@@ -1,0 +1,2106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Cell Cycle Checkpoints" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Hoffmann, I, Khanna, K, O'Connell, M, Walworth, N, Yen, TJ" Maintainer="Matthews, L">
+  <Comment Source="WikiPathways-description">A hallmark of the human cell cycle in normal somatic cells is its precision. This remarkable fidelity is achieved by a number of signal transduction pathways, known as checkpoints, which monitor cell cycle progression ensuring an interdependency of S-phase and mitosis, the integrity of the genome and the fidelity of chromosome segregation.&lt;p&gt;Checkpoints are layers of control that act to delay CDK activation when defects in the division program occur. As the CDKs functioning at different points in the cell cycle are regulated by different means, the various checkpoints differ in the biochemical mechanisms by which they elicit their effect. However, all checkpoints share a common hierarchy of a sensor, signal transducers, and effectors that interact with the CDKs.&lt;p&gt;The stability of the genome in somatic cells contrasts to the almost universal genomic instability of tumor cells. There are a number of documented genetic lesions in checkpoint genes, or in cell cycle genes themselves, which result either directly in cancer or in a predisposition to certain cancer types. Indeed, restraint over cell cycle progression and failure to monitor genome integrity are likely prerequisites for the molecular evolution required for the development of a tumor. Perhaps most notable amongst these is the p53 tumor suppressor gene, which is mutated in &gt;50% of human tumors.  Thus, the importance of the checkpoint pathways to human biology is clear.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n5_REACTOME_182558" TextLabel="p21/p27&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1862.0" CenterY="469.0" Width="62.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_8306"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_68374" TextLabel="Cyclin E:Cdk2 &#10;complexes&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1953.5" CenterY="524.0" Width="91.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5247"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_68376" TextLabel="Cyclin E:Cdk2:&#10;p21/p27 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1746.5" CenterY="522.0" Width="115.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3804"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_182585" TextLabel="p21&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1922.0" CenterY="896.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P38936"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_69507" TextLabel="p53 ser-15 &#10;phosphorylated&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1844.0" CenterY="821.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P04637"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1974.0" CenterY="757.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_69486" TextLabel="Mdm2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1898.5" CenterY="607.0" Width="45.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q00987"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_75145" TextLabel="phospho-ATM (Ser &#10;1981)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1842.5" CenterY="659.0" Width="121.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13315"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1776.5" CenterY="698.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_69490" TextLabel="phospho-MDM2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1844.0" CenterY="565.0" Width="102.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q00987"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_69488" TextLabel="p53 protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1775.5" CenterY="767.0" Width="77.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P04637"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_349474" TextLabel="p53 tetramer&#10;" Type="Complex">
+    <BiopaxRef>lit_349422</BiopaxRef>
+    <Graphics Color="000000" CenterX="2318.0" CenterY="663.0" Width="86.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20792"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_349450" TextLabel="phospho-COP1(Ser &#10;387)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2051.5" CenterY="661.0" Width="123.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8NHY2"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_349439" TextLabel="phosho-COP1(ser-&#10;387)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2421.0" CenterY="715.0" Width="118.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8NHY2"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_68819" TextLabel="26S proteasome&#10;" Type="Complex">
+    <BiopaxRef>lit_68820</BiopaxRef>
+    <Graphics Color="000000" CenterX="2395.5" CenterY="1022.0" Width="103.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2353"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_113595" TextLabel="ubiquitin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2390.0" CenterY="884.0" Width="58.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_3316"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_349454" TextLabel="COP1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1939.0" CenterY="723.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8NHY2"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_349433" TextLabel="ubiquitinated &#10;phospho-COP1(ser-&#10;387)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2478.0" CenterY="905.0" Width="126.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21146"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_349420" TextLabel="Phospho-COP1(Ser-&#10;387):p53 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2249.5" CenterY="584.0" Width="125.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21189"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_69589" TextLabel="Ubiquitinated &#10;Phospho-Cdc25A&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">A number of ubiquitin moeities are covalently added to the Cdc25A, which marks it for proteolytic degradation.</Comment>
+    <Graphics Color="000000" CenterX="2316.0" CenterY="1157.0" Width="110.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4164"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_69599" TextLabel="Amino Acid&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2480.5" CenterY="1157.0" Width="73.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2474"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_69588" TextLabel="phospho-Cdc25A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2238.5" CenterY="891.0" Width="111.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30304"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_69593" TextLabel="Ubiquitin ligase&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2236.0" CenterY="1044.0" Width="96.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_4282"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1566.5" CenterY="979.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_143487" TextLabel="Cdc25A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1617.0" CenterY="949.0" Width="54.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30304"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_143488" TextLabel="phospho-Cdc25A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1666.5" CenterY="902.0" Width="111.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30304"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1709.0" CenterY="1001.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_75807" TextLabel="Chk1/Ckk2(Cds1)&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1650.0" CenterY="1051.0" Width="112.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5826"/>
+  </DataNode>
+  <DataNode GraphId="n157_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1343.5" CenterY="595.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n158_REACTOME_113826" TextLabel="Chk1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1385.0" CenterY="625.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14757"/>
+  </DataNode>
+  <DataNode GraphId="n159_REACTOME_113838" TextLabel="phospho-Chk1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1534.5" CenterY="599.5" Width="95.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14757"/>
+  </DataNode>
+  <DataNode GraphId="n160_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1447.0" CenterY="634.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n161_REACTOME_176269" TextLabel="ATR-ATRIP&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">The ATR (ATM- and rad3-related) kinase is an essential checkpoint factor in human cells. In response to replication stress (i.e., stresses that cause replication fork stalling) or ultraviolet radiation, ATR becomes active and phosphorylates numerous factors involved in the checkpoint response including the checkpoint kinase Chk1. ATR is invariably associated with ATRIP (ATR-interacting protein) in human cells. Depletion of ATRIP by siRNA causes a loss of ATR without affecting ATR mRNA levels indicating that complex formation stabilizes ATR. ATRIP is also a substrate for the ATR kinase, but this modification does not play a significant role in the recruitment of ATR-ATRIP to sites of damage, the activation of Chk1, or the modification of p53.</Comment>
+    <BiopaxRef>lit_176259</BiopaxRef>
+    <BiopaxRef>lit_176171</BiopaxRef>
+    <Graphics Color="000000" CenterX="1414.5" CenterY="548.0" Width="73.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7002"/>
+  </DataNode>
+  <DataNode GraphId="n171_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1655.5" CenterY="447.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_113824" TextLabel="Chk2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1620.0" CenterY="483.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O96017-12"/>
+  </DataNode>
+  <DataNode GraphId="n173_REACTOME_113825" TextLabel="phospho-Chk2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1763.0" CenterY="441.5" Width="96.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O96017-12"/>
+  </DataNode>
+  <DataNode GraphId="n174_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1687.0" CenterY="392.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n192_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1624.5" CenterY="1099.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n193_REACTOME_69741" TextLabel="Cdc25C&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1580.0" CenterY="1142.0" Width="54.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30307"/>
+  </DataNode>
+  <DataNode GraphId="n194_REACTOME_156496" TextLabel="phosph-Cdc25C (Ser &#10;216)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1453.0" CenterY="1041.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30307"/>
+  </DataNode>
+  <DataNode GraphId="n195_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1698.0" CenterY="1167.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n197_REACTOME_75004" TextLabel="14-3-3 proteins&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="546.5" CenterY="813.0" Width="105.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2548"/>
+  </DataNode>
+  <DataNode GraphId="n198_REACTOME_75003" TextLabel="phosph-Cdc25C (Ser &#10;216)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="621.0" CenterY="766.0" Width="134.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30307"/>
+  </DataNode>
+  <DataNode GraphId="n199_REACTOME_75005" TextLabel="phospho-Cdc25C:&#10;14-3-3 protein &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="620.5" CenterY="900.0" Width="115.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4474"/>
+  </DataNode>
+  <DataNode GraphId="n210_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1346.5" CenterY="703.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n211_REACTOME_69253" TextLabel="Wee1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1353.0" CenterY="760.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30291"/>
+  </DataNode>
+  <DataNode GraphId="n212_REACTOME_156491" TextLabel="phospho-Wee1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1482.5" CenterY="727.0" Width="97.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30291"/>
+  </DataNode>
+  <DataNode GraphId="n213_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1422.0" CenterY="688.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n223_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1305.5" CenterY="781.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n224_REACTOME_170073" TextLabel="Cyclin B1:phospho-&#10;Cdc2 (Thr 14, Thr &#10;161)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1299.5" CenterY="845.0" Width="121.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6474"/>
+  </DataNode>
+  <DataNode GraphId="n225_REACTOME_170065" TextLabel="Cyclin B1:phospho-&#10;Cdc2(Thr 161, Thr &#10;14, Tyr 15)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1465.0" CenterY="845.0" Width="122.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6704"/>
+  </DataNode>
+  <DataNode GraphId="n226_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1439.0" CenterY="774.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n244_REACTOME_170077" TextLabel="Cyclin B:Cdc2 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="490.0" CenterY="1076.0" Width="90.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6447"/>
+  </DataNode>
+  <DataNode GraphId="n245_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="574.5" CenterY="1031.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n246_REACTOME_170069" TextLabel="Cyclin B:phospho-&#10;Cdc2(Thr 14)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="703.5" CenterY="1076.0" Width="113.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6524"/>
+  </DataNode>
+  <DataNode GraphId="n247_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="622.0" CenterY="1119.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n249_REACTOME_68462" TextLabel="RPA heterotrimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="900.5" CenterY="775.0" Width="107.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3427"/>
+  </DataNode>
+  <DataNode GraphId="n250_REACTOME_176104" TextLabel="Persistent single-&#10;stranded DNA&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1013.0" CenterY="768.0" Width="108.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_7801"/>
+  </DataNode>
+  <DataNode GraphId="n251_REACTOME_176293" TextLabel="RPA complexed to &#10;ssDNA&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">RPA associates with ssDNA in distinct complexes that can be distinguished by the length of ssDNA occluded by each RPA molecule. These complexes reflect the progressive association of distinct DNA-binding domains present in the RPA heterotrimeric structure. Binding is coupled to significant conformational changes within RPA that are observable at the microscopic level. Presumably, the different conformations of free and ssDNA-bound RPA allow the protein to selectively interact with factors such as ATR-ATRIP when bound to DNA.</Comment>
+    <BiopaxRef>lit_69372</BiopaxRef>
+    <BiopaxRef>lit_176266</BiopaxRef>
+    <BiopaxRef>lit_176103</BiopaxRef>
+    <BiopaxRef>lit_176156</BiopaxRef>
+    <Graphics Color="000000" CenterX="902.0" CenterY="902.0" Width="118.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7172"/>
+  </DataNode>
+  <DataNode GraphId="n253_REACTOME_176281" TextLabel="ATR-ATRIP-RPA-&#10;ssDNA signaling &#10;complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">While the ATR-ATRIP complex binds only poorly to RPA complexed with ssDNA lengths of 30 or 50 nt, binding is significantly enhanced in the presence of a 75 nt ssDNA molecule. Complex formation is primarily mediated by physical interaction between ATRIP and RPA. Multiple elements within the ATRIP molecule can bind to the RPA-ssDNA complex, including residues 1-107 (highest affinity), 218-390, and 390-791 (lowest afiinity). Although the full-length ATRIP is unable to bind ssDNA, an internal region (108-390) can weakly bind ssDNA when present in rabbit reticulocyte lysates. ATR can bind to the ssDNA directly independent of RPA, but this binding is inhibited by ATRIP. Upon binding, the ATR kinase becomes activated and can directly phosphorylate substrates such as Rad17.</Comment>
+    <BiopaxRef>lit_176216</BiopaxRef>
+    <BiopaxRef>lit_176163</BiopaxRef>
+    <BiopaxRef>lit_176205</BiopaxRef>
+    <Graphics Color="000000" CenterX="1236.0" CenterY="454.0" Width="110.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7037"/>
+  </DataNode>
+  <DataNode GraphId="n271_REACTOME_176353" TextLabel="Rad17-RFC complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">The Rad17-RFC complex is a heteropentamer structurally similar to RFC.  The Rad17-RFC complex contains the four smaller RFC subunits (Rfc2 [p37], Rfc3 [p36], Rfc4 [p40], and Rfc5 [p38]) and the 75 kDa Rad17 subunit in place of the Rfc1 [p140] subunit. The Rad17 complex contains a weak ATPase that is poorly stimulated by primed DNA.  Along with binding the 9-1-1 complex and RPA, the Rad17-RFC complex interacts with human MCM7 protein. Each of these interactions is critical for Chk1 activation.&lt;p&gt;The Rad17 subunit is conserved evolutionarily with the protein showing 49% identity at the amino acid level with the S. pombe rad17 protein. Targeted deletion of the N-terminal region of mouse Rad17 leads to embryonic lethality, strongly suggesting that human Rad17 is also essential for long-term viability.</Comment>
+    <Graphics Color="000000" CenterX="986.5" CenterY="960.0" Width="129.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7804"/>
+  </DataNode>
+  <DataNode GraphId="n272_REACTOME_176204" TextLabel="Rad17-RFC complex &#10;bound to DNA&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Rad17-RFC complex associates with DNA substrates containing ssDNA regions including gapped or primed DNA in an ATP-independent reaction. Loading of the Rad9-Hus1-Rad1 (9-1-1) complex occurs preferentially on DNA substrates containing a 5' recessed end. This contrasts with the loading of PCNA by RFC which preferentially occurs on DNA with 3' recessed ends.</Comment>
+    <Graphics Color="000000" CenterX="900.5" CenterY="1055.0" Width="133.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7502"/>
+  </DataNode>
+  <DataNode GraphId="n274_REACTOME_176312" TextLabel="Rad9-Hus1-Rad1 &#10;complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">The Rad9-Hus1-Rad1 (9-1-1) complex is a ring-shaped heterotrimeric complex. Under genotoxic stress conditions, it can be loaded onto DNA at sites of damage or stalled forks by the Rad17 complex.</Comment>
+    <BiopaxRef>lit_176375</BiopaxRef>
+    <Graphics Color="000000" CenterX="1003.0" CenterY="1133.0" Width="118.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7593"/>
+  </DataNode>
+  <DataNode GraphId="n275_REACTOME_176256" TextLabel="Rad9-Hus1-Rad1 &#10;bound to DNA&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">A major known function of the 9-1-1 complex is to recruit Chk1 to stalled replication forks for activation by ATR. However, the presence of the 9-1-1 complex also alters the ability of Rad17 to become phoshorylated, perhaps suggesting that 9-1-1 may also serve to recruit a subset of ATR substrates. The 9-1-1 complex has also been found to interact with base excision repair factors human DNA polymerase beta, flap endonuclease FEN1, and the S. pombe MutY homolog (SpMYH), indicating that 9-1-1 also plays a direct role in DNA repair.</Comment>
+    <Graphics Color="000000" CenterX="882.0" CenterY="1200.0" Width="118.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7267"/>
+  </DataNode>
+  <DataNode GraphId="n285_REACTOME_176282" TextLabel="Claspin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="922.0" CenterY="687.0" Width="50.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9HAW4"/>
+  </DataNode>
+  <DataNode GraphId="n286_REACTOME_68564" TextLabel="Cdc45:CDK:DDK:&#10;Mcm10:pre-&#10;replicative complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1062.0" CenterY="682.0" Width="120.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4546"/>
+  </DataNode>
+  <DataNode GraphId="n287_REACTOME_176229" TextLabel="Cdc45:CDK:DDK:&#10;Mcm10:claspin:pre-&#10;replicative complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="980.0" CenterY="558.0" Width="126.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7273"/>
+  </DataNode>
+  <DataNode GraphId="n289_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="872.5" CenterY="501.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n290_REACTOME_176182" TextLabel="Cdc45:CDK:DDK:&#10;Mcm10:Activated &#10;claspin:pre-&#10;replicative complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1154.0" CenterY="378.0" Width="120.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7262"/>
+  </DataNode>
+  <DataNode GraphId="n291_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1002.0" CenterY="415.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n301_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1083.5" CenterY="949.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n302_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1584.0" CenterY="867.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n328_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1486.5" CenterY="1143.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n329_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1445.0" CenterY="972.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n380_REACTOME_141433" TextLabel="HsMad1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="540.0" CenterY="304.0" Width="56.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y6D9"/>
+  </DataNode>
+  <DataNode GraphId="n381_REACTOME_141398" TextLabel="Kinetochore &#10;Complex&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="680.0" CenterY="296.0" Width="80.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5901"/>
+  </DataNode>
+  <DataNode GraphId="n382_REACTOME_141441" TextLabel="Mad1:kinetochore &#10;complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">The molecules that directly interact with Mad1 is unknown. However molecular genetic data has defined an assembly pathway consisting of CENP-I, HEC1, Mps1 that specifies the assembly of Mad1.</Comment>
+    <Graphics Color="000000" CenterX="598.0" CenterY="407.0" Width="116.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5632"/>
+  </DataNode>
+  <DataNode GraphId="n384_REACTOME_141400" TextLabel="HsMAD2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="675.0" CenterY="450.0" Width="58.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13257"/>
+  </DataNode>
+  <DataNode GraphId="n385_REACTOME_141427" TextLabel="Kinetochore:Mad1:&#10;MAD2 Complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Mad2 binds to the Mad1:Kinetochore and undergoes a major conformational change within the complex to assume the form Mad2*.</Comment>
+    <Graphics Color="000000" CenterX="595.5" CenterY="531.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4828"/>
+  </DataNode>
+  <DataNode GraphId="n387_REACTOME_141432" TextLabel="Kinetochore:Mad1:&#10;MAD2* Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="594.5" CenterY="643.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5238"/>
+  </DataNode>
+  <DataNode GraphId="n397_REACTOME_141447" TextLabel="MAD2*&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="369.5" CenterY="405.0" Width="49.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13257"/>
+  </DataNode>
+  <DataNode GraphId="n407_REACTOME_141412" TextLabel="Cdc20&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="369.0" CenterY="315.0" Width="46.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q12834"/>
+  </DataNode>
+  <DataNode GraphId="n408_REACTOME_141408" TextLabel="MAD2*CDC20 &#10;complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Activated Mad2 upon release from kinetochores binds and sequesters Cdc20 from activating the APC.</Comment>
+    <Graphics Color="000000" CenterX="483.0" CenterY="357.0" Width="94.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2295"/>
+  </DataNode>
+  <DataNode GraphId="n426_REACTOME_141416" TextLabel="Mitotic checkpoint &#10;protein BUB3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="216.5" CenterY="314.0" Width="115.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43684"/>
+  </DataNode>
+  <DataNode GraphId="n427_REACTOME_141436" TextLabel="hBUBR1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="353.5" CenterY="273.0" Width="53.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60566"/>
+  </DataNode>
+  <DataNode GraphId="n428_REACTOME_141440" TextLabel="hBUBR1:hBUB3:&#10;MAD2*:CDC20 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="300.0" CenterY="214.0" Width="98.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5836"/>
+  </DataNode>
+  <DataNode GraphId="n438_REACTOME_174191" TextLabel="phosphorylated &#10;anaphase promoting &#10;complex (APC/C)&#10;" Type="Complex">
+    <BiopaxRef>lit_174165</BiopaxRef>
+    <Graphics Color="000000" CenterX="410.5" CenterY="158.0" Width="131.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7058"/>
+  </DataNode>
+  <DataNode GraphId="n439_REACTOME_141410" TextLabel="MCC:APC/C complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="300.0" CenterY="93.0" Width="128.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3955"/>
+  </DataNode>
+  <DataNode GraphId="n517_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1279.5" CenterY="1208.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n518_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1782.5" CenterY="925.5" Width="41.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n520_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1393.0" CenterY="420.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n521_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1480.5" CenterY="530.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <Line GraphId="e_8_REACTOME_69562">
+    <Comment Source="WikiPathways-description">During G1, the activity of cyclin-dependent kinases (CDKs) is kept in check by the CDK inhibitors (CKIs) p27 and p21, thereby preventing premature entry into S phase (see Guardavaccaro and Pagano, 2006). The efficient recognition and ubiquitination of p27 by the SCF(Skp2) complex requires the formation of a trimeric complex containing p27 and cyclin E/A:Cdk2.</Comment>
+    <BiopaxRef>lit_187515</BiopaxRef>
+    <BiopaxRef>lit_187793</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1894.0" Y="522.0" GraphId="e_8_0"/>
+      <Point X="1832.0" Y="522.0" GraphId="e_8_1"/>
+      <Point X="1807.0" Y="522.0" GraphId="e_8_2" GraphRef="n7_REACTOME_68376" RelX="1.0608695652173914" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_8_a_i"/>
+      <Anchor Position="0.7126436781609196" GraphId="e_8_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1868.0" Y="483.0" GraphId="e_8_i0_0" GraphRef="n5_REACTOME_182558" RelX="0.1935483870967742" RelY="1.2727272727272727"/>
+      <Point X="1894.0" Y="522.0" GraphId="e_8_i0_1" GraphRef="e_8_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1905.0" Y="522.0" GraphId="e_8_i1_0" GraphRef="n6_REACTOME_68374" RelX="-1.054945054945055" RelY="-0.1111111111111111"/>
+      <Point X="1894.0" Y="522.0" GraphId="e_8_i1_1" GraphRef="e_8_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1855.0" Y="483.0" GraphId="e_8_c__0_0" GraphRef="n5_REACTOME_182558" RelX="-0.22580645161290322" RelY="1.2727272727272727"/>
+      <Point X="1832.0" Y="522.0" GraphId="e_8_c__0_1" GraphRef="e_8_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_188383">
+    <Comment Source="WikiPathways-description">p21 is transcriptionally activated by p53 after DNA damage.</Comment>
+    <BiopaxRef>lit_69405</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1844.0" Y="895.0" GraphId="e_13_0"/>
+      <Point X="1895.0" Y="896.0" GraphId="e_13_1"/>
+      <Point X="1903.0" Y="896.0" GraphId="e_13_2" GraphRef="n11_REACTOME_182585" RelX="-1.1875" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_13_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1844.0" Y="842.0" GraphId="e_13_a__0_0" GraphRef="n12_REACTOME_69507" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="1844.0" Y="895.0" GraphId="e_13_a__0_1" GraphRef="e_13_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_REACTOME_69491">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Mdm2' is present. At the end of this reaction, 1 molecule of 'phospho-MDM2' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleoplasm' and  is mediated by the 'kinase activity' of 'phospho-ATM (Ser 1981)'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_69492</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1873.0" Y="606.0" GraphId="e_21_0" GraphRef="n15_REACTOME_69486" RelX="-1.1111111111111112" RelY="-0.09090909090909091"/>
+      <Point X="1843.0" Y="606.0" GraphId="e_21_1"/>
+      <Point X="1843.0" Y="586.0" GraphId="e_21_2" GraphRef="n18_REACTOME_69490" RelX="-0.0196078431372549" RelY="1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.6" GraphId="e_21_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1842.0" Y="638.0" GraphId="e_21_c__0_0" GraphRef="n16_REACTOME_75145" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="1843.0" Y="606.0" GraphId="e_21_c__0_1" GraphRef="e_21_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_REACTOME_69511">
+    <Comment Source="WikiPathways-description">In response to DNA damage due to ionizing radiation, the serine at position 15 of the p53 tumor suppressor protein is rapidly phosphorylated by the ATM kinase.  This serves to stabilize the p53 protein.  A rise in the levels of the p53 protein induce the expression of the p21 cyclin-dependent kinase inhibitor.  This prevents the normal progression from G1 to S phase, thus providing a check on replication of damaged DNA.</Comment>
+    <BiopaxRef>lit_69512</BiopaxRef>
+    <BiopaxRef>lit_69520</BiopaxRef>
+    <BiopaxRef>lit_69530</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1775.0" Y="730.0" GraphId="e_22_0"/>
+      <Point X="1843.0" Y="730.0" GraphId="e_22_1"/>
+      <Point X="1843.0" Y="756.0" GraphId="e_22_2"/>
+      <Anchor Position="0.0" GraphId="e_22_a_i"/>
+      <Anchor Position="0.723404255319149" GraphId="e_22_a_p"/>
+      <Anchor Position="1.0" GraphId="e_22_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1775.0" Y="716.0" GraphId="e_22_i0_0" GraphRef="n17_REACTOME_29358" RelX="-0.05128205128205128" RelY="1.2"/>
+      <Point X="1775.0" Y="730.0" GraphId="e_22_i0_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1775.0" Y="753.0" GraphId="e_22_i1_0" GraphRef="n19_REACTOME_69488" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1775.0" Y="730.0" GraphId="e_22_i1_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1951.0" Y="756.0" GraphId="e_22_o0_0" ArrowHead="Arrow" GraphRef="n14_REACTOME_113582" RelX="-1.15" RelY="-0.06666666666666667"/>
+      <Point X="1843.0" Y="756.0" GraphId="e_22_o0_1" GraphRef="e_22_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1843.0" Y="800.0" GraphId="e_22_o1_0" ArrowHead="Arrow" GraphRef="n12_REACTOME_69507" RelX="-0.02040816326530612" RelY="-1.1666666666666667"/>
+      <Point X="1843.0" Y="756.0" GraphId="e_22_o1_1" GraphRef="e_22_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1842.0" Y="680.0" GraphId="e_22_c__0_0" GraphRef="n16_REACTOME_75145" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="1843.0" Y="730.0" GraphId="e_22_c__0_1" GraphRef="e_22_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_REACTOME_264458">
+    <Comment Source="WikiPathways-description">Autoubiquitinated COP1 is degraded by the proteasome. The number of ubiquitin molecules shown in this reaction is arbitrarily set at 4. (Dornan et al., 2006).</Comment>
+    <BiopaxRef>lit_349437</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2445.0" Y="933.0" GraphId="e_31_0" GraphRef="n29_REACTOME_349433" RelX="-0.5238095238095238" RelY="1.12"/>
+      <Point X="2393.0" Y="971.0" GraphId="e_31_1"/>
+      <Point X="2390.0" Y="898.0" GraphId="e_31_2" GraphRef="n27_REACTOME_113595" RelX="0.0" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.46851362468073077" GraphId="e_31_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2394.0" Y="1008.0" GraphId="e_31_c__0_0" GraphRef="n26_REACTOME_68819" RelX="-0.019417475728155338" RelY="-1.2727272727272727"/>
+      <Point X="2393.0" Y="971.0" GraphId="e_31_c__0_1" GraphRef="e_31_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_264418">
+    <Comment Source="WikiPathways-description">Ionizing radiation results in an ATM-dependent movement of COP1 from the nucleus to the cytoplasm (Dornan et al., 2006).</Comment>
+    <BiopaxRef>lit_349437</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2081.0" Y="682.0" GraphId="e_32_0" GraphRef="n24_REACTOME_349450" RelX="0.4878048780487805" RelY="1.1666666666666667"/>
+      <Point X="2142.0" Y="715.0" GraphId="e_32_1"/>
+      <Point X="2251.0" Y="715.0" GraphId="e_32_2"/>
+      <Point X="2359.0" Y="715.0" GraphId="e_32_3" GraphRef="n25_REACTOME_349439" RelX="-1.0508474576271187" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6228446666681017" GraphId="e_32_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_264435">
+    <Comment Source="WikiPathways-description">ATM-dependent phosphorylation of COP1 on Ser(387) results in disruption of  the COP1-p53 complex (Dornan et al., 2006)</Comment>
+    <BiopaxRef>lit_349437</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2248.0" Y="605.0" GraphId="e_33_0" GraphRef="n30_REACTOME_349420" RelX="-0.016" RelY="1.1666666666666667"/>
+      <Point X="2248.0" Y="637.0" GraphId="e_33_1"/>
+      <Point X="2248.0" Y="662.0" GraphId="e_33_2"/>
+      <Anchor Position="0.5614035087719298" GraphId="e_33_a_p"/>
+      <Anchor Position="1.0" GraphId="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2272.0" Y="662.0" GraphId="e_33_o0_0" ArrowHead="Arrow" GraphRef="n23_REACTOME_349474" RelX="-1.069767441860465" RelY="-0.09090909090909091"/>
+      <Point X="2248.0" Y="662.0" GraphId="e_33_o0_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2116.0" Y="661.0" GraphId="e_33_o1_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_349450" RelX="1.056910569105691" RelY="0.0"/>
+      <Point X="2248.0" Y="662.0" GraphId="e_33_o1_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_349444">
+    <Comment Source="WikiPathways-description">ATM phosphorylates COP1 on Ser387 in response to DNA damage (Dornan et al., 2006).</Comment>
+    <BiopaxRef>lit_349437</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1939.0" Y="698.0" GraphId="e_34_0"/>
+      <Point X="1939.0" Y="659.0" GraphId="e_34_1"/>
+      <Point X="1974.0" Y="658.0" GraphId="e_34_2"/>
+      <Anchor Position="0.0" GraphId="e_34_a_i"/>
+      <Anchor Position="0.5269253247426965" GraphId="e_34_a_p"/>
+      <Anchor Position="1.0" GraphId="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1799.0" Y="698.0" GraphId="e_34_i0_0" GraphRef="n17_REACTOME_29358" RelX="1.1794871794871795" RelY="0.0"/>
+      <Point X="1939.0" Y="698.0" GraphId="e_34_i0_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1939.0" Y="709.0" GraphId="e_34_i1_0" GraphRef="n28_REACTOME_349454" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1939.0" Y="698.0" GraphId="e_34_i1_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1974.0" Y="739.0" GraphId="e_34_o0_0" ArrowHead="Arrow" GraphRef="n14_REACTOME_113582" RelX="0.0" RelY="-1.2"/>
+      <Point X="1974.0" Y="658.0" GraphId="e_34_o0_1" GraphRef="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1987.0" Y="658.0" GraphId="e_34_o1_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_349450" RelX="-1.0406504065040652" RelY="-0.16666666666666666"/>
+      <Point X="1974.0" Y="658.0" GraphId="e_34_o1_1" GraphRef="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1906.0" Y="659.0" GraphId="e_34_c__0_0" GraphRef="n16_REACTOME_75145" RelX="1.0578512396694215" RelY="0.0"/>
+      <Point X="1939.0" Y="659.0" GraphId="e_34_c__0_1" GraphRef="e_34_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_REACTOME_264444">
+    <Comment Source="WikiPathways-description">ATM phosphorylation promotes autoubiquitination of COP1 in vitro (Dornan et al., 2006). The number of ubiquitin molecules shown in this reaction is set arbitrarily at 4.</Comment>
+    <BiopaxRef>lit_349437</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2403.0" Y="813.0" GraphId="e_35_0"/>
+      <Point X="2447.0" Y="813.0" GraphId="e_35_1"/>
+      <Point X="2469.0" Y="877.0" GraphId="e_35_2" GraphRef="n29_REACTOME_349433" RelX="-0.14285714285714285" RelY="-1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_35_a_i"/>
+      <Anchor Position="0.3939979877311645" GraphId="e_35_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2417.0" Y="736.0" GraphId="e_35_i0_0" GraphRef="n25_REACTOME_349439" RelX="-0.06779661016949153" RelY="1.1666666666666667"/>
+      <Point X="2403.0" Y="813.0" GraphId="e_35_i0_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2392.0" Y="870.0" GraphId="e_35_i1_0" GraphRef="n27_REACTOME_113595" RelX="0.06896551724137931" RelY="-1.2727272727272727"/>
+      <Point X="2403.0" Y="813.0" GraphId="e_35_i1_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2425.0" Y="736.0" GraphId="e_35_c__0_0" GraphRef="n25_REACTOME_349439" RelX="0.06779661016949153" RelY="1.1666666666666667"/>
+      <Point X="2447.0" Y="813.0" GraphId="e_35_c__0_1" GraphRef="e_35_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_36_REACTOME_69600">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Ubiquitinated Phospho-Cdc25A' is present. At the end of this reaction, 1 molecule of 'Amino Acid' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol' and  is mediated by the 'endopeptidase activity' of '26S proteasome'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2374.0" Y="1157.0" GraphId="e_36_0" GraphRef="n37_REACTOME_69589" RelX="1.0545454545454545" RelY="0.0"/>
+      <Point X="2396.0" Y="1157.0" GraphId="e_36_1"/>
+      <Point X="2441.0" Y="1157.0" GraphId="e_36_2" GraphRef="n38_REACTOME_69599" RelX="-1.0684931506849316" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3283582089552239" GraphId="e_36_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_36_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2395.0" Y="1036.0" GraphId="e_36_c__0_0" GraphRef="n26_REACTOME_68819" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="2396.0" Y="1157.0" GraphId="e_36_c__0_1" GraphRef="e_36_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_REACTOME_69598">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'ubiquitin', and 1 molecule of 'phospho-Cdc25A' are present. At the end of this reaction, 1 molecule of 'Ubiquitinated Phospho-Cdc25A' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol' and  is mediated by the 'ubiquitin-protein ligase activity' of 'Ubiquitin ligase'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2316.0" Y="884.0" GraphId="e_47_0"/>
+      <Point X="2316.0" Y="1043.0" GraphId="e_47_1"/>
+      <Point X="2316.0" Y="1136.0" GraphId="e_47_2" GraphRef="n37_REACTOME_69589" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_47_a_i"/>
+      <Anchor Position="0.6309523809523809" GraphId="e_47_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2297.0" Y="886.0" GraphId="e_47_i0_0" GraphRef="n48_REACTOME_69588" RelX="1.063063063063063" RelY="-0.45454545454545453"/>
+      <Point X="2316.0" Y="884.0" GraphId="e_47_i0_1" GraphRef="e_47_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2358.0" Y="884.0" GraphId="e_47_i1_0" GraphRef="n27_REACTOME_113595" RelX="-1.103448275862069" RelY="0.0"/>
+      <Point X="2316.0" Y="884.0" GraphId="e_47_i1_1" GraphRef="e_47_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2287.0" Y="1043.0" GraphId="e_47_c__0_0" GraphRef="n49_REACTOME_69593" RelX="1.0625" RelY="-0.09090909090909091"/>
+      <Point X="2316.0" Y="1043.0" GraphId="e_47_c__0_1" GraphRef="e_47_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_REACTOME_69591">
+    <Comment Source="WikiPathways-description">Chk1 directly phosphorylates Cdc25A at Ser-123. Chk1 phosphorylation  is required for cells to delay cell cycle progression in response to double-strand DNA breaks (Zhao et al., 2002).</Comment>
+    <BiopaxRef>lit_69451</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1616.0" Y="978.0" GraphId="e_58_0"/>
+      <Point X="1650.0" Y="978.0" GraphId="e_58_1"/>
+      <Point X="1666.0" Y="978.0" GraphId="e_58_2"/>
+      <Anchor Position="0.0" GraphId="e_58_a_i"/>
+      <Anchor Position="0.68" GraphId="e_58_a_p"/>
+      <Anchor Position="1.0" GraphId="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1589.0" Y="978.0" GraphId="e_58_i0_0" GraphRef="n59_REACTOME_29358" RelX="1.1794871794871795" RelY="-0.06666666666666667"/>
+      <Point X="1616.0" Y="978.0" GraphId="e_58_i0_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1616.0" Y="963.0" GraphId="e_58_i1_0" GraphRef="n60_REACTOME_143487" RelX="-0.037037037037037035" RelY="1.2727272727272727"/>
+      <Point X="1616.0" Y="978.0" GraphId="e_58_i1_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1666.0" Y="916.0" GraphId="e_58_o0_0" ArrowHead="Arrow" GraphRef="n61_REACTOME_143488" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1666.0" Y="978.0" GraphId="e_58_o0_1" GraphRef="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1686.0" Y="990.0" GraphId="e_58_o1_0" ArrowHead="Arrow" GraphRef="n62_REACTOME_113582" RelX="-1.15" RelY="-0.7333333333333333"/>
+      <Point X="1666.0" Y="978.0" GraphId="e_58_o1_1" GraphRef="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1650.0" Y="1037.0" GraphId="e_58_c__0_0" GraphRef="n63_REACTOME_75807" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1650.0" Y="978.0" GraphId="e_58_c__0_1" GraphRef="e_58_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_REACTOME_176116">
+    <Comment Source="WikiPathways-description">Chk1 is a checkpoint kinase activated during genotoxic stress. Like ATR, Chk1 is essential for viability in mammals. Targeted gene disruption in mice shows that loss of Chk1 causes peri-implantation embryonic lethality. Even though ATR-ATRIP not bound to ssDNA can phosphorylate Chk1, Chk1 activation is greatly enhanced when recruited to stalled replication forks by physical interaction with a modified form of claspin and the Rad9-Hus1-Rad1 sliding clamp. Activation of Chk1 occurs following phosphorylation of two sites (serine 317 and serine 345). Mutational analysis indicates that modification of both sites is essential for maximal kinase activity, while phosphorylation of only a single site causes only weak activation of Chk1. Following phosphorylation, Chk1 can diffuse away from the complex to further amplify the checkpoint signal. ATR appears to be the primary kinase activating Chk1 as conditions that activate ATR (ultraviolet irradiation or treatment with hydroxyurea) also activate Chk1. Stresses that activate ATM, e.g., ionizing irradiation, do not cause significant Chk1 activation. While the ATR and ATM pathways are distinct, there is interplay between the two. For example, double-strand DNA breaks can be processed in an ATM-dependent manner to generate structures that can cause ATR and hence Chk1 activation. The ATR and ATM pathways also have mechanistic similarities. Analogous to the Chk1 kinase existing downstream of ATR, the Chk2 checkpoint kinase is modified and activated by ATM. Although having distinct structures, Chk1 and Chk2 also have overlapping targets with some substrate sites phosphorylatable by both kinases (e.g., serine 20 of p53).</Comment>
+    <BiopaxRef>lit_176273</BiopaxRef>
+    <BiopaxRef>lit_176337</BiopaxRef>
+    <BiopaxRef>lit_75006</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1385.0" Y="595.0" GraphId="e_156_0"/>
+      <Point X="1415.0" Y="595.0" GraphId="e_156_1"/>
+      <Point X="1447.0" Y="595.0" GraphId="e_156_2"/>
+      <Anchor Position="0.0" GraphId="e_156_a_i"/>
+      <Anchor Position="0.4838709677419355" GraphId="e_156_a_p"/>
+      <Anchor Position="1.0" GraphId="e_156_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1366.0" Y="595.0" GraphId="e_156_i0_0" GraphRef="n157_REACTOME_29358" RelX="1.1794871794871795" RelY="0.0"/>
+      <Point X="1385.0" Y="595.0" GraphId="e_156_i0_1" GraphRef="e_156_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1385.0" Y="611.0" GraphId="e_156_i1_0" GraphRef="n158_REACTOME_113826" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1385.0" Y="595.0" GraphId="e_156_i1_1" GraphRef="e_156_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1484.0" Y="596.0" GraphId="e_156_o0_0" ArrowHead="Arrow" GraphRef="n159_REACTOME_113838" RelX="-1.0526315789473684" RelY="-0.16216216216216217"/>
+      <Point X="1447.0" Y="595.0" GraphId="e_156_o0_1" GraphRef="e_156_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1447.0" Y="616.0" GraphId="e_156_o1_0" ArrowHead="Arrow" GraphRef="n160_REACTOME_113582" RelX="0.0" RelY="-1.2"/>
+      <Point X="1447.0" Y="595.0" GraphId="e_156_o1_1" GraphRef="e_156_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1414.0" Y="562.0" GraphId="e_156_c__0_0" GraphRef="n161_REACTOME_176269" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1415.0" Y="595.0" GraphId="e_156_c__0_1" GraphRef="e_156_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_REACTOME_69891">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'ATP', and 1 molecule of 'Chk2' are present. At the end of this reaction, 1 molecule of 'phospho-Chk2', and 1 molecule of 'ADP' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'kinase activity' of 'phospho-ATM (Ser 1981)'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_83554</BiopaxRef>
+    <BiopaxRef>lit_179441</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1654.0" Y="482.0" GraphId="e_170_0"/>
+      <Point X="1686.0" Y="482.0" GraphId="e_170_1"/>
+      <Point X="1687.0" Y="440.0" GraphId="e_170_2"/>
+      <Anchor Position="0.0" GraphId="e_170_a_i"/>
+      <Anchor Position="0.4323628858385969" GraphId="e_170_a_p"/>
+      <Anchor Position="1.0" GraphId="e_170_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1654.0" Y="465.0" GraphId="e_170_i0_0" GraphRef="n171_REACTOME_29358" RelX="-0.05128205128205128" RelY="1.2"/>
+      <Point X="1654.0" Y="482.0" GraphId="e_170_i0_1" GraphRef="e_170_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1642.0" Y="482.0" GraphId="e_170_i1_0" GraphRef="n172_REACTOME_113824" RelX="1.1578947368421053" RelY="-0.09090909090909091"/>
+      <Point X="1654.0" Y="482.0" GraphId="e_170_i1_1" GraphRef="e_170_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1712.0" Y="440.0" GraphId="e_170_o0_0" ArrowHead="Arrow" GraphRef="n173_REACTOME_113825" RelX="-1.0625" RelY="-0.05405405405405406"/>
+      <Point X="1687.0" Y="440.0" GraphId="e_170_o0_1" GraphRef="e_170_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1687.0" Y="410.0" GraphId="e_170_o1_0" ArrowHead="Arrow" GraphRef="n174_REACTOME_113582" RelX="0.0" RelY="1.2"/>
+      <Point X="1687.0" Y="440.0" GraphId="e_170_o1_1" GraphRef="e_170_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1779.0" Y="658.0" GraphId="e_170_c__0_0" GraphRef="n16_REACTOME_75145" RelX="-1.0413223140495869" RelY="-0.05555555555555555"/>
+      <Point X="1686.0" Y="658.0" GraphId="e_170_c__0_1"/>
+      <Point X="1686.0" Y="482.0" GraphId="e_170_c__0_2" GraphRef="e_170_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_191_REACTOME_75809">
+    <Comment Source="WikiPathways-description">Cdc25C is negatively regulated  by phosphorylation on Ser 216, the 14-3-3-binding site. This is an important regulatory mechanism used by cells to block mitotic entry under normal conditions and after DNA damage (Bulavin et al., 2003).</Comment>
+    <BiopaxRef>lit_210722</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1624.0" Y="1142.0" GraphId="e_191_0"/>
+      <Point X="1651.0" Y="1142.0" GraphId="e_191_1"/>
+      <Point X="1650.0" Y="1164.0" GraphId="e_191_2"/>
+      <Anchor Position="0.0" GraphId="e_191_a_i"/>
+      <Anchor Position="0.5507650830749119" GraphId="e_191_a_p"/>
+      <Anchor Position="1.0" GraphId="e_191_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_191_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1624.0" Y="1117.0" GraphId="e_191_i0_0" GraphRef="n192_REACTOME_29358" RelX="0.0" RelY="1.2"/>
+      <Point X="1624.0" Y="1142.0" GraphId="e_191_i0_1" GraphRef="e_191_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_191_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1610.0" Y="1142.0" GraphId="e_191_i1_0" GraphRef="n193_REACTOME_69741" RelX="1.1111111111111112" RelY="0.0"/>
+      <Point X="1624.0" Y="1142.0" GraphId="e_191_i1_1" GraphRef="e_191_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_191_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1452.0" Y="1062.0" GraphId="e_191_o0_0" ArrowHead="Arrow" GraphRef="n194_REACTOME_156496" RelX="-0.014925373134328358" RelY="1.1666666666666667"/>
+      <Point X="1452.0" Y="1164.0" GraphId="e_191_o0_1"/>
+      <Point X="1650.0" Y="1164.0" GraphId="e_191_o0_2" GraphRef="e_191_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_191_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1675.0" Y="1165.0" GraphId="e_191_o1_0" ArrowHead="Arrow" GraphRef="n195_REACTOME_113582" RelX="-1.15" RelY="-0.13333333333333333"/>
+      <Point X="1650.0" Y="1164.0" GraphId="e_191_o1_1" GraphRef="e_191_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_191_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1650.0" Y="1065.0" GraphId="e_191_c__0_0" GraphRef="n63_REACTOME_75807" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1651.0" Y="1142.0" GraphId="e_191_c__0_1" GraphRef="e_191_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_196_REACTOME_75016">
+    <Comment Source="WikiPathways-description">Association of Cdc25C with 14-3-3 proteins with phospho-Cdc25C (Ser216) is believed to result in retention of this complex within the cytoplasm ( Dalal et al., 1999)</Comment>
+    <BiopaxRef>lit_75017</BiopaxRef>
+    <BiopaxRef>lit_75019</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="619.0" Y="813.0" GraphId="e_196_0"/>
+      <Point X="619.0" Y="836.0" GraphId="e_196_1"/>
+      <Point X="619.0" Y="872.0" GraphId="e_196_2" GraphRef="n199_REACTOME_75005" RelX="-0.017391304347826087" RelY="-1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_196_a_i"/>
+      <Anchor Position="0.3898305084745763" GraphId="e_196_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_196_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="602.0" Y="813.0" GraphId="e_196_i0_0" GraphRef="n197_REACTOME_75004" RelX="1.0666666666666667" RelY="0.0"/>
+      <Point X="619.0" Y="813.0" GraphId="e_196_i0_1" GraphRef="e_196_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_196_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="620.0" Y="785.0" GraphId="e_196_i1_0" GraphRef="n198_REACTOME_75003" RelX="-0.014925373134328358" RelY="1.1875"/>
+      <Point X="619.0" Y="813.0" GraphId="e_196_i1_1" GraphRef="e_196_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_208_REACTOME_75022">
+    <Comment Source="WikiPathways-description">Cdc25C is phosphorylated by Chk1 at ser-216 (Blasina et al.,1999 )  resulting in both inhibition of the Cdc25 phosphatase activity and creation of  a 14-3-3 docking site (Peng et al., 1997). Association of 14-3-3 protein is believed to exclude Cdc25C from the nucleus via cytoplasmic retention of the Cdc25C:14-3-3 complex.</Comment>
+    <BiopaxRef>lit_75019</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="610.0" Y="928.0" GraphId="e_208_0" GraphRef="n199_REACTOME_75005" RelX="-0.17391304347826086" RelY="1.12"/>
+      <Point X="597.0" Y="960.0" GraphId="e_208_1"/>
+      <Point X="634.0" Y="960.0" GraphId="e_208_2"/>
+      <Point X="625.0" Y="928.0" GraphId="e_208_3" GraphRef="n199_REACTOME_75005" RelX="0.08695652173913043" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.32963714162041186" GraphId="e_208_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_209_REACTOME_75028">
+    <Comment Source="WikiPathways-description">Phosphorylation of Wee1 by Chk1 stimulates Wee1 kinase activity.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1362.0" Y="727.0" GraphId="e_209_0"/>
+      <Point X="1384.0" Y="727.0" GraphId="e_209_1"/>
+      <Point X="1396.0" Y="727.0" GraphId="e_209_2"/>
+      <Anchor Position="0.0" GraphId="e_209_a_i"/>
+      <Anchor Position="0.6470588235294118" GraphId="e_209_a_p"/>
+      <Anchor Position="1.0" GraphId="e_209_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_209_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1356.0" Y="721.0" GraphId="e_209_i0_0" GraphRef="n210_REACTOME_29358" RelX="0.5128205128205128" RelY="1.2"/>
+      <Point X="1362.0" Y="727.0" GraphId="e_209_i0_1" GraphRef="e_209_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_209_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1356.0" Y="746.0" GraphId="e_209_i1_0" GraphRef="n211_REACTOME_69253" RelX="0.15" RelY="-1.2727272727272727"/>
+      <Point X="1362.0" Y="727.0" GraphId="e_209_i1_1" GraphRef="e_209_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_209_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1431.0" Y="727.0" GraphId="e_209_o0_0" ArrowHead="Arrow" GraphRef="n212_REACTOME_156491" RelX="-1.0515463917525774" RelY="0.0"/>
+      <Point X="1396.0" Y="727.0" GraphId="e_209_o0_1" GraphRef="e_209_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_209_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1412.0" Y="706.0" GraphId="e_209_o1_0" ArrowHead="Arrow" GraphRef="n213_REACTOME_113582" RelX="-0.5" RelY="1.2"/>
+      <Point X="1396.0" Y="727.0" GraphId="e_209_o1_1" GraphRef="e_209_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_209_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1384.0" Y="639.0" GraphId="e_209_c__0_0" GraphRef="n158_REACTOME_113826" RelX="-0.05263157894736842" RelY="1.2727272727272727"/>
+      <Point X="1384.0" Y="727.0" GraphId="e_209_c__0_1" GraphRef="e_209_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_222_REACTOME_170070">
+    <Comment Source="WikiPathways-description">Wee1, a nuclear kinase, phosphorylates cyclin B1:Cdc2  on tyrosine 15 inactivating the complex.</Comment>
+    <BiopaxRef>lit_170219</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1329.0" Y="805.0" GraphId="e_222_0"/>
+      <Point X="1353.0" Y="805.0" GraphId="e_222_1"/>
+      <Point X="1389.0" Y="805.0" GraphId="e_222_2"/>
+      <Anchor Position="0.0" GraphId="e_222_a_i"/>
+      <Anchor Position="0.4" GraphId="e_222_a_p"/>
+      <Anchor Position="1.0" GraphId="e_222_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_222_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1320.0" Y="799.0" GraphId="e_222_i0_0" GraphRef="n223_REACTOME_29358" RelX="0.7692307692307693" RelY="1.2"/>
+      <Point X="1329.0" Y="805.0" GraphId="e_222_i0_1" GraphRef="e_222_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_222_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1317.0" Y="817.0" GraphId="e_222_i1_0" GraphRef="n224_REACTOME_170073" RelX="0.2975206611570248" RelY="-1.12"/>
+      <Point X="1329.0" Y="805.0" GraphId="e_222_i1_1" GraphRef="e_222_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_222_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1417.0" Y="817.0" GraphId="e_222_o0_0" ArrowHead="Arrow" GraphRef="n225_REACTOME_170065" RelX="-0.7868852459016393" RelY="-1.12"/>
+      <Point X="1389.0" Y="805.0" GraphId="e_222_o0_1" GraphRef="e_222_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_222_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1416.0" Y="786.0" GraphId="e_222_o1_0" ArrowHead="Arrow" GraphRef="n226_REACTOME_113582" RelX="-1.15" RelY="0.8"/>
+      <Point X="1389.0" Y="805.0" GraphId="e_222_o1_1" GraphRef="e_222_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_222_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1353.0" Y="774.0" GraphId="e_222_c__0_0" GraphRef="n211_REACTOME_69253" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1353.0" Y="805.0" GraphId="e_222_c__0_1" GraphRef="e_222_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_REACTOME_170055">
+    <Comment Source="WikiPathways-description">Myt1, which localizes preferentially to the endoplasmic reticulum and Golgi complex, phosphorylates Cdc2 on threonine 14 ( Liu et al., 1997).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="573.0" Y="1074.0" GraphId="e_243_0"/>
+      <Point X="595.0" Y="1074.0" GraphId="e_243_1"/>
+      <Point X="619.0" Y="1074.0" GraphId="e_243_2"/>
+      <Anchor Position="0.0" GraphId="e_243_a_i"/>
+      <Anchor Position="0.4782608695652174" GraphId="e_243_a_p"/>
+      <Anchor Position="1.0" GraphId="e_243_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="538.0" Y="1074.0" GraphId="e_243_i0_0" GraphRef="n244_REACTOME_170077" RelX="1.0666666666666667" RelY="-0.1111111111111111"/>
+      <Point X="573.0" Y="1074.0" GraphId="e_243_i0_1" GraphRef="e_243_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="573.0" Y="1049.0" GraphId="e_243_i1_0" GraphRef="n245_REACTOME_113592" RelX="-0.05128205128205128" RelY="1.2"/>
+      <Point X="573.0" Y="1074.0" GraphId="e_243_i1_1" GraphRef="e_243_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="644.0" Y="1074.0" GraphId="e_243_o0_0" ArrowHead="Arrow" GraphRef="n246_REACTOME_170069" RelX="-1.0442477876106195" RelY="-0.1111111111111111"/>
+      <Point X="619.0" Y="1074.0" GraphId="e_243_o0_1" GraphRef="e_243_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="621.0" Y="1101.0" GraphId="e_243_o1_0" ArrowHead="Arrow" GraphRef="n247_REACTOME_29370" RelX="-0.05" RelY="-1.2"/>
+      <Point X="619.0" Y="1074.0" GraphId="e_243_o1_1" GraphRef="e_243_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_248_REACTOME_176175">
+    <Comment Source="WikiPathways-description">When a DNA replication fork encounters DNA lesions (e.g., cyclobutane pyrimidine dimers or alkylated bases) stalling of the replicative DNA polymerase may occur. This can lead to dissociation or 'uncoupling' of the DNA polymerase from the DNA helicase and generation of long regions of persistent ssDNA. Uncoupling can also occur in response to other genotoxic stresses such as reduced dNTP pools caused by hydroxyurea treatment which inhibits cellular ribonucleotide diphosphate reductase. The exposed ssDNA is bound by the single-stranded DNA binding protein RPA.  The persistent nature of this RPA-ssDNA complex (as opposed to a more-transient complex found at an active replication fork) allows it to serve as a signal for replication stress that can be recognized by the ATR-ATRIP and Rad17-Rfc2-5 complexes.&lt;p&gt;RPA associates with ssDNA in distinct complexes that can be distinguished by the length of ssDNA occluded by each RPA molecule.  These complexes reflect the progressive association of distinct DNA-binding domains present in the RPA heterotrimeric structure.  Binding is coupled to significant conformational changes within RPA that are observable at the microscopic level. Presumably, the different conformations of free and ssDNA-bound RPA allow the protein to selectively interact with factors such as ATR-ATRIP when bound to DNA.</Comment>
+    <BiopaxRef>lit_176362</BiopaxRef>
+    <BiopaxRef>lit_176190</BiopaxRef>
+    <BiopaxRef>lit_176317</BiopaxRef>
+    <BiopaxRef>lit_176266</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1012.0" Y="837.0" GraphId="e_248_0"/>
+      <Point X="901.0" Y="836.0" GraphId="e_248_1"/>
+      <Point X="901.0" Y="881.0" GraphId="e_248_2" GraphRef="n251_REACTOME_176293" RelX="-0.01694915254237288" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_248_a_i"/>
+      <Anchor Position="0.7115467904642209" GraphId="e_248_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_248_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="919.0" Y="789.0" GraphId="e_248_i0_0" GraphRef="n249_REACTOME_68462" RelX="0.35514018691588783" RelY="1.2727272727272727"/>
+      <Point X="1012.0" Y="837.0" GraphId="e_248_i0_1" GraphRef="e_248_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_248_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1012.0" Y="789.0" GraphId="e_248_i1_0" GraphRef="n250_REACTOME_176104" RelX="-0.018518518518518517" RelY="1.1666666666666667"/>
+      <Point X="1012.0" Y="837.0" GraphId="e_248_i1_1" GraphRef="e_248_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_248_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="900.0" Y="789.0" GraphId="e_248_c__0_0" GraphRef="n249_REACTOME_68462" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="901.0" Y="836.0" GraphId="e_248_c__0_1" GraphRef="e_248_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_252_REACTOME_176250">
+    <Comment Source="WikiPathways-description">ATR kinase activity is stimulated upon binding of the ATR-ATRIP complex to an RPA-ssDNA complex. ATR can subsequently phosphorylate and activate the checkpoint kinase Chk1, allowing further amplification of the checkpoint signal. The ATR and Chk1 kinases then modify a variety of factors that can lead to stabilization of stalled DNA replication forks, inhibition of origin firing, inhibition of cell cycle progression, mobilization of DNA repair factors, and induction of apoptosis. This checkpoint signaling mechanism is highly conserved in eukaryotes, and homologues of ATR and ATRIP are found in such organisms as S. cerevisiae (Mec1 and Ddc2, respectively), S. pombe (rad3 and rad26, respectively), and X. laevis (Xatr and Xatrip, respectively).&lt;p&gt;The ATR (ATM- and rad3-related) kinase is an essential checkpoint factor in human cells. In response to replication stress (i.e., stresses that cause replication fork stalling) or ultraviolet radiation, ATR becomes active and phosphorylates numerous factors involved in the checkpoint response including the checkpoint kinase Chk1. ATR is invariably associated with ATRIP (ATR-interacting protein) in human cells. Depletion of ATRIP by siRNA causes a loss of ATR protein without affecting ATR mRNA levels indicating that complex formation stabilizes the ATR protein. ATRIP is also a substrate for the ATR kinase, but modification of ATRIP does not significantly regulate the recruitment of ATR-ATRIP to sites of damage, the activation of Chk1, or the modification of p53.&lt;p&gt;While the ATR-ATRIP complex binds only poorly to RPA complexed with ssDNA lengths of 30 or 50 nt, binding is significantly enhanced in the presence of a 75 nt ssDNA molecule. Complex formation is primarily mediated by physical interaction between ATRIP and RPA. Multiple elements within the ATRIP molecule can bind to the RPA-ssDNA complex, including residues 1-107 (highest affinity), 218-390, and 390-791 (lowest affinity). Although the full-length ATRIP is unable to bind ssDNA, an internal region (108-390) can weakly bind ssDNA when present in rabbit reticulocyte lysates. ATR can bind to the ssDNA directly independent of RPA, but this binding is inhibited by ATRIP. Upon binding, the ATR kinase becomes activated and can directly phosphorylate substrates such as Rad17.</Comment>
+    <BiopaxRef>lit_176216</BiopaxRef>
+    <BiopaxRef>lit_176163</BiopaxRef>
+    <BiopaxRef>lit_176285</BiopaxRef>
+    <BiopaxRef>lit_176176</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1235.0" Y="547.0" GraphId="e_252_0"/>
+      <Point X="1235.0" Y="521.0" GraphId="e_252_1"/>
+      <Point X="1235.0" Y="482.0" GraphId="e_252_2" GraphRef="n253_REACTOME_176281" RelX="-0.01818181818181818" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_252_a_i"/>
+      <Anchor Position="0.4" GraphId="e_252_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_252_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1375.0" Y="547.0" GraphId="e_252_i0_0" GraphRef="n161_REACTOME_176269" RelX="-1.0684931506849316" RelY="-0.09090909090909091"/>
+      <Point X="1235.0" Y="547.0" GraphId="e_252_i0_1" GraphRef="e_252_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_252_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="964.0" Y="901.0" GraphId="e_252_i1_0" GraphRef="n251_REACTOME_176293" RelX="1.0508474576271187" RelY="-0.05555555555555555"/>
+      <Point X="1095.0" Y="901.0" GraphId="e_252_i1_1"/>
+      <Point X="1176.0" Y="568.0" GraphId="e_252_i1_2"/>
+      <Point X="1235.0" Y="547.0" GraphId="e_252_i1_3" GraphRef="e_252_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_270_REACTOME_176101">
+    <Comment Source="WikiPathways-description">The Rad17-RFC complex is involved in an early stage of the genotoxic stress response. The major function of the protein complex is to load the Rad9-Hus1-Rad1 (9-1-1) complex onto DNA at sites of damage and/or stalled replication forks. This reaction is conceptually similar to the loading of the PCNA sliding clamp onto DNA by RFC. The association of the Rad17-RFC complex with ssDNA or gapped or primed DNA is significantly stimulated by RPA, but not by the heterologous E. coli SSB. Loading of the human 9-1-1 complex onto such DNA templates is also strongly stimulated by cognate RPA, but not yeast RPA. Although Rad17 and Rad9 are substrates of the ATR kinase activity, loading of the Rad17 and 9-1-1 complexes onto DNA occurs independent of ATR.&lt;p&gt;The Rad17-RFC complex is a heteropentamer structurally similar to RFC. The complex contains the four smaller RFC subunits (Rfc2 [p37], Rfc3 [p36], Rfc4 [p40], and Rfc5 [p38]) and the 75 kDa Rad17 subunit in place of the Rfc1 [p140] subunit. The Rad17 complex contains a weak ATPase that is slightly stimulated by primed DNA. Along with binding the 9-1-1 complex and RPA, the Rad17-RFC complex interacts with human MCM7 protein. Each of these interactions is critical for Chk1 activation.&lt;p&gt;The Rad17 subunit is conserved evolutionarily with the protein showing 49% identity at the amino acid level with the S. pombe rad17 protein. Targeted deletion of the N-terminal region of mouse Rad17 leads to embryonic lethality, strongly suggesting that human Rad17 is also essential for long-term viability.&lt;p&gt;Rad17-RFC complex associates with DNA substrates containing ssDNA regions including gapped or primed DNA in an ATP-independent reaction. Loading of the Rad9-Hus1-Rad1 (9-1-1) complex occurs preferentially on DNA substrates containing a 5' recessed end. This contrasts with the loading of PCNA by RFC which preferentially occurs on DNA with 3' recessed ends.</Comment>
+    <BiopaxRef>lit_176370</BiopaxRef>
+    <BiopaxRef>lit_176117</BiopaxRef>
+    <BiopaxRef>lit_176209</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="900.0" Y="959.0" GraphId="e_270_0"/>
+      <Point X="900.0" Y="991.0" GraphId="e_270_1"/>
+      <Point X="900.0" Y="1034.0" GraphId="e_270_2" GraphRef="n272_REACTOME_176204" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_270_a_i"/>
+      <Anchor Position="0.4266666666666667" GraphId="e_270_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_270_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="901.0" Y="923.0" GraphId="e_270_i0_0" GraphRef="n251_REACTOME_176293" RelX="-0.01694915254237288" RelY="1.1666666666666667"/>
+      <Point X="900.0" Y="959.0" GraphId="e_270_i0_1" GraphRef="e_270_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_270_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="919.0" Y="959.0" GraphId="e_270_i1_0" GraphRef="n271_REACTOME_176353" RelX="-1.0387596899224807" RelY="-0.09090909090909091"/>
+      <Point X="900.0" Y="959.0" GraphId="e_270_i1_1" GraphRef="e_270_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_273_REACTOME_176264">
+    <Comment Source="WikiPathways-description">The 9-1-1 complex is a heterotrimeric ring-shaped structure that is loaded onto DNA by the Rad17-RFC complex. In vitro studies indicate that loading is preferred onto DNA substrates containing ssDNA gaps that presumably resemble structures found upon replication fork stalling and DNA polymerase/helicase uncoupling. The Rad17-RFC and 9-1-1 complexes are structurally similar to the RFC (replication factor C) clamp loader and PCNA sliding clamp, respectively, and similar mechanisms are thought to be used during loading of the 9-1-1 complex and PCNA. Upon loading, the 9-1-1 complex can recruit Chk1 onto sites of replication fork uncoupling or DNA damage.&lt;p&gt;The purified Rad17 and Rad9-Hus1-Rad1 (9-1-1) complexes can form a stable co-complex in the presence of ATP, using Rad17-Rad9 interactions. From computer modeling studies, the Rad17 subunit of the complex is also proposed to interact with the C-terminus of Rad1, p36 with the C-terminus of Hus1, and p38 with the C-terminus of Rad9. A major known function of the 9-1-1 complex is to recruit Chk1 to stalled replication forks for activation by ATR. However, the presence of the 9-1-1 complex also alters the ability of Rad17 to become phosphorylated, perhaps suggesting that 9-1-1 may regulate the recruiment of additional ATR substrates. The 9-1-1 complex has also been found to interact with base excision repair factors human DNA polymerase beta, flap endonuclease FEN1, and the S. pombe MutY homolog (SpMYH), indicating that 9-1-1 also plays a direct role in DNA repair.</Comment>
+    <BiopaxRef>lit_176370</BiopaxRef>
+    <BiopaxRef>lit_176117</BiopaxRef>
+    <BiopaxRef>lit_176209</BiopaxRef>
+    <BiopaxRef>lit_176164</BiopaxRef>
+    <BiopaxRef>lit_176110</BiopaxRef>
+    <BiopaxRef>lit_176356</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="916.0" Y="1133.0" GraphId="e_273_0"/>
+      <Point X="881.0" Y="1133.0" GraphId="e_273_1"/>
+      <Point X="881.0" Y="1179.0" GraphId="e_273_2" GraphRef="n275_REACTOME_176256" RelX="-0.01694915254237288" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_273_a_i"/>
+      <Anchor Position="0.43209876543209874" GraphId="e_273_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_273_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="941.0" Y="1133.0" GraphId="e_273_i0_0" GraphRef="n274_REACTOME_176312" RelX="-1.0508474576271187" RelY="0.0"/>
+      <Point X="916.0" Y="1133.0" GraphId="e_273_i0_1" GraphRef="e_273_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_273_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="903.0" Y="1076.0" GraphId="e_273_i1_0" GraphRef="n272_REACTOME_176204" RelX="0.045112781954887216" RelY="1.1666666666666667"/>
+      <Point X="916.0" Y="1133.0" GraphId="e_273_i1_1" GraphRef="e_273_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_273_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="895.0" Y="1076.0" GraphId="e_273_c__0_0" GraphRef="n272_REACTOME_176204" RelX="-0.07518796992481203" RelY="1.1666666666666667"/>
+      <Point X="881.0" Y="1133.0" GraphId="e_273_c__0_1" GraphRef="e_273_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_284_REACTOME_176318">
+    <Comment Source="WikiPathways-description">Claspin is loaded onto DNA replication origins during replication initiation. Studies in Xenopus egg extracts indicate claspin loading requires the presence of Cdc45, a factor that promotes the initial unwinding of the origin DNA in the presence of Cdk2. This step is followed by RPA binding which is a prerequisite for recruitment of PCNA and DNA polymerases alpha and delta. As RPA is not required for claspin binding, it is postulated that claspin binds at the time of initial origin unwinding but prior to the initiation of DNA synthesis. Claspin would then continue to associate with replication fork machinery where it can serve as a checkpoint sensor protein. Even though associated with the replication fork, claspin is not an essential DNA replication factor.&lt;p&gt;Studies of Xenopus claspin indicate that it can physically associate with cognate Cdc45, DNA polymerase epsilon, RPA, RFC, and Rad17-RFC on chromatin. Studies of purified human claspin indicate that it binds with high affinity to branched (or forked) DNA structures that resemble stalled replication forks. Electron microscopy of these complexes indicates that claspin binds as a ring-like structure near the branch. The protein is hypothesized to encircle the DNA at these sites.</Comment>
+    <BiopaxRef>lit_176242</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="979.0" Y="663.0" GraphId="e_284_0"/>
+      <Point X="979.0" Y="632.0" GraphId="e_284_1"/>
+      <Point X="979.0" Y="586.0" GraphId="e_284_2" GraphRef="n287_REACTOME_176229" RelX="-0.015873015873015872" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_284_a_i"/>
+      <Anchor Position="0.4025974025974026" GraphId="e_284_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_284_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="950.0" Y="676.0" GraphId="e_284_i0_0" GraphRef="n285_REACTOME_176282" RelX="1.12" RelY="-1.0"/>
+      <Point X="979.0" Y="663.0" GraphId="e_284_i0_1" GraphRef="e_284_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_284_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="999.0" Y="668.0" GraphId="e_284_i1_0" GraphRef="n286_REACTOME_68564" RelX="-1.05" RelY="-0.56"/>
+      <Point X="979.0" Y="663.0" GraphId="e_284_i1_1" GraphRef="e_284_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_REACTOME_176298">
+    <Comment Source="WikiPathways-description">Claspin is a replication fork-associated protein important for Chk1 activation. Claspin loads onto the fork during replication origin firing and travels with the fork during DNA synthesis. Upon fork uncoupling and ATR-ATRIP binding to persistent ssDNA, the activated ATR kinase phosphorylates claspin at two primary sites. Modification increases the affinity of claspin for Chk1. Studies of human or Xenopus claspin indicate that phosphorylation of both sites is essential for significant claspin-Chk1 association. Following claspin modification by ATR, Chk1 can be transiently recruited to the stalled replication fork for subsequent phosphorylation and activation by ATR. Activation of Chk1 allows modification of additional downstream targets, thus amplifying the checkpoint signal. While much of the mechanistic information concerning claspin action has been obtained using Xenopus laevis egg extracts and Xenopus claspin, factors with similar activity have been found in various eukaryotic species including S. cerevisiae (MRC1), S. pombe (mrc1), and humans.&lt;p&gt;Activated ATR phosphorylates human claspin on two sites, threonine 916 and serine 945.</Comment>
+    <BiopaxRef>lit_176239</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="981.0" Y="499.0" GraphId="e_288_0"/>
+      <Point X="1002.0" Y="499.0" GraphId="e_288_1"/>
+      <Point X="1002.0" Y="471.0" GraphId="e_288_2"/>
+      <Anchor Position="0.0" GraphId="e_288_a_i"/>
+      <Anchor Position="0.42857142857142855" GraphId="e_288_a_p"/>
+      <Anchor Position="1.0" GraphId="e_288_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="980.0" Y="530.0" GraphId="e_288_i0_0" GraphRef="n287_REACTOME_176229" RelX="0.0" RelY="-1.12"/>
+      <Point X="981.0" Y="499.0" GraphId="e_288_i0_1" GraphRef="e_288_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="895.0" Y="500.0" GraphId="e_288_i1_0" GraphRef="n289_REACTOME_29358" RelX="1.1794871794871795" RelY="-0.06666666666666667"/>
+      <Point X="981.0" Y="499.0" GraphId="e_288_i1_1" GraphRef="e_288_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1101.0" Y="413.0" GraphId="e_288_o0_0" ArrowHead="Arrow" GraphRef="n290_REACTOME_176182" RelX="-0.8833333333333333" RelY="1.09375"/>
+      <Point X="1002.0" Y="471.0" GraphId="e_288_o0_1" GraphRef="e_288_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1002.0" Y="433.0" GraphId="e_288_o1_0" ArrowHead="Arrow" GraphRef="n291_REACTOME_113582" RelX="0.0" RelY="1.2"/>
+      <Point X="1002.0" Y="471.0" GraphId="e_288_o1_1" GraphRef="e_288_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1413.0" Y="534.0" GraphId="e_288_c__0_0" GraphRef="n161_REACTOME_176269" RelX="-0.0273972602739726" RelY="-1.2727272727272727"/>
+      <Point X="1413.0" Y="499.0" GraphId="e_288_c__0_1"/>
+      <Point X="1002.0" Y="499.0" GraphId="e_288_c__0_2" GraphRef="e_288_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_300_REACTOME_69604">
+    <Comment Source="WikiPathways-description">Detection of DNA damage caused by ionizing radiation results in the phosphorylation of Cdc25A at Ser-123 by Chk1, inhibiting Cdc25A.</Comment>
+    <BiopaxRef>lit_69451</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1128.0" Y="948.0" GraphId="e_300_0"/>
+      <Point X="1127.0" Y="901.0" GraphId="e_300_1"/>
+      <Point X="1560.0" Y="901.0" GraphId="e_300_2"/>
+      <Anchor Position="0.0" GraphId="e_300_a_i"/>
+      <Anchor Position="0.09793665694318704" GraphId="e_300_a_p"/>
+      <Anchor Position="1.0" GraphId="e_300_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_300_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1106.0" Y="948.0" GraphId="e_300_i0_0" GraphRef="n301_REACTOME_29358" RelX="1.1794871794871795" RelY="-0.06666666666666667"/>
+      <Point X="1128.0" Y="948.0" GraphId="e_300_i0_1" GraphRef="e_300_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_300_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1587.0" Y="948.0" GraphId="e_300_i1_0" GraphRef="n60_REACTOME_143487" RelX="-1.1111111111111112" RelY="-0.09090909090909091"/>
+      <Point X="1128.0" Y="948.0" GraphId="e_300_i1_1" GraphRef="e_300_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_300_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1608.0" Y="901.0" GraphId="e_300_o0_0" ArrowHead="Arrow" GraphRef="n61_REACTOME_143488" RelX="-1.045045045045045" RelY="-0.09090909090909091"/>
+      <Point X="1560.0" Y="901.0" GraphId="e_300_o0_1" GraphRef="e_300_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_300_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1573.0" Y="885.0" GraphId="e_300_o1_0" ArrowHead="Arrow" GraphRef="n302_REACTOME_113582" RelX="-0.55" RelY="1.2"/>
+      <Point X="1560.0" Y="901.0" GraphId="e_300_o1_1" GraphRef="e_300_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_300_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1374.0" Y="639.0" GraphId="e_300_c__0_0" GraphRef="n158_REACTOME_113826" RelX="-0.5789473684210527" RelY="1.2727272727272727"/>
+      <Point X="1127.0" Y="901.0" GraphId="e_300_c__0_1" GraphRef="e_300_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_327_REACTOME_75010">
+    <Comment Source="WikiPathways-description">Phosphorylation of Cdc25C at Ser 216 results in both the inhibition of Cdc25C phosphatase activity and the creation of a 14-3-3 docking site (Peng et al. 1997).</Comment>
+    <BiopaxRef>lit_75011</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1533.0" Y="1143.0" GraphId="e_327_0"/>
+      <Point X="1533.0" Y="983.0" GraphId="e_327_1"/>
+      <Point X="1497.0" Y="983.0" GraphId="e_327_2"/>
+      <Anchor Position="0.0" GraphId="e_327_a_i"/>
+      <Anchor Position="0.8163265306122449" GraphId="e_327_a_p"/>
+      <Anchor Position="1.0" GraphId="e_327_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_327_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1550.0" Y="1142.0" GraphId="e_327_i0_0" GraphRef="n193_REACTOME_69741" RelX="-1.1111111111111112" RelY="0.0"/>
+      <Point X="1533.0" Y="1143.0" GraphId="e_327_i0_1" GraphRef="e_327_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_327_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1509.0" Y="1143.0" GraphId="e_327_i1_0" GraphRef="n328_REACTOME_29358" RelX="1.1794871794871795" RelY="0.0"/>
+      <Point X="1533.0" Y="1143.0" GraphId="e_327_i1_1" GraphRef="e_327_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_327_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1466.0" Y="1020.0" GraphId="e_327_o0_0" ArrowHead="Arrow" GraphRef="n194_REACTOME_156496" RelX="0.19402985074626866" RelY="-1.1666666666666667"/>
+      <Point X="1497.0" Y="983.0" GraphId="e_327_o0_1" GraphRef="e_327_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_327_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1468.0" Y="976.0" GraphId="e_327_o1_0" ArrowHead="Arrow" GraphRef="n329_REACTOME_113582" RelX="1.15" RelY="0.26666666666666666"/>
+      <Point X="1497.0" Y="983.0" GraphId="e_327_o1_1" GraphRef="e_327_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_327_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1533.0" Y="621.0" GraphId="e_327_c__0_0" GraphRef="n159_REACTOME_113838" RelX="-0.021052631578947368" RelY="1.1891891891891893"/>
+      <Point X="1533.0" Y="983.0" GraphId="e_327_c__0_1" GraphRef="e_327_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_379_REACTOME_141409">
+    <Comment Source="WikiPathways-description">The association of Mad1 with the kinetochore is the first step in the process of Mad2 mediated amplification of the signal from defective kinetochores.</Comment>
+    <BiopaxRef>lit_143441</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="597.0" Y="331.0" GraphId="e_379_0"/>
+      <Point X="597.0" Y="346.0" GraphId="e_379_1"/>
+      <Point X="597.0" Y="386.0" GraphId="e_379_2" GraphRef="n382_REACTOME_141441" RelX="-0.017241379310344827" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_379_a_i"/>
+      <Anchor Position="0.2727272727272727" GraphId="e_379_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_379_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="563.0" Y="318.0" GraphId="e_379_i0_0" GraphRef="n380_REACTOME_141433" RelX="0.8214285714285714" RelY="1.2727272727272727"/>
+      <Point X="597.0" Y="331.0" GraphId="e_379_i0_1" GraphRef="e_379_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_379_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="637.0" Y="312.0" GraphId="e_379_i1_0" GraphRef="n381_REACTOME_141398" RelX="-1.075" RelY="0.8888888888888888"/>
+      <Point X="597.0" Y="331.0" GraphId="e_379_i1_1" GraphRef="e_379_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_383_REACTOME_141431">
+    <Comment Source="WikiPathways-description">Mad2 is recruited to the kinetochore through an interaction with Mad1.</Comment>
+    <BiopaxRef>lit_143441</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="594.0" Y="448.0" GraphId="e_383_0"/>
+      <Point X="594.0" Y="471.0" GraphId="e_383_1"/>
+      <Point X="594.0" Y="510.0" GraphId="e_383_2" GraphRef="n385_REACTOME_141427" RelX="-0.017094017094017096" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_383_a_i"/>
+      <Anchor Position="0.3709677419354839" GraphId="e_383_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_383_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="596.0" Y="428.0" GraphId="e_383_i0_0" GraphRef="n382_REACTOME_141441" RelX="-0.034482758620689655" RelY="1.1666666666666667"/>
+      <Point X="594.0" Y="448.0" GraphId="e_383_i0_1" GraphRef="e_383_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_383_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="643.0" Y="449.0" GraphId="e_383_i1_0" GraphRef="n384_REACTOME_141400" RelX="-1.103448275862069" RelY="-0.09090909090909091"/>
+      <Point X="594.0" Y="448.0" GraphId="e_383_i1_1" GraphRef="e_383_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_386_REACTOME_141422">
+    <Comment Source="WikiPathways-description">In vitro structural studies have shown that Mad2 undergoes a major conformational change upon binding to Mad1. This conformational change is postulated to activate Mad2 into a high affinity state which can bind and sequester Cdc20 from the APC.</Comment>
+    <BiopaxRef>lit_143448</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="594.0" Y="552.0" GraphId="e_386_0" GraphRef="n385_REACTOME_141427" RelX="-0.017094017094017096" RelY="1.1666666666666667"/>
+      <Point X="594.0" Y="582.0" GraphId="e_386_1"/>
+      <Point X="594.0" Y="622.0" GraphId="e_386_2" GraphRef="n387_REACTOME_141432" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.42857142857142855" GraphId="e_386_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_396_REACTOME_141439">
+    <Comment Source="WikiPathways-description">The mechanism by which the conformationally altered inhibitory form of Mad2 is released from its association with Mad1 at the kinetochore is not known. Mad1 and Cdc20 have a common 10 residue Mad2 binding motif. Therefore, one possibility is that  Mad2 is transferred competitively from Mad1 to Cdc20 (Luo et al., 2002; Sironi et al., 2002).</Comment>
+    <BiopaxRef>lit_143453</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="533.0" Y="640.0" GraphId="e_396_0" GraphRef="n387_REACTOME_141432" RelX="-1.0427350427350428" RelY="-0.16666666666666666"/>
+      <Point X="512.0" Y="640.0" GraphId="e_396_1"/>
+      <Point X="512.0" Y="406.0" GraphId="e_396_2"/>
+      <Anchor Position="0.08235294117647059" GraphId="e_396_a_p"/>
+      <Anchor Position="1.0" GraphId="e_396_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_396_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="397.0" Y="405.0" GraphId="e_396_o0_0" ArrowHead="Arrow" GraphRef="n397_REACTOME_141447" RelX="1.1428571428571428" RelY="0.0"/>
+      <Point X="512.0" Y="406.0" GraphId="e_396_o0_1" GraphRef="e_396_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_396_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="537.0" Y="406.0" GraphId="e_396_o1_0" ArrowHead="Arrow" GraphRef="n382_REACTOME_141441" RelX="-1.0517241379310345" RelY="-0.05555555555555555"/>
+      <Point X="512.0" Y="406.0" GraphId="e_396_o1_1" GraphRef="e_396_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_406_REACTOME_141429">
+    <Comment Source="WikiPathways-description">In the sequestration model, the Mad2  molecules that dissociate from unattached kinetochores are perceived to bind to Cdc20, a protein that recruits specific substrates to the APC/C. Consequently, Mad2 indirectly inhibits the APC/C by sequestering its activator, Cdc20. This requires interaction between Mad1 and Mad2. Cdc20 and Mad1 bind to the same site on Mad2.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="356.0" GraphId="e_406_0"/>
+      <Point X="393.0" Y="356.0" GraphId="e_406_1"/>
+      <Point X="433.0" Y="356.0" GraphId="e_406_2" GraphRef="n408_REACTOME_141408" RelX="-1.0638297872340425" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_406_a_i"/>
+      <Anchor Position="0.375" GraphId="e_406_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_406_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="391.0" GraphId="e_406_i0_0" GraphRef="n397_REACTOME_141447" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="369.0" Y="356.0" GraphId="e_406_i0_1" GraphRef="e_406_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_406_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="329.0" GraphId="e_406_i1_0" GraphRef="n407_REACTOME_141412" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="369.0" Y="356.0" GraphId="e_406_i1_1" GraphRef="e_406_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_425_REACTOME_141437">
+    <Comment Source="WikiPathways-description">Upon release from the kinetochore, Mad2 associates with Cdc20, hBUBR1, and hBUB3 to form the Mitotic Checkpoint Complex (MCC). Assembly of this complex does not depend on kinetochores but this complex can only inhibit APC/C that has undergone mitotic modifications.</Comment>
+    <BiopaxRef>lit_143450</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="299.0" Y="314.0" GraphId="e_425_0"/>
+      <Point X="300.0" Y="277.0" GraphId="e_425_1"/>
+      <Point X="300.0" Y="242.0" GraphId="e_425_2" GraphRef="n428_REACTOME_141440" RelX="0.0" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_425_a_i"/>
+      <Anchor Position="0.5139800921895014" GraphId="e_425_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_425_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="342.0" Y="403.0" GraphId="e_425_i0_0" GraphRef="n397_REACTOME_141447" RelX="-1.1020408163265305" RelY="-0.18181818181818182"/>
+      <Point X="300.0" Y="402.0" GraphId="e_425_i0_1"/>
+      <Point X="299.0" Y="314.0" GraphId="e_425_i0_2" GraphRef="e_425_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_425_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="343.0" Y="314.0" GraphId="e_425_i1_0" GraphRef="n407_REACTOME_141412" RelX="-1.1304347826086956" RelY="-0.09090909090909091"/>
+      <Point X="299.0" Y="314.0" GraphId="e_425_i1_1" GraphRef="e_425_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_425_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="277.0" Y="314.0" GraphId="e_425_i2_0" GraphRef="n426_REACTOME_141416" RelX="1.0608695652173914" RelY="0.0"/>
+      <Point X="299.0" Y="314.0" GraphId="e_425_i2_1" GraphRef="e_425_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_425_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="338.0" Y="287.0" GraphId="e_425_i3_0" GraphRef="n427_REACTOME_141436" RelX="-0.5660377358490566" RelY="1.2727272727272727"/>
+      <Point X="299.0" Y="314.0" GraphId="e_425_i3_1" GraphRef="e_425_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_437_REACTOME_141423">
+    <Comment Source="WikiPathways-description">In the direct inhibition model, association of the MCC with APCC results in the inactivation of APC/C. However, the affinity between MCC and APC/C is not high, so that the inhibition is readily reversible. The role of unattached kinetochores is to sensitize the APC/C to prolonged inhibition by the MCC.</Comment>
+    <BiopaxRef>lit_143450</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="299.0" Y="156.0" GraphId="e_437_0"/>
+      <Point X="299.0" Y="139.0" GraphId="e_437_1"/>
+      <Point X="299.0" Y="107.0" GraphId="e_437_2" GraphRef="n439_REACTOME_141410" RelX="-0.015625" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_437_a_i"/>
+      <Anchor Position="0.3469387755102041" GraphId="e_437_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_437_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="299.0" Y="186.0" GraphId="e_437_i0_0" GraphRef="n428_REACTOME_141440" RelX="-0.02040816326530612" RelY="-1.12"/>
+      <Point X="299.0" Y="156.0" GraphId="e_437_i0_1" GraphRef="e_437_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_437_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="342.0" Y="156.0" GraphId="e_437_i1_0" GraphRef="n438_REACTOME_174191" RelX="-1.0381679389312977" RelY="-0.08"/>
+      <Point X="299.0" Y="156.0" GraphId="e_437_i1_1" GraphRef="e_437_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_516_REACTOME_69608">
+    <Comment Source="WikiPathways-description">Detection of DNA damage caused by ionizing radiation results in the phosphorylation of Cdc25A at Ser-123 by Chk2.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1350.0" Y="1229.0" GraphId="e_516_0"/>
+      <Point X="1759.0" Y="1229.0" GraphId="e_516_1"/>
+      <Point X="1760.0" Y="982.0" GraphId="e_516_2"/>
+      <Anchor Position="0.0" GraphId="e_516_a_i"/>
+      <Anchor Position="0.6234736858425156" GraphId="e_516_a_p"/>
+      <Anchor Position="1.0" GraphId="e_516_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_516_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1607.0" Y="935.0" GraphId="e_516_i0_0" GraphRef="n60_REACTOME_143487" RelX="-0.37037037037037035" RelY="-1.2727272727272727"/>
+      <Point X="1587.0" Y="916.0" GraphId="e_516_i0_1"/>
+      <Point X="1350.0" Y="916.0" GraphId="e_516_i0_2"/>
+      <Point X="1350.0" Y="1229.0" GraphId="e_516_i0_3" GraphRef="e_516_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_516_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1302.0" Y="1213.0" GraphId="e_516_i1_0" GraphRef="n517_REACTOME_29358" RelX="1.1794871794871795" RelY="0.3225806451612903"/>
+      <Point X="1350.0" Y="1229.0" GraphId="e_516_i1_1" GraphRef="e_516_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_516_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1776.0" Y="944.0" GraphId="e_516_o0_0" ArrowHead="Arrow" GraphRef="n518_REACTOME_113582" RelX="-0.2926829268292683" RelY="1.2258064516129032"/>
+      <Point X="1760.0" Y="982.0" GraphId="e_516_o0_1" GraphRef="e_516_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_516_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1678.0" Y="916.0" GraphId="e_516_o1_0" ArrowHead="Arrow" GraphRef="n61_REACTOME_143488" RelX="0.21621621621621623" RelY="1.2727272727272727"/>
+      <Point X="1760.0" Y="982.0" GraphId="e_516_o1_1" GraphRef="e_516_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_516_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1619.0" Y="469.0" GraphId="e_516_c__0_0" GraphRef="n172_REACTOME_113824" RelX="-0.05263157894736842" RelY="-1.2727272727272727"/>
+      <Point X="1619.0" Y="350.0" GraphId="e_516_c__0_1"/>
+      <Point X="2145.0" Y="352.0" GraphId="e_516_c__0_2"/>
+      <Point X="2147.0" Y="1230.0" GraphId="e_516_c__0_3"/>
+      <Point X="1759.0" Y="1229.0" GraphId="e_516_c__0_4" GraphRef="e_516_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_519_REACTOME_69889">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'ATP', and 1 molecule of 'Chk1' are present. At the end of this reaction, 1 molecule of 'phospho-Chk1', and 1 molecule of 'ADP' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'kinase activity' of 'phospho-ATM (Ser 1981)'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1436.0" Y="449.0" GraphId="e_519_0"/>
+      <Point X="1533.0" Y="449.0" GraphId="e_519_1"/>
+      <Point X="1533.0" Y="528.0" GraphId="e_519_2"/>
+      <Anchor Position="0.0" GraphId="e_519_a_i"/>
+      <Anchor Position="0.5511363636363636" GraphId="e_519_a_p"/>
+      <Anchor Position="1.0" GraphId="e_519_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_519_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1363.0" Y="625.0" GraphId="e_519_i0_0" GraphRef="n158_REACTOME_113826" RelX="-1.1578947368421053" RelY="0.0"/>
+      <Point X="1278.0" Y="627.0" GraphId="e_519_i0_1"/>
+      <Point X="1436.0" Y="449.0" GraphId="e_519_i0_2" GraphRef="e_519_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_519_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1415.0" Y="432.0" GraphId="e_519_i1_0" GraphRef="n520_REACTOME_29358" RelX="1.1578947368421053" RelY="0.7741935483870968"/>
+      <Point X="1436.0" Y="449.0" GraphId="e_519_i1_1" GraphRef="e_519_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_519_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1533.0" Y="578.0" GraphId="e_519_o0_0" ArrowHead="Arrow" GraphRef="n159_REACTOME_113838" RelX="-0.021052631578947368" RelY="-1.135135135135135"/>
+      <Point X="1533.0" Y="528.0" GraphId="e_519_o0_1" GraphRef="e_519_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_519_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1503.0" Y="529.0" GraphId="e_519_o1_0" ArrowHead="Arrow" GraphRef="n521_REACTOME_113582" RelX="1.1794871794871795" RelY="-0.06451612903225806"/>
+      <Point X="1533.0" Y="528.0" GraphId="e_519_o1_1" GraphRef="e_519_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_519_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1786.0" Y="638.0" GraphId="e_519_c__0_0" GraphRef="n16_REACTOME_75145" RelX="-0.9256198347107438" RelY="-1.1666666666666667"/>
+      <Point X="1605.0" Y="582.0" GraphId="e_519_c__0_1"/>
+      <Point X="1533.0" Y="449.0" GraphId="e_519_c__0_2" GraphRef="e_519_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_9" GroupRef="group_comp_9" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="105.5" CenterY="1317.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_10" GroupRef="group_comp_10" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="2095.0" CenterY="323.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_9" GroupRef="group_comp_9">
+    <Graphics Color="000000" CenterX="1332.5" CenterY="690.5" Width="2559.0" Height="1315.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_10" GroupRef="group_comp_10">
+    <Graphics Color="000000" CenterX="1469.5" CenterY="795.5" Width="1403.0" Height="1005.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_349422" rdf:id="lit_349422">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7850419</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Allosteric activation of latent p53 tetramers</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hupp, TR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lane, DP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 4:865-75</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_68820" rdf:id="lit_68820">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10872471</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The 26S proteasome: a molecular machine designed for controlled proteolysis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Voges, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zwickl, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumeister, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 68:1015-68</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176259" rdf:id="lit_176259">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16027118</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATRIP oligomerization is required for ATR-dependent checkpoint signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ball, HL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cortez, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:31390-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176171" rdf:id="lit_176171">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14729973</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quaternary structure of ATR and effects of ATRIP and replication protein A on its DNA binding and kinase activities</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Unsal-Kacmaz, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sancar, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 24:1292-300</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69372" rdf:id="lit_69372">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10473346</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Replication protein A (RPA): the eukaryotic SSB.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iftode, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Daniely, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borowiec, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crit Rev Biochem Mol Biol 34:141-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176266" rdf:id="lit_176266">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8196638</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human replication protein A binds single-stranded DNA in two distinct complexes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blackwell, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borowiec, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 14:3993-4001</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176103" rdf:id="lit_176103">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11927569</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of the RPA trimerization core and its role in the multistep DNA-binding mechanism of RPA</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bochkareva, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korolev, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bochkarev, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 21:1855-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176156" rdf:id="lit_176156">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11157767</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of the major single-stranded DNA-binding domain of replication protein A suggests a dynamic mechanism for DNA binding</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bochkareva, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Belegu, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korolev, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bochkarev, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 20:612-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176216" rdf:id="lit_176216">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12791985</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sensing DNA damage through ATRIP recognition of RPA-ssDNA complexes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zou, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 300:1542-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176163" rdf:id="lit_176163">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16407120</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATRIP associates with replication protein A-coated ssDNA through multiple interactions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Namiki, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zou, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 103:580-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176205" rdf:id="lit_176205">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16314342</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DNA damage checkpoints in mammals</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Niida, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakanishi, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutagenesis</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176375" rdf:id="lit_176375">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11907025</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structures of the human Rad17-replication factor C and checkpoint Rad 9-1-1 complexes visualized by glycerol spray/low voltage microscopy</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Griffith, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lindsey-Boltz, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sancar, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:15233-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_174165" rdf:id="lit_174165">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12049731</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The anaphase-promoting complex: proteolysis in mitosis and beyond</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peters, JM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 9:931-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_187515" rdf:id="lit_187515">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10323868</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ubiquitination of p27 is regulated by Cdk-dependent phosphorylation and trimeric complex formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Montagnoli, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fiore, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eytan, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carrano, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Draetta, GF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hershko, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pagano, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 13:1181-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_187793" rdf:id="lit_187793">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16262255</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ubiquitination of p21Cip1/WAF1 by SCFSkp2: substrate requirement and ubiquitination site selection</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nacusi, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sheaff, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 44:14553-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69405" rdf:id="lit_69405">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8242752</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">WAF1, a potential mediator of p53 tumor suppression.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">el-Deiry, WS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tokino, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Velculescu, VE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levy, DB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parsons, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trent, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lin, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mercer, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinzler, KW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vogelstein, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 75:817-25</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69492" rdf:id="lit_69492">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11331603</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATM-dependent phosphorylation of Mdm2 on serine 395: role in p53 activation by DNA damage.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maya, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Balass, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, ST</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shkedy, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leal, JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shifman, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moas, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Buschmann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ronai, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shiloh, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kastan, MB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Katzir, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oren, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 15:1067-77</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69512" rdf:id="lit_69512">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9733515</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of the ATM kinase by ionizing radiation and phosphorylation of p53.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Canman, CE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lim, DS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taya, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakaguchi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appella, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kastan, MB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Siliciano, JD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 281:1677-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69520" rdf:id="lit_69520">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9733514</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Enhanced phosphorylation of p53 by ATM in response to DNA damage.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Banin, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moyal, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shieh, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taya, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anderson, CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chessa, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smorodinsky, NI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prives, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reiss, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shiloh, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ziv, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 281:1674-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69530" rdf:id="lit_69530">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9843217</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATM associates with and phosphorylates p53: mapping the region of interaction.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khanna, KK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keating, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kozlov, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scott, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gatei, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hobson, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taya, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gabrielli, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lavin, MF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet 20:398-400</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_349437" rdf:id="lit_349437">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16931761</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATM engages autodegradation of the E3 ubiquitin ligase COP1 after DNA damage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dornan, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimizu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mah, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dudhela, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eby, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Rourke, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seshagiri, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dixit, VM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 313:1122-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69451" rdf:id="lit_69451">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12399544</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Disruption of the checkpoint kinase 1/cell division cycle 25A pathway abrogates ionizing radiation-induced S and G2 checkpoints.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watkins, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piwnica-Worms, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 99:14795-800</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176273" rdf:id="lit_176273">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11390642</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATR-mediated checkpoint pathways regulate phosphorylation and activation of human Chk1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piwnica-Worms, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 21:4129-39</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176337" rdf:id="lit_176337">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15190204</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATR, Claspin and the Rad9-Rad1-Hus1 complex regulate Chk1 and Cdc25A in the absence of DNA damage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sorensen, CS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Syljuasen, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lukas, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bartek, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Cycle 3:941-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_75006" rdf:id="lit_75006">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10859164</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chk1 is an essential kinase that is regulated by Atr and required for the G(2)/M DNA damage checkpoint.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guntuku, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cui, XS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuoka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cortez, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luo, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carattini-Rivera, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DeMayo, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bradley, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Donehower, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 14:1448-59</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83554" rdf:id="lit_83554">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12773400</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A subset of ATM- and ATR-dependent phosphorylation events requires the BRCA1 protein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foray, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marot, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gabriel, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Randrianarison, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perricaudet, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ashworth, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jeggo, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 22:2860-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_179441" rdf:id="lit_179441">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10973490</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ataxia telangiectasia-mutated phosphorylates Chk2 in vivo and in vitro</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuoka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rotman, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ogawa, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shiloh, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 97:10389-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210722" rdf:id="lit_210722">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12766774</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dual phosphorylation controls Cdc25 phosphatases and mitotic entry</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bulavin, DV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Higashimoto, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Demidenko, ZN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meek, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Graves, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phillips, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moody, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appella, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piwnica-Worms, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fornace AJ, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Cell Biol 5:545-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_75017" rdf:id="lit_75017">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11313932</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Localization of human Cdc25C is regulated both by nuclear export and 14-3-3 protein binding.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Graves, PR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lovly, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uy, GL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piwnica-Worms, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 20:1839-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_75019" rdf:id="lit_75019">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10330186</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytoplasmic localization of human cdc25C during interphase requires an intact 14-3-3 binding site.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dalal, SN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schweitzer, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gan, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DeCaprio, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 19:4465-79</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_170219" rdf:id="lit_170219">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1384126</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inactivation of the p34cdc2-cyclin B complex by the human WEE1 tyrosine kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parker, LL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piwnica-Worms, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 257:1955-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176362" rdf:id="lit_176362">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10373362</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Analysis of DNA replication forks encountering a pyrimidine dimer in the template to the leading strand</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cordeiro-Stone, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Makhov, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zaritskaya, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Griffith, JD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 289:1207-18</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176190" rdf:id="lit_176190">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15833913</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional uncoupling of MCM helicase and DNA polymerase activities activates the ATR-dependent checkpoint</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Byun, TS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pacek, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yee, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walter, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cimprich, KA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 19:1040-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176317" rdf:id="lit_176317">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10051570</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nuclear foci of mammalian recombination proteins are located at single-stranded DNA regions formed after DNA damage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raderschall, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Golub, EI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haaf, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 96:1921-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176285" rdf:id="lit_176285">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16327781</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATM- and cell cycle-dependent regulation of ATR in response to DNA double-strand breaks</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jazayeri, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Falck, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lukas, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bartek, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith, GC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lukas, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Cell Biol 8:37-45</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176176" rdf:id="lit_176176">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15743907</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATRIP binding to replication protein A-single-stranded DNA promotes ATR-ATRIP localization but is dispensable for Chk1 phosphorylation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ball, HL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Myers, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cortez, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 16:2372-81</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176370" rdf:id="lit_176370">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14605214</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Replication protein A-mediated recruitment and activation of Rad17 complexes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zou, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 100:13827-32</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176117" rdf:id="lit_176117">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14624239</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemical characterization of DNA damage checkpoint complexes: clamp loader and clamp complexes with specificity for 5' recessed DNA</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ellison, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stillman, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PLoS Biol 1:E33</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176209" rdf:id="lit_176209">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12578958</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loading of the human 9-1-1 checkpoint complex onto DNA by the checkpoint clamp loader hRad17-replication factor C complex in vitro</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bermudez, VP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lindsey-Boltz, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cesare, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maniwa, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Griffith, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hurwitz, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sancar, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 100:1633-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176164" rdf:id="lit_176164">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8943031</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A human homolog of the Schizosaccharomyces pombe rad9+ checkpoint control gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lieberman, HB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hopkins, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nass, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Demetrick, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davey, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 93:13890-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176110" rdf:id="lit_176110">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14500360</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expression of mammalian paralogues of HRAD9 and Mrad9 checkpoint control genes in normal and cancerous testicular tissue</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hopkins, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berlin, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hang, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thaker, HM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lieberman, HB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res 63:5291-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176356" rdf:id="lit_176356">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10777662</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physical interactions among human checkpoint control proteins HUS1p, RAD1p, and RAD9p, and implications for the regulation of cell cycle progression</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hang, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lieberman, HB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genomics 65:24-33</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176242" rdf:id="lit_176242">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15226314</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human claspin is a ring-shaped DNA-binding protein with high affinity to branched DNA structures</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sar, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lindsey-Boltz, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subramanian, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Croteau, DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hutsell, SQ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Griffith, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sancar, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:39289-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_176239" rdf:id="lit_176239">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15707391</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DNA-dependent phosphorylation of Chk1 and Claspin in a human cell-free system</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clarke, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clarke, PR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 388:705-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_75011" rdf:id="lit_75011">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9278512</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitotic and G2 checkpoint control: regulation of 14-3-3 protein binding by phosphorylation of Cdc25C on serine-216.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng, CY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Graves, PR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thoma, RS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shaw, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piwnica-Worms, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 277:1501-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_143441" rdf:id="lit_143441">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11181178</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitotic checkpoint proteins HsMAD1 and HsMAD2 are associated with nuclear pore complexes in interphase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Campbell, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, GK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yen, TJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 114:953-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_143448" rdf:id="lit_143448">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11804586</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Mad2 spindle checkpoint protein undergoes similar major conformational changes upon binding to either Mad1 or Cdc20</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luo, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tang, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rizo, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yu, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 9:59-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_143453" rdf:id="lit_143453">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12006501</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of the tetrameric Mad1-Mad2 core complex: implications of a 'safety belt' binding mechanism for the spindle checkpoint</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sironi, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mapelli, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Knapp, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Antoni, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jeang, KT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Musacchio, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 21:2496-506</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_143450" rdf:id="lit_143450">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11535616</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Checkpoint inhibition of the APC/C in HeLa cells is mediated by a complex of BUBR1, BUB3, CDC20, and MAD2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sudakin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, GK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yen, TJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 154:925-36</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>cell cycle checkpoint pathway</bp:TERM><bp:ID>PW:0000094</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

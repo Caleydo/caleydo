@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="GP1b-IX-V activation signalling" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Akkerman, JW" Maintainer="Jupe, S" Email="sjupe@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">The platelet GPIb complex (GP1b-IX-V) together with GPVI are primarily responsible for regulating the initial adhesion of platelets to the damaged blood vessel and platelet activation. The importance of GPIb is demonstrated by the bleeding problems in patients with Bernard-Soulier syndrome where this receptor is either absent or defective. GP1b-IX-V binds von Willebrand Factor (vWF) to resting platelets, particularly under conditions of high shear stress. This transient interaction is the first stage of the vascular repair process. Activation of GP1b-IX-V on exposure of the fibrous matrix following atherosclerotic plaque rupture, or in occluded arteries, is a major contributory factor leading to thrombus formation leading to heart attack or stroke.
+GpIb also binds thrombin (Yamamoto et al. 1986), at a site distinct from the site of vWF binding, acting as a docking site for thrombin which then activates Proteinase Activated Receptors leading to enhanced platelet activation (Dormann et al. 2000).</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_430081</BiopaxRef>
+  <BiopaxRef>lit_870285</BiopaxRef>
+  <DataNode GraphId="n259_REACTOME_377592" TextLabel="Active SRC (p-Y419)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="249.5" CenterY="203.5" Width="127.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12931-1"/>
+  </DataNode>
+  <DataNode GraphId="n260_REACTOME_210019" TextLabel="Filamin-A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="136.5" CenterY="98.5" Width="67.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P21333"/>
+  </DataNode>
+  <DataNode GraphId="n261_REACTOME_206751" TextLabel="14-3-3zeta &#10;dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="335.5" CenterY="129.5" Width="99.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24853"/>
+  </DataNode>
+  <DataNode GraphId="n262_REACTOME_443443" TextLabel="Active c-Src:Raf1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="220.5" CenterY="408.0" Width="103.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24303"/>
+  </DataNode>
+  <DataNode GraphId="n264_REACTOME_74789" TextLabel="PI3K-p85&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="436.5" CenterY="131.0" Width="63.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P27986"/>
+  </DataNode>
+  <DataNode GraphId="n267_REACTOME_443827" TextLabel="14-3-3-zeta:&#10;Raf1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="333.0" CenterY="411.5" Width="104.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24804"/>
+  </DataNode>
+  <DataNode GraphId="n268_REACTOME_429544" TextLabel="GPIb-IX-V:vWF:14-&#10;3-3-zeta&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="508.0" CenterY="57.0" Width="120.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24215"/>
+  </DataNode>
+  <DataNode GraphId="n269_REACTOME_167205" TextLabel="Raf-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="270.0" CenterY="268.5" Width="46.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P04049"/>
+  </DataNode>
+  <DataNode GraphId="n272_REACTOME_354153" TextLabel="SRC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="255.0" CenterY="96.5" Width="40.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12931-1"/>
+  </DataNode>
+  <DataNode GraphId="n274_REACTOME_430104" TextLabel="GPIb-IX-V:vWF:&#10;filamin-A&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="119.5" CenterY="309.0" Width="129.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24471"/>
+  </DataNode>
+  <DataNode GraphId="n276_REACTOME_443399" TextLabel="GPIb-IX-V:vWF:14-&#10;3-3-zeta:p85&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="505.0" CenterY="438.0" Width="120.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24633"/>
+  </DataNode>
+  <DataNode GraphId="n277_REACTOME_429541" TextLabel="GPIb-IX-V:vWF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="204.5" CenterY="56.0" Width="101.0" Height="28.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24749"/>
+  </DataNode>
+  <Line GraphId="e_263_REACTOME_443831">
+    <Comment Source="WikiPathways-description">14-3-3 family proteins can bind Raf1 and have been suggested to activate Raf1, but this has been refuted.</Comment>
+    <BiopaxRef>lit_443832</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="329.0" Y="280.0" GraphId="e_263_0"/>
+      <Point X="330.0" Y="320.0" GraphId="e_263_1"/>
+      <Point X="332.0" Y="391.0" GraphId="e_263_2" GraphRef="n267_REACTOME_443827" RelX="-0.019230769230769232" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_263_a_i"/>
+      <Anchor Position="0.36034095542743017" GraphId="e_263_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_263_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="334.0" Y="152.0" GraphId="e_263_i0_0" GraphRef="n261_REACTOME_206751" RelX="-0.020202020202020204" RelY="1.1794871794871795"/>
+      <Point X="329.0" Y="280.0" GraphId="e_263_i0_1" GraphRef="e_263_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_263_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="296.0" Y="272.0" GraphId="e_263_i1_0" GraphRef="n269_REACTOME_167205" RelX="1.1304347826086956" RelY="0.34782608695652173"/>
+      <Point X="329.0" Y="280.0" GraphId="e_263_i1_1" GraphRef="e_263_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_265_REACTOME_430076">
+    <Comment Source="WikiPathways-description">The Gp1b-IX-V complex binds to 14-3-3-zeta, a scaffolding protein. The highly conserved cytoplasmic domain of GpIb alpha binds directly to dimeric 14-3-3 zeta adapter protein. Binding also involves regions of GpV, and is enhanced by phosphorylation of GP1b at Ser-609 or Ser-166 of Gp1b alpha and beta respectively. For Gp1b beta this phosphorylation is PKA-dependent.</Comment>
+    <BiopaxRef>lit_430077</BiopaxRef>
+    <BiopaxRef>lit_430071</BiopaxRef>
+    <BiopaxRef>lit_430068</BiopaxRef>
+    <BiopaxRef>lit_430067</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="72.0" GraphId="e_265_0"/>
+      <Point X="394.0" Y="73.0" GraphId="e_265_1"/>
+      <Point X="445.0" Y="65.0" GraphId="e_265_2" GraphRef="n268_REACTOME_429544" RelX="-1.05" RelY="0.42105263157894735" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_265_a_i"/>
+      <Anchor Position="0.3264458116797053" GraphId="e_265_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_265_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="346.0" Y="107.0" GraphId="e_265_i0_0" GraphRef="n261_REACTOME_206751" RelX="0.2222222222222222" RelY="-1.1282051282051282"/>
+      <Point X="369.0" Y="72.0" GraphId="e_265_i0_1" GraphRef="e_265_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_265_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="258.0" Y="60.0" GraphId="e_265_i1_0" GraphRef="n277_REACTOME_429541" RelX="1.0693069306930694" RelY="0.2857142857142857"/>
+      <Point X="369.0" Y="72.0" GraphId="e_265_i1_1" GraphRef="e_265_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_REACTOME_443439">
+    <Comment Source="WikiPathways-description">c-Src binds to Raf1, the interaction  involves the SH2 and SH3 domains of c-Src and requires serine phosphorylation of Raf1. Coexpression of Raf1 and c-Src in Sf9 cells results in c-Src/Raf-1 complexes, tyrosine phosphorylation of Raf-1, and stimulation of Raf-1 kinase activity. Tyr-340 and Tyr-341 were found to be the major tyrosine phosphorylation sites of Raf1 when coexpressed with activated tyrosine kinases. However, the significance of tyrosine phosphorylation under physiological conditions remains unclear, as tyrosine phosphorylation of endogenous Raf-1 following activation has been disputed and may be limited to cells of hematopoietic origin.</Comment>
+    <BiopaxRef>lit_443446</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="222.0" Y="285.0" GraphId="e_266_0"/>
+      <Point X="220.0" Y="324.0" GraphId="e_266_1"/>
+      <Point X="220.0" Y="387.0" GraphId="e_266_2" GraphRef="n262_REACTOME_443443" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_266_a_i"/>
+      <Anchor Position="0.3826631128930426" GraphId="e_266_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="245.0" Y="218.0" GraphId="e_266_i0_0" GraphRef="n259_REACTOME_377592" RelX="-0.06299212598425197" RelY="1.3043478260869565"/>
+      <Point X="222.0" Y="285.0" GraphId="e_266_i0_1" GraphRef="e_266_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="244.0" Y="276.0" GraphId="e_266_i1_0" GraphRef="n269_REACTOME_167205" RelX="-1.1304347826086956" RelY="0.6956521739130435"/>
+      <Point X="222.0" Y="285.0" GraphId="e_266_i1_1" GraphRef="e_266_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_270_REACTOME_443418">
+    <Comment Source="WikiPathways-description">Src and its downstream signaling molecule PLC gamma 2 are implicated in GPIb-IX-V (GPIbR) signalling. GPIbR-mediated platelet activation correlates with cytoskeletal association of Src, activation of PI3K and the appearance of multiple tyrosine-phosphorylated proteins (Jackson et al. 1994). von Willebrand Factor (vWF) and the vWF modulator botrocetin induce tyrosine phosphorylation of FceRIgamma, Syk, LAT and PLCgamma2. Src kinase inhibition markedly suppresses these events (Wu et al. 2001). Src and Lyn form a complex with FceRIgamma and Syk upon GPIbR/vWF interaction (Wu et al. 2003). FcgammaRIIa was tyrosine phosphorylated upon vWF and ristocetin-induced-platelet activation, followed by Syk and PLCgamma2 activation. A selective Src kinase inhibitor inhibited these events (Torti et al. 1994).&lt;br&gt;
+Though a considerable body of evidence suggests Src as a signaling molecule downstream of GPIbR the mechanism that connects Src to GPIbR is not clear. There are obvious similarities with the GPIV signal transduction pathway but also important differences: Src appears to be recruited to GPIbR upon platelet activation, while Lyn and Fyn constitutively associate with GPVI; GPVI activation induces a robust level of inositol phosphate production and PLCgamma2 activity, while GPIbRactivation PLCgamma2 activation is modest and the tyrosine phosphorylation sites of PLCgamma2 are distinct from those of GPVI stimulation (Suzuki-Inoue et al. 2004). GPVI signalling requires the FCeRIgamma chain while mouse knockouts suggest it is not required for GPIbR signalling (Kaiser-Friede et al. 2004).&lt;br&gt;
+Studies on GPIbalpha transgenic mice suggested that GPIbR activates AlphaIIbBeta3 Integrin through Src and PLC gamma2 activation (Kaiser-Friede et al. 2004). An alternative suggested mechansim is indirect association via 14-3-3-zeta and the p85 subunit of PI3K; the p85 subunit of PI3K constitutively associates with GPIbR so upon vWF/GPIb-IX-V interaction can bind Src via its SH3 domain (Wu et al. 2003).&lt;br&gt;
+Although many studies support a role for Src signaling in vWF/GPIb induced platelet activation, Src-independent platelet activation has been reported for platelets spreading on surfaces coated with echicetin, a GPIb-cross-linking component of snake venom (Navdaev &amp; Clemetson, 2002).</Comment>
+    <BiopaxRef>lit_443436</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="226.0" Y="118.0" GraphId="e_270_0"/>
+      <Point X="235.0" Y="158.0" GraphId="e_270_1"/>
+      <Point X="245.0" Y="189.0" GraphId="e_270_2" GraphRef="n259_REACTOME_377592" RelX="-0.06299212598425197" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_270_a_i"/>
+      <Anchor Position="0.5572696888032401" GraphId="e_270_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_270_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="239.0" Y="111.0" GraphId="e_270_i0_0" GraphRef="n272_REACTOME_354153" RelX="-0.8" RelY="1.3043478260869565"/>
+      <Point X="226.0" Y="118.0" GraphId="e_270_i0_1" GraphRef="e_270_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_270_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="208.0" Y="73.0" GraphId="e_270_i1_0" GraphRef="n277_REACTOME_429541" RelX="0.07920792079207921" RelY="1.2142857142857142"/>
+      <Point X="226.0" Y="118.0" GraphId="e_270_i1_1" GraphRef="e_270_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_271_REACTOME_430096">
+    <Comment Source="WikiPathways-description">GP1b-IX-V interacts with filamin-1; within the cytoplasmic domain of GP1b alpha amino acids 557-568 and 569-579 are critical for this association. GPIb-filamin-1 association links the receptor complex to the membrane skeleton and has been proposed to regulate the ability of GPIb-IX-V to adhere to vWf under conditions of high shear.</Comment>
+    <BiopaxRef>lit_430098</BiopaxRef>
+    <BiopaxRef>lit_430100</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="168.0" Y="156.0" GraphId="e_271_0"/>
+      <Point X="167.0" Y="242.0" GraphId="e_271_1"/>
+      <Point X="132.0" Y="287.0" GraphId="e_271_2" GraphRef="n274_REACTOME_430104" RelX="0.20155038759689922" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_271_a_i"/>
+      <Anchor Position="0.6013779206491467" GraphId="e_271_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_271_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="142.0" Y="113.0" GraphId="e_271_i0_0" GraphRef="n260_REACTOME_210019" RelX="0.1791044776119403" RelY="1.3043478260869565"/>
+      <Point X="168.0" Y="156.0" GraphId="e_271_i0_1" GraphRef="e_271_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_271_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="198.0" Y="73.0" GraphId="e_271_i1_0" GraphRef="n277_REACTOME_429541" RelX="-0.1188118811881188" RelY="1.2142857142857142"/>
+      <Point X="168.0" Y="156.0" GraphId="e_271_i1_1" GraphRef="e_271_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_273_REACTOME_443402">
+    <Comment Source="WikiPathways-description">Resting platelets contain a heterotrimeric complex of GPIb-IX-V, 14-3-3-zeta and the p85 subunit of PI-3K. While GPIb-IX-V has no apparent binding sites for PI3K so the interaction with p85 is likely to be mediated by 14-3-3-zeta.</Comment>
+    <BiopaxRef>lit_443424</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="505.0" Y="113.0" GraphId="e_273_0"/>
+      <Point X="505.0" Y="172.0" GraphId="e_273_1"/>
+      <Point X="505.0" Y="416.0" GraphId="e_273_2" GraphRef="n276_REACTOME_443399" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_273_a_i"/>
+      <Anchor Position="0.19471947194719472" GraphId="e_273_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_273_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="471.0" Y="122.0" GraphId="e_273_i0_0" GraphRef="n264_REACTOME_74789" RelX="1.1111111111111112" RelY="-0.8181818181818182"/>
+      <Point X="505.0" Y="113.0" GraphId="e_273_i0_1" GraphRef="e_273_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_273_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="506.0" Y="79.0" GraphId="e_273_i1_0" GraphRef="n268_REACTOME_429544" RelX="-0.03333333333333333" RelY="1.1578947368421053"/>
+      <Point X="505.0" Y="113.0" GraphId="e_273_i1_1" GraphRef="e_273_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_275_REACTOME_430073">
+    <Comment Source="WikiPathways-description">High shear stress, or immobilization of VWF under high shear conditions induce VWF binding to GPIb-IX-V. This activation mechanism is believed to involve shear-stress induced conformational changes in vWF.</Comment>
+    <BiopaxRef>lit_430093</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="445.0" Y="48.0" GraphId="e_275_0" GraphRef="n268_REACTOME_429544" RelX="-1.05" RelY="-0.47368421052631576"/>
+      <Point X="413.0" Y="43.0" GraphId="e_275_1"/>
+      <Point X="359.0" Y="43.0" GraphId="e_275_2"/>
+      <Anchor Position="0.3749151322955425" GraphId="e_275_a_p"/>
+      <Anchor Position="1.0" GraphId="e_275_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_275_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="340.0" Y="107.0" GraphId="e_275_o0_0" ArrowHead="Arrow" GraphRef="n261_REACTOME_206751" RelX="0.10101010101010101" RelY="-1.1282051282051282"/>
+      <Point X="359.0" Y="43.0" GraphId="e_275_o0_1" GraphRef="e_275_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_275_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="258.0" Y="51.0" GraphId="e_275_o1_0" ArrowHead="Arrow" GraphRef="n277_REACTOME_429541" RelX="1.0693069306930694" RelY="-0.35714285714285715"/>
+      <Point X="359.0" Y="43.0" GraphId="e_275_o1_1" GraphRef="e_275_a_o"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_278" GroupRef="group_comp_278" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="431.5" CenterY="268.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_278" GroupRef="group_comp_278">
+    <Graphics Color="000000" CenterX="339.0" CenterY="250.0" Width="500.0" Height="400.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430081" rdf:id="lit_430081">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15507277</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet physiology and thrombosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andrews, RK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thromb Res 114:447-53</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_870285" rdf:id="lit_870285">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17585075</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adhesion mechanisms in platelet function</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruggeri, ZM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mendolicchio, GL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Circ Res 100:1673-85</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_443832" rdf:id="lit_443832">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7935795</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of Raf-1 by 14-3-3 proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fantl, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muslin, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kikuchi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MacNicol, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gross, RW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, LT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 371:612-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430077" rdf:id="lit_430077">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8034572</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Association of a phospholipase A2 (14-3-3 protein) with the platelet glycoprotein Ib-IX complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Du, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tetaz, TJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ginsberg, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:18287-90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430071" rdf:id="lit_430071">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9425086</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Binding of purified 14-3-3 zeta signaling protein to discrete amino acid sequences within the cytoplasmic domain of the platelet membrane glycoprotein Ib-IX-V complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andrews, RK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McNally, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 37:638-47</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430068" rdf:id="lit_430068">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10627461</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytoplasmic domains of GpIbalpha and GpIbbeta regulate 14-3-3zeta binding to GpIb/IX/V</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feng, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christodoulides, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ResÃ©ndiz, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kroll, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 95:551-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430067" rdf:id="lit_430067">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8631758</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a binding sequence for the 14-3-3 protein within the cytoplasmic domain of the adhesion receptor, platelet glycoprotein Ib alpha</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Du, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fox, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pei, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:7362-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_443446" rdf:id="lit_443446">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7517401</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raf-1 interacts with Fyn and Src in a non-phosphotyrosine-dependent manner</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cleghon, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morrison, DK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:17749-55</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_443436" rdf:id="lit_443436">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16102041</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet GPIb-IX-V-dependent signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ozaki, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Asazuma, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki-Inoue, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost 3:1745-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430098" rdf:id="lit_430098">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3155520</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1985</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">On the association of glycoprotein Ib and actin-binding protein in human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okita, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pidard, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newman, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Montgomery, RR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kunicki, TJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 100:317-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430100" rdf:id="lit_430100">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11700320</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction between platelet glycoprotein Ibalpha and filamin-1 is essential for glycoprotein Ib/IX receptor anchorage at high shear</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williamson, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pikovski, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cranmer, SL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mangin, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mistry, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Domagala, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chehab, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lanza, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salem, HH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:2151-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_443424" rdf:id="lit_443424">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10887121</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphoinositide 3-kinase forms a complex with platelet membrane glycoprotein Ib-IX-V complex and 14-3-3zeta</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Munday, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitchell, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 96:577-84</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430093" rdf:id="lit_430093">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010539</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of von Willebrand factor and fibrinogen in platelet aggregation under varying shear stress</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ikeda, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handa, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawano, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamata, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murata, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Araki, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anbo, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawai, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watanabe, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Itagaki, I</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 87:1234-40</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

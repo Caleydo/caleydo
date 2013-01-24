@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Polyol pathway" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">When glucose is unused, it is metabolized via the polyol pathway. This pathway consists of two main enzymatic steps. First, glucose is reduced to sorbitol by aldose reductase. In this step, NADPH is oxidized to NADP+. The next step is the oxidation of sorbitol to D-fructose by sorbitol dehydrogenase.
+Fructose can then be phosphorylated by fructokinase and subsequently be metabolized via dihydroxyacetone phosphate or glyceraldehyde to D-glyceraldehyde 3-phosphate, which can be used as a substrate in the process of glycolysis.
+The sorbitol pathway plays a role in diabetic renal complications because aldose reductase metabolizes the excess of glucose to toxic metabolites that induce hyperfiltration and glomerular dysfunction.</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP690&amp;oldid=29659 WP690(r29659)] with a 100% conversion rate.</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <BiopaxRef>ccc</BiopaxRef>
+  <BiopaxRef>e59</BiopaxRef>
+  <BiopaxRef>f60</BiopaxRef>
+  <Graphics BoardWidth="9322.5" BoardHeight="8052.0" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="D-Glucose" Type="Metabolite" GraphId="a4027">
+    <Graphics Color="0000ff" CenterX="7365.0" CenterY="1455.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00122"/>
+  </DataNode>
+  <DataNode TextLabel="Sorbitol" Type="Metabolite" GraphId="a02f1">
+    <Graphics Color="0000ff" CenterX="4305.0" CenterY="1455.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00247"/>
+  </DataNode>
+  <DataNode TextLabel="D-Fructose" Type="Metabolite" GraphId="b29e5">
+    <Graphics Color="0000ff" CenterX="4319.75" CenterY="2834.75" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00660"/>
+  </DataNode>
+  <DataNode TextLabel="Fructose 1-phosphate" Type="Metabolite" GraphId="e285c">
+    <Graphics Color="0000ff" CenterX="4305.0" CenterY="4215.0" Width="1680.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01076"/>
+  </DataNode>
+  <DataNode TextLabel="Dihydroxyacetone phosphate" Type="Metabolite" GraphId="bd923">
+    <Graphics Color="0000ff" CenterX="3030.0" CenterY="5790.0" Width="2370.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01473"/>
+  </DataNode>
+  <DataNode TextLabel="Glyceraldehyde" Type="Metabolite" GraphId="c05e7">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="5790.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01051"/>
+  </DataNode>
+  <DataNode TextLabel="D-Glyceraldehyde 3-phosphate" Type="Metabolite" GraphId="f6cd9">
+    <Graphics Color="0000ff" CenterX="4305.0" CenterY="7170.0" Width="2400.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01112"/>
+  </DataNode>
+  <DataNode TextLabel="Sord" Type="GeneProduct" BackpageHead="Sord" GraphId="f61f1">
+    <Graphics Color="000000" CenterX="5580.0" CenterY="2115.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000027227"/>
+  </DataNode>
+  <DataNode TextLabel="Khk" Type="GeneProduct" BackpageHead="Khk" GraphId="a9883">
+    <Graphics Color="000000" CenterX="5640.0" CenterY="3405.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029162"/>
+  </DataNode>
+  <DataNode TextLabel="Akr1b3" Type="GeneProduct" BackpageHead="Akr1b3" GraphId="c43b6">
+    <Graphics Color="000000" CenterX="5925.0" CenterY="645.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11677"/>
+  </DataNode>
+  <DataNode TextLabel="Aldob" Type="GeneProduct" BackpageHead="Aldob" GraphId="b6834">
+    <Graphics Color="000000" CenterX="6960.0" CenterY="5100.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028307"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="b31eb">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6765.0" y="1455.0" GraphRef="a4027" relX="-1.0" relY="0.0"/>
+      <Point x="4905.0" y="1455.0" GraphRef="a02f1" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.45161290322580644" Shape="None" GraphId="a2901"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7c71">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4305.0" y="1605.0" GraphRef="a02f1" relX="0.0" relY="1.0"/>
+      <Point x="4319.75" y="2684.75" GraphRef="b29e5" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.47243317099065346" Shape="None" GraphId="d40a7"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f6dda">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4319.75" y="2984.75" GraphRef="b29e5" relX="0.0" relY="1.0"/>
+      <Point x="4305.0" y="4065.0" GraphRef="e285c" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="fde1d"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a2c0b">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="4305.0" y="4365.0" GraphRef="e285c" relX="0.0" relY="1.0"/>
+      <Point x="3667.5" y="4665.0"/>
+      <Point x="3030.0" y="5640.0" GraphRef="bd923" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b21bb">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="4305.0" y="4365.0" GraphRef="e285c" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="5640.0" GraphRef="c05e7" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.7292758962732038" Shape="None" GraphId="f0e37"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ff7ae">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="3030.0" y="5940.0" GraphRef="bd923" relX="0.0" relY="1.0"/>
+      <Point x="3667.5" y="6165.0"/>
+      <Point x="4305.0" y="7020.0" GraphRef="f6cd9" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fc0ff">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="5940.0" GraphRef="c05e7" relX="0.0" relY="1.0"/>
+      <Point x="4927.5" y="6165.0"/>
+      <Point x="4305.0" y="7020.0" GraphRef="f6cd9" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2d24">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4980.0" y="2115.0" GraphRef="f61f1" relX="-1.0" relY="0.0"/>
+      <Point x="4311.968389272112" y="2115.1097163771583" GraphRef="d40a7" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dc056">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5040.0" y="3405.0" GraphRef="a9883" relX="-1.0" relY="0.0"/>
+      <Point x="4313.85" y="3416.85" GraphRef="fde1d" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f6dce">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5925.0" y="795.0" GraphRef="c43b6" relX="0.0" relY="1.0"/>
+      <Point x="5925.0" y="1455.0" GraphRef="a2901" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cc6fe">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6360.0" y="5100.0" GraphRef="b6834" relX="-1.0" relY="0.0"/>
+      <Point x="5453.786485908223" y="5100.4308835767915" GraphRef="f0e37" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="a82a0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5505.0" y="7170.0" GraphRef="f6cd9" relX="1.0" relY="0.0"/>
+      <Point x="7275.0" y="7170.0" GraphRef="d4c82" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="c1b0c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7365.0" y="1605.0" GraphRef="a4027" relX="0.0" relY="1.0"/>
+      <Point x="7365.0" y="2595.0" GraphRef="b822b" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="glycolysis" GraphId="d4c82">
+    <Graphics FontSize="150" Color="000000" CenterX="7875.0" CenterY="7170.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="glycolysis" GraphId="b822b">
+    <Graphics FontSize="150" Color="000000" CenterX="7365.0" CenterY="2745.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ccc">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10997684</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aldose reductase and the role of the polyol pathway in diabetic nephropathy.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kidney Int Suppl</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dunlop M</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="f60">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11742414</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry and molecular cell biology of diabetic complications.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brownlee M</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="e59">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8535439</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular basis of hereditary fructose intolerance: mutations and polymorphisms in the human aldolase B gene.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mutat</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tolan DR</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

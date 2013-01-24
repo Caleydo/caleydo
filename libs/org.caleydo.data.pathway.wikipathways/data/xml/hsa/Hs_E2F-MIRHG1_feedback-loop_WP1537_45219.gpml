@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="E2F/MIRHG1 feedback-loop" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment>replica of Bose KS et al. figure 1</Comment>
+  <Comment Source="WikiPathways-description">Replica of Bose KS et al. figure 1.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="621.0" BoardHeight="389.0" />
+  <DataNode TextLabel="E2F1" GraphId="d7cd2" Type="GeneProduct">
+    <Graphics CenterX="316.0" CenterY="102.75" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1869" />
+  </DataNode>
+  <DataNode TextLabel="E2F2" GraphId="c1f3b" Type="GeneProduct">
+    <Graphics CenterX="448.75" CenterY="102.75" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1870" />
+  </DataNode>
+  <DataNode TextLabel="E2F3" GraphId="b2847" Type="GeneProduct">
+    <Graphics CenterX="551.0" CenterY="139.75" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1871" />
+  </DataNode>
+  <DataNode TextLabel="MYC" GraphId="e6f3d" Type="GeneProduct">
+    <Graphics CenterX="213.75" CenterY="139.75" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="4609" />
+  </DataNode>
+  <DataNode TextLabel="MIRHG1, (miR-17/92)" GraphId="be32e" Type="GeneProduct">
+    <Graphics CenterX="382.875" CenterY="295.25" Width="124.25" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000215417" />
+  </DataNode>
+  <Line GraphId="idf8a0cf10">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="233.75" Y="129.75" GraphRef="e6f3d" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+      <Point X="276.0" Y="102.75" GraphRef="d7cd2" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide105976a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="356.0" Y="102.75" GraphRef="d7cd2" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Point X="408.75" Y="102.75" GraphRef="c1f3b" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4c202e0a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="488.75" Y="102.75" GraphRef="c1f3b" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Point X="531.0" Y="129.75" GraphRef="b2847" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idab735af8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="511.0" Y="139.75" GraphRef="b2847" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Point X="336.0" Y="112.75" GraphRef="d7cd2" RelX="0.5" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id479f8e6c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="253.75" Y="139.75" GraphRef="e6f3d" RelX="1.0" RelY="0.0" />
+      <Point X="511.0" Y="139.75" GraphRef="b2847" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf664d18a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="253.75" Y="139.75" GraphRef="e6f3d" RelX="1.0" RelY="0.0" />
+      <Point X="428.75" Y="112.75" GraphRef="c1f3b" RelX="-0.5" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id11b1f040">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="233.75" Y="149.75" GraphRef="e6f3d" RelX="0.5" RelY="1.0" />
+      <Point X="382.875" Y="285.25" GraphRef="be32e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8df23c44">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="316.0" Y="112.75" GraphRef="d7cd2" RelX="0.0" RelY="1.0" />
+      <Point X="382.875" Y="285.25" GraphRef="be32e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id7253791b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="531.0" Y="149.75" GraphRef="b2847" RelX="-0.5" RelY="1.0" />
+      <Point X="382.875" Y="285.25" GraphRef="be32e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id32556e8c">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="446.0" Y="112.0" />
+      <Point X="382.875" Y="285.25" GraphRef="be32e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idc4e1fe">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="382.875" Y="285.25" GraphRef="be32e" RelX="0.0" RelY="-1.0" />
+      <Point X="336.0" Y="112.75" GraphRef="d7cd2" RelX="0.5" RelY="1.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfa765286">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="382.875" Y="285.25" GraphRef="be32e" RelX="0.0" RelY="-1.0" />
+      <Point X="428.75" Y="112.75" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida45dfbd2">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="445.0" Y="295.25" GraphRef="be32e" RelX="1.0" RelY="0.0" />
+      <Point X="551.0" Y="149.75" GraphRef="b2847" RelX="0.0" RelY="1.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax />
+</Pathway>

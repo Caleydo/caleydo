@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Glycogen Metabolism" Organism="Mus musculus">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP500&amp;amp;oldid=21730 WP500(r21730)] with a 72% conversion rate.</Comment>
+  <Comment Source="WikiPathways-description">Glycogen is a very large, branched polymer of glucose residues. Within skeletal musle and liver glucose is stored as glycogen. In the liver, glycogen synthesis and degradation are regulated to maintain blood-glucose levels as required to meet the needs of the organism as a whole. In contrast, in muscle, these processes are regulated to meet the energy needs of the muscle itself. 
+
+Glycogen synthesis
+Glycogen synthesis is, unlike its breakdown, endergonic. This means that glycogen synthesis requires the input of energy. Energy for glycogen synthesis comes from UTP, which reacts with glucose-1-phosphate, forming UDP-glucose, in reaction catalysed by UDP-glucose pyrophosphorylase. Glycogen is synthesized from monomers of UDP-glucose by the enzyme glycogen synthase, which progressively lengthens the glycogen chain with (Î±1â4) bonded glucose. As glycogen synthase can only lengthen an existing chain, the protein glycogenin is needed to initiate the synthesis of glycogen. The glycogen-branching enzyme, amylo (Î±1â4) to (Î±1â6) transglycosylase, catalyzes the transfer of a terminal fragment of 6-7 glucose residues from a nonreducing end to the C-6 hydroxyl group of a glucose residue deeper into the interior of the glycogen molecule. The branching enzyme can act upon only a branch having at least 11 residues, and the enzyme may transfer to the same glucose chain or adjacent glucose chains.
+
+Glycogen degradation
+Glycogen degradation consists of three steps: (1) the release of glucose 1-phosphate from glycogen, (2) the remodeling of the glycogen substrate to permit further degradation, and (3) the conversion of glucose 1-phosphate into glucose 6-phosphate for further metabolism.
+
+Information partly derived from "Biochemistry" by Stryer and Wikipedia.</Comment>
+  <Graphics BoardWidth="1003.3333333333334" BoardHeight="844.6666666666666" />
+  <DataNode TextLabel="Gsk3b" GraphId="ea5" Type="GeneProduct" GroupRef="bb15b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gsk3b" />
+    <Graphics CenterX="943.3333333333334" CenterY="399.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="56637" />
+  </DataNode>
+  <DataNode TextLabel="Gbe1" GraphId="f01" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gbe1" />
+    <Graphics CenterX="771.0" CenterY="477.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="74185" />
+  </DataNode>
+  <DataNode TextLabel="Gys1" GraphId="bdb" Type="GeneProduct" GroupRef="cc4d3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gys1" />
+    <Graphics CenterX="771.0" CenterY="379.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="14936" />
+  </DataNode>
+  <DataNode TextLabel="Gys2" GraphId="a3c" Type="GeneProduct" GroupRef="cc4d3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gys2" />
+    <Graphics CenterX="771.0" CenterY="399.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="232493" />
+  </DataNode>
+  <DataNode TextLabel="Agl" GraphId="df1" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Agl" />
+    <Graphics CenterX="71.0" CenterY="478.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="77559" />
+  </DataNode>
+  <DataNode TextLabel="Pygm" GraphId="a03" Type="GeneProduct" GroupRef="f11a0">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Pygm" />
+    <Graphics CenterX="263.6666666666667" CenterY="386.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="19309" />
+  </DataNode>
+  <DataNode TextLabel="Pygb" GraphId="b4d" Type="GeneProduct" GroupRef="f11a0">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Pygb" />
+    <Graphics CenterX="263.6666666666667" CenterY="406.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="110078" />
+  </DataNode>
+  <DataNode TextLabel="Pygl" GraphId="fd9" Type="GeneProduct" GroupRef="f11a0">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Pygl" />
+    <Graphics CenterX="263.6666666666667" CenterY="366.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="110095" />
+  </DataNode>
+  <DataNode TextLabel="Pgm2" GraphId="f0d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Pgm2" />
+    <Graphics CenterX="264.6666666666667" CenterY="482.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="72157" />
+  </DataNode>
+  <DataNode TextLabel="Ugp2" GraphId="b6f" Type="GeneProduct" GroupRef="ed3d3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ugp2" />
+    <Graphics CenterX="707.6666666666666" CenterY="259.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="216558" />
+  </DataNode>
+  <DataNode TextLabel="Ugp2" GraphId="ced" Type="GeneProduct" GroupRef="ed3d3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ugp2" />
+    <Graphics CenterX="707.6666666666666" CenterY="279.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="216558" />
+  </DataNode>
+  <DataNode TextLabel="Gyg" GraphId="c04" Type="GeneProduct" GroupRef="e77a5">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gyg" />
+    <Graphics CenterX="826.6666666666666" CenterY="313.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="27357" />
+  </DataNode>
+  <DataNode TextLabel="GYG2" GraphId="d29" Type="GeneProduct" GroupRef="e77a5">
+    <Graphics CenterX="826.6666666666666" CenterY="333.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Phka1" GraphId="b13" Type="GeneProduct" GroupRef="ddfca">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Phka1" />
+    <Graphics CenterX="503.6666666666667" CenterY="147.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="18679" />
+  </DataNode>
+  <DataNode TextLabel="Phka2" GraphId="e17" Type="GeneProduct" GroupRef="ddfca">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Phka2" />
+    <Graphics CenterX="503.6666666666667" CenterY="167.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="110094" />
+  </DataNode>
+  <DataNode TextLabel="Phkb" GraphId="a31" Type="GeneProduct" GroupRef="ddfca">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Phkb" />
+    <Graphics CenterX="503.6666666666667" CenterY="187.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="102093" />
+  </DataNode>
+  <DataNode TextLabel="Phkg1" GraphId="eb4" Type="GeneProduct" GroupRef="ddfca">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Phkg1" />
+    <Graphics CenterX="503.6666666666667" CenterY="207.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="18682" />
+  </DataNode>
+  <DataNode TextLabel="Phkg2" GraphId="a9b" Type="GeneProduct" GroupRef="ddfca">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Phkg2" />
+    <Graphics CenterX="503.6666666666667" CenterY="227.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="68961" />
+  </DataNode>
+  <DataNode TextLabel="Calm2" GraphId="df8" Type="GeneProduct" GroupRef="ddfca">
+    <Graphics CenterX="503.6666666666667" CenterY="267.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="12314" />
+  </DataNode>
+  <DataNode TextLabel="Gsk3a" GraphId="bf3" Type="GeneProduct" GroupRef="bb15b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gsk3a" />
+    <Graphics CenterX="943.3333333333334" CenterY="379.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="606496" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2cb" GraphId="a2e" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2cb" />
+    <Graphics CenterX="507.6666666666667" CenterY="544.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="19053" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r5b" GraphId="a4f" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r5b" />
+    <Graphics CenterX="507.6666666666667" CenterY="704.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="225849" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r5d" GraphId="d4b" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r5d" />
+    <Graphics CenterX="507.6666666666667" CenterY="744.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="21770" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r5a" GraphId="df7" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r5a" />
+    <Graphics CenterX="507.6666666666667" CenterY="684.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="226849" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r5e" GraphId="c42" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r5e" />
+    <Graphics CenterX="507.6666666666667" CenterY="764.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="26932" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r5c" GraphId="ac1" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r5c" />
+    <Graphics CenterX="507.6666666666667" CenterY="724.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="26931" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r1a" GraphId="c15" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r1a" />
+    <Graphics CenterX="507.6666666666667" CenterY="564.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="51792" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r2a" GraphId="e1e" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r2a" />
+    <Graphics CenterX="507.6666666666667" CenterY="604.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="71978" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r2b" GraphId="d5a" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r2b" />
+    <Graphics CenterX="507.6666666666667" CenterY="624.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="72930" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r2c" GraphId="b42" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r2c" />
+    <Graphics CenterX="507.6666666666667" CenterY="644.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="269643" />
+  </DataNode>
+  <DataNode TextLabel="3222402P14Rik" GraphId="bf6" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="3222402P14Rik" />
+    <Graphics CenterX="507.6666666666667" CenterY="664.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="235542" />
+  </DataNode>
+  <DataNode TextLabel="PPP2R3B" GraphId="df9" Type="GeneProduct" GroupRef="af47d">
+    <Graphics CenterX="507.6666666666667" CenterY="784.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2ca" GraphId="c65" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2ca" />
+    <Graphics CenterX="507.6666666666667" CenterY="524.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="19052" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r4" GraphId="f57" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r4" />
+    <Graphics CenterX="507.6666666666667" CenterY="804.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="110854" />
+  </DataNode>
+  <DataNode TextLabel="Calm1" GraphId="af6" Type="GeneProduct" GroupRef="ddfca">
+    <Graphics CenterX="503.6666666666667" CenterY="247.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="12313" />
+  </DataNode>
+  <DataNode TextLabel="Calm3" GraphId="c2a" Type="GeneProduct" GroupRef="ddfca">
+    <Graphics CenterX="503.6666666666667" CenterY="287.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="12315" />
+  </DataNode>
+  <DataNode TextLabel="Ppp2r1b" GraphId="edd" Type="GeneProduct" GroupRef="af47d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ppp2r1b" />
+    <Graphics CenterX="507.6666666666667" CenterY="584.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="73699" />
+  </DataNode>
+  <DataNode TextLabel="Glycogen" GraphId="aa2" Type="Metabolite">
+    <Graphics CenterX="264.6666666666667" CenterY="324.6666666666667" Width="78.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00757" />
+  </DataNode>
+  <DataNode TextLabel="Glucose" GraphId="dcc" Type="Metabolite">
+    <Graphics CenterX="71.0" CenterY="527.6666666666666" Width="68.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00122" />
+  </DataNode>
+  <DataNode TextLabel="Glucose 6-phosphate" GraphId="f2c" Type="Metabolite">
+    <Graphics CenterX="263.6666666666667" CenterY="527.6666666666666" Width="169.33333333333334" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01401" />
+  </DataNode>
+  <DataNode TextLabel="Glucose 1-phosphate" GraphId="b9f" Type="Metabolite">
+    <Graphics CenterX="707.6666666666666" CenterY="222.33333333333334" Width="169.33333333333334" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01586" />
+  </DataNode>
+  <DataNode TextLabel="Glycogen (n+1)" GraphId="e3e" Type="Metabolite">
+    <Graphics CenterX="770.0" CenterY="443.3333333333333" Width="120.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00757" />
+  </DataNode>
+  <DataNode TextLabel="Glycogen" GraphId="da6" Type="Metabolite">
+    <Graphics CenterX="769.0" CenterY="519.0" Width="78.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00757" />
+  </DataNode>
+  <DataNode TextLabel="cAMP" GraphId="afdba" Type="Metabolite">
+    <Graphics CenterX="503.0" CenterY="53.0" Width="56.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00058" />
+  </DataNode>
+  <DataNode TextLabel="UDP-glucose" GraphId="d1c90" Type="Metabolite">
+    <Graphics CenterX="708.0" CenterY="323.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00286" />
+  </DataNode>
+  <DataNode TextLabel="Glycogen (n+1)" GraphId="b8494" Type="Metabolite">
+    <Graphics CenterX="70.0" CenterY="443.3333333333333" Width="120.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00757" />
+  </DataNode>
+  <DataNode TextLabel="Glucose 1-phosphate" GraphId="d5dd2" Type="Metabolite">
+    <Graphics CenterX="263.5" CenterY="448.0" Width="123.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01586" />
+  </DataNode>
+  <DataNode TextLabel="Glycolysis" GraphId="bd066" Type="Pathway">
+    <Graphics CenterX="265.36264822134456" CenterY="608.4456521739131" Width="74.808300395257" Height="28.958498023715432" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP157" />
+  </DataNode>
+  <Line GraphId="ad0d8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="264.6666666666667" Y="334.1666666666667" GraphRef="aa2" RelX="0.0" RelY="1.0" />
+      <Point X="263.5" Y="438.0" GraphRef="d5dd2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="c16c9" />
+    </Graphics>
+  </Line>
+  <Line GraphId="df54d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="70.0" Y="452.8333333333333" GraphRef="b8494" RelX="0.0" RelY="1.0" />
+      <Point X="71.0" Y="518.1666666666666" GraphRef="dcc" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="eae25" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ac3e7">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="70.0" Y="433.8333333333333" GraphRef="b8494" RelX="0.0" RelY="-1.0" />
+      <Point X="225.5" Y="324.6666666666667" GraphRef="aa2" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e23ab">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="263.5" Y="458.0" GraphRef="d5dd2" RelX="0.0" RelY="1.0" />
+      <Point X="263.6666666666667" Y="518.1666666666666" GraphRef="f2c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="aacbf" />
+    </Graphics>
+  </Line>
+  <Line GraphId="aefe3">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="263.6666666666667" Y="537.1666666666666" GraphRef="f2c" RelX="0.0" RelY="1.0" />
+      <Point X="265.36264822134456" Y="593.9664031620553" GraphRef="bd066" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f6c92">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="71.0" Y="537.1666666666666" GraphRef="dcc" RelX="0.0" RelY="1.0" />
+      <Point X="227.95849802371606" Y="608.445652173913" GraphRef="bd066" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="edecf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="707.6666666666667" Y="231.83333333333334" GraphRef="b9f" RelX="0.0" RelY="1.0" />
+      <Point X="708.0" Y="313.0" GraphRef="d1c90" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="ecec7" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b1243">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="770.0" Y="360.0" />
+      <Point X="770.0" Y="433.8333333333333" GraphRef="e3e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.54" Shape="None" GraphId="b3764" />
+      <Anchor Position="0.03" Shape="None" GraphId="a14cb" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f18c0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="770.0" Y="452.8333333333333" GraphRef="e3e" RelX="0.0" RelY="1.0" />
+      <Point X="769.0" Y="509.5" GraphRef="da6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="e0566" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e4a06">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="905.3333333333334" Y="389.0" GraphRef="af3bf" RelX="-1.0" RelY="0.0" />
+      <Point X="809.0" Y="389.0" GraphRef="e2798" RelX="1.0" RelY="0.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c774d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="484.66666666666674" Y="305.3333333333333" GraphRef="f88ec" RelX="-0.5" RelY="1.0" />
+      <Point X="301.6666666666667" Y="386.0" GraphRef="a9287" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cf30f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="522.6666666666667" Y="305.3333333333333" GraphRef="f88ec" RelX="0.5" RelY="1.0" />
+      <Point X="733.0" Y="389.0" GraphRef="e2798" RelX="-1.0" RelY="0.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d1916">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="487.0" Y="506.66666666666663" GraphRef="f80c3" RelX="-0.5" RelY="-1.0" />
+      <Point X="301.6666666666667" Y="405.0" GraphRef="a9287" RelX="1.0" RelY="0.5" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c5d4a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="528.3333333333334" Y="506.66666666666663" GraphRef="f80c3" RelX="0.5" RelY="-1.0" />
+      <Point X="733.0" Y="403.0" GraphRef="e2798" RelX="-1.0" RelY="0.5" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c38a8">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="503.0" Y="63.0" GraphRef="afdba" RelX="0.0" RelY="1.0" />
+      <Point X="503.66666666666674" Y="129.33333333333331" GraphRef="f88ec" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fd5b6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="707.6666666666666" Y="241.0" GraphRef="dea4e" RelX="0.0" RelY="-1.0" />
+      <Point X="707.8000000000001" Y="264.3" GraphRef="ecec7" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fc45e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="771.0" Y="361.0" GraphRef="e2798" RelX="0.0" RelY="-1.0" />
+      <Point X="770.0" Y="399.87" GraphRef="b3764" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d9f67">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="748.0" Y="323.0" GraphRef="d1c90" RelX="1.0" RelY="0.0" />
+      <Point X="770.0" Y="362.215" GraphRef="a14cb" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="daf36">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="788.6666666666666" Y="323.3333333333333" GraphRef="dfe4e" RelX="-1.0" RelY="0.0" />
+      <Point X="770.0" Y="362.215" GraphRef="a14cb" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ce91c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="771.0" Y="467.6666666666667" GraphRef="f01" RelX="0.0" RelY="-1.0" />
+      <Point X="769.6" Y="475.5" GraphRef="e0566" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a05ad">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="263.6666666666667" Y="348.0" GraphRef="a9287" RelX="0.0" RelY="-1.0" />
+      <Point X="264.2" Y="375.70000000000005" GraphRef="c16c9" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f0d39">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="264.6666666666667" Y="472.0" GraphRef="f0d" RelX="0.0" RelY="-1.0" />
+      <Point X="263.56666666666666" Y="482.06666666666666" GraphRef="aacbf" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a6108">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="71.0" Y="468.0" GraphRef="df1" RelX="0.0" RelY="-1.0" />
+      <Point X="70.4" Y="478.96666666666664" GraphRef="eae25" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="Degradation" GraphId="f20">
+    <Graphics CenterX="263.3333333333333" CenterY="286.6666666666667" Width="111.33333333333333" Height="21.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Synthesis" GraphId="ee7">
+    <Graphics CenterX="766.6666666666666" CenterY="176.66666666666666" Width="92.33333333333333" Height="21.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Ser/Thr Protein Phosphatase 2A" GraphId="f30">
+    <Graphics CenterX="506.6666666666667" CenterY="503.3333333333333" Width="249.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Phosphorylase Kinase" GraphId="a8f">
+    <Graphics CenterX="509.0" CenterY="118.0" Width="178.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Group GroupId="ddfca" GraphId="f88ec" />
+  <Group GroupId="ed3d3" GraphId="dea4e" />
+  <Group GroupId="e77a5" GraphId="dfe4e" />
+  <Group GroupId="cc4d3" GraphId="e2798" />
+  <Group GroupId="bb15b" GraphId="af3bf" />
+  <Group GroupId="f11a0" GraphId="a9287" />
+  <Group GroupId="af47d" GraphId="f80c3" />
+  <InfoBox CenterX="18.333333333333332" CenterY="15.0" />
+  <Legend CenterX="230.96666666666667" CenterY="627.6666666666666" />
+</Pathway>

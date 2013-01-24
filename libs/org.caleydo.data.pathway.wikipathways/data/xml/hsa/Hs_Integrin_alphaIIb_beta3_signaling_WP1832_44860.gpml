@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Integrin alphaIIb beta3 signaling" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">At the sites of vascular injury bioactive molecules such as thrombin, ADP, collagen, fibrinogen and thrombospondin are generated, secreted or exposed. These stimuli activate platelets, converting the major platelet integrin alphaIIbbeta3 from a resting state to an active conformation, in a process termed integrin priming or âinside-out signallingâ. Integrin activation refers to the change required to enhance ligand-binding activity. The activated alphaIIbbeta3 interacts with the fibrinogen and links platelets together in an aggregate to form a platelet plug. AlphaIIbbeta3 bound to fibrin generates more intracellular signals (outside-in signalling), causing further platelet activation and platelet-plug retraction. &lt;br&gt;In the resting state the alpha and beta tails are close together. This interaction keeps the membrane proximal regions in a bent conformation that maintains alphaIIbbeta3 in a low affinity state. &lt;br&gt;Integrin alphaIIbbeta3 is released from its inactive state by interaction with the protein talin. Talin interacts with the beta3 cytoplasmic domain and disrupts the salt bridge between the alpha and beta chains. This separation in the cytoplasmic regions triggers the conformational change in the extracellular domain that increases its affinity to fibrinogen. &lt;br&gt;Much of talin exists in an inactive cytosolic pool, and the Rap1 interacting adaptor molecule (RIAM) is implicated in talin activation and translocation to beta3 integrin cytoplasmic domain.&lt;br&gt;</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_210067</BiopaxRef>
+  <BiopaxRef>lit_354123</BiopaxRef>
+  <BiopaxRef>lit_377578</BiopaxRef>
+  <BiopaxRef>lit_354175</BiopaxRef>
+  <BiopaxRef>lit_354141</BiopaxRef>
+  <BiopaxRef>lit_140237</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_354074" TextLabel="Rap1-GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="210.5" CenterY="127.0" Width="71.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15771"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="226.0" CenterY="200.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_29420" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="383.5" CenterY="198.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_354126" TextLabel="Rap1-GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="413.0" CenterY="128.0" Width="70.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_16044"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_179856" TextLabel="Phosphatidylinositol-&#10;4,5-bisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="575.0" CenterY="134.0" Width="136.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18348"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_354081" TextLabel="RIAM&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="477.5" CenterY="211.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q7Z5R6"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_354110" TextLabel="Rap1-GTP:PIP2:&#10;RIAM&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="710.5" CenterY="129.0" Width="103.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18055"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_350713" TextLabel="Talin-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="729.5" CenterY="218.0" Width="51.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y490"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_354176" TextLabel="Talin:RIAM complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="923.0" CenterY="168.0" Width="122.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15897"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_377608" TextLabel="Integrin alphaIIb &#10;beta3:p(Y530)-&#10;SRC:CSK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="922.5" CenterY="106.0" Width="109.0" Height="56.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15817"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_354130" TextLabel="Integrin alphaIIb &#10;beta3:p(Y530)-SRC:&#10;CSK:Talin:RIAM &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1161.0" CenterY="131.0" Width="124.0" Height="70.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_16075"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_377603" TextLabel="Integrin alphaIIb &#10;beta3 ECM ligands&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1251.5" CenterY="22.0" Width="121.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17269"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_377604" TextLabel="Integrin binding &#10;divalent cations&#10;" Type="Metabolite">
+    <BiopaxRef>lit_397780</BiopaxRef>
+    <Graphics Color="000000" CenterX="1193.0" CenterY="67.0" Width="110.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_18138"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_354137" TextLabel="Focal complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1388.0" CenterY="202.0" Width="90.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_16114"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_377619" TextLabel="Talin:RIAM complex:&#10;ECM ligands: 2X&#10;(Integrin alphaIIb &#10;beta3:p(Y530)-SRC:&#10;CSK)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1588.0" CenterY="122.0" Width="138.0" Height="80.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18137"/>
+  </DataNode>
+  <DataNode GraphId="n44_REACTOME_377608" TextLabel="Integrin alphaIIb &#10;beta3:p(Y530)-&#10;SRC:CSK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1387.5" CenterY="115.0" Width="111.0" Height="60.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15817"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1630.5" CenterY="209.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1829.0" CenterY="219.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n53_REACTOME_377620" TextLabel="Talin:RIAM complex:&#10;ECM ligands: 2X&#10;(Integrin alphaIIb &#10;beta3:Inactive (p-&#10;Y419, Y530)-SRC:&#10;CSK)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1880.0" CenterY="123.5" Width="130.0" Height="99.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18152"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_354153" TextLabel="SRC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1731.5" CenterY="221.5" Width="45.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12931-1"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_377616" TextLabel="Talin:RIAM complex:&#10;ECM ligands: 2X&#10;(Integrin alphaIIb &#10;beta3:Inactive (p-&#10;Y419,Y530)-SRC)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2090.0" CenterY="116.5" Width="122.0" Height="87.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17147"/>
+  </DataNode>
+  <DataNode GraphId="n69_REACTOME_203776" TextLabel="Tyrosine-protein &#10;kinase CSK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2070.5" CenterY="201.0" Width="109.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P41240"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_377622" TextLabel="Talin:RIAM complex:&#10;ECM ligands:2X&#10;(Integrin alphaIIb &#10;beta3:Active (p-Y419)&#10;-SRC)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2368.0" CenterY="111.0" Width="134.0" Height="84.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_16022"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_210625" TextLabel="PTP1B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2230.0" CenterY="239.0" Width="60.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18031"/>
+  </DataNode>
+  <DataNode GraphId="n76_REACTOME_201621" TextLabel="FADK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2422.5" CenterY="185.0" Width="51.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q05397"/>
+  </DataNode>
+  <DataNode GraphId="n77_REACTOME_354103" TextLabel="Talin:RIAM complex: &#10;ECM ligands:Integrin &#10;alphaIIb beta3:Active &#10;(p-Y419)- SRC:&#10;FADK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2605.0" CenterY="114.0" Width="128.0" Height="86.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15808"/>
+  </DataNode>
+  <DataNode GraphId="n84_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2596.5" CenterY="188.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_354135" TextLabel="Talin:RIAM complex:&#10;ECM ligands: alphaIIb &#10;beta3:Active (p-Y419)-&#10;SRC:p(Y397)-FADK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2714.5" CenterY="297.5" Width="139.0" Height="71.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15915"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2614.0" CenterY="269.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n94_REACTOME_354080" TextLabel="Talin:RIAM complex:ECM &#10;ligands: Integrin alphaIIb &#10;beta3:Active (p-Y419)-&#10;SRC:p(Y397,&#10;407,576,577,861,925)-&#10;FADK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2715.5" CenterY="504.0" Width="155.0" Height="96.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15973"/>
+  </DataNode>
+  <DataNode GraphId="n102_REACTOME_74686" TextLabel="GRB2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2637.0" CenterY="601.5" Width="50.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62993-1"/>
+  </DataNode>
+  <DataNode GraphId="n103_REACTOME_354113" TextLabel="GRB2 bound to &#10;pFADK1 in Focal &#10;adhesion&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2710.0" CenterY="668.0" Width="106.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18065"/>
+  </DataNode>
+  <DataNode GraphId="n116_REACTOME_64847" TextLabel="Son of sevenless &#10;protein homolog 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2599.0" CenterY="721.0" Width="114.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q07889"/>
+  </DataNode>
+  <DataNode GraphId="n117_REACTOME_354168" TextLabel="SOS bound to Grb2:&#10;pFADK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2711.5" CenterY="807.0" Width="123.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15655"/>
+  </DataNode>
+  <DataNode GraphId="n120_REACTOME_201625" TextLabel="p130Cas&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2440.5" CenterY="575.0" Width="61.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P56945"/>
+  </DataNode>
+  <DataNode GraphId="n121_REACTOME_372688" TextLabel="FADK1 bound &#10;p130Cas complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2468.0" CenterY="808.0" Width="114.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15888"/>
+  </DataNode>
+  <DataNode GraphId="n123_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2420.5" CenterY="739.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n124_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2245.0" CenterY="737.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n125_REACTOME_372646" TextLabel="Phosphorylated &#10;p130Cas in complex &#10;with FADK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2190.0" CenterY="808.0" Width="132.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18088"/>
+  </DataNode>
+  <DataNode GraphId="n127_REACTOME_109809" TextLabel="Crk&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2135.0" CenterY="734.0" Width="28.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46108-1"/>
+  </DataNode>
+  <DataNode GraphId="n128_REACTOME_372652" TextLabel="Crk bound to &#10;p130Cas:FADK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1943.0" CenterY="806.0" Width="104.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15949"/>
+  </DataNode>
+  <DataNode GraphId="n132_REACTOME_392488" TextLabel="CalDAG-GEFs&#10;" Type="Protein">
+    <Comment Source="WikiPathways-description">Rap1 can be activated by certain GEFs that respond to calcium and diacylglycerol (CalDAG-GEFs).</Comment>
+    <Graphics Color="000000" CenterX="305.5" CenterY="72.5" Width="87.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_18194"/>
+  </DataNode>
+  <DataNode GraphId="n134_REACTOME_392485" TextLabel="Rap1 cAMP-&#10;GEFs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="307.0" CenterY="202.5" Width="100.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17998"/>
+  </DataNode>
+  <DataNode GraphId="n135_REACTOME_29356" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2164.5" CenterY="200.5" Width="41.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n136_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2305.5" CenterY="199.5" Width="105.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n137_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2617.0" CenterY="336.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n138_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2625.0" CenterY="427.5" Width="40.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n140_REACTOME_114514" TextLabel="Integrin alphaIIb beta3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="170.5" CenterY="468.5" Width="143.0" Height="27.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4958"/>
+  </DataNode>
+  <DataNode GraphId="n141_REACTOME_432105" TextLabel="Integrin alpha IIb p(T779)&#10;-beta 3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="173.0" CenterY="321.0" Width="150.0" Height="40.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24465"/>
+  </DataNode>
+  <DataNode GraphId="n142_REACTOME_432180" TextLabel="AKT1/PDK1&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="251.0" CenterY="385.0" Width="78.0" Height="24.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_24667"/>
+  </DataNode>
+  <DataNode GraphId="n144_REACTOME_74680" TextLabel="SHC1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1284.0" CenterY="339.5" Width="82.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29353"/>
+  </DataNode>
+  <DataNode GraphId="n145_REACTOME_432098" TextLabel="Integrin alphaIIb beta &#10;3:p(Y530)-SRC:CSK:&#10;Talin:RIAM complex:&#10;SHC&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1197.0" CenterY="801.0" Width="134.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24611"/>
+  </DataNode>
+  <DataNode GraphId="n176_REACTOME_443900" TextLabel="Integrin alpha IIb beta &#10;3:p(Y530)-SRC:CSK:&#10;Talin:RIAM complex:p&#10;(Y317)-SHC&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="982.0" CenterY="802.0" Width="134.0" Height="70.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23140"/>
+  </DataNode>
+  <DataNode GraphId="n178_REACTOME_74684" TextLabel="p(Y317)-SHC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1042.5" CenterY="343.5" Width="95.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29353"/>
+  </DataNode>
+  <DataNode GraphId="n181_REACTOME_58268" TextLabel="SYK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1720.0" CenterY="494.0" Width="72.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P43405"/>
+  </DataNode>
+  <DataNode GraphId="n182_REACTOME_429424" TextLabel="Talin:RIAM:ECM ligands:&#10;2X (Integrin alphaIIb &#10;beta3:Active (p-Y419)-&#10;SRC):SYK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1779.0" CenterY="801.0" Width="148.0" Height="70.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24734"/>
+  </DataNode>
+  <DataNode GraphId="n185_REACTOME_429434" TextLabel="Talin:RIAM:ECM ligands:&#10;2X(Integrin alphaIIb &#10;beta3:Active (p-Y419)-&#10;SRC):p(Y)-SYK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1520.5" CenterY="803.0" Width="145.0" Height="72.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24653"/>
+  </DataNode>
+  <DataNode GraphId="n356_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1708.0" CenterY="714.0" Width="52.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n358_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1563.0" CenterY="722.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_354173">
+    <Comment Source="WikiPathways-description">Signals from agonist receptors (such as GPVI) trigger the production of PIP3, DAG, cAMP and elevated Ca++ levels. This leads to the activation and translocation of active Rap1-GTP to the plasma membrane. Rap-GEFs stimulate the replacement of GDP for GTP, activating Rap1. Several Rap1 GEFs have been identified enabling Rap1 to respond to diverse stimuli. CalDAG-GEFs activate Rap1 in response to calcium and DAG, downstream of Phospholipase C. EPAC (exchange proteins directly activated by cAMP) GEFs are activated by binding cAMP.</Comment>
+    <BiopaxRef>lit_354167</BiopaxRef>
+    <BiopaxRef>lit_354139</BiopaxRef>
+    <BiopaxRef>lit_354121</BiopaxRef>
+    <BiopaxRef>lit_392504</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="277.0" Y="127.0" GraphId="e_1_0"/>
+      <Point X="307.0" Y="127.0" GraphId="e_1_1"/>
+      <Point X="335.0" Y="127.0" GraphId="e_1_2"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.5172413793103449" GraphId="e_1_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="249.0" Y="127.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_354074" RelX="1.0985915492957747" RelY="0.0"/>
+      <Point X="277.0" Y="127.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="236.0" Y="182.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_29438" RelX="0.5" RelY="-1.2"/>
+      <Point X="277.0" Y="127.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="372.0" Y="180.0" GraphId="e_1_o0_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_29420" RelX="-0.5365853658536586" RelY="-1.2"/>
+      <Point X="335.0" Y="127.0" GraphId="e_1_o0_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="375.0" Y="127.0" GraphId="e_1_o1_0" ArrowHead="Arrow" GraphRef="n5_REACTOME_354126" RelX="-1.0857142857142856" RelY="-0.09090909090909091"/>
+      <Point X="335.0" Y="127.0" GraphId="e_1_o1_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="305.0" Y="87.0" GraphId="e_1_c__0_0" GraphRef="n132_REACTOME_392488" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="307.0" Y="127.0" GraphId="e_1_c__0_1" GraphRef="e_1_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_REACTOME_354060">
+    <Comment Source="WikiPathways-description">Upon the production of activated Rap1A at the plasma membrane, RIAM interacts with Rap1A-GTP with its N-ter RA domain, and with its C-ter PH domain it interacts with PIP2.</Comment>
+    <BiopaxRef>lit_354123</BiopaxRef>
+    <BiopaxRef>lit_354167</BiopaxRef>
+    <BiopaxRef>lit_354139</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="476.0" Y="109.0" GraphId="e_7_0"/>
+      <Point X="476.0" Y="73.0" GraphId="e_7_1"/>
+      <Point X="614.0" Y="73.0" GraphId="e_7_2"/>
+      <Point X="710.0" Y="73.0" GraphId="e_7_3"/>
+      <Point X="710.0" Y="108.0" GraphId="e_7_4" GraphRef="n10_REACTOME_354110" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_7_a_i"/>
+      <Anchor Position="0.5704918032786885" GraphId="e_7_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="504.0" Y="116.0" GraphId="e_7_i0_0" GraphRef="n8_REACTOME_179856" RelX="-1.0441176470588236" RelY="-0.8181818181818182"/>
+      <Point X="476.0" Y="109.0" GraphId="e_7_i0_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="476.0" Y="197.0" GraphId="e_7_i1_0" GraphRef="n9_REACTOME_354081" RelX="-0.05405405405405406" RelY="-1.2727272727272727"/>
+      <Point X="476.0" Y="109.0" GraphId="e_7_i1_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="451.0" Y="117.0" GraphId="e_7_i2_0" GraphRef="n5_REACTOME_354126" RelX="1.0857142857142856" RelY="-1.0"/>
+      <Point X="476.0" Y="109.0" GraphId="e_7_i2_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_REACTOME_354097">
+    <Comment Source="WikiPathways-description">Talin is one of the major cytoskeletal proteins involved in integrin activation and linking the resulting focal adhesion (FA) with cytoskeleton. Talin comprises an N-ter head region and a flexible rod domain. The head region has the FERM domain (subdivided into F1, F2 and F3 subdomains), which has the binding sites for beta integrin cytoplasmic regions and actin binding sites close to the C-terminal rod domain.  &lt;br&gt;Talin exists in closed inactive conformation, where the head region interacts with the rod domain masking the integrin binding sites. At the plasma membrane the RIAM bound to active Rap1 recruits talin to form the integrin activation complex. This interaction exposes the integrin-binding site in talin F3 domain leading to integrin activation. &lt;br&gt;</Comment>
+    <BiopaxRef>lit_354123</BiopaxRef>
+    <BiopaxRef>lit_354084</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="786.0" Y="126.0" GraphId="e_21_0"/>
+      <Point X="814.0" Y="126.0" GraphId="e_21_1"/>
+      <Point X="829.0" Y="151.0" GraphId="e_21_2"/>
+      <Point X="862.0" Y="154.0" GraphId="e_21_3" GraphRef="n23_REACTOME_354176" RelX="-1.0" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_21_a_i"/>
+      <Anchor Position="0.3101089680495873" GraphId="e_21_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="735.0" Y="204.0" GraphId="e_21_i0_0" GraphRef="n22_REACTOME_350713" RelX="0.23529411764705882" RelY="-1.2727272727272727"/>
+      <Point X="786.0" Y="126.0" GraphId="e_21_i0_1" GraphRef="e_21_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="765.0" Y="126.0" GraphId="e_21_i1_0" GraphRef="n10_REACTOME_354110" RelX="1.0679611650485437" RelY="-0.16666666666666666"/>
+      <Point X="786.0" Y="126.0" GraphId="e_21_i1_1" GraphRef="e_21_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_REACTOME_354077">
+    <Comment Source="WikiPathways-description">The interaction between talin and integrin alphaIIb beta3 breaks the putative salt bridge between the alphaIIb (R995) and beta3 (D723) integrin chains and induces conformational changes in their external domains increasing their affinity for fibrinogen and other ECM ligands. Breaking of this salt bridge is necessary but not sufficient for full activation.&lt;br&gt;The Talin F3 subdomain of the FERM domain has a phosphotyrosine binding (PTB) domain fold. This domain interacts with the membrane-proximal (MP) region within the integrin beta3 chain. The primary function of this interaction is to provide an initial strong linkage between talin and integrin and this interaction holds the key to the molecular recognition required for activation.</Comment>
+    <BiopaxRef>lit_354084</BiopaxRef>
+    <BiopaxRef>lit_354175</BiopaxRef>
+    <BiopaxRef>lit_354127</BiopaxRef>
+    <BiopaxRef>lit_377584</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1028.0" Y="126.0" GraphId="e_24_0"/>
+      <Point X="1063.0" Y="126.0" GraphId="e_24_1"/>
+      <Point X="1096.0" Y="127.0" GraphId="e_24_2" GraphRef="n26_REACTOME_354130" RelX="-1.0483870967741935" RelY="-0.11428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_24_a_i"/>
+      <Anchor Position="0.5145912492937597" GraphId="e_24_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="950.0" Y="154.0" GraphId="e_24_i0_0" GraphRef="n23_REACTOME_354176" RelX="0.4426229508196721" RelY="-1.2727272727272727"/>
+      <Point X="1028.0" Y="126.0" GraphId="e_24_i0_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="980.0" Y="116.0" GraphId="e_24_i1_0" GraphRef="n25_REACTOME_377608" RelX="1.0642201834862386" RelY="0.35714285714285715"/>
+      <Point X="1028.0" Y="126.0" GraphId="e_24_i1_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_REACTOME_354149">
+    <Comment Source="WikiPathways-description">The overall shape of integrins is that of a globular 'head' supported by two rod like legs. The ligand-binding pocket is formed by the combination of A-domain or beta-I domain on the beta3 subunit and the putative beta-propeller fold on the alphaIIb subunit in the head regions. The binding of ligand to integrin is also dependent on divalent cations (usually Mn++ or Mg++or Ca++). A conserved motif, the metal ion-dependant adhesion site (MIDAS) is located in the alpha and the beta chains that coordinate the divalent cation at the top of the domain. &lt;br&gt;Active integrin alphaIIb beta3 interacts with a variety of plasma proteins such as fibrinogen, vWF, thrombin, thrombospondin, and fibronectin. Most of these matrix proteins have integrin binding sites of 3-6 amino acids length, of which the best known are the 'RGD' and 'KGD' motifs. The alpha and beta integrin subunits are both required for ligand binding.</Comment>
+    <BiopaxRef>lit_354175</BiopaxRef>
+    <BiopaxRef>lit_354127</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1279.0" Y="126.0" GraphId="e_27_0"/>
+      <Point X="1310.0" Y="126.0" GraphId="e_27_1"/>
+      <Point X="1328.0" Y="151.0" GraphId="e_27_2"/>
+      <Point X="1375.0" Y="188.0" GraphId="e_27_3" GraphRef="n30_REACTOME_354137" RelX="-0.28888888888888886" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_27_a_i"/>
+      <Anchor Position="0.2548876153169372" GraphId="e_27_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1255.0" Y="43.0" GraphId="e_27_i0_0" GraphRef="n28_REACTOME_377603" RelX="0.06611570247933884" RelY="1.1666666666666667"/>
+      <Point X="1279.0" Y="126.0" GraphId="e_27_i0_1" GraphRef="e_27_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1226.0" Y="128.0" GraphId="e_27_i1_0" GraphRef="n26_REACTOME_354130" RelX="1.0483870967741935" RelY="-0.08571428571428572"/>
+      <Point X="1279.0" Y="126.0" GraphId="e_27_i1_1" GraphRef="e_27_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1225.0" Y="92.0" GraphId="e_27_i2_0" GraphRef="n29_REACTOME_377604" RelX="0.5818181818181818" RelY="1.1363636363636365"/>
+      <Point X="1279.0" Y="126.0" GraphId="e_27_i2_1" GraphRef="e_27_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_36_REACTOME_377641">
+    <Comment Source="WikiPathways-description">The fibrinogen-bound integrin alphaIIb beta3 clusters platelets together to form a platelet plug and generates intracellular signals (outside-in) causing further platelet activation and platelet plug retraction.&lt;br&gt;Intracellular integrin alphaIIb beta3 clustering brings SRCs bound to integrin beta3 chains into proximity. SRC associates constitutively with integrin alphaIIb beta3. In unstimulated cells this SRC is inactive, auto-inhibited by an internal interaction between  phosphorylated Y529 and the SH2 domain. CSK is selective for the Y529 residue and prevents access to SRC of PTP1B, a protein tyrosine phosphatase that is capable of de-phosphorylating Y529.</Comment>
+    <BiopaxRef>lit_377572</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1473.0" Y="131.0" GraphId="e_36_0"/>
+      <Point X="1495.0" Y="130.0" GraphId="e_36_1"/>
+      <Point X="1516.0" Y="127.0" GraphId="e_36_2" GraphRef="n37_REACTOME_377619" RelX="-1.0434782608695652" RelY="0.125" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_36_a_i"/>
+      <Anchor Position="0.5093615693736254" GraphId="e_36_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_36_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1401.0" Y="188.0" GraphId="e_36_i0_0" GraphRef="n30_REACTOME_354137" RelX="0.28888888888888886" RelY="-1.2727272727272727"/>
+      <Point X="1473.0" Y="131.0" GraphId="e_36_i0_1" GraphRef="e_36_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_36_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1446.0" Y="125.0" GraphId="e_36_i1_0" GraphRef="n44_REACTOME_377608" RelX="1.063063063063063" RelY="0.3333333333333333"/>
+      <Point X="1473.0" Y="131.0" GraphId="e_36_i1_1" GraphRef="e_36_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_REACTOME_377640">
+    <Comment Source="WikiPathways-description">Clustering of Integrin alphaIIb beta3 complexes results in the trans auto-phosphorylation of SRC tyrosine residue 419 (often referred to as 418 in the literature, as the initiating methionine is cleaved in the mature peptide) in SRC's kinase activation loop.</Comment>
+    <BiopaxRef>lit_377572</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1702.0" Y="130.0" GraphId="e_50_0"/>
+      <Point X="1733.0" Y="130.0" GraphId="e_50_1"/>
+      <Point X="1764.0" Y="130.0" GraphId="e_50_2"/>
+      <Anchor Position="0.0" GraphId="e_50_a_i"/>
+      <Anchor Position="0.5" GraphId="e_50_a_p"/>
+      <Anchor Position="1.0" GraphId="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1643.0" Y="191.0" GraphId="e_50_i0_0" GraphRef="n51_REACTOME_113592" RelX="0.6666666666666666" RelY="-1.2"/>
+      <Point X="1702.0" Y="130.0" GraphId="e_50_i0_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1660.0" Y="126.0" GraphId="e_50_i1_0" GraphRef="n37_REACTOME_377619" RelX="1.0434782608695652" RelY="0.1"/>
+      <Point X="1702.0" Y="130.0" GraphId="e_50_i1_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1818.0" Y="201.0" GraphId="e_50_o0_0" ArrowHead="Arrow" GraphRef="n52_REACTOME_29370" RelX="-0.55" RelY="-1.2"/>
+      <Point X="1764.0" Y="130.0" GraphId="e_50_o0_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1812.0" Y="126.0" GraphId="e_50_o1_0" ArrowHead="Arrow" GraphRef="n53_REACTOME_377620" RelX="-1.0461538461538462" RelY="0.06060606060606061"/>
+      <Point X="1764.0" Y="130.0" GraphId="e_50_o1_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1731.0" Y="207.0" GraphId="e_50_c__0_0" GraphRef="n54_REACTOME_354153" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="1733.0" Y="130.0" GraphId="e_50_c__0_1" GraphRef="e_50_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_REACTOME_377644">
+    <Comment Source="WikiPathways-description">After trans-autophosphorylation of tyrosine 419, CSK kinase releases from the Integrin alphaIIb beta3 complex.</Comment>
+    <BiopaxRef>lit_377572</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1948.0" Y="126.0" GraphId="e_67_0" GraphRef="n53_REACTOME_377620" RelX="1.0461538461538462" RelY="0.06060606060606061"/>
+      <Point X="1969.0" Y="128.0" GraphId="e_67_1"/>
+      <Point X="1989.0" Y="128.0" GraphId="e_67_2"/>
+      <Anchor Position="0.5133230623426728" GraphId="e_67_a_p"/>
+      <Anchor Position="1.0" GraphId="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2026.0" Y="123.0" GraphId="e_67_o0_0" ArrowHead="Arrow" GraphRef="n68_REACTOME_377616" RelX="-1.0491803278688525" RelY="0.16091954022988506"/>
+      <Point X="1989.0" Y="128.0" GraphId="e_67_o0_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2050.0" Y="180.0" GraphId="e_67_o1_0" ArrowHead="Arrow" GraphRef="n69_REACTOME_203776" RelX="-0.3669724770642202" RelY="-1.1666666666666667"/>
+      <Point X="1989.0" Y="128.0" GraphId="e_67_o1_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_REACTOME_377643">
+    <Comment Source="WikiPathways-description">The integrin alphaIIb beta3:Inactive SRC complex recruits PTP1B protein tyrosine phosphatase resulting in the dephosphorylation of SRC tyrosine 530. The phosphorylated tail of SRC tail interacts with the SH2 domain thereby repressing kinase activity; removal of phosphorylation activates SRC kinase activity.</Comment>
+    <BiopaxRef>lit_377572</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2194.0" Y="128.0" GraphId="e_70_0"/>
+      <Point X="2227.0" Y="127.0" GraphId="e_70_1"/>
+      <Point X="2266.0" Y="128.0" GraphId="e_70_2"/>
+      <Anchor Position="0.0" GraphId="e_70_a_i"/>
+      <Anchor Position="0.45836568305431297" GraphId="e_70_a_p"/>
+      <Anchor Position="1.0" GraphId="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2170.0" Y="182.0" GraphId="e_70_i0_0" GraphRef="n135_REACTOME_29356" RelX="0.2926829268292683" RelY="-1.1612903225806452"/>
+      <Point X="2194.0" Y="128.0" GraphId="e_70_i0_1" GraphRef="e_70_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2154.0" Y="123.0" GraphId="e_70_i1_0" GraphRef="n68_REACTOME_377616" RelX="1.0491803278688525" RelY="0.16091954022988506"/>
+      <Point X="2194.0" Y="128.0" GraphId="e_70_i1_1" GraphRef="e_70_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2298.0" Y="122.0" GraphId="e_70_o0_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_377622" RelX="-1.044776119402985" RelY="0.2619047619047619"/>
+      <Point X="2266.0" Y="128.0" GraphId="e_70_o0_1" GraphRef="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2296.0" Y="181.0" GraphId="e_70_o1_0" ArrowHead="Arrow" GraphRef="n136_REACTOME_29372" RelX="-0.17142857142857143" RelY="-1.1612903225806452"/>
+      <Point X="2266.0" Y="128.0" GraphId="e_70_o1_1" GraphRef="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2229.0" Y="225.0" GraphId="e_70_c__0_0" GraphRef="n74_REACTOME_210625" RelX="-0.03333333333333333" RelY="-1.2727272727272727"/>
+      <Point X="2227.0" Y="127.0" GraphId="e_70_c__0_1" GraphRef="e_70_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_REACTOME_354066">
+    <Comment Source="WikiPathways-description">As integrins do not have an intrinsic catalytic activity, the signals initiated by the ECM-integrin interactions are transduced into cells through the integrin bound protein-tyrosine kinases. Focal adhesion kinase 1 (FADK1, FAK) is one of the protein tyrosine kinases that plays a prominent role in integrin signaling. FAK has been implicated in controlling cell motility and transmitting a cell survival signal from ECM. &lt;br&gt;&lt;br&gt;FAK is recruited to sites of integrin clustering by directly binding to integrin associated c-Src.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_354120</BiopaxRef>
+    <BiopaxRef>lit_354182</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2464.0" Y="127.0" GraphId="e_75_0"/>
+      <Point X="2493.0" Y="127.0" GraphId="e_75_1"/>
+      <Point X="2538.0" Y="121.0" GraphId="e_75_2" GraphRef="n77_REACTOME_354103" RelX="-1.046875" RelY="0.16279069767441862" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_75_a_i"/>
+      <Anchor Position="0.3897941784317011" GraphId="e_75_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2429.0" Y="171.0" GraphId="e_75_i0_0" GraphRef="n76_REACTOME_201621" RelX="0.27450980392156865" RelY="-1.2727272727272727"/>
+      <Point X="2464.0" Y="127.0" GraphId="e_75_i0_1" GraphRef="e_75_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2438.0" Y="122.0" GraphId="e_75_i1_0" GraphRef="n73_REACTOME_377622" RelX="1.044776119402985" RelY="0.2619047619047619"/>
+      <Point X="2464.0" Y="127.0" GraphId="e_75_i1_1" GraphRef="e_75_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_REACTOME_354073">
+    <Comment Source="WikiPathways-description">The co-localization of FAK with integrins in focal adhesions and the actin cytoskeleton is essential for the activation and phosphorylation of FAK. &lt;br&gt;FAK has six tyrosine phosphorylation sites and tyrosine 397 is the main auto-phosphorylation site present upstream of the kinase domain.</Comment>
+    <BiopaxRef>lit_354120</BiopaxRef>
+    <BiopaxRef>lit_354182</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2647.0" Y="195.0" GraphId="e_83_0"/>
+      <Point X="2659.0" Y="216.0" GraphId="e_83_1"/>
+      <Point X="2671.0" Y="240.0" GraphId="e_83_2"/>
+      <Anchor Position="0.0" GraphId="e_83_a_i"/>
+      <Anchor Position="0.47406836728531904" GraphId="e_83_a_p"/>
+      <Anchor Position="1.0" GraphId="e_83_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2619.0" Y="190.0" GraphId="e_83_i0_0" GraphRef="n84_REACTOME_113592" RelX="1.1794871794871795" RelY="0.13333333333333333"/>
+      <Point X="2647.0" Y="195.0" GraphId="e_83_i0_1" GraphRef="e_83_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2627.0" Y="160.0" GraphId="e_83_i1_0" GraphRef="n77_REACTOME_354103" RelX="0.34375" RelY="1.069767441860465"/>
+      <Point X="2647.0" Y="195.0" GraphId="e_83_i1_1" GraphRef="e_83_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2687.0" Y="259.0" GraphId="e_83_o0_0" ArrowHead="Arrow" GraphRef="n85_REACTOME_354135" RelX="-0.38848920863309355" RelY="-1.0704225352112675"/>
+      <Point X="2671.0" Y="240.0" GraphId="e_83_o0_1" GraphRef="e_83_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2637.0" Y="258.0" GraphId="e_83_o1_0" ArrowHead="Arrow" GraphRef="n86_REACTOME_29370" RelX="1.15" RelY="-0.7333333333333333"/>
+      <Point X="2671.0" Y="240.0" GraphId="e_83_o1_1" GraphRef="e_83_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2658.0" Y="160.0" GraphId="e_83_c__0_0" GraphRef="n77_REACTOME_354103" RelX="0.828125" RelY="1.069767441860465"/>
+      <Point X="2704.0" Y="194.0" GraphId="e_83_c__0_1"/>
+      <Point X="2659.0" Y="216.0" GraphId="e_83_c__0_2" GraphRef="e_83_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_REACTOME_354124">
+    <Comment Source="WikiPathways-description">The recruitment of FADK1 to active SRC leads to the efficient tyrosine phosphorylation of multiple additional sites on FADK1. SRC trans-phosphorylates FADK1 within the kinase doman activation loop (Y576 and Y577) and within the FADK1 C-terminal domain (Y861 and Y925).</Comment>
+    <BiopaxRef>lit_354120</BiopaxRef>
+    <BiopaxRef>lit_354182</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2712.0" Y="370.0" GraphId="e_92_0"/>
+      <Point X="2712.0" Y="393.0" GraphId="e_92_1"/>
+      <Point X="2713.0" Y="417.0" GraphId="e_92_2"/>
+      <Anchor Position="0.0" GraphId="e_92_a_i"/>
+      <Anchor Position="0.4891449765699674" GraphId="e_92_a_p"/>
+      <Anchor Position="1.0" GraphId="e_92_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2713.0" Y="336.0" GraphId="e_92_i0_0" GraphRef="n85_REACTOME_354135" RelX="-0.014388489208633094" RelY="1.0985915492957747"/>
+      <Point X="2712.0" Y="370.0" GraphId="e_92_i0_1" GraphRef="e_92_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2639.0" Y="342.0" GraphId="e_92_i1_0" GraphRef="n137_REACTOME_113592" RelX="1.1578947368421053" RelY="0.3870967741935484"/>
+      <Point X="2712.0" Y="370.0" GraphId="e_92_i1_1" GraphRef="e_92_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2713.0" Y="453.0" GraphId="e_92_o0_0" ArrowHead="Arrow" GraphRef="n94_REACTOME_354080" RelX="-0.025806451612903226" RelY="-1.0625"/>
+      <Point X="2713.0" Y="417.0" GraphId="e_92_o0_1" GraphRef="e_92_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2648.0" Y="424.0" GraphId="e_92_o1_0" ArrowHead="Arrow" GraphRef="n138_REACTOME_29370" RelX="1.15" RelY="-0.1935483870967742"/>
+      <Point X="2713.0" Y="417.0" GraphId="e_92_o1_1" GraphRef="e_92_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2377.0" Y="156.0" GraphId="e_92_c__0_0" GraphRef="n73_REACTOME_377622" RelX="0.13432835820895522" RelY="1.0714285714285714"/>
+      <Point X="2422.0" Y="345.0" GraphId="e_92_c__0_1"/>
+      <Point X="2712.0" Y="393.0" GraphId="e_92_c__0_2" GraphRef="e_92_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_REACTOME_354087">
+    <Comment Source="WikiPathways-description">Phosphorylated tyrosine 925 in the FAT domain of FADK1 creates a docking site for the SH2 domain of GRB2 and recruits the GRB2/SOS complex. FADK1 may use this mechanism to activate Ras and the MAP kinase pathway.</Comment>
+    <BiopaxRef>lit_354100</BiopaxRef>
+    <BiopaxRef>lit_354156</BiopaxRef>
+    <BiopaxRef>lit_354148</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2711.0" Y="580.0" GraphId="e_101_0"/>
+      <Point X="2711.0" Y="601.0" GraphId="e_101_1"/>
+      <Point X="2710.0" Y="640.0" GraphId="e_101_2" GraphRef="n103_REACTOME_354113" RelX="0.0" RelY="-1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_101_a_i"/>
+      <Anchor Position="0.34992524193479063" GraphId="e_101_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2665.0" Y="593.0" GraphId="e_101_i0_0" GraphRef="n102_REACTOME_74686" RelX="1.12" RelY="-0.45714285714285713"/>
+      <Point X="2711.0" Y="580.0" GraphId="e_101_i0_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2712.0" Y="555.0" GraphId="e_101_i1_0" GraphRef="n94_REACTOME_354080" RelX="-0.03870967741935484" RelY="1.0625"/>
+      <Point X="2711.0" Y="580.0" GraphId="e_101_i1_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_REACTOME_354165">
+    <Comment Source="WikiPathways-description">Son of sevenless protein homolog 1(SOS) is an activating nucleotide exchange factor for H-Ras (p21Ras). SOS is brought close to the H-Ras by interacting with the FADK1 bound GRB2.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2710.0" Y="723.0" GraphId="e_115_0"/>
+      <Point X="2711.0" Y="749.0" GraphId="e_115_1"/>
+      <Point X="2711.0" Y="786.0" GraphId="e_115_2" GraphRef="n117_REACTOME_354168" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_115_a_i"/>
+      <Anchor Position="0.4128775657703308" GraphId="e_115_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2659.0" Y="722.0" GraphId="e_115_i0_0" GraphRef="n116_REACTOME_64847" RelX="1.0526315789473684" RelY="0.05555555555555555"/>
+      <Point X="2710.0" Y="723.0" GraphId="e_115_i0_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2710.0" Y="696.0" GraphId="e_115_i1_0" GraphRef="n103_REACTOME_354113" RelX="0.0" RelY="1.12"/>
+      <Point X="2710.0" Y="723.0" GraphId="e_115_i1_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_119_REACTOME_372705">
+    <Comment Source="WikiPathways-description">p130Cas (Crk-associated substrate) is an adaptor protein that promotes protein-protein interactions, leading to the multiprotein complexes. The interaction of p130Cas with other proteins modulates cell motility, survial and proliferation. P130Cas is one of the main phosphorylation targets of the FAK/Src complex. The p130Cas SH3 domain binds to PR1 and PR2 (âPxxPâ) domains in the FAK C-terminal domain.</Comment>
+    <BiopaxRef>lit_372665</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2467.0" Y="624.0" GraphId="e_119_0"/>
+      <Point X="2467.0" Y="737.0" GraphId="e_119_1"/>
+      <Point X="2467.0" Y="787.0" GraphId="e_119_2" GraphRef="n121_REACTOME_372688" RelX="-0.017543859649122806" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_119_a_i"/>
+      <Anchor Position="0.6932515337423313" GraphId="e_119_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_119_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2635.0" Y="541.0" GraphId="e_119_i0_0" GraphRef="n94_REACTOME_354080" RelX="-1.032258064516129" RelY="0.7708333333333334"/>
+      <Point X="2467.0" Y="624.0" GraphId="e_119_i0_1" GraphRef="e_119_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_119_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2446.0" Y="589.0" GraphId="e_119_i1_0" GraphRef="n120_REACTOME_201625" RelX="0.19672131147540983" RelY="1.2727272727272727"/>
+      <Point X="2467.0" Y="624.0" GraphId="e_119_i1_1" GraphRef="e_119_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_REACTOME_372693">
+    <Comment Source="WikiPathways-description">SH3-mediated binding of p130Cas to FAK is linked to enhanced tyrosine phosphorylation of p130Cas at multiple sites. The Cas substrate domain contains 15 separate YxxP motifs after phosphorylation recruits the SH2 mediated binding of Crk adaptor protein that affect the downstream MAPK signalling pathway, resulting in cell survival and increased motility.</Comment>
+    <BiopaxRef>lit_372665</BiopaxRef>
+    <BiopaxRef>lit_215835</BiopaxRef>
+    <BiopaxRef>lit_372692</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2363.0" Y="807.0" GraphId="e_122_0"/>
+      <Point X="2328.0" Y="807.0" GraphId="e_122_1"/>
+      <Point X="2296.0" Y="807.0" GraphId="e_122_2"/>
+      <Anchor Position="0.0" GraphId="e_122_a_i"/>
+      <Anchor Position="0.5223880597014925" GraphId="e_122_a_p"/>
+      <Anchor Position="1.0" GraphId="e_122_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2407.0" Y="757.0" GraphId="e_122_i0_0" GraphRef="n123_REACTOME_113592" RelX="-0.6666666666666666" RelY="1.2"/>
+      <Point X="2363.0" Y="807.0" GraphId="e_122_i0_1" GraphRef="e_122_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2408.0" Y="807.0" GraphId="e_122_i1_0" GraphRef="n121_REACTOME_372688" RelX="-1.0526315789473684" RelY="-0.05555555555555555"/>
+      <Point X="2363.0" Y="807.0" GraphId="e_122_i1_1" GraphRef="e_122_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2255.0" Y="755.0" GraphId="e_122_o0_0" ArrowHead="Arrow" GraphRef="n124_REACTOME_29370" RelX="0.5" RelY="1.2"/>
+      <Point X="2296.0" Y="807.0" GraphId="e_122_o0_1" GraphRef="e_122_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2259.0" Y="807.0" GraphId="e_122_o1_0" ArrowHead="Arrow" GraphRef="n125_REACTOME_372646" RelX="1.0454545454545454" RelY="-0.04"/>
+      <Point X="2296.0" Y="807.0" GraphId="e_122_o1_1" GraphRef="e_122_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2635.0" Y="513.0" GraphId="e_122_c__0_0" GraphRef="n94_REACTOME_354080" RelX="-1.032258064516129" RelY="0.1875"/>
+      <Point X="2386.0" Y="546.0" GraphId="e_122_c__0_1"/>
+      <Point X="2328.0" Y="807.0" GraphId="e_122_c__0_2" GraphRef="e_122_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_126_REACTOME_372697">
+    <Comment Source="WikiPathways-description">Crk is an adaptor protein with one SH2 and two SH3 domains. It is involved in integrin mediated signalling and is recruited to the focal adhesion complexes by interacting with p130Cas or paxillin through its SH2 domain.</Comment>
+    <BiopaxRef>lit_372692</BiopaxRef>
+    <BiopaxRef>lit_372665</BiopaxRef>
+    <BiopaxRef>lit_372664</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2090.0" Y="806.0" GraphId="e_126_0"/>
+      <Point X="2048.0" Y="807.0" GraphId="e_126_1"/>
+      <Point X="1998.0" Y="806.0" GraphId="e_126_2" GraphRef="n128_REACTOME_372652" RelX="1.0576923076923077" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_126_a_i"/>
+      <Anchor Position="0.4565424331348501" GraphId="e_126_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_126_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2128.0" Y="748.0" GraphId="e_126_i0_0" GraphRef="n127_REACTOME_109809" RelX="-0.5" RelY="1.2727272727272727"/>
+      <Point X="2090.0" Y="806.0" GraphId="e_126_i0_1" GraphRef="e_126_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_126_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2121.0" Y="806.0" GraphId="e_126_i1_0" GraphRef="n125_REACTOME_372646" RelX="-1.0454545454545454" RelY="-0.08"/>
+      <Point X="2090.0" Y="806.0" GraphId="e_126_i1_1" GraphRef="e_126_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_REACTOME_939265">
+    <Comment Source="WikiPathways-description">Signals from agonist receptors (such as GPVI) trigger the production of PIP3, DAG, cAMP and elevated Ca++ levels. This leads to the activation and translocation of active Rap1-GTP to the plasma membrane. Rap-GEFs stimulate the replacement of GDP for GTP, activating Rap1. Several Rap1 GEFs have been identified enabling Rap1 to respond to diverse stimuli. CalDAG-GEFs activate Rap1 in response to calcium and DAG, downstream of Phospholipase C. EPAC (exchange proteins directly activated by cAMP) GEFs are activated by binding cAMP.</Comment>
+    <BiopaxRef>lit_354167</BiopaxRef>
+    <BiopaxRef>lit_354139</BiopaxRef>
+    <BiopaxRef>lit_354121</BiopaxRef>
+    <BiopaxRef>lit_392504</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="257.0" Y="147.0" GraphId="e_133_0"/>
+      <Point X="308.0" Y="147.0" GraphId="e_133_1"/>
+      <Point X="358.0" Y="147.0" GraphId="e_133_2"/>
+      <Anchor Position="0.0" GraphId="e_133_a_i"/>
+      <Anchor Position="0.504950495049505" GraphId="e_133_a_p"/>
+      <Anchor Position="1.0" GraphId="e_133_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="235.0" Y="141.0" GraphId="e_133_i0_0" GraphRef="n2_REACTOME_354074" RelX="0.704225352112676" RelY="1.2727272727272727"/>
+      <Point X="257.0" Y="147.0" GraphId="e_133_i0_1" GraphRef="e_133_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="234.0" Y="182.0" GraphId="e_133_i1_0" GraphRef="n3_REACTOME_29438" RelX="0.4" RelY="-1.2"/>
+      <Point X="257.0" Y="147.0" GraphId="e_133_i1_1" GraphRef="e_133_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="381.0" Y="142.0" GraphId="e_133_o0_0" ArrowHead="Arrow" GraphRef="n5_REACTOME_354126" RelX="-0.9142857142857143" RelY="1.2727272727272727"/>
+      <Point X="358.0" Y="147.0" GraphId="e_133_o0_1" GraphRef="e_133_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="375.0" Y="180.0" GraphId="e_133_o1_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_29420" RelX="-0.3902439024390244" RelY="-1.2"/>
+      <Point X="358.0" Y="147.0" GraphId="e_133_o1_1" GraphRef="e_133_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="307.0" Y="182.0" GraphId="e_133_c__0_0" GraphRef="n134_REACTOME_392485" RelX="0.0" RelY="-1.1428571428571428"/>
+      <Point X="308.0" Y="147.0" GraphId="e_133_c__0_1" GraphRef="e_133_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_139_REACTOME_432110">
+    <Comment Source="WikiPathways-description">The binding of SHC to integrin alpha IIb beta 3 is blocked by phosphorylation of beta 3 at Thr-779, or by substitution of this residue for Asp. PDK1 and Akt1/PKB-alpha both specifically target Thr-779 in in vitro assays.</Comment>
+    <BiopaxRef>lit_432184</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="169.0" Y="452.0" GraphId="e_139_0" GraphRef="n140_REACTOME_114514" RelX="-0.013986013986013986" RelY="-1.1851851851851851"/>
+      <Point X="169.0" Y="386.0" GraphId="e_139_1"/>
+      <Point X="171.0" Y="344.0" GraphId="e_139_2" GraphRef="n141_REACTOME_432105" RelX="-0.02666666666666667" RelY="1.15" ArrowHead="Arrow"/>
+      <Anchor Position="0.6108419329617542" GraphId="e_139_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_139_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="209.0" Y="385.0" GraphId="e_139_c__0_0" GraphRef="n142_REACTOME_432180" RelX="-1.0769230769230769" RelY="0.0"/>
+      <Point X="169.0" Y="386.0" GraphId="e_139_c__0_1" GraphRef="e_139_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_REACTOME_432096">
+    <Comment Source="WikiPathways-description">The beta 3 integrin cytoplasmic tail binds SH2-containing protein (SHC), an adapter in Ras signaling. Phosphorylation of Y785 may be necessary for binding; phosphorylation of T779 inhibits SHC binding. Mice expressing a mutated beta 3 where Y773 and Y785 have been mutated to F exhibit rebleeding from tail wounds and subtle defects in clot retraction and platelet aggregation.</Comment>
+    <BiopaxRef>lit_443908</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1181.0" Y="397.0" GraphId="e_143_0"/>
+      <Point X="1191.0" Y="562.0" GraphId="e_143_1"/>
+      <Point X="1196.0" Y="764.0" GraphId="e_143_2" GraphRef="n145_REACTOME_432098" RelX="-0.014925373134328358" RelY="-1.088235294117647" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_143_a_i"/>
+      <Anchor Position="0.4499691631462809" GraphId="e_143_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1263.0" Y="354.0" GraphId="e_143_i0_0" GraphRef="n144_REACTOME_74680" RelX="-0.5121951219512195" RelY="1.3043478260869565"/>
+      <Point X="1181.0" Y="397.0" GraphId="e_143_i0_1" GraphRef="e_143_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1163.0" Y="169.0" GraphId="e_143_i1_0" GraphRef="n26_REACTOME_354130" RelX="0.03225806451612903" RelY="1.0857142857142856"/>
+      <Point X="1181.0" Y="397.0" GraphId="e_143_i1_1" GraphRef="e_143_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_175_REACTOME_443905">
+    <Comment Source="WikiPathways-description">In a mechanism that is presumed to be analagous to signaling of SHC downstream of the insulin and TrkA receptors, SHC becomes phosphorylated and dissociates from the integrin alphaIIb beta3 complex.</Comment>
+    <BiopaxRef>lit_432100</BiopaxRef>
+    <BiopaxRef>lit_188605</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1127.0" Y="799.0" GraphId="e_175_0" GraphRef="n145_REACTOME_432098" RelX="-1.044776119402985" RelY="-0.058823529411764705"/>
+      <Point X="1084.0" Y="799.0" GraphId="e_175_1"/>
+      <Point X="1052.0" Y="800.0" GraphId="e_175_2" GraphRef="n176_REACTOME_443900" RelX="1.044776119402985" RelY="-0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.5732139429028368" GraphId="e_175_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_REACTOME_443910">
+    <Comment Source="WikiPathways-description">In a mechanism that is presumed to be analagous to signaling of SHC downstream of the insulin and TrkA receptors, SHC becomes phosphorylated and dissociates from the integrin alphaIIb beta3 complex.</Comment>
+    <BiopaxRef>lit_432100</BiopaxRef>
+    <BiopaxRef>lit_188605</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="995.0" Y="764.0" GraphId="e_177_0" GraphRef="n176_REACTOME_443900" RelX="0.19402985074626866" RelY="-1.0857142857142856"/>
+      <Point X="1076.0" Y="557.0" GraphId="e_177_1"/>
+      <Point X="1117.0" Y="396.0" GraphId="e_177_2"/>
+      <Anchor Position="0.5722733159695166" GraphId="e_177_a_p"/>
+      <Anchor Position="1.0" GraphId="e_177_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1155.0" Y="169.0" GraphId="e_177_o0_0" ArrowHead="Arrow" GraphRef="n26_REACTOME_354130" RelX="-0.0967741935483871" RelY="1.0857142857142856"/>
+      <Point X="1117.0" Y="396.0" GraphId="e_177_o0_1" GraphRef="e_177_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1058.0" Y="358.0" GraphId="e_177_o1_0" ArrowHead="Arrow" GraphRef="n178_REACTOME_74684" RelX="0.3368421052631579" RelY="1.3043478260869565"/>
+      <Point X="1117.0" Y="396.0" GraphId="e_177_o1_1" GraphRef="e_177_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_REACTOME_429415">
+    <Comment Source="WikiPathways-description">Integrin alphaIIb beta3 'outside-in' signalling involves multiple proteins including SRC, SYK, SLP-76 and PLCgamma2. SRC is constitutively associated with the C-terminal tail of integrin beta 3. SYK is recruited to the beta3 tail and subsequently activated by SRC.</Comment>
+    <BiopaxRef>lit_429422</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1773.0" Y="577.0" GraphId="e_179_0"/>
+      <Point X="1773.0" Y="618.0" GraphId="e_179_1"/>
+      <Point X="1777.0" Y="763.0" GraphId="e_179_2" GraphRef="n182_REACTOME_429424" RelX="-0.02702702702702703" RelY="-1.0857142857142856" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_179_a_i"/>
+      <Anchor Position="0.22036475406876252" GraphId="e_179_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1728.0" Y="510.0" GraphId="e_179_i0_0" GraphRef="n181_REACTOME_58268" RelX="0.2222222222222222" RelY="1.2307692307692308"/>
+      <Point X="1773.0" Y="577.0" GraphId="e_179_i0_1" GraphRef="e_179_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2367.0" Y="156.0" GraphId="e_179_i1_0" GraphRef="n73_REACTOME_377622" RelX="-0.014925373134328358" RelY="1.0714285714285714"/>
+      <Point X="2365.0" Y="351.0" GraphId="e_179_i1_1"/>
+      <Point X="1773.0" Y="577.0" GraphId="e_179_i1_2" GraphRef="e_179_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_REACTOME_429441">
+    <Comment Source="WikiPathways-description">SYK activation in integrin signalling is associated with increased tyrosine phosphorylation. SYK activation and phosphorylation of SYK targets can be blocked by SRC inhibitors or expression of dominant negative SRC mutants.</Comment>
+    <BiopaxRef>lit_429422</BiopaxRef>
+    <BiopaxRef>lit_429439</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1668.0" Y="760.0" GraphId="e_183_0"/>
+      <Point X="1642.0" Y="759.0" GraphId="e_183_1"/>
+      <Point X="1618.0" Y="759.0" GraphId="e_183_2"/>
+      <Anchor Position="0.0" GraphId="e_183_a_i"/>
+      <Anchor Position="0.5201844762339703" GraphId="e_183_a_p"/>
+      <Anchor Position="1.0" GraphId="e_183_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1702.0" Y="773.0" GraphId="e_183_i0_0" GraphRef="n182_REACTOME_429424" RelX="-1.0405405405405406" RelY="-0.8"/>
+      <Point X="1668.0" Y="760.0" GraphId="e_183_i0_1" GraphRef="e_183_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1691.0" Y="736.0" GraphId="e_183_i1_0" GraphRef="n356_REACTOME_113592" RelX="-0.6538461538461539" RelY="1.1578947368421053"/>
+      <Point X="1668.0" Y="760.0" GraphId="e_183_i1_1" GraphRef="e_183_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1596.0" Y="770.0" GraphId="e_183_o0_0" ArrowHead="Arrow" GraphRef="n185_REACTOME_429434" RelX="1.0482758620689656" RelY="-0.9166666666666666"/>
+      <Point X="1618.0" Y="759.0" GraphId="e_183_o0_1" GraphRef="e_183_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1587.0" Y="736.0" GraphId="e_183_o1_0" ArrowHead="Arrow" GraphRef="n358_REACTOME_29370" RelX="1.1428571428571428" RelY="0.9032258064516129"/>
+      <Point X="1618.0" Y="759.0" GraphId="e_183_o1_1" GraphRef="e_183_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1702.0" Y="801.0" GraphId="e_183_c__0_0" GraphRef="n182_REACTOME_429424" RelX="-1.0405405405405406" RelY="0.0"/>
+      <Point X="1642.0" Y="801.0" GraphId="e_183_c__0_1"/>
+      <Point X="1642.0" Y="759.0" GraphId="e_183_c__0_2" GraphRef="e_183_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_56" GroupRef="group_comp_56" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="623.5" CenterY="769.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_56" GroupRef="group_comp_56">
+    <Graphics Color="000000" CenterX="1430.0" CenterY="468.5" Width="2552.0" Height="697.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210067" rdf:id="lit_210067">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16102042</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GPVI and integrin alphaIIb beta3 signaling in platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Auger, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCarty, OJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pearce, AC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost 3:1752-62</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354123" rdf:id="lit_354123">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17624957</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet integrins and immunoreceptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kasirer-Friede, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kahn, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunol Rev 218:247-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_377578" rdf:id="lit_377578">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15205259</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrins: dynamic scaffolds for adhesion and signaling in platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newman, PJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 104:1606-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354175" rdf:id="lit_354175">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14754902</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calderwood, DA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 117:657-66</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354141" rdf:id="lit_354141">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10508650</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin alpha(IIb)beta(3) signaling in platelet adhesion and aggregation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parise, LV</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 11:597-601</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140237" rdf:id="lit_140237">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10605720</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signaling through platelet integrin alpha IIb beta 3: inside-out, outside-in, and sideways</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thromb Haemost 82:318-25</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_397780" rdf:id="lit_397780">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16723352</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The specificity and function of the metal-binding sites in the integrin beta3 A-domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pesho, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bledzka, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michalec, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cierniewski, CS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Plow, EF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:23034-41</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354167" rdf:id="lit_354167">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15469846</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RIAM, an Ena/VASP and Profilin ligand, interacts with Rap1-GTP and mediates Rap1-induced adhesion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lafuente, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Puijenbroek, AA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krause, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carman, CV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Freeman, GJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezovskaya, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Constantine, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Springer, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gertler, FB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boussiotis, VA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Cell 7:585-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354139" rdf:id="lit_354139">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16757337</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rap1 regulation of RIAM and cell adhesion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lafuente, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boussiotis, VA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Methods Enzymol 407:345-58</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354121" rdf:id="lit_354121">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15334074</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CalDAG-GEFI integrates signaling for platelet aggregation and thrombus formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crittenden, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bergmeier, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piffath, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wagner, DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Housman, DE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Graybiel, AM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Med 10:982-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_392504" rdf:id="lit_392504">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16076873</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Multiple roles of Rap1 in hematopoietic cells: complementary versus antagonistic functions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stork, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dillon, TJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 106:2952-61</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354084" rdf:id="lit_354084">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18434644</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Talin at a glance</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Critchley, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gingras, AR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 121:1345-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354127" rdf:id="lit_354127">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10446041</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Giancotti, FG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruoslahti, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 285:1028-32</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_377584" rdf:id="lit_377584">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17218263</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis of integrin activation by talin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wegener, KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Partridge, AW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Han, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pickford, AR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liddington, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ginsberg, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Campbell, ID</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 128:171-82</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_377572" rdf:id="lit_377572">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16005629</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrins and Src: dynamic duo of adhesion signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cell Biol 15:399-403</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354120" rdf:id="lit_354120">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11476890</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemical signals and biological responses elicited by the focal adhesion kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schaller, MD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1540:1-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354182" rdf:id="lit_354182">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16919435</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin-regulated FAK-Src signaling in normal and cancer cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitra, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlaepfer, DD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 18:516-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354100" rdf:id="lit_354100">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12005431</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The structural basis of localization and signaling by the focal adhesion targeting domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arold, ST</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoellerer, MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noble, ME</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure 10:319-27</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354156" rdf:id="lit_354156">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7997267</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin-mediated signal transduction linked to Ras pathway by GRB2 binding to focal adhesion kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlaepfer, DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanks, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hunter, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Geer, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 372:786-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354148" rdf:id="lit_354148">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9566877</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Multiple Grb2-mediated integrin-stimulated signaling pathways to ERK2/mitogen-activated protein kinase: summation of both c-Src- and focal adhesion kinase-initiated tyrosine phosphorylation events</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlaepfer, DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, KC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hunter, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 18:2571-85</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_372665" rdf:id="lit_372665">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16581250</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">p130Cas: a versatile scaffold in signaling networks</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Defilippi, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Di Stefano, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cabodi, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cell Biol 16:257-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_215835" rdf:id="lit_215835">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12585966</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bidirectional integrin alphaIIbbeta3 signalling regulating platelet adhesion under flow: contribution of protein kinase C</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Giuliano, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nesbitt, WS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rooney, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 372:163-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_372692" rdf:id="lit_372692">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12640026</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Focal adhesion kinase: the first ten years</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parsons, JT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 116:1409-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_372664" rdf:id="lit_372664">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10777559</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crk activation of JNK via C3G and R-Ras</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mochizuki, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohba, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Otsuka, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Graybiel, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuda, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:12667-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_432184" rdf:id="lit_432184">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10896934</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Threonine phosphorylation of the beta 3 integrin cytoplasmic tail, at a site recognized by PDK1 and Akt/PKB in vitro, regulates Shc binding</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kirk, RI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanderson, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lerea, KM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:30901-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_443908" rdf:id="lit_443908">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8631894</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Outside-in integrin signal transduction. Alpha IIb beta 3-(GP IIb IIIa) tyrosine phosphorylation induced by platelet aggregation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Law, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nannizzi-Alaimo, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phillips, DR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:10811-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_432100" rdf:id="lit_432100">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10964917</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of shc as the primary protein binding to the tyrosine-phosphorylated beta 3 subunit of alpha IIbbeta 3 during outside-in integrin platelet signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cowan, KJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Law, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phillips, DR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:36423-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_188605" rdf:id="lit_188605">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8755247</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Not all Shc's roads lead to Ras</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bonfini, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Migliaccio, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pelicci, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lanfrancone, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pelicci, PG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Biochem Sci 21:257-61</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_429422" rdf:id="lit_429422">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9351824</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of the pp72syk protein tyrosine kinase by platelet integrin alpha IIb beta 3</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gao, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zoller, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ginsberg, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brugge, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 16:6414-25</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_429439" rdf:id="lit_429439">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7513017</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Syk activation by the Src-family tyrosine kinase in the B cell receptor signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurosaki, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takata, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamanashi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inazu, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taniguchi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamamoto, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamamura, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Exp Med 179:1725-9</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>integrin mediated signaling pathway</bp:TERM><bp:ID>PW:0000286</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

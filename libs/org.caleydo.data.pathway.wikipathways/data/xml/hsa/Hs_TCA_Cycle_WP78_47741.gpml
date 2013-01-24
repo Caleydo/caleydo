@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="TCA Cycle" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"></Comment>
+  <Comment Source="GenMAPP remarks"></Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="WikiPathways-description">The [[wikipedia:citric_acid_cycle|citric acid cycle]], also known as the tricarboxylic acid cycle (TCA cycle) or the Krebs cycle, (or rarely, the Szent-Gyorgyi-Krebs cycle) is a series of enzyme-catalysed chemical reactions of central importance in all living cells that use oxygen as part of cellular respiration. In eukaryotes, the citric acid cycle occurs in the matrix of the mitochondrion. The components and reactions of the citric acid cycle were established by seminal work from both [[wikipedia:Albert_Szent-Gyorgyi|Albert Szent-Gyorgyi]] and [[wikipedia:Hans_Krebs|Hans Krebs]]. 
+Source: Wikipedia ([[wikipedia:citric_acid_cycle]])</Comment>
+  <BiopaxRef>e64</BiopaxRef>
+  <Graphics BoardWidth="1160.0" BoardHeight="813.0" />
+  <DataNode TextLabel="CoA" GraphId="d056c" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57287</Comment>
+    <Graphics CenterX="331.3834316761326" CenterY="586.666666666667" Width="30.174860844352786" Height="14.666666666666597" ZOrder="-17" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01423" />
+  </DataNode>
+  <DataNode TextLabel="GTP" GraphId="bc5b7" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 37565</Comment>
+    <Graphics CenterX="295.47131272608607" CenterY="586.4785371457727" Width="29.966908616594637" Height="13.945663531870526" ZOrder="-16" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01273" />
+  </DataNode>
+  <DataNode TextLabel="GDP" GraphId="f85a0" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 58189</Comment>
+    <Graphics CenterX="559.5370013165566" CenterY="721.9666880989555" Width="39.074002633109814" Height="14.733290468755708" ZOrder="-14" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01201" />
+  </DataNode>
+  <DataNode TextLabel="carbon dioxide" GraphId="ea9a4" Type="Metabolite">
+    <Graphics CenterX="929.0876290623314" CenterY="543.2835280321445" Width="72.47619047619045" Height="14.371002132196118" ZOrder="-12" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01967" />
+  </DataNode>
+  <DataNode TextLabel="water" GraphId="d7980" Type="Metabolite">
+    <Graphics CenterX="733.9083538759668" CenterY="312.19728433121475" Width="41.84162062615102" Height="15.061235329096364" ZOrder="-10" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02111" />
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="e8693" Type="Metabolite">
+    <Graphics CenterX="402.5770358002065" CenterY="317.7878102984369" Width="21.512595066253326" Height="16.908953930207048" ZOrder="-4" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="NADH" GraphId="bc872" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57945</Comment>
+    <Graphics CenterX="407.585621018759" CenterY="297.0129186577619" Width="33.768176152887364" Height="15.359170648856837" ZOrder="-2" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01487" />
+  </DataNode>
+  <DataNode TextLabel="FH" GraphId="fbddc" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FH | fumarate hydratase" />
+    <Graphics CenterX="267.38794273148375" CenterY="430.8753748575901" Width="32.58208955223897" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="2271" />
+  </DataNode>
+  <DataNode TextLabel="SDHC" GraphId="d0245" Type="GeneProduct" GroupRef="b6585">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHC | succinate dehydrogenase complex subunit..." />
+    <Graphics CenterX="230.73658375472704" CenterY="543.6891731190751" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6391" />
+  </DataNode>
+  <DataNode TextLabel="D-threo-Isocitrate" GraphId="b96da" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 15562</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Isocitrate" />
+    <Graphics CenterX="832.2163009404388" CenterY="413.55550729068653" Width="88.0" Height="19.446979149035347" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00193" />
+  </DataNode>
+  <DataNode TextLabel="succinyl-CoA" GraphId="ffbe6" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57292</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Succinyl-CoA" />
+    <Graphics CenterX="607.2738154418787" CenterY="670.9760615378415" Width="69.53333333333333" Height="18.266666666666666" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01022" />
+  </DataNode>
+  <DataNode TextLabel="2-oxoglutarate" GraphId="da75d" Type="Metabolite">
+    <Graphics CenterX="810.3910858073119" CenterY="544.0923872569491" Width="72.62988735066344" Height="19.263501348170895" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00208" />
+  </DataNode>
+  <DataNode TextLabel="SUCLG2" GraphId="bd36e" Type="GeneProduct" GroupRef="bd188">
+    <BiopaxRef>d25</BiopaxRef>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SUCLG2 | succinate-CoA ligase GDP-forming bet..." />
+    <Graphics CenterX="411.2323578810314" CenterY="726.5498202826236" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8801" />
+  </DataNode>
+  <DataNode TextLabel="CS" GraphId="e6311" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CS | citrate synthase" />
+    <Graphics CenterX="443.3752503003662" CenterY="188.2559838750314" Width="33.62122103798798" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1431" />
+  </DataNode>
+  <DataNode TextLabel="DLD" GraphId="f1927" Type="GeneProduct" GroupRef="f6844">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DLD | dihydrolipoamide dehydrogenase (E3 compon..." />
+    <Graphics CenterX="852.2375300176794" CenterY="668.0018753268641" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1738" />
+  </DataNode>
+  <DataNode TextLabel="DLST" GraphId="c6452" Type="GeneProduct" GroupRef="f6844">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DLST | dihydrolipoamide S-succinyltransferase (..." />
+    <Graphics CenterX="852.2375300176792" CenterY="648.3371936960817" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1743" />
+  </DataNode>
+  <DataNode TextLabel="acetyl-CoA" GraphId="d9ef6" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57288</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Acetyl-CoA" />
+    <Graphics CenterX="368.95630912986394" CenterY="235.31595276440973" Width="60.717038344525974" Height="14.631905528819605" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="IDH3B" GraphId="a61f3" Type="GeneProduct" GroupRef="a8d9a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IDH3B | isocitrate dehydrogenase 3 (NAD+) beta" />
+    <Graphics CenterX="968.3602503491594" CenterY="466.0420933133177" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3420" />
+  </DataNode>
+  <DataNode TextLabel="IDH3A" GraphId="ee392" Type="GeneProduct" GroupRef="a8d9a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IDH3A | isocitrate dehydrogenase 3 (NAD+) alpha..." />
+    <Graphics CenterX="968.3602503491594" CenterY="446.0420933133178" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3419" />
+  </DataNode>
+  <DataNode TextLabel="SUCLG1" GraphId="c57b3" Type="GeneProduct" GroupRef="bd188">
+    <Comment></Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SUCLG1 | succinate-CoA ligase GDP-forming alp..." />
+    <Graphics CenterX="411.2323578810314" CenterY="706.5498202826236" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8802" />
+  </DataNode>
+  <DataNode TextLabel="SDHA" GraphId="b5f1a" Type="GeneProduct" GroupRef="b6585">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHA | succinate dehydrogenase complex subunit..." />
+    <Graphics CenterX="230.73658375472704" CenterY="503.6891731190761" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6389" />
+  </DataNode>
+  <DataNode TextLabel="MDH2" GraphId="fd8f9" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MDH2 | malate dehydrogenase 2 NAD (mitochondri..." />
+    <Graphics CenterX="287.5517522098937" CenterY="323.6174631619641" Width="41.493435641421286" Height="20.84467566612304" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="4191" />
+  </DataNode>
+  <DataNode TextLabel="IDH3G" GraphId="cea45" Type="GeneProduct" GroupRef="a8d9a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IDH3G | isocitrate dehydrogenase 3 (NAD+) gamma..." />
+    <Graphics CenterX="968.3602503491594" CenterY="486.0420933133177" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3421" />
+  </DataNode>
+  <DataNode TextLabel="OGDH" GraphId="f381d" Type="GeneProduct" GroupRef="f6844">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="OGDH | oxoglutarate (alpha-ketoglutarate) dehyd..." />
+    <Graphics CenterX="852.2375300176792" CenterY="628.3371936960817" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="4967" />
+  </DataNode>
+  <DataNode TextLabel="(S)-malate" GraphId="c53f3" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Malate" />
+    <Graphics CenterX="318.4252001848467" CenterY="379.67449355432757" Width="53.89999999999998" Height="19.651012891344458" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00156" />
+  </DataNode>
+  <DataNode TextLabel="oxaloacetate" GraphId="a39f2" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Oxaloacetate" />
+    <Graphics CenterX="372.7717141726684" CenterY="277.3302270374019" Width="68.57648640529051" Height="18.573376770967375" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00223" />
+  </DataNode>
+  <DataNode TextLabel="fumarate" GraphId="fc117" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Fumarate" />
+    <Graphics CenterX="318.60169444477543" CenterY="482.7016198923374" Width="61.41432725977479" Height="20.099164549565067" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00134" />
+  </DataNode>
+  <DataNode TextLabel="SDHD" GraphId="ddb56" Type="GeneProduct" GroupRef="b6585">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHD | succinate dehydrogenase complex subunit..." />
+    <Graphics CenterX="230.73658375472704" CenterY="563.6891731190751" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6392" />
+  </DataNode>
+  <DataNode TextLabel="citrate" GraphId="e95eb" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Citrate" />
+    <Graphics CenterX="578.8801533622836" CenterY="199.8809598035618" Width="50.6" Height="18.266666666666666" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00094" />
+  </DataNode>
+  <DataNode TextLabel="ACO2" GraphId="bdef5" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACO2 | aconitase 2 mitochondrial" />
+    <Graphics CenterX="751.217839727414" CenterY="213.40695516847745" Width="40.83586406215196" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="50" />
+  </DataNode>
+  <DataNode TextLabel="succinate" GraphId="c6beb" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 30031</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Succinate" />
+    <Graphics CenterX="382.1249977465539" CenterY="585.3474955750571" Width="57.991285164858056" Height="18.820382999643517" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00254" />
+  </DataNode>
+  <DataNode TextLabel="SDHB" GraphId="e2231" Type="GeneProduct" GroupRef="b6585">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHB | succinate dehydrogenase complex subunit..." />
+    <Graphics CenterX="230.73658375472704" CenterY="523.6891731190756" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6390" />
+  </DataNode>
+  <DataNode TextLabel="Electron Transport Chain" GraphId="e10ab" Type="Pathway">
+    <Graphics CenterX="273.297362167969" CenterY="659.0470033234898" Width="157.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP111" />
+  </DataNode>
+  <DataNode TextLabel="Fatty Acid Synthesis" GraphId="f21aa" Type="Pathway">
+    <Graphics CenterX="739.1894593440477" CenterY="167.26901847386893" Width="133.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP357" />
+  </DataNode>
+  <DataNode TextLabel="Degradation of Fatty Acids" GraphId="b09de" Type="Pathway">
+    <Graphics CenterX="404.56426332288396" CenterY="122.03709508881917" Width="173.12852664576792" Height="26.074190177638343" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP143" />
+  </DataNode>
+  <DataNode TextLabel="cis-aconitate" GraphId="ab88e" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 16383</Comment>
+    <Graphics CenterX="796.359703585759" CenterY="312.11311251541144" Width="67.38607383818334" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00072" />
+  </DataNode>
+  <DataNode TextLabel="ACO2" GraphId="d1c04" Type="GeneProduct">
+    <Graphics CenterX="887.3315378916996" CenterY="361.951733482022" Width="41.254400190575936" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="50" />
+  </DataNode>
+  <DataNode TextLabel="NAD" GraphId="eb68a" Type="Metabolite">
+    <Graphics CenterX="902.4382716049388" CenterY="414.2222222222223" Width="39.0" Height="16.44444444444452" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00902" />
+  </DataNode>
+  <DataNode TextLabel="NADH" GraphId="f30d1" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57945</Comment>
+    <Graphics CenterX="870.0140561670411" CenterY="542.4815997323109" Width="36.5" Height="14.246250261681798" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01487" />
+  </DataNode>
+  <DataNode TextLabel="IDH2" GraphId="dd5a4" Type="GeneProduct">
+    <Graphics CenterX="754.1319625105433" CenterY="465.86403074684983" Width="44.28852153902221" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3418" />
+  </DataNode>
+  <DataNode TextLabel="NADP" GraphId="b5c93" Type="Metabolite">
+    <Graphics CenterX="757.1168897239985" CenterY="414.4367015320405" Width="41.85329821346782" Height="15.540069730747597" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00217" />
+  </DataNode>
+  <DataNode TextLabel="NADPH" GraphId="e5766" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57783</Comment>
+    <Graphics CenterX="747.8049552268242" CenterY="542.6356957649092" Width="42.60192395785594" Height="15.666666666666682" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00221" />
+  </DataNode>
+  <DataNode TextLabel="CoA" GraphId="ea5a6" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57287</Comment>
+    <Comment>Type your comment here</Comment>
+    <Graphics CenterX="832.5213582539209" CenterY="573.8952852364554" Width="28.547869903802127" Height="16.18584560975913" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01423" />
+  </DataNode>
+  <DataNode TextLabel="NAD" GraphId="bcff7" Type="Metabolite">
+    <Graphics CenterX="868.030608762559" CenterY="573.753646441457" Width="31.261167954570645" Height="15.911787264936459" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00902" />
+  </DataNode>
+  <DataNode TextLabel="NADH" GraphId="ab312" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57945</Comment>
+    <Graphics CenterX="746.6073143056649" CenterY="684.6666666666666" Width="32.98245614035075" Height="13.333333333333417" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01487" />
+  </DataNode>
+  <DataNode TextLabel="hydrogenphosphate" GraphId="f09e8" Type="Metabolite">
+    <Graphics CenterX="590.0" CenterY="701.948929916414" Width="100.0" Height="16.1021401671712" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01429" />
+  </DataNode>
+  <DataNode TextLabel="ADP" GraphId="e271d" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 456216</Comment>
+    <Graphics CenterX="585.984906297208" CenterY="625.6823187433621" Width="29.613626921479103" Height="15.17412935323408" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01341" />
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="c7118" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 30616</Comment>
+    <Graphics CenterX="464.0750771438309" CenterY="586.8133102852208" Width="30.183467147083167" Height="14.373379429560114" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00538" />
+  </DataNode>
+  <DataNode TextLabel="CoA" GraphId="e1568" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57287</Comment>
+    <Graphics CenterX="431.1723766846544" CenterY="587.1043478025268" Width="29.613626921479053" Height="13.39602925809816" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01423" />
+  </DataNode>
+  <DataNode TextLabel="ubiquinone-10" GraphId="a8ee4" Type="Metabolite">
+    <Graphics CenterX="414.518110057786" CenterY="554.6280041797285" Width="70.96377988442777" Height="14.743991640542982" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01072" />
+  </DataNode>
+  <DataNode TextLabel="ubiquinol-10" GraphId="c5215" Type="Metabolite">
+    <Graphics CenterX="396.2640486617785" CenterY="485.4022988505747" Width="71.00945004929673" Height="14.528735632183968" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB13111" />
+  </DataNode>
+  <DataNode TextLabel="water" GraphId="ac347" Type="Metabolite">
+    <Graphics CenterX="374.3084438065743" CenterY="401.0706776951066" Width="39.383112386851366" Height="18.309098462816785" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02111" />
+  </DataNode>
+  <DataNode TextLabel="NAD" GraphId="d65f9" Type="Metabolite">
+    <Graphics CenterX="267.53136684669767" CenterY="376.2578842013826" Width="29.72940036006206" Height="12.817564930568226" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00902" />
+  </DataNode>
+  <DataNode TextLabel="water" GraphId="c02ba" Type="Metabolite">
+    <Graphics CenterX="355.96353978325425" CenterY="254.59248168769471" Width="35.01133786848084" Height="14.518296708722753" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02111" />
+  </DataNode>
+  <DataNode TextLabel="CoA" GraphId="d568e" Type="Metabolite">
+    <Comment>The ChEBI ID with the correct charge is: 57287</Comment>
+    <Graphics CenterX="568.5601922360996" CenterY="178.96077882626625" Width="28.20861678004524" Height="14.080761632632045" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01423" />
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="c181a" Type="Metabolite">
+    <Graphics CenterX="566.7778793109239" CenterY="162.33333333333323" Width="23.129251700680186" Height="12.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="Glucose metabolism" GraphId="f8db5" Type="Pathway">
+    <Graphics CenterX="321.125" CenterY="145.25" Width="131.75" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP534" />
+  </DataNode>
+  <DataNode TextLabel="Metabolism of amino acids" GraphId="bb44a" Type="Pathway">
+    <Comment>Not all metabolic pathways of amino acids are connected to the TCa cycle.</Comment>
+    <Graphics CenterX="249.5" CenterY="178.0" Width="165.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP1847" />
+  </DataNode>
+  <DataNode TextLabel="carbon dioxide" GraphId="f4381" Type="Metabolite">
+    <Graphics CenterX="685.7894810244755" CenterY="541.738349159286" Width="73.01519315925997" Height="15.732751407731502" ZOrder="32769" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01967" />
+  </DataNode>
+  <DataNode TextLabel="carbon dioxide" GraphId="f5407" Type="Metabolite">
+    <Graphics CenterX="689.7955827006306" CenterY="684.3771376574786" Width="72.47619047619045" Height="13.912391351709696" ZOrder="32771" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01967" />
+  </DataNode>
+  <DataNode TextLabel="SUCLG1" GraphId="fd6d4" Type="GeneProduct" GroupRef="a2189">
+    <Comment>Type your comment here</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SUCLG2 | succinate-CoA ligase GDP-forming bet..." />
+    <Graphics CenterX="538.6436849254502" CenterY="565.7578153421703" Width="60.21733234345712" Height="20.067354822271568" ZOrder="32776" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8802" />
+  </DataNode>
+  <DataNode TextLabel="SUCLA2" GraphId="d3c99" Type="GeneProduct" GroupRef="a2189">
+    <BiopaxRef>d25</BiopaxRef>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SUCLG1 | succinate-CoA ligase GDP-forming alp..." />
+    <Graphics CenterX="538.6436849254503" CenterY="584.1064747201752" Width="60.21733234345709" Height="19.14711871934747" ZOrder="32777" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8803" />
+  </DataNode>
+  <DataNode TextLabel="hydrogenphosphate" GraphId="ac299" Type="Metabolite">
+    <Graphics CenterX="619.7226717164397" CenterY="646.932649146172" Width="98.55465656712067" Height="15.784414896013804" ZOrder="32778" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01429" />
+  </DataNode>
+  <Line GraphId="d65d3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="268.736583754727" Y="533.6891731190756" GraphRef="fa963" RelX="1.0" RelY="0.0" />
+      <Point X="333.71745232129024" Y="533.4782295796338" GraphRef="c2cbb" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ed903">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="367.62717645533945" Y="575.9373040752354" GraphRef="c6beb" RelX="-0.5" RelY="-1.0" />
+      <Point X="342.72081218274116" Y="552.2233502538072" />
+      <Point X="327.5260663507109" Y="520.5876777251185" />
+      <Point X="318.6016944447754" Y="492.7512021671199" GraphRef="fc117" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5590212555056675" Shape="None" GraphId="c2cbb" />
+      <Anchor Position="0.27026726250320965" Shape="None" GraphId="e7974" />
+      <Anchor Position="0.7196648473340433" Shape="None" GraphId="f12c8" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ad4b7">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="404.56426332288396" Y="135.07419017763834" GraphRef="b09de" RelX="0.0" RelY="1.0" />
+      <Point X="368.95630912986394" Y="227.9999999999999" GraphRef="d9ef6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b68ea">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="411.2323578810314" Y="688.5498202826236" GraphRef="ac16a" RelX="0.0" RelY="-1.0" />
+      <Point X="462.728872182526" Y="653.6606084202315" GraphRef="dfa78" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e6e22">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="443.3752503003662" Y="198.2559838750314" GraphRef="e6311" RelX="0.0" RelY="1.0" />
+      <Point X="466.02621660916645" Y="221.3269116901764" GraphRef="f002c" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f4d6d">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="318.6016944447754" Y="472.6520376175548" GraphRef="fc117" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Point X="313.3333333333333" Y="434.6666666666667" />
+      <Point X="318.4252001848467" Y="389.4999999999998" GraphRef="c53f3" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5036340831979929" Shape="None" GraphId="f5588" />
+      <Anchor Position="0.6868867067250081" Shape="None" GraphId="b1c01" />
+    </Graphics>
+  </Line>
+  <Line GraphId="badc0">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="367.62717645533945" Y="594.7576870748788" GraphRef="c6beb" RelX="-0.5" RelY="1.0" />
+      <Point X="273.297362167969" Y="649.0470033234898" GraphRef="e10ab" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ef149">
+    <BiopaxRef>a4d</BiopaxRef>
+    <BiopaxRef>ed6</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="318.4252001848467" Y="369.84898710865536" GraphRef="c53f3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Point X="323.3333333333333" Y="350.0" />
+      <Point X="334.6666666666667" Y="328.6666666666667" />
+      <Point X="347.3333333333333" Y="306.0" />
+      <Point X="372.77171417266834" Y="286.61691542288565" GraphRef="a39f2" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4943669154098174" Shape="None" GraphId="c3414" />
+      <Anchor Position="0.25060905436521674" Shape="None" GraphId="c7f7e" />
+      <Anchor Position="0.7082134183930358" Shape="None" GraphId="c9030" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ccfec">
+    <BiopaxRef>ead</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="389.915835773991" Y="268.0435386519183" GraphRef="a39f2" RelX="0.5" RelY="-1.0" />
+      <Point X="466.0" Y="221.33333333333334" />
+      <Point X="553.5801533622837" Y="199.88095980356184" GraphRef="e95eb" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.7420065644625893" Shape="None" GraphId="a0254" />
+      <Anchor Position="0.1428391031532586" Shape="None" GraphId="bf2fc" />
+      <Anchor Position="0.4976684744042032" Shape="None" GraphId="f002c" />
+    </Graphics>
+  </Line>
+  <Line GraphId="db91a">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="604.1801533622836" Y="199.88095980356184" GraphRef="e95eb" RelX="1.0" RelY="0.0" />
+      <Point X="672.6894593440477" Y="167.26901847386893" GraphRef="f21aa" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="dece7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="730.7999076963381" Y="213.40695516847745" GraphRef="bdef5" RelX="-1.0" RelY="0.0" />
+      <Point X="699.2443547789699" Y="228.18755797836755" GraphRef="c8b31" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f7fd4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="930.3602503491594" Y="466.04209331331776" GraphRef="f971b" RelX="-1.0" RelY="0.0" />
+      <Point X="850.0" Y="466.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="be808">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="814.2375300176792" Y="648.1695345114729" GraphRef="f8b20" RelX="-1.0" RelY="0.0" />
+      <Point X="753.6515384429126" Y="615.3823827057472" GraphRef="fd2da" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ccad3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="283.6789875076032" Y="430.8753748575901" GraphRef="fbddc" RelX="1.0" RelY="0.0" />
+      <Point X="313.76535293966447" Y="430.83449938467595" GraphRef="f5588" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fe634">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="308.29847003060434" Y="323.6174631619641" GraphRef="fd8f9" RelX="1.0" RelY="0.0" />
+      <Point X="337.6395011592531" Y="323.3468575746699" GraphRef="c3414" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idcc3e07ab">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="866.7043377964117" Y="361.951733482022" GraphRef="d1c04" RelX="-1.0" RelY="0.0" />
+      <Point X="826.5919225692504" Y="361.4206141662009" GraphRef="aa6b1" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idc714ef2a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="752.4395363419843" Y="258.9493695253692" GraphRef="db42f" RelX="0.0" RelY="0.0" />
+      <Point X="733.9083538759667" Y="304.6666666666666" GraphRef="d7980" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id17b35470">
+    <BiopaxRef>af4</BiopaxRef>
+    <BiopaxRef>be3</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="854.2163009404388" Y="423.27899686520425" GraphRef="b96da" RelX="0.5" RelY="1.0" />
+      <Point X="852.0" Y="484.0" />
+      <Point X="849.3333333333334" Y="509.3333333333333" />
+      <Point X="828.5485576449778" Y="534.4606365828637" GraphRef="da75d" RelX="0.5" RelY="-1.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.18474167056301377" Shape="None" GraphId="c0e75" />
+      <Anchor Position="0.42100692556267777" Shape="None" GraphId="cde0d" />
+      <Anchor Position="0.6631807180525423" Shape="None" GraphId="b2686" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id1135975e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="902.4382716049388" Y="422.44444444444457" GraphRef="eb68a" RelX="0.0" RelY="1.0" />
+      <Point X="853.4154638647991" Y="445.2198938314594" GraphRef="c0e75" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9f8f19fa">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="850.1100358572953" Y="501.95465935569496" GraphRef="b2686" RelX="0.0" RelY="0.0" />
+      <Point X="870.0140561670411" Y="535.35847460147" GraphRef="f30d1" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id1e6d1dd6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="850.1100358572953" Y="501.95465935569496" GraphRef="b2686" RelX="0.0" RelY="0.0" />
+      <Point X="929.0876290623314" Y="536.0980269660465" GraphRef="ea9a4" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id68dda630">
+    <BiopaxRef>af4</BiopaxRef>
+    <BiopaxRef>f8c</BiopaxRef>
+    <BiopaxRef>b72</BiopaxRef>
+    <BiopaxRef>ea0</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="792.2336139696461" Y="534.4606365828637" GraphRef="da75d" RelX="-0.5" RelY="-1.0" />
+      <Point X="821.0" Y="500.0" />
+      <Point X="832.0" Y="474.0" />
+      <Point X="832.2163009404388" Y="423.27899686520425" GraphRef="b96da" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.310788561492386" Shape="None" GraphId="fde72" />
+      <Anchor Position="0.5678287192049414" Shape="None" GraphId="cf002" />
+      <Anchor Position="0.6551988999092321" Shape="None" GraphId="ac6fc" />
+    </Graphics>
+  </Line>
+  <Line GraphId="iddc8ee953">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="776.2762232800544" Y="465.86403074684983" GraphRef="dd5a4" RelX="1.0" RelY="0.0" />
+      <Point X="832.0342039725828" Y="465.97941628422024" GraphRef="ac6fc" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide16f3c42">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="747.8049552268242" Y="534.8023624315758" GraphRef="e5766" RelX="0.0" RelY="-1.0" />
+      <Point X="816.8983172080111" Y="504.9136029782736" GraphRef="fde72" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8c25b382">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="685.7894810244755" Y="533.8719734554203" GraphRef="f4381" RelX="0.0" RelY="-1.0" />
+      <Point X="816.8983172080111" Y="504.9136029782736" GraphRef="fde72" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id109b1520">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="833.3333333333333" Y="446.6666666666667" />
+      <Point X="757.1168897239986" Y="422.20673639741426" GraphRef="b5c93" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id56459e3d">
+    <BiopaxRef>b56</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="810.3910858073119" Y="553.7241379310345" GraphRef="da75d" RelX="0.0" RelY="1.0" />
+      <Point X="747.5431472081219" Y="622.020304568528" />
+      <Point X="695.51269035533" Y="651.2081218274112" />
+      <Point X="642.0404821085453" Y="670.9760615378415" GraphRef="ffbe6" RelX="1.0" RelY="0.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.4" Shape="None" GraphId="fd2da" />
+      <Anchor Position="0.31085021034086296" Shape="None" GraphId="d4da0" />
+      <Anchor Position="0.5997319762339252" Shape="None" GraphId="f132e" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id5439474b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="832.5213582539209" Y="581.9882080413349" GraphRef="ea5a6" RelX="0.0" RelY="1.0" />
+      <Point X="766.2973352251397" Y="601.6403338247042" GraphRef="d4da0" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3944502d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="868.030608762559" Y="581.7095400739253" GraphRef="bcff7" RelX="0.0" RelY="1.0" />
+      <Point X="766.2973352251397" Y="601.6403338247042" GraphRef="d4da0" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idaed0e1f7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="718.9201769334974" Y="638.0770927713662" GraphRef="f132e" RelX="0.0" RelY="0.0" />
+      <Point X="689.7955827006306" Y="677.4209419816239" GraphRef="f5407" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd2b546ff">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="718.9201769334974" Y="638.0770927713662" GraphRef="f132e" RelX="0.0" RelY="0.0" />
+      <Point X="746.6073143056649" Y="677.9999999999998" GraphRef="ab312" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id644dcbe0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="526.6686746254527" Y="670.4257358180583" GraphRef="de9ec" RelX="0.0" RelY="0.0" />
+      <Point X="565.0" Y="693.8978598328284" GraphRef="f09e8" RelX="-0.5" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id7461da54">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="526.6686746254527" Y="670.4257358180583" GraphRef="de9ec" RelX="0.0" RelY="0.0" />
+      <Point X="540.0000000000017" Y="721.9666880989555" GraphRef="f85a0" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idc5f5c2fb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="419.8053927993205" Y="630.2424693579661" GraphRef="f36b1" RelX="0.0" RelY="0.0" />
+      <Point X="295.47131272608607" Y="593.4513689117082" GraphRef="bc5b7" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4470a2ed">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="419.8053927993205" Y="630.2424693579661" GraphRef="f36b1" RelX="0.0" RelY="0.0" />
+      <Point X="331.3834316761326" Y="594.0000000000002" GraphRef="d056c" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida4349d97">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="523.4654114046855" Y="652.4964486292437" GraphRef="ed289" RelX="0.0" RelY="0.0" />
+      <Point X="571.1780928364685" Y="625.6823187433621" GraphRef="e271d" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id90d187b4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="523.4654114046855" Y="652.4964486292437" GraphRef="ed289" RelX="0.0" RelY="0.0" />
+      <Point X="570.4453434328793" Y="646.932649146172" GraphRef="ac299" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idbb034a14">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="443.93490911465767" Y="621.028907977967" GraphRef="f920f" RelX="0.0" RelY="0.0" />
+      <Point X="464.07507714383087" Y="594.0000000000009" GraphRef="c7118" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida41d6b5c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="443.93490911465767" Y="621.028907977967" GraphRef="f920f" RelX="0.0" RelY="0.0" />
+      <Point X="431.1723766846544" Y="593.8023624315758" GraphRef="e1568" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf7e247ae">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="379.03622011557206" Y="554.6280041797284" GraphRef="a8ee4" RelX="-1.0" RelY="0.0" />
+      <Point X="348.3045839282749" Y="557.5397948329409" GraphRef="e7974" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idcebb8f2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="327.0504095820479" Y="519.1040317997309" GraphRef="f12c8" RelX="0.0" RelY="0.0" />
+      <Point X="378.5116861494543" Y="492.6666666666667" GraphRef="c5215" RelX="-0.5" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idc940c637">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="315.48571528528333" Y="415.5742746230328" GraphRef="b1c01" RelX="0.0" RelY="0.0" />
+      <Point X="354.6168876131486" Y="401.0706776951066" GraphRef="ac347" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id7df46aa7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="325.79798998602826" Y="345.36064630080955" GraphRef="c7f7e" RelX="0.0" RelY="0.0" />
+      <Point X="267.53136684669767" Y="369.8491017360985" GraphRef="d65f9" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="iddcae2bba">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="348.9706707296217" Y="304.75241079870716" GraphRef="c9030" RelX="0.0" RelY="0.0" />
+      <Point X="390.70153294231534" Y="297.0129186577618" GraphRef="bc872" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd5ead25a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="348.9706707296217" Y="304.75241079870716" GraphRef="c9030" RelX="0.0" RelY="0.0" />
+      <Point X="391.82073826707983" Y="317.7878102984369" GraphRef="e8693" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3729ec34">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="399.3148283021269" Y="235.3159527644097" GraphRef="d9ef6" RelX="1.0" RelY="0.0" />
+      <Point X="411.7598544538183" Y="254.63288207314838" GraphRef="bf2fc" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id449050c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="411.7598544538183" Y="254.63288207314838" GraphRef="bf2fc" RelX="0.0" RelY="0.0" />
+      <Point X="373.46920871749467" Y="254.59248168769471" GraphRef="c02ba" RelX="1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id366481de">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="508.61315490251013" Y="210.89542838391884" GraphRef="a0254" RelX="0.0" RelY="0.0" />
+      <Point X="555.2132534605839" Y="162.3333333333332" GraphRef="c181a" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id2bf0d3a0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="508.61315490251013" Y="210.89542838391884" GraphRef="a0254" RelX="0.0" RelY="0.0" />
+      <Point X="554.4558838460769" Y="178.96077882626622" GraphRef="d568e" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide8f04d6b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="820.6848103306631" Y="347.2435447935915" GraphRef="d25ce" RelX="0.0" RelY="0.0" />
+      <Point X="733.9083538759667" Y="319.7279019957629" GraphRef="d7980" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b0fb0">
+    <BiopaxRef>a20</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="32772" LineThickness="1.0">
+      <Point X="572.507148775212" Y="670.9760615378415" GraphRef="ffbe6" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Point X="511.50253807106606" Y="670.2436548223351" />
+      <Point X="448.05076142131986" Y="648.6700507614214" />
+      <Point X="397.85895585215206" Y="615.9243785313959" />
+      <Point X="382.12499774655396" Y="594.7576870748788" GraphRef="c6beb" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5250041634640811" Shape="None" GraphId="dfa78" />
+      <Anchor Position="0.2138830087344485" Shape="None" GraphId="de9ec" />
+      <Anchor Position="0.5951285724695884" Shape="None" GraphId="f593b" />
+      <Anchor Position="0.7546877095108043" Shape="None" GraphId="f36b1" />
+      <Anchor Position="0.5941564397339124" Shape="None" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b94a6">
+    <BiopaxRef>a20</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="32773" LineThickness="1.0">
+      <Point X="572.507148775212" Y="670.9760615378415" GraphRef="ffbe6" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Point X="475.029497299543" Y="634.2451184046531" />
+      <Point X="382.12499774655396" Y="594.7576870748788" GraphRef="c6beb" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.47610216746379935" Shape="None" />
+      <Anchor Position="0.2138830087344485" Shape="None" GraphId="ef7d5" />
+      <Anchor Position="0.4744182798720468" Shape="None" GraphId="a4a47" />
+      <Anchor Position="0.7546877095108043" Shape="None" GraphId="e9a16" />
+      <Anchor Position="0.2555031989039438" Shape="None" GraphId="ed289" />
+      <Anchor Position="0.6725697769517891" Shape="None" GraphId="f920f" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a36c6">
+    <Graphics ZOrder="32775" LineThickness="1.0">
+      <Point X="538.6436849254503" Y="601.6800340798491" GraphRef="f430e" RelX="0.0" RelY="1.0" />
+      <Point X="481.4464623138701" Y="636.6631206180912" GraphRef="a4a47" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cbc1e">
+    <BiopaxRef>c21</BiopaxRef>
+    <BiopaxRef>c9e</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="32779" LineThickness="1.0">
+      <Point X="796.359703585759" Y="302.11311251541144" GraphRef="ab88e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Point X="743.3333333333334" Y="250.0" />
+      <Point X="680.0" Y="218.66666666666666" />
+      <Point X="604.1801533622836" Y="199.88095980356184" GraphRef="e95eb" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5536797869228365" Shape="None" GraphId="c8b31" />
+      <Anchor Position="0.6868867067250081" Shape="None" GraphId="a88f0" />
+      <Anchor Position="0.27599417823725064" Shape="None" GraphId="db42f" />
+      <Anchor Position="0.5471679626255709" Shape="None" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f598e">
+    <BiopaxRef>c21</BiopaxRef>
+    <BiopaxRef>c9e</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="32780" LineThickness="1.0">
+      <Point X="837.3333333333334" Y="402.0" ArrowHead="Arrow" />
+      <Point X="832.6666666666666" Y="376.0" />
+      <Point X="819.3333333333334" Y="344.0" />
+      <Point X="813.2062220453048" Y="322.11311251541144" GraphRef="ab88e" RelX="0.5" RelY="1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5036340831979929" Shape="None" GraphId="aa6b1" />
+      <Anchor Position="0.6868867067250081" Shape="None" GraphId="d25ce" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bddc9">
+    <Graphics ZOrder="32781" LineStyle="Broken" LineThickness="1.0">
+      <Point X="321.125" Y="155.25" GraphRef="f8db5" RelX="0.0" RelY="1.0" />
+      <Point X="368.95630912986394" Y="227.9999999999999" GraphRef="d9ef6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a738c">
+    <Graphics ZOrder="32782" LineStyle="Broken" LineThickness="1.0">
+      <Point X="249.5" Y="188.0" GraphRef="bb44a" RelX="0.0" RelY="1.0" />
+      <Point X="368.95630912986394" Y="227.9999999999999" GraphRef="d9ef6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="Mitochondrion" GraphId="b5f5f">
+    <Graphics CenterX="206.11666666666667" CenterY="90.06666666666666" Width="121.76666666666665" Height="15.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" Color="999999" />
+  </Label>
+  <Label TextLabel="Cytosol" GraphId="d43ce">
+    <Graphics CenterX="67.16666666666666" CenterY="171.06666666666666" Width="78.33333333333331" Height="15.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" Color="999999" />
+  </Label>
+  <Shape GraphId="bd568">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="636.6190476190476" CenterY="425.5" Width="986.7619047619048" Height="715.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="f6844" GraphId="f8b20">
+    <BiopaxRef>e8a</BiopaxRef>
+  </Group>
+  <Group GroupId="a8d9a" GraphId="f971b" />
+  <Group GroupId="bd188" GraphId="ac16a" />
+  <Group GroupId="b6585" GraphId="fa963" />
+  <Group GroupId="a2189" GraphId="f430e" />
+  <InfoBox CenterX="4.5" CenterY="5.333333333333333" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:TERM>TCA cycle</bp:TERM>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:ID>PW:0000026</bp:ID>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="f8c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3052428</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiological roles of nicotinamide nucleotide transhydrogenase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1988</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoek JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rydström J</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c9e">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">949837</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Urinary organic acids in man. I. Normal patterns.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clin Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1976</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lawson AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chalmers RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watts RW</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ed6">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7730304</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isotopomer analysis of citric acid cycle and gluconeogenesis in rat liver. Reversibility of isocitrate dehydrogenase and involvement of ATP-citrate lyase in gluconeogenesis.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Des Rosiers C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Di Donato L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Comte B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Laplante A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marcoux C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fernandez CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brunengraber H</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c21">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">13018271</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The conversion of citrate into cis-aconitate and isocitrate in the presence of aconitase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1952</bp:YEAR>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">13018271</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The conversion of citrate into cis-aconitate and isocitrate in the presence of aconitase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1952</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krebs HA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holzach O</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ea0">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12234803</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reverse flux through cardiac NADP(+)-isocitrate dehydrogenase under normoxia and ischemia.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Physiol Heart Circ Physiol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Comte B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vincent G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bouchard B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benderdour M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Des Rosiers C</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ead">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7060582</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Citrate synthesis in intact rat-liver mitochondria is irreversible.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1982</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greksák M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lopes-Cardozo M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Bergh SG</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d25">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15234968</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expression of two succinyl-CoA synthetases with different nucleotide specificities in mammalian tissues.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lambeth DO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tews KN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adkins S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frohlich D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Milavetz BI</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a4d">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7730305</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Modeling of liver citric acid cycle and gluconeogenesis based on 13C mass isotopomer distribution analysis of intermediates.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fernandez CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Des Rosiers C</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e64">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"></bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Role of Citric Acid in Intermediate Metabolism in Animal Tissues.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Enzymologia</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1937</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krebs, H. A.</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, W. A.</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="af4">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8187868</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proton-translocating transhydrogenase and NAD- and NADP-linked isocitrate dehydrogenases operate in a substrate cycle which contributes to fine regulation of the tricarboxylic acid cycle activity in mitochondria.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sazanov LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson JB</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a20">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9765290</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of the ATP- and GTP-specific succinyl-CoA synthetases in pigeon. The enzymes incorporate the same alpha-subunit.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muhonen WW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lambeth DO</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="be3">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3724458</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activity of purified NAD-specific isocitrate dehydrogenase at modulator and substrate concentrations approximating conditions in mitochondria.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Metabolism</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1986</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gabriel JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zervos PR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Plaut GW</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b72">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7961626</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reversibility of the mitochondrial isocitrate dehydrogenase reaction in the perfused rat liver. Evidence from isotopomer analysis of citric acid cycle intermediates.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Des Rosiers C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fernandez CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brunengraber H</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e8a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8506365</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of two missense mutations in a dihydrolipoamide dehydrogenase-deficient patient.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1993</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu TC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arizmendi C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitano A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patel MS</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b56">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10672230</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The alpha-ketoglutarate dehydrogenase complex.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ann N Y Acad Sci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sheu KF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blass JP</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

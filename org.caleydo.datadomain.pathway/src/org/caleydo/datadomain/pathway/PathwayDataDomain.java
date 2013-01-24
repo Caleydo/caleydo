@@ -124,6 +124,7 @@ public class PathwayDataDomain extends ADataDomain {
 		addIDCategory(IDCategory.getIDCategory("GENE"));
 
 		metaboliteIDCategory = IDCategory.registerCategory("METABOLITE");
+
 		metaboliteIDType = IDType.registerType("METABOLITE", metaboliteIDCategory, EDataType.INTEGER);
 
 		addIDCategory(metaboliteIDCategory);
@@ -141,15 +142,20 @@ public class PathwayDataDomain extends ADataDomain {
 		//
 		// PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 
-		PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(EPathwayDatabaseType.KEGG,
-				"data/xml/", "data/images/", "");
+		PathwayManager pathwayManager = PathwayManager.get();
 
-		PathwayManager.get().loadPathwaysByType(pathwayDatabase);
+		PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.KEGG, "data/xml/",
+				"data/images/", "");
 
-		PathwayManager.get().notifyPathwayLoadingFinished(true);
+		pathwayManager.loadPathwaysByType(pathwayDatabase);
+
+		// pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS, "data/xml/",
+		// "data/images/", "");
+
+		pathwayManager.notifyPathwayLoadingFinished(true);
 
 		pathwayRecordPerspectives.clear();
-		for (PathwayGraph pathway : PathwayManager.get().getAllItems()) {
+		for (PathwayGraph pathway : pathwayManager.getAllItems()) {
 			PathwayRecordPerspective p = new PathwayRecordPerspective(pathway, this);
 			// p.reset();
 			pathwayRecordPerspectives.add(p);

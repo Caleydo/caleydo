@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Nicotine Activity on Dopaminergic Neurons" Organism="Mus musculus" License="CC BY 2.0" Last-Modified="12/1/2011">
+  <Comment Source="WikiPathways-description">
+
+Nicotine is an alkaloid found in tobacco plants. It is a substance that acts as a stimulant in humans and is one of the main factors responsible for tobacco dependence. When nicotine enters the body, it is distributed quickly through the bloodstream, and it can cross the blood-brain barrier to enter the central nervous system (CNS). It binds to two main types of nicotinic acetylcholine receptors: the ganglion type and the CNS type.
+
+In dopaminergic neurons in the CNS, nicotine binds to the CNS-type nicotinic acetylcholine receptors. The main type of CNS receptor is composed of alpha 4 beta 2 (CHRNA4, CHRNB2) subunits. It has been shown that alpha 6, alpha 5, and beta 3 can also be in the receptor complex to modulate binding sensitivity. By binding to the receptor, nicotine causes cell depolarization and release of dopamine from the cell through the SNARE complex. Dopamine then binds to dopamine receptors (DRD2, DRD3, DRD4) on dopaminergic terminals and activates Gi alpha (GNAI1), initiating a feedback loop to inhibit dopamine release. One of the key players mediating dopamine signaling is PPP1R1B (also called DARPP-32, dopamine and cyclic AMP-regulated phospho-protein). PPP1R1B is a bifunctional signal transduction molecule which, by distinct mechanisms, inhibits either a serine/threonine kinase (PPKACA or PKA) or a serine/threonine phosphatase (PPP1CA or protein phosphatase 1). When PPP1R1B is phosphorylated by PPKACA at threonine 34, it is an inhibitor of protein phosphatase 1 (PPP1CA), which inhibits dopamine secretion through the SNARE complex. When PPP1R1B is phosphorylated by CDK5 at threonine 75, it is converted to an inhibitor of PPKACA. Binding of dopamine to D2-like dopamine receptors leads to inhibition of adenylate cyclase (ADCY2) via G-protein GNAI1, and decreases PKA-stimulated phosphorylation of DARPP-32 at Thr34. This, in turn, relieves the inhibition of protein phosphatase 1 (PPP1CA), and inhibits further dopamine release.
+
+Sources: [http://www.pharmgkb.org/do/serve?objId=PA162355621&amp;objCls=Pathway PharmGKB:Nicotine in Dopaminergic Neurons], [http://en.wikipedia.org/wiki/Nicotine Wikipedia:Nicotine]
+
+</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP1602&amp;oldid=45361 WP1602(r45361)] with a 50% conversion rate.</Comment>
+  <BiopaxRef>e10</BiopaxRef>
+  <Graphics BoardWidth="914.4537815126054" BoardHeight="869.0"/>
+  <DataNode TextLabel="GNG2" GraphId="efd21" Type="GeneProduct" GroupRef="d8d3a">
+    <Graphics CenterX="453.5" CenterY="651.0" Width="49.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Kcnk3" GraphId="f0162" Type="GeneProduct" GroupRef="f6634">
+    <Graphics CenterX="169.0" CenterY="426.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16527"/>
+  </DataNode>
+  <DataNode TextLabel="Slc18a2" GraphId="e36f9" Type="GeneProduct" GroupRef="cb3b2">
+    <Graphics CenterX="724.0" CenterY="566.0" Width="62.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Entrez Gene" ID="214084"/>
+  </DataNode>
+  <DataNode TextLabel="Ca++" GraphId="ee8f8" Type="Metabolite">
+    <Graphics CenterX="565.0" CenterY="149.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00464"/>
+  </DataNode>
+  <DataNode TextLabel="Chrnb2" GraphId="e22a2" Type="GeneProduct" GroupRef="ce2f7">
+    <Graphics CenterX="379.0" CenterY="197.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11444"/>
+  </DataNode>
+  <DataNode TextLabel="K+" GraphId="d7b8f" Type="Metabolite">
+    <Graphics CenterX="254.0" CenterY="393.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00586"/>
+  </DataNode>
+  <DataNode TextLabel="Nicotine" GraphId="e8b55" Type="Metabolite">
+    <Graphics CenterX="475.5" CenterY="50.0" Width="59.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01934"/>
+  </DataNode>
+  <DataNode TextLabel="ADCY2" GraphId="c26f8" Type="GeneProduct">
+    <Graphics CenterX="273.0" CenterY="598.0" Width="50.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="DRD4" GraphId="ea3bf" Type="GeneProduct" GroupRef="b5370">
+    <Graphics CenterX="426.5" CenterY="820.0" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="GNAI1" GraphId="cd4f3" Type="GeneProduct">
+    <Graphics CenterX="273.7941176470588" CenterY="676.9495798319327" Width="49.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ppp1r1b" GraphId="e5410" Type="GeneProduct" GroupRef="dd327">
+    <Graphics CenterX="409.5" CenterY="469.0" Width="59.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="19049"/>
+  </DataNode>
+  <DataNode TextLabel="Ppp1r1b" GraphId="bccc3" Type="GeneProduct">
+    <Graphics CenterX="462.5" CenterY="537.0" Width="59.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="19049"/>
+  </DataNode>
+  <DataNode TextLabel="GNAI1" GraphId="a1943" Type="GeneProduct" GroupRef="b5370">
+    <Graphics CenterX="479.5" CenterY="781.0" Width="49.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Drd3" GraphId="fc5fe" Type="GeneProduct" GroupRef="b5370">
+    <Graphics CenterX="426.5" CenterY="800.0" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="13490"/>
+  </DataNode>
+  <DataNode TextLabel="PRKACA" GraphId="a70e4" Type="GeneProduct">
+    <Graphics CenterX="396.0" CenterY="510.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Chrna4" GraphId="b1a95" Type="GeneProduct" GroupRef="ee1d2">
+    <Graphics CenterX="475.0" CenterY="151.0" Width="56.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11438"/>
+  </DataNode>
+  <DataNode TextLabel="Cdk5" GraphId="aece2" Type="GeneProduct">
+    <Graphics CenterX="539.0" CenterY="556.0" Width="42.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12568"/>
+  </DataNode>
+  <DataNode TextLabel="Chrna4" GraphId="bc68c" Type="GeneProduct" GroupRef="cdb3d">
+    <Graphics CenterX="648.0" CenterY="172.0" Width="58.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11438"/>
+  </DataNode>
+  <DataNode TextLabel="K+" GraphId="fca90" Type="Metabolite">
+    <Graphics CenterX="275.0" CenterY="130.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00586"/>
+  </DataNode>
+  <DataNode TextLabel="DRD2" GraphId="c2b5c" Type="GeneProduct" GroupRef="b5370">
+    <Graphics CenterX="426.5" CenterY="780.0" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="GNB1" GraphId="ffaa4" Type="GeneProduct" GroupRef="d8d3a">
+    <Graphics CenterX="453.5" CenterY="631.0" Width="49.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CHRNA5" GraphId="c3dd9" Type="GeneProduct" GroupRef="cdb3d">
+    <Graphics CenterX="648.0" CenterY="212.0" Width="58.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CHRNA6" GraphId="ea60c" Type="GeneProduct" GroupRef="ee1d2">
+    <Graphics CenterX="475.0" CenterY="191.0" Width="56.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="K+" GraphId="d7a6f" Type="Metabolite">
+    <Graphics CenterX="275.0" CenterY="241.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00586"/>
+  </DataNode>
+  <DataNode TextLabel="Tyrosine" GraphId="bc6f0" Type="Metabolite">
+    <Graphics CenterX="647.9705882352949" CenterY="735.2100840336135" Width="59.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00158"/>
+  </DataNode>
+  <DataNode TextLabel="GNB1" GraphId="d2a7c" Type="GeneProduct" GroupRef="b5370">
+    <Graphics CenterX="479.5" CenterY="821.0" Width="49.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="c2e81" Type="Metabolite">
+    <Graphics CenterX="212.5" CenterY="601.0" Width="45.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00538"/>
+  </DataNode>
+  <DataNode TextLabel="Dopamine" GraphId="c3a4d" Type="Metabolite" GroupRef="dc360">
+    <Graphics CenterX="280.0" CenterY="825.0" Width="68.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00073"/>
+  </DataNode>
+  <DataNode TextLabel="cAMP" GraphId="f45e7" Type="Metabolite">
+    <Graphics CenterX="323.375" CenterY="561.25" Width="53.25" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00058"/>
+  </DataNode>
+  <DataNode TextLabel="Chrnb2" GraphId="f7cb0" Type="GeneProduct" GroupRef="cdb3d">
+    <Graphics CenterX="648.0" CenterY="192.0" Width="58.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11444"/>
+  </DataNode>
+  <DataNode TextLabel="DOPA" GraphId="db1e8" Type="Metabolite">
+    <Graphics CenterX="648.8025210084037" CenterY="671.5210084033617" Width="59.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00181"/>
+  </DataNode>
+  <DataNode TextLabel="Ddc" GraphId="c39e4" Type="GeneProduct" GroupRef="cb3b2">
+    <Graphics CenterX="720.7310924369746" CenterY="648.3697478991595" Width="46.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Entrez Gene" ID="13195"/>
+  </DataNode>
+  <DataNode TextLabel="Dopamine" GraphId="a8665" Type="Metabolite">
+    <Graphics CenterX="648.5084033613451" CenterY="615.1848739495794" Width="67.99999999999999" Height="19.99999999999996" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00073"/>
+  </DataNode>
+  <DataNode TextLabel="KCNK9" GraphId="e01eb" Type="GeneProduct" GroupRef="f6634">
+    <Graphics CenterX="169.0" CenterY="446.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Drd3" GraphId="bff32" Type="GeneProduct" GroupRef="dc360">
+    <Graphics CenterX="280.0" CenterY="785.0" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="13490"/>
+  </DataNode>
+  <DataNode TextLabel="GNG2" GraphId="f5682" Type="GeneProduct" GroupRef="b5370">
+    <Graphics CenterX="479.5" CenterY="801.0" Width="49.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Chrna3" GraphId="f28d0" Type="GeneProduct" GroupRef="ee1d2">
+    <Graphics CenterX="475.0" CenterY="211.0" Width="56.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="110834"/>
+  </DataNode>
+  <DataNode TextLabel="PPP1CA" GraphId="ecf11" Type="GeneProduct">
+    <Graphics CenterX="472.5" CenterY="418.0" Width="59.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="SNARE Complex" GraphId="ad212" Type="GeneProduct">
+    <Graphics CenterX="777.3067226890756" CenterY="473.81092436974797" Width="85.0" Height="23.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Th" GraphId="a23a8" Type="GeneProduct" GroupRef="cb3b2">
+    <Graphics CenterX="718.2058823529412" CenterY="703.8655462184876" Width="39.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Entrez Gene" ID="21823"/>
+  </DataNode>
+  <DataNode TextLabel="K+" GraphId="d2f42" Type="Metabolite">
+    <Graphics CenterX="105.0" CenterY="393.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00586"/>
+  </DataNode>
+  <DataNode TextLabel="DRD2" GraphId="a8a53" Type="GeneProduct" GroupRef="dc360">
+    <Graphics CenterX="280.0" CenterY="765.0" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Dopamine" GraphId="c3f13" Type="Metabolite">
+    <Graphics CenterX="648.6050420168065" CenterY="502.85714285714255" Width="68.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00073"/>
+  </DataNode>
+  <DataNode TextLabel="Na+" GraphId="faf77" Type="Metabolite">
+    <Graphics CenterX="326.5" CenterY="130.0" Width="43.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00588"/>
+  </DataNode>
+  <DataNode TextLabel="Chrnb2" GraphId="c7688" Type="GeneProduct" GroupRef="ee1d2">
+    <Graphics CenterX="475.0" CenterY="171.0" Width="56.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11444"/>
+  </DataNode>
+  <DataNode TextLabel="Chrna4" GraphId="a15bc" Type="GeneProduct" GroupRef="ce2f7">
+    <Graphics CenterX="379.0" CenterY="177.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11438"/>
+  </DataNode>
+  <DataNode TextLabel="Na+" GraphId="a539e" Type="Metabolite">
+    <Graphics CenterX="326.5" CenterY="241.0" Width="43.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00588"/>
+  </DataNode>
+  <DataNode TextLabel="Ppp1r1b" GraphId="c33b0" Type="GeneProduct" GroupRef="e4532">
+    <Graphics CenterX="523.5" CenterY="595.0" Width="59.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="19049"/>
+  </DataNode>
+  <DataNode TextLabel="Dopamine" GraphId="c0992" Type="Metabolite">
+    <Graphics CenterX="850.4537815126054" CenterY="502.8571428571426" Width="68.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00073"/>
+  </DataNode>
+  <DataNode TextLabel="Ca++" GraphId="c8535" Type="Metabolite">
+    <Graphics CenterX="513.0" CenterY="258.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00464"/>
+  </DataNode>
+  <DataNode TextLabel="DRD4" GraphId="bb8ac" Type="GeneProduct" GroupRef="dc360">
+    <Graphics CenterX="280.0" CenterY="805.0" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Line GraphId="f315f">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="490.25" Y="60.0" GraphRef="e8b55" RelX="0.5" RelY="1.0"/>
+      <Point X="559.125" Y="84.0"/>
+      <Point X="648.0" Y="154.0" GraphRef="f2f17" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cf542">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="403.75" Y="451.0" GraphRef="cf988" RelX="-0.5" RelY="-1.0"/>
+      <Point X="443.0" Y="418.0" GraphRef="ecf11" RelX="-1.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ab4d4">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="460.75" Y="60.0" GraphRef="e8b55" RelX="-0.5" RelY="1.0"/>
+      <Point X="409.875" Y="92.0"/>
+      <Point X="379.0" Y="159.0" GraphRef="a5a0c" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d487f">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="212.5" Y="591.0" GraphRef="c2e81" RelX="0.0" RelY="-1.0"/>
+      <Point X="296.75" Y="561.25" GraphRef="f45e7" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5236320063906271" Shape="None" GraphId="a88d8"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d7d3e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="850.4537815126054" Y="512.8571428571427" GraphRef="c0992" RelX="0.0" RelY="1.0"/>
+      <Point X="651.4768907563027" Y="856.4814814814814"/>
+      <Point X="452.5" Y="839.0" GraphRef="a2122" RelX="0.0" RelY="1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ce593">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="423.0" Y="510.0" GraphRef="a70e4" RelX="1.0" RelY="0.0"/>
+      <Point X="447.2" Y="507.8" GraphRef="e3042" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f51b0">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="422.75" Y="762.0" GraphRef="a2122" RelX="-0.5" RelY="-1.0"/>
+      <Point X="298.2941176470588" Y="676.9495798319327" GraphRef="cd4f3" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e97e5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="648.5084033613451" Y="605.1848739495794" GraphRef="a8665" RelX="0.0" RelY="-1.0"/>
+      <Point X="648.6050420168065" Y="512.8571428571425" GraphRef="c3f13" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5020476954465215" Shape="None" GraphId="ecbe7"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c38c3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="518.0" Y="556.0" GraphRef="aece2" RelX="-1.0" RelY="0.0"/>
+      <Point X="493.3999088379234" Y="566.4824297092409" GraphRef="e17d9" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b28a5">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="457.1759259259259" Y="310.3796296296296" GraphRef="e5238" RelX="1.0" RelY="0.0"/>
+      <Point X="777.3067226890756" Y="462.31092436974797" GraphRef="ad212" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d8311">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="475.5" Y="60.0" GraphRef="e8b55" RelX="0.0" RelY="1.0"/>
+      <Point X="475.0" Y="133.0" GraphRef="c8e44" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4f62">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="611.0" Y="173.0" GraphRef="f2f17" RelX="-1.0" RelY="-0.5"/>
+      <Point X="549.2874979818093" Y="185.89255153113393" GraphRef="b18e0" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d1534">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="486.0" Y="641.0" GraphRef="c5aec" RelX="1.0" RelY="0.0"/>
+      <Point X="525.2100840336134" Y="711.125"/>
+      <Point X="512.0" Y="781.25" GraphRef="a2122" RelX="1.0" RelY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dd887">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="647.9705882352949" Y="725.2100840336135" GraphRef="bc6f0" RelX="0.0" RelY="-1.0"/>
+      <Point X="648.8025210084037" Y="681.5210084033617" GraphRef="db1e8" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.49495524816924313" Shape="None" GraphId="fc4a8"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ff25b">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="286.0441176470588" Y="666.9495798319327" GraphRef="cd4f3" RelX="0.5" RelY="-1.0"/>
+      <Point X="416.13130252100837" Y="593.4873949579832"/>
+      <Point X="546.218487394958" Y="687.3686974789916"/>
+      <Point X="512.0" Y="781.25" GraphRef="a2122" RelX="1.0" RelY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ab366">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="234.0" Y="393.0" GraphRef="d7b8f" RelX="-1.0" RelY="0.0"/>
+      <Point X="125.0" Y="393.0" GraphRef="d2f42" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.543289278394233" Shape="None" GraphId="c69ac"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b3a7a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="477.25" Y="547.0" GraphRef="bccc3" RelX="0.5" RelY="1.0"/>
+      <Point X="508.75" Y="585.0" GraphRef="c33b0" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5126955186642355" Shape="None" GraphId="e17d9"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4a27">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="462.5" Y="527.0" GraphRef="bccc3" RelX="0.0" RelY="-1.0"/>
+      <Point X="424.25" Y="479.0" GraphRef="e5410" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="e3042"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f8953">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="480.0" Y="281.0"/>
+      <Point X="434.8958333333333" Y="299.0" GraphRef="e5238" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f93ee" GroupRef="c877d">
+    <Comment/>
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="369.0" Y="510.0" GraphRef="a70e4" RelX="-1.0" RelY="0.0"/>
+      <Point X="186.5" Y="464.0" GraphRef="d677d" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df884">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="337.0" Y="271.0"/>
+      <Point X="390.3356481481481" Y="299.0" GraphRef="e5238" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ce866">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="511.0" Y="181.0" GraphRef="c8e44" RelX="1.0" RelY="0.0"/>
+      <Point X="549.2874979818093" Y="185.89255153113393" GraphRef="b18e0" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af45e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="697.7310924369746" Y="648.3697478991595" GraphRef="c39e4" RelX="-1.0" RelY="0.0"/>
+      <Point X="648.6989293889353" Y="648.7230037581643" GraphRef="cc619" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2b58">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="169.0" Y="408.0" GraphRef="d677d" RelX="0.0" RelY="-1.0"/>
+      <Point X="174.78146865502862" Y="393.0" GraphRef="c69ac" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cbfc2">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="422.75" Y="762.0" GraphRef="a2122" RelX="-0.5" RelY="-1.0"/>
+      <Point X="418.30777310924367" Y="756.3025210084033"/>
+      <Point X="413.86554621848734" Y="698.6512605042017"/>
+      <Point X="421.0" Y="641.0" GraphRef="c5aec" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a05ba">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="487.25" Y="408.0" GraphRef="ecf11" RelX="0.5" RelY="-1.0"/>
+      <Point X="621.6533613445379" Y="357.63888888888886"/>
+      <Point X="756.0567226890756" Y="462.31092436974797" GraphRef="ad212" RelX="-0.5" RelY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ebdb6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="260.5" Y="588.0" GraphRef="c26f8" RelX="-0.5" RelY="-1.0"/>
+      <Point X="251.52364690417076" Y="565.5749209014798" GraphRef="a88d8" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dd37c">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="273.7941176470588" Y="666.9495798319327" GraphRef="cd4f3" RelX="0.0" RelY="-1.0"/>
+      <Point X="273.0" Y="608.0" GraphRef="c26f8" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e7238">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="494.0" Y="595.0" GraphRef="c33b0" RelX="-1.0" RelY="0.0"/>
+      <Point X="396.0" Y="520.0" GraphRef="a70e4" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7150">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="307.0" Y="376.0"/>
+      <Point X="390.3356481481481" Y="321.75925925925924" GraphRef="e5238" RelX="-0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2a1a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="737.7058823529412" Y="703.8655462184876" GraphRef="a23a8" RelX="1.0" RelY="0.0"/>
+      <Point X="648.3823577274691" Y="703.5859467627574" GraphRef="fc4a8" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fc3cf">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="323.375" Y="551.25" GraphRef="f45e7" RelX="0.0" RelY="-1.0"/>
+      <Point X="369.0" Y="510.0" GraphRef="a70e4" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e91d5">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="422.75" Y="762.0" GraphRef="a2122" RelX="-0.5" RelY="-1.0"/>
+      <Point X="351.375" Y="719.5378151260504"/>
+      <Point X="280.0" Y="747.0" GraphRef="ecc8b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4df6">
+    <Graphics ZOrder="32769" LineThickness="1.0">
+      <Point X="682.6050420168065" Y="502.85714285714255" GraphRef="c3f13" RelX="1.0" RelY="0.0"/>
+      <Point X="816.4537815126054" Y="502.85714285714266" GraphRef="c0992" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6960969919204633" Shape="None" GraphId="f29b9"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bbb5f">
+    <Graphics ZOrder="32770" LineThickness="1.0">
+      <Point X="777.3067226890756" Y="485.31092436974797" GraphRef="ad212" RelX="0.0" RelY="1.0"/>
+      <Point X="775.7767469521777" Y="502.8571428571426" GraphRef="f29b9" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af59d">
+    <BiopaxRef>e38</BiopaxRef>
+    <Graphics ZOrder="32771" LineThickness="1.0">
+      <Point X="693.0" Y="566.0" GraphRef="e36f9" RelX="-1.0" RelY="0.0"/>
+      <Point X="648.5569205756105" Y="558.8319493288153" GraphRef="ecbe7" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fe57f">
+    <Graphics ZOrder="32772" LineThickness="1.0">
+      <Point X="648.8025210084037" Y="661.5210084033617" GraphRef="db1e8" RelX="0.0" RelY="-1.0"/>
+      <Point X="648.5084033613451" Y="625.1848739495794" GraphRef="a8665" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3522115061929822" Shape="None" GraphId="cc619"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a5650">
+    <Graphics ZOrder="32773" LineThickness="1.0">
+      <Point X="326.5" Y="231.0" GraphRef="a539e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Point X="326.5" Y="140.0" GraphRef="faf77" RelX="0.0" RelY="1.0"/>
+      <Anchor Position="0.6890364789849327" Shape="None" GraphId="a6ead"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cbfeb">
+    <Graphics ZOrder="32774" LineThickness="1.0">
+      <Point X="275.0" Y="231.0" GraphRef="d7a6f" RelX="0.0" RelY="-1.0"/>
+      <Point X="275.0" Y="140.0" GraphRef="fca90" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6597938144329897" Shape="None" GraphId="d5fae"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b8d6c">
+    <Graphics ZOrder="32775" LineThickness="1.0">
+      <Point X="344.0" Y="187.0" GraphRef="a5a0c" RelX="-1.0" RelY="0.0"/>
+      <Point X="326.5" Y="168.2976804123711" GraphRef="a6ead" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a10c5">
+    <Graphics ZOrder="32776" LineThickness="1.0">
+      <Point X="344.0" Y="187.0" GraphRef="a5a0c" RelX="-1.0" RelY="0.0"/>
+      <Point X="275.0" Y="170.95876288659792" GraphRef="d5fae" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fca2b">
+    <Graphics ZOrder="32777" LineThickness="1.0">
+      <Point X="565.0" Y="159.0" GraphRef="ee8f8" RelX="0.0" RelY="1.0"/>
+      <Point X="513.0" Y="248.0" GraphRef="c8535" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3021635003498196" Shape="None" GraphId="b18e0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="P" GraphId="f59f7" GroupRef="dd327">
+    <Graphics CenterX="482.0" CenterY="469.0" Width="18.0" Height="16.0" ZOrder="28672" FillColor="ff9900" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+  </Label>
+  <Label TextLabel="P" GraphId="d7610" GroupRef="e4532">
+    <Graphics CenterX="597.0" CenterY="594.0" Width="18.0" Height="16.0" ZOrder="28672" FillColor="ff9900" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+  </Label>
+  <Label TextLabel="P" GraphId="e69c7" GroupRef="c877d">
+    <Graphics CenterX="268.0" CenterY="486.0" Width="18.0" Height="16.0" ZOrder="28672" FillColor="ff9900" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+  </Label>
+  <Label TextLabel="Thr34" GraphId="b2d6b" GroupRef="dd327">
+    <Graphics CenterX="457.0" CenterY="469.0" Width="40.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Thr75" GraphId="ca494" GroupRef="e4532">
+    <Graphics CenterX="571.0" CenterY="593.0" Width="38.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Dopaminergic neuron" GraphId="f1ca1">
+    <Graphics CenterX="690.5" CenterY="773.0" Width="131.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Depolarization" GraphId="e5238">
+    <Graphics CenterX="412.6157407407407" CenterY="310.3796296296296" Width="89.12037037037042" Height="22.759259259259238" ZOrder="28672" FillColor="ffffff" FontSize="12"/>
+  </Label>
+  <Label TextLabel="Synaptic Vesicle" GraphId="eb7d1">
+    <Graphics CenterX="665.75700280112" CenterY="441.0028789293498" Width="101.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="b6098">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="675.5" CenterY="487.52941176470586" Width="193.0" Height="180.94117647058832" ZOrder="-4" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="c12e6">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="475.125" CenterY="492.375" Width="618.75" Height="618.75" ZOrder="-2" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="f6634" GraphId="d677d" Style="Group"/>
+  <Group GroupId="c877d" Style="Group"/>
+  <Group GroupId="e4532" Style="Group"/>
+  <Group GroupId="cdb3d" GraphId="f2f17" Style="Group"/>
+  <Group GroupId="ce2f7" GraphId="a5a0c" Style="Group"/>
+  <Group GroupId="dd327" GraphId="cf988" Style="Group"/>
+  <Group GroupId="dc360" GraphId="ecc8b" Style="Group"/>
+  <Group GroupId="b5370" GraphId="a2122" Style="Group"/>
+  <Group GroupId="d8d3a" GraphId="c5aec" Style="Group"/>
+  <Group GroupId="ee1d2" GraphId="c8e44" Style="Group"/>
+  <Group GroupId="cb3b2" Style="Complex">
+    <BiopaxRef>b43</BiopaxRef>
+  </Group>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e38">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12827358</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The vesicular amine transporter family (SLC18): amine/proton antiporters required for vesicular accumulation and regulated exocytotic secretion of monoamines and acetylcholine.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eiden LE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schäfer MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weihe E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schütz B</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e10">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11908751</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrating genotype and phenotype information: an overview of the PharmGKB project. Pharmacogenetics Research Network and Knowledge Base.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pharmacogenomics J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klein TE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang JT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cho MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Easton KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fergerson R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hewett M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lin Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oliver DE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rubin DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shafa F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stuart JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Altman RB</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="b43">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19903816</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A biochemical and functional protein complex involving dopamine synthesis and transport into synaptic vesicles.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cartier EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parra LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baust TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quiroz M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salazar G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Faundez V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Egaña L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Torres GE</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>dopaminergic neuron</bp:TERM>
+      <bp:ID>CL:0000700</bp:ID>
+      <bp:Ontology>Cell Type</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>nicotine pathway</bp:TERM>
+      <bp:ID>PW:0000721</bp:ID>
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+    </bp:openControlledVocabulary>
+  </Biopax>
+</Pathway>

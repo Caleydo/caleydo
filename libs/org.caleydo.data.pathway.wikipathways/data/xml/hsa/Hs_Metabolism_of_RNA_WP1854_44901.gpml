@@ -1,0 +1,1705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Metabolism of RNA" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Maintainer="Matthews, L" Email="lisa.matthews@cshl.edu" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">RNA metabolism consists of both mRNA degradative pathways and non-coding RNA metabolism. Non-coding RNA metabolism includes the processing and packaging of the small nuclear ribonucleoproteins (snRNPs).</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0"/>
+  <DataNode TextLabel="Translatable mRNA &#10;Complex&#10;" GraphId="n2_REACTOME_429977" Type="Complex">
+    <Comment Source="WikiPathways-description">mRNA's that are ready for translation have a circular structure caused by interaction between PABP bound to the 3' poly(A) tail and the eIF4E-eIF4G-PAIP complex bound to the 7-methylguanosine cap. The interaction between poly(A)-PABP and the eIF4G-eIF4E complex stimulates affinity of eIF4E for the cap and improves translation.</Comment>
+    <BiopaxRef>lit_430056</BiopaxRef>
+    <BiopaxRef>lit_430053</BiopaxRef>
+    <BiopaxRef>lit_430051</BiopaxRef>
+    <Graphics CenterX="184.0" CenterY="234.0" Width="124.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_21129"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n3_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="197.0" CenterY="360.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="AMP&#10;" GraphId="n4_REACTOME_76577" Type="Metabolite">
+    <Graphics CenterX="448.5" CenterY="254.0" Width="41.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode TextLabel="Partially Deadenylated &#10;mRNA Complex&#10;" GraphId="n5_REACTOME_429989" Type="Complex">
+    <Graphics CenterX="476.0" CenterY="344.0" Width="132.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20682"/>
+  </DataNode>
+  <DataNode TextLabel="PAN2-PAN3 &#10;Complex&#10;" GraphId="n6_REACTOME_429882" Type="Complex">
+    <Graphics CenterX="326.5" CenterY="202.0" Width="83.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20697"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n8_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="550.0" CenterY="292.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="eIF4B&#10;" GraphId="n9_REACTOME_72589" Type="Protein">
+    <Graphics CenterX="866.5" CenterY="165.0" Width="39.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P23588"/>
+  </DataNode>
+  <DataNode TextLabel="eIF4E&#10;" GraphId="n10_REACTOME_72578" Type="Protein">
+    <Graphics CenterX="872.5" CenterY="225.0" Width="39.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P06730"/>
+  </DataNode>
+  <DataNode TextLabel="PAIP1&#10;" GraphId="n11_REACTOME_429861" Type="Protein">
+    <Graphics CenterX="874.5" CenterY="279.0" Width="41.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9H074"/>
+  </DataNode>
+  <DataNode TextLabel="eIF4A&#10;" GraphId="n12_REACTOME_429842" Type="Protein">
+    <Graphics CenterX="874.0" CenterY="315.0" Width="40.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21151"/>
+  </DataNode>
+  <DataNode TextLabel="mature mRNA &#10;(eukaryotic, capped &#10;and deadenylated)&#10;" GraphId="n13_REACTOME_429974">
+    <Comment Source="WikiPathways-description">After deadenylation, mRNAs have 10-15 3' adenosine residues remaining of about 200 initial adenosine residues.</Comment>
+    <Graphics CenterX="788.5" CenterY="481.0" Width="127.0" Height="50.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_20743"/>
+  </DataNode>
+  <DataNode TextLabel="PABP&#10;" GraphId="n14_REACTOME_156803" Type="Protein">
+    <Graphics CenterX="868.5" CenterY="359.0" Width="37.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P11940"/>
+  </DataNode>
+  <DataNode TextLabel="eIF4G&#10;" GraphId="n15_REACTOME_72584" Type="Protein">
+    <Graphics CenterX="864.5" CenterY="419.0" Width="41.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04637"/>
+  </DataNode>
+  <DataNode TextLabel="PARN homodimer&#10;" GraphId="n16_REACTOME_429886" Type="Complex">
+    <Comment Source="WikiPathways-description">Structural analysis has shown that PARN forms homodimers.</Comment>
+    <BiopaxRef>lit_429903</BiopaxRef>
+    <Graphics CenterX="624.0" CenterY="407.0" Width="110.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_21052"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n18_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="630.0" CenterY="643.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="CCR4-NOT Complex&#10;" GraphId="n19_REACTOME_429896" Type="Complex">
+    <Comment Source="WikiPathways-description">The human CCR4-NOT complex contains 7 core subunits: CNOT1, CNOT2, CNOT3, CNOT9/RCD1, CNOT10, TAB182, and C2ORF29. Complexes contain either CNOT7 or CNOT8 (with CNOT8-containing complexes apparently involved in nuclear RNA splicing and CNOT7-containing complexes involved in cytoplasmic mRNA decay) and CNOT6 or CNOT6L. CNOT6 and CNOT6L are catalytic exoribonucleases. CNOT7 and CNOT8 also have ribonuclease activity. CNOT1 is the largest subunit and, based on yeast two-hybrid assays, interacts with CNOT2, CNOT7, CNOT8, and CNOT9, thus acting as a scaffold.</Comment>
+    <BiopaxRef>lit_429874</BiopaxRef>
+    <BiopaxRef>lit_429843</BiopaxRef>
+    <Graphics CenterX="749.0" CenterY="673.0" Width="128.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_21110"/>
+  </DataNode>
+  <DataNode TextLabel="AMP&#10;" GraphId="n20_REACTOME_76577" Type="Metabolite">
+    <Graphics CenterX="1091.5" CenterY="202.0" Width="41.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n24_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="909.0" CenterY="544.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="capped &#10;oligoribonucleotide&#10;" GraphId="n25_REACTOME_429926">
+    <Graphics CenterX="1268.5" CenterY="593.0" Width="117.0" Height="36.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_20913"/>
+  </DataNode>
+  <DataNode TextLabel="UMP&#10;" GraphId="n26_REACTOME_109402" Type="Metabolite">
+    <Graphics CenterX="1322.5" CenterY="519.0" Width="41.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16695"/>
+  </DataNode>
+  <DataNode TextLabel="cytidine 5'-&#10;monophosphate&#10;" GraphId="n27_REACTOME_109395" Type="Metabolite">
+    <Graphics CenterX="1316.5" CenterY="449.0" Width="109.0" Height="44.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17361"/>
+  </DataNode>
+  <DataNode TextLabel="GMP&#10;" GraphId="n28_REACTOME_113578" Type="Metabolite">
+    <Graphics CenterX="1242.0" CenterY="399.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17345"/>
+  </DataNode>
+  <DataNode TextLabel="Exosome Complex&#10;" GraphId="n29_REACTOME_429971" Type="Complex">
+    <Comment Source="WikiPathways-description">The exosome complex comprises a ring and associated subunits. The ring contains EXOSC2, EXOSC7, EXOSC8, EXOSC9, EXOSC5, and EXOSC6. The subunits EXOSC1, EXOSC2, EXOSC3, and RRP44 bind the ring. The catalytic ribonuclease site is located in RRP44, which yields ribonucleotides having 5'-monophosphates.</Comment>
+    <BiopaxRef>lit_449160</BiopaxRef>
+    <Graphics CenterX="1124.5" CenterY="651.0" Width="115.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20841"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n31_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="1403.0" CenterY="611.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="oligoribonucleotide &#10;with a 5'-&#10;diphosphate&#10;" GraphId="n32_REACTOME_429925">
+    <Graphics CenterX="1228.5" CenterY="827.0" Width="121.0" Height="50.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_20778"/>
+  </DataNode>
+  <DataNode TextLabel="7-methylguanosine &#10;5'-monophosphate&#10;" GraphId="n33_REACTOME_430042" Type="Metabolite">
+    <Graphics CenterX="1382.5" CenterY="835.0" Width="131.0" Height="44.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17825"/>
+  </DataNode>
+  <DataNode TextLabel="Scavenger mRNA-&#10;decapping enzyme &#10;DcpS&#10;" GraphId="n34_REACTOME_429988" Type="Protein">
+    <Graphics CenterX="1180.0" CenterY="715.0" Width="122.0" Height="50.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96C86"/>
+  </DataNode>
+  <DataNode TextLabel="Lsm1-7 Complex&#10;" GraphId="n38_REACTOME_430001" Type="Complex">
+    <Graphics CenterX="428.5" CenterY="467.0" Width="109.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_21014"/>
+  </DataNode>
+  <DataNode TextLabel="Deadenylated &#10;mRNA:Lsm1-7 &#10;Complex&#10;" GraphId="n39_REACTOME_429908" Type="Complex">
+    <Graphics CenterX="514.0" CenterY="705.0" Width="98.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20909"/>
+  </DataNode>
+  <DataNode TextLabel="7-methylguanosine &#10;5'-diphosphate&#10;" GraphId="n42_REACTOME_430004" Type="Metabolite">
+    <Graphics CenterX="604.5" CenterY="868.0" Width="131.0" Height="44.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="20794"/>
+  </DataNode>
+  <DataNode TextLabel="Decapped mRNA:&#10;LSM1-7 Complex&#10;" GraphId="n43_REACTOME_429996" Type="Complex">
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <Graphics CenterX="462.0" CenterY="860.0" Width="112.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_21085"/>
+  </DataNode>
+  <DataNode TextLabel="DCP1-DCP2 &#10;Decapping Complex&#10;" GraphId="n44_REACTOME_429991" Type="Complex">
+    <BiopaxRef>lit_429858</BiopaxRef>
+    <BiopaxRef>lit_430023</BiopaxRef>
+    <Graphics CenterX="736.5" CenterY="786.0" Width="125.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20836"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n46_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="292.0" CenterY="889.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="XRN1&#10;" GraphId="n47_REACTOME_429835" Type="Protein">
+    <Graphics CenterX="259.5" CenterY="715.0" Width="41.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8IZH2"/>
+  </DataNode>
+  <DataNode TextLabel="UMP&#10;" GraphId="n50_REACTOME_109402" Type="Metabolite">
+    <Graphics CenterX="438.5" CenterY="575.0" Width="41.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16695"/>
+  </DataNode>
+  <DataNode TextLabel="cytidine 5'-&#10;monophosphate&#10;" GraphId="n51_REACTOME_109395" Type="Metabolite">
+    <Graphics CenterX="228.5" CenterY="559.0" Width="109.0" Height="44.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17361"/>
+  </DataNode>
+  <DataNode TextLabel="GMP&#10;" GraphId="n52_REACTOME_113578" Type="Metabolite">
+    <Graphics CenterX="274.0" CenterY="483.0" Width="42.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17345"/>
+  </DataNode>
+  <DataNode TextLabel="AMP&#10;" GraphId="n54_REACTOME_76577" Type="Metabolite">
+    <Graphics CenterX="322.5" CenterY="429.0" Width="41.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode TextLabel="m7G capped snRNA:&#10;CBC:PHAX complex&#10;" GraphId="n60_REACTOME_191887" Type="Complex">
+    <Graphics CenterX="301.0" CenterY="1011.0" Width="130.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10849"/>
+  </DataNode>
+  <DataNode TextLabel="PHAX&#10;" GraphId="n61_REACTOME_191804" Type="Protein">
+    <Graphics CenterX="764.0" CenterY="1079.0" Width="40.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9H814"/>
+  </DataNode>
+  <DataNode TextLabel="Cap Binding &#10;Complex (CBC)&#10;" GraphId="n62_REACTOME_162460" Type="Complex">
+    <Graphics CenterX="751.0" CenterY="976.0" Width="94.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_3506"/>
+  </DataNode>
+  <DataNode TextLabel="m7G capped &#10;Spliceosomal snRNA&#10;" GraphId="n63_REACTOME_191853" Type="Complex">
+    <Graphics CenterX="786.0" CenterY="1028.0" Width="124.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10232"/>
+  </DataNode>
+  <DataNode TextLabel="Nuclear Pore &#10;Complex (NPC)&#10;" GraphId="n64_REACTOME_157689" Type="Complex">
+    <BiopaxRef>lit_157698</BiopaxRef>
+    <BiopaxRef>lit_157701</BiopaxRef>
+    <BiopaxRef>lit_157696</BiopaxRef>
+    <Graphics CenterX="433.5" CenterY="1085.0" Width="95.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_5542"/>
+  </DataNode>
+  <DataNode TextLabel="SMN complex&#10;" GraphId="n66_REACTOME_191881" Type="Complex">
+    <Graphics CenterX="820.0" CenterY="867.0" Width="86.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10606"/>
+  </DataNode>
+  <DataNode TextLabel="Sm protein E&#10;" GraphId="n67_REACTOME_191782" Type="Protein">
+    <Graphics CenterX="840.5" CenterY="914.0" Width="81.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62304"/>
+  </DataNode>
+  <DataNode TextLabel="Sm protein D2&#10;" GraphId="n68_REACTOME_191810" Type="Protein">
+    <Graphics CenterX="900.5" CenterY="959.0" Width="91.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62316"/>
+  </DataNode>
+  <DataNode TextLabel="Sm protein D1&#10;" GraphId="n69_REACTOME_191890" Type="Protein">
+    <Graphics CenterX="857.5" CenterY="830.0" Width="91.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62314"/>
+  </DataNode>
+  <DataNode TextLabel="Sm Protein B&#10;" GraphId="n70_REACTOME_191798" Type="Protein">
+    <Graphics CenterX="918.0" CenterY="798.0" Width="80.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P14678"/>
+  </DataNode>
+  <DataNode TextLabel="S-adenosylmethionine&#10;" GraphId="n71_REACTOME_71284" Type="Metabolite">
+    <Graphics CenterX="989.0" CenterY="756.0" Width="130.0" Height="44.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15414"/>
+  </DataNode>
+  <DataNode TextLabel="dimethylated Sm &#10;protein D3&#10;" GraphId="n72_REACTOME_191781" Type="Protein">
+    <Graphics CenterX="1058.0" CenterY="828.0" Width="108.0" Height="36.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62318"/>
+  </DataNode>
+  <DataNode TextLabel="Sm protein G&#10;" GraphId="n73_REACTOME_191827" Type="Protein">
+    <Graphics CenterX="1090.5" CenterY="872.0" Width="83.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62308"/>
+  </DataNode>
+  <DataNode TextLabel="Sm protein F&#10;" GraphId="n74_REACTOME_191852" Type="Protein">
+    <Graphics CenterX="1113.0" CenterY="912.0" Width="80.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62306"/>
+  </DataNode>
+  <DataNode TextLabel="SMN:SM protein &#10;complex&#10;" GraphId="n75_REACTOME_191791" Type="Complex">
+    <Graphics CenterX="1002.0" CenterY="1027.0" Width="102.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10415"/>
+  </DataNode>
+  <DataNode TextLabel="Methylosome&#10;" GraphId="n76_REACTOME_191849" Type="Complex">
+    <Graphics CenterX="1086.5" CenterY="959.0" Width="83.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10865"/>
+  </DataNode>
+  <DataNode TextLabel="Spliceosomal m7G &#10;capped snRNAs with &#10;SMN:SM protein &#10;complex bound&#10;" GraphId="n80_REACTOME_191813" Type="Complex">
+    <Graphics CenterX="1156.5" CenterY="1079.0" Width="131.0" Height="64.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10860"/>
+  </DataNode>
+  <DataNode TextLabel="Spliceosomal m3G &#10;capped snRNAs with &#10;SMN:SM protein &#10;complex bound&#10;" GraphId="n82_REACTOME_191891" Type="Complex">
+    <Graphics CenterX="1397.5" CenterY="1082.0" Width="131.0" Height="64.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10845"/>
+  </DataNode>
+  <DataNode TextLabel="TGS1&#10;" GraphId="n83_REACTOME_192209" Type="Protein">
+    <Graphics CenterX="1294.5" CenterY="1016.0" Width="39.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96RS0"/>
+  </DataNode>
+  <DataNode TextLabel="Snurportin&#10;" GraphId="n85_REACTOME_191857" Type="Protein">
+    <Graphics CenterX="774.5" CenterY="1266.0" Width="67.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O95149"/>
+  </DataNode>
+  <DataNode TextLabel="Spliceosomal m3G &#10;capped snRNA:SMN:&#10;SM:Snurportin &#10;complex&#10;" GraphId="n86_REACTOME_191778" Type="Complex">
+    <Graphics CenterX="998.5" CenterY="1173.0" Width="127.0" Height="64.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10792"/>
+  </DataNode>
+  <DataNode TextLabel="SMN complex&#10;" GraphId="n88_REACTOME_191762" Type="Complex">
+    <Graphics CenterX="284.0" CenterY="1172.0" Width="86.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10714"/>
+  </DataNode>
+  <DataNode TextLabel="Spliceosomal m3G &#10;capped snRNA &#10;loaded with the SM &#10;complex&#10;" GraphId="n89_REACTOME_191870" Type="Complex">
+    <Graphics CenterX="287.5" CenterY="1096.0" Width="121.0" Height="78.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_10264"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_430021">
+    <Comment Source="WikiPathways-description">The PAN2-PAN3 exoribonuclease complex hydrolyzes the poly(A) tail of a mRNA, shortening the tail from about 200 adenosine residues to about 80 adenosine residues and yielding adenosine 5'-monophosphate. PAN2 is the exoribonuclease component of the complex; PAN3 is required for cellular localization.  The poly(A)-binding protein (PABP) interacts with PAN3 and recruits the PAN2-PAN3 complex to mRNA.</Comment>
+    <BiopaxRef>lit_433080</BiopaxRef>
+    <BiopaxRef>lit_429831</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429884</BiopaxRef>
+    <BiopaxRef>lit_429929</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="277.0" Y="332.0"/>
+      <Point X="339.0" Y="332.0"/>
+      <Point X="393.0" Y="332.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_1_a_i"/>
+      <Anchor Position="0.5344827586206896" Shape="None" GraphId="e_1_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="201.0" Y="255.0" GraphRef="n2_REACTOME_429977" RelX="0.27419354838709675" RelY="1.1666666666666667"/>
+      <Point X="277.0" Y="332.0" GraphRef="e_1_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="221.0" Y="352.0" GraphRef="n3_REACTOME_29356" RelX="1.1428571428571428" RelY="-0.5333333333333333"/>
+      <Point X="277.0" Y="332.0" GraphRef="e_1_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="437.5" Y="272.0" GraphRef="n4_REACTOME_76577" RelX="-0.5365853658536586" RelY="1.2" ArrowHead="Arrow"/>
+      <Point X="393.0" Y="332.0" GraphRef="e_1_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="407.0" Y="334.0" GraphRef="n5_REACTOME_429989" RelX="-1.0454545454545454" RelY="-0.4" ArrowHead="Arrow"/>
+      <Point X="393.0" Y="332.0" GraphRef="e_1_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="327.5" Y="223.0" GraphRef="n6_REACTOME_429882" RelX="0.024096385542168676" RelY="1.1666666666666667"/>
+      <Point X="339.0" Y="332.0" GraphRef="e_1_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_REACTOME_429992">
+    <Comment Source="WikiPathways-description">The PARN exoribonuclease hydrolyzes adenosine residues at the 3' ends of polyadenylated mRNA, shortening the poly(A) tail from about 80 adenosine residues to about 10-15 residues and yielding adenosine 5'-monophosphate. PARN interacts simultaneously with the poly(A) tail and with the 7-methylguanosine cap of the mRNA, therefore it is believed that PARN displaces the eIF4F cap-binding complex. The trigger for deadenylation by PARN is unknown. PARN is also part of a complex that regulates poly(A) tail length and hence translation in developing oocytes.</Comment>
+    <BiopaxRef>lit_433055</BiopaxRef>
+    <BiopaxRef>lit_430018</BiopaxRef>
+    <BiopaxRef>lit_429931</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <BiopaxRef>lit_442442</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="573.0" Y="343.0"/>
+      <Point X="623.0" Y="343.0"/>
+      <Point X="668.0" Y="291.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_7_a_i"/>
+      <Anchor Position="0.4209897933561413" Shape="None" GraphId="e_7_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_7_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="545.0" Y="343.0" GraphRef="n5_REACTOME_429989" RelX="1.0454545454545454" RelY="-0.04"/>
+      <Point X="573.0" Y="343.0" GraphRef="e_7_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="556.0" Y="310.0" GraphRef="n8_REACTOME_29356" RelX="0.2857142857142857" RelY="1.2"/>
+      <Point X="573.0" Y="343.0" GraphRef="e_7_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="472.5" Y="257.0" GraphRef="n4_REACTOME_76577" RelX="1.170731707317073" RelY="0.2" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="850.5" Y="227.0" GraphRef="n10_REACTOME_72578" RelX="-1.1282051282051282" RelY="0.18181818181818182" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="254.0"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="851.5" Y="280.0" GraphRef="n11_REACTOME_429861" RelX="-1.1219512195121952" RelY="0.09090909090909091" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="851.0" Y="312.0" GraphRef="n12_REACTOME_429842" RelX="-1.15" RelY="-0.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="772.5" Y="453.0" GraphRef="n13_REACTOME_429974" RelX="-0.25196850393700787" RelY="-1.12" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="847.5" Y="352.0" GraphRef="n14_REACTOME_156803" RelX="-1.135135135135135" RelY="-0.6363636363636364" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o6">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="847.5" Y="405.0" GraphRef="n15_REACTOME_72584" RelX="-0.8292682926829268" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_o7">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="848.5" Y="179.0" GraphRef="n9_REACTOME_72589" RelX="-0.9230769230769231" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="668.0" Y="291.0" GraphRef="e_7_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="623.0" Y="393.0" GraphRef="n16_REACTOME_429886" RelX="-0.01818181818181818" RelY="-1.2727272727272727"/>
+      <Point X="623.0" Y="343.0" GraphRef="e_7_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_429955">
+    <Comment Source="WikiPathways-description">The CCR4-NOT complex hydrolyzes adenosine residues at the 3' end of polyadenylated mRNA, shortening the number of adenosine residues to about 10-15 residues and yielding adenosine 5'-monophosphate. CNOT6 and CNOT6L are the exoribonucleases responsible for hydrolysis. Activity of the CCR4-NOT complex is inhibited by PABP bound to the poly(A) tail of the mRNA. The trigger for activation of deadenylation by the CCR4-NOT complex is unknown. Complexes containing CNOT7 rather than CNOT8 appear to be responsible for cytoplasmic mRNA decay.</Comment>
+    <BiopaxRef>lit_433062</BiopaxRef>
+    <BiopaxRef>lit_429874</BiopaxRef>
+    <BiopaxRef>lit_433061</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429884</BiopaxRef>
+    <BiopaxRef>lit_429929</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="685.0" Y="601.0"/>
+      <Point X="749.0" Y="601.0"/>
+      <Point X="1088.0" Y="600.0"/>
+      <Point X="1089.0" Y="291.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_17_a_i"/>
+      <Anchor Position="0.08988724996485935" Shape="None" GraphId="e_17_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_17_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="496.0" Y="372.0" GraphRef="n5_REACTOME_429989" RelX="0.30303030303030304" RelY="1.12"/>
+      <Point X="685.0" Y="601.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="649.0" Y="625.0" GraphRef="n18_REACTOME_29356" RelX="0.9047619047619048" RelY="-1.2"/>
+      <Point X="685.0" Y="601.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="885.5" Y="179.0" GraphRef="n9_REACTOME_72589" RelX="0.9743589743589743" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="895.5" Y="230.0" GraphRef="n10_REACTOME_72578" RelX="1.1794871794871795" RelY="0.45454545454545453" ArrowHead="Arrow"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="898.5" Y="280.0" GraphRef="n11_REACTOME_429861" RelX="1.170731707317073" RelY="0.09090909090909091" ArrowHead="Arrow"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="897.0" Y="312.0" GraphRef="n12_REACTOME_429842" RelX="1.15" RelY="-0.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="827.5" Y="453.0" GraphRef="n13_REACTOME_429974" RelX="0.6141732283464567" RelY="-1.12" ArrowHead="Arrow"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="864.5" Y="373.0" GraphRef="n14_REACTOME_156803" RelX="-0.21621621621621623" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="786.0" Y="600.0"/>
+      <Point X="1088.0" Y="600.0"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o6">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="883.5" Y="405.0" GraphRef="n15_REACTOME_72584" RelX="0.926829268292683" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o7">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1090.5" Y="220.0" GraphRef="n20_REACTOME_76577" RelX="-0.04878048780487805" RelY="1.2" ArrowHead="Arrow"/>
+      <Point X="1089.0" Y="291.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="749.0" Y="659.0" GraphRef="n19_REACTOME_429896" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="749.0" Y="601.0" GraphRef="e_17_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_430028">
+    <Comment Source="WikiPathways-description">The exosome complex hydrolyzes capped, deadenylated mRNA from 3' to 5' and yields ribonucleotides having 5'-monophosphates. In yeast the Ski2-Ski3-Ski8 complex assists degradation by the exosome complex, however little is known about the function of the homologous Ski complex in mammals. Although many exosomal components contain exonuclease signatures, only two components have been shown to degrade RNA.  Rrp6/PMSCL-100 has been shown to be involved in the 3â-5â decay of nuclear mRNAs in yeast.  Rrp6 may also function in the absence of the core exosomal components. The Rrp44/dDis3 component of the core exosome has been shown to possess both 3â-5â exonuclease activity along with endonuclease activity via its PIN domain.</Comment>
+    <BiopaxRef>lit_433047</BiopaxRef>
+    <BiopaxRef>lit_433045</BiopaxRef>
+    <BiopaxRef>lit_442433</BiopaxRef>
+    <BiopaxRef>lit_981612</BiopaxRef>
+    <BiopaxRef>lit_442429</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1009.0" Y="481.0"/>
+      <Point X="1124.0" Y="481.0"/>
+      <Point X="1172.0" Y="481.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_23_a_i"/>
+      <Anchor Position="0.7055214723926381" Shape="None" GraphId="e_23_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="855.5" Y="481.0" GraphRef="n13_REACTOME_429974" RelX="1.0551181102362204" RelY="0.0"/>
+      <Point X="1009.0" Y="481.0" GraphRef="e_23_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="933.0" Y="530.0" GraphRef="n24_REACTOME_29356" RelX="1.1428571428571428" RelY="-0.9333333333333333"/>
+      <Point X="1009.0" Y="481.0" GraphRef="e_23_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1252.5" Y="572.0" GraphRef="n25_REACTOME_429926" RelX="-0.27350427350427353" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Point X="1172.0" Y="481.0" GraphRef="e_23_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1299.5" Y="513.0" GraphRef="n26_REACTOME_109402" RelX="-1.1219512195121952" RelY="-0.4" ArrowHead="Arrow"/>
+      <Point X="1172.0" Y="481.0" GraphRef="e_23_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1259.5" Y="461.0" GraphRef="n27_REACTOME_109395" RelX="-1.0458715596330275" RelY="0.5454545454545454" ArrowHead="Arrow"/>
+      <Point X="1172.0" Y="481.0" GraphRef="e_23_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1229.0" Y="417.0" GraphRef="n28_REACTOME_113578" RelX="-0.6190476190476191" RelY="1.2" ArrowHead="Arrow"/>
+      <Point X="1172.0" Y="481.0" GraphRef="e_23_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1095.5" Y="220.0" GraphRef="n20_REACTOME_76577" RelX="0.1951219512195122" RelY="1.2" ArrowHead="Arrow"/>
+      <Point X="1172.0" Y="481.0" GraphRef="e_23_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1124.5" Y="637.0" GraphRef="n29_REACTOME_429971" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1124.0" Y="481.0" GraphRef="e_23_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_429961">
+    <Comment Source="WikiPathways-description">The scavenging nuclease DCPS hydrolyzes the triphosphate bond between the 7-methylguanosine cap and the remaining oligoribonucleotide body of the mRNA. The products are 7-methylguanosine 5'-monophosphate and an oligoribonucleotide with a 5'-diphosphate.</Comment>
+    <BiopaxRef>lit_429944</BiopaxRef>
+    <BiopaxRef>lit_429953</BiopaxRef>
+    <BiopaxRef>lit_430036</BiopaxRef>
+    <BiopaxRef>lit_433082</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1306.0" Y="670.0"/>
+      <Point X="1306.0" Y="718.0"/>
+      <Point X="1307.0" Y="760.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_30_a_i"/>
+      <Anchor Position="0.5332628059191086" Shape="None" GraphId="e_30_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1276.5" Y="614.0" GraphRef="n25_REACTOME_429926" RelX="0.13675213675213677" RelY="1.1666666666666667"/>
+      <Point X="1306.0" Y="670.0" GraphRef="e_30_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1379.0" Y="623.0" GraphRef="n31_REACTOME_29356" RelX="-1.1428571428571428" RelY="0.8"/>
+      <Point X="1306.0" Y="670.0" GraphRef="e_30_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1257.5" Y="799.0" GraphRef="n32_REACTOME_429925" RelX="0.4793388429752066" RelY="-1.12" ArrowHead="Arrow"/>
+      <Point X="1307.0" Y="760.0" GraphRef="e_30_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1360.5" Y="810.0" GraphRef="n33_REACTOME_430042" RelX="-0.33587786259541985" RelY="-1.1363636363636365" ArrowHead="Arrow"/>
+      <Point X="1307.0" Y="760.0" GraphRef="e_30_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1244.0" Y="716.0" GraphRef="n34_REACTOME_429988" RelX="1.0491803278688525" RelY="0.04"/>
+      <Point X="1306.0" Y="718.0" GraphRef="e_30_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_429978">
+    <Comment Source="WikiPathways-description">The Lsm1-7 complex forms a heptameric ring that binds the 3' oligoadenylated ends of mRNAs that have been deadenylated. The bound Lsm1-7 may prevent access of the exosome (a 3' to 5' exonuclease) to the 3' end and thereby direct the mRNA to the 5' to 3' exonuclease pathway. The yeast Lsm1-7 complex has a preference for oligoadenylated RNA compared to polyadenylated RNA, however other determinants of binding by Lsm1-7 are unknown.</Comment>
+    <BiopaxRef>lit_429900</BiopaxRef>
+    <BiopaxRef>lit_429975</BiopaxRef>
+    <BiopaxRef>lit_430033</BiopaxRef>
+    <BiopaxRef>lit_433045</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="512.0" Y="508.0"/>
+      <Point X="512.0" Y="609.0"/>
+      <Point X="513.0" Y="677.0" GraphRef="n39_REACTOME_429908" RelX="-0.02040816326530612" RelY="-1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_37_a_i"/>
+      <Anchor Position="0.5976071364936516" Shape="None" GraphId="e_37_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="722.5" Y="487.0" GraphRef="n13_REACTOME_429974" RelX="-1.0393700787401574" RelY="0.24"/>
+      <Point X="512.0" Y="508.0" GraphRef="e_37_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="450.5" Y="481.0" GraphRef="n38_REACTOME_430001" RelX="0.4036697247706422" RelY="1.2727272727272727"/>
+      <Point X="512.0" Y="508.0" GraphRef="e_37_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_429860">
+    <Comment Source="WikiPathways-description">The DCP1-DCP2 decapping complex binds the 7-methylguanosine cap of mRNA and hydrolyzes the triphosphate bond to yield 7-methylguanosine 5'-diphosphate and RNA with 5'-monophosphate. The DCP2 subunit of the complex catalyzes the hydrolysis. DCP2 has higher affinity for some subsets of mRNA.</Comment>
+    <BiopaxRef>lit_433069</BiopaxRef>
+    <BiopaxRef>lit_433068</BiopaxRef>
+    <BiopaxRef>lit_433076</BiopaxRef>
+    <BiopaxRef>lit_433066</BiopaxRef>
+    <BiopaxRef>lit_429998</BiopaxRef>
+    <BiopaxRef>lit_429916</BiopaxRef>
+    <BiopaxRef>lit_429829</BiopaxRef>
+    <BiopaxRef>lit_433075</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="555.0" Y="755.0"/>
+      <Point X="554.0" Y="787.0"/>
+      <Point X="554.0" Y="819.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_40_a_i"/>
+      <Anchor Position="0.5001220107442101" Shape="None" GraphId="e_40_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="534.0" Y="733.0" GraphRef="n39_REACTOME_429908" RelX="0.40816326530612246" RelY="1.12"/>
+      <Point X="555.0" Y="755.0" GraphRef="e_40_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="619.0" Y="661.0" GraphRef="n18_REACTOME_29356" RelX="-0.5238095238095238" RelY="1.2"/>
+      <Point X="555.0" Y="755.0" GraphRef="e_40_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="581.5" Y="843.0" GraphRef="n42_REACTOME_430004" RelX="-0.3511450381679389" RelY="-1.1363636363636365" ArrowHead="Arrow"/>
+      <Point X="554.0" Y="819.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="502.0" Y="839.0" GraphRef="n43_REACTOME_429996" RelX="0.7142857142857143" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Point X="554.0" Y="819.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="671.5" Y="786.0" GraphRef="n44_REACTOME_429991" RelX="-1.04" RelY="0.0"/>
+      <Point X="554.0" Y="787.0" GraphRef="e_40_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_REACTOME_429845">
+    <Comment Source="WikiPathways-description">The XRN1 exoribonuclease hydrolyzes decapped mRNA from 5' to 3' and yields ribonucleotides having 5'-monophosphates. In yeast Xrn1 associates with the Lsm1-7 complex.</Comment>
+    <BiopaxRef>lit_429880</BiopaxRef>
+    <BiopaxRef>lit_429939</BiopaxRef>
+    <BiopaxRef>lit_429957</BiopaxRef>
+    <BiopaxRef>lit_429946</BiopaxRef>
+    <BiopaxRef>lit_429954</BiopaxRef>
+    <BiopaxRef>lit_430040</BiopaxRef>
+    <BiopaxRef>lit_429833</BiopaxRef>
+    <BiopaxRef>lit_430007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="355.0" Y="791.0"/>
+      <Point X="355.0" Y="715.0"/>
+      <Point X="354.0" Y="625.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_45_a_i"/>
+      <Anchor Position="0.4578160039533232" Shape="None" GraphId="e_45_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="403.0" Y="858.0" GraphRef="n43_REACTOME_429996" RelX="-1.0535714285714286" RelY="-0.1111111111111111"/>
+      <Point X="354.0" Y="858.0"/>
+      <Point X="355.0" Y="791.0" GraphRef="e_45_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="301.0" Y="871.0" GraphRef="n46_REACTOME_29356" RelX="0.42857142857142855" RelY="-1.2"/>
+      <Point X="355.0" Y="791.0" GraphRef="e_45_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="422.5" Y="481.0" GraphRef="n38_REACTOME_430001" RelX="-0.11009174311926606" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="354.0" Y="625.0" GraphRef="e_45_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="415.5" Y="587.0" GraphRef="n50_REACTOME_109402" RelX="-1.1219512195121952" RelY="0.8" ArrowHead="Arrow"/>
+      <Point X="354.0" Y="625.0" GraphRef="e_45_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="270.5" Y="584.0" GraphRef="n51_REACTOME_109395" RelX="0.7706422018348624" RelY="1.1363636363636365" ArrowHead="Arrow"/>
+      <Point X="354.0" Y="625.0" GraphRef="e_45_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="282.0" Y="501.0" GraphRef="n52_REACTOME_113578" RelX="0.38095238095238093" RelY="1.2" ArrowHead="Arrow"/>
+      <Point X="354.0" Y="625.0" GraphRef="e_45_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="324.5" Y="447.0" GraphRef="n54_REACTOME_76577" RelX="0.0975609756097561" RelY="1.2" ArrowHead="Arrow"/>
+      <Point X="354.0" Y="625.0" GraphRef="e_45_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="283.5" Y="715.0" GraphRef="n47_REACTOME_429835" RelX="1.170731707317073" RelY="0.0"/>
+      <Point X="355.0" Y="715.0" GraphRef="e_45_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_REACTOME_191825">
+    <Comment Source="WikiPathways-description">The snRNAs, except U6 snRNA, are transcribed by RNA polymerase II, co-transcriptionally capped and exported rapidly to the cytoplasm in association with a cap-binding complex and the export factor PHAX.</Comment>
+    <BiopaxRef>lit_191801</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="369.0" Y="1010.0" GraphRef="n60_REACTOME_191887" RelX="1.0461538461538462" RelY="-0.05555555555555555"/>
+      <Point X="433.0" Y="1010.0"/>
+      <Point X="542.0" Y="1010.0"/>
+      <Anchor Position="0.3699421965317919" Shape="None" GraphId="e_59_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_59_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="741.0" Y="1072.0" GraphRef="n61_REACTOME_191804" RelX="-1.15" RelY="-0.6363636363636364" ArrowHead="Arrow"/>
+      <Point X="542.0" Y="1010.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="701.0" Y="983.0" GraphRef="n62_REACTOME_162460" RelX="-1.0638297872340425" RelY="0.3888888888888889" ArrowHead="Arrow"/>
+      <Point X="542.0" Y="1010.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="721.0" Y="1023.0" GraphRef="n63_REACTOME_191853" RelX="-1.0483870967741935" RelY="-0.2777777777777778" ArrowHead="Arrow"/>
+      <Point X="542.0" Y="1010.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_a__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="433.5" Y="1064.0" GraphRef="n64_REACTOME_157689" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="433.0" Y="1010.0" GraphRef="e_59_a_p" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_REACTOME_191790">
+    <Comment Source="WikiPathways-description">The survival of motor neurons (SMN) complex binds to Sm proteins and small nuclear RNAs (snRNAs) in the cytoplasm. Sm is part the SMN multiprotein complex that contains Gemins 2 â 7, including the DEAD-box RNA helicase Gemin3. The binding of the SMN complex to the snRNAs depends on the presence of specific, high-affinity (nanomolar) binding domains in the snRNAs. The SMN complex binds the Sm proteins through the Sm domains interaction with the Gemins, the TUDOR domain, and through unique arginine- and glycine-rich (RG) domains found in three of these, SmB, SmD1 and SmD3. The association with RG domains is strongly enhanced by the post-translational symmetric dimethylation of specific arginines in these domains, a process that is carried out by the methylosome (JBP1 or PRMT5) complex.</Comment>
+    <BiopaxRef>lit_191817</BiopaxRef>
+    <BiopaxRef>lit_191895</BiopaxRef>
+    <BiopaxRef>lit_191842</BiopaxRef>
+    <BiopaxRef>lit_191828</BiopaxRef>
+    <BiopaxRef>lit_191764</BiopaxRef>
+    <BiopaxRef>lit_191807</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1005.0" Y="928.0"/>
+      <Point X="1002.0" Y="961.0"/>
+      <Point X="1002.0" Y="1006.0" GraphRef="n75_REACTOME_191791" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_65_a_i"/>
+      <Anchor Position="0.4240817015321254" Shape="None" GraphId="e_65_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="853.0" Y="881.0" GraphRef="n66_REACTOME_191881" RelX="0.7674418604651163" RelY="1.2727272727272727"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="884.5" Y="917.0" GraphRef="n67_REACTOME_191782" RelX="1.0864197530864197" RelY="0.2727272727272727"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="937.5" Y="945.0" GraphRef="n68_REACTOME_191810" RelX="0.8131868131868132" RelY="-1.2727272727272727"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="873.5" Y="844.0" GraphRef="n69_REACTOME_191890" RelX="0.3516483516483517" RelY="1.2727272727272727"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="925.0" Y="812.0" GraphRef="n70_REACTOME_191798" RelX="0.175" RelY="1.2727272727272727"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="991.0" Y="781.0" GraphRef="n71_REACTOME_71284" RelX="0.03076923076923077" RelY="1.1363636363636365"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i6">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1048.0" Y="849.0" GraphRef="n72_REACTOME_191781" RelX="-0.18518518518518517" RelY="1.1666666666666667"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i7">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1073.5" Y="886.0" GraphRef="n73_REACTOME_191827" RelX="-0.40963855421686746" RelY="1.2727272727272727"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i8">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1070.0" Y="917.0" GraphRef="n74_REACTOME_191852" RelX="-1.075" RelY="0.45454545454545453"/>
+      <Point X="1005.0" Y="928.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1042.5" Y="959.0" GraphRef="n76_REACTOME_191849" RelX="-1.0602409638554218" RelY="0.0"/>
+      <Point X="1002.0" Y="961.0" GraphRef="e_65_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_REACTOME_191786">
+    <Comment Source="WikiPathways-description">To facilitate snRNP assembly, the SMN complex must bring together the Sm proteins and an Sm-site-containing snRNA. The SMN:Sm protein complex binds to the m7G capped snRNAs in the cytoplasm.</Comment>
+    <BiopaxRef>lit_191879</BiopaxRef>
+    <BiopaxRef>lit_191856</BiopaxRef>
+    <BiopaxRef>lit_191851</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="964.0" Y="1079.0"/>
+      <Point X="1001.0" Y="1079.0"/>
+      <Point X="1088.5" Y="1079.0" GraphRef="n80_REACTOME_191813" RelX="-1.0381679389312977" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_79_a_i"/>
+      <Anchor Position="0.29838709677419356" Shape="None" GraphId="e_79_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="988.0" Y="1048.0" GraphRef="n75_REACTOME_191791" RelX="-0.27450980392156865" RelY="1.1666666666666667"/>
+      <Point X="964.0" Y="1079.0" GraphRef="e_79_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="851.0" Y="1045.0" GraphRef="n63_REACTOME_191853" RelX="1.0483870967741935" RelY="0.9444444444444444"/>
+      <Point X="964.0" Y="1079.0" GraphRef="e_79_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_REACTOME_191784">
+    <Comment Source="WikiPathways-description">The snRNA:SMN:SM protein complex is engaged by a hypermethylase that hypermethylates the snRNA cap from
+m7G (7-methylguanosine) to m3G (2,2,7-trimethylguanosine).</Comment>
+    <BiopaxRef>lit_191877</BiopaxRef>
+    <BiopaxRef>lit_191775</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1225.5" Y="1077.0" GraphRef="n80_REACTOME_191813" RelX="1.0534351145038168" RelY="-0.0625"/>
+      <Point X="1294.0" Y="1075.0"/>
+      <Point X="1334.0" Y="1074.0"/>
+      <Point X="1334.5" Y="1050.0" GraphRef="n82_REACTOME_191891" RelX="-0.9618320610687023" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5188530730026149" Shape="None" GraphId="e_81_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1294.5" Y="1030.0" GraphRef="n83_REACTOME_192209" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1294.0" Y="1075.0" GraphRef="e_81_a_p" RelX="-0.24309784073170704" RelY="0.0060774460182528856"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_REACTOME_191763">
+    <Comment Source="WikiPathways-description">The nuclear import signal has two parts; Cap hypermethylation triggers nuclear import via snurportin1 binding and by receptor recognition of the Sm proteins. Snurportin1 (SPN) is an adaptor that links the assembled snRNP to the nuclear transport machinery, recruiting importin beta for nuclear import. The import receptor that recognizes the Sm proteins is not yet known.</Comment>
+    <BiopaxRef>lit_191877</BiopaxRef>
+    <BiopaxRef>lit_191767</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1299.0" Y="1171.0"/>
+      <Point X="1177.0" Y="1171.0"/>
+      <Point X="1065.5" Y="1172.0" GraphRef="n86_REACTOME_191778" RelX="1.0551181102362204" RelY="-0.03125" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_84_a_i"/>
+      <Anchor Position="0.5213575750308137" Shape="None" GraphId="e_84_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="811.5" Y="1265.0" GraphRef="n85_REACTOME_191857" RelX="1.1044776119402986" RelY="-0.09090909090909091"/>
+      <Point X="1301.0" Y="1264.0"/>
+      <Point X="1299.0" Y="1171.0" GraphRef="e_84_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1361.5" Y="1117.0" GraphRef="n82_REACTOME_191891" RelX="-0.549618320610687" RelY="1.09375"/>
+      <Point X="1299.0" Y="1171.0" GraphRef="e_84_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_REACTOME_191830">
+    <Comment Source="WikiPathways-description">A properly assembled Sm core and the m3G cap structure are prerequisites for small nuclear ribonucleoprotein (snRNP) import into the nucleus. Once imported into the nucleus, the snRNPs are initially concentrated in Cajal bodies (CBs), where there is further processing of the snRNAs plus binding of additional proteins, from CRBs they transit to "speckles", from where they are engaged for pre-mRNA splicing. The SMN complexes in the nucleus are found throughout the nucleoplasm but are particularly concentrated in Gems, the "twins" of the snRNP-rich CBs.</Comment>
+    <BiopaxRef>lit_197130</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="932.5" Y="1172.0" GraphRef="n86_REACTOME_191778" RelX="-1.0393700787401574" RelY="-0.03125"/>
+      <Point X="529.0" Y="1172.0"/>
+      <Point X="499.0" Y="1173.0"/>
+      <Anchor Position="0.9306801223347344" Shape="None" GraphId="e_87_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="774.5" Y="1252.0" GraphRef="n85_REACTOME_191857" RelX="0.0" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="776.0" Y="1196.0"/>
+      <Point X="476.0" Y="1196.0"/>
+      <Point X="499.0" Y="1173.0" GraphRef="e_87_a_o" RelX="-5.6843418860808015E-14" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="330.0" Y="1172.0" GraphRef="n88_REACTOME_191762" RelX="1.069767441860465" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="499.0" Y="1173.0" GraphRef="e_87_a_o" RelX="-5.6843418860808015E-14" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="351.5" Y="1130.0" GraphRef="n89_REACTOME_191870" RelX="1.0578512396694215" RelY="0.8717948717948718" ArrowHead="Arrow"/>
+      <Point X="421.0" Y="1173.0"/>
+      <Point X="499.0" Y="1173.0" GraphRef="e_87_a_o" RelX="-5.6843418860808015E-14" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_a__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="484.5" Y="1084.0" GraphRef="n64_REACTOME_157689" RelX="1.0736842105263158" RelY="-0.05555555555555555"/>
+      <Point X="528.0" Y="1084.0"/>
+      <Point X="529.0" Y="1172.0" GraphRef="e_87_a_p" RelX="-0.03465993883264673" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="cytosol" GraphId="comp_text_55" GroupRef="group_comp_55">
+    <Graphics CenterX="391.5" CenterY="1279.5" Width="59.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="nucleoplasm" GraphId="comp_text_58" GroupRef="group_comp_58">
+    <Graphics CenterX="179.0" CenterY="1224.5" Width="92.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="comp_55" GroupRef="group_comp_55">
+    <Graphics CenterX="779.0" CenterY="711.0" Width="1454.0" Height="1210.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="comp_58" GroupRef="group_comp_58">
+    <Graphics CenterX="295.0" CenterY="1100.5" Width="330.0" Height="303.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_442429">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19060886</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endonucleolytic RNA cleavage by a eukaryotic exosome</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lebreton, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomecki, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dziembowski, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SÃ©raphin, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 456:993-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191801">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11333016</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The evolutionarily conserved region of the U snRNA export mediator PHAX is a novel RNA-binding domain that is essential for U snRNA export</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Segref, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mattaj, IW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohno, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA 7:351-60</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433069">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12218187</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The hDcp2 protein is a mammalian mRNA decapping enzyme</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiao, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carr-Schmid, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 99:12663-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429858">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16395315</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">More than 1 + 2 in mRNA decapping</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bail, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Mol Biol 13:7-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_449160">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11719186</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AU binding proteins recruit the exosome to degrade ARE-containing mRNAs</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, CY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gherzi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ong, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, EL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raijmakers, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pruijn, GJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stoecklin, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moroni, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karin, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 107:451-64</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191775">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8196654</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">m3G cap hypermethylation of U1 small nuclear ribonucleoprotein (snRNP) in vitro: evidence that the U1 small nuclear RNA-(guanosine-N2)-methyltransferase is a non-snRNP cytoplasmic protein that requires a binding site on the Sm core domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Plessel, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luhrmann, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 14:4160-72</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429939">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16299471</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ARE-mRNA degradation requires the 5'-3' decay pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stoecklin, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mayo, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anderson, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO Rep 7:72-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430040">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16141059</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">From birth to death: the complex lives of eukaryotic mRNAs</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moore, MJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 309:1514-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429929">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18625844</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deadenylation is prerequisite for P-body formation and mRNA decay in mammalian cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ezzeddine, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, CY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">He, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shyu, AB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 182:89-101</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429831">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17595167</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poly(A) nuclease interacts with the C-terminal domain of polyadenylate-binding protein domain from poly(A)-binding protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Siddiqui, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mangus, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, TC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Palermino, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shyu, AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gehring, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 282:25067-75</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191856">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10556282</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Essential role for the tudor domain of SMN in spliceosomal U snRNP assembly: implications for spinal muscular atrophy</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Buhler, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raker, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luhrmann, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 8:2351-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433076">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12486012</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human Dcp2: a catalytically active mRNA decapping enzyme located in specific cytoplasmic structures</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Dijk, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cougot, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meyer, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Babajko, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wahle, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SÃ©raphin, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 21:6915-24</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_157701">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12196509</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proteomic analysis of the mammalian nuclear pore complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cronshaw, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krutchinsky, AN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chait, BT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matunis, MJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 158:915-27</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429843">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11747467</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of four families of yCCR4- and Mg2+-dependent endonuclease-related proteins in higher eukaryotes, and characterization of orthologs of yCCR4 with a conserved leucine-rich repeat essential for hCAF1/hPOP2 binding</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dupressoir, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morel, AP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barbot, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loireau, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Corbo, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heidmann, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BMC Genomics 2:9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_442442">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17052452</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Opposing polymerase-deadenylase activities regulate cytoplasmic polyadenylation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Richter, JD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 24:173-83</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433080">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14583602</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a human cytoplasmic poly(A) nuclease complex stimulated by poly(A)-binding protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uchida, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoshino, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Katada, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:1383-91</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430023">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16364915</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Multiple processing body factors and the ARE binding protein TTP activate mRNA decapping</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fenger-GrÃ¸n, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fillman, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Norrild, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lykke-Andersen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 20:905-15</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191828">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11748230</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification of native survival of motor neurons complexes and identification of Gemin6 as a novel component</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellizzoni, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baccon, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rappsilber, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfuss, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:7540-5</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191817">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10601333</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gemin3: A novel DEAD box protein that interacts with SMN, the spinal muscular atrophy gene product, and is a component of gems</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Charroux, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellizzoni, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perkinson, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shevchenko, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfuss, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 147:1181-94</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433082">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15769464</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structures of human DcpS in ligand-free and m7GDP-bound forms suggest a dynamic mechanism for scavenger mRNA decapping</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walsh, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parker, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Song, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 347:707-18</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191767">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12095920</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SMN, the spinal muscular atrophy protein, forms a pre-import snRNP complex with snurportin1 and importin beta</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Narayanan, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ospina, JK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frey, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hebert, MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matera, AG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 11:1785-95</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433066">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12923261</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional characterization of the mammalian mRNA decapping enzyme hDcp2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piccirillo, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khanna, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA 9:1138-47</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433068">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12417715</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a human decapping complex associated with hUpf proteins in nonsense-mediated decay</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lykke-Andersen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 22:8114-21</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429884">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16284618</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Concerted action of poly(A) nucleases and decapping enzyme in mammalian mRNA turnover</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamashita, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, TC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamashita, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhong, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, CY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shyu, AB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Mol Biol 12:1054-63</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429953">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15273322</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional analysis of mRNA scavenger decapping enzymes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, SW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiao, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gu, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lima, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA 10:1412-22</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429998">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18039849</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcript-specific decapping and regulated stability by the human Dcp2 decapping protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Song, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 28:939-48</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430036">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15068804</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insights into the structure, mechanism, and regulation of scavenger mRNA decapping activity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gu, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fabrega, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, SW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lima, CD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 14:67-80</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191879">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12441251</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SMN-mediated assembly of RNPs: a complex story</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meister, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eggert, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cell Biol 12:472-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191807">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10851237</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Specific sequences of the Sm and Sm-like (Lsm) proteins mediate their interaction with the spinal muscular atrophy disease gene product (SMN)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Friesen, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfuss, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:26370-5</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430051">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12138105</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Free poly(A) stimulates capped mRNA translation in vitro through the eIF4G-poly(A)-binding protein interaction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borman, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michel, YM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Malnou, CE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kean, KM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:36818-24</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429874">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19558367</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human Ccr4-Not complexes contain variable deadenylase subunits</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lau, NC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kolkman, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Schaik, FM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mulder, KW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pijnappel, WW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heck, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Timmers, HT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429944">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18441014</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanistic and kinetic analysis of the DcpS scavenger decapping enzyme</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, SW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rajagopal, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patel, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 283:16427-36</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429903">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16281054</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural insight into poly(A) binding and catalytic mechanism of human PARN</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reuter, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lilie, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wahle, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Song, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 24:4082-93</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191895">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10725331</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gemin4. A novel component of the SMN complex that is found in both gems and nucleoli.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Charroux, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellizzoni, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perkinson, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yong, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shevchenko, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfuss, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 148:1177-86</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433047">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17174896</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reconstitution, activities, and structure of the eukaryotic RNA exosome</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greimann, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lima, CD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 127:1223-37</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429833">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14749774</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The enzymes and control of eukaryotic mRNA turnover</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parker, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Song, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Mol Biol 11:121-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191877">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12776181</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction between the small-nuclear-RNA cap hypermethylase and the spinal muscular atrophy protein, survival of motor neuron</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mouaikel, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Narayanan, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verheggen, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matera, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bertrand, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tazi, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bordonne, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO Rep 4:616-22</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430056">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9714706</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A tale of two termini: a functional interaction between the termini of an mRNA is a prerequisite for efficient translation initiation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gallie, DR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gene 216:1-11</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430053">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15355595</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The roles of cytoplasmic poly(A)-binding proteins in regulating gene expression: a developmental perspective</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gorgoni, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gray, NK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brief Funct Genomic Proteomic 3:125-41</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433045">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15231747</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A protein interaction framework for human mRNA degradation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lehner, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanderson, CM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genome Res 14:1315-23</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430007">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11283721</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The cap-to-tail guide to mRNA turnover</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilusz, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wormington, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peltz, SW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 2:237-46</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429975">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19279404</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lsm1-7-Pat1 complex: A link between 3' and 5'-ends in mRNA decay?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tharun, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA Biol 6:</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191851">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9845364</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A novel function for SMN, the spinal muscular atrophy disease gene product, in pre-mRNA splicing</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellizzoni, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kataoka, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Charroux, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfuss, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 95:615-24</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191764">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12065586</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification and characterization of Gemin7, a novel component of the survival of motor neuron complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baccon, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellizzoni, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rappsilber, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfuss, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:31957-62</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429957">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17245413</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The highways and byways of mRNA decay</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garneau, NL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilusz, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilusz, CJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 8:113-26</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_442433">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19225159</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Core exosome-independent roles for Rrp6 in cell cycle progression</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Graham, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiss, DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andrulis, ED</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 20:2242-53</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429931">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10882133</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction between a poly(A)-specific ribonuclease and the 5' cap influences mRNA deadenylation rates in vitro</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gao, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fritz, DT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ford, LP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilusz, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 5:479-88</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429829">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19061636</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The control of mRNA decapping and P-body formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Franks, TM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lykke-Andersen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 32:605-15</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433055">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9099687</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poly(A) tail shortening by a mammalian poly(A)-specific 3'-exoribonuclease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">KÃ¶rner, CG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wahle, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:10448-56</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429946">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15475613</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Messenger RNA decay in mammalian cells: the exonuclease perspective</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fritz, DT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bergman, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kilpatrick, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilusz, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilusz, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Biochem Biophys 41:265-78</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430033">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16051491</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LSm proteins form heptameric rings that bind to RNA via repeating motifs</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khusial, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Plaag, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zieve, GW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Biochem Sci 30:522-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_981612">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17545563</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human cell growth requires a functional cytoplasmic exosome, which is involved in various mRNA decay pathways</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Dijk, EL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schilders, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pruijn, GJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA 13:1027-35</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_191842">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11714716</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gemin5, a novel WD repeat protein component of the SMN complex that binds Sm proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gubitz, AK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mourelatos, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abel, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rappsilber, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfuss, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:5631-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429900">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15711010</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reconstitution of two recombinant LSm protein complexes reveals aspects of their architecture, assembly, and function</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zaric, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chami, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ©migy, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Engel, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ballmer-Hofer, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Winkler, FK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kambach, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:16066-75</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_157696">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15502822</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mapping the dynamic organization of the nuclear pore complex inside single living cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rabut, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Doye, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ellenberg, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Cell Biol 6:1114-21</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433062">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11889047</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CCR4, a 3'-5' poly(A) RNA and ssDNA exonuclease, is the catalytic component of the cytoplasmic deadenylase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chiang, YC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, CL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 21:1414-26</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433075">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15085179</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poly(A)-binding-protein-mediated regulation of hDcp2 decapping in vitro</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khanna, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 23:1968-76</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429880">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12515382</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human LSm1-7 proteins colocalize with the mRNA-degrading enzymes Dcp1/2 and Xrnl in distinct cytoplasmic foci</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ingelfinger, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arndt-Jovin, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LÃ¼hrmann, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Achsel, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA 8:1489-501</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_433061">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10637334</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isolation and characterization of human orthologs of yeast CCR4-NOT complex subunits</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Albert, TK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemaire, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Berkum, NL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gentz, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Collart, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Timmers, HT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 28:809-17</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_197130">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10531003</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newly assembled snRNPs associate with coiled bodies before speckles, suggesting a nuclear snRNP maturation pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sleeman, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lamond, AI</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 9:1065-74</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_430018">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1355481</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Properties of a HeLa cell 3' exonuclease specific for degrading poly(A) tails of mammalian mRNA</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AstrÃ¶m, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AstrÃ¶m, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Virtanen, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 267:18154-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_157698">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12791264</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peering through the pore: nuclear pore complex structure, assembly, and function</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suntharalingam, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wente, SR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Cell 4:775-89</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429916">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16246173</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Decapping the message: a beginning or an end</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiledjian, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Soc Trans 34:35-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429954">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19239894</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The many pathways of RNA degradation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Houseley, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tollervey, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 136:763-76</bp:SOURCE>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>deoxyribonucleotide metabolic pathway</bp:TERM><bp:ID>PW:0000875</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

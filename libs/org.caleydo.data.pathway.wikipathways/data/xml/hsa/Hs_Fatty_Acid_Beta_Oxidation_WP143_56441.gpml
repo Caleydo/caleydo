@@ -1,0 +1,1325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Fatty Acid Beta Oxidation" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="WikiPathways-description">Complete fatty acid beta-oxidation pathway for saturated and unsaturated fatty acids, developed and curated internally by BiGCaT Bioinformatics. 
+
+This pathway was previously split into three parts plus a meta file for statistics. If you still have these you can replace all four with this single pathway.</Comment>
+  <Graphics BoardWidth="1907.333333333333" BoardHeight="2164.735857319761"/>
+  <DataNode TextLabel="TPI1" GraphId="cb3" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TPI1 | triosephosphate isomerase 1"/>
+    <Graphics CenterX="32.60124660954535" CenterY="1005.9536383395302" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7167"/>
+  </DataNode>
+  <DataNode TextLabel="GK" GraphId="e81" Type="GeneProduct" GroupRef="ac6aa">
+    <Comment Source="GenMAPP remarks"/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GK | glycerol kinase"/>
+    <Graphics CenterX="31.601246609545306" CenterY="803.9536383395308" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2710"/>
+  </DataNode>
+  <DataNode TextLabel="GK2" GraphId="cb7" Type="GeneProduct" GroupRef="ac6aa">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GK2 | glycerol kinase 2"/>
+    <Graphics CenterX="31.601246609545306" CenterY="823.9536383395308" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2712"/>
+  </DataNode>
+  <DataNode TextLabel="GPD2" GraphId="bd8" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GPD2 | glycerol-3-phosphate dehydrogenase 2 (mi..."/>
+    <Graphics CenterX="31.601246609545306" CenterY="911.6203050061973" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2820"/>
+  </DataNode>
+  <DataNode TextLabel="CPT2" GraphId="a92" Type="GeneProduct" GroupRef="f6db6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CPT2 | carnitine palmitoyltransferase II"/>
+    <Graphics CenterX="272.2679132762122" CenterY="1026.9536383395302" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1376"/>
+  </DataNode>
+  <DataNode TextLabel="CPT1A" GraphId="dca" Type="GeneProduct" GroupRef="f6db6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CPT1A | carnitine palmitoyltransferase 1A (live..."/>
+    <Graphics CenterX="272.2679132762122" CenterY="986.9536383395304" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1374"/>
+  </DataNode>
+  <DataNode TextLabel="CHKB" GraphId="f16" Type="GeneProduct" GroupRef="f6db6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CHKB | choline kinase beta"/>
+    <Graphics CenterX="272.2679132762122" CenterY="1006.9536383395302" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1120"/>
+  </DataNode>
+  <DataNode TextLabel="SLC25A20" GraphId="d55" Type="GeneProduct" GroupRef="f6db6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLC25A20 | solute carrier family 25 (carnitine/..."/>
+    <Graphics CenterX="272.2679132762122" CenterY="1046.953638339531" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="788"/>
+  </DataNode>
+  <DataNode TextLabel="CRAT" GraphId="d73" Type="GeneProduct" GroupRef="f6db6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CRAT | carnitine acetyltransferase"/>
+    <Graphics CenterX="272.2679132762122" CenterY="966.9536383395306" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1384"/>
+  </DataNode>
+  <DataNode TextLabel="ACSL1" GraphId="d14" Type="GeneProduct" GroupRef="e1b37">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACSL1 | acyl-CoA synthetase long-chain family m..."/>
+    <Graphics CenterX="264.26791327621214" CenterY="812.2869716728643" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2180"/>
+  </DataNode>
+  <DataNode TextLabel="ACAS2" GraphId="caf" Type="GeneProduct" GroupRef="e1b37">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACAS2 | acetyl-Coenzyme A synthetase 2 (ADP for..."/>
+    <Graphics CenterX="264.26791327621214" CenterY="793.2869716728645" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="55902"/>
+  </DataNode>
+  <DataNode TextLabel="ACSL3" GraphId="f83" Type="GeneProduct" GroupRef="e1b37">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACSL3 | acyl-CoA synthetase long-chain family m..."/>
+    <Graphics CenterX="264.26791327621214" CenterY="833.2869716728643" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2181"/>
+  </DataNode>
+  <DataNode TextLabel="ACSL4" GraphId="e54" Type="GeneProduct" GroupRef="e1b37">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACSL4 | acyl-CoA synthetase long-chain family m..."/>
+    <Graphics CenterX="264.26791327621214" CenterY="853.2869716728644" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2182"/>
+  </DataNode>
+  <DataNode TextLabel="ACSL5" GraphId="c86" Type="GeneProduct" GroupRef="e1b37">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACSL5 | acyl-CoA synthetase long-chain family m..."/>
+    <Graphics CenterX="264.26791327621214" CenterY="873.2869716728643" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="51703"/>
+  </DataNode>
+  <DataNode TextLabel="ACSL6" GraphId="d96" Type="GeneProduct" GroupRef="e1b37">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACSL6 | acyl-CoA synthetase long-chain family m..."/>
+    <Graphics CenterX="264.26791327621214" CenterY="893.2869716728643" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23305"/>
+  </DataNode>
+  <DataNode TextLabel="CPT1B" GraphId="def" Type="GeneProduct" GroupRef="f6db6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CPT1B | carnitine palmitoyltransferase 1B (musc..."/>
+    <Graphics CenterX="272.2679132762122" CenterY="1066.9536383395312" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1375"/>
+  </DataNode>
+  <DataNode TextLabel="ACADVL" GraphId="b73" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADVL | acyl-Coenzyme A dehydrogenase very lo..."/>
+    <Graphics CenterX="552.6666666666666" CenterY="717.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="37"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="eab" Type="GeneProduct" GroupRef="ffdf4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="518.6666666666666" CenterY="845.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="aa9" Type="GeneProduct" GroupRef="ffdf4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="518.6666666666666" CenterY="865.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="e19" Type="GeneProduct" GroupRef="be6b8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="521.6666666666666" CenterY="998.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="b51" Type="GeneProduct" GroupRef="be6b8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="521.9166666666666" CenterY="978.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="b7f" Type="GeneProduct" GroupRef="df874">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="579.3333333333334" CenterY="1155.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="ACADL" GraphId="fc3" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADL | acyl-Coenzyme A dehydrogenase long cha..."/>
+    <Graphics CenterX="914.6666666666666" CenterY="715.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="33"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="b80" Type="GeneProduct" GroupRef="e6523">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="882.6666666666665" CenterY="869.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="e48" Type="GeneProduct" GroupRef="c75e8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="882.6666666666665" CenterY="972.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="b4f" Type="GeneProduct" GroupRef="f6993">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="952.6666666666666" CenterY="1150.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="ECHS1" GraphId="f38" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ECHS1 | enoyl Coenzyme A hydratase short chain..."/>
+    <Graphics CenterX="1233.6666666666667" CenterY="845.3333333333334" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1892"/>
+  </DataNode>
+  <DataNode TextLabel="HADHSC" GraphId="b31" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHSC | L-3-hydroxyacyl-Coenzyme A dehydrogena..."/>
+    <Graphics CenterX="1233.6666666666665" CenterY="955.0" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3033"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="b0d" Type="GeneProduct" GroupRef="c1cdb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1298.3333333333333" CenterY="1121.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="LIPE" GraphId="d88" Type="GeneProduct" GroupRef="cb66c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LIPE | lipase hormone-sensitive"/>
+    <Graphics CenterX="668.6666666666666" CenterY="354.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3991"/>
+  </DataNode>
+  <DataNode TextLabel="LIPC" GraphId="d4c" Type="GeneProduct" GroupRef="cb66c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LIPC | lipase hepatic"/>
+    <Graphics CenterX="668.6666666666666" CenterY="334.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3990"/>
+  </DataNode>
+  <DataNode TextLabel="PNPLA2" GraphId="a7c" Type="GeneProduct" GroupRef="cb66c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PNPLA2 | patatin-like phospholipase domain cont..."/>
+    <Graphics CenterX="668.6666666666666" CenterY="394.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="57104"/>
+  </DataNode>
+  <DataNode TextLabel="LIPF" GraphId="e9c" Type="GeneProduct" GroupRef="cb66c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LIPF | lipase gastric"/>
+    <Graphics CenterX="668.6666666666666" CenterY="374.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8513"/>
+  </DataNode>
+  <DataNode TextLabel="LPL" GraphId="fcb" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LPL | lipoprotein lipase"/>
+    <Graphics CenterX="224.26791327621214" CenterY="751.9536383395309" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4023"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="f06" Type="GeneProduct" GroupRef="f6993">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="952.6666666666666" CenterY="1130.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="a03" Type="GeneProduct" GroupRef="df874">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="579.3333333333334" CenterY="1135.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="ACADL" GraphId="ece" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADL | acyl-Coenzyme A dehydrogenase long cha..."/>
+    <Graphics CenterX="1270.6666666666667" CenterY="718.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="33"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="c07" Type="GeneProduct" GroupRef="e6523">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="882.6666666666665" CenterY="849.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="ef3" Type="GeneProduct" GroupRef="c75e8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="882.6666666666664" CenterY="992.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="f74" Type="GeneProduct" GroupRef="c1cdb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1298.3333333333333" CenterY="1101.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="ACADM" GraphId="aa3" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADM | acyl-Coenzyme A dehydrogenase C-4 to C..."/>
+    <Graphics CenterX="1609.3333333333333" CenterY="720.3333333333334" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="34"/>
+  </DataNode>
+  <DataNode TextLabel="ECHS1" GraphId="e47" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ECHS1 | enoyl Coenzyme A hydratase short chain..."/>
+    <Graphics CenterX="1568.0" CenterY="858.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1892"/>
+  </DataNode>
+  <DataNode TextLabel="HADHSC" GraphId="cb0" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHSC | L-3-hydroxyacyl-Coenzyme A dehydrogena..."/>
+    <Graphics CenterX="1568.0" CenterY="978.6666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3033"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="e4d" Type="GeneProduct" GroupRef="c39e7">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1644.6666666666667" CenterY="1158.0" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="ACADM" GraphId="a5b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADM | acyl-Coenzyme A dehydrogenase C-4 to C..."/>
+    <Graphics CenterX="534.3333333333334" CenterY="1428.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="34"/>
+  </DataNode>
+  <DataNode TextLabel="ECHS1" GraphId="d92" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ECHS1 | enoyl Coenzyme A hydratase short chain..."/>
+    <Graphics CenterX="534.3333333333334" CenterY="1589.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1892"/>
+  </DataNode>
+  <DataNode TextLabel="HADHSC" GraphId="c02" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHSC | L-3-hydroxyacyl-Coenzyme A dehydrogena..."/>
+    <Graphics CenterX="534.3333333333334" CenterY="1713.6666666666667" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3033"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="b37" Type="GeneProduct" GroupRef="ea8b1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="606.3333333333334" CenterY="1898.3333333333333" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="ACADS" GraphId="e6e" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADS | acyl-Coenzyme A dehydrogenase C-2 to C..."/>
+    <Graphics CenterX="972.0" CenterY="1459.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="35"/>
+  </DataNode>
+  <DataNode TextLabel="ECHS1" GraphId="aef" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ECHS1 | enoyl Coenzyme A hydratase short chain..."/>
+    <Graphics CenterX="951.0" CenterY="1589.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1892"/>
+  </DataNode>
+  <DataNode TextLabel="HADHSC" GraphId="db7" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHSC | L-3-hydroxyacyl-Coenzyme A dehydrogena..."/>
+    <Graphics CenterX="951.0" CenterY="1713.6666666666667" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3033"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="ceb" Type="GeneProduct" GroupRef="d0c09">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1023.0" CenterY="1900.3333333333333" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="fb4" Type="GeneProduct" GroupRef="c39e7">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1644.6666666666667" CenterY="1138.0" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="e21" Type="GeneProduct" GroupRef="ea8b1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="606.3333333333334" CenterY="1878.3333333333333" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="f07" Type="GeneProduct" GroupRef="d0c09">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1023.0" CenterY="1880.3333333333333" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="ACADS" GraphId="a9b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADS | acyl-Coenzyme A dehydrogenase C-2 to C..."/>
+    <Graphics CenterX="1367.0" CenterY="1455.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="35"/>
+  </DataNode>
+  <DataNode TextLabel="ECHS1" GraphId="cfa" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ECHS1 | enoyl Coenzyme A hydratase short chain..."/>
+    <Graphics CenterX="1348.0" CenterY="1587.3333333333333" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1892"/>
+  </DataNode>
+  <DataNode TextLabel="HADHSC" GraphId="e2c" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHSC | L-3-hydroxyacyl-Coenzyme A dehydrogena..."/>
+    <Graphics CenterX="1348.0" CenterY="1707.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3033"/>
+  </DataNode>
+  <DataNode TextLabel="GCDH" GraphId="af4" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GCDH | glutaryl-Coenzyme A dehydrogenase"/>
+    <Graphics CenterX="1583.3333333333333" CenterY="1488.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2639"/>
+  </DataNode>
+  <DataNode TextLabel="DLD" GraphId="c92" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DLD | dihydrolipoamide dehydrogenase (E3 compon..."/>
+    <Graphics CenterX="1809.6666666666667" CenterY="1467.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1738"/>
+  </DataNode>
+  <DataNode TextLabel="ACAT1" GraphId="f7e" Type="GeneProduct" GroupRef="ee6a5">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACAT1 | acetyl-Coenzyme A acetyltransferase 1 (..."/>
+    <Graphics CenterX="1348.0" CenterY="1823.3333333333333" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="38"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="bfe" Type="GeneProduct" GroupRef="ee6a5">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1348.0" CenterY="1843.3333333333333" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="b2f" Type="GeneProduct" GroupRef="ee6a5">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1348.0" CenterY="1863.3333333333333" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="df7" Type="GeneProduct" GroupRef="b102e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1434.6666666666667" CenterY="194.66666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="a72" Type="GeneProduct" GroupRef="b102e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1434.6666666666667" CenterY="214.66666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="ACADL" GraphId="d69" Type="GeneProduct" GroupRef="b102e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADL | acyl-Coenzyme A dehydrogenase long cha..."/>
+    <Graphics CenterX="1434.6666666666667" CenterY="174.66666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="33"/>
+  </DataNode>
+  <DataNode TextLabel="ACADL" GraphId="d6a" Type="GeneProduct" GroupRef="aefc6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADL | acyl-Coenzyme A dehydrogenase long cha..."/>
+    <Graphics CenterX="1434.6666666666667" CenterY="466.6666666666667" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="33"/>
+  </DataNode>
+  <DataNode TextLabel="HADHA" GraphId="ca4" Type="GeneProduct" GroupRef="aefc6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHA | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1434.6666666666667" CenterY="486.6666666666667" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3030"/>
+  </DataNode>
+  <DataNode TextLabel="HADHB" GraphId="dc4" Type="GeneProduct" GroupRef="aefc6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HADHB | hydroxyacyl-Coenzyme A dehydrogenase/3-..."/>
+    <Graphics CenterX="1434.6666666666667" CenterY="506.6666666666667" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3032"/>
+  </DataNode>
+  <DataNode TextLabel="DCI" GraphId="ad8" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DCI | dodecenoyl-Coenzyme A delta isomerase (3..."/>
+    <Graphics CenterX="1434.6666666666667" CenterY="340.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1632"/>
+  </DataNode>
+  <DataNode TextLabel="ACADM" GraphId="ffb" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACADM | acyl-Coenzyme A dehydrogenase C-4 to C..."/>
+    <Graphics CenterX="1628.0" CenterY="482.6666666666667" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="34"/>
+  </DataNode>
+  <DataNode TextLabel="DECR1" GraphId="d32" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DECR1 | 24-dienoyl CoA reductase 1 mitochondr..."/>
+    <Graphics CenterX="1850.6666666666665" CenterY="431.3333333333333" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1666"/>
+  </DataNode>
+  <DataNode TextLabel="DCI" GraphId="d9c" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DCI | dodecenoyl-Coenzyme A delta isomerase (3..."/>
+    <Graphics CenterX="1802.6666666666665" CenterY="682.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1632"/>
+  </DataNode>
+  <DataNode TextLabel="Glycerol" GraphId="abc" Type="Metabolite">
+    <Graphics CenterX="114.60124660954544" CenterY="766.6203050061976" Width="68.53333333333333" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="56-81-5"/>
+  </DataNode>
+  <DataNode TextLabel="Dihydroxyacetone Phosphate" GraphId="cf6" Type="Metabolite">
+    <Graphics CenterX="114.60124660954543" CenterY="962.2869716728637" Width="227.73333333333332" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="57-04-5"/>
+  </DataNode>
+  <DataNode TextLabel="Acyl-CoA" GraphId="e29" Type="Metabolite">
+    <Graphics CenterX="372.6666666666667" CenterY="891.3333333333334" Width="74.13333333333334" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="9029-97-4"/>
+  </DataNode>
+  <DataNode TextLabel="Glyceraldehyde-3-Phosphate" GraphId="a98" Type="Metabolite">
+    <Graphics CenterX="114.60124660954543" CenterY="1057.6203050061977" Width="223.73333333333332" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="591-57-1"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="f54" Type="Metabolite">
+    <Graphics CenterX="466.0" CenterY="1174.6666666666667" Width="88.53333333333333" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="c08" Type="Metabolite">
+    <Graphics CenterX="859.6666666666666" CenterY="1202.0" Width="88.53333333333333" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Lauroyl-CoA" GraphId="d93" Type="Metabolite">
+    <Graphics CenterX="1082.6666666666667" CenterY="1188.0" Width="98.93333333333334" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="6244-92-4"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="fdf" Type="Metabolite">
+    <Graphics CenterX="1214.3333333333333" CenterY="1178.6666666666667" Width="88.53333333333333" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="ebe" Type="Metabolite">
+    <Graphics CenterX="1540.6666666666667" CenterY="1207.3333333333333" Width="88.53333333333333" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="c41" Type="Metabolite">
+    <Graphics CenterX="505.3333333333333" CenterY="1943.3333333333333" Width="88.53333333333333" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="a31" Type="Metabolite">
+    <Graphics CenterX="922.0" CenterY="1943.3333333333333" Width="88.53333333333333" Height="19.2" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Acetoacetyl-CoA" GraphId="f0d" Type="Metabolite">
+    <Graphics CenterX="1408.0" CenterY="1778.0" Width="132.33333333333334" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="1420-36-6"/>
+  </DataNode>
+  <DataNode TextLabel="Glutaryl-CoA" GraphId="a8c" Type="Metabolite">
+    <Graphics CenterX="1744.6666666666667" CenterY="1538.0" Width="102.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="103192-48-9"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="a4f" Type="Metabolite">
+    <Graphics CenterX="1408.0" CenterY="1938.0" Width="90.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Linoleoyl-CoA" GraphId="c6d" Type="Metabolite">
+    <Graphics CenterX="1377.3333333333333" CenterY="95.33333333333333" Width="113.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="40757-80-0"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="b74" Type="Metabolite">
+    <Graphics CenterX="1220.0" CenterY="527.3333333333334" Width="90.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="f33" Type="Metabolite">
+    <Graphics CenterX="1238.0" CenterY="197.33333333333334" Width="90.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="72-89-9"/>
+  </DataNode>
+  <DataNode TextLabel="cis,cis-3,6-Dodecadienoyl-CoA" GraphId="ace05" Type="Metabolite">
+    <Graphics CenterX="1377.0" CenterY="283.0" Width="168.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:28002"/>
+  </DataNode>
+  <DataNode TextLabel="2-trans-4-cis-decadienoyl-CoA" GraphId="beea6" Type="Metabolite">
+    <Graphics CenterX="1779.5" CenterY="329.0" Width="167.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:29119"/>
+  </DataNode>
+  <DataNode TextLabel="3-trans-decenoyl-CoA" GraphId="f91b4" Type="Metabolite">
+    <Graphics CenterX="1780.0" CenterY="557.0" Width="124.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:29126"/>
+  </DataNode>
+  <DataNode TextLabel="Trans-Dec-2-enoyl-CoA" GraphId="b172b" Type="Metabolite">
+    <Graphics CenterX="1643.0" CenterY="801.0" Width="124.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:10723"/>
+  </DataNode>
+  <DataNode TextLabel="(S)-3-Hydroxydecanoyl-CoA" GraphId="e58d2" Type="Metabolite">
+    <Graphics CenterX="1644.875" CenterY="925.25" Width="146.25" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:28325"/>
+  </DataNode>
+  <DataNode TextLabel="L-Glycerol-3-Phosphate" GraphId="dbc47" Type="Metabolite">
+    <Graphics CenterX="113.60124660954543" CenterY="876.2869716728643" Width="126.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:15978"/>
+  </DataNode>
+  <DataNode TextLabel="Palmitoyl-CoA" GraphId="ec0c5" Type="Metabolite">
+    <Graphics CenterX="372.0" CenterY="1060.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:15525"/>
+  </DataNode>
+  <DataNode TextLabel="Triacylglycerol" GraphId="fabf6" Type="Metabolite">
+    <Graphics CenterX="226.60124660954537" CenterY="683.2869716728644" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:17855"/>
+  </DataNode>
+  <DataNode TextLabel="(S)-3-Hydroxyhexadecanoyl-CoA" GraphId="d5291" Type="Metabolite">
+    <Graphics CenterX="578.0" CenterY="925.0" Width="162.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:27402"/>
+  </DataNode>
+  <DataNode TextLabel="3-Oxopalmitoyl-CoA" GraphId="c78e7" Type="Metabolite">
+    <Graphics CenterX="578.5" CenterY="1052.0" Width="107.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:15491"/>
+  </DataNode>
+  <DataNode TextLabel="Myristoyl-CoA" GraphId="a22ba" Type="Metabolite">
+    <Graphics CenterX="701.0" CenterY="1174.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:15532"/>
+  </DataNode>
+  <DataNode TextLabel="(S)-3-Hydroxytetradecanoyl-CoA" GraphId="a27ae" Type="Metabolite">
+    <Graphics CenterX="953.5" CenterY="928.0" Width="159.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:27466"/>
+  </DataNode>
+  <DataNode TextLabel="2-trans-dodecenoyl-CoA" GraphId="a9a26" Type="Metabolite">
+    <Graphics CenterX="1297.0" CenterY="808.0" Width="128.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:15471"/>
+  </DataNode>
+  <DataNode TextLabel="Decanoyl-CoA" GraphId="c62de" Type="Metabolite">
+    <Graphics CenterX="1381.0" CenterY="1192.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:28493"/>
+  </DataNode>
+  <DataNode TextLabel="Trans-Oct-2-enoyl-CoA" GraphId="a0c90" Type="Metabolite">
+    <Graphics CenterX="607.5" CenterY="1536.0" Width="127.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:27537"/>
+  </DataNode>
+  <DataNode TextLabel="(S)-3-Hydroxyoctanoyl-CoA" GraphId="ea739" Type="Metabolite">
+    <Graphics CenterX="605.0" CenterY="1663.0" Width="134.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:28632"/>
+  </DataNode>
+  <DataNode TextLabel="3-Oxo-octanoyl-CoA" GraphId="b6b37" Type="Metabolite">
+    <Graphics CenterX="604.375" CenterY="1783.25" Width="105.25" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:28264"/>
+  </DataNode>
+  <DataNode TextLabel="Hexanoyl-CoA" GraphId="daf8d" Type="Metabolite">
+    <Graphics CenterX="726.0" CenterY="1944.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:27540"/>
+  </DataNode>
+  <DataNode TextLabel="Trans-Hex-2-enoyl-CoA" GraphId="d35a9" Type="Metabolite">
+    <Graphics CenterX="1021.0" CenterY="1539.0" Width="116.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:28706"/>
+  </DataNode>
+  <DataNode TextLabel="3-Oxohexanoyl-CoA" GraphId="bb576" Type="Metabolite">
+    <Graphics CenterX="1021.0" CenterY="1782.0" Width="106.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:27648"/>
+  </DataNode>
+  <DataNode TextLabel="Butanoyl-CoA" GraphId="bf98b" Type="Metabolite">
+    <Graphics CenterX="1128.0" CenterY="1943.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:15517"/>
+  </DataNode>
+  <DataNode TextLabel="(S)-3-Hydroxybutanoyl-CoA" GraphId="d85b0" Type="Metabolite">
+    <Graphics CenterX="1407.5" CenterY="1657.0" Width="131.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="CHEBI:15453"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="dd235" Type="Pathway">
+    <Graphics CenterX="295.14305548326644" CenterY="1300.0096679185947" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="a14f9" Type="Pathway">
+    <Graphics CenterX="114.19128093651975" CenterY="1142.8831217251488" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32769" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="f7598" Type="Pathway">
+    <Graphics CenterX="849.788987385102" CenterY="1293.3458047660772" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32770" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="d0eb2" Type="Pathway">
+    <Graphics CenterX="1206.8565475993341" CenterY="1276.0362420888719" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32771" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="c361a" Type="Pathway">
+    <Graphics CenterX="1537.7109165313768" CenterY="1273.5508051956674" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32772" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="e339d" Type="Pathway">
+    <Graphics CenterX="1412.4114062641743" CenterY="2023.8059817572237" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32773" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="dbff2" Type="Pathway">
+    <Graphics CenterX="897.0955562030023" CenterY="2034.4424304226018" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32774" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <DataNode TextLabel="TCA cycle" GraphId="aaee7" Type="Pathway">
+    <Graphics CenterX="487.70902312605364" CenterY="2007.4716447396368" Width="67.05290102389085" Height="44.86860068259419" ZOrder="32775" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <Line GraphId="dab47">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="114.60124660954544" Y="776.2203050061976" GraphRef="abc" RelX="0.0" RelY="1.0"/>
+      <Point X="114.60124660954543" Y="865.6203050061972" ArrowHead="Arrow"/>
+      <Anchor Position="0.41943397731365195" Shape="None" GraphId="ba874"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a041a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="257.0679132762121" Y="693.8869716728643"/>
+      <Point X="352.3333333333333" Y="713.7333333333333" GraphRef="e43" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="c1653"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7585">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="198.80124660954542" Y="693.8869716728643"/>
+      <Point X="131.73457994287878" Y="757.0203050061975" GraphRef="abc" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="f0cab"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c0ea1">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="114.60124660954541" Y="1067.2203050061976" GraphRef="a98" RelX="0.0" RelY="1.0"/>
+      <Point X="114.19128093651975" Y="1120.4488213838517" GraphRef="a14f9" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a9b50">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="114.60124660954543" Y="883.8869716728642"/>
+      <Point X="114.60124660954541" Y="952.6869716728637" GraphRef="cf6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="f0eb0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a09fc">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="114.60124660954541" Y="971.8869716728638" GraphRef="cf6" RelX="0.0" RelY="1.0"/>
+      <Point X="114.60124660954541" Y="1048.0203050061978" GraphRef="a98" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.43870402802101577" Shape="None" GraphId="c85b7"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="faab3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="372.66666666666663" Y="732.9333333333334" GraphRef="e43" RelX="0.0" RelY="1.0"/>
+      <Point X="372.6666666666667" Y="881.7333333333333" GraphRef="e29" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4409090909090909" Shape="None" GraphId="d1e9f"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5434">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="372.6666666666667" Y="900.9333333333334" GraphRef="e29" RelX="0.0" RelY="1.0"/>
+      <Point X="372.66666666666674" Y="1050.4" ArrowHead="Arrow"/>
+      <Anchor Position="0.4669084315503173" Shape="None" GraphId="fd3b3"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b9f85">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="412.0" Y="1060.0" GraphRef="ec0c5" RelX="1.0" RelY="0.0"/>
+      <Point X="579.3333333333334" Y="791.7333333333333" GraphRef="e5b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.8973380701524157" Shape="None" GraphId="f23f8"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a265e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="552.6666666666666" Y="727.0" GraphRef="b73" RelX="0.0" RelY="1.0"/>
+      <Point X="550.5073194978223" Y="771.7333333333333" GraphRef="f23f8" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bebf8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="579.3333333333334" Y="810.9333333333334" GraphRef="e5b" RelX="0.0" RelY="1.0"/>
+      <Point X="579.3333333333333" Y="917.0666666666666" ArrowHead="Arrow"/>
+      <Anchor Position="0.42258064516129035" Shape="None" GraphId="bbc65"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b55a4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="579.3333333333333" Y="936.2666666666667"/>
+      <Point X="579.3333333333335" Y="1043.7333333333336" ArrowHead="Arrow"/>
+      <Anchor Position="0.4967741935483871" Shape="None" GraphId="e459c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b300c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="618.2666666666669" Y="1062.9333333333334"/>
+      <Point X="706.3333333333334" Y="1165.066666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.29363244582304876" Shape="None" GraphId="bd5c1"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c14ff">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="540.4000000000001" Y="1062.9333333333334"/>
+      <Point X="466.0" Y="1165.066666666667" GraphRef="f54" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3217762349149555" Shape="None" GraphId="a6ad8"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5cdf">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="741.0" Y="1174.0" GraphRef="a22ba" RelX="1.0" RelY="0.0"/>
+      <Point X="952.6666666666666" Y="791.0666666666666" GraphRef="de2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.9051322501478509" Shape="None" GraphId="caad4"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b9933">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="952.6666666666666" Y="810.2666666666667" GraphRef="de2" RelX="0.0" RelY="1.0"/>
+      <Point X="952.6666666666665" Y="917.7333333333333" ArrowHead="Arrow"/>
+      <Anchor Position="0.45347394540942926" Shape="None" GraphId="c9fbc"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c3062">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="952.6666666666665" Y="936.9333333333334"/>
+      <Point X="952.6666666666667" Y="1037.7333333333336" GraphRef="c3c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4470899470899471" Shape="None" GraphId="bcd7d"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e2953">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="908.9333333333334" Y="1056.9333333333334" GraphRef="c3c" RelX="-0.5" RelY="1.0"/>
+      <Point X="859.6666666666666" Y="1192.4" GraphRef="c08" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.30788734894853537" Shape="None" GraphId="d0124"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dbf63">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="996.4000000000001" Y="1056.9333333333334" GraphRef="c3c" RelX="0.5" RelY="1.0"/>
+      <Point X="1082.6666666666667" Y="1178.4" GraphRef="d93" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.2446012510712593" Shape="None" GraphId="e6b0a"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f42d7">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="1132.1333333333334" Y="1188.0" GraphRef="d93" RelX="1.0" RelY="0.0"/>
+      <Point X="1297.0" Y="798.0" GraphRef="a9a26" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.9205043746488241" Shape="None" GraphId="c6cc0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d01fb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1298.3333333333333" Y="808.6"/>
+      <Point X="1298.333333333333" Y="900.4" GraphRef="bff" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="ced7a"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df29d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1298.333333333333" Y="919.6" GraphRef="bff" RelX="0.0" RelY="1.0"/>
+      <Point X="1298.3333333333333" Y="1009.4000000000001" GraphRef="e95" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="d3e70"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0b23">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1254.6" Y="1028.6" GraphRef="e95" RelX="-0.5" RelY="1.0"/>
+      <Point X="1214.3333333333333" Y="1169.066666666667" GraphRef="fdf" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3111554004618815" Shape="None" GraphId="ea603"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f5f38">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1342.0666666666666" Y="1028.6" GraphRef="e95" RelX="0.5" RelY="1.0"/>
+      <Point X="1382.666666666667" Y="1184.7333333333336" ArrowHead="Arrow"/>
+      <Anchor Position="0.2805381631515178" Shape="None" GraphId="d1393"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="db955">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="466.0" Y="1184.2666666666669" GraphRef="f54" RelX="0.0" RelY="1.0"/>
+      <Point X="295.14305548326644" Y="1277.5753675772976" GraphRef="dd235" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eb7c1">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="859.6666666666666" Y="1211.6" GraphRef="c08" RelX="0.0" RelY="1.0"/>
+      <Point X="849.788987385102" Y="1270.91150442478" GraphRef="f7598" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d9e2a">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1214.3333333333333" Y="1188.2666666666669" GraphRef="fdf" RelX="0.0" RelY="1.0"/>
+      <Point X="1206.8565475993341" Y="1253.6019417475748" GraphRef="d0eb2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0019">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="1421.0" Y="1192.0" GraphRef="c62de" RelX="1.0" RelY="0.0"/>
+      <Point X="1644.6666666666665" Y="791.0666666666666" ArrowHead="Arrow"/>
+      <Anchor Position="0.9164223154139662" Shape="None" GraphId="f013b"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c0e44">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1644.6666666666665" Y="810.2666666666667"/>
+      <Point X="1644.6666666666665" Y="917.7333333333333" ArrowHead="Arrow"/>
+      <Anchor Position="0.45037220843672454" Shape="None" GraphId="b9a1f"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b13dc">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1644.6666666666665" Y="936.9333333333334"/>
+      <Point X="1644.6666666666665" Y="1036.7333333333336" GraphRef="fb2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.414021164021164" Shape="None" GraphId="ba6bd"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bedac">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1610.3333333333333" Y="1055.9333333333334" GraphRef="fb2" RelX="-0.5" RelY="1.0"/>
+      <Point X="1540.6666666666667" Y="1197.7333333333336" GraphRef="ebe" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.29358788697627985" Shape="None" GraphId="b9e78"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fb065">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1678.9999999999998" Y="1055.9333333333334" GraphRef="fb2" RelX="0.5" RelY="1.0"/>
+      <Point X="1767.3333333333333" Y="1198.4" GraphRef="aa5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.2560495057325503" Shape="None" GraphId="ee27a"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e570f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="605.3333333333334" Y="1546.2666666666669"/>
+      <Point X="605.3333333333334" Y="1653.7333333333336" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="fbe6c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bee2c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="605.3333333333334" Y="1672.9333333333334"/>
+      <Point X="605.3333333333333" Y="1773.7333333333336" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="e6714"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b0967">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="565.8" Y="1792.9333333333334"/>
+      <Point X="505.33333333333337" Y="1933.7333333333336" GraphRef="c41" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="d7c32"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c8171">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="644.8666666666666" Y="1792.9333333333334"/>
+      <Point X="725.3333333333334" Y="1933.7333333333336" ArrowHead="Arrow"/>
+      <Anchor Position="0.3434123777143079" Shape="None" GraphId="b478a"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d950c">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="766.0" Y="1944.0" GraphRef="daf8d" RelX="1.0" RelY="0.0"/>
+      <Point X="1021.0" Y="1529.0" GraphRef="d35a9" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.900507974773456" Shape="None" GraphId="ac316"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ec56e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1022.0" Y="1546.2666666666669"/>
+      <Point X="1022.0" Y="1653.7333333333336" GraphRef="a9d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="f59af"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4c47">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1022.0" Y="1672.9333333333334" GraphRef="a9d" RelX="0.0" RelY="1.0"/>
+      <Point X="1022.0" Y="1773.7333333333336" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="e0d6f"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="deded">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="983.0666666666667" Y="1792.9333333333334"/>
+      <Point X="922.0" Y="1933.7333333333336" GraphRef="a31" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="aa817"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b0ba2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1060.9333333333334" Y="1792.9333333333334"/>
+      <Point X="1128.6666666666665" Y="1933.7333333333336" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="bd490"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fadc3">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1540.6666666666667" Y="1216.9333333333334" GraphRef="ebe" RelX="0.0" RelY="1.0"/>
+      <Point X="1537.7109165313768" Y="1251.1165048543703" GraphRef="c361a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de99d">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="505.33333333333337" Y="1952.9333333333334" GraphRef="c41" RelX="0.0" RelY="1.0"/>
+      <Point X="487.7090231260537" Y="1985.0373443983397" GraphRef="aaee7" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dd73e">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="922.0" Y="1952.9333333333334" GraphRef="a31" RelX="0.0" RelY="1.0"/>
+      <Point X="897.0955562030023" Y="2012.008130081305" GraphRef="dbff2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5659">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1408.0" Y="1547.5" GraphRef="f19" RelX="0.0" RelY="1.0"/>
+      <Point X="1408.0" Y="1648.5" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="a4693"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f885d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1408.0" Y="1667.5"/>
+      <Point X="1408.0" Y="1768.5" GraphRef="f0d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="ab3a3"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e1025">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1744.6666666666665" Y="1419.5" GraphRef="d17" RelX="0.0" RelY="1.0"/>
+      <Point X="1744.6666666666665" Y="1528.5" GraphRef="a8c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.43577981651376146" Shape="None" GraphId="dbb04"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0914">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1693.5" Y="1538.0" GraphRef="a8c" RelX="-1.0" RelY="0.0"/>
+      <Point X="1460.1666666666665" Y="1538.0" GraphRef="f19" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.47296322999279017" Shape="None" GraphId="b37f8"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c1a7f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1408.0" Y="1787.5" GraphRef="f0d" RelX="0.0" RelY="1.0"/>
+      <Point X="1408.0" Y="1928.5" GraphRef="a4f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="a8cbc"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0271">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1408.0" Y="1947.5" GraphRef="a4f" RelX="0.0" RelY="1.0"/>
+      <Point X="1412.4114062641743" Y="2001.3716814159266" GraphRef="e339d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b694d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="1168.0" Y="1943.0" GraphRef="bf98b" RelX="1.0" RelY="0.0"/>
+      <Point X="1408.0" Y="1528.5" GraphRef="f19" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.9120697429730948" Shape="None" GraphId="b5385"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e3e31">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1377.333333333333" Y="104.83333333333333" GraphRef="c6d" RelX="0.0" RelY="1.0"/>
+      <Point X="1377.333333333333" Y="274.8333333333333" ArrowHead="Arrow"/>
+      <Anchor Position="0.5306122448979592" Shape="None" GraphId="fb24b"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3bc2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1377.333333333333" Y="293.8333333333333"/>
+      <Point X="1377.333333333333" Y="409.1666666666667" GraphRef="ef8" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="e4064"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b9fe6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1377.333333333333" Y="428.1666666666667" GraphRef="ef8" RelX="0.0" RelY="1.0"/>
+      <Point X="1377.333333333333" Y="575.8333333333334" GraphRef="c15" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="c8444"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2191">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1415.9166666666663" Y="575.8333333333334" GraphRef="c15" RelX="0.5" RelY="-1.0"/>
+      <Point X="1721.8333333333333" Y="340.1666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.5911319012798141" Shape="None" GraphId="fc298"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e7011">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1315.7499999999998" Y="428.1666666666667" GraphRef="ef8" RelX="-0.5" RelY="1.0"/>
+      <Point X="1242.5833333333333" Y="517.8333333333334" GraphRef="b74" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dc722">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1780.6666666666665" Y="340.1666666666667"/>
+      <Point X="1780.6666666666665" Y="551.8333333333334" ArrowHead="Arrow"/>
+      <Anchor Position="0.43070866141732284" Shape="None" GraphId="d278c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c06ae">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1780.6666666666665" Y="570.8333333333334"/>
+      <Point X="1689.9999999999998" Y="791.0666666666666" ArrowHead="Arrow"/>
+      <Anchor Position="0.37298625533142465" Shape="None" GraphId="c7cac"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ddbbb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1348.9999999999998" Y="104.83333333333333" GraphRef="c6d" RelX="-0.5" RelY="1.0"/>
+      <Point X="1260.5833333333333" Y="187.83333333333334" GraphRef="f33" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a387e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="1767.3333333333333" Y="1217.6" GraphRef="aa5" RelX="0.0" RelY="1.0"/>
+      <Point X="607.5" Y="1526.0" GraphRef="a0c90" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.9329993646532864" Shape="None" GraphId="d852e"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b7c2c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="66.26791327621197" Y="813.9536383395308" GraphRef="eeec7" RelX="1.0" RelY="0.0"/>
+      <Point X="114.60124660954544" Y="813.7177025780379" GraphRef="ba874" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d262e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="205.9345799428788" Y="741.9536383395309" GraphRef="fcb" RelX="-0.5" RelY="-1.0"/>
+      <Point X="171.97457994287876" Y="719.1403050061977" GraphRef="f0cab" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ba0c8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="242.60124660954548" Y="741.9536383395309" GraphRef="fcb" RelX="0.5" RelY="-1.0"/>
+      <Point X="295.17408129906056" Y="701.8255163370519" GraphRef="c1653" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f32ff">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="58.26791327621197" Y="911.6203050061973" GraphRef="bd8" RelX="1.0" RelY="0.0"/>
+      <Point X="114.60124660954543" Y="911.406971672864" GraphRef="f0eb0" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ae7ae">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="59.267913276212006" Y="1005.9536383395302" GraphRef="cb3" RelX="1.0" RelY="0.0"/>
+      <Point X="114.60124660954541" Y="1005.2869716728641" GraphRef="c85b7" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a5fd3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="298.9345799428788" Y="843.2869716728644" GraphRef="bf69a" RelX="1.0" RelY="0.0"/>
+      <Point X="372.66666666666663" Y="798.5406060606061" GraphRef="d1e9f" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c98ce">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="316.9345799428789" Y="1016.9536383395309" GraphRef="e6daa" RelX="1.0" RelY="0.0"/>
+      <Point X="372.6666666666667" Y="970.7205802357208" GraphRef="fd3b3" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c78e8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="555.3333333333334" Y="1117.6666666666667" GraphRef="b34cb" RelX="-0.5" RelY="-1.0"/>
+      <Point X="516.4598481223273" Y="1095.7974127926477" GraphRef="a6ad8" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d29b7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="603.3333333333334" Y="1117.6666666666667" GraphRef="b34cb" RelX="0.5" RelY="-1.0"/>
+      <Point X="644.1258973954833" Y="1092.9229938000608" GraphRef="bd5c1" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eab09">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="553.3333333333333" Y="855.6666666666666" GraphRef="adc6a" RelX="1.0" RelY="0.0"/>
+      <Point X="579.3333333333334" Y="855.7832258064516" GraphRef="bbc65" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d3a00">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="556.5833333333333" Y="988.0" GraphRef="d7c72" RelX="1.0" RelY="0.0"/>
+      <Point X="579.3333333333334" Y="989.6533333333334" GraphRef="e459c" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ab781">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="914.6666666666667" Y="725.0" GraphRef="fc3" RelX="0.0" RelY="1.0"/>
+      <Point X="912.4635926104928" Y="771.0666666666666" GraphRef="caad4" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c982a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="917.3333333333333" Y="859.0" GraphRef="c6581" RelX="1.0" RelY="0.0"/>
+      <Point X="952.6666666666666" Y="859.0" GraphRef="c9fbc" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ae37b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="917.3333333333333" Y="982.6666666666666" GraphRef="ca83d" RelX="1.0" RelY="0.0"/>
+      <Point X="952.6666666666666" Y="982.0000000000001" GraphRef="bcd7d" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="abbb7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="928.6666666666666" Y="1112.6666666666667" GraphRef="a9c06" RelX="-0.5" RelY="-1.0"/>
+      <Point X="893.7647499418022" Y="1098.6418062042283" GraphRef="d0124" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e0740">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="976.6666666666666" Y="1112.6666666666667" GraphRef="a9c06" RelX="0.5" RelY="-1.0"/>
+      <Point X="1017.5009345924141" Y="1086.6442319634557" GraphRef="e6b0a" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d61e6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1270.6666666666665" Y="728.0" GraphRef="ece" RelX="0.0" RelY="1.0"/>
+      <Point X="1269.7107023327637" Y="778.0" GraphRef="c6cc0" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7691">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1260.333333333333" Y="845.3333333333334" GraphRef="f38" RelX="1.0" RelY="0.0"/>
+      <Point X="1298.3333333333333" Y="845.32" GraphRef="ced7a" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e69b6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1267.0" Y="955.0" GraphRef="b31" RelX="1.0" RelY="0.0"/>
+      <Point X="1298.333333333333" Y="955.5200000000001" GraphRef="d3e70" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d94e6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1274.3333333333333" Y="1083.3333333333333" GraphRef="d256a" RelX="-0.5" RelY="-1.0"/>
+      <Point X="1242.070809208068" Y="1072.3069619182124" GraphRef="ea603" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="acca2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1322.3333333333333" Y="1083.3333333333333" GraphRef="d256a" RelX="0.5" RelY="-1.0"/>
+      <Point X="1353.4565160906184" Y="1072.401358540057" GraphRef="d1393" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="be3c6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1609.333333333333" Y="730.3333333333334" GraphRef="aa3" RelX="0.0" RelY="1.0"/>
+      <Point X="1592.4640448742298" Y="791.0666666666666" GraphRef="f013b" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af13e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1601.3333333333335" Y="978.6666666666666" GraphRef="cb0" RelX="1.0" RelY="0.0"/>
+      <Point X="1644.6666666666665" Y="978.2526455026457" GraphRef="ba6bd" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b10bb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1594.6666666666665" Y="858.6666666666666" GraphRef="e47" RelX="1.0" RelY="0.0"/>
+      <Point X="1644.6666666666665" Y="858.6666666666666" GraphRef="b9a1f" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e8acf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1622.3333333333333" Y="1120.0" GraphRef="ac0a1" RelX="-0.5" RelY="-1.0"/>
+      <Point X="1589.8800438739859" Y="1097.56409570657" GraphRef="b9e78" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b6985">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1666.9999999999998" Y="1120.0" GraphRef="ac0a1" RelX="0.5" RelY="-1.0"/>
+      <Point X="1701.6177063397083" Y="1092.4118529166974" GraphRef="ee27a" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f8eaf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1789.3333333333333" Y="672.6666666666666" GraphRef="d9c" RelX="-0.5" RelY="-1.0"/>
+      <Point X="1746.849246183284" Y="652.9773396324907" GraphRef="c7cac" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed5c7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1824.0" Y="431.3333333333333" GraphRef="d32" RelX="-1.0" RelY="0.0"/>
+      <Point X="1780.6666666666665" Y="431.33333333333337" GraphRef="d278c" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d2f0c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1628.0" Y="472.6666666666667" GraphRef="ffb" RelX="0.0" RelY="-1.0"/>
+      <Point X="1596.7537674665164" Y="436.5232485983905" GraphRef="fc298" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c7588">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1400.0" Y="194.66666666666666" GraphRef="b9ec0" RelX="-1.0" RelY="0.0"/>
+      <Point X="1377.333333333333" Y="195.0374149659864" GraphRef="fb24b" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b696b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1408.0" Y="340.0" GraphRef="ad8" RelX="-1.0" RelY="0.0"/>
+      <Point X="1377.333333333333" Y="339.9666666666667" GraphRef="e4064" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ca205">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1400.0" Y="486.66666666666674" GraphRef="d00b7" RelX="-1.0" RelY="0.0"/>
+      <Point X="1377.333333333333" Y="487.23333333333335" GraphRef="c8444" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4f32">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="561.0" Y="1428.0" GraphRef="a5b" RelX="1.0" RelY="0.0"/>
+      <Point X="607.5" Y="1427.6274338294434" GraphRef="d852e" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f703f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="561.0" Y="1589.0" GraphRef="d92" RelX="1.0" RelY="0.0"/>
+      <Point X="605.3333333333334" Y="1589.2533333333336" GraphRef="fbe6c" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a633e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="567.6666666666667" Y="1713.6666666666667" GraphRef="c02" RelX="1.0" RelY="0.0"/>
+      <Point X="605.3333333333334" Y="1713.2533333333336" GraphRef="e6714" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eecbc">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="584.0000000000001" Y="1860.3333333333333" GraphRef="aa946" RelX="-0.5" RelY="-1.0"/>
+      <Point X="541.6133333333333" Y="1849.2533333333336" GraphRef="d7c32" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2f2b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="628.6666666666669" Y="1860.3333333333333" GraphRef="aa946" RelX="0.5" RelY="-1.0"/>
+      <Point X="672.4999159934113" Y="1841.285796115508" GraphRef="b478a" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6c72">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="972.0" Y="1469.0" GraphRef="e6e" RelX="0.0" RelY="1.0"/>
+      <Point X="970.3606620891537" Y="1509.0" GraphRef="ac316" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ec5c8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="977.6666666666667" Y="1589.0" GraphRef="aef" RelX="1.0" RelY="0.0"/>
+      <Point X="1022.0" Y="1589.2533333333336" GraphRef="f59af" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ee26f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="984.3333333333333" Y="1713.6666666666667" GraphRef="db7" RelX="1.0" RelY="0.0"/>
+      <Point X="1022.0" Y="1713.2533333333336" GraphRef="e0d6f" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e7838">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1000.6666666666666" Y="1862.3333333333333" GraphRef="c3868" RelX="-0.5" RelY="-1.0"/>
+      <Point X="958.64" Y="1849.2533333333336" GraphRef="aa817" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dc82a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1045.3333333333333" Y="1862.3333333333333" GraphRef="c3868" RelX="0.5" RelY="-1.0"/>
+      <Point X="1088.0266666666666" Y="1849.2533333333336" GraphRef="bd490" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e49b6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1374.6666666666665" Y="1587.3333333333333" GraphRef="cfa" RelX="1.0" RelY="0.0"/>
+      <Point X="1408.0" Y="1587.9" GraphRef="a4693" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e8e36">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1378.0" Y="1707.3333333333333" GraphRef="e2c" RelX="1.0" RelY="0.0"/>
+      <Point X="1408.0" Y="1707.9" GraphRef="ab3a3" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fd3e7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1382.6666666666665" Y="1843.3333333333333" GraphRef="c1ebc" RelX="1.0" RelY="0.0"/>
+      <Point X="1408.0" Y="1843.9" GraphRef="a8cbc" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="acd75">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1367.0" Y="1465.0" GraphRef="a9b" RelX="0.0" RelY="1.0"/>
+      <Point X="1366.9324364948143" Y="1508.5" GraphRef="b5385" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f1d9d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1783.0" Y="1467.0" GraphRef="c92" RelX="-1.0" RelY="0.0"/>
+      <Point X="1744.6666666666665" Y="1467.0" GraphRef="dbb04" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6130">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1583.333333333333" Y="1498.0" GraphRef="af4" RelX="0.0" RelY="1.0"/>
+      <Point X="1583.1419130016823" Y="1538.0" GraphRef="b37f8" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Fatty Acid" GraphId="e43">
+    <Graphics CenterX="372.6666666666667" CenterY="723.3333333333334" Width="81.33333333333333" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Trans-Hexadecanoyl-CoA" GraphId="e5b">
+    <Graphics CenterX="579.3333333333334" CenterY="801.3333333333334" Width="197.33333333333334" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Trans-Tetradex-2-enoyl-CoA" GraphId="de2">
+    <Graphics CenterX="952.6666666666666" CenterY="800.6666666666666" Width="219.73333333333332" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Dxotetradecanoyl-CoA" GraphId="c3c">
+    <Graphics CenterX="952.6666666666667" CenterY="1047.3333333333333" Width="174.93333333333334" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="(S)-3-Hydroxydodexanonyl-CoA" GraphId="bff">
+    <Graphics CenterX="1298.333333333333" CenterY="910.0" Width="243.73333333333332" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="3-Oxododexanoyl-CoA" GraphId="e95">
+    <Graphics CenterX="1298.3333333333333" CenterY="1019.0" Width="174.93333333333334" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Lipases" GraphId="fd1" GroupRef="cb66c">
+    <Graphics CenterX="668.6666666666666" CenterY="310.6666666666667" Width="59.733333333333334" Height="16.8" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="3-Oxocanoyl-CoA" GraphId="fb2">
+    <Graphics CenterX="1644.6666666666667" CenterY="1046.3333333333333" Width="137.33333333333334" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Octaoyl-CoA" GraphId="aa5">
+    <Graphics CenterX="1767.3333333333333" CenterY="1208.0" Width="100.53333333333333" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="(S)-Hydrocyhexanoyl" GraphId="a9d">
+    <Graphics CenterX="1022.0" CenterY="1663.3333333333333" Width="163.73333333333332" Height="19.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cronoyl-CoA" GraphId="f19">
+    <Graphics CenterX="1408.0" CenterY="1538.0" Width="104.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Glutarate" GraphId="d17">
+    <Graphics CenterX="1744.6666666666667" CenterY="1410.0" Width="74.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="4-cis-dexeboyl-CoA" GraphId="c15">
+    <Graphics CenterX="1377.3333333333333" CenterY="585.3333333333334" Width="154.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="trans,cis-Lauro-2,6-dienoyl-CoA" GraphId="ef8">
+    <Graphics CenterX="1377.3333333333333" CenterY="418.6666666666667" Width="246.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Unsaturated fatty acids" GraphId="bfc">
+    <Graphics CenterX="1373.0" CenterY="51.083333333333336" Width="250.0" Height="58.166666666666664" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="Saturated fatty acids" GraphId="ae2">
+    <Graphics CenterX="223.60124660954537" CenterY="637.3703050061978" Width="250.0" Height="58.166666666666664" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Group GroupId="ac6aa" GraphId="eeec7"/>
+  <Group GroupId="cb66c" GraphId="ababd"/>
+  <Group GroupId="e1b37" GraphId="bf69a"/>
+  <Group GroupId="f6db6" GraphId="e6daa"/>
+  <Group GroupId="ffdf4" GraphId="adc6a"/>
+  <Group GroupId="be6b8" GraphId="d7c72"/>
+  <Group GroupId="df874" GraphId="b34cb"/>
+  <Group GroupId="e6523" GraphId="c6581"/>
+  <Group GroupId="c75e8" GraphId="ca83d"/>
+  <Group GroupId="f6993" GraphId="a9c06"/>
+  <Group GroupId="c1cdb" GraphId="d256a"/>
+  <Group GroupId="c39e7" GraphId="ac0a1"/>
+  <Group GroupId="aefc6" GraphId="d00b7"/>
+  <Group GroupId="b102e" GraphId="b9ec0"/>
+  <Group GroupId="ea8b1" GraphId="aa946"/>
+  <Group GroupId="d0c09" GraphId="c3868"/>
+  <Group GroupId="ee6a5" GraphId="c1ebc"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>fatty acid beta degradation pathway</bp:TERM><bp:ID>PW:0000738</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>fatty acid degradation pathway</bp:TERM><bp:ID>PW:0000642</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>fatty acid metabolic pathway</bp:TERM><bp:ID>PW:0000058</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>fatty acid metabolism</bp:TERM><bp:ID>DOID:3146</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

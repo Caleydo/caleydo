@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Glycoprotein VI platelet signaling" Organism="Homo sapiens" License="CC BY 2.0">
+<Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>f75</BiopaxRef>
+  <Graphics BoardWidth="866.0" BoardHeight="353.75"/>
+  <DataNode TextLabel="GPVI_HUMAN" GraphId="df42e" Type="Protein">
+    <Graphics CenterX="88.75" CenterY="158.25" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="Q9HCN6"/>
+  </DataNode>
+  <DataNode TextLabel="FcyR &#10;" GraphId="ed07e">
+    <BiopaxRef>f8c</BiopaxRef>
+    <Graphics CenterX="238.0" CenterY="188.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="FYN_HUMAN" GraphId="cb776" Type="Protein" GroupRef="cb2c8">
+    <Graphics CenterX="158.0" CenterY="257.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="P06241"/>
+  </DataNode>
+  <DataNode TextLabel="LYN_HUMAN" GraphId="d3d27" Type="Protein" GroupRef="cb2c8">
+    <Graphics CenterX="158.0" CenterY="274.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="P07948"/>
+  </DataNode>
+  <DataNode TextLabel="SYK_HUMAN" GraphId="e076f" Type="Protein">
+    <Graphics CenterX="265.75" CenterY="247.25" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="Q15046"/>
+  </DataNode>
+  <DataNode TextLabel="LAT_HUMAN" GraphId="e5017" Type="Protein">
+    <Graphics CenterX="380.0" CenterY="148.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="O43561"/>
+  </DataNode>
+  <DataNode TextLabel="PI3 Kinase" GraphId="d2361" Type="Protein">
+    <Graphics CenterX="485.0" CenterY="115.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="SLP 76&#10;" GraphId="ec75d" Type="Protein">
+    <BiopaxRef>a60</BiopaxRef>
+    <Graphics CenterX="379.75" CenterY="306.25" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="Q13094"/>
+  </DataNode>
+  <DataNode TextLabel="PLCG2" GraphId="f491d" Type="GeneProduct">
+    <Graphics CenterX="502.0" CenterY="253.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000197943"/>
+  </DataNode>
+  <DataNode TextLabel="MPIP3_HUMAN" GraphId="cfc20" Type="Protein">
+    <Graphics CenterX="585.0" CenterY="193.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="P30307"/>
+  </DataNode>
+  <DataNode TextLabel="MPIP2_HUMAN" GraphId="f6201" Type="Protein">
+    <Graphics CenterX="695.0" CenterY="160.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="P30305"/>
+  </DataNode>
+  <DataNode TextLabel="IP3&#10;" GraphId="b4b75" Type="Protein">
+    <Graphics CenterX="726.0" CenterY="230.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Calcium" GraphId="ab8c8" Type="Metabolite">
+    <Graphics CenterX="726.0" CenterY="284.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00464"/>
+  </DataNode>
+  <DataNode TextLabel="DAG1_HUMAN" GraphId="eab89" Type="Protein">
+    <Graphics CenterX="795.0" CenterY="163.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="Q14118"/>
+  </DataNode>
+  <DataNode TextLabel="PKC&#10;" GraphId="eec53" Type="Protein">
+    <Graphics CenterX="796.0" CenterY="182.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="COL1A1" GraphId="f95f5" Type="GeneProduct">
+    <Graphics CenterX="150.0" CenterY="60.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000108821"/>
+  </DataNode>
+  <DataNode TextLabel="GPVI_HUMAN" GraphId="f779a" Type="Protein">
+    <Graphics CenterX="271.75" CenterY="154.25" Width="80.0" Height="20.0" ZOrder="32769" FontSize="10" Valign="Middle"/>
+    <Xref Database="Uniprot/TrEMBL" ID="Q9HCN6"/>
+  </DataNode>
+  <DataNode TextLabel="FcyR &#10;" GraphId="eaad1">
+    <BiopaxRef>f8c</BiopaxRef>
+    <Graphics CenterX="150.0" CenterY="187.0" Width="80.0" Height="20.0" ZOrder="32770" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <State GraphRef="ed07e" TextLabel="" GraphId="d9e0e">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e5017" TextLabel="" GraphId="d64cc">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e076f" TextLabel="" GraphId="e8d0b">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ec75d" TextLabel="" GraphId="acc76">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <Line GraphId="idfd00584c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="158.0" Y="239.0"/>
+      <Point X="218.0" Y="198.0" GraphRef="ed07e" RelX="-0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idff9f4660">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="726.0" Y="240.0" GraphRef="b4b75" RelX="0.0" RelY="1.0"/>
+      <Point X="726.0" Y="274.0" GraphRef="ab8c8" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id2985455a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="732.0" Y="161.0"/>
+      <Point X="755.0" Y="163.0" GraphRef="eab89" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd84c559">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="742.0" Y="163.0"/>
+      <Point X="726.0" Y="220.0" GraphRef="b4b75" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="iddff7b920">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="655.0" Y="160.0" GraphRef="f6201" RelX="-1.0" RelY="0.0"/>
+      <Point X="625.0" Y="193.0" GraphRef="cfc20" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9f146c74">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="528.0" Y="115.0"/>
+      <Point X="641.0" Y="172.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7c09c2d4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="544.0" Y="252.0"/>
+      <Point X="742.0" Y="163.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ida340f464">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="304.0" Y="246.0"/>
+      <Point X="340.0" Y="148.0" GraphRef="e5017" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id168fb8c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="305.75" Y="247.25" GraphRef="e076f" RelX="1.0" RelY="0.0"/>
+      <Point X="339.75" Y="306.25" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idcdc30f0d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="419.0" Y="303.0"/>
+      <Point X="462.0" Y="253.0" GraphRef="f491d" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id76068e38">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="238.0" Y="198.0" GraphRef="ed07e" RelX="0.0" RelY="1.0"/>
+      <Point X="265.75" Y="237.25" GraphRef="e076f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd9327255">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="245.0" Y="166.0"/>
+      <Point X="258.0" Y="178.0" GraphRef="ed07e" RelX="0.5" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8430538">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="129.0" Y="155.0"/>
+      <Point X="150.0" Y="177.0" GraphRef="eaad1" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id661a49a3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="190.0" Y="187.0" GraphRef="eaad1" RelX="1.0" RelY="0.0"/>
+      <Point X="198.0" Y="188.0" GraphRef="ed07e" RelX="-1.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id977d7fe3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="150.0" Y="70.0" GraphRef="f95f5" RelX="0.0" RelY="1.0"/>
+      <Point X="268.0" Y="142.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Group GroupId="cb2c8" GraphId="fa621" Style="Complex"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="f8c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1916092</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1916092</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fc receptors and immunoglobulin binding factors.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FASEB J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1991</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fridman WH</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="f75">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15381385</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15381385</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet glycoprotein VI: its structure and function.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thromb Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moroi M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jung SM</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a60">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10026222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10026222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tyrosine phosphorylation of SLP-76 is downstream of Syk following stimulation of the collagen receptor in platelets.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gross BS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clements JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turner M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tybulewicz VL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Findell PR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koretzky GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson SP</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>platelet</bp:TERM><bp:ID>CL:0000233</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

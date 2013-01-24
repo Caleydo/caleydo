@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Arylamine metabolism" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="10048.5" BoardHeight="9834.0" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="Arylamine" Type="Metabolite" GraphId="e147e">
+    <Graphics Color="0000ff" CenterX="3585.0" CenterY="3015.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="N-Acetylarylamine" Type="Metabolite" GraphId="cbb69">
+    <Graphics Color="0000ff" CenterX="7822.5" CenterY="3090.0" Width="1665.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01250"/>
+  </DataNode>
+  <DataNode TextLabel="NAT2" Type="GeneProduct" GraphId="fc98b" GroupRef="ea6b4">
+    <Graphics Color="000000" CenterX="5565.0" CenterY="1560.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000156006"/>
+  </DataNode>
+  <DataNode TextLabel="N-hydroxyarylamine" Type="Metabolite" GraphId="e55d1">
+    <Graphics Color="0000ff" CenterX="3585.0" CenterY="6405.0" Width="1560.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CYP1A2" Type="GeneProduct" GraphId="bb0f4">
+    <Graphics Color="000000" CenterX="5625.0" CenterY="4845.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000140505"/>
+  </DataNode>
+  <DataNode TextLabel="N-hydroxy-N-acetylamine" Type="Metabolite" GraphId="f2ba4">
+    <Graphics Color="0000ff" CenterX="7815.0" CenterY="6405.0" Width="2010.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="O-acetylarylamine" Type="Metabolite" GraphId="d06f5">
+    <Graphics Color="0000ff" CenterX="5542.5" CenterY="7920.0" Width="1485.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" Type="Metabolite" GraphId="d5a3e">
+    <Graphics Color="0000ff" CenterX="4185.0" CenterY="1890.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01206"/>
+  </DataNode>
+  <DataNode TextLabel="Coenzyme A" Type="Metabolite" GraphId="f2bcc">
+    <Graphics Color="0000ff" CenterX="6930.0" CenterY="1935.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01423"/>
+  </DataNode>
+  <DataNode TextLabel="Deacetylase" Type="GeneProduct" GraphId="f9488">
+    <Graphics Color="000000" CenterX="5565.0" CenterY="5835.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Deacetylase" Type="GeneProduct" GraphId="d1bbc">
+    <Graphics Color="000000" CenterX="5670.0" CenterY="4155.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="NAT1" Type="GeneProduct" GraphId="c0e47" GroupRef="ea6b4">
+    <Graphics Color="000000" CenterX="5565.0" CenterY="1260.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000171428"/>
+  </DataNode>
+  <DataNode TextLabel="NAT1" Type="GeneProduct" GraphId="c541c" GroupRef="ea9b3">
+    <Graphics Color="000000" CenterX="5550.0" CenterY="7050.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000171428"/>
+  </DataNode>
+  <DataNode TextLabel="NAT2" Type="GeneProduct" GraphId="d55e5" GroupRef="ea9b3">
+    <Graphics Color="000000" CenterX="5550.0" CenterY="7350.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000156006"/>
+  </DataNode>
+  <DataNode TextLabel="Arylamine N,O-sulfate" Type="Metabolite" GraphId="f7f51">
+    <Graphics Color="0000ff" CenterX="930.0" CenterY="6405.0" Width="1650.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="SULT1A2" Type="GeneProduct" GraphId="c3d82" GroupRef="af4e1">
+    <Graphics Color="000000" CenterX="2295.0" CenterY="5490.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000197165"/>
+  </DataNode>
+  <DataNode TextLabel="SULT1A1" Type="GeneProduct" GraphId="d94ce" GroupRef="af4e1">
+    <Graphics Color="000000" CenterX="2295.0" CenterY="5190.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000196502"/>
+  </DataNode>
+  <DataNode TextLabel="N-aryl sulfamic acid" Type="Metabolite" GraphId="d0f9e">
+    <Graphics Color="0000ff" CenterX="1132.5" CenterY="3810.0" Width="1665.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Arylamine N-glucuronide" Type="Metabolite" GraphId="ebb60">
+    <Graphics Color="0000ff" CenterX="1102.5" CenterY="3015.0" Width="1875.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A4" Type="GeneProduct" GraphId="a1f59" GroupRef="cfd1a">
+    <Graphics Color="000000" CenterX="2550.0" CenterY="2010.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="54657"/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A9" Type="GeneProduct" GraphId="a042b" GroupRef="cfd1a">
+    <Graphics Color="000000" CenterX="2550.0" CenterY="2310.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="54600"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="c9255">
+    <BiopaxRef>ba8</BiopaxRef>
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="3885.0" y="2865.0" GraphRef="e147e" relX="0.5" relY="-1.0"/>
+      <Point x="7406.25" y="2940.0" GraphRef="cbb69" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4748917665490336" Shape="None" GraphId="f9173"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa81f">
+    <BiopaxRef>ba8</BiopaxRef>
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3585.0" y="3165.0" GraphRef="e147e" relX="0.0" relY="1.0"/>
+      <Point x="3585.0" y="6255.0" GraphRef="e55d1" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5436893203883495" Shape="None" GraphId="a4319"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d9890">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5565.0" y="1710.0" GraphRef="fc98b" relX="0.0" relY="1.0"/>
+      <Point x="5568.530137344865" y="2565.667762733995" GraphRef="f9173" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cc844">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5025.0" y="4845.0" GraphRef="bb0f4" relX="-1.0" relY="0.0"/>
+      <Point x="3585.0" y="4845.0" GraphRef="a4319" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="be768">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6225.0" y="4845.0" GraphRef="bb0f4" relX="1.0" relY="0.0"/>
+      <Point x="7818.507348163733" y="4845.046038179512" GraphRef="c77fd" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d9c79">
+    <BiopaxRef>ba8</BiopaxRef>
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7822.5" y="3240.0" GraphRef="cbb69" relX="0.0" relY="1.0"/>
+      <Point x="7815.0" y="6255.0" GraphRef="f2ba4" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5323535781689923" Shape="None" GraphId="c77fd"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f2392">
+    <BiopaxRef>ba8</BiopaxRef>
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="7815.0" y="6555.0" GraphRef="f2ba4" relX="0.0" relY="1.0"/>
+      <Point x="6285.0" y="7920.0" GraphRef="d06f5" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.29617340112389634" Shape="None" GraphId="aad4e"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2c5c">
+    <BiopaxRef>ba8</BiopaxRef>
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="3585.0" y="6555.0" GraphRef="e55d1" relX="0.0" relY="1.0"/>
+      <Point x="4800.0" y="7920.0" GraphRef="d06f5" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.32562996900687247" Shape="None" GraphId="f7c55"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e7c57">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="4185.0" y="2040.0" GraphRef="d5a3e" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="2580.0"/>
+      <Point x="6930.0" y="2085.0" GraphRef="f2bcc" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fdeab">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6810.0" y="6405.0" GraphRef="f2ba4" relX="-1.0" relY="0.0"/>
+      <Point x="4365.0" y="6405.0" GraphRef="e55d1" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5063291139240507" Shape="None" GraphId="c0470"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d9f02">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5565.0" y="5985.0" GraphRef="f9488" relX="0.0" relY="1.0"/>
+      <Point x="5572.025316455696" y="6405.0" GraphRef="c0470" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a5212">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="7406.25" y="3240.0" GraphRef="cbb69" relX="-0.5" relY="1.0"/>
+      <Point x="3885.0" y="3165.0" GraphRef="e147e" relX="0.5" relY="1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.489165020816732" Shape="None" GraphId="bb468"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="efcb8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5670.0" y="4005.0" GraphRef="d1bbc" relX="0.0" relY="-1.0"/>
+      <Point x="5670.083263514076" y="3539.7881529799724" GraphRef="bb468" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ac2d4">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6270.0" y="7200.0" GraphRef="b7000" relX="1.0" relY="0.0"/>
+      <Point x="7660.748473363187" y="7210.86395361179" GraphRef="aad4e" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="eb018">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4830.0" y="7200.0" GraphRef="b7000" relX="-1.0" relY="0.0"/>
+      <Point x="3705.592817837497" y="7205.820895873988" GraphRef="f7c55" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="e2ba7">
+    <BiopaxRef>ba8</BiopaxRef>
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5542.5" y="8070.0" GraphRef="d06f5" relX="0.0" relY="1.0"/>
+      <Point x="5535.0" y="8685.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6849">
+    <BiopaxRef>a13</BiopaxRef>
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2805.0" y="6405.0" GraphRef="e55d1" relX="-1.0" relY="0.0"/>
+      <Point x="1755.0" y="6405.0" GraphRef="f7f51" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.47619047619047616" Shape="None" GraphId="d8c0f"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2b93">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2295.0" y="5640.0" GraphRef="c3d82" relX="0.0" relY="1.0"/>
+      <Point x="2305.0" y="6405.0" GraphRef="d8c0f" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4a29">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="3285.0" y="3165.0" GraphRef="e147e" relX="-0.5" relY="1.0"/>
+      <Point x="1965.0" y="3810.0" GraphRef="d0f9e" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c7852">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2985.0" y="3015.0" GraphRef="e147e" relX="-1.0" relY="0.0"/>
+      <Point x="2040.0" y="3015.0" GraphRef="ebb60" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4603174603174603" Shape="None" GraphId="a0afc"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fcec7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2550.0" y="2580.0" GraphRef="f035a" relX="0.0" relY="1.0"/>
+      <Point x="2550.0" y="3015.0" GraphRef="a0afc" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="O-acetylation" GraphId="d9a78">
+    <Graphics FontSize="150" Color="000000" CenterX="3240.0" CenterY="7410.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="N,O-Transacetylation" GraphId="aaf1e">
+    <Graphics FontSize="150" Color="000000" CenterX="8332.5" CenterY="7500.0" Width="1605.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="DNA adducts" GraphId="f5dde">
+    <Graphics FontSize="150" Color="000000" CenterX="5535.0" CenterY="8790.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="ea6b4" GraphId="c6a15" Style="Complex"/>
+  <Group GroupId="ea9b3" GraphId="b7000" Style="Complex"/>
+  <Group GroupId="af4e1" GraphId="b6ddb" Style="Complex"/>
+  <Group GroupId="cfd1a" GraphId="f035a" Style="Complex"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ba8">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7889851</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Polymorphism of human acetyltransferases.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Environ Health Perspect</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meyer UA</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="a13">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7834621</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Metabolic activation of N-hydroxy arylamines and N-hydroxy heterocyclic amines by human sulfotransferase(s).</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chou HC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lang NP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kadlubar FF</bp:AUTHORS>
+    </bp:PublicationXRef>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#"><bp:TERM>metabolic pathway of secondary metabolites</bp:TERM><bp:ID>PW:0000147</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

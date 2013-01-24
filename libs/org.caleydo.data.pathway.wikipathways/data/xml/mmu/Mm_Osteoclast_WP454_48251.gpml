@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2007" Name="Osteoclast" Organism="Mus musculus" License="CC BY 2.0" Last-Modified="5/16/2012">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="14454.0" BoardHeight="8448.55" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="RANK ligand" Type="Protein" GraphId="c68">
+    <Graphics Color="000000" CenterX="10980.0" CenterY="1950.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="21943"/>
+  </DataNode>
+  <DataNode TextLabel="RANK" Type="Protein" GraphId="f00">
+    <Graphics Color="000000" CenterX="10335.0" CenterY="3375.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="21934"/>
+  </DataNode>
+  <DataNode TextLabel="OPG" Type="Protein" GraphId="b5e">
+    <Graphics Color="000000" CenterX="12540.0" CenterY="2880.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="18383"/>
+  </DataNode>
+  <DataNode TextLabel="PDGFB" Type="Protein" GraphId="c12">
+    <Graphics Color="000000" CenterX="8835.0" CenterY="1530.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="18591"/>
+  </DataNode>
+  <DataNode TextLabel="b3 integrin" Type="Protein" GraphId="f56">
+    <Graphics Color="000000" CenterX="11070.0" CenterY="4762.5" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="16416"/>
+  </DataNode>
+  <DataNode TextLabel="Osteopontin" Type="Protein" GraphId="fc5">
+    <Graphics Color="000000" CenterX="11070.0" CenterY="5055.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="20750"/>
+  </DataNode>
+  <DataNode TextLabel="Cathepsin K" Type="Protein" GraphId="f78">
+    <Graphics Color="000000" CenterX="9795.0" CenterY="5505.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="13038"/>
+  </DataNode>
+  <DataNode TextLabel="TRAP" Type="Protein" GraphId="d2e">
+    <Graphics Color="000000" CenterX="7215.0" CenterY="5505.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="11433"/>
+  </DataNode>
+  <DataNode TextLabel="H+ ATPase" Type="Protein" GraphId="edf">
+    <Graphics Color="000000" CenterX="8520.0" CenterY="4755.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="66290"/>
+  </DataNode>
+  <DataNode TextLabel="H+" Type="Metabolite" GraphId="c9d">
+    <Graphics Color="000000" CenterX="8505.0" CenterY="5505.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="PubChem-compound" ID="5362549"/>
+  </DataNode>
+  <DataNode TextLabel="Ca2+" Type="Metabolite" GraphId="e85">
+    <Graphics Color="000000" CenterX="5910.0" CenterY="5505.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="PubChem-compound" ID="271"/>
+  </DataNode>
+  <DataNode TextLabel="Pi" Type="Metabolite" GraphId="c0f">
+    <Graphics Color="000000" CenterX="4620.0" CenterY="5505.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Na+/H+ transporter" Type="Protein" GraphId="ea3">
+    <Graphics Color="000000" CenterX="3697.5" CenterY="4770.0" Width="1755.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="20544"/>
+  </DataNode>
+  <DataNode TextLabel="Na+" Type="Metabolite" GraphId="ef6">
+    <Graphics Color="000000" CenterX="4455.0" CenterY="3705.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="HMDB" ID="HMDB00588"/>
+  </DataNode>
+  <DataNode TextLabel="H+" Type="Metabolite" GraphId="acd">
+    <Graphics Color="000000" CenterX="2790.0" CenterY="5505.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="PubChem-compound" ID="5362549"/>
+  </DataNode>
+  <DataNode TextLabel="TRPV" Type="Protein" GraphId="c3d">
+    <Graphics Color="000000" CenterX="1912.5" CenterY="4755.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="194352"/>
+  </DataNode>
+  <DataNode TextLabel="Ca2+" Type="Metabolite" GraphId="e45">
+    <Graphics Color="000000" CenterX="2340.0" CenterY="3690.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="PubChem-compound" ID="271"/>
+  </DataNode>
+  <DataNode TextLabel="OGR1" Type="Protein" GraphId="fbe">
+    <Graphics Color="000000" CenterX="4800.0" CenterY="1995.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="238377"/>
+  </DataNode>
+  <DataNode TextLabel="IFN-b" Type="Protein" GraphId="e2f">
+    <Graphics Color="000000" CenterX="1350.0" CenterY="1695.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="15977"/>
+  </DataNode>
+  <DataNode TextLabel="Type 1 interferon receptor" Type="Protein" GraphId="f27">
+    <Graphics Color="000000" CenterX="2587.5" CenterY="2730.0" Width="2460.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="15975"/>
+  </DataNode>
+  <DataNode TextLabel="H+" Type="Metabolite" GraphId="cf3">
+    <Graphics Color="000000" CenterX="4065.0" CenterY="990.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="PubChem-compound" ID="5362549"/>
+  </DataNode>
+  <DataNode TextLabel="PDGFB" Type="Protein" GraphId="e09">
+    <Graphics Color="000000" CenterX="8835.0" CenterY="1230.0" Width="1200.0" Height="300.0"/>
+    <Xref Database="Entrez Gene" ID="18591"/>
+  </DataNode>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="510.0" y="4770.0"/>
+      <Point x="12645.0" y="4770.0"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="10950.0" y="1950.0" GraphRef="c68"/>
+      <Point x="10365.0" y="3165.0" ArrowHead="Arrow" GraphRef="f00"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="12540.0" y="2865.0" GraphRef="b5e"/>
+      <Point x="11610.0" y="2160.0" ArrowHead="TBar" GraphRef="c68"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="8520.0" y="3750.0"/>
+      <Point x="8520.0" y="5280.0" ArrowHead="Arrow" GraphRef="c9d"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="3825.0" y="5100.0"/>
+      <Point x="4305.0" y="3915.0" ArrowHead="Arrow" GraphRef="ef6"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="3405.0" y="3945.0"/>
+      <Point x="2805.0" y="5310.0" ArrowHead="Arrow" GraphRef="acd"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="1680.0" y="5115.0"/>
+      <Point x="2265.0" y="3915.0" ArrowHead="Arrow" GraphRef="e45"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="7950.0" y="3735.0"/>
+      <Point x="7305.0" y="5280.0" ArrowHead="Arrow" GraphRef="d2e"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="9150.0" y="3735.0"/>
+      <Point x="9795.0" y="5280.0" ArrowHead="Arrow" GraphRef="f78"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="1395.0" y="1650.0" GraphRef="e2f"/>
+      <Point x="2100.0" y="2505.0" ArrowHead="Arrow" GraphRef="f27"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="4020.0" y="990.0" GraphRef="cf3"/>
+      <Point x="4665.0" y="1770.0" ArrowHead="Arrow" GraphRef="fbe"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics Color="000000">
+      <Point x="4860.0" y="1980.0" GraphRef="fbe"/>
+      <Point x="5730.0" y="2805.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Bone" GraphId="f53">
+    <Graphics FontSize="200" Color="000000" CenterX="6589.0" CenterY="4950.5" Width="622.0" Height="299.0"/>
+  </Label>
+  <Label TextLabel="Osteoclast" GraphId="c7c">
+    <Graphics FontSize="200" Color="000000" CenterX="6689.5" CenterY="2100.5" Width="1261.0" Height="299.0"/>
+  </Label>
+  <Label TextLabel="PDGF-BB complex" GraphId="bdb">
+    <Graphics FontSize="150" Color="000000" CenterX="8865.0" CenterY="870.0" Width="1500.0" Height="300.0"/>
+  </Label>
+  <Label TextLabel="Osteoclast activation" GraphId="d0b">
+    <Graphics FontSize="150" Color="000000" CenterX="5895.0" CenterY="2955.0" Width="1710.0" Height="300.0"/>
+  </Label>
+  <Shape Type="Arc" GraphId="cbd">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="6570.0" CenterY="4755.0" Width="11341.0" Height="5851.000000000001" Rotation="3.141592653589793"/>
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+</Pathway>

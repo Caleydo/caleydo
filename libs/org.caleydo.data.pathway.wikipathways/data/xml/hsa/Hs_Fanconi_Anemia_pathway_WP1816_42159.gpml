@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Fanconi Anemia pathway" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Matthews, L" Maintainer="Matthews, L" Email="lisa.matthews@cshl.edu">
+  <Comment Source="WikiPathways-description">Fanconi anemia (FA) is a genetic disease of genome instability characterized by congenital skeletal defects, aplastic anemia, susceptibility to leukemias, and cellular sensitivity to DNA damaging agents. Patients with FA have been categorized into at least 13 complementation groups (FA-A, -B, -C, -D1, -D2, -E, -F, -G, -I, -J, -L, -M, and -N). These complementation groups correspond to the genes FANCA, FANCB, FANCC, FANCD1/BRCA2, FANCD2, FANCE, FANCF, FANCG, FANCJ/BRIP1, FANCL, FANCM, and FANCN/PALB2. Although the functions of most of these proteins are mostly unknown, eight of them, FANCA, FANCB, FANCC, FANCE, FANCF, FANCG, FANCL, and FANCM products together with AAP24 and FAAP100 form a nuclear complex termed the FA core complex. The core complex is essential for FANCD2 and FANCI monoubiquitination after DNA damage. FANCD2 and FANCI are mutually dependent on one another for their respective monoubiquitination. After DNA damage and during S phase, FANCD2 localizes to chromatin, forming foci that overlap those containing proteins involved in homologous recombination, such as BRCA1 and RAD51. The FA pathway is regulated by the deubiquitination of FANCD2 and the phosphorylation FANCD2 and FANCI. The USP1/UAF1 complex is responsible for deubiquitination of FANCD2 and negatively regulates the FA pathway (Cohn  et al., 2007)  ATR and ATM dependent phosphorylation of FANCD2 promotes the monoubiquitination of FANCD2 stimulating the FA pathway (Cohn and  D'Andrea, 2008; Wang, 2007).</Comment>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <BiopaxRef>lit_421848</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_419526" TextLabel="FA core &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="782.5" CenterY="193.5" Width="67.0" Height="33.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18602"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_420942" TextLabel="UBE2T&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="766.5" CenterY="317.5" Width="55.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NPD8"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_68524" TextLabel="ubiquitin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1056.0" CenterY="239.5" Width="114.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_3995"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_419522" TextLabel="FANCD2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1134.5" CenterY="313.5" Width="63.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BXW9"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_420752" TextLabel="mono-ubiquitinated &#10;FANCD2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="912.5" CenterY="366.0" Width="119.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18762"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_419529" TextLabel="FANCI&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="911.0" CenterY="240.5" Width="110.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NVI1"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_420753" TextLabel="mono-ubiquitinated &#10;FANCI&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="740.5" CenterY="102.0" Width="123.0" Height="40.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18503"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_109939" TextLabel="damaged DNA &#10;substrate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="742.5" CenterY="408.0" Width="89.0" Height="32.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2765"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_420761" TextLabel="ub-FANCD- &#10;and  ub-FANCI-&#10;bound &#10;chromatin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="551.0" CenterY="367.0" Width="94.0" Height="76.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18703"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_419548" TextLabel="PALB2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="657.5" CenterY="531.0" Width="45.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q86YC2"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_50949" TextLabel="BRCA1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="698.0" CenterY="492.0" Width="52.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P38398"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_50951" TextLabel="BRCA2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="773.0" CenterY="492.5" Width="48.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P51587"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_517917" TextLabel="BRCA1:BRCA2:&#10;PALB2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="875.0" CenterY="531.5" Width="94.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21702"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_420771" TextLabel="FANCD and ub-&#10;FANCI-bound &#10;chromatin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="337.0" CenterY="407.0" Width="92.0" Height="66.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18588"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_419551" TextLabel="USP1:UAF1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="459.5" CenterY="422.5" Width="83.0" Height="25.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18986"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_68524" TextLabel="ubiquitin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="400.5" CenterY="332.0" Width="67.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_3995"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_113550" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1308.0" CenterY="357.5" Width="100.0" Height="39.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_420754" TextLabel="phosph-FANCD2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1446.5" CenterY="312.0" Width="107.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BXW9"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_421853" TextLabel="ATM/ATR kinase&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1344.5" CenterY="251.5" Width="103.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_18974"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_420755" TextLabel="phopho-FANCI&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1245.5" CenterY="88.0" Width="93.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NVI1"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_68524" TextLabel="ubiquitin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1010.5" CenterY="333.0" Width="81.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_3995"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_419534">
+    <Comment Source="WikiPathways-description">Lysine 561 of FANCD2 is monoubiquitinated by FANCL, a component of the FA core complex with ubiquitin ligase activity (Garcia Higuera et al., 2001).  UBE2T binds to FANCL, and is required for the monoubiquitination of FANCD2 (Machida et al., 2006). Monoubiquitination of FANCD2 in turn is necessary for its localization to chromatin and for the formation of nuclear foci in response to DNA damage. FANCD2 ubiquitination requires the presence of FANCI although the molecular role of FANCI in FANCD2 ubiquitination is unknown.</Comment>
+    <BiopaxRef>lit_217032</BiopaxRef>
+    <BiopaxRef>lit_421846</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="910.0" Y="312.0" GraphId="e_1_0"/>
+      <Point X="910.0" Y="313.0" GraphId="e_1_1"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_2"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.0" GraphId="e_1_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="792.0" Y="213.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_419526" RelX="0.29850746268656714" RelY="1.2121212121212122"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="797.0" Y="309.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_420942" RelX="1.1272727272727272" RelY="-0.64"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1100.0" Y="312.0" GraphId="e_1_i2_0" GraphRef="n5_REACTOME_419522" RelX="-1.0793650793650793" RelY="-0.08695652173913043"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_i2_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="967.0" Y="324.0" GraphId="e_1_i3_0" GraphRef="n37_REACTOME_68524" RelX="-1.0617283950617284" RelY="-0.9"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_i3_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="799.0" Y="213.0" GraphId="e_1_o0_0" ArrowHead="Arrow" GraphRef="n2_REACTOME_419526" RelX="0.5074626865671642" RelY="1.2121212121212122"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_o0_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="797.0" Y="316.0" GraphId="e_1_o1_0" ArrowHead="Arrow" GraphRef="n3_REACTOME_420942" RelX="1.1272727272727272" RelY="-0.08"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_o1_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="911.0" Y="344.0" GraphId="e_1_o2_0" ArrowHead="Arrow" GraphRef="n6_REACTOME_420752" RelX="-0.01680672268907563" RelY="-1.1578947368421053"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_o2_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="806.0" Y="213.0" GraphId="e_1_c__0_0" GraphRef="n2_REACTOME_419526" RelX="0.7164179104477612" RelY="1.2121212121212122"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_c__0_1" GraphRef="e_1_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="910.0" Y="255.0" GraphId="e_1_a__0_0" GraphRef="n7_REACTOME_419529" RelX="-0.01818181818181818" RelY="1.3043478260869565"/>
+      <Point X="910.0" Y="312.0" GraphId="e_1_a__0_1" GraphRef="e_1_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_419539">
+    <Comment Source="WikiPathways-description">FANCI is  monoubiquitinated on lysine 523  in an FA core-complex-dependent manner (Sims et al., 2007; Smogorzewska et al. 2007). FANCD2 and FANCI are mutually dependent on each other for their respective monoubiquitination. However, multiple phosphorylation of FANCI but not monoubiquitination is crucial for FANCD2 activation following DNA damage (Ishiai et al., 2008).</Comment>
+    <BiopaxRef>lit_265872</BiopaxRef>
+    <BiopaxRef>lit_265816</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="991.0" Y="194.0" GraphId="e_9_0"/>
+      <Point X="1133.0" Y="143.0" GraphId="e_9_1"/>
+      <Point X="781.0" Y="143.0" GraphId="e_9_2"/>
+      <Anchor Position="0.0" GraphId="e_9_a_i"/>
+      <Anchor Position="0.30003285734954144" GraphId="e_9_a_p"/>
+      <Anchor Position="1.0" GraphId="e_9_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="931.0" Y="226.0" GraphId="e_9_i0_0" GraphRef="n7_REACTOME_419529" RelX="0.36363636363636365" RelY="-1.2173913043478262"/>
+      <Point X="991.0" Y="194.0" GraphId="e_9_i0_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="819.0" Y="193.0" GraphId="e_9_i1_0" GraphRef="n2_REACTOME_419526" RelX="1.1044776119402986" RelY="0.0"/>
+      <Point X="991.0" Y="194.0" GraphId="e_9_i1_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1039.0" Y="225.0" GraphId="e_9_i2_0" GraphRef="n4_REACTOME_68524" RelX="-0.2982456140350877" RelY="-1.2173913043478262"/>
+      <Point X="991.0" Y="194.0" GraphId="e_9_i2_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="781.0" Y="174.0" GraphId="e_9_o0_0" ArrowHead="Arrow" GraphRef="n2_REACTOME_419526" RelX="-0.029850746268656716" RelY="-1.1515151515151516"/>
+      <Point X="781.0" Y="143.0" GraphId="e_9_o0_1" GraphRef="e_9_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="760.0" Y="125.0" GraphId="e_9_o1_0" ArrowHead="Arrow" GraphRef="n10_REACTOME_420753" RelX="0.3252032520325203" RelY="1.15"/>
+      <Point X="781.0" Y="143.0" GraphId="e_9_o1_1" GraphRef="e_9_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="819.0" Y="188.0" GraphId="e_9_c__0_0" GraphRef="n2_REACTOME_419526" RelX="1.1044776119402986" RelY="-0.30303030303030304"/>
+      <Point X="1133.0" Y="143.0" GraphId="e_9_c__0_1" GraphRef="e_9_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1133.0" Y="299.0" GraphId="e_9_a__0_0" GraphRef="n5_REACTOME_419522" RelX="-0.031746031746031744" RelY="-1.2173913043478262"/>
+      <Point X="1133.0" Y="143.0" GraphId="e_9_a__0_1" GraphRef="e_9_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_REACTOME_420781">
+    <Comment Source="WikiPathways-description">Monoubiquitinated  FANCD2 and FANCI are targeted to chromatin   (Wang et al., 2004; Smogorzewska et al., 2007).</Comment>
+    <BiopaxRef>lit_421850</BiopaxRef>
+    <BiopaxRef>lit_265816</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="704.0" Y="366.0" GraphId="e_11_0"/>
+      <Point X="646.0" Y="366.0" GraphId="e_11_1"/>
+      <Point X="601.0" Y="366.0" GraphId="e_11_2" GraphRef="n13_REACTOME_420761" RelX="1.0638297872340425" RelY="-0.02631578947368421" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_11_a_i"/>
+      <Anchor Position="0.5631067961165048" GraphId="e_11_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="850.0" Y="366.0" GraphId="e_11_i0_0" GraphRef="n6_REACTOME_420752" RelX="-1.0420168067226891" RelY="0.0"/>
+      <Point X="704.0" Y="366.0" GraphId="e_11_i0_1" GraphRef="e_11_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="727.0" Y="389.0" GraphId="e_11_i1_0" GraphRef="n12_REACTOME_109939" RelX="-0.33707865168539325" RelY="-1.1875"/>
+      <Point X="704.0" Y="366.0" GraphId="e_11_i1_1" GraphRef="e_11_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="737.0" Y="125.0" GraphId="e_11_i2_0" GraphRef="n10_REACTOME_420753" RelX="-0.04878048780487805" RelY="1.15"/>
+      <Point X="704.0" Y="366.0" GraphId="e_11_i2_1" GraphRef="e_11_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_446345">
+    <Comment Source="WikiPathways-description">BRCA2 plays a critical role in the initiation of DNA repair by loading the repair protein RAD51 onto single-stranded DNA for homologous recombination (HR) (Reviewed in Lord and Ashworth, 2007).  PALB2 associates with BRCA2 and  also functions in the loading of the the BRCA2-RAD51 repair complex onto DNA (Xia et al., 2006 ). BRCA1, through its direct interaction with PALB2, may regulate recombinational repair partly by modulating the PALB2- dependent loading of the BRCA2-RAD51 repair machinery at the sites of  DNA breaks (Sy et al., 2009).</Comment>
+    <BiopaxRef>lit_517915</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="734.0" Y="531.0" GraphId="e_14_0"/>
+      <Point X="776.0" Y="531.0" GraphId="e_14_1"/>
+      <Point X="825.0" Y="531.0" GraphId="e_14_2" GraphRef="n18_REACTOME_517917" RelX="-1.0638297872340425" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_14_a_i"/>
+      <Anchor Position="0.46153846153846156" GraphId="e_14_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="683.0" Y="531.0" GraphId="e_14_i0_0" GraphRef="n15_REACTOME_419548" RelX="1.1555555555555554" RelY="0.0"/>
+      <Point X="734.0" Y="531.0" GraphId="e_14_i0_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="709.0" Y="507.0" GraphId="e_14_i1_0" GraphRef="n16_REACTOME_50949" RelX="0.4230769230769231" RelY="1.25"/>
+      <Point X="734.0" Y="531.0" GraphId="e_14_i1_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="759.0" Y="509.0" GraphId="e_14_i2_0" GraphRef="n17_REACTOME_50951" RelX="-0.5833333333333334" RelY="1.2592592592592593"/>
+      <Point X="734.0" Y="531.0" GraphId="e_14_i2_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_419525">
+    <Comment Source="WikiPathways-description">The FA pathway is negatively regulated through the USP1/UAF1 mediated deubiquitination of FANCD2 (Nijman et al., 2005)   UAF1 forms a complex with and activates USP1 (Cohn et al., 2007).</Comment>
+    <BiopaxRef>lit_421859</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="501.0" Y="367.0" GraphId="e_19_0" GraphRef="n13_REACTOME_420761" RelX="-1.0638297872340425" RelY="0.0"/>
+      <Point X="460.0" Y="367.0" GraphId="e_19_1"/>
+      <Point X="424.0" Y="367.0" GraphId="e_19_2"/>
+      <Anchor Position="0.5324675324675324" GraphId="e_19_a_p"/>
+      <Anchor Position="1.0" GraphId="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="386.0" Y="385.0" GraphId="e_19_o0_0" ArrowHead="Arrow" GraphRef="n20_REACTOME_420771" RelX="1.065217391304348" RelY="-0.6666666666666666"/>
+      <Point X="424.0" Y="367.0" GraphId="e_19_o0_1" GraphRef="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="406.0" Y="345.0" GraphId="e_19_o1_0" ArrowHead="Arrow" GraphRef="n22_REACTOME_68524" RelX="0.1791044776119403" RelY="1.3"/>
+      <Point X="424.0" Y="367.0" GraphId="e_19_o1_1" GraphRef="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="459.0" Y="407.0" GraphId="e_19_c__0_0" GraphRef="n21_REACTOME_419551" RelX="0.0" RelY="-1.2"/>
+      <Point X="460.0" Y="367.0" GraphId="e_19_c__0_1" GraphRef="e_19_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_420770">
+    <Comment Source="WikiPathways-description">ATR and ATM dependent phosphorylation of FANCD2  promotes the monoubiquitination of FANCD2 stimulating the FA pathway  (Andreassen et al., 2004; Ho et al., 2006).</Comment>
+    <BiopaxRef>lit_421854</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1308.0" Y="312.0" GraphId="e_23_0"/>
+      <Point X="1344.0" Y="312.0" GraphId="e_23_1"/>
+      <Point X="1390.0" Y="312.0" GraphId="e_23_2" GraphRef="n25_REACTOME_420754" RelX="-1.0467289719626167" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_23_a_i"/>
+      <Anchor Position="0.43902439024390244" GraphId="e_23_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1308.0" Y="335.0" GraphId="e_23_i0_0" GraphRef="n24_REACTOME_113550" RelX="0.0" RelY="-1.1282051282051282"/>
+      <Point X="1308.0" Y="312.0" GraphId="e_23_i0_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1169.0" Y="312.0" GraphId="e_23_i1_0" GraphRef="n5_REACTOME_419522" RelX="1.1111111111111112" RelY="-0.08695652173913043"/>
+      <Point X="1308.0" Y="312.0" GraphId="e_23_i1_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1344.0" Y="266.0" GraphId="e_23_c__0_0" GraphRef="n26_REACTOME_421853" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="1344.0" Y="312.0" GraphId="e_23_c__0_1" GraphRef="e_23_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_REACTOME_420769">
+    <Comment Source="WikiPathways-description">FANCI phosphorylation may function as a molecular switch to turn on the&#13;
+Fanconi anemia pathway in response to DNA damage or replication fork stress  (Ishiai et al., 2008).  Multiple phosphorylation sites within FANCI are functionally important for inducing monoubiquitination of FANCD2. Several lines of evidence support the notion that the ATR kinase is involved in this phosphorylation (Ishiai et al., 2008).</Comment>
+    <BiopaxRef>lit_420772</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="910.0" Y="226.0" GraphId="e_27_0" GraphRef="n7_REACTOME_419529" RelX="-0.01818181818181818" RelY="-1.2173913043478262"/>
+      <Point X="910.0" Y="112.0" GraphId="e_27_1"/>
+      <Point X="1144.0" Y="112.0" GraphId="e_27_2"/>
+      <Point X="1196.0" Y="99.0" GraphId="e_27_3" GraphRef="n28_REACTOME_420755" RelX="-1.053763440860215" RelY="0.9166666666666666" ArrowHead="Arrow"/>
+      <Anchor Position="0.8665330594320078" GraphId="e_27_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1327.0" Y="237.0" GraphId="e_27_c__0_0" GraphRef="n26_REACTOME_421853" RelX="-0.3300970873786408" RelY="-1.2173913043478262"/>
+      <Point X="1144.0" Y="112.0" GraphId="e_27_c__0_1" GraphRef="e_27_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_8" GroupRef="group_comp_8" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="94.0" CenterY="576.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_8" GroupRef="group_comp_8">
+    <Graphics Color="000000" CenterX="776.0" CenterY="312.0" Width="1496.0" Height="588.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421848" rdf:id="lit_421848">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18995829</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chromatin recruitment of DNA repair proteins: lessons from the fanconi anemia and double-strand break repair pathways</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohn, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, AD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 32:306-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_217032" rdf:id="lit_217032">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11239454</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction of the Fanconi anemia proteins and BRCA1 in a common pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garcia-Higuera, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taniguchi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ganesan, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meyn, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Timmers, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hejna, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grompe, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, AD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 7:249-62</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421846" rdf:id="lit_421846">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16916645</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">UBE2T is the E2 in the Fanconi anemia pathway and undergoes negative autoregulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Machida, YJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Machida, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gurtan, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kupfer, GM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dutta, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 23:589-96</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_265872" rdf:id="lit_265872">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17460694</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FANCI is a second monoubiquitinated member of the Fanconi anemia pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sims, AE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spiteri, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sims RJ, 3rd</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arita, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lach, FP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Landers, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wurm, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Freund, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neveling, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanenberg, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Auerbach, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, TT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Mol Biol 14:564-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_265816" rdf:id="lit_265816">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17412408</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of the FANCI protein, a monoubiquitinated FANCD2 paralog required for DNA repair</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smogorzewska, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuoka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vinciguerra, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McDonald ER, 3rd</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hurov, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luo, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ballif, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gygi, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hofmann, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 129:289-301</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421850" rdf:id="lit_421850">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15199141</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional interaction of monoubiquitinated FANCD2 and BRCA2/FANCD1 in chromatin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andreassen, PR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, AD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 24:5850-62</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_517915" rdf:id="lit_517915">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19369211</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PALB2 is an integral component of the BRCA complex required for homologous recombination repair</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sy, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huen, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 106:7155-60</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421859" rdf:id="lit_421859">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18082604</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A UAF1-containing multisubunit protein complex regulates the Fanconi anemia pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohn, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kowal, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haas, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, TT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gygi, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, AD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 28:786-97</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421854" rdf:id="lit_421854">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16943440</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation of FANCD2 on two novel sites is required for mitomycin C resistance</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ho, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Margossian, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taniguchi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, AD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 26:7005-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_420772" rdf:id="lit_420772">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18931676</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FANCI phosphorylation functions as a molecular switch to turn on the Fanconi anemia pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishiai, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitao, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smogorzewska, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomida, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinomura, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uchida, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saberi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinoshita, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinoshita-Kikuta, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koike, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tashiro, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takata, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Mol Biol 15:1138-46</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

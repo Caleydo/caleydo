@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Insulin Leptin Adiponectin Resistin" Author="Sailendra" Organism="Homo sapiens">
+  <Graphics BoardWidth="893.0" BoardHeight="216.0" />
+  <Line GraphId="idb997d0cd">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="21.0" Y="102.0" />
+      <Point X="861.0" Y="101.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idbdedd8ae">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="24.0" Y="148.0" />
+      <Point X="863.0" Y="149.0" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="Leptin" GraphId="bb3ac">
+    <Graphics CenterX="351.0" CenterY="84.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Insulin" GraphId="dbb33">
+    <Graphics CenterX="92.0" CenterY="86.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Adiponectin" GraphId="ad379">
+    <Graphics CenterX="194.0" CenterY="85.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Resistin" GraphId="b449e">
+    <Graphics CenterX="507.0" CenterY="81.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Leptin-R--Leptin-R" GraphId="c1277">
+    <Graphics CenterX="357.5" CenterY="114.0" Width="99.0" Height="30.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Label" GraphId="b41ee">
+    <Graphics CenterX="328.0" CenterY="175.5" Width="80.0" Height="21.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

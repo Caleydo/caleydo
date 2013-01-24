@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="ACE Inhibitor Pathway" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Comment Source="WikiPathways-description">The renin-angiotensin-aldosterone system (RAAS) is central to the control of blood pressure and the target of several types of anti-hypertensive drugs. This pathway depicts a simplified representation of the pharmacodynamics (PD) of RAAS-acting drugs including candidate genes for the pharmacogenomics (PGx) of ACE inhibitors, angiotensin receptor blockers (ARBs), renin inhibitor aliskiren and aldosterone receptor antagonists.
+Source: PharmGKB (http://www.pharmgkb.org/do/serve?objId=PA2023&amp;objCls=Pathway)</Comment>
+  <BiopaxRef>cc0</BiopaxRef>
+  <Graphics BoardWidth="11247.5" BoardHeight="8580.0"/>
+  <DataNode BackpageHead="Agt | angiotensinogen" TextLabel="Agt" Type="GeneProduct" GraphId="fa1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Agt | angiotensinogen"/>
+    <Graphics Color="000000" CenterX="2350.0" CenterY="2250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11606"/>
+  </DataNode>
+  <DataNode BackpageHead="Ren1 | renin 1 structural" TextLabel="Ren1" Type="GeneProduct" GraphId="daf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ren1 | renin 1 structural"/>
+    <Graphics Color="000000" CenterX="1960.0" CenterY="2880.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19701"/>
+  </DataNode>
+  <DataNode BackpageHead="Angiotensin I" TextLabel="Angiotensin I" Type="Metabolite" GraphId="f33">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Angiotensin I"/>
+    <Graphics Color="0000ff" CenterX="1590.0" CenterY="3800.0" Width="1400.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="PubChem-compound" ID="3081372"/>
+  </DataNode>
+  <DataNode BackpageHead="Ace | angiotensin converting enzyme" TextLabel="Ace" Type="GeneProduct" GraphId="a36">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ace | angiotensin converting enzyme"/>
+    <Graphics Color="000000" CenterX="1620.0" CenterY="4495.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11421"/>
+  </DataNode>
+  <DataNode BackpageHead="ACE Inhibitor" TextLabel="ACE Inhibitor" Type="GeneProduct" GraphId="f39">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ACE Inhibitor"/>
+    <Graphics Color="ff0000" CenterX="4300.0" CenterY="3100.0" Width="1400.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode BackpageHead="Kng1 | kininogen 1" TextLabel="Kng1" Type="GeneProduct" GraphId="b32">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Kng1 | kininogen 1"/>
+    <Graphics Color="000000" CenterX="7000.0" CenterY="2300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16644"/>
+  </DataNode>
+  <DataNode BackpageHead="Bradykinin" TextLabel="Bradykinin" Type="GeneProduct" GraphId="a51">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Bradykinin"/>
+    <Graphics Color="0000ff" CenterX="6850.0" CenterY="3700.0" Width="1400.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB04246"/>
+  </DataNode>
+  <DataNode BackpageHead="Ace | angiotensin converting enzyme" TextLabel="Ace" Type="GeneProduct" GraphId="c80">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ace | angiotensin converting enzyme"/>
+    <Graphics Color="000000" CenterX="6650.0" CenterY="4990.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11421"/>
+  </DataNode>
+  <DataNode BackpageHead="Nos3 | nitric oxide synthase 3 endothelial ce..." TextLabel="Nos3" Type="GeneProduct" GraphId="f67">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Nos3 | nitric oxide synthase 3 endothelial ce..."/>
+    <Graphics Color="000000" CenterX="5550.0" CenterY="7400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18127"/>
+  </DataNode>
+  <DataNode BackpageHead="Angiotensin II" TextLabel="Angiotensin II" Type="Metabolite" GraphId="b67">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Angiotensin II"/>
+    <Graphics Color="0000ff" CenterX="1595.0" CenterY="5400.0" Width="1400.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01035"/>
+  </DataNode>
+  <DataNode BackpageHead="Aldosterone" TextLabel="Aldosterone" Type="GeneProduct" GraphId="df7">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Aldosterone"/>
+    <Graphics Color="0000ff" CenterX="2300.0" CenterY="7650.0" Width="1400.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Kegg Compound" ID="C01780"/>
+  </DataNode>
+  <DataNode BackpageHead="Bdkrb2 | bradykinin receptor beta 2" TextLabel="Bdkrb2" Type="GeneProduct" GraphId="fb4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Bdkrb2 | bradykinin receptor beta 2"/>
+    <Graphics Color="000000" CenterX="6335.0" CenterY="6270.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12062"/>
+  </DataNode>
+  <DataNode BackpageHead="Agtr2 | angiotensin II receptor type 2" TextLabel="Agtr2" Type="GeneProduct" GraphId="be7" GroupRef="f927c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Agtr2 | angiotensin II receptor type 2"/>
+    <Graphics Color="000000" CenterX="1595.0" CenterY="6650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11609"/>
+  </DataNode>
+  <DataNode BackpageHead="Agtr1 | angiotensin receptor 1" TextLabel="Agtr1" Type="GeneProduct" GraphId="d6a" GroupRef="f927c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Agtr1 | angiotensin receptor 1"/>
+    <Graphics Color="000000" CenterX="1595.0" CenterY="6350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11607"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="id2067a77f">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="2350.0" y="2400.0" GraphRef="fa1" relX="0.0" relY="1.0"/>
+      <Point x="1590.0" y="3650.0" GraphRef="f33" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="d6877"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idcb6c05c1">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="1590.0" y="3950.0" GraphRef="f33" relX="0.0" relY="1.0"/>
+      <Point x="1595.0" y="5250.0" GraphRef="b67" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="cb4a9"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id4760d27a">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="1595.0" y="5550.0" GraphRef="b67" relX="0.0" relY="1.0"/>
+      <Point x="1595.0" y="6080.0" GraphRef="ad07f" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="id167474c3">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="1595.0" y="6920.0" GraphRef="ad07f" relX="0.0" relY="1.0"/>
+      <Point x="2300.0" y="7500.0" GraphRef="df7" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id61316c2a">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="3950.0" y="3250.0" GraphRef="f39" relX="-0.5" relY="1.0"/>
+      <Point x="2070.0" y="4495.0" GraphRef="a36" relX="1.0" relY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id8a906e85">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="7000.0" y="2450.0" GraphRef="b32" relX="0.0" relY="1.0"/>
+      <Point x="6850.0" y="3550.0" GraphRef="a51" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idd0d0680f">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="6850.0" y="3850.0" GraphRef="a51" relX="0.0" relY="1.0"/>
+      <Point x="6335.0" y="6120.0" GraphRef="fb4" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.48628158844765335" Shape="None" GraphId="caac6"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ida74b522d">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="6335.0" y="6420.0" GraphRef="fb4" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="7250.0" GraphRef="f67" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id99f492c6">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="4650.0" y="3250.0" GraphRef="f39" relX="0.5" relY="1.0"/>
+      <Point x="6200.0" y="4990.0" GraphRef="c80" relX="-1.0" relY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idd754b0de">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6650.0" y="5140.0" GraphRef="c80" relX="0.0" relY="1.0"/>
+      <Point x="6599.564981949458" y="4953.8592057761725" GraphRef="caac6" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idac1fc574">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1170.0" y="4495.0" GraphRef="a36" relX="-1.0" relY="0.0"/>
+      <Point x="1592.0" y="4470.0" GraphRef="cb4a9" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id243257fc">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1960.0" y="3030.0" GraphRef="daf" relX="0.0" relY="1.0"/>
+      <Point x="2046.0" y="2900.0" GraphRef="d6877" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Cell Membrane" GraphId="ae7">
+    <Graphics FontWeight="Bold" FontSize="180" Color="008000" CenterX="8200.0" CenterY="6050.0" Width="1775.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Arc" Style="Solid" GraphId="a66">
+    <Graphics FillColor="000000" Color="000000" CenterX="4700.0" CenterY="6700.0" Width="7902.532" Height="900.0" ZOrder="16384" Rotation="3.141593"/>
+  </Shape>
+  <Group GroupId="f927c" GraphId="ad07f" Style="Group" TextLabel="Group object"/>
+  <InfoBox CenterX="25.0" CenterY="575.0"/>
+  <Legend CenterX="10225.0" CenterY="1775.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="cc0">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17464936</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The emerging role of ACE2 in physiology and disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Pathol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hamming I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper ME</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haagmans BL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hooper NM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korstanje R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Osterhaus AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Timens W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turner AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Navis G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Goor H</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

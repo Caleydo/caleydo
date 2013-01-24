@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Interactions of the immunoglobulin superfamily (IgSF) member proteins" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n1_REACTOME_391160" TextLabel="Signal regulatory &#10;protein (SIRP) family &#10;interactions&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Signal regulatory protein (SIRP)alpha, also known as SHPS-1 or SIRPA or CD172a, is a transmembrane protein expressed mostly on myeloid cells. CD47, a widely expressed transmembrane protein, is a ligand for SIRP alpha, with the two proteins constituting a cell-cell communication system. The interaction of SIRP alpha with CD47 is important for the regulation of migration and phagocytosis. SIRP alpha functions as a docking protein to recruit and activate SHP-1 or SHP-2 at the cell membrane in response to extracellular stimuli. SIRP alpha also binds other intracellular proteins including the adaptor molecules Src kinase-associated protein (SKAP2 SKAP55hom/R), Fyn-binding protein/SLP-76-associated phosphoprotein (FYB/SLAP-130) and the tyrosine kinase PYK2. SIRP alpha also binds the extracellular proteins, surfactant-A (SP-A) and surfactant-D (SP-D). &lt;br&gt;In addition to SIRP alpha there are two closely related proteins in the SIRP family namely SIRP beta and SIRP gamma. These three family proteins show high sequence similarity and similar extracellular structural topology, including three Ig domains, but their ligand binding topology might differ. SIRP beta is expressed on myeloid cells, including monocytes, granulocytes and DCs. A natural ligand for SIRP beta remains unknown; SIRP gamma can bind to CD47 but the binding affinity is lower than that of SIRP alpha.</Comment>
+    <BiopaxRef>lit_203245</BiopaxRef>
+    <BiopaxRef>lit_391053</BiopaxRef>
+    <BiopaxRef>lit_548909</BiopaxRef>
+    <BiopaxRef>lit_391140</BiopaxRef>
+    <BiopaxRef>lit_925201</BiopaxRef>
+    <Graphics Color="000000" CenterX="89.0" CenterY="58.0" Width="120.0" Height="58.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_23916"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_373753" TextLabel="Nephrin &#10;interactions&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Nephrin is a member of the Super-IgG-Molecule family and is most prominently expressed in kidney podocytes. It is a major if not the most important structural component of the slit diaphragm, a modified adherens junction in between these cells. Nephrin is composed of an extracellular domain with eight distal IgG like domains and one proximal fibronectin type III domain, a transmembrane domain and a short intracellular domain. Nephrin molecules show both homophilic and heterophilic interactions.  Among heterophilic interaction partners slit diaphragm proteins such as NEPH1, NEPH2 and NEPH3 were shown to stabilize the slit diaphragm structure. Intracellularly Podocin, CD2 associated protein (CD2AP) and adherins junction associated proteins like IQGAP, MAGI, CASK and spectrins were all shown to interact with nephrin. Hence nephrin seems to play a major role in organizing the molecular structure of the slit diaphragm itself and via its binding partners links it to the actin cytoskeleton. Nephrin does not only fulfill static properties within the slit diaphragm but by tyrosine phosphorylation of its cytoplasmic tail by the Src kinase Fyn it initiates the PI3K AKT signaling cascade which seems to promote antiapoptotic signals.</Comment>
+    <BiopaxRef>lit_451749</BiopaxRef>
+    <BiopaxRef>lit_451745</BiopaxRef>
+    <BiopaxRef>lit_451748</BiopaxRef>
+    <BiopaxRef>lit_375810</BiopaxRef>
+    <BiopaxRef>lit_451753</BiopaxRef>
+    <BiopaxRef>lit_936051</BiopaxRef>
+    <BiopaxRef>lit_451378</BiopaxRef>
+    <BiopaxRef>lit_937359</BiopaxRef>
+    <Graphics Color="000000" CenterX="229.0" CenterY="56.0" Width="82.0" Height="44.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_23832"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_376172" TextLabel="DSCAM interactions&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">DSCAM (Down syndrome cell adhesion molecule) is one of the members of the Ig superfamily CAMs with a domain architecture comprising 10 Ig domains, 6 fibronectin type III (FN) repeats, a single transmembrane and a C terminal cytoplasmic domain. DSCAM is implicated in Down syndrome (DS) due to the chromosomal location of the DSCAM gene, but no evidence supports a direct involvement of DSCAM with DS. It likely functions as a cell surface receptor mediating axon pathfinding. Besides these important implications, little is known about the physiological function or the molecular mechanism of DSCAM signal transduction in mammalian systems. A closely related DSCAM paralogue Down syndrome cell adhesion moleculelike protein 1 (DSCAML1) is present in humans. Both these proteins are involved in homophilic intercellular interactions.</Comment>
+    <BiopaxRef>lit_375866</BiopaxRef>
+    <BiopaxRef>lit_375872</BiopaxRef>
+    <Graphics Color="000000" CenterX="372.5" CenterY="55.0" Width="127.0" Height="30.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_25299"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_203245" rdf:id="lit_203245">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16691243</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The SIRP family of receptors and immune regulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barclay, AN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Immunol 6:457-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_391053" rdf:id="lit_391053">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12023008</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SHPS-1, a multifunctional transmembrane glycoprotein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oshima, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruhul Amin, AR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hamaguchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuda, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 519:1-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_548909" rdf:id="lit_548909">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19144521</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functions and molecular mechanisms of the CD47-SIRPalpha signalling pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matozaki, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murata, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okazawa, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohnishi, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cell Biol 19:72-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_391140" rdf:id="lit_391140">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11792697</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signal regulatory protein (SIRPalpha), a cellular ligand for CD47, regulates neutrophil transmigration</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BÃ¼hring, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zen, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burst, SL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schnell, FJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, IR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkos, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:10028-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_925201" rdf:id="lit_925201">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16339511</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A nomenclature for signal regulatory protein family members</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Berg, TK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Beek, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BÃ¼hring, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colonna, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hamaguchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Howard, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kasuga, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matozaki, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neel, BG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkos, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sano, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vignery, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vivier, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wright, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zawatzky, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barclay, AN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Immunol 175:7788-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451749" rdf:id="lit_451749">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17766183</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin--a unique structural and signaling protein of the kidney filter</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patrakka, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Mol Med 13:396-403</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451745" rdf:id="lit_451745">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10393930</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin is specifically located at the slit diaphragm of glomerular podocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruotsalainen, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ljungberg, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wartiovaara, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lenkkeri, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">KestilÃ¤, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jalanko, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holmberg, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 96:7962-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451748" rdf:id="lit_451748">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10541305</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Unraveling the mechanisms of glomerular ultrafiltration: nephrin, a key component of the slit diaphragm</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Soc Nephrol 10:2440-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375810" rdf:id="lit_375810">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16571882</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hereditary proteinuria syndromes and mechanisms of proteinuria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patrakka, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wartiovaara, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N Engl J Med 354:1387-401</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451753" rdf:id="lit_451753">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12832477</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin and CD2AP associate with phosphoinositide 3-OH kinase and stimulate AKT-dependent signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hartleben, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmidts, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schermer, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keil, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Egger, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lecha, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borner, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PavenstÃ¤dt, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shaw, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 23:4917-28</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_936051" rdf:id="lit_936051">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15821412</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The slit diaphragm: a signaling platform to regulate podocyte function</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Nephrol Hypertens 14:211-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451378" rdf:id="lit_451378">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15994232</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell junction-associated proteins IQGAP1, MAGI-2, CASK, spectrins, and alpha-actinin are components of the nephrin multiprotein complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lehtonen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ryan, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kudlicka, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iino, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Farquhar, MG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 102:9814-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_937359" rdf:id="lit_937359">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19649571</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetics of nephrotic syndrome: new insights into molecules acting at the glomerular filtration barrier</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zenker, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Machuca, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antignac, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Med 87:849-57</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375866" rdf:id="lit_375866">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18585357</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DSCAM is a netrin receptor that collaborates with DCC in mediating turning responses to netrin-1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ly, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nikolaev, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suresh, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tessier-Lavigne, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stein, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 133:1241-54</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375872" rdf:id="lit_375872">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10925149</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Down syndrome cell adhesion molecule DSCAM mediates homophilic intercellular adhesion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agarwala, KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakamura, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsutsumi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamakawa, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brain Res Mol Brain Res 79:118-26</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>immune response pathway</bp:TERM><bp:ID>PW:0000023</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

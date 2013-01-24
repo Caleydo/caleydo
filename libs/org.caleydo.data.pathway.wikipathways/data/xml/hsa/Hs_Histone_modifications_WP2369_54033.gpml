@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Histone modifications" Author="Egon Willighagen" Organism="Homo sapiens">
+  <Comment>Histones can undergo many modifications involved in transcriptiong regulation. This pathway provides an overview of the various known modifications and which catalysts are involved in that modification.</Comment>
+  <BiopaxRef>fe1</BiopaxRef>
+  <BiopaxRef>a1e</BiopaxRef>
+  <BiopaxRef>c75</BiopaxRef>
+  <Graphics BoardWidth="1346.942202754371" BoardHeight="1069.139240506329" />
+  <DataNode TextLabel="Histone" GraphId="dbd3e" Type="Complex">
+    <Graphics CenterX="706.5831397003183" CenterY="521.826826845398" Width="619.6294750918396" Height="575.7359333828124" ZOrder="-2" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3" GraphId="c79c3" Type="Protein">
+    <Graphics CenterX="872.2148322632266" CenterY="400.9227765180151" Width="270.4296645264533" Height="324.0803728898961" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4" GraphId="cf613" Type="Protein">
+    <Graphics CenterX="878.0294499946342" CenterY="671.7607482546382" Width="258.80042906363803" Height="178.92015519628893" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="GeneProduct" GraphId="ebc02" Type="GeneProduct">
+    <Graphics CenterX="1109.964809384163" CenterY="221.19061583577712" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K4me2" GraphId="bd31b">
+    <Graphics CenterX="1037.0" CenterY="183.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K4me1" GraphId="ea44e">
+    <Graphics CenterX="963.0" CenterY="129.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K14ac" GraphId="a214a">
+    <Graphics CenterX="1109.8347117636351" CenterY="360.15226337448547" Width="80.00000000000003" Height="27.500000000000018" ZOrder="32792" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K4me3" GraphId="cb4bb">
+    <Graphics CenterX="1109.8347117636354" CenterY="274.84802324318474" Width="80.0000000000001" Height="27.50000000000004" ZOrder="32793" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K27" GraphId="a4892">
+    <Graphics CenterX="932.920340975897" CenterY="484.795834383136" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32794" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K14" GraphId="c994d">
+    <Graphics CenterX="932.920340975897" CenterY="360.15226337448547" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32796" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K18" GraphId="c7f25">
+    <Graphics CenterX="932.920340975897" CenterY="404.3128103926126" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32797" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K4" GraphId="ee0dd">
+    <Graphics CenterX="932.920340975897" CenterY="274.84802324318474" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32798" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K27ac" GraphId="eab92">
+    <Graphics CenterX="1109.8347117636354" CenterY="484.79583438313597" Width="80.0000000000001" Height="27.49999999999999" ZOrder="32800" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K18ac" GraphId="b895d">
+    <Graphics CenterX="1109.8347117636351" CenterY="404.3128103926126" Width="80.0000000000001" Height="27.50000000000004" ZOrder="32801" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K36" GraphId="a1dcb">
+    <Graphics CenterX="932.9203409758968" CenterY="531.1332829428067" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32802" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K36ac" GraphId="f6821">
+    <Graphics CenterX="1109.8347117636354" CenterY="531.1332829428067" Width="80.0000000000001" Height="27.49999999999999" ZOrder="32803" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K23" GraphId="bd728">
+    <Graphics CenterX="932.9203409758968" CenterY="443.1908961115309" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32804" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K23ac" GraphId="f8228">
+    <Graphics CenterX="1109.8347117636351" CenterY="444.96044343663385" Width="80.0000000000001" Height="27.50000000000004" ZOrder="32805" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K9" GraphId="f931e">
+    <Graphics CenterX="932.9203409758968" CenterY="319.1234567901237" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32806" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3K9ac" GraphId="c738f">
+    <Graphics CenterX="1109.8347117636351" CenterY="316.7777777777782" Width="80.0000000000001" Height="27.50000000000004" ZOrder="32807" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K5ac" GraphId="fd644">
+    <Graphics CenterX="1109.8347117636351" CenterY="602.7448614146076" Width="80.0000000000001" Height="22.47058823529401" ZOrder="32811" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K12" GraphId="a4fde">
+    <Graphics CenterX="935.044377719573" CenterY="673.5907997899525" Width="53.57142857142858" Height="22.470588235294013" ZOrder="32812" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K8" GraphId="cb97d">
+    <Graphics CenterX="935.0443777195728" CenterY="635.4882871431072" Width="53.57142857142858" Height="22.470588235294013" ZOrder="32813" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K16" GraphId="e4d1e">
+    <Graphics CenterX="935.0443777195729" CenterY="709.9376370323088" Width="53.57142857142858" Height="22.470588235294013" ZOrder="32814" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K91" GraphId="cc73a">
+    <Graphics CenterX="935.0443777195728" CenterY="746.9454550849025" Width="53.57142857142858" Height="22.470588235294013" ZOrder="32815" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K5" GraphId="e921c">
+    <Graphics CenterX="935.0443777195729" CenterY="602.7448614146076" Width="53.57142857142858" Height="22.470588235294013" ZOrder="32816" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K8ac" GraphId="c54c4">
+    <Graphics CenterX="1109.8347117636351" CenterY="635.4882871431072" Width="80.0000000000001" Height="22.47058823529401" ZOrder="32817" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K12ac" GraphId="ac62b">
+    <Graphics CenterX="1109.8347117636351" CenterY="673.5907997899525" Width="80.0000000000001" Height="22.47058823529401" ZOrder="32818" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K16ac" GraphId="b6643">
+    <Graphics CenterX="1109.8347117636351" CenterY="709.9376370323088" Width="80.0000000000001" Height="22.47058823529401" ZOrder="32819" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H4K91ac" GraphId="b5212">
+    <Graphics CenterX="1109.8347117636354" CenterY="746.9454550849024" Width="80.0000000000001" Height="22.47058823529401" ZOrder="32820" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3R8" GraphId="f7a86">
+    <Graphics CenterX="858.920340975897" CenterY="275.84802324318474" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32824" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3R8ci" GraphId="d9649">
+    <Graphics CenterX="857.920340975897" CenterY="154.84802324318474" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32825" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3S10" GraphId="ea1be">
+    <Graphics CenterX="781.920340975897" CenterY="275.84802324318474" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32827" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="H3S10ph" GraphId="c4f36">
+    <Graphics CenterX="774.920340975897" CenterY="150.84802324318474" Width="61.500000000000064" Height="27.500000000000018" ZOrder="32828" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <Line GraphId="id346198ff">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="961.830092005287" Y="602.7448614146076" GraphRef="e921c" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636351" Y="602.7448614146076" GraphRef="fd644" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id85f369e7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="961.830092005287" Y="635.4882871431073" GraphRef="cb97d" RelX="1.0" RelY="0.0" />
+      <Point X="1083.0489974779216" Y="635.4882871431073" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9a089cbe">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="961.8300920052873" Y="673.5907997899526" GraphRef="a4fde" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636351" Y="673.5907997899526" GraphRef="ac62b" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id19f82e7f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="961.830092005287" Y="709.9376370323089" GraphRef="e4d1e" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636351" Y="709.9376370323089" GraphRef="b6643" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idda61403c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="961.830092005287" Y="746.9454550849025" GraphRef="cc73a" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636354" Y="746.9454550849025" GraphRef="b5212" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4ea955e">
+    <Graphics ZOrder="32775" LineThickness="1.0">
+      <Point X="948.295340975897" Y="261.09802324318474" GraphRef="ee0dd" RelX="0.5" RelY="-1.0" />
+      <Point X="1037.0" Y="193.0" GraphRef="bd31b" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id5d6d41dd">
+    <Graphics ZOrder="32776" LineThickness="1.0">
+      <Point X="917.545340975897" Y="261.09802324318474" GraphRef="ee0dd" RelX="-0.5" RelY="-1.0" />
+      <Point X="983.0" Y="139.0" GraphRef="ea44e" RelX="0.5" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idff5ac686">
+    <Graphics ZOrder="32786" LineThickness="1.0">
+      <Point X="963.670340975897" Y="484.795834383136" GraphRef="a4892" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636354" Y="484.79583438313597" GraphRef="eab92" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id6e5c4150">
+    <Graphics ZOrder="32787" LineThickness="1.0">
+      <Point X="1089.964809384163" Y="231.19061583577712" GraphRef="ebc02" RelX="-0.5" RelY="1.0" />
+      <Point X="1037.0" Y="274.8480232431848" GraphRef="ce7aa" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id12de85ec">
+    <Graphics ZOrder="32788" LineThickness="1.0">
+      <Point X="963.670340975897" Y="404.3128103926126" GraphRef="c7f25" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636351" Y="404.3128103926126" GraphRef="b895d" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id31a62716">
+    <Graphics ZOrder="32789" LineThickness="1.0">
+      <Point X="963.6703409758968" Y="319.1234567901237" GraphRef="f931e" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636351" Y="316.7777777777783" GraphRef="c738f" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idace0c414">
+    <Graphics ZOrder="32790" LineThickness="1.0">
+      <Point X="963.6703409758968" Y="531.1332829428067" GraphRef="a1dcb" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636354" Y="531.1332829428067" GraphRef="f6821" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida808b3c7">
+    <Graphics ZOrder="32791" LineThickness="1.0">
+      <Point X="963.6703409758968" Y="443.1908961115309" GraphRef="bd728" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636351" Y="444.9604434366339" GraphRef="f8228" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id22ecd1a4">
+    <Graphics ZOrder="32795" LineThickness="1.0">
+      <Point X="963.670340975897" Y="274.84802324318474" GraphRef="ee0dd" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636354" Y="274.8480232431848" GraphRef="cb4bb" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.6907181616581701" Shape="None" GraphId="ce7aa" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3c3ded5e">
+    <Graphics ZOrder="32799" LineThickness="1.0">
+      <Point X="963.670340975897" Y="360.15226337448547" GraphRef="c994d" RelX="1.0" RelY="0.0" />
+      <Point X="1069.8347117636351" Y="360.15226337448547" GraphRef="a214a" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="32823" LineThickness="1.0">
+      <Point X="858.920340975897" Y="262.09802324318474" GraphRef="f7a86" RelX="0.0" RelY="-1.0" />
+      <Point X="857.920340975897" Y="168.59802324318474" GraphRef="d9649" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="32829" LineThickness="1.0">
+      <Point X="781.920340975897" Y="262.09802324318474" GraphRef="ea1be" RelX="0.0" RelY="-1.0" />
+      <Point X="774.920340975897" Y="164.59802324318474" GraphRef="c4f36" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Shape GraphId="c0158">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="731.0407216303503" CenterY="528.9669055970718" Width="1171.8029622480417" Height="1020.3446698185146" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c75">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18552846</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Combinatorial patterns of histone acetylations and methylations in the human genome.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zang C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosenfeld JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schones DE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barski A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cuddapah S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cui K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roh TY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang MQ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao K</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a1e">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">23016851</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Modulation of epigenetic targets for anticancer therapy: clinicopathological relevance, structural data and drug discovery perspectives.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Pharm Des</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2012</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andreoli F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barbosa AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parenti MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Del Rio A</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="fe1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17277777</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Distinct and predictive chromatin signatures of transcriptional promoters and enhancers in the human genome.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heintzman ND</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stuart RK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hon G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ching CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hawkins RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barrera LO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Calcar S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qu C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ching KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weng Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Green RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crawford GE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ren B</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="GPCR-orphan-noGO" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Comment Source="WikiPathways-description">Orphan GPCRs with no Gene Ontology annotation.</Comment>
+  <Graphics BoardWidth="4125.0" BoardHeight="9240.0" WindowWidth="6100.0" WindowHeight="9550.0"/>
+  <DataNode TextLabel="Gpr107" Type="GeneProduct" BackpageHead=" " GraphId="a0fed">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 107</Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="1350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000194"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr108" Type="GeneProduct" BackpageHead=" " GraphId="a4bfa">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 108</Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="1650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000005823"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr111" Type="GeneProduct" BackpageHead=" " GraphId="cd82e">
+    <Comment Source="GenMAPP remarks">Putative uncharacterized protein </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="1950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000057899"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr112" Type="GeneProduct" BackpageHead=" " GraphId="ecd41">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 112 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="2250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000053852"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr112" Type="GeneProduct" BackpageHead=" " GraphId="ac55b">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 112 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="2550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000053852"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr116" Type="GeneProduct" BackpageHead=" " GraphId="dd82a">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 116 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="2850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000056492"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr137" Type="GeneProduct" BackpageHead=" " GraphId="aa28f">
+    <Comment Source="GenMAPP remarks">Putative uncharacterized protein (Fragment) </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="3150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000024958"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr137b" Type="GeneProduct" BackpageHead=" " GraphId="c82fd">
+    <Comment Source="GenMAPP remarks">Integral membrane protein GPR137B </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="3450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021306"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr137b" Type="GeneProduct" BackpageHead=" " GraphId="c084c">
+    <Comment Source="GenMAPP remarks">cdna:known chromosome:NCBIM37:13:12709610:12742553:-1 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="3750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000075118"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr137c" Type="GeneProduct" BackpageHead=" " GraphId="bc313">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 137C </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="4050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000049092"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr155" Type="GeneProduct" BackpageHead=" " GraphId="bfd3f">
+    <Comment Source="GenMAPP remarks">cdna:known chromosome:NCBIM37:2:73181514:73224455:-1 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="4350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000041762"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr161" Type="GeneProduct" BackpageHead=" " GraphId="c40c0">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor RE2 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="4650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000040836"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr165" Type="GeneProduct" BackpageHead=" " GraphId="b5afc">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 165</Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="4950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031210"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr172b" Type="GeneProduct" BackpageHead=" " GraphId="c2cad">
+    <Comment Source="GenMAPP remarks">Isoform 1 of Porcine endogenous retrovirus A receptor 2 homolog </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="5250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022560"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr175" Type="GeneProduct" BackpageHead=" " GraphId="f7b9d">
+    <Comment Source="GenMAPP remarks">Integral membrane protein GPR175 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="5550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000002871"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr177" Type="GeneProduct" BackpageHead=" " GraphId="b745c">
+    <Comment Source="GenMAPP remarks">Isoform 1 of Integral membrane protein GPR177 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="5850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028173"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr179" Type="GeneProduct" BackpageHead=" " GraphId="f6f7f">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 179</Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="6150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000070337"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr180" Type="GeneProduct" BackpageHead=" " GraphId="bf638">
+    <Comment Source="GenMAPP remarks">Integral membrane protein GPR180 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="6450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022131"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr31c" Type="GeneProduct" BackpageHead=" " GraphId="ff3e1">
+    <Comment Source="GenMAPP remarks">cdna:known chromosome:NCBIM37:17:13244187:13245146:-1 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000071311"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr31c" Type="GeneProduct" BackpageHead=" " GraphId="dda66">
+    <Comment Source="GenMAPP remarks">cdna:known chromosome:NCBIM37:17:13244187:13245146:-1 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="7050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000071311"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr4" Type="GeneProduct" BackpageHead=" " GraphId="b1856">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 4 </Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="7350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000044317"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr89" Type="GeneProduct" BackpageHead=" " GraphId="a8295">
+    <Comment Source="GenMAPP remarks">G protein-coupled receptor 89</Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="7650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028096"/>
+  </DataNode>
+  <DataNode TextLabel="Gprc2a-rs5" Type="GeneProduct" BackpageHead=" " GraphId="ed8cb">
+    <Comment Source="GenMAPP remarks">âG protein-coupled receptor, family C, group 2, member A, related sequence 5â</Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="7950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000074164"/>
+  </DataNode>
+  <DataNode TextLabel="Gprc2a-rs5" Type="GeneProduct" BackpageHead=" " GraphId="d51b4">
+    <Comment Source="GenMAPP remarks">âG protein-coupled receptor, family C, group 2, member A, related sequence 5â</Comment>
+    <Graphics Color="000000" CenterX="1500.0" CenterY="8250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000074164"/>
+  </DataNode>
+  <Label TextLabel="Orphan GPCRs - No GO Annotation" GraphId="ef005">
+    <Graphics FontSize="150" Color="000000" CenterX="2077.5" CenterY="885.0" Width="3345.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <InfoBox CenterX="76.5" CenterY="125.0"/>
+  <Legend CenterX="2820.0" CenterY="1778.0"/>
+</Pathway>

@@ -1,0 +1,1153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Metabolism of porphyrins" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">Porphyrins are heterocyclic macrocycles, consisting of four pyrrole subunits (tetrapyrrole) linked by four methine (=CH-) bridges. The extensive conjugated porphyrin macrocycle is chromatic and the name itself, &lt;b&gt;porphyrin&lt;/b&gt;, is derived from the Greek word for &lt;i&gt;purple&lt;/i&gt;. The aromatic character of porphyrins can be seen by NMR spectroscopy.&lt;br&gt;Porphyrins readily combine with metals by coordinating them in the central cavity. Iron (heme) and magnesium (chlorophyll) are two well known examples although zinc, copper, nickel and cobalt form other known metal-containing phorphyrins. A porphyrin which has no metal in the cavity is called a &lt;i&gt;free base&lt;/i&gt;.&lt;br&gt;Some iron-containing porphyrins are called hemes (heme-containing proteins or hemoproteins) and these are found extensively in nature ie. hemoglobin. Hemoglobin is quantitatively the most important hemoprotein. The hemoglobin iron is the transfer site of oxygen and carries it in the blood all round the body for cell respiration. Other examples are cytochromes present in mitochondria and endoplasmic reticulum which takes part in electron transfer events, catalase and peroxidase whic protect the body against the oxidant hydrogen peroxide and tryptophan oxygenase which is present in intermediary metabolism. Hemoproteins are synthesized in all mammalian cells and the major sites are erythropoietic tissue and the liver.&lt;br&gt; A chlorin is the ring structure found in chlorophyll. Chlorins are produced when one of the four pyrrole subunits is reduced to pyrroline. If two of the four pyrrole subunits are reduced then a bacteriochlorin is produced (found in some photosynthestic bacteria).</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0"/>
+  <DataNode TextLabel="NADPH&#10;" GraphId="n4_REACTOME_29364" Type="Metabolite">
+    <Graphics CenterX="160.0" CenterY="77.5" Width="54.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16474"/>
+  </DataNode>
+  <DataNode TextLabel="Heme &#10;oxygenase&#10;" GraphId="n5_REACTOME_189382">
+    <Graphics CenterX="199.5" CenterY="251.0" Width="81.0" Height="32.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_22577"/>
+  </DataNode>
+  <DataNode TextLabel="NADP+&#10;" GraphId="n6_REACTOME_29366" Type="Metabolite">
+    <Graphics CenterX="421.5" CenterY="217.5" Width="55.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18009"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n7_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="222.5" CenterY="119.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="Biliverdin &#10;reductase&#10;" GraphId="n8_REACTOME_189387">
+    <Graphics CenterX="485.0" CenterY="145.5" Width="82.0" Height="29.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_22833"/>
+  </DataNode>
+  <DataNode TextLabel="heme&#10;" GraphId="n9_REACTOME_71185" Type="Metabolite">
+    <Graphics CenterX="96.5" CenterY="188.5" Width="45.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17627"/>
+  </DataNode>
+  <DataNode TextLabel="carbon monoxide&#10;" GraphId="n10_REACTOME_189385" Type="Metabolite">
+    <Graphics CenterX="315.5" CenterY="103.5" Width="105.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17245"/>
+  </DataNode>
+  <DataNode TextLabel="Bilirubin&#10;" GraphId="n11_REACTOME_189386" Type="Metabolite">
+    <Graphics CenterX="559.5" CenterY="189.5" Width="55.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16990"/>
+  </DataNode>
+  <DataNode TextLabel="iron (ferrous)&#10;" GraphId="n12_REACTOME_71067" Type="Metabolite">
+    <Graphics CenterX="357.5" CenterY="144.5" Width="93.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18248"/>
+  </DataNode>
+  <DataNode TextLabel="biliverdin&#10;" GraphId="n13_REACTOME_189396" Type="Metabolite">
+    <Graphics CenterX="355.5" CenterY="189.0" Width="65.0" Height="26.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17033"/>
+  </DataNode>
+  <DataNode TextLabel="Bilirubin&#10;" GraphId="n14_REACTOME_159151" Type="Metabolite">
+    <Graphics CenterX="563.5" CenterY="331.0" Width="55.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16990"/>
+  </DataNode>
+  <DataNode TextLabel="Oxygen&#10;" GraphId="n15_REACTOME_29368" Type="Metabolite">
+    <Graphics CenterX="98.5" CenterY="125.5" Width="57.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode TextLabel="CoA-SH&#10;" GraphId="n19_REACTOME_29374" Type="Metabolite">
+    <Graphics CenterX="1043.0" CenterY="173.5" Width="54.0" Height="29.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode TextLabel="Succinyl-CoA&#10;" GraphId="n20_REACTOME_70958" Type="Metabolite">
+    <Graphics CenterX="718.5" CenterY="188.5" Width="75.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15380"/>
+  </DataNode>
+  <DataNode TextLabel="Protoporphyrin IX&#10;" GraphId="n21_REACTOME_189487" Type="Metabolite">
+    <Graphics CenterX="751.5" CenterY="572.5" Width="111.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15430"/>
+  </DataNode>
+  <DataNode TextLabel="Coproporphyrinogen III&#10;" GraphId="n22_REACTOME_189455" Type="Metabolite">
+    <Graphics CenterX="1458.0" CenterY="888.5" Width="138.0" Height="47.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15439"/>
+  </DataNode>
+  <DataNode TextLabel="Uroporphyrinogen III&#10;" GraphId="n23_REACTOME_189407" Type="Metabolite">
+    <Graphics CenterX="1456.5" CenterY="725.5" Width="129.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15437"/>
+  </DataNode>
+  <DataNode TextLabel="Protoporphyrin IX&#10;" GraphId="n24_REACTOME_189463" Type="Metabolite">
+    <Graphics CenterX="518.5" CenterY="691.5" Width="111.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15430"/>
+  </DataNode>
+  <DataNode TextLabel="Zn++&#10;" GraphId="n25_REACTOME_29426" Type="Metabolite">
+    <Graphics CenterX="1468.5" CenterY="180.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29105"/>
+  </DataNode>
+  <DataNode TextLabel="Uroporphyrinogen I&#10;" GraphId="n26_REACTOME_190157" Type="Metabolite">
+    <Graphics CenterX="1296.5" CenterY="741.5" Width="117.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28766"/>
+  </DataNode>
+  <DataNode TextLabel="Glycine&#10;" GraphId="n27_REACTOME_159549" Type="Metabolite">
+    <Graphics CenterX="722.5" CenterY="233.5" Width="51.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15428"/>
+  </DataNode>
+  <DataNode TextLabel="FECH homodimer &#10;(2Fe-2S cluster)&#10;" GraphId="n28_REACTOME_189402" Type="Complex">
+    <Graphics CenterX="940.5" CenterY="470.5" Width="103.0" Height="49.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_9592"/>
+  </DataNode>
+  <DataNode TextLabel="Coproporphyrinogen I&#10;" GraphId="n29_REACTOME_190128" Type="Metabolite">
+    <Graphics CenterX="1196.5" CenterY="834.5" Width="129.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28607"/>
+  </DataNode>
+  <DataNode TextLabel="Uroporphyrinogen-III &#10;synthase&#10;" GraphId="n30_REACTOME_189430" Type="Protein">
+    <Graphics CenterX="1459.5" CenterY="626.0" Width="127.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P10746"/>
+  </DataNode>
+  <DataNode TextLabel="Hydroxymethylbilane&#10;" GraphId="n31_REACTOME_189449" Type="Metabolite">
+    <Graphics CenterX="1310.5" CenterY="568.5" Width="131.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16645"/>
+  </DataNode>
+  <DataNode TextLabel="UROD &#10;homodimer&#10;" GraphId="n32_REACTOME_189454" Type="Complex">
+    <Graphics CenterX="1378.0" CenterY="787.5" Width="102.0" Height="35.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_9830"/>
+  </DataNode>
+  <DataNode TextLabel="Porphobilinogen&#10;" GraphId="n34_REACTOME_189464" Type="Metabolite">
+    <Graphics CenterX="1306.5" CenterY="365.5" Width="99.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17381"/>
+  </DataNode>
+  <DataNode TextLabel="Coproporphyrinogen &#10;III&#10;" GraphId="n35_REACTOME_189411" Type="Metabolite">
+    <Graphics CenterX="1121.5" CenterY="689.0" Width="123.0" Height="46.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15439"/>
+  </DataNode>
+  <DataNode TextLabel="CO2&#10;" GraphId="n36_REACTOME_113528" Type="Metabolite">
+    <Graphics CenterX="1376.5" CenterY="834.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode TextLabel="heme&#10;" GraphId="n37_REACTOME_189444" Type="Metabolite">
+    <Graphics CenterX="840.5" CenterY="333.5" Width="45.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17627"/>
+  </DataNode>
+  <DataNode TextLabel="iron (ferrous)&#10;" GraphId="n38_REACTOME_113531" Type="Metabolite">
+    <Graphics CenterX="898.5" CenterY="569.5" Width="93.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18248"/>
+  </DataNode>
+  <DataNode TextLabel="H+&#10;" GraphId="n39_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="1006.5" CenterY="367.5" Width="27.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode TextLabel="5-aminolevulinate&#10;" GraphId="n40_REACTOME_189489" Type="Metabolite">
+    <Graphics CenterX="1305.0" CenterY="218.5" Width="104.0" Height="47.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17549"/>
+  </DataNode>
+  <DataNode TextLabel="Protoporphyrinogen IX&#10;" GraphId="n41_REACTOME_189478" Type="Metabolite">
+    <Graphics CenterX="783.5" CenterY="691.5" Width="135.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15435"/>
+  </DataNode>
+  <DataNode TextLabel="ALAS &#10;homodimer&#10;" GraphId="n42_REACTOME_189429">
+    <Graphics CenterX="835.5" CenterY="172.5" Width="97.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_9546"/>
+  </DataNode>
+  <DataNode TextLabel="NH3&#10;" GraphId="n43_REACTOME_29382" Type="Metabolite">
+    <Graphics CenterX="1253.5" CenterY="512.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16134"/>
+  </DataNode>
+  <DataNode TextLabel="PPO homodimer (FAD &#10;cofactor)&#10;" GraphId="n44_REACTOME_189469" Type="Complex">
+    <Graphics CenterX="634.5" CenterY="646.0" Width="133.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_9681"/>
+  </DataNode>
+  <DataNode TextLabel="Pb++&#10;" GraphId="n45_REACTOME_391232" Type="Metabolite">
+    <Graphics CenterX="744.5" CenterY="471.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="27889"/>
+  </DataNode>
+  <DataNode TextLabel="Pb++&#10;" GraphId="n46_REACTOME_190173" Type="Metabolite">
+    <Graphics CenterX="1468.5" CenterY="231.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="27889"/>
+  </DataNode>
+  <DataNode TextLabel="CPO homodimer&#10;" GraphId="n47_REACTOME_189485" Type="Complex">
+    <Graphics CenterX="932.5" CenterY="638.0" Width="97.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_9811"/>
+  </DataNode>
+  <DataNode TextLabel="ALAD homooctamer &#10;(Zinc cofactor)&#10;" GraphId="n48_REACTOME_189400" Type="Complex">
+    <Graphics CenterX="1403.5" CenterY="284.0" Width="121.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_9587"/>
+  </DataNode>
+  <DataNode TextLabel="ALAD homooctamer &#10;(Pb and Zn bound)&#10;" GraphId="n49_REACTOME_190145" Type="Complex">
+    <Graphics CenterX="1401.5" CenterY="125.0" Width="121.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_9852"/>
+  </DataNode>
+  <DataNode TextLabel="Oxygen&#10;" GraphId="n50_REACTOME_189461" Type="Metabolite">
+    <Graphics CenterX="1002.5" CenterY="738.5" Width="57.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode TextLabel="Porphobilinogen &#10;deaminase &#10;(dipyrromethane &#10;cofactor)&#10;" GraphId="n51_REACTOME_189426" Type="Complex">
+    <Graphics CenterX="1409.5" CenterY="438.0" Width="103.0" Height="68.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_9578"/>
+  </DataNode>
+  <DataNode TextLabel="CO2&#10;" GraphId="n52_REACTOME_189480" Type="Metabolite">
+    <Graphics CenterX="878.5" CenterY="738.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode TextLabel="5-aminolevulinate&#10;" GraphId="n53_REACTOME_189466" Type="Metabolite">
+    <Graphics CenterX="1004.5" CenterY="221.0" Width="113.0" Height="44.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17549"/>
+  </DataNode>
+  <DataNode TextLabel="CO2&#10;" GraphId="n54_REACTOME_29376" Type="Metabolite">
+    <Graphics CenterX="985.5" CenterY="147.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode TextLabel="H2O2&#10;" GraphId="n55_REACTOME_189481" Type="Metabolite">
+    <Graphics CenterX="559.5" CenterY="738.5" Width="45.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16240"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n82_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="1248.5" CenterY="683.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n84_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="1330.5" CenterY="680.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n89_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="1256.5" CenterY="404.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n91_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="1399.5" CenterY="337.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="UDP-glucuronic &#10;acid&#10;" GraphId="n95_REACTOME_174384" Type="Metabolite">
+    <Graphics CenterX="513.5" CenterY="370.5" Width="103.0" Height="37.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17200"/>
+  </DataNode>
+  <DataNode TextLabel="uridine 5'-&#10;diphosphate&#10;" GraphId="n96_REACTOME_158602" Type="Metabolite">
+    <Graphics CenterX="357.5" CenterY="289.0" Width="85.0" Height="46.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17659"/>
+  </DataNode>
+  <DataNode TextLabel="Bilirubin &#10;monoglucuronide&#10;" GraphId="n97_REACTOME_159160" Type="Metabolite">
+    <Graphics CenterX="278.5" CenterY="332.0" Width="113.0" Height="46.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16427"/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A1&#10;" GraphId="n98_REACTOME_159156" Type="Protein">
+    <Graphics CenterX="438.0" CenterY="288.5" Width="54.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22309"/>
+  </DataNode>
+  <DataNode TextLabel="Bilirubin &#10;diglucuronide&#10;" GraphId="n103_REACTOME_159149" Type="Metabolite">
+    <Graphics CenterX="302.5" CenterY="459.5" Width="99.0" Height="49.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18392"/>
+  </DataNode>
+  <DataNode TextLabel="Tetrameric &#10;UGT1A1&#10;" GraphId="n104_REACTOME_159191" Type="Complex">
+    <Graphics CenterX="371.5" CenterY="398.5" Width="91.0" Height="37.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_22998"/>
+  </DataNode>
+  <DataNode TextLabel="Oxygen&#10;" GraphId="n105_REACTOME_189461" Type="Metabolite">
+    <Graphics CenterX="712.5" CenterY="738.5" Width="57.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode TextLabel="H2O2&#10;" GraphId="n107_REACTOME_189481" Type="Metabolite">
+    <Graphics CenterX="808.5" CenterY="738.5" Width="45.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16240"/>
+  </DataNode>
+  <Line GraphId="e_16_REACTOME_189381">
+    <Comment Source="WikiPathways-description">The enzyme which catalyzes the conjugation of bilirubin (UGT1A1) is found in the ER. Bilirubin translocates here to be eliminated from the body.</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="559.5" Y="206.5" GraphRef="n11_REACTOME_189386" RelX="0.0" RelY="1.2592592592592593"/>
+      <Point X="560.0" Y="228.0"/>
+      <Point X="562.5" Y="313.0" GraphRef="n14_REACTOME_159151" RelX="-0.03636363636363636" RelY="-1.2" ArrowHead="Arrow"/>
+      <Anchor Position="0.20573086168635993" Shape="None" GraphId="e_16_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_189398">
+    <Comment Source="WikiPathways-description">Heme oxygenase (HO) cleaves the heme ring at the alpha-methene bridge to form bilverdin. This reaction forms the only endogenous source of carbon monoxide. HO-1 is inducible and is thought to have an antioxidant role as it's activated in virtually all cell types and by many types of "oxidative stress" (Poss and Tonegawa, 1997). HO-2 is non-inducible.</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="201.0" Y="188.0"/>
+      <Point X="200.0" Y="187.0"/>
+      <Point X="201.0" Y="187.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_17_a_i"/>
+      <Anchor Position="0.5857864376269051" Shape="None" GraphId="e_17_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_17_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="165.0" Y="96.5" GraphRef="n4_REACTOME_29364" RelX="0.18518518518518517" RelY="1.2258064516129032"/>
+      <Point X="201.0" Y="188.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="123.5" Y="144.5" GraphRef="n15_REACTOME_29368" RelX="0.8771929824561403" RelY="1.2258064516129032"/>
+      <Point X="201.0" Y="188.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="122.5" Y="188.5" GraphRef="n9_REACTOME_71185" RelX="1.1555555555555554" RelY="0.0"/>
+      <Point X="201.0" Y="188.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="293.5" Y="122.5" GraphRef="n10_REACTOME_189385" RelX="-0.41904761904761906" RelY="1.2258064516129032" ArrowHead="Arrow"/>
+      <Point X="201.0" Y="187.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="308.5" Y="156.5" GraphRef="n12_REACTOME_71067" RelX="-1.053763440860215" RelY="0.7741935483870968" ArrowHead="Arrow"/>
+      <Point X="201.0" Y="187.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="391.5" Y="216.5" GraphRef="n6_REACTOME_29366" RelX="-1.0909090909090908" RelY="-0.06451612903225806" ArrowHead="Arrow"/>
+      <Point X="298.0" Y="215.0"/>
+      <Point X="201.0" Y="187.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="320.5" Y="188.0" GraphRef="n13_REACTOME_189396" RelX="-1.0769230769230769" RelY="-0.07692307692307693" ArrowHead="Arrow"/>
+      <Point X="201.0" Y="187.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="217.5" Y="138.5" GraphRef="n7_REACTOME_29356" RelX="-0.2564102564102564" RelY="1.2258064516129032" ArrowHead="Arrow"/>
+      <Point X="201.0" Y="187.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="199.5" Y="232.0" GraphRef="n5_REACTOME_189382" RelX="0.0" RelY="-1.1875"/>
+      <Point X="200.0" Y="187.0" GraphRef="e_17_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_REACTOME_189384">
+    <Comment Source="WikiPathways-description">Bilirubin is the breakdown product of heme, causing death if allowed to accumulate in the blood. It is highly lipophilic thus requires conjugation to become more water soluble to aid excretion.</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="483.0" Y="187.0"/>
+      <Point X="484.0" Y="188.0"/>
+      <Point X="483.0" Y="188.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_18_a_i"/>
+      <Anchor Position="0.5857864376269051" Shape="None" GraphId="e_18_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_18_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="190.0" Y="76.5" GraphRef="n4_REACTOME_29364" RelX="1.1111111111111112" RelY="-0.06451612903225806"/>
+      <Point X="418.0" Y="76.0"/>
+      <Point X="419.0" Y="160.0"/>
+      <Point X="483.0" Y="187.0" GraphRef="e_18_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="391.5" Y="188.0" GraphRef="n13_REACTOME_189396" RelX="1.1076923076923078" RelY="-0.07692307692307693"/>
+      <Point X="483.0" Y="187.0" GraphRef="e_18_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="529.5" Y="188.5" GraphRef="n11_REACTOME_189386" RelX="-1.0909090909090908" RelY="-0.07407407407407407" ArrowHead="Arrow"/>
+      <Point X="483.0" Y="188.0" GraphRef="e_18_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="452.5" Y="204.5" GraphRef="n6_REACTOME_29366" RelX="1.1272727272727272" RelY="-0.8387096774193549" ArrowHead="Arrow"/>
+      <Point X="483.0" Y="188.0" GraphRef="e_18_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="484.0" Y="163.5" GraphRef="n8_REACTOME_189387" RelX="-0.024390243902439025" RelY="1.2413793103448276"/>
+      <Point X="484.0" Y="188.0" GraphRef="e_18_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_REACTOME_189423">
+    <Comment Source="WikiPathways-description">Six electrons are oxidized in proto'gen IX to form the planar macrocycle protoporphyrin IX (proto IX). This reaction is performed by the enzyme protoporphyrinogen oxidase (PPO). PPO functions as a homodimer containing one non-covalently-bound FAD. The protein resides on the outer surface of the inner mitochondrial membrane. PPO deficiency is associated with variegate porphyria in vivo.</Comment>
+    <BiopaxRef>lit_190007</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="675.0" Y="690.0"/>
+      <Point X="636.0" Y="691.0"/>
+      <Point X="610.0" Y="691.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_56_a_i"/>
+      <Anchor Position="0.600078866947021" Shape="None" GraphId="e_56_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_56_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="713.5" Y="690.5" GraphRef="n41_REACTOME_189478" RelX="-1.037037037037037" RelY="-0.06451612903225806"/>
+      <Point X="675.0" Y="690.0" GraphRef="e_56_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="700.5" Y="720.5" GraphRef="n105_REACTOME_189461" RelX="-0.42105263157894735" RelY="-1.1612903225806452"/>
+      <Point X="675.0" Y="690.0" GraphRef="e_56_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="577.5" Y="691.5" GraphRef="n24_REACTOME_189463" RelX="1.063063063063063" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="610.0" Y="691.0" GraphRef="e_56_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="575.5" Y="720.5" GraphRef="n55_REACTOME_189481" RelX="0.7111111111111111" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="610.0" Y="691.0" GraphRef="e_56_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="634.5" Y="668.0" GraphRef="n44_REACTOME_189469" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="636.0" Y="691.0" GraphRef="e_56_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_REACTOME_190168">
+    <Comment Source="WikiPathways-description">Hydroxymethybilane (HMB) can spontaneously cyclize and rearrange to form uroporphyrinogen I.</Comment>
+    <BiopaxRef>lit_190125</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1305.5" Y="587.5" GraphRef="n31_REACTOME_189449" RelX="-0.07633587786259542" RelY="1.2258064516129032"/>
+      <Point X="1295.0" Y="622.0"/>
+      <Point X="1294.0" Y="648.0"/>
+      <Anchor Position="0.5831573495611123" Shape="None" GraphId="e_57_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1295.5" Y="723.5" GraphRef="n26_REACTOME_190157" RelX="-0.017094017094017096" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="1294.0" Y="648.0" GraphRef="e_57_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1268.5" Y="665.5" GraphRef="n82_REACTOME_29356" RelX="1.0256410256410255" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="1294.0" Y="648.0" GraphRef="e_57_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_REACTOME_189425">
+    <Comment Source="WikiPathways-description">Cytosolic uroporphyrinogen decarboxylase (UROD) catalyzes the sequntial removal of four carboxylic groups from the acetic acid side chains of uroporphyrinogen III (uro'gen III) to form coproporphyrinogen III (copro'gen III) (de Verneuil et al. 1983). Human UROD is a dimer (Whitby et al. 1998). Heterogenous and homogenous deficiencies of UROD are associated with porphyria cutanea tarda and hepatoerythropoietic porphyria respectively in vivo (Moran-Jiminez et al. 1996).</Comment>
+    <BiopaxRef>lit_190134</BiopaxRef>
+    <BiopaxRef>lit_190137</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1456.5" Y="744.5" GraphRef="n23_REACTOME_189407" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="1458.0" Y="785.0"/>
+      <Point X="1457.0" Y="835.0"/>
+      <Anchor Position="0.4507941441812143" Shape="None" GraphId="e_58_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1399.5" Y="834.5" GraphRef="n36_REACTOME_113528" RelX="1.1794871794871795" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="1457.0" Y="835.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1457.0" Y="862.5" GraphRef="n22_REACTOME_189455" RelX="-0.014492753623188406" RelY="-1.1063829787234043" ArrowHead="Arrow"/>
+      <Point X="1457.0" Y="835.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1432.0" Y="785.5" GraphRef="n32_REACTOME_189454" RelX="1.0588235294117647" RelY="-0.11428571428571428"/>
+      <Point X="1458.0" Y="785.0" GraphRef="e_58_a_p" RelX="0.005721396816397828" RelY="-0.28606984081511655"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_REACTOME_189465">
+    <Comment Source="WikiPathways-description">Ferrochelatase (FECH) catalyzes the insertion of ferrous iron into protoporphyrin IX to form heme. FECH is localized on the matrix surface of the inner mitochondrial membrane and this reaction takes place within the mitochondrial matrix. The enzyme functions as a homodimer with each monomer containing a nitric oxide-sensitive 2Fe-2S cluster. Enzyme deficiency is associated with erythropoietic protoporphyria in vivo, and inhibition of ferrochelatase activity is a clinically important consequence of lead poisoning (Piomelli et al. 1987).</Comment>
+    <BiopaxRef>lit_190150</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="842.0" Y="524.0"/>
+      <Point X="840.0" Y="471.0"/>
+      <Point X="841.0" Y="414.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_59_a_i"/>
+      <Anchor Position="0.48195740410497806" Shape="None" GraphId="e_59_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_59_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="780.5" Y="554.5" GraphRef="n21_REACTOME_189487" RelX="0.5225225225225225" RelY="-1.1612903225806452"/>
+      <Point X="842.0" Y="524.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="878.5" Y="551.5" GraphRef="n38_REACTOME_113531" RelX="-0.43010752688172044" RelY="-1.1612903225806452"/>
+      <Point X="842.0" Y="524.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="840.5" Y="352.5" GraphRef="n37_REACTOME_189444" RelX="0.0" RelY="1.2258064516129032" ArrowHead="Arrow"/>
+      <Point X="841.0" Y="414.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="990.5" Y="370.5" GraphRef="n39_REACTOME_113529" RelX="-1.1851851851851851" RelY="0.1935483870967742" ArrowHead="Arrow"/>
+      <Point X="841.0" Y="414.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="886.5" Y="470.5" GraphRef="n28_REACTOME_189402" RelX="-1.0485436893203883" RelY="0.0"/>
+      <Point X="840.0" Y="471.0" GraphRef="e_59_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="767.5" Y="471.5" GraphRef="n45_REACTOME_391232" RelX="1.1794871794871795" RelY="0.0"/>
+      <Point X="840.0" Y="471.0" GraphRef="e_59_a_p" RelX="0.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_REACTOME_189456">
+    <Comment Source="WikiPathways-description">5-aminolevulinate is transported from the mitochondrial matrix to the cytosol. The transporter that enables it to cross the inner mitochondrial membrane is unknown.</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1064.5" Y="220.0" GraphRef="n53_REACTOME_189466" RelX="1.0619469026548674" RelY="-0.045454545454545456"/>
+      <Point X="1208.0" Y="218.0"/>
+      <Point X="1250.0" Y="218.5" GraphRef="n40_REACTOME_189489" RelX="-1.0576923076923077" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.7742104076093689" Shape="None" GraphId="e_60_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_REACTOME_189406">
+    <Comment Source="WikiPathways-description">Cytosolic porphobilinogen deaminase catalyzes the polymerization of four molecules of porphobilinogen (PBG) to generate hydroxymethylbilane (HMB), an unstable tetrapyrrole. This reaction is the first step in the formation of the tetrapyrrole macrocycle. Two isoforms of porphobilinogen deaminase are generated by alternative splicing, one expresssed in erythroid tissues and one ubiquitously expressed in the body. Deficiencies of both forms of PBG deaminase are associated with acute intermittent porphyria.</Comment>
+    <BiopaxRef>lit_189990</BiopaxRef>
+    <BiopaxRef>lit_190139</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1307.0" Y="423.0"/>
+      <Point X="1308.0" Y="441.0"/>
+      <Point X="1307.0" Y="471.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_61_a_i"/>
+      <Anchor Position="0.3752310251916449" Shape="None" GraphId="e_61_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_61_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1306.5" Y="384.5" GraphRef="n34_REACTOME_189464" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="1307.0" Y="423.0" GraphRef="e_61_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1279.5" Y="411.5" GraphRef="n89_REACTOME_29356" RelX="1.1794871794871795" RelY="0.45161290322580644"/>
+      <Point X="1307.0" Y="423.0" GraphRef="e_61_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1273.5" Y="499.5" GraphRef="n43_REACTOME_29382" RelX="1.2121212121212122" RelY="-0.8387096774193549" ArrowHead="Arrow"/>
+      <Point X="1307.0" Y="471.0" GraphRef="e_61_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1309.5" Y="550.5" GraphRef="n31_REACTOME_189449" RelX="-0.015267175572519083" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="1307.0" Y="471.0" GraphRef="e_61_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1355.5" Y="439.0" GraphRef="n51_REACTOME_189426" RelX="-1.0485436893203883" RelY="0.029411764705882353"/>
+      <Point X="1308.0" Y="441.0" GraphRef="e_61_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_REACTOME_189442">
+    <Comment Source="WikiPathways-description">The committed step for porphyrin synthesis is the formation of 5-aminolevulinate (ALA) by condensation of glycine (from the general amino acid pool) and succinyl-CoA (from the TCA cycle), in the mitochondrial matrix. The reaction is catalyzed by two different ALA synthases, one expressed ubiquitously (ALAS1) and the other only expressed in erythroid precursors (ALAS2). Both enzymes are expressed as homodimers and require pyridoxal 5-phosphate as a cofactor.&lt;br&gt;No disease-causing mutations of ALAS1 have been recognised in humans. Mutations in ALAS2 cause X-linked sideroblastic anaemia (XLSA), characterised by a microcytic hypochromic anaemia.</Comment>
+    <BiopaxRef>lit_189502</BiopaxRef>
+    <BiopaxRef>lit_190160</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="800.0" Y="220.0"/>
+      <Point X="838.0" Y="220.0"/>
+      <Point X="877.0" Y="222.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_62_a_i"/>
+      <Anchor Position="0.49317825212672023" Shape="None" GraphId="e_62_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="759.5" Y="202.5" GraphRef="n20_REACTOME_70958" RelX="1.0933333333333333" RelY="0.9032258064516129"/>
+      <Point X="800.0" Y="220.0" GraphRef="e_62_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="751.5" Y="228.5" GraphRef="n27_REACTOME_159549" RelX="1.1372549019607843" RelY="-0.3225806451612903"/>
+      <Point X="800.0" Y="220.0" GraphRef="e_62_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1013.0" Y="180.5" GraphRef="n19_REACTOME_29374" RelX="-1.1111111111111112" RelY="0.4827586206896552" ArrowHead="Arrow"/>
+      <Point X="877.0" Y="222.0" GraphRef="e_62_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="945.5" Y="221.0" GraphRef="n53_REACTOME_189466" RelX="-1.0442477876106195" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="877.0" Y="222.0" GraphRef="e_62_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="963.5" Y="160.5" GraphRef="n54_REACTOME_29376" RelX="-1.1282051282051282" RelY="0.8387096774193549" ArrowHead="Arrow"/>
+      <Point X="877.0" Y="222.0" GraphRef="e_62_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="835.5" Y="191.5" GraphRef="n42_REACTOME_189429" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="838.0" Y="220.0" GraphRef="e_62_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_i__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="839.5" Y="315.5" GraphRef="n37_REACTOME_189444" RelX="-0.044444444444444446" RelY="-1.1612903225806452"/>
+      <Point X="838.0" Y="220.0" GraphRef="e_62_a_p" RelX="0.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_REACTOME_189467">
+    <Comment Source="WikiPathways-description">Coproporpyrinogen III enters the mitochondrial intermembrane space from the cytosol. It is not known whether this process is facilitated by a transporter.</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1386.0" Y="887.5" GraphRef="n22_REACTOME_189455" RelX="-1.0434782608695652" RelY="-0.0425531914893617"/>
+      <Point X="1123.0" Y="887.0"/>
+      <Point X="1121.5" Y="715.0" GraphRef="n35_REACTOME_189411" RelX="0.0" RelY="1.1304347826086956" ArrowHead="Arrow"/>
+      <Anchor Position="0.6045815407349366" Shape="None" GraphId="e_63_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_REACTOME_190182">
+    <Comment Source="WikiPathways-description">Cytosolic uroporphyrinogen decarboxylase (UROD) catalyzes the sequential removal of four carboxylic groups from the acetic acid side chains of uroporphyrinogen I (uro'gen I) to form coproporphyrinogen I (copro'gen I). UROD catalyzes this reaction less efficiently than the decarboxylation of uroporphyrinogen III (de Verneuil et al. 1983).</Comment>
+    <BiopaxRef>lit_190134</BiopaxRef>
+    <BiopaxRef>lit_190137</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1296.5" Y="760.5" GraphRef="n26_REACTOME_190157" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="1297.0" Y="781.0"/>
+      <Point X="1298.0" Y="836.0"/>
+      <Anchor Position="0.2765092460972355" Shape="None" GraphId="e_64_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_64_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1264.5" Y="835.5" GraphRef="n29_REACTOME_190128" RelX="1.054263565891473" RelY="0.06451612903225806" ArrowHead="Arrow"/>
+      <Point X="1298.0" Y="836.0" GraphRef="e_64_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1354.5" Y="834.5" GraphRef="n36_REACTOME_113528" RelX="-1.1282051282051282" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="1298.0" Y="836.0" GraphRef="e_64_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1324.0" Y="783.5" GraphRef="n32_REACTOME_189454" RelX="-1.0588235294117647" RelY="-0.22857142857142856"/>
+      <Point X="1297.0" Y="781.0" GraphRef="e_64_a_p" RelX="-0.0068088877471836895" RelY="-0.3744888260891912"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_REACTOME_189488">
+    <Comment Source="WikiPathways-description">Cytosolic uroporphyrinogen III synthase (URO3S) catalyzes the conversion of HMB (hydroxymethylbilane) to uroporphyrinogen III, a reaction involving ring closure and intramolecular rearrangement. Uroporphyrinogen III represents a branch point for the pathways leading to formation of heme, chlorophyll and corrins. HMB is rapidly converted from a linear tetrapyrrole to the cyclic form. Deficiencies of URO3S in vivo are associated with congenital erythropoietic porphyria.</Comment>
+    <BiopaxRef>lit_189992</BiopaxRef>
+    <BiopaxRef>lit_190125</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1325.5" Y="587.5" GraphRef="n31_REACTOME_189449" RelX="0.22900763358778625" RelY="1.2258064516129032"/>
+      <Point X="1365.0" Y="624.0"/>
+      <Point X="1367.0" Y="650.0"/>
+      <Anchor Position="0.6763271966434959" Shape="None" GraphId="e_65_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_65_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1437.5" Y="707.5" GraphRef="n23_REACTOME_189407" RelX="-0.29457364341085274" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="1367.0" Y="650.0" GraphRef="e_65_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1349.5" Y="662.5" GraphRef="n84_REACTOME_29356" RelX="0.9743589743589743" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="1367.0" Y="650.0" GraphRef="e_65_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1393.5" Y="624.0" GraphRef="n30_REACTOME_189430" RelX="-1.0393700787401574" RelY="-0.10526315789473684"/>
+      <Point X="1365.0" Y="624.0" GraphRef="e_65_a_p" RelX="-0.01754013973277324" RelY="-0.22802181652480158"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_REACTOME_190141">
+    <Comment Source="WikiPathways-description">Lead binds to ALAD enzyme displacing zinc ions essential for its catalytic activity and inactivating it. Lead is a major environmental toxin and this enzyme is one of its principal molecular targets (Jaffe et al. 2001).</Comment>
+    <BiopaxRef>lit_190149</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1401.0" Y="231.0"/>
+      <Point X="1400.0" Y="211.0"/>
+      <Point X="1400.0" Y="185.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_66_a_i"/>
+      <Anchor Position="0.43508943366189246" Shape="None" GraphId="e_66_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_66_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1402.5" Y="262.0" GraphRef="n48_REACTOME_189400" RelX="-0.01652892561983471" RelY="-1.1578947368421053"/>
+      <Point X="1401.0" Y="231.0" GraphRef="e_66_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1446.5" Y="231.5" GraphRef="n46_REACTOME_190173" RelX="-1.1282051282051282" RelY="0.0"/>
+      <Point X="1401.0" Y="231.0" GraphRef="e_66_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1446.5" Y="181.5" GraphRef="n25_REACTOME_29426" RelX="-1.1282051282051282" RelY="0.06451612903225806" ArrowHead="Arrow"/>
+      <Point X="1400.0" Y="185.0" GraphRef="e_66_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1400.5" Y="147.0" GraphRef="n49_REACTOME_190145" RelX="-0.01652892561983471" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Point X="1400.0" Y="185.0" GraphRef="e_66_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_REACTOME_189439">
+    <Comment Source="WikiPathways-description">5-Aminolevulinic acid dehydratase (ALAD), also known as porphobilinogen synthase (PBGS), catalyzes the asymmetric condensation of two molecules of ALA to form porphobilinogen. The substrate that becomes the acetyl side chain-containing half of PBG is called A-side ALA; the half that becomes the propionyl side chains and the pyrrole nitrogen is called P-ALA (Jaffe 2004). Porphobilinogen (PBG) is the first pyrrole formed, the precursor to all tetrapyrrole pigments such as heme and chlorophyll. There are at least eight bonds that are made or broken during this reaction. The active form of the ALAD enzyme is an octamer complexed with eight Zn++ ions, four that are strongly bound and four that are weakly bound. The four weakly bound ones are dispensible for enzyme activity in vitro (Bevan et al. 1980; Mitchell et al. 2001).&lt;br&gt;Deficiencies of ALAD enzyme in vivo are associated with 5-aminolevulinate dehydratase-deficient porphyria (e.g., Akagi et al. 2000).</Comment>
+    <BiopaxRef>lit_190123</BiopaxRef>
+    <BiopaxRef>lit_190163</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1304.0" Y="245.5" GraphRef="n40_REACTOME_189489" RelX="-0.019230769230769232" RelY="1.148936170212766"/>
+      <Point X="1304.0" Y="280.0"/>
+      <Point X="1305.0" Y="321.0"/>
+      <Anchor Position="0.46045244159451093" Shape="None" GraphId="e_67_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1305.5" Y="347.5" GraphRef="n34_REACTOME_189464" RelX="-0.020202020202020204" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="1305.0" Y="321.0" GraphRef="e_67_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1377.5" Y="333.5" GraphRef="n91_REACTOME_29356" RelX="-1.1282051282051282" RelY="-0.25806451612903225" ArrowHead="Arrow"/>
+      <Point X="1305.0" Y="321.0" GraphRef="e_67_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1340.5" Y="281.0" GraphRef="n48_REACTOME_189400" RelX="-1.0413223140495869" RelY="-0.15789473684210525"/>
+      <Point X="1304.0" Y="280.0" GraphRef="e_67_a_p" RelX="-0.006577892022733067" RelY="-0.2696935729339316"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_REACTOME_189457">
+    <Comment Source="WikiPathways-description">Protoporphyrin IX is transported into the mitochondrial matrix where it becomes available for the last step in the heme biosynthetic pathway. The transporter that mediates this event is unknown.</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="517.5" Y="673.5" GraphRef="n24_REACTOME_189463" RelX="-0.018018018018018018" RelY="-1.1612903225806452"/>
+      <Point X="516.0" Y="572.0"/>
+      <Point X="693.5" Y="572.5" GraphRef="n21_REACTOME_189487" RelX="-1.045045045045045" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3633206899299715" Shape="None" GraphId="e_68_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_REACTOME_189421">
+    <Comment Source="WikiPathways-description">O2-dependent coproporpyrinogen oxidase (CPO) catalyzes the conversion of coproporphyrinogen III to protoporphyrinogen IX. The localization of the human enzyme to the mitochondrial intermembrane space is inferred from studies of the homologous rat enzyme (Elder and Evans 1978). The human enzyme functions as a homodimer (Lee et al. 2005). Enzyme deficiency is associated with hereditary coproporphyria in vivo.</Comment>
+    <BiopaxRef>lit_190006</BiopaxRef>
+    <BiopaxRef>lit_190133</BiopaxRef>
+    <BiopaxRef>lit_190177</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="961.0" Y="688.0"/>
+      <Point X="933.0" Y="687.0"/>
+      <Point X="889.0" Y="687.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_69_a_i"/>
+      <Anchor Position="0.389040368287339" Shape="None" GraphId="e_69_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_69_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1057.5" Y="688.0" GraphRef="n35_REACTOME_189411" RelX="-1.0406504065040652" RelY="-0.043478260869565216"/>
+      <Point X="961.0" Y="688.0" GraphRef="e_69_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="989.5" Y="720.5" GraphRef="n50_REACTOME_189461" RelX="-0.45614035087719296" RelY="-1.1612903225806452"/>
+      <Point X="961.0" Y="688.0" GraphRef="e_69_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="881.5" Y="720.5" GraphRef="n52_REACTOME_189480" RelX="0.15384615384615385" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="889.0" Y="687.0" GraphRef="e_69_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="854.5" Y="688.5" GraphRef="n41_REACTOME_189478" RelX="1.0518518518518518" RelY="-0.1935483870967742" ArrowHead="Arrow"/>
+      <Point X="889.0" Y="687.0" GraphRef="e_69_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="834.5" Y="723.5" GraphRef="n107_REACTOME_189481" RelX="1.1555555555555554" RelY="-0.967741935483871" ArrowHead="Arrow"/>
+      <Point X="889.0" Y="687.0" GraphRef="e_69_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="932.5" Y="659.0" GraphRef="n47_REACTOME_189485" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="933.0" Y="687.0" GraphRef="e_69_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_REACTOME_159194">
+    <Comment Source="WikiPathways-description">Bilirubin is a breakdown product of heme, causing death if allowed to accumulate in the blood. It is highly lipophilic and thus requires conjugation to become more water soluble to aid excretion. UGT1A1 is the only enzyme that converts bilirubin to either a monoglucuronide or diglucuronide. Mutations of the UGT1A1 gene cause complete loss or partial activity for bilirubin glucuronidation.</Comment>
+    <BiopaxRef>lit_159153</BiopaxRef>
+    <BiopaxRef>lit_159173</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="499.0" Y="331.0"/>
+      <Point X="439.0" Y="330.0"/>
+      <Point X="404.0" Y="331.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_94_a_i"/>
+      <Anchor Position="0.631516322765764" Shape="None" GraphId="e_94_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_94_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="506.5" Y="349.5" GraphRef="n95_REACTOME_174384" RelX="-0.13592233009708737" RelY="-1.135135135135135"/>
+      <Point X="499.0" Y="331.0" GraphRef="e_94_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="533.5" Y="331.0" GraphRef="n14_REACTOME_159151" RelX="-1.0909090909090908" RelY="0.0"/>
+      <Point X="499.0" Y="331.0" GraphRef="e_94_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="382.5" Y="315.0" GraphRef="n96_REACTOME_158602" RelX="0.5882352941176471" RelY="1.1304347826086956" ArrowHead="Arrow"/>
+      <Point X="404.0" Y="331.0" GraphRef="e_94_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="338.5" Y="331.0" GraphRef="n97_REACTOME_159160" RelX="1.0619469026548674" RelY="-0.043478260869565216" ArrowHead="Arrow"/>
+      <Point X="404.0" Y="331.0" GraphRef="e_94_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="438.0" Y="303.5" GraphRef="n98_REACTOME_159156" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="439.0" Y="330.0" GraphRef="e_94_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_REACTOME_159179">
+    <Comment Source="WikiPathways-description">The principal conjugate of bilirubin in bile is bilirubin diglucuronide. The monmeric form of UGT1A1 (Bilirubin UDP-glucuronyltransferase) only conjugates the first step of bilirubin conjugation to form the monoglucuronide. A tetrameric form of UGT1A1 can convert bilirubin to both the monoglucuronide and the diglucuronide.</Comment>
+    <BiopaxRef>lit_159192</BiopaxRef>
+    <BiopaxRef>lit_159163</BiopaxRef>
+    <BiopaxRef>lit_159173</BiopaxRef>
+    <BiopaxRef>lit_159193</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="301.0" Y="371.0"/>
+      <Point X="300.0" Y="398.0"/>
+      <Point X="300.0" Y="416.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_102_a_i"/>
+      <Anchor Position="0.6001644849757963" Shape="None" GraphId="e_102_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_102_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="459.5" Y="370.5" GraphRef="n95_REACTOME_174384" RelX="-1.0485436893203883" RelY="0.0"/>
+      <Point X="301.0" Y="371.0" GraphRef="e_102_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="291.5" Y="358.0" GraphRef="n97_REACTOME_159160" RelX="0.23008849557522124" RelY="1.1304347826086956"/>
+      <Point X="301.0" Y="371.0" GraphRef="e_102_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="300.5" Y="432.5" GraphRef="n103_REACTOME_159149" RelX="-0.04040404040404041" RelY="-1.1020408163265305" ArrowHead="Arrow"/>
+      <Point X="300.0" Y="416.0" GraphRef="e_102_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="312.5" Y="288.0" GraphRef="n96_REACTOME_158602" RelX="-1.0588235294117647" RelY="-0.043478260869565216" ArrowHead="Arrow"/>
+      <Point X="208.0" Y="288.0"/>
+      <Point X="208.0" Y="403.0"/>
+      <Point X="300.0" Y="416.0" GraphRef="e_102_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="323.5" Y="398.5" GraphRef="n104_REACTOME_159191" RelX="-1.054945054945055" RelY="0.0"/>
+      <Point X="300.0" Y="398.0" GraphRef="e_102_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="endoplasmic reticulum lumen" GraphId="comp_text_1" GroupRef="group_comp_1">
+    <Graphics CenterX="504.5" CenterY="494.5" Width="189.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="mitochondrial matrix" GraphId="comp_text_2" GroupRef="group_comp_2">
+    <Graphics CenterX="773.5" CenterY="623.5" Width="139.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="cytosol" GraphId="comp_text_3" GroupRef="group_comp_3">
+    <Graphics CenterX="72.5" CenterY="910.5" Width="59.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics CenterX="344.5" CenterY="382.5" Width="535.0" Height="285.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics CenterX="926.0" CenterY="377.0" Width="560.0" Height="546.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics CenterX="796.5" CenterY="472.5" Width="1527.0" Height="937.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190137">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8644733</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uroporphyrinogen decarboxylase: complete human gene sequence and molecular study of three families with hepatoerythropoietic porphyria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moran-Jimenez, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ged, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Romana, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Enriquez De Salamanca, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taieb, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Topi, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Alessandro, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de Verneuil, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Hum Genet 58:712-21</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_189992">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7592565</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Porphobilinogen deaminase and uroporphyrinogen III synthase: structure, molecular biology, and mechanism</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shoolingin-Jordan, PM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Bioenerg Biomembr 27:181-95</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_159193">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">4639028</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1972</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bilirubin conjugates in bile of man and rat in the normal state and in liver disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fevery, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van, Damme B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michiels, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Groote, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heirwegh, KP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 51:2482-92</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190150">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11175906</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The 2.0 A structure of human ferrochelatase, the terminal enzyme of heme biosynthesis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, CK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dailey, HA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rose, JP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burden, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sellers, VM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, BC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Biol 8:156-60</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_159163">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6796486</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1981</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bilirubin mono- and diglucuronide formation by human liver in vitro: assay by high-pressure liquid chromatography</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chowdhury, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chowdhury, NR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shouval, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arias, IM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hepatology 1:622-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190134">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6822570</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1983</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and properties of uroporphyrinogen decarboxylase from human erythrocytes. A single enzyme catalyzing the four sequential decarboxylations of uroporphyrinogens I and III.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de Verneuil, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sassa, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kappas, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 258:2454-60</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190163">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10706561</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Novel molecular defects of the delta-aminolevulinate dehydratase gene in a patient with inherited acute hepatic porphyria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akagi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimizu, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furuyama, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Doss, MO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sassa, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hepatology 31:704-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190007">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8771201</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human protoporphyrinogen oxidase: expression, purification, and characterization of the cloned enzyme</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dailey, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dailey, HA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protein Sci 5:98-105</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190133">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">666752</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1978</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evidence that the coproporphyrinogen oxidase activity of rat liver is situated in the intermembrane space of mitochondria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elder, GH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evans, JO</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 172:345-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190160">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16121195</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of 5-aminolevulinate synthase, the first enzyme of heme biosynthesis, and its link to XLSA in humans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Astner, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schulze, JO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Heuvel, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jahn, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schubert, WD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heinz, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 24:3166-77</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190125">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3805019</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1987</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and properties of uroporphyrinogen III synthase from human erythrocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsai, SF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bishop, DF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Desnick, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 262:1268-73</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_159173">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3082969</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1986</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Microsomal UDP-glucuronyltransferase-catalyzed bilirubin diglucuronide formation in human liver</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peters, WH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jansen, PL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Hepatol 2:182-94</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190139">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7354069</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1980</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and properties of uroporphyrinogen I synthase from human erythrocytes. Identification of stable enzyme-substrate intermediates.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anderson, PM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Desnick, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 255:1993-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_159153">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8027054</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bilirubin UDP-glucuronosyltransferase 1 is the only relevant bilirubin glucuronidating isoform in man</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bosma, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seppen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldhoorn, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bakker, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oude, Elferink RP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chowdhury, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chowdhury, NR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jansen, PL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:17960-4</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_159192">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6654901</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1983</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The hepatic microsomal formation of bilirubin diglucuronide</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gordon, ER</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sommerer, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goresky, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 258:15028-36</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_189502">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1939222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biosynthesis of delta-aminolevulinic acid and the regulation of heme formation by immature erythroid cells in man</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gardner, LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cox, TM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 266:22010-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190177">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16176984</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis of hereditary coproporphyria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, DS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Flachsova, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bodnarova, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Demeler, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martasek, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raman, CS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 102:14232-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190123">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11032841</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanistic implications of mutations to the active site lysine of porphobilinogen synthase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitchell, LW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Volin, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martins, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jaffe, EK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:1538-44</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190006">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16258391</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinetic evaluation of human cloned coproporphyrinogen oxidase using a ring isomer of the natural substrate</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lash, TD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, MA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Med Sci Monit 11:BR420-5</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_189990">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12773194</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human porphobilinogen deaminase mutations in the investigation of the mechanism of dipyrromethane cofactor assembly and tetrapyrrole formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shoolingin-Jordan, PM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Al-Dbass, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McNeill, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sarwar, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butler, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Soc Trans 31:731-5</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_190149">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11032836</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The molecular mechanism of lead inhibition of human porphobilinogen synthase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jaffe, EK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martins, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kervinen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dunbrack RL, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:1531-7</bp:SOURCE>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>porphyrin and chlorophyll metabolic pathway</bp:TERM><bp:ID>PW:0000190</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

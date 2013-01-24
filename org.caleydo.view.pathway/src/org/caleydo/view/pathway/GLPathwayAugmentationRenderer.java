@@ -167,10 +167,12 @@ public class GLPathwayAugmentationRenderer {
 		switch (glPathwayView.getSampleMappingMode()) {
 		case ALL:
 			if (!glPathwayView.getDataDomain().isGeneRecord()) {
-				selectedSamplesVA = glPathwayView.getTablePerspective().getRecordPerspective().getVirtualArray();
+				if (glPathwayView.getTablePerspective() != null)
+					selectedSamplesVA = glPathwayView.getTablePerspective().getRecordPerspective().getVirtualArray();
 				return;
 			} else {
-				selectedSamplesVA = glPathwayView.getTablePerspective().getDimensionPerspective().getVirtualArray();
+				if (glPathwayView.getTablePerspective() != null)
+					selectedSamplesVA = glPathwayView.getTablePerspective().getDimensionPerspective().getVirtualArray();
 				return;
 			}
 
@@ -183,7 +185,7 @@ public class GLPathwayAugmentationRenderer {
 			}
 
 			selectedSamplesVA = new VirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
-						selectedSamplesArray);
+					selectedSamplesArray);
 
 			break;
 		default:

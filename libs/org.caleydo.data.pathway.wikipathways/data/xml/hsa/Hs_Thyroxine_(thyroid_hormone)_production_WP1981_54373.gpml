@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Thyroxine (thyroid hormone) production" Version="20110313" Author="Andra Waagmeester" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="WikiPathways-description">Thyroxine hormone is produced in the thyroid gland from tyrosine and iodine. Thyrotropin-releasing hormone (TRH) is produced by the hypothalamus. It stimulates the production of thyroid-stimulating hormone (TSH) in the anterior pituitary gland, which affects the thyroid-stimulating hormone receptor (TSHR). Iodine is captured by a hydrogen peroxide trap procuced by thyroid peroxidase and added to the 3' and 5' postitions of tyrosine. This can either be free tyrosine or a tyrosine residue in thyroglobuline. After the multiple iodination steps this produces T3 and T4. 
+The production of the thyroid hormones thyroxine (T4),tri-iodothyronine (T3) and reverse T3 (rT3) is dependent on the organification of iodine into thyroglobulin (Tg), the major protein product of the thyroid (2). This involves thyroid peroxidase catalyzed iodination of tyrosine residues in Tg to form mono- and di-iodotyrosines and their subsequent crosslinking to form the iodothyronines T3 and T4.
+
+Iodine 131 is an important radioactive fallout product. It was released in the atmosphere after nuclear tests and after nuclear incidents like at Tchernobyl and Fukushima. Since the iodine is concentrated in the thyroid glant as a substrate for the process described here non-radioactive iodine 127 is given as competitor to people exposed.</Comment>
+  <BiopaxRef>d2a</BiopaxRef>
+  <Graphics BoardWidth="1309.0" BoardHeight="617.0" />
+  <DataNode TextLabel="Triiodothyronine (T3)" GraphId="fcff2" Type="Metabolite">
+    <Graphics CenterX="1025.0079161106228" CenterY="357.8999233043232" Width="163.5" Height="33.5" ZOrder="32793" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" Color="0000ff" />
+    <Xref Database="Chemspider" ID="5707" />
+  </DataNode>
+  <DataNode TextLabel="TSH" GraphId="abd53" Type="GeneProduct">
+    <Graphics CenterX="164.79372213277017" CenterY="268.2329858982219" Width="101.96007259528125" Height="26.0" ZOrder="32794" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" />
+    <Xref Database="Entrez Gene" ID="1081" />
+  </DataNode>
+  <DataNode TextLabel="127 Iodide" GraphId="f3eaa" Type="Metabolite" GroupRef="e6879">
+    <Graphics CenterX="516.9765158224973" CenterY="252.76519507166128" Width="80.0" Height="20.0" ZOrder="32795" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB12238" />
+  </DataNode>
+  <DataNode TextLabel="TRH" GraphId="adcdb" Type="GeneProduct">
+    <Graphics CenterX="166.01996370235938" CenterY="117.85843920145209" Width="101.96007259528125" Height="26.0" ZOrder="32796" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" />
+    <Xref Database="Entrez Gene" ID="7200" />
+  </DataNode>
+  <DataNode TextLabel="TSHR" GraphId="b0a8e" Type="GeneProduct">
+    <Graphics CenterX="335.77291288566244" CenterY="268.09142468239554" Width="101.96007259528122" Height="26.0" ZOrder="32797" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" />
+    <Xref Database="Entrez Gene" ID="7253" />
+  </DataNode>
+  <DataNode TextLabel="SLC5A5" GraphId="ecc11" Type="GeneProduct">
+    <Graphics CenterX="365.25" CenterY="242.4762415695892" Width="117.5" Height="25.5" ZOrder="32798" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" />
+    <Xref Database="Entrez Gene" ID="6528" />
+  </DataNode>
+  <DataNode TextLabel="131 Iodide" GraphId="fb5f6" Type="Metabolite" GroupRef="e6879">
+    <Graphics CenterX="516.9765158224973" CenterY="232.76519507166086" Width="80.0" Height="20.0" ZOrder="32799" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Thyroglobulin (Tg)" GraphId="d7d5b" Type="GeneProduct">
+    <BiopaxRef>f2a</BiopaxRef>
+    <Graphics CenterX="679.4295294542386" CenterY="329.0190459407202" Width="163.5" Height="33.5" ZOrder="32800" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" />
+    <Xref Database="Entrez Gene" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Thyroidperoxidase&#xA;" GraphId="a85d9" Type="GeneProduct">
+    <Graphics CenterX="824.8861746361736" CenterY="277.29883339218145" Width="163.5" Height="33.5" ZOrder="32801" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" />
+    <Xref Database="Entrez Gene" ID="7173" />
+  </DataNode>
+  <DataNode TextLabel="L-Tyrosine" GraphId="bfddd" Type="Metabolite">
+    <Graphics CenterX="679.4295294542385" CenterY="223.93298976867717" Width="163.5" Height="33.5" ZOrder="32802" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00158" />
+  </DataNode>
+  <DataNode TextLabel="Thyroxine (T4)" GraphId="f95aa" Type="Metabolite">
+    <Graphics CenterX="1025.0079161106228" CenterY="404.15592515592556" Width="163.5" Height="33.5" ZOrder="32803" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00248" />
+  </DataNode>
+  <DataNode TextLabel="131 Iodide" GraphId="af9f2" Type="Metabolite" GroupRef="d13e2">
+    <Graphics CenterX="335.0" CenterY="113.0" Width="80.0" Height="20.0" ZOrder="32806" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="127 Iodide" GraphId="bed55" Type="Metabolite" GroupRef="d13e2">
+    <Graphics CenterX="335.0" CenterY="133.0" Width="80.0" Height="20.0" ZOrder="32807" FontName="Verdana" FontSize="12" Valign="Middle" LineThickness="2.0" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB12238" />
+  </DataNode>
+  <Line GraphId="f6732">
+    <Graphics ZOrder="32779" LineThickness="2.0">
+      <Point X="383.0" Y="137.0" GraphRef="a06aa" RelX="1.0" RelY="0.5" />
+      <Point X="492.9765158224973" Y="214.76519507166086" GraphRef="a1f14" RelX="-0.5" RelY="-1.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.488570715411992" Shape="Circle" GraphId="b3fac" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a5bbe">
+    <Graphics ZOrder="32780" LineThickness="1.0">
+      <Point X="679.4295294542385" Y="240.68298976867717" GraphRef="bfddd" RelX="0.0" RelY="1.0" />
+      <Point X="679.4295294542386" Y="312.2690459407202" GraphRef="d7d5b" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.49945973841507196" Shape="None" GraphId="d2079" />
+    </Graphics>
+  </Line>
+  <Line GraphId="dca29">
+    <Graphics ZOrder="32781" LineThickness="2.0">
+      <Point X="166.01996370235938" Y="130.8584392014521" GraphRef="adcdb" RelX="0.0" RelY="1.0" />
+      <Point X="164.79372213277017" Y="255.2329858982219" GraphRef="abd53" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e79b5">
+    <Graphics ZOrder="32782" LineThickness="1.0">
+      <Point X="564.9765158224973" Y="242.76519507166108" GraphRef="a1f14" RelX="1.0" RelY="0.0" />
+      <Point X="679.4295294542385" Y="276.43734265853243" GraphRef="d2079" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a07eb">
+    <Graphics ZOrder="32783" LineThickness="1.0">
+      <Point X="679.4295294542386" Y="345.7690459407202" GraphRef="d7d5b" RelX="0.0" RelY="1.0" />
+      <Point X="679.4295294542385" Y="388.6559251559257" GraphRef="cf33e" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b11fa">
+    <Graphics ZOrder="32784" LineThickness="2.0">
+      <Point X="215.7737584304108" Y="268.2329858982219" GraphRef="abd53" RelX="1.0" RelY="0.0" />
+      <Point X="284.79287658802184" Y="268.09142468239554" GraphRef="b0a8e" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bde6f">
+    <Graphics ZOrder="32785" LineThickness="1.0">
+      <Point X="780.947378112857" Y="404.1559251559257" GraphRef="d0ba9" RelX="0.0" RelY="0.0" />
+      <Point X="943.2579161106228" Y="357.8999233043232" GraphRef="fcff2" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bbcf4">
+    <Graphics ZOrder="32786" LineThickness="1.0">
+      <Point X="733.4295294542385" Y="404.1559251559257" GraphRef="cf33e" RelX="1.0" RelY="0.0" />
+      <Point X="943.2579161106228" Y="404.15592515592556" GraphRef="f95aa" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.22646053480091743" Shape="None" GraphId="d0ba9" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cddf6">
+    <Graphics ZOrder="32787" LineThickness="2.0">
+      <Point X="365.25" Y="229.7262415695892" GraphRef="ecc11" RelX="0.0" RelY="-1.0" />
+      <Point X="436.73130501391574" Y="174.99379699031445" GraphRef="b3fac" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e58fe">
+    <Graphics ZOrder="32788" LineThickness="1.0">
+      <Point X="743.1361746361736" Y="277.29883339218145" GraphRef="a85d9" RelX="-1.0" RelY="0.0" />
+      <Point X="679.4295294542385" Y="276.43734265853243" GraphRef="d2079" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="Label" GraphId="e9f23">
+    <Graphics CenterX="611.0" CenterY="494.0" Width="0.0" Height="0.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Iodination of &#xA;tyrosine" GraphId="c9cdc">
+    <Graphics CenterX="711.888207156499" CenterY="296.14508504752473" Width="80.0" Height="33.03523035230343" ZOrder="32789" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Hypothalamus" GraphId="ee012">
+    <Graphics CenterX="152.5" CenterY="90.5" Width="109.0" Height="25.0" ZOrder="32790" FillColor="ffffff" FontName="Verdana" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="mono- and&#xA;di-iodotyrosines" GraphId="cf33e">
+    <Graphics CenterX="679.4295294542385" CenterY="404.1559251559257" Width="108.0" Height="31.0" ZOrder="32791" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Rectangle" />
+  </Label>
+  <Label TextLabel="Spontaneous&#xA;crosslinking" GraphId="ff236">
+    <Graphics CenterX="814.6361746361736" CenterY="419.1559251559256" Width="80.0" Height="20.0" ZOrder="32792" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Anterior pituitary" GraphId="b24e8">
+    <Graphics CenterX="136.63795217657872" CenterY="291.34610668301644" Width="109.0" Height="25.0" ZOrder="32804" FillColor="ffffff" FontName="Verdana" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Thyroid" GraphId="e31b7">
+    <Graphics CenterX="1007.0" CenterY="517.5" Width="58.0" Height="25.0" ZOrder="32805" FillColor="ffffff" FontName="Verdana" FontSize="12" Valign="Middle" />
+  </Label>
+  <Shape GraphId="b3d51">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="151.75" CenterY="112.25" Width="228.5" Height="85.5" ZOrder="32774" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="e59e1">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="150.25" CenterY="267.55993255671365" Width="228.5" Height="85.5" ZOrder="32775" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a7088">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="797.25" CenterY="339.25" Width="963.5" Height="495.5" ZOrder="32776" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="e6879" GraphId="a1f14" Style="Group" />
+  <Group GroupId="d13e2" GraphId="a06aa" Style="Group" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:TERM>thyroid gland disease</bp:TERM>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:ID>DOID:50</bp:ID>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:Ontology>Disease</bp:Ontology>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:TERM>thyroid hormone signaling pathway</bp:TERM>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:ID>PW:0000501</bp:ID>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:TERM>thyroid gland disease</bp:TERM>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:ID>DOID:50</bp:ID>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:Ontology>Disease</bp:Ontology>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:TERM>thyroid hormone signaling pathway</bp:TERM>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:ID>PW:0000501</bp:ID>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d2a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7871153 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thyroid cancer after exposure to external radiation: a pooled analysis of seven studies.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Radiat Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ron E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lubin JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shore RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mabuchi K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Modan B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pottern LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schneider AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tucker MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boice JD Jr</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="f2a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">221813</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Control of thyroglobulin synthesis and secretion</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N. Engl. J. Med. 301:239</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1979</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Herle, A.J .</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">G. Vassart</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J.E . Dumont</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

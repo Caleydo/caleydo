@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Platelet Aggregation (Plug Formation)" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="de Bono, B">
+  <Comment Source="WikiPathways-description">The tethering of platelets to the site of vascular injury is the first step in the formation of a platelet thrombus. Firm adhesion of these tethered platelets, as well as the additional recruitment of others onto their surface leads to the formation of large platelet aggregates. The formation of a thrombus is strictly dependent on the formation of interplatelet bonds.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n66_REACTOME_390627" TextLabel="Catecholamine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="73.5" CenterY="195.5" Width="107.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17411"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_390664" TextLabel="Alpha-2 &#10;adrenoceptor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="165.0" CenterY="231.0" Width="86.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_18048"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_390700" TextLabel="Alpha-2 &#10;adrenoceptor:&#10;Catecholamine&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="153.0" CenterY="344.5" Width="98.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17529"/>
+  </DataNode>
+  <DataNode GraphId="n215_REACTOME_156786" TextLabel="Activated thrombin &#10;(factor IIa)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="545.5" CenterY="232.0" Width="123.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3298"/>
+  </DataNode>
+  <DataNode GraphId="n216_REACTOME_114668" TextLabel="GPIb-IX-V &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="459.0" CenterY="184.5" Width="96.0" Height="37.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3007"/>
+  </DataNode>
+  <DataNode GraphId="n217_REACTOME_429532" TextLabel="GP1b-IX-V &#10;complex:&#10;activated &#10;thrombin &#10;(factor IIa)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="463.0" CenterY="330.5" Width="86.0" Height="83.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24330"/>
+  </DataNode>
+  <DataNode GraphId="n218_REACTOME_354192" TextLabel="Integrin alphaIIb &#10;beta3 signaling&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">At the sites of vascular injury bioactive molecules such as thrombin, ADP, collagen, fibrinogen and thrombospondin are generated, secreted or exposed. These stimuli activate platelets, converting the major platelet integrin alphaIIbbeta3 from a resting state to an active conformation, in a process termed integrin priming or âinside-out signallingâ. Integrin activation refers to the change required to enhance ligand-binding activity. The activated alphaIIbbeta3 interacts with the fibrinogen and links platelets together in an aggregate to form a platelet plug. AlphaIIbbeta3 bound to fibrin generates more intracellular signals (outside-in signalling), causing further platelet activation and platelet-plug retraction. &lt;br&gt;In the resting state the alpha and beta tails are close together. This interaction keeps the membrane proximal regions in a bent conformation that maintains alphaIIbbeta3 in a low affinity state. &lt;br&gt;Integrin alphaIIbbeta3 is released from its inactive state by interaction with the protein talin. Talin interacts with the beta3 cytoplasmic domain and disrupts the salt bridge between the alpha and beta chains. This separation in the cytoplasmic regions triggers the conformational change in the extracellular domain that increases its affinity to fibrinogen. &lt;br&gt;Much of talin exists in an inactive cytosolic pool, and the Rap1 interacting adaptor molecule (RIAM) is implicated in talin activation and translocation to beta3 integrin cytoplasmic domain.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_210067</BiopaxRef>
+    <BiopaxRef>lit_354123</BiopaxRef>
+    <BiopaxRef>lit_377578</BiopaxRef>
+    <BiopaxRef>lit_354175</BiopaxRef>
+    <BiopaxRef>lit_354141</BiopaxRef>
+    <BiopaxRef>lit_140237</BiopaxRef>
+    <Graphics Color="000000" CenterX="230.5" CenterY="96.0" Width="115.0" Height="72.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_15523"/>
+  </DataNode>
+  <Line GraphId="e_65_REACTOME_390663">
+    <Comment Source="WikiPathways-description">Alpha-2 adrenoceptors couple with G protein alpha-i subtype which decreases adenylyl cyclase activity, thus reducing cAMP intracellular levels resulting in smooth muscle contraction. There are three alpha-2 subtypes in humans; 2A (Kobilka BK et al, 1987), 2B (Weinshank RL et al, 1990) and 2C (Hirasawa A et al, 1993).</Comment>
+    <BiopaxRef>lit_390787</BiopaxRef>
+    <BiopaxRef>lit_390804</BiopaxRef>
+    <BiopaxRef>lit_390683</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="101.0" Y="242.0" GraphId="e_65_0"/>
+      <Point X="119.0" Y="279.0" GraphId="e_65_1"/>
+      <Point X="139.0" Y="315.0" GraphId="e_65_2" GraphRef="n68_REACTOME_390700" RelX="-0.2857142857142857" RelY="-1.0943396226415094" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_65_a_i"/>
+      <Anchor Position="0.49977869573711214" GraphId="e_65_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="82.0" Y="214.0" GraphId="e_65_i0_0" GraphRef="n66_REACTOME_390627" RelX="0.16822429906542055" RelY="1.2258064516129032"/>
+      <Point X="101.0" Y="242.0" GraphId="e_65_i0_1" GraphRef="e_65_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="119.0" Y="238.0" GraphId="e_65_i1_0" GraphRef="n67_REACTOME_390664" RelX="-1.069767441860465" RelY="0.3684210526315789"/>
+      <Point X="101.0" Y="242.0" GraphId="e_65_i1_1" GraphRef="e_65_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_214_REACTOME_429529">
+    <Comment Source="WikiPathways-description">Thrombin binds to the GP1b-IX-V receptor during platelet aggregation. This leads to increased PAR activation, possibly due to favourable orientation of thrombin towards the PAR extracellular domain.</Comment>
+    <BiopaxRef>lit_429530</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="459.0" Y="232.0" GraphId="e_214_0"/>
+      <Point X="459.0" Y="253.0" GraphId="e_214_1"/>
+      <Point X="460.0" Y="286.0" GraphId="e_214_2" GraphRef="n217_REACTOME_429532" RelX="-0.06976744186046512" RelY="-1.0602409638554218" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_214_a_i"/>
+      <Anchor Position="0.38877982867057853" GraphId="e_214_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_214_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="481.0" Y="232.0" GraphId="e_214_i0_0" GraphRef="n215_REACTOME_156786" RelX="-1.0406504065040652" RelY="0.0"/>
+      <Point X="459.0" Y="232.0" GraphId="e_214_i0_1" GraphRef="e_214_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_214_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="459.0" Y="206.0" GraphId="e_214_i1_0" GraphRef="n216_REACTOME_114668" RelX="0.0" RelY="1.1891891891891893"/>
+      <Point X="459.0" Y="232.0" GraphId="e_214_i1_1" GraphRef="e_214_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_21" GroupRef="group_comp_21" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="409.5" CenterY="642.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_21" GroupRef="group_comp_21">
+    <Graphics Color="000000" CenterX="304.0" CenterY="405.0" Width="322.0" Height="660.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210067" rdf:id="lit_210067">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16102042</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GPVI and integrin alphaIIb beta3 signaling in platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Auger, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCarty, OJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pearce, AC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost 3:1752-62</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354123" rdf:id="lit_354123">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17624957</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet integrins and immunoreceptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kasirer-Friede, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kahn, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunol Rev 218:247-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_377578" rdf:id="lit_377578">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15205259</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrins: dynamic scaffolds for adhesion and signaling in platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newman, PJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 104:1606-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354175" rdf:id="lit_354175">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14754902</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calderwood, DA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 117:657-66</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354141" rdf:id="lit_354141">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10508650</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin alpha(IIb)beta(3) signaling in platelet adhesion and aggregation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parise, LV</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 11:597-601</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140237" rdf:id="lit_140237">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10605720</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signaling through platelet integrin alpha IIb beta 3: inside-out, outside-in, and sideways</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thromb Haemost 82:318-25</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390787" rdf:id="lit_390787">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2823383</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1987</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning, sequencing, and expression of the gene coding for the human platelet alpha 2-adrenergic receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobilka, BK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsui, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobilka, TS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang-Feng, TL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Francke, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Caron, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lefkowitz, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regan, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 238:650-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390804" rdf:id="lit_390804">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2172775</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning, expression, and pharmacological characterization of a human alpha 2B-adrenergic receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinshank, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zgombick, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Macchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adham, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lichtblau, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Branchek, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hartig, PR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Pharmacol 38:681-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390683" rdf:id="lit_390683">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8396931</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning, functional expression and tissue distribution of human cDNA for the alpha 1C-adrenergic receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirasawa, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horie, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takagaki, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murai, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yano, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsujimoto, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 195:902-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_429530" rdf:id="lit_429530">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12855811</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of the GpIbalpha-thrombin complex essential for platelet aggregation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dumas, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumar, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seehra, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Somers, WS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mosyak, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 301:222-6</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

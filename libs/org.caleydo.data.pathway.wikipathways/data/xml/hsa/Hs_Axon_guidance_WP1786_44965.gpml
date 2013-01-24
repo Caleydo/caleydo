@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Axon guidance" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Axon guidance / axon pathfinding is the process by which neurons send out axons to reach the correct targets. Growing axons have a highly motile structure at the growing tip called the growth cone, which senses the guidance cues in the environment through guidance cue receptors and responds by undergoing cytoskeletal changes that determine the direction of axon growth. &lt;br&gt;Guidance cues present in the surrounding environment provide the necessary directional information for the trip. These extrinsic cues have been divided into attractive or repulsive signals that tell the growth cone where and where not to grow. &lt;br&gt;Genetic and biochemical studies have led to the identification of highly conserved families of guidance molecules and their receptors that guide axons. These include netrins, Slits, semaphorins, and ephrins, and their cognate receptors, DCC and or uncoordinated-5 (UNC5), roundabouts (Robo), neuropilin and Eph. In addition, many other classes of adhesion molecules are also used by growth cones to navigate properly which include NCAM and L1CAM.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n1_REACTOME_373755" TextLabel="Semaphorin &#10;interactions&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Semaphorins are a large family of cell surface and secreted guidance molecules divided into eight classes on the basis of their structures. They all have an N-terminal conserved sema domain. Semaphorins signal through multimeric receptor complexes that include other proteins such as plexins and neuropilins.</Comment>
+    <BiopaxRef>lit_375904</BiopaxRef>
+    <BiopaxRef>lit_416566</BiopaxRef>
+    <BiopaxRef>lit_399751</BiopaxRef>
+    <BiopaxRef>lit_419641</BiopaxRef>
+    <BiopaxRef>lit_419639</BiopaxRef>
+    <Graphics Color="000000" CenterX="125.0" CenterY="114.0" Width="88.0" Height="44.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_19271"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_375165" TextLabel="NCAM signaling for &#10;neurite out-growth&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The neural cell adhesion molecule, NCAM, is a member of the immunoglobulin (Ig) superfamily and is involved in a variety of cellular processes of importance for the formation and maintenance of the nervous system. The role of NCAM in neural differentiation and synaptic plasticity is presumed to depend on the modulation of intracellular signal transduction cascades. NCAM based signaling complexes can initiate downstream intracellular signals by at least two mechanisms: (1) activation of FGFR and (2) formation of intracellular signaling complexes by direct interaction with cytoplasmic interaction partners such as Fyn and FAK. Tyrosine kinases Fyn and FAK interact with NCAM and undergo phosphorylation and this transiently activates the MAPK, ERK 1 and 2, cAMP response element binding protein (CREB) and transcription factors ELK and NFkB. CREB activates transcription of genes which are important for axonal growth, survival, and synaptic plasticity in neurons.&lt;br&gt;&lt;br&gt;NCAM1 mediated intracellular signal transduction is represented in the figure below. The Ig domains in NCAM1 are represented in orange ovals and Fn domains in green squares. The tyrosine residues susceptible to phosphorylation are represented in red circles and their positions are numbered. Phosphorylation is represented by red arrows and dephosphorylation by yellow. Ig, Immunoglobulin domain; Fn, Fibronectin domain; Fyn, Proto-oncogene tyrosine-protein kinase Fyn; FAK, focal adhesion kinase; RPTPalpha, Receptor-type tyrosine-protein phosphatase; Grb2, Growth factor receptor-bound protein 2; SOS, Son of sevenless homolog; Raf, RAF proto-oncogene serine/threonine-protein kinase; MEK, MAPK and ERK kinase; ERK, Extracellular signal-regulated kinase; MSK1, Mitogen and stress activated protein kinase 1; CREB, Cyclic AMP-responsive element-binding protein; CRE, cAMP response elements.</Comment>
+    <BiopaxRef>lit_375122</BiopaxRef>
+    <BiopaxRef>lit_375119</BiopaxRef>
+    <BiopaxRef>lit_419030</BiopaxRef>
+    <BiopaxRef>lit_391814</BiopaxRef>
+    <BiopaxRef>lit_419275</BiopaxRef>
+    <BiopaxRef>lit_419276</BiopaxRef>
+    <Graphics Color="000000" CenterX="263.5" CenterY="114.0" Width="129.0" Height="44.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_18334"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_376176" TextLabel="Signaling by Robo &#10;receptor&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The Roundabout (Robo) family encodes transmembrane receptors that regulate axonal guidance and cell migration. The major function of the Robo receptors is to mediate repulsion of the navigating growth cones. There are four human Robo homologues, Robo1, Robo2, Robo3 and Robo4. Most of the Robos have the similar ectodomain architecture as the cell adhesion molecules, five Ig domains followed by three FN3 repeats except for Robo4, it has 2Ig and 2FN3 repeats. The cytoplasmic domains of Robo receptors are in general poorly conserved. However, there are four short conserved cytoplasmic sequence motifs, named CC0-3, that serve as binding sites for adaptor proteins. The ligands for the human Robo receptors are the three Slit proteins Slit1, Slit2, and Slit3; all of the Slit proteins contain a tandem of four LRR (leucine rich repeat) domains at N terminus, termed D1 D4 followed by six EGF (epidermal growth factor)-like domains, a laminin G like domain (ALPS), three EGF-like domains, and a C-terminal cysteine knot domain. Most Slit proteins are cleaved within the EGF-like region by unknown proteases.&lt;br&gt;&lt;br&gt;Slit protein binding modulates Robo interactions with the cytosolic adaptors. The cytoplasmic domain of Robo1 and Robo2 determines the repulsive responses of these receptors. Based on the studies from both invertebrate and vertebrate organisms its been inferred that Robo induces growth cone repulsion by controlling cytoskeletal dynamics via either Abelson kinase (Abl) and Enabled (Ena), or Rac activity.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_375905</BiopaxRef>
+    <Graphics Color="000000" CenterX="558.0" CenterY="117.0" Width="122.0" Height="44.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_19351"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_373752" TextLabel="Netrin-1 signaling&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Netrins are secreted proteins that play a crucial role in neuronal migration and in axon guidance during the development of the nervous system. To date, several Netrins have been described in mouse and humans: Netrin-1, -3/NTL2, -4/h and G-Netrins. Netrin-1 is the most studied member of the family and has been shown to play a crucial role in neuronal navigation during nervous system development mainly through its interaction with its receptors DCC and UNC5. Members of the Deleted in colorectal cancer (DCC) family- which includes DCC and Neogenin in vertebrates- mediate netrin-induced axon attraction, whereas the C. elegans UNC5 receptor and its four vertebrate homologs Unc5a-Unc5d mediate repulsion.</Comment>
+    <BiopaxRef>lit_421714</BiopaxRef>
+    <BiopaxRef>lit_513012</BiopaxRef>
+    <Graphics Color="000000" CenterX="416.0" CenterY="115.0" Width="120.0" Height="30.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_22237"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_373760" TextLabel="L1CAM interactions&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The L1 family of cell adhesion molecules (L1CAMs) are a subfamily of the immunoglobulin superfamily of transmembrane receptors, comprised of four structurally related proteins: L1, Close Homolog of L1 (CHL1), NrCAM, and Neurofascin. These CAMs contain six Ig like domains, five or six fibronectin like repeats, a transmembrane region and a cytoplasmic domain. The L1CAM family has been implicated in processes integral to nervous system development, including neurite outgrowth, neurite fasciculation and inter neuronal adhesion.&lt;br&gt;L1CAM members are predominately expressed by neuronal, as well as some nonneuronal cells, during development.  Except CHL1 all the other members of L1 family contain an alternatively spliced 12-nclueotide exon, encoding the amino acid residues RSLE in the neuronal splice forms but missing in the non-neuronal cells. The extracellular regions of L1CAM members are divergent and differ in their abilities to interact with extracellular, heterophilic ligands. The L1 ligands include other Ig-domain CAMs (such as NCAM, TAG-1/axonin and F11), proteoglycans type molecules (neurocan), beta1 integrins, and extra cellular matrix protein laminin, Neuropilin-1, FGF and EGF receptors. Some of these L1-interacting proteins also bind to other L1CAM members. For example TAG-1/axonin interact with L1 and NrCAM; L1, neurofascin and CHL1 binds to contactin family members. The cytoplasmic domains of L1CAM members are most highly conserved. Nevertheless, they have different cytoplasmic binding partners, and even those with similar binding partners may be involved in different signaling complexes and mechanisms. The most conserved feature of L1CAMs is their ability to interact with the actin cytoskeletal adapter protein ankyrin. The cytoplasmic ankyrin-binding domain, exhibits the highest degree of amino acid conservation throughout the L1 family.</Comment>
+    <BiopaxRef>lit_444913</BiopaxRef>
+    <BiopaxRef>lit_445055</BiopaxRef>
+    <BiopaxRef>lit_445028</BiopaxRef>
+    <BiopaxRef>lit_419030</BiopaxRef>
+    <BiopaxRef>lit_391815</BiopaxRef>
+    <Graphics Color="000000" CenterX="712.0" CenterY="117.0" Width="126.0" Height="30.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_22205"/>
+  </DataNode>
+  <Label GraphId="comp_text_4" GroupRef="group_comp_4" TextLabel="cell">
+    <Graphics Color="000000" CenterX="93.5" CenterY="174.5" Width="39.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_4" GroupRef="group_comp_4">
+    <Graphics Color="000000" CenterX="430.0" CenterY="120.0" Width="760.0" Height="164.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375904" rdf:id="lit_375904">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12471249</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular mechanisms of axon guidance</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dickson, BJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 298:1959-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_416566" rdf:id="lit_416566">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12593985</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Semaphorin junction: making tracks toward neural connectivity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pasterkamp, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kolodkin, AL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Neurobiol 13:79-89</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_399751" rdf:id="lit_399751">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18374575</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Semaphorin signaling: progress made and promises ahead</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gunput, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pasterkamp, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Biochem Sci 33:161-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419641" rdf:id="lit_419641">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16939971</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Semaphorins in axon regeneration: developmental guidance molecules gone wrong?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pasterkamp, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verhaagen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Philos Trans R Soc Lond B Biol Sci 361:1499-511</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419639" rdf:id="lit_419639">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18269210</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of semaphorins during axon growth and guidance</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koncina, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roth, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gonthier, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bagnard, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adv Exp Med Biol 621:50-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375122" rdf:id="lit_375122">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15662836</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zippers make signals: NCAM-mediated molecular interactions and signal transduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walmod, PS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kolkova, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neurochem Res 29:2015-35</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375119" rdf:id="lit_375119">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17975827</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCAM-induced intracellular signaling revisited</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ditlevsen, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Povlsen, GK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neurosci Res 86:727-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419030" rdf:id="lit_419030">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18760361</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">L1 and NCAM adhesion molecules as signaling coreceptors in neuronal migration and process outgrowth</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmid, RS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maness, PF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Neurobiol 18:245-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_391814" rdf:id="lit_391814">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12700044</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cellular signalling mechanisms of neural cell adhesion molecules</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Panicker, AK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Buhusi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thelen, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maness, PF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Front Biosci 8:d900-11</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419275" rdf:id="lit_419275">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15153429</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulators of neurite outgrowth: role of cell adhesion molecules</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiryushko, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ann N Y Acad Sci 1014:140-54</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419276" rdf:id="lit_419276">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12587671</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Intracellular signaling by the neural cell adhesion molecule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Povlsen, GK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ditlevsen, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neurochem Res 28:127-41</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375905" rdf:id="lit_375905">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18363568</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural insight into Slit-Robo signalling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hohenester, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Soc Trans 36:251-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421714" rdf:id="lit_421714">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18269208</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Netrins and their receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moore, SW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tessier-Lavigne, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kennedy, TE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adv Exp Med Biol 621:17-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_513012" rdf:id="lit_513012">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10499167</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Deleted in Colorectal Cancer netrin guidance system: a molecular strategy for neuronal navigation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, HM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gad, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keeling, SL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clin Exp Pharmacol Physiol 26:749-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_444913" rdf:id="lit_444913">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14709786</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The mechanism of axon growth: what we have learned from the cell adhesion molecule L1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamiguchi, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Neurobiol 28:219-28</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_445055" rdf:id="lit_445055">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9211984</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neural cell adhesion molecule L1: signaling pathways and growth cone motility</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamiguchi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemmon, V</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neurosci Res 49:1-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_445028" rdf:id="lit_445028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19356150</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The intracellular interactions of the L1 family of cell adhesion molecules</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Herron, LR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hill, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davey, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gunn-Moore, FJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 419:519-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_391815" rdf:id="lit_391815">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17189949</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neural recognition molecules of the immunoglobulin superfamily: signaling transducers of axon guidance and neuronal migration</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maness, PF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schachner, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Neurosci 10:19-26</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>signaling pathway</bp:TERM><bp:ID>PW:0000003</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

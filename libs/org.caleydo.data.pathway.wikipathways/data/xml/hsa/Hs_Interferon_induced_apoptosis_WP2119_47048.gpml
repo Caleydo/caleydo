@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Interferon induced apoptosis" Author="Shamith Samarajiwa" Organism="Homo sapiens">
+  <Graphics BoardWidth="1631.3904982618772" BoardHeight="1151.0" />
+  <DataNode TextLabel="FAS" GraphId="d864e" Type="GeneProduct">
+    <Graphics CenterX="579.0" CenterY="240.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="355" />
+  </DataNode>
+  <DataNode TextLabel="FASLG" GraphId="e0526" Type="GeneProduct">
+    <Graphics CenterX="615.0" CenterY="196.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="356" />
+  </DataNode>
+  <DataNode TextLabel="FADD" GraphId="d708f" Type="GeneProduct">
+    <Graphics CenterX="599.0" CenterY="295.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8772" />
+  </DataNode>
+  <DataNode TextLabel="TNFSF10" GraphId="c87b5" Type="Rna">
+    <Graphics CenterX="850.6159169550174" CenterY="858.2456747404846" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8743" />
+  </DataNode>
+  <DataNode TextLabel="TNFRSF10C" GraphId="bb2e0" Type="GeneProduct">
+    <Graphics CenterX="310.0" CenterY="238.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8794" />
+  </DataNode>
+  <DataNode TextLabel="TNFRSF10D" GraphId="fcc87" Type="GeneProduct">
+    <Graphics CenterX="399.0" CenterY="238.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8793" />
+  </DataNode>
+  <DataNode TextLabel="CFLAR" GraphId="faa46" Type="GeneProduct">
+    <Graphics CenterX="322.0" CenterY="305.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8837" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="b155e" Type="Protein">
+    <Graphics CenterX="155.0" CenterY="607.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="CASP3" GraphId="c7e94" Type="GeneProduct">
+    <Graphics CenterX="329.0" CenterY="509.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="836" />
+  </DataNode>
+  <DataNode TextLabel="FAS" GraphId="b0f86" Type="Rna">
+    <Graphics CenterX="914.5363321799308" CenterY="826.0968858131491" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="355" />
+  </DataNode>
+  <DataNode TextLabel="RNASEL" GraphId="a440d" Type="Rna">
+    <Graphics CenterX="769.4567474048439" CenterY="790.0726643598614" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6041" />
+  </DataNode>
+  <DataNode TextLabel="XAF1" GraphId="dd04d" Type="Rna">
+    <Graphics CenterX="800.7854671280273" CenterY="907.4325259515577" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="54739" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="b59d4" Type="Rna">
+    <Graphics CenterX="894.5709342560557" CenterY="773.889273356403" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="CASP8" GraphId="b7568" Type="GeneProduct">
+    <Graphics CenterX="338.0" CenterY="370.0" Width="80.0" Height="20.0" ZOrder="32769" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="841" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="d34cf" Type="Protein">
+    <Graphics CenterX="341.0" CenterY="452.0" Width="80.0" Height="20.0" ZOrder="32770" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="CASP9" GraphId="d0c0b" Type="GeneProduct">
+    <Graphics CenterX="649.0" CenterY="388.0" Width="80.0" Height="20.0" ZOrder="32771" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="842" />
+  </DataNode>
+  <DataNode TextLabel="TNFRSF10A" GraphId="a83fc" Type="Protein">
+    <Graphics CenterX="815.0" CenterY="240.0" Width="80.0" Height="20.0" ZOrder="32772" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="TNFRSF10B" GraphId="b52a6" Type="GeneProduct">
+    <Graphics CenterX="906.0" CenterY="240.0" Width="80.0" Height="20.0" ZOrder="32773" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8795" />
+  </DataNode>
+  <DataNode TextLabel="IFNAR1" GraphId="b7950" Type="GeneProduct">
+    <Graphics CenterX="1089.0" CenterY="239.0" Width="80.0" Height="20.0" ZOrder="32774" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3454" />
+  </DataNode>
+  <DataNode TextLabel="IFNAR2" GraphId="f8347" Type="GeneProduct">
+    <Graphics CenterX="1184.0" CenterY="238.0" Width="80.0" Height="20.0" ZOrder="32775" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3455" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="e9820" Type="Protein">
+    <Graphics CenterX="543.0" CenterY="509.0" Width="80.0" Height="20.0" ZOrder="32776" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="XIAP" GraphId="c35f6" Type="GeneProduct">
+    <Graphics CenterX="586.0" CenterY="540.0" Width="80.0" Height="20.0" ZOrder="32777" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="331" />
+  </DataNode>
+  <DataNode TextLabel="JAK1" GraphId="a2d7e" Type="GeneProduct">
+    <Graphics CenterX="1221.0" CenterY="267.0" Width="80.0" Height="20.0" ZOrder="32778" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3716" />
+  </DataNode>
+  <DataNode TextLabel="TYK2" GraphId="a1f0e" Type="GeneProduct">
+    <Graphics CenterX="1070.0" CenterY="269.0" Width="80.0" Height="20.0" ZOrder="32779" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="7297" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="ce5fc" Type="Protein">
+    <Graphics CenterX="1061.0" CenterY="357.0" Width="80.0" Height="20.0" ZOrder="32780" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="c91d7" Type="Protein">
+    <Graphics CenterX="1061.0" CenterY="405.0" Width="80.0" Height="20.0" ZOrder="32781" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="a35ee" Type="Protein">
+    <Graphics CenterX="1059.0" CenterY="382.0" Width="80.0" Height="20.0" ZOrder="32782" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="e7b07" Type="Protein">
+    <Graphics CenterX="1201.0" CenterY="386.0" Width="80.0" Height="20.0" ZOrder="32783" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="c9adb" Type="Protein">
+    <Graphics CenterX="1200.0" CenterY="364.0" Width="80.0" Height="20.0" ZOrder="32784" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="FAS" GraphId="da206" Type="GeneProduct">
+    <Graphics CenterX="670.0" CenterY="241.0" Width="80.0" Height="20.0" ZOrder="32785" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="355" />
+  </DataNode>
+  <Shape GraphId="f8edd">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="827.4452491309386" CenterY="681.25" Width="1547.8904982618772" Height="879.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="b7252">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="956.4122247972192" CenterY="886.0237543453071" Width="721.5" Height="405.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a1d44">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Mitochondria" />
+    <Graphics CenterX="211.9046650451839" CenterY="721.5684329971823" Width="219.62043925622288" Height="79.1925130459488" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Mitochondria" LineThickness="3.0" Color="c0c0c0" Rotation="0.5191461142465229" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

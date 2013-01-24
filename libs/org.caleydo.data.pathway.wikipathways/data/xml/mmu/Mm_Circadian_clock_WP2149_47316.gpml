@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Circadian clock" Organism="Mus musculus">
+  <Graphics BoardWidth="225.0" BoardHeight="278.0" />
+  <DataNode TextLabel="BMAL1" GraphId="cbea1" Type="Protein">
+    <Graphics CenterX="138.0" CenterY="69.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q9WTL8" />
+  </DataNode>
+  <DataNode TextLabel="Clock" GraphId="da288" Type="GeneProduct">
+    <Graphics CenterX="120.0" CenterY="119.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029238" />
+  </DataNode>
+  <DataNode TextLabel="Cry1" GraphId="f4c8b" Type="GeneProduct">
+    <Graphics CenterX="122.0" CenterY="176.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="12952" />
+  </DataNode>
+  <DataNode TextLabel="Per2" GraphId="c52cf" Type="GeneProduct">
+    <Graphics CenterX="155.0" CenterY="238.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000055866" />
+  </DataNode>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Signaling by Interleukins" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Ray, K" Maintainer="Jupe, S" Email="sjupe@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Interleukins are low molecular weight proteins that bind to cell surface receptors and act in an autocrine and/or paracrine fashion. They were first identified as factors produced by leukocytes but are now known to be produced by many other cells throughout the body. They have pleiotropic effects on cells which bind them, impacting processes such as tissue growth and repair, hematopoietic homeostasis, and multiple levels of the host defense against pathogens where they are an essential part of the immune system.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_827359</BiopaxRef>
+  <BiopaxRef>lit_451657</BiopaxRef>
+  <DataNode GraphId="n1_REACTOME_446652" TextLabel="Interleukin-1 &#10;signaling&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Interleukin 1 (IL1) signals via Interleukin 1 receptor 1 (IL1R1), the only signaling-capable IL1 receptor. This is a single chain type 1 transmembrane protein comprising an extracellular ligand binding domain and an intracellular  region called the Toll/Interleukin-1 receptor (TIR) domain that is structurally conserved and shared by other members of the two families of receptors (Xu et al. 2000). This domain is also shared by the downstream adapter molecule MyD88. IL1 binding to IL1R1 leads to the recruitment of a second receptor chain termed the IL1 receptor accessory protein (IL1RAP or IL1RAcP) enabling the formation of a high-affinity ligand-receptor complex that is capable of signal transduction. Intracellular signaling is initiated by the recruitment of MyD88 to the IL-1R1/IL1RAP complex. IL1RAP is only recruited to IL1R1 when IL1 is present; it is believed that a TIR domain signaling complex is formed between the receptor and the adapter TIR domains. The recruitment of MyD88 leads to the recruitment of Interleukin-1 receptor-associated kinase (IRAK)-1 and -4, probably via their death domains. IRAK4 then activates IRAK1, allowing IRAK1 to autophosphorylate. Both IRAK1 and IRAK4 then dissociate from MyD88 (Brikos et al. 2007) which remains stably complexed with IL-1R1 and IL1RAP. They in turn interact with Tumor Necrosis Factor Receptor (TNFR)-Associated Factor 6 (TRAF6), which is an E3 ubiquitin ligase (Deng et al. 2000). TRAF6 is then thought to auto-ubiquinate, attaching K63-polyubiquitin to itself with the assistance of the E2 conjugating complex Ubc13/Uev1a. K63-pUb-TRAF6 recruits Transforming Growth Factor (TGF) beta-activated protein kinase 1 (TAK1) in a complex with TAK1-binding protein 2 (TAB2) and TAB3, which both contain nuclear zinc finger motifs that interact with K63-polyubiquitin chains (Ninomiya-Tsuji et al. 1999). This activates TAK1, which then activates  inhibitor of NF-kappaB (IkappaB) kinase 2 (IKK2 or IKKB) within the IKK complex, the kinase responsible for phosphorylation of IkappaB. The IKK complex also contains the scaffold protein NF-kappa B essential modulator (NEMO). TAK1 also couples to the upstream kinases for p38 and c-jun N-terminal kinase (JNK). IRAK1 undergoes K63-linked polyubiquination; Pellino E3 ligases are important in this process. (Butler et al. 2007; Ordureau et al. 2008). The activity of these proteins is greatly enhanced by IRAK phosphorylation (Schauvliege et al. 2006), leading to K63-linked polyubiquitination of IRAK1. This recruits NEMO to IRAK1, with NEMO binding to polyubiquitin (Conze et al. 2008).&lt;br&gt;&lt;br&gt;TAK1 activates IKKB (and IKK), resulting in phosphorylation of the inhibitory IkB proteins and enabling translocation of NFkB to the nucleus; IKKB also phosphorylates NFkB p105, leading to its degradation and the subsequent release of active TPL2 that triggers the extracellular-signal regulated kinase (ERK)1/2 MAPK cascade. TAK1 can also trigger the p38 and JNK MAPK pathways via activating the upstream MKKs3, 4 and 6. The MAPK pathways activate a number of downstream kinases and transcription factors that co-operate with NFkB to induce the expression of a range of TLR/IL-1R-responsive genes. There are reports suggesting that IL1 stimulation increases nuclear localization of IRAK1 (Bol et al. 2000) and that nuclear IRAK1 binds to the promoter of NFkB-regulated gene and IkBa, enhancing binding of the NFkB p65 subunit to NFkB responsive elements within the IkBa promoter.  IRAK1 is required for IL1-induced Ser-10 phosphorylation of histone H3 in vivo (Liu et al. 2008). However, details of this aspect of IRAK1 signaling mechanisms remain unclear.</Comment>
+    <BiopaxRef>lit_451657</BiopaxRef>
+    <BiopaxRef>lit_451412</BiopaxRef>
+    <Graphics Color="000000" CenterX="206.5" CenterY="88.5" Width="97.0" Height="53.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_22442"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_448706" TextLabel="Interleukin-1 &#10;processing&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The IL-1 family of cytokines that interact with the Type 1 IL-1R include IL-1 Alpha (IL1A), IL-1 Beta (IL1B) and the IL-1 receptor antagonist protein (IL1RAP). IL1RAP is synthesized with a signal peptide and secreted as a mature protein via the classical secretory pathway.  IL1A and IL1B are synthesised as cytoplasmic precursors (pro-IL1A and pro-IL1B) in activated cells. They have no signal sequence, precluding secretion via the classical ER-Golgi route (Rubartelli et al. 1990). Processing of pro-IL1B to the active form requires caspase-1 (Thornberry et al. 1992), which is itself activated by a molecular scaffold termed the inflammasome (Martinon et al. 2002). Processing and release of IL1B are thought to be closely linked, because mature IL1B is only seen inside inflammatory cells just prior to release (Brough et al. 2003). It has been reported that in monocytes a fraction of cellular IL1B is released by the regulated secretion of late endosomes and early lysosomes, and that this may represent a cellular compartment where caspase-1 processing of pro-IL1B takes place (Andrei et al. 1999). Shedding of microvesicles from the plasma membrane has also been proposed as a mechanism of secretion (MacKenzie et al. 2001). These proposals superceded previous models in which non-specific release due to cell lysis and passage through a plasma membrane pore were considered. However, there is evidence in the literature that supports all of these mechanisms and there is still controversy over how IL1B exits from cells (Brough &amp; Rothwell 2007). A calpain-like potease has been reported to be important for the processing of  pro-IL1A, but much less is known about how IL1A is released from cells and what specific roles it plays in biology.</Comment>
+    <BiopaxRef>lit_451670</BiopaxRef>
+    <Graphics Color="000000" CenterX="88.0" CenterY="88.5" Width="112.0" Height="53.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_23950"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_512988" TextLabel="Interleukin-3, 5 and &#10;GM-CSF signaling&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The Interleukin-3 (IL-3), IL-5 and Granulocyte-macrophage colony stimulating factor (GM-CSF) receptors form a family of heterodimeric receptors that have specific alpha chains but share a common beta subunit, often referred to as the common beta (Bc). Both subunits contain extracellular conserved motifs typical of the cytokine receptor superfamily. The cytoplasmic domains have limited similarity with other cytokine receptors and lack detectable catalytic domains such as tyrosine kinase domains.&lt;br&gt;&lt;br&gt; IL-3 is a 20-26 kDa product of CD4+ T cells that acts on the most immature marrow progenitors. IL-3 is capable of inducing the growth and differentiation of multi-potential hematopoietic stem cells, neutrophils, eosinophils, megakaryocytes, macrophages, lymphoid and erythroid cells. IL-3 has been used to support the proliferation of murine cell lines with properties of multi-potential progenitors, immature myeloid as well as T and pre-B lymphoid cells (Miyajima et al. 1992). IL-5 is a hematopoietic growth factor responsible for the maturation and differentiation of eosinophils. It was originally defined as a T-cell-derived cytokine that triggers activated B cells for terminal differentiation into antibody-secreting plasma cells. It also promotes the generation of cytotoxic T-cells from thymocytes. IL-5 induces the expression of IL-2 receptors (Kouro &amp; Takatsu 2009). GM-CSF is produced by cells (T-lymphocytes, tissue macrophages, endothelial cells, mast cells) found at sites of inflammatory responses. It stimulates the growth and development of progenitors of granulocytes and macrophages, and the production and maturation of dendritic cells. It stimulates myeloblast and monoblast differentiation, synergises with Epo in the proliferation of erythroid and megakaryocytic  progenitor cells, acts as an autocrine mediator of growth for some types of acute myeloid leukemia, is a strong chemoattractant for neutrophils and eosinophils. It enhances the activity of neutrophils and macrophages. Under steady-state conditions GM-CSF is not essential for the production of myeloid cells, but it is required for the proper development of alveolar macrophages, otherwise, pulmonary alvelolar proteinosis (PAP) develops. A growing body of evidence suggests that GM-CSF plays a key role in emergency hematopoiesis (predominantly myelopoiesis)  in response to infection, including the production of granulocytes and macrophages in the bone marrow and their maintenance, survival, and functional activation at sites of injury or insult  (Hercus et al. 2009).&lt;br&gt;&lt;br&gt; All three receptors have alpha chains that bind their specific ligands with low affinity (de Groot et al. 1998). Bc then associates with the alpha chain forming a high affinity receptor (Geijsen et al. 2001), though the in vivo receptor is likely be a higher order multimer as recently demonstrated for the GM-CSF receptor (Hansen et al. 2008).&lt;br&gt;&lt;br&gt; The receptor chains lack intrinsic kinase activity, instead they interact with and activate signaling kinases, notably Janus Kinase 2 (JAK2). These phosphorylate the common beta subunit, allowing recruitment of signaling molecules such as Shc, the phosphatidylinositol 3-kinases (PI3Ks), and the Signal Transducers and Activators of Transcription (STATs). The cytoplasmic domain of Bc has two distinct functional domains: the membrane proximal region mediates the induction of proliferation-associated genes such as c-myc, pim-1 and oncostatin M. This region binds multiple signal-transducing proteins including JAK2 (Quelle et al. 1994), STATs, c-Src and PI3 kinase (Rao and Mufson, 1995). The membrane distal domain is required for cytokine-induced growth inhibition and is necessary for the viability of hematopoietic cells (Inhorn et al. 1995). This region interacts with signal-transducing proteins such as Shc (Inhorn et al. 1995) and SHP and mediates the transcriptional activation of c-fos, c-jun, c-Raf and p70S6K (Reddy et al. 2000).&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;Figure reproduced by permission from Macmillan Publishers Ltd: Leukemia, WL Blalock et al. 13:1109-1166, copyright 1999. Note that residue numbering in this diagram refers to the mature Common beta chain with signal peptide removed.</Comment>
+    <BiopaxRef>lit_879924</BiopaxRef>
+    <BiopaxRef>lit_914193</BiopaxRef>
+    <Graphics Color="000000" CenterX="338.0" CenterY="87.0" Width="128.0" Height="70.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_23837"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_827359" rdf:id="lit_827359">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12445398</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interleukin signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vosshenrich, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Di Santo, JP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 12:R760-3</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451657" rdf:id="lit_451657">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19302047</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunological and inflammatory functions of the interleukin-1 family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dinarello, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Immunol 27:519-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451412" rdf:id="lit_451412">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19022706</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Pellino family: IRAK E3 ligases with emerging roles in innate immune signalling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moynagh, PN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Immunol 30:33-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451670" rdf:id="lit_451670">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17284521</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Caspase-1-dependent processing of pro-interleukin-1beta is cytosolic and precedes cell death</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brough, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rothwell, NJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 120:772-81</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879924" rdf:id="lit_879924">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9766809</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanism of activation of the GM-CSF, IL-3, and IL-5 family of receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guthridge, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stomski, FC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Woodcock, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bagley, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lopez, AF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stem Cells 16:301-13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_914193" rdf:id="lit_914193">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10450743</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signal transduction, cell cycle regulatory, and anti-apoptotic pathways regulated by IL-3 in hematopoietic cells: possible sites for intervention with anti-neoplastic drugs</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blalock, WL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinstein-Oppenheimer, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoyle, PE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, XY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Algate, PA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Franklin, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oberhaus, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Steelman, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCubrey, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leukemia 13:1109-66</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>Interleukin mediated signaling pathway</bp:TERM><bp:ID>PW:0000512</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

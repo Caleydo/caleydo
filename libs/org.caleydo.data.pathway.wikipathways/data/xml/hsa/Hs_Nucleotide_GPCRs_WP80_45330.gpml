@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Nucleotide GPCRs" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Graphics BoardWidth="549.7666666666667" BoardHeight="458.0"/>
+  <DataNode TextLabel="ADORA1" GraphId="b82" Type="GeneProduct" GroupRef="d9620">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ADORA1 | adenosine A1 receptor"/>
+    <Graphics CenterX="93.33333333333333" CenterY="170.0" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="134"/>
+  </DataNode>
+  <DataNode TextLabel="ADORA2A" GraphId="a58" Type="GeneProduct" GroupRef="d9620">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ADORA2A | adenosine A2a receptor"/>
+    <Graphics CenterX="93.33333333333333" CenterY="190.0" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="135"/>
+  </DataNode>
+  <DataNode TextLabel="ADORA2B" GraphId="fd5" Type="GeneProduct" GroupRef="d9620">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ADORA2B | adenosine A2b receptor"/>
+    <Graphics CenterX="93.33333333333333" CenterY="210.0" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="136"/>
+  </DataNode>
+  <DataNode TextLabel="ADORA3" GraphId="afd" Type="GeneProduct" GroupRef="d9620">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ADORA3 | adenosine A3 receptor"/>
+    <Graphics CenterX="93.33333333333333" CenterY="230.0" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="140"/>
+  </DataNode>
+  <DataNode TextLabel="P2RY1" GraphId="fa1" Type="GeneProduct" GroupRef="dc35e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="P2RY1 | purinergic receptor P2Y G-protein coup..."/>
+    <Graphics CenterX="286.6666666666667" CenterY="166.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5028"/>
+  </DataNode>
+  <DataNode TextLabel="P2RY2" GraphId="f37" Type="GeneProduct" GroupRef="dc35e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="P2RY2 | purinergic receptor P2Y G-protein coup..."/>
+    <Graphics CenterX="286.6666666666667" CenterY="186.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5029"/>
+  </DataNode>
+  <DataNode TextLabel="P2RY5" GraphId="a25" Type="GeneProduct" GroupRef="dc35e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="P2RY5 | purinergic receptor P2Y G-protein coup..."/>
+    <Graphics CenterX="286.6666666666667" CenterY="226.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10161"/>
+  </DataNode>
+  <DataNode TextLabel="P2RY6" GraphId="e37" Type="GeneProduct" GroupRef="dc35e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="P2RY6 | pyrimidinergic receptor P2Y G-protein ..."/>
+    <Graphics CenterX="286.6666666666667" CenterY="246.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5031"/>
+  </DataNode>
+  <DataNode TextLabel="LTB4R" GraphId="b6a" Type="GeneProduct" GroupRef="dc35e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LTB4R | leukotriene B4 receptor"/>
+    <Graphics CenterX="286.6666666666667" CenterY="266.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1241"/>
+  </DataNode>
+  <DataNode TextLabel="GPR23" GraphId="fd4" Type="GeneProduct" GroupRef="dc35e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GPR23 | G protein-coupled receptor 23"/>
+    <Graphics CenterX="286.6666666666667" CenterY="286.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2846"/>
+  </DataNode>
+  <DataNode TextLabel="P2RY4" GraphId="e4c" Type="GeneProduct" GroupRef="dc35e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="P2RY4 | pyrimidinergic receptor P2Y G-protein ..."/>
+    <Graphics CenterX="286.6666666666667" CenterY="206.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5030"/>
+  </DataNode>
+  <DataNode TextLabel="Adenosine" GraphId="c4d" Type="Metabolite">
+    <Graphics CenterX="93.33333333333333" CenterY="114.0" Width="87.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="58-61-7"/>
+  </DataNode>
+  <DataNode TextLabel="Adenine" GraphId="efa" Type="Metabolite">
+    <Graphics CenterX="286.6666666666667" CenterY="110.0" Width="68.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="73-24-5"/>
+  </DataNode>
+  <DataNode TextLabel="Gi/Go Pathway" GraphId="b62e8" Type="Pathway">
+    <Graphics CenterX="138.5" CenterY="418.0" Width="97.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP35"/>
+  </DataNode>
+  <DataNode TextLabel="Gs Pathway" GraphId="d72b3" Type="Pathway">
+    <Graphics CenterX="287.5" CenterY="418.0" Width="97.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP35"/>
+  </DataNode>
+  <DataNode TextLabel="Gq/G11 Pathway" GraphId="de1d6" Type="Pathway">
+    <Graphics CenterX="449.5" CenterY="418.0" Width="97.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP35"/>
+  </DataNode>
+  <Line GraphId="id8876d41e">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="59.999999999999986" Y="230.0" GraphRef="afd" RelX="-1.0" RelY="0.0"/>
+      <Point X="90.0" Y="418.0" GraphRef="b62e8" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id67b240e9">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="0000ff">
+      <Point X="126.66666666666664" Y="190.0" GraphRef="a58" RelX="1.0" RelY="0.0"/>
+      <Point X="287.5" Y="408.0" GraphRef="d72b3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id916bcd07">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="256.6666666666667" Y="186.66666666666666" GraphRef="f37" RelX="-1.0" RelY="0.0"/>
+      <Point X="162.75" Y="408.0" GraphRef="b62e8" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idf7f12c86">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="316.6666666666667" Y="166.66666666666666" GraphRef="fa1" RelX="1.0" RelY="0.0"/>
+      <Point X="449.5" Y="408.0" GraphRef="de1d6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idca6442a3">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="316.6666666666667" Y="186.66666666666666" GraphRef="f37" RelX="1.0" RelY="0.0"/>
+      <Point X="449.5" Y="408.0" GraphRef="de1d6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id5dfcf38b">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="316.6666666666667" Y="206.66666666666666" GraphRef="e4c" RelX="1.0" RelY="0.0"/>
+      <Point X="449.5" Y="408.0" GraphRef="de1d6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id2e31fc5">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="316.6666666666667" Y="246.66666666666663" GraphRef="e37" RelX="1.0" RelY="0.0"/>
+      <Point X="449.5" Y="408.0" GraphRef="de1d6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id79e85aae">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="0000ff">
+      <Point X="126.66666666666664" Y="230.0" GraphRef="afd" RelX="1.0" RelY="0.0"/>
+      <Point X="287.5" Y="408.0" GraphRef="d72b3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4ff7f6fc">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="59.999999999999986" Y="170.0" GraphRef="b82" RelX="-1.0" RelY="0.0"/>
+      <Point X="90.0" Y="418.0" GraphRef="b62e8" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9a6e7319">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="286.6666666666667" Y="119.5" GraphRef="efa" RelX="0.0" RelY="1.0"/>
+      <Point X="286.6666666666667" Y="148.66666666666669" GraphRef="af03b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ide94f47c5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="93.33333333333334" Y="123.5" GraphRef="c4d" RelX="0.0" RelY="1.0"/>
+      <Point X="93.33333333333331" Y="152.0" GraphRef="cb700" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Group GroupId="d9620" GraphId="cb700"/>
+  <Group GroupId="dc35e" GraphId="af03b"/>
+  <InfoBox CenterX="8.0" CenterY="58.43333333333333"/>
+  <Legend CenterX="519.7666666666667" CenterY="158.33333333333334"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>G protein mediated signaling pathway</bp:TERM><bp:ID>PW:0000125</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Signaling by Rho GTPases" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Van Aelst, L" Maintainer="Gopinathrao, G">
+  <Comment Source="WikiPathways-description">The Rho family of small guanine nucleotide binding proteins is one of five generally recognized branches of the Ras superfamily. Like most Ras superfamily members, typical Rho proteins function as binary switches controlling a variety of biological processes. They perform this function by cycling between active GTP-bound and inactive GDP-bound conformations. Mammalian Rho GTPases include RhoA, RhoB and RhoC (Rho proteins), Rac1 3 (Rac proteins), Cdc42, TC10, TCL, Wrch1, Chp/Wrch2, RhoD and RhoG, to name some. The family also includes RhoH and Rnd1-3, which lack GTPase activity and are predicted to exist in a constitutively active state.&lt;p&gt;Members of the Rho family have been identified in all eukaryotes. Including the atypical RHOBTB1-3 and RHOT1-2 proteins, 24 Rho family members have been identified in mammals (Jaffe and Hall, 2005; Bernards, 2005; Ridley, 2006). Among Rho GTPases, RhoA, Rac1 and Cdc42 have been most extensively studied. These proteins are best known for their ability to induce dynamic rearrangements of the plasma membrane-associated actin cytoskeleton (Aspenstrom et al, 2004; Murphy et al, 1999; Govek et al, 2005). Beyond this function, Rho GTPases also regulate actomyosin contractility and microtubule dynamics. Rho mediated effects on transcription and membrane trafficking are believed to be secondary to these functions. At the more macroscopic level, Rho GTPases have been implicated in many important cell biological processes, including cell growth control, cytokinesis, cell motility, cell cell and cell extracellular matrix adhesion, cell transformation and invasion, and development (Govek et al., 2005). The illustration below lists Rho GTPase effectors implicated in actin and microtubule dynamics (courtesy: Govek et al., 2005, Genes and Development, CSHL Press). Detailed annotations of various biological processes regulated by Rho GTPases will be available in future releases.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_195242</BiopaxRef>
+  <BiopaxRef>lit_195248</BiopaxRef>
+  <DataNode GraphId="n44_REACTOME_194915" TextLabel="RhoGTPase:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="238.0" CenterY="48.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_10155"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="306.0" CenterY="93.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_29420" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="407.5" CenterY="91.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_194890" TextLabel="RhoGTPase:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="477.0" CenterY="48.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_10731"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_194849" TextLabel="GEF&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="348.5" CenterY="122.0" Width="35.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_10196"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_194872" TextLabel="effector proteins&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="523.5" CenterY="98.5" Width="97.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_10469"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_194875" TextLabel="RhoGTPase:GTP:&#10;Effectors complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="645.5" CenterY="46.5" Width="105.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_10149"/>
+  </DataNode>
+  <DataNode GraphId="n55_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="295.0" CenterY="229.5" Width="102.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n56_REACTOME_194904" TextLabel="GAP &#10;proteins&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="425.0" CenterY="226.0" Width="60.0" Height="34.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_10748"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_194862" TextLabel="GDI proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="234.0" CenterY="169.5" Width="72.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_10263"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_194912" TextLabel="Inactivated &#10;RhoGTPase:GDP:GDI &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="100.5" CenterY="104.5" Width="123.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_10882"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_194900" TextLabel="RhoGTPase:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="127.0" CenterY="232.5" Width="98.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_10889"/>
+  </DataNode>
+  <Line GraphId="e_43_REACTOME_194913">
+    <Comment Source="WikiPathways-description">Guanine nucleotide exchange factors (GEFs) activate GTPases by enhancing the exchange of bound GDP for GTP.  Much evidence points to GEFs being critical mediators of Rho GTPase activation (Schmidt and Hall, 2002). Many GEFs are known to be highly specific for a particular GTPase, e.g. Fgd1/Cdc42 and p115RhoGEF/Rho (Hart et al., 1996, Zheng et al., 1996). Others have a broader spectrum and activate several GTPases, e.g.  Vav1 for Rac, Rho, and Cdc42 (Hart et al, 1994).</Comment>
+    <BiopaxRef>lit_195238</BiopaxRef>
+    <BiopaxRef>lit_195224</BiopaxRef>
+    <BiopaxRef>lit_195242</BiopaxRef>
+    <BiopaxRef>lit_196518</BiopaxRef>
+    <BiopaxRef>lit_196537</BiopaxRef>
+    <BiopaxRef>lit_196514</BiopaxRef>
+    <BiopaxRef>lit_196533</BiopaxRef>
+    <BiopaxRef>lit_196532</BiopaxRef>
+    <BiopaxRef>lit_196525</BiopaxRef>
+    <BiopaxRef>lit_196528</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="318.0" Y="48.0" GraphId="e_43_0"/>
+      <Point X="349.0" Y="47.0" GraphId="e_43_1"/>
+      <Point X="380.0" Y="48.0" GraphId="e_43_2"/>
+      <Anchor Position="0.0" GraphId="e_43_a_i"/>
+      <Anchor Position="0.5" GraphId="e_43_a_p"/>
+      <Anchor Position="1.0" GraphId="e_43_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="290.0" Y="48.0" GraphId="e_43_i0_0" GraphRef="n44_REACTOME_194915" RelX="1.0612244897959184" RelY="0.0"/>
+      <Point X="318.0" Y="48.0" GraphId="e_43_i0_1" GraphRef="e_43_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="310.0" Y="75.0" GraphId="e_43_i1_0" GraphRef="n45_REACTOME_29438" RelX="0.21052631578947367" RelY="-1.1612903225806452"/>
+      <Point X="318.0" Y="48.0" GraphId="e_43_i1_1" GraphRef="e_43_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="397.0" Y="73.0" GraphId="e_43_o0_0" ArrowHead="Arrow" GraphRef="n46_REACTOME_29420" RelX="-0.5128205128205128" RelY="-1.1612903225806452"/>
+      <Point X="380.0" Y="48.0" GraphId="e_43_o0_1" GraphRef="e_43_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="425.0" Y="48.0" GraphId="e_43_o1_0" ArrowHead="Arrow" GraphRef="n47_REACTOME_194890" RelX="-1.0612244897959184" RelY="0.0"/>
+      <Point X="380.0" Y="48.0" GraphId="e_43_o1_1" GraphRef="e_43_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="348.0" Y="108.0" GraphId="e_43_c__0_0" GraphRef="n48_REACTOME_194849" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="349.0" Y="47.0" GraphId="e_43_c__0_1" GraphRef="e_43_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_REACTOME_194894">
+    <Comment Source="WikiPathways-description">To transduce signals, the activated, GTP-bound Rho GTPases interact with specific effector molecules. It has been observed that GEFs contribute to the signaling specificity of their downstream target GTPase via association with scaffolding molecules that link them and the GTPase to specific GTPase effectors (Govek et al.,  2005). Some of the effector molecules implicated in actin and microtubule dynamics include diaphanous-related formins, Toca 1, WIP, WASP, Pak, p35/Cdk5, Wave, Nap125, MLCK, MLC, IRSp53. Detailed annotations of the downstream events stimulated by activated, GTP bound Rho GTPases will be available in future releases.</Comment>
+    <BiopaxRef>lit_195224</BiopaxRef>
+    <BiopaxRef>lit_195235</BiopaxRef>
+    <BiopaxRef>lit_195246</BiopaxRef>
+    <BiopaxRef>lit_196693</BiopaxRef>
+    <BiopaxRef>lit_196694</BiopaxRef>
+    <BiopaxRef>lit_196701</BiopaxRef>
+    <BiopaxRef>lit_196695</BiopaxRef>
+    <BiopaxRef>lit_196688</BiopaxRef>
+    <BiopaxRef>lit_196712</BiopaxRef>
+    <BiopaxRef>lit_196703</BiopaxRef>
+    <BiopaxRef>lit_196715</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="545.0" Y="46.0" GraphId="e_50_0"/>
+      <Point X="568.0" Y="46.0" GraphId="e_50_1"/>
+      <Point X="590.0" Y="46.0" GraphId="e_50_2" GraphRef="n52_REACTOME_194875" RelX="-1.0476190476190477" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_50_a_i"/>
+      <Anchor Position="0.5111111111111111" GraphId="e_50_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="529.0" Y="46.0" GraphId="e_50_i0_0" GraphRef="n47_REACTOME_194890" RelX="1.0612244897959184" RelY="-0.1111111111111111"/>
+      <Point X="545.0" Y="46.0" GraphId="e_50_i0_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="527.0" Y="84.0" GraphId="e_50_i1_0" GraphRef="n51_REACTOME_194872" RelX="0.08247422680412371" RelY="-1.2173913043478262"/>
+      <Point X="545.0" Y="46.0" GraphId="e_50_i1_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_REACTOME_194922">
+    <Comment Source="WikiPathways-description">The human genome includes approximately 70 genes that are predicted to encode Rho-specific GTPase Activating Proteins (RhoGAPs). As in the case of GEFs, some RhoGAPs are believed to be highly specific, whereas others are more promiscuous with respect to their target GTPases. Increasing evidence suggests that GAPs are also regulated by external cues in addition to being signal terminators leading to Rho GTPase inactivation. These proteins play important role in many Rho mediated signaling pathways.&lt;p&gt;Some known GAPs include p190 A, cdGAP, ARAP3, MgcRacGAP, Chimaerin, Nadrin, TCGAP, DLC 1, 2, ArhGAP6, Myosin IXA. These and other GAPs have been implicated in many processes, such as exocytosis, endocytosis, cytokinesis, cell differentiation, migration, neuronal morphogenesis, angiogenesis and tumor suppression. Detailed annotations of the biological role of GAPs in Rho mediated signaling will be available in future releases.</Comment>
+    <BiopaxRef>lit_195241</BiopaxRef>
+    <BiopaxRef>lit_196634</BiopaxRef>
+    <BiopaxRef>lit_196597</BiopaxRef>
+    <BiopaxRef>lit_196684</BiopaxRef>
+    <BiopaxRef>lit_196649</BiopaxRef>
+    <BiopaxRef>lit_196680</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="464.0" Y="69.0" GraphId="e_54_0" GraphRef="n47_REACTOME_194890" RelX="-0.2653061224489796" RelY="1.1666666666666667"/>
+      <Point X="389.0" Y="176.0" GraphId="e_54_1"/>
+      <Point X="326.0" Y="177.0" GraphId="e_54_2"/>
+      <Anchor Position="0.6746725770965541" GraphId="e_54_a_p"/>
+      <Anchor Position="1.0" GraphId="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="250.0" Y="70.0" GraphId="e_54_o0_0" ArrowHead="Arrow" GraphRef="n44_REACTOME_194915" RelX="0.24489795918367346" RelY="1.1578947368421053"/>
+      <Point X="326.0" Y="177.0" GraphId="e_54_o0_1" GraphRef="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="304.0" Y="211.0" GraphId="e_54_o1_0" ArrowHead="Arrow" GraphRef="n55_REACTOME_29372" RelX="0.17647058823529413" RelY="-1.1612903225806452"/>
+      <Point X="326.0" Y="177.0" GraphId="e_54_o1_1" GraphRef="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="412.0" Y="206.0" GraphId="e_54_c__0_0" GraphRef="n56_REACTOME_194904" RelX="-0.43333333333333335" RelY="-1.1764705882352942"/>
+      <Point X="389.0" Y="176.0" GraphId="e_54_c__0_1" GraphRef="e_54_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_REACTOME_194854">
+    <Comment Source="WikiPathways-description">GDP dissociation inhibitors or GDIs confer an additional but important layer of Rho GTPase regulation along with GEFs and GAPs. GDIs mainly inhibit the dissociation of bound guanine nucleotide (usually GDP) from their partner GTPases. So far, three human GDIs with proven biological functions have been found: RhoGDI/GDIalpha/GDI1, hematopoietic cell selective Ly/D4GDI/GDIbeta/GDI2, and Rho GDIgamma/GDI3 (DerMardirossian and Bokoch, 2005). Three specific biochemical functions of GDIs have been established: inhibiting the dissociation of GDP from Rho proteins, maintaining the GTPases in an inactive form, and preventing GTPase activation by GEFs (Olofsson, 1999). Detailed annotations of GDIs will be available in future releases.</Comment>
+    <BiopaxRef>lit_195240</BiopaxRef>
+    <BiopaxRef>lit_196679</BiopaxRef>
+    <BiopaxRef>lit_196609</BiopaxRef>
+    <BiopaxRef>lit_196604</BiopaxRef>
+    <BiopaxRef>lit_196645</BiopaxRef>
+    <BiopaxRef>lit_196655</BiopaxRef>
+    <BiopaxRef>lit_196633</BiopaxRef>
+    <BiopaxRef>lit_196636</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="220.0" Y="103.0" GraphId="e_59_0"/>
+      <Point X="188.0" Y="103.0" GraphId="e_59_1"/>
+      <Point X="165.0" Y="103.0" GraphId="e_59_2" GraphRef="n61_REACTOME_194912" RelX="1.056910569105691" RelY="-0.03773584905660377" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_59_a_i"/>
+      <Anchor Position="0.5818181818181818" GraphId="e_59_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="231.0" Y="70.0" GraphId="e_59_i0_0" GraphRef="n44_REACTOME_194915" RelX="-0.14285714285714285" RelY="1.1578947368421053"/>
+      <Point X="220.0" Y="103.0" GraphId="e_59_i0_1" GraphRef="e_59_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="230.0" Y="150.0" GraphId="e_59_i1_0" GraphRef="n60_REACTOME_194862" RelX="-0.1111111111111111" RelY="-1.1515151515151516"/>
+      <Point X="220.0" Y="103.0" GraphId="e_59_i1_1" GraphRef="e_59_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_REACTOME_195146">
+    <Comment Source="WikiPathways-description">GDIs sequester the inactive GTPases, preventing the dissociation of GDP and interactions with regulatory and effector molecules. They maintain Rho GTPases as soluble cytosolic proteins by forming high affinity complexes. In these complexes, the geranylgeranyl membrane targeting moiety present at the C terminus of the Rho GTPases is shielded from the solvent by its insertion into the hydrophobic pocket formed by the immunoglobulin like beta sandwich of the GDI (DerMardirossian and Bokoch, 2005).&lt;p&gt;Rho proteins, when released from the sequestering cytosolic GDIs, insert into the lipid bilayer of the plasma membrane with their isoprenylated C termini. The membrane bound GEFs activate these free RhoGTPases and thereby trigger the downstream signaling events via respective effector proteins on the membrane (Robbe et al., 2003). Detailed annotation of the activities of farnesyltransferase / geranylgeranyltransferases on prenylation of Rho GTPases thereby enabling their subsequent localization to plasma membrane will be available in future releases.</Comment>
+    <BiopaxRef>lit_196655</BiopaxRef>
+    <BiopaxRef>lit_195240</BiopaxRef>
+    <BiopaxRef>lit_196645</BiopaxRef>
+    <BiopaxRef>lit_196636</BiopaxRef>
+    <BiopaxRef>lit_196660</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="109.0" Y="134.0" GraphId="e_62_0" GraphRef="n61_REACTOME_194912" RelX="0.14634146341463414" RelY="1.1320754716981132"/>
+      <Point X="118.0" Y="154.0" GraphId="e_62_1"/>
+      <Point X="125.0" Y="180.0" GraphId="e_62_2"/>
+      <Anchor Position="0.4488910798512604" GraphId="e_62_a_p"/>
+      <Anchor Position="1.0" GraphId="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="126.0" Y="210.0" GraphId="e_62_o0_0" ArrowHead="Arrow" GraphRef="n63_REACTOME_194900" RelX="-0.02040816326530612" RelY="-1.1282051282051282"/>
+      <Point X="125.0" Y="180.0" GraphId="e_62_o0_1" GraphRef="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="195.0" Y="172.0" GraphId="e_62_o1_0" ArrowHead="Arrow" GraphRef="n60_REACTOME_194862" RelX="-1.0833333333333333" RelY="0.18181818181818182"/>
+      <Point X="125.0" Y="180.0" GraphId="e_62_o1_1" GraphRef="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_42" GroupRef="group_comp_42" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="637.5" CenterY="250.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_42" GroupRef="group_comp_42">
+    <Graphics Color="000000" CenterX="347.5" CenterY="157.5" Width="659.0" Height="231.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195242" rdf:id="lit_195242">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16212495</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rho GTPases: biochemistry and biology</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jaffe, AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hall, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Cell Dev Biol 21:247-69</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195248" rdf:id="lit_195248">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15630019</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of the Rho GTPases in neuronal development</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Govek, EE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newey, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Aelst, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 19:1-49</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195238" rdf:id="lit_195238">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12101119</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guanine nucleotide exchange factors for Rho GTPases: turning on the switch</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmidt, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hall, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 16:1587-609</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195224" rdf:id="lit_195224">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9308960</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rho GTPases and signaling networks</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Aelst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Souza-Schorey, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 11:2295-322</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196518" rdf:id="lit_196518">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8969170</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The faciogenital dysplasia gene product FGD1 functions as a Cdc42Hs-specific guanine-nucleotide exchange factor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Santos, MF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tigyi, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pasteris, NG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gorski, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:33169-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196537" rdf:id="lit_196537">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7954831</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isolation and characterization of the faciogenital dysplasia (Aarskog-Scott syndrome) gene: a putative Rho/Rac guanine nucleotide exchange factor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pasteris, NG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cadle, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Logie, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Porteous, ME</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schwartz, CE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stevenson, RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glover, TW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilroy, RS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gorski, JL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 79:669-78</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196514" rdf:id="lit_196514">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7478592</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The proline-rich region of Vav binds to Grb2 and Grb3-3</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ramos-Morales, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Romero, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schweighoffer, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bismuth, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Camonis, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tortolero, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 11:1665-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196533" rdf:id="lit_196533">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9857026</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and characterization of GEF-H1, a microtubule-associated guanine nucleotide exchange factor for Rac and Rho GTPases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ren, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Busch, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:34954-60</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196532" rdf:id="lit_196532">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10559246</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification and characterization of hPEM-2, a guanine nucleotide exchange factor specific for Cdc42</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reid, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bathoorn, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ahmadian, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Collard, JG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 274:33587-93</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196525" rdf:id="lit_196525">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8810315</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a novel guanine nucleotide exchange factor for the Rho GTPase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharma, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">elMasry, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qiu, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCabe, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Polakis, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bollag, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:25452-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196528" rdf:id="lit_196528">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8276860</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cellular transformation and guanine nucleotide exchange activity are catalyzed by a common domain on the dbl oncogene product</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eva, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zangrilli, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aaronson, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evans, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cerione, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:62-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195235" rdf:id="lit_195235">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11738596</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dbl family guanine nucleotide exchange factors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Biochem Sci 26:724-32</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195246" rdf:id="lit_195246">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12423633</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of the interactions between the small GTPase RhoA and its guanine nucleotide exchange factors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tan, YC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, WN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, ZX</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anal Biochem 310:156-62</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196693" rdf:id="lit_196693">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11157984</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cdc42Hs facilitates cytoskeletal reorganization and neurite outgrowth by localizing the 58-kD insulin receptor substrate to filamentous actin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Govind, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kozma, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Monfries, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lim, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ahmed, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 152:579-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196694" rdf:id="lit_196694">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12504591</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The insulin receptor substrate IRSp53 links postsynaptic shank1 to the small G-protein cdc42</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soltau, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Richter, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kreienkamp, HJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Neurosci 21:575-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196701" rdf:id="lit_196701">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15260990</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toca-1 mediates Cdc42-dependent actin nucleation by activating the N-WASP-WIP complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ho, HY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rohatgi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lebensohn, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Le, Ma</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gygi, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kirschner, MW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 118:203-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196695" rdf:id="lit_196695">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10360578</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of Cdc42 in complex with the GTPase-binding domain of the 'Wiskott-Aldrich syndrome' protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abdul-Manan, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aghazadeh, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Majumdar, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ouerfelli, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Siminovitch, KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosen, MK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 399:379-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196688" rdf:id="lit_196688">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15821030</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The nucleotide switch in Cdc42 modulates coupling between the GTPase-binding and allosteric equilibria of Wiskott-Aldrich syndrome protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leung, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosen, MK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 102:5685-90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196712" rdf:id="lit_196712">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15611088</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin engagement differentially modulates epithelial cell motility by RhoA/ROCK and PAK1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kramer, RH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:10624-35</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196703" rdf:id="lit_196703">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12429845</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Motility determinants in WASP family proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yarar, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Alessio, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jeng, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Welch, MD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 13:4045-59</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196715" rdf:id="lit_196715">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11130076</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IRSp53 is an essential intermediate between Rac and WAVE in the regulation of membrane ruffling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miki, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaguchi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suetsugu, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takenawa, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 408:732-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195241" rdf:id="lit_195241">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17222083</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Current knowledge of the large RhoGAP family of proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tcherkezian, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lamarche-Vane, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biol Cell 99:67-86</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196634" rdf:id="lit_196634">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8288572</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of rhoGAP. A GTPase-activating protein for rho-related small GTPases.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lancaster, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taylor-Harris, PM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Self, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brill, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Erp, HE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hall, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:1137-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196597" rdf:id="lit_196597">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2825022</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1987</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A new fused transcript in Philadelphia chromosome positive acute lymphocytic leukaemia</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fainstein, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marcelle, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosner, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Canaani, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gale, RP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreazen, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith, SD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Croce, CM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 330:386-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196684" rdf:id="lit_196684">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11804589</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of ARAP3, a novel PI3K effector regulating both Arf and Rho GTPases, by selective capture on phosphoinositide affinity matrices</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krugmann, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anderson, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ridley, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Risso, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McGregor, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coadwell, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davidson, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eguinoa, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ellson, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lipp, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Manifava, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ktistakis, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Painter, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thuring, JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lim, ZY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holmes, AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dove, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michell, RH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grewal, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nazarian, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Erdjument-Bromage, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tempst, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stephens, LR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hawkins, PT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 9:95-108</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196649" rdf:id="lit_196649">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9605766</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning, characterization, and chromosomal localization of a gene frequently deleted in human liver cancer (DLC-1) homologous to rat RhoGAP</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yuan, BZ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miller, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keck, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zimonjic, DB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thorgeirsson, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Popescu, NC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res 58:2196-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196680" rdf:id="lit_196680">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11431473</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rich, a rho GTPase-activating protein domain-containing protein involved in signaling by Cdc42 and Rac1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Richnau, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aspenstrom, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:35060-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_195240" rdf:id="lit_195240">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15921909</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GDIs: central regulatory molecules in Rho GTPase activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DerMardirossian, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bokoch, GM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cell Biol 15:356-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196679" rdf:id="lit_196679">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15292224</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ExoS Rho GTPase-activating protein activity stimulates reorganization of the actin cytoskeleton through Rho GTPase guanine nucleotide disassociation inhibitor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barbieri, JT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:42936-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196609" rdf:id="lit_196609">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7543319</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expression patterns of two human genes coding for different rab GDP-dissociation inhibitors (GDIs), extremely conserved proteins involved in cellular transport</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bachner, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sedlacek, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korn, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hameister, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poustka, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 4:701-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196604" rdf:id="lit_196604">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1439791</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A GDP dissociation inhibitor that serves as a GTPase inhibitor for the Ras-like protein CDC42Hs</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maru, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leonard, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Witte, ON</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evans, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cerione, RA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 258:812-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196645" rdf:id="lit_196645">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10676816</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of the Rho family GTP-binding protein Cdc42 in complex with the multifunctional regulator RhoGDI</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoffman, GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nassar, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cerione, RA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 100:345-56</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196655" rdf:id="lit_196655">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10655614</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Rac-RhoGDI complex and the structural basis for the regulation of Rho proteins by RhoGDI</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scheffzek, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stephan, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jensen, ON</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Illenberger, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gierschik, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Biol 7:122-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196633" rdf:id="lit_196633">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9113980</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RhoGDIgamma: a GDP-dissociation inhibitor for Rho proteins with preferential expression in brain and pancreas</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adra, CN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Manor, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ko, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horiuchi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Aelst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cerione, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lim, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 94:4279-84</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196636" rdf:id="lit_196636">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9194563</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">C-terminal binding domain of Rho GDP-dissociation inhibitor directs N-terminal inhibitory peptide to GTPases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gosser, YQ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nomanbhoy, TK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aghazadeh, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Manor, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Combs, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cerione, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosen, MK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 387:814-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_196660" rdf:id="lit_196660">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12471028</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dissociation of GDP dissociation inhibitor and membrane translocation are required for efficient activation of Rac by the Dbl homology-pleckstrin homology region of Tiam</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robbe, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Otto-Bruc, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chardin, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antonny, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:4756-62</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>signaling pathway</bp:TERM><bp:ID>PW:0000003</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

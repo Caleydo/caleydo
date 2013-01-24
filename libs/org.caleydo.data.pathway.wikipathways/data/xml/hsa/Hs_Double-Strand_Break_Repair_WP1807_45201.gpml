@@ -1,0 +1,1707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Double-Strand Break Repair" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Lees-Miller, S, Thompson, L" Maintainer="Matthews, L">
+  <Comment Source="WikiPathways-description">Numerous types of DNA damage can occur within a cell due to the endogenous production of oxygen free radicals, normal alkylation reactions, or exposure to exogenous radiations and chemicals. Double-strand breaks (DSBs), one of the most dangerous type of DNA damage along with interstrand crosslinks, are caused by ionizing radiation or certain chemicals such as bleomycin, and occur normally during the processes of DNA replication, meiotic exchange, and V(D)J recombination. &lt;p&gt;Two distinct mechanisms for DSB repair are the error-free homologous recombination repair (HRR) pathway and the error-prone nonhomologous end-joining (NHEJ) pathway. The choice of pathway may be determined by whether the DNA region has already replicated and the precise nature of the break. NHEJ functions at all stages of the cell cycle, but plays the predominant role in both the G1 phase and in S-phase regions of DNA that have not yet replicated (Rothkamm et al. 2003). HRR functions primarily in repairing both one-sided DSBs that arise at DNA replication forks and two-sided DSBs arising in S or G2-phase chromatid regions that have replicated.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n2_REACTOME_83538" TextLabel="dimeric ATM kinase&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2004.0" CenterY="470.0" Width="118.0" Height="24.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2479"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2047.0" CenterY="418.5" Width="60.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1857.0" CenterY="378.5" Width="48.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_83894" TextLabel="dimeric phospho-ATM &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1503.5" CenterY="417.5" Width="131.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5755"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_75145" TextLabel="phospho-ATM (Ser &#10;1981)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1746.5" CenterY="485.0" Width="119.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13315"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_56151" TextLabel="Histone H2A.x&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1877.0" CenterY="680.0" Width="102.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16104"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1865.0" CenterY="554.0" Width="52.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1651.0" CenterY="616.0" Width="60.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_75170" TextLabel="gamma-H2AX&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1631.0" CenterY="538.0" Width="102.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16104"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1105.0" CenterY="417.0" Width="58.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_50949" TextLabel="BRCA1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1214.0" CenterY="426.0" Width="68.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P38398"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1142.0" CenterY="617.0" Width="60.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_75234" TextLabel="phospho-BRCA1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1264.5" CenterY="553.0" Width="115.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P38398"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_75231" TextLabel="MDC1/NFBD1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1050.0" CenterY="472.0" Width="102.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14676"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_75163" TextLabel="NBS1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="992.0" CenterY="327.0" Width="62.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60934"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1171.0" CenterY="296.0" Width="60.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n32_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1022.0" CenterY="205.0" Width="50.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_75237" TextLabel="phospho-NBS1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1133.5" CenterY="200.0" Width="107.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60934"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="898.0" CenterY="504.0" Width="72.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="807.0" CenterY="347.0" Width="72.0" Height="34.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_75236" TextLabel="phospho-&#10;MDC1/NFBD1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="824.0" CenterY="435.5" Width="102.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14676"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_110399" TextLabel="gamma H2AX-&#10;coated DNA &#10;double-strand &#10;break ends&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1055.0" CenterY="866.5" Width="102.0" Height="71.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4416"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_110400" TextLabel="gamma H2AX:&#10;MDC1/NFBD1 &#10;complex at site of &#10;DNA double-strand &#10;break&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1218.5" CenterY="756.0" Width="131.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4269"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_83566" TextLabel="MDC1/NFBD1:&#10;gamma-H2AX &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1887.0" CenterY="315.0" Width="102.0" Height="58.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5218"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_110403" TextLabel="ATM associated with &#10;DNA double-strand &#10;break ends&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1823.5" CenterY="213.0" Width="131.0" Height="56.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3544"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_61175" TextLabel="53BP1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1366.0" CenterY="723.0" Width="72.0" Height="16.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q12888"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_110401" TextLabel="53BP1:H2AX complex &#10;at site of double-&#10;strand break&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1512.5" CenterY="757.5" Width="131.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3104"/>
+  </DataNode>
+  <DataNode GraphId="n72_REACTOME_75171" TextLabel="gamma-H2AX:NBS1 &#10;complex at the site &#10;of double-strand &#10;break&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="834.0" CenterY="868.0" Width="124.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3255"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_59544" TextLabel="Double-strand &#10;break repair &#10;protein MRE11A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1267.5" CenterY="936.0" Width="115.0" Height="54.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P49959"/>
+  </DataNode>
+  <DataNode GraphId="n79_REACTOME_75160" TextLabel="RAD50&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1187.0" CenterY="997.0" Width="102.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q92878"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_75161" TextLabel="RAD50:MRE11 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1403.0" CenterY="995.5" Width="102.0" Height="45.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5426"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_75164" TextLabel="MRE11:RAD50:&#10;NBS1 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1696.5" CenterY="995.5" Width="107.0" Height="43.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4350"/>
+  </DataNode>
+  <DataNode GraphId="n84_REACTOME_75166" TextLabel="DNA double-strand &#10;break ends: MRN &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="698.5" CenterY="1066.0" Width="131.0" Height="56.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3443"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_110402" TextLabel="BRCA1:53BP1 &#10;complex at site of &#10;DNA double-strand &#10;break&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="868.5" CenterY="657.5" Width="129.0" Height="73.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5695"/>
+  </DataNode>
+  <DataNode GraphId="n96_REACTOME_75165" TextLabel="DNA double-strand &#10;break ends&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1151.5" CenterY="1146.5" Width="131.0" Height="53.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5340"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_75156" TextLabel="3' overhanging DNA  &#10;at resected DSB &#10;ends&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1359.5" CenterY="1146.0" Width="119.0" Height="68.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5086"/>
+  </DataNode>
+  <DataNode GraphId="n99_REACTOME_75155" TextLabel="3' ends of DNA &#10;double strand &#10;break&#10;" Type="Unknown">
+    <Comment Source="WikiPathways-description">The NHEJ pathway is initiated in response to formation of  a DNA double-strand break  (DSB) by a DNA-damaging agent such as ionizing radiation. Step 2: The Ku70/80 heterodimer to the ends of the DSB. Step 3: The catalytic subunit of the DNA-dependent protein kinase (DNA-PKcs) is recruited to form  the DNA-PK holoenzyme. Step 4. Two molecules of DNA-PK may come together in a synaptic complex. Step 5. XRCC4/DNA ligase IV is recruited. Step 6. Other factors may be required for processing of the DNA ends prior to re joining of the DNA ends. Step 7: Protein factors must be removed from the DNA prior to rejoining. Step 8. DNA ends are ligated and the DNA is repaired. Mg-ATP and the protein kinase activity of DNA-PKcs are required for NHEJ but the precise step at which it is required is not known with certainty. DNA-PKcs, Ku70, Ku80 and XRCC4 become phosphorylated in vitro when incubated with DNA-PK. DNA-PKcs phosphorylation sites are important for NHEJ.  Inositol hexaphosphate (IP6) stimulates end joining in vitro and binds to Ku. It is not known where in the NHEJ pathway that it acts. &lt;BR&gt; S.P. Jackson (2002) Carcinogenesis, 23, 687; S.P. Lees-Miller (2003) DNA Repair, Invited review, submitted Sept 2003</Comment>
+    <Graphics Color="000000" CenterX="1500.5" CenterY="1114.0" Width="107.0" Height="68.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5575"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_68462" TextLabel="RPA heterotrimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1522.5" CenterY="1198.0" Width="119.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3427"/>
+  </DataNode>
+  <DataNode GraphId="n101_REACTOME_75993" TextLabel="RPA-coated 3'-&#10;ends of DNA &#10;double strand &#10;break&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1768.0" CenterY="1156.5" Width="102.0" Height="83.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3704"/>
+  </DataNode>
+  <DataNode GraphId="n104_REACTOME_62637" TextLabel="RAD51&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2053.0" CenterY="1249.0" Width="64.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q06609"/>
+  </DataNode>
+  <DataNode GraphId="n105_REACTOME_50951" TextLabel="BRCA2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2160.0" CenterY="1210.0" Width="82.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P51587"/>
+  </DataNode>
+  <DataNode GraphId="n106_REACTOME_83621" TextLabel="RAD51:BRCA2 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2310.0" CenterY="1248.5" Width="102.0" Height="41.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4224"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_62639" TextLabel="RAD52&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1650.0" CenterY="1237.5" Width="118.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P43351"/>
+  </DataNode>
+  <DataNode GraphId="n109_REACTOME_83900" TextLabel="heptameric RAD52 &#10;complex &#10;associated with &#10;ssDNA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1882.0" CenterY="1237.0" Width="112.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3435"/>
+  </DataNode>
+  <DataNode GraphId="n111_REACTOME_83620" TextLabel="RAD52:RPA &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1352.0" CenterY="1237.5" Width="102.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2546"/>
+  </DataNode>
+  <DataNode GraphId="n113_REACTOME_109778" TextLabel="RAD52:DNA &#10;double-strand &#10;break&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="996.0" CenterY="1279.0" Width="102.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3721"/>
+  </DataNode>
+  <DataNode GraphId="n119_REACTOME_83619" TextLabel="RAD51:RAD52:DNA &#10;double strand break &#10;end  complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="833.5" CenterY="1355.5" Width="127.0" Height="83.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5752"/>
+  </DataNode>
+  <DataNode GraphId="n121_REACTOME_83618" TextLabel="RAD51:RPA &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2239.0" CenterY="1155.5" Width="102.0" Height="41.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3100"/>
+  </DataNode>
+  <DataNode GraphId="n123_REACTOME_109777" TextLabel="RAD51:resected &#10;ends of DNA &#10;double-strand &#10;break&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1143.5" CenterY="1495.5" Width="115.0" Height="83.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2547"/>
+  </DataNode>
+  <DataNode GraphId="n133_REACTOME_83891" TextLabel="Heteroduplex DNA &#10;containing D-loop &#10;structure&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1294.5" CenterY="1497.0" Width="127.0" Height="68.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5108"/>
+  </DataNode>
+  <DataNode GraphId="n134_REACTOME_83893" TextLabel="Heteroduplex DNA &#10;with D-loop structure &#10;with extended pairing &#10;between invading &#10;strand and &#10;complementary &#10;heteroduplex strand&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1490.5" CenterY="1498.0" Width="127.0" Height="136.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_4075"/>
+  </DataNode>
+  <DataNode GraphId="n136_REACTOME_110300" TextLabel="dNTP&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1619.0" CenterY="1461.0" Width="62.0" Height="30.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2960"/>
+  </DataNode>
+  <DataNode GraphId="n137_REACTOME_83898" TextLabel="Heteroduplex DNA &#10;with D-loop structure &#10;with extended pairing &#10;between invading &#10;strand and &#10;complementary &#10;heteroduplex strand &#10;and containing newly &#10;synthesized ends&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1783.5" CenterY="1498.5" Width="131.0" Height="153.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2357"/>
+  </DataNode>
+  <DataNode GraphId="n143_REACTOME_75220" TextLabel="Holliday structure&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2048.5" CenterY="1499.0" Width="127.0" Height="38.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5857"/>
+  </DataNode>
+  <DataNode GraphId="n144_REACTOME_53787" TextLabel="DNA ligase I&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1924.0" CenterY="1442.0" Width="78.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18858"/>
+  </DataNode>
+  <DataNode GraphId="n146_REACTOME_83636" TextLabel="cleaved Holliday &#10;structure&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2251.5" CenterY="1500.5" Width="123.0" Height="53.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2367"/>
+  </DataNode>
+  <DataNode GraphId="n148_REACTOME_84009" TextLabel="duplex containing &#10;reannealed extended &#10;strands from &#10;damaged DNA &#10;molecule&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1939.5" CenterY="1584.0" Width="131.0" Height="98.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2929"/>
+  </DataNode>
+  <DataNode GraphId="n149_REACTOME_84008" TextLabel="homologous &#10;duplex DNA&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1921.0" CenterY="1671.5" Width="102.0" Height="53.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5063"/>
+  </DataNode>
+  <DataNode GraphId="n151_REACTOME_84010" TextLabel="repaired DNA &#10;duplex&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2147.0" CenterY="1583.5" Width="102.0" Height="53.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_4943"/>
+  </DataNode>
+  <DataNode GraphId="n153_REACTOME_75905" TextLabel="Ku70:Ku80 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1016.0" CenterY="1107.0" Width="128.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3482"/>
+  </DataNode>
+  <DataNode GraphId="n154_REACTOME_75906" TextLabel="Ku:DNA double-&#10;strand break ends&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="838.0" CenterY="1148.0" Width="122.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5272"/>
+  </DataNode>
+  <DataNode GraphId="n160_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="485.5" CenterY="918.5" Width="33.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n161_REACTOME_62161" TextLabel="DNA-dependent &#10;protein kinase &#10;catalytic subunit&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="562.0" CenterY="999.0" Width="128.0" Height="54.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P78527"/>
+  </DataNode>
+  <DataNode GraphId="n162_REACTOME_76302" TextLabel="phospho-DNA-PKcs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="710.5" CenterY="979.5" Width="129.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P78527"/>
+  </DataNode>
+  <DataNode GraphId="n163_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="683.5" CenterY="896.5" Width="33.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n165_REACTOME_75907" TextLabel="DNA-PK:DNA &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="424.5" CenterY="1148.5" Width="111.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2311"/>
+  </DataNode>
+  <DataNode GraphId="n167_REACTOME_75908" TextLabel="DNA-PK &#10;synaptic &#10;complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Two DNA-PK-DNA complexes, one on either side of the double-strand break, interact to bring the DNA ends together.</Comment>
+    <Graphics Color="000000" CenterX="425.5" CenterY="1001.0" Width="93.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5513"/>
+  </DataNode>
+  <DataNode GraphId="n173_REACTOME_76324" TextLabel="DNA-PK:DNA &#10;synaptic complex &#10;with ligatable ends&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="313.0" CenterY="934.5" Width="116.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2405"/>
+  </DataNode>
+  <DataNode GraphId="n174_REACTOME_175597" TextLabel="nucleases removing &#10;3' phosphoglycolate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="425.0" CenterY="860.0" Width="122.0" Height="38.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_7333"/>
+  </DataNode>
+  <DataNode GraphId="n176_REACTOME_177947" TextLabel="unknown &#10;endonuclease&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="202.0" CenterY="1000.5" Width="116.0" Height="33.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_6978"/>
+  </DataNode>
+  <DataNode GraphId="n182_REACTOME_75912" TextLabel="XRCC4:DNA ligase &#10;IV complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="228.5" CenterY="848.0" Width="111.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3745"/>
+  </DataNode>
+  <DataNode GraphId="n183_REACTOME_75915" TextLabel="DNA-PK:XRCC4:DNA &#10;ligase IV:DNA  &#10;complex associated &#10;with ligatable DNA &#10;ends&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="312.5" CenterY="732.0" Width="133.0" Height="88.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2526"/>
+  </DataNode>
+  <DataNode GraphId="n185_REACTOME_75927" TextLabel="ligated DNA &#10;double-strand &#10;break ends&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="563.5" CenterY="528.0" Width="105.0" Height="48.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3350"/>
+  </DataNode>
+  <DataNode GraphId="n186_REACTOME_58274" TextLabel="ATP-dependent &#10;DNA helicase II, 80 &#10;kDa subunit&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="655.5" CenterY="605.5" Width="111.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P13010"/>
+  </DataNode>
+  <DataNode GraphId="n187_REACTOME_58272" TextLabel="ATP-dependent &#10;DNA helicase II, 70 &#10;kDa subunit&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="473.5" CenterY="601.5" Width="111.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12956"/>
+  </DataNode>
+  <DataNode GraphId="n188_REACTOME_53791" TextLabel="DNA ligase IV&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="437.0" CenterY="692.5" Width="90.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P49917"/>
+  </DataNode>
+  <DataNode GraphId="n189_REACTOME_75911" TextLabel="DNA repair &#10;protein XRCC4&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="677.5" CenterY="704.0" Width="105.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13426"/>
+  </DataNode>
+  <DataNode GraphId="n199_REACTOME_419540" TextLabel="FANCJ/BRIP1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1387.0" CenterY="1593.5" Width="104.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BX63"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_75147">
+    <Comment Source="WikiPathways-description">ATM is present in unirradiated cells as a dimer or higher-order multimer. Following irradiation, ATM undergoes rapid intermolecular autophosphorylation of serine 1981.</Comment>
+    <BiopaxRef>lit_83540</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1943.0" Y="417.0" GraphId="e_1_0"/>
+      <Point X="1900.0" Y="417.0" GraphId="e_1_1"/>
+      <Point X="1780.0" Y="416.0" GraphId="e_1_2"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.2637969378231551" GraphId="e_1_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1990.0" Y="455.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_83538" RelX="-0.23728813559322035" RelY="-1.25"/>
+      <Point X="1943.0" Y="417.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2014.0" Y="417.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_29358" RelX="-1.1" RelY="-0.06896551724137931"/>
+      <Point X="1943.0" Y="417.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1830.0" Y="389.0" GraphId="e_1_o0_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_113582" RelX="-1.125" RelY="0.7586206896551724"/>
+      <Point X="1780.0" Y="416.0" GraphId="e_1_o0_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1572.0" Y="416.0" GraphId="e_1_o1_0" ArrowHead="Arrow" GraphRef="n5_REACTOME_83894" RelX="1.0534351145038168" RelY="-0.05128205128205128"/>
+      <Point X="1780.0" Y="416.0" GraphId="e_1_o1_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1789.0" Y="463.0" GraphId="e_1_c__0_0" GraphRef="n6_REACTOME_75145" RelX="0.7226890756302521" RelY="-1.1578947368421053"/>
+      <Point X="1900.0" Y="417.0" GraphId="e_1_c__0_1" GraphRef="e_1_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_83895">
+    <Comment Source="WikiPathways-description">Autophosphorylation of ATM results in the dissociation of  the dimeric/multimeric ATM complex  and initiation of  ATM kinase activity. Autophosphorylation does not directly regulate ATM kinase activity. Instead, it is the resulting dissociation of ATM oligomers that allows substrates access to the ATM kinase domain.</Comment>
+    <BiopaxRef>lit_83540</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1503.0" Y="440.0" GraphId="e_13_0" GraphRef="n5_REACTOME_83894" RelX="0.0" RelY="1.1794871794871795"/>
+      <Point X="1503.0" Y="484.0" GraphId="e_13_1"/>
+      <Point X="1684.0" Y="484.0" GraphId="e_13_2" GraphRef="n6_REACTOME_75145" RelX="-1.0420168067226891" RelY="-0.05263157894736842" ArrowHead="Arrow"/>
+      <Anchor Position="0.19555555555555557" GraphId="e_13_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_75242">
+    <Comment Source="WikiPathways-description">H2AX phosphorylation (producing the  gamma-H2AX protein form) occurs within 1-3 minutes of DNA damage  (Rogakou et al,1998) and is promoted by MDC1/NFBD1 (Stewart et al., 2003). gamma H2AX is one of the first proteins to appear at the site of damage, localizing  to a region of about 2 Mbp surrounding the site of the double-strand break (Rogakou et al,1998). gamma-H2AX appears to play an essential role in recruiting other repair proteins including Rad50, Rad51 and BRCA1(Paull et al., 2000) (Stewart et al., 2003).</Comment>
+    <BiopaxRef>lit_83547</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1804.0" Y="580.0" GraphId="e_14_0"/>
+      <Point X="1746.0" Y="580.0" GraphId="e_14_1"/>
+      <Point X="1704.0" Y="580.0" GraphId="e_14_2"/>
+      <Anchor Position="0.0" GraphId="e_14_a_i"/>
+      <Anchor Position="0.58" GraphId="e_14_a_p"/>
+      <Anchor Position="1.0" GraphId="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1863.0" Y="658.0" GraphId="e_14_i0_0" GraphRef="n15_REACTOME_56151" RelX="-0.27450980392156865" RelY="-1.1578947368421053"/>
+      <Point X="1804.0" Y="580.0" GraphId="e_14_i0_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1836.0" Y="565.0" GraphId="e_14_i1_0" GraphRef="n16_REACTOME_29358" RelX="-1.1153846153846154" RelY="0.6111111111111112"/>
+      <Point X="1804.0" Y="580.0" GraphId="e_14_i1_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1671.0" Y="599.0" GraphId="e_14_o0_0" ArrowHead="Arrow" GraphRef="n17_REACTOME_113582" RelX="0.6666666666666666" RelY="-1.2142857142857142"/>
+      <Point X="1704.0" Y="580.0" GraphId="e_14_o0_1" GraphRef="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1664.0" Y="560.0" GraphId="e_14_o1_0" ArrowHead="Arrow" GraphRef="n18_REACTOME_75170" RelX="0.6470588235294118" RelY="1.1578947368421053"/>
+      <Point X="1704.0" Y="580.0" GraphId="e_14_o1_1" GraphRef="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1746.0" Y="507.0" GraphId="e_14_c__0_0" GraphRef="n6_REACTOME_75145" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="1746.0" Y="580.0" GraphId="e_14_c__0_1" GraphRef="e_14_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_75239">
+    <Comment Source="WikiPathways-description">ATM mediated phosphorylation of BRCA1 at Ser 1189, Ser 1542 and Ser 1524 (Cortez et al., 1999)  is regulated by MDC1 (Lou et al., 2003). BRCA1 plays an important role in the response to double-strand breaks, participating in genome surveillance, DNA repair, and cell cycle checkpoint arrests. BRCA1 is required for ATM-dependent phosphorylation of NBS1 following exposure to ionizing radiation (Foray et al., 2003). BRCA1 also interacts with the MRE11-RAD50-NBS1 complex which has been implicated early in HRR during resection of the double-strand break.</Comment>
+    <BiopaxRef>lit_83579</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1140.0" Y="460.0" GraphId="e_19_0"/>
+      <Point X="1141.0" Y="526.0" GraphId="e_19_1"/>
+      <Point X="1141.0" Y="553.0" GraphId="e_19_2"/>
+      <Anchor Position="0.0" GraphId="e_19_a_i"/>
+      <Anchor Position="0.7097010656789969" GraphId="e_19_a_p"/>
+      <Anchor Position="1.0" GraphId="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1117.0" Y="435.0" GraphId="e_19_i0_0" GraphRef="n20_REACTOME_29358" RelX="0.41379310344827586" RelY="1.2"/>
+      <Point X="1140.0" Y="460.0" GraphId="e_19_i0_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1192.0" Y="439.0" GraphId="e_19_i1_0" GraphRef="n21_REACTOME_50949" RelX="-0.6470588235294118" RelY="1.3"/>
+      <Point X="1140.0" Y="460.0" GraphId="e_19_i1_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1141.0" Y="601.0" GraphId="e_19_o0_0" ArrowHead="Arrow" GraphRef="n22_REACTOME_113582" RelX="-0.03333333333333333" RelY="-1.2307692307692308"/>
+      <Point X="1141.0" Y="553.0" GraphId="e_19_o0_1" GraphRef="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1204.0" Y="553.0" GraphId="e_19_o1_0" ArrowHead="Arrow" GraphRef="n23_REACTOME_75234" RelX="-1.0434782608695652" RelY="0.0"/>
+      <Point X="1141.0" Y="553.0" GraphId="e_19_o1_1" GraphRef="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1684.0" Y="489.0" GraphId="e_19_c__0_0" GraphRef="n6_REACTOME_75145" RelX="-1.0420168067226891" RelY="0.21052631578947367"/>
+      <Point X="1141.0" Y="526.0" GraphId="e_19_c__0_1" GraphRef="e_19_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1082.0" Y="494.0" GraphId="e_19_a__0_0" GraphRef="n24_REACTOME_75231" RelX="0.6274509803921569" RelY="1.1578947368421053"/>
+      <Point X="1141.0" Y="526.0" GraphId="e_19_a__0_1" GraphRef="e_19_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_REACTOME_75241">
+    <Comment Source="WikiPathways-description">NSB1 is a component of the MRE11/RAD50/NBS1 complex which acts early in HRR during resection of the double-strand break. In addition, NBS1 is required for activation of the S-phase checkpoint in response to ionizing radiation (IR), ATM-dependent activation of CHK2 and cell survival after exposure to IR.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1073.0" Y="260.0" GraphId="e_29_0"/>
+      <Point X="1067.0" Y="260.0" GraphId="e_29_1"/>
+      <Point X="1067.0" Y="230.0" GraphId="e_29_2"/>
+      <Anchor Position="0.0" GraphId="e_29_a_i"/>
+      <Anchor Position="0.16666666666666666" GraphId="e_29_a_p"/>
+      <Anchor Position="1.0" GraphId="e_29_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1007.0" Y="311.0" GraphId="e_29_i0_0" GraphRef="n30_REACTOME_75163" RelX="0.4838709677419355" RelY="-1.2307692307692308"/>
+      <Point X="1073.0" Y="260.0" GraphId="e_29_i0_1" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1138.0" Y="284.0" GraphId="e_29_i1_0" GraphRef="n31_REACTOME_29358" RelX="-1.1" RelY="-0.9230769230769231"/>
+      <Point X="1073.0" Y="260.0" GraphId="e_29_i1_1" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1050.0" Y="218.0" GraphId="e_29_o0_0" ArrowHead="Arrow" GraphRef="n32_REACTOME_113582" RelX="1.12" RelY="0.9285714285714286"/>
+      <Point X="1067.0" Y="230.0" GraphId="e_29_o0_1" GraphRef="e_29_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1102.0" Y="217.0" GraphId="e_29_o1_0" ArrowHead="Arrow" GraphRef="n33_REACTOME_75237" RelX="-0.5794392523364486" RelY="1.2142857142857142"/>
+      <Point X="1067.0" Y="230.0" GraphId="e_29_o1_1" GraphRef="e_29_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1741.0" Y="463.0" GraphId="e_29_c__0_0" GraphRef="n6_REACTOME_75145" RelX="-0.08403361344537816" RelY="-1.1578947368421053"/>
+      <Point X="1697.0" Y="261.0" GraphId="e_29_c__0_1"/>
+      <Point X="1067.0" Y="260.0" GraphId="e_29_c__0_2" GraphRef="e_29_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1205.0" Y="413.0" GraphId="e_29_a__0_0" GraphRef="n21_REACTOME_50949" RelX="-0.2647058823529412" RelY="-1.3"/>
+      <Point X="1067.0" Y="260.0" GraphId="e_29_a__0_1" GraphRef="e_29_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_75245">
+    <Comment Source="WikiPathways-description">ATM mediated phosphorylation of MDC1/NFBD1 may be involved in the rapid relocalization of MDC1/NFBD1 to nuclear foci that contain the MRE11 complex, phosphorylated histone H2AX and 53BP1 (Goldberg et al., 2003). NFBD1 may also function in recruiting DNA checkpoint signaling and repair proteins to the sites of DNA damage (Xu and Stern., 2003 and Stewart et al.,2003).</Comment>
+    <BiopaxRef>lit_83563</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="897.0" Y="471.0" GraphId="e_34_0"/>
+      <Point X="897.0" Y="385.0" GraphId="e_34_1"/>
+      <Point X="855.0" Y="385.0" GraphId="e_34_2"/>
+      <Anchor Position="0.0" GraphId="e_34_a_i"/>
+      <Anchor Position="0.671875" GraphId="e_34_a_p"/>
+      <Anchor Position="1.0" GraphId="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="996.0" Y="471.0" GraphId="e_34_i0_0" GraphRef="n24_REACTOME_75231" RelX="-1.0588235294117647" RelY="-0.05263157894736842"/>
+      <Point X="897.0" Y="471.0" GraphId="e_34_i0_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="897.0" Y="491.0" GraphId="e_34_i1_0" GraphRef="n35_REACTOME_29358" RelX="-0.027777777777777776" RelY="-1.3"/>
+      <Point X="897.0" Y="471.0" GraphId="e_34_i1_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="828.0" Y="367.0" GraphId="e_34_o0_0" ArrowHead="Arrow" GraphRef="n36_REACTOME_113582" RelX="0.5833333333333334" RelY="1.1764705882352942"/>
+      <Point X="855.0" Y="385.0" GraphId="e_34_o0_1" GraphRef="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="840.0" Y="406.0" GraphId="e_34_o1_0" ArrowHead="Arrow" GraphRef="n37_REACTOME_75236" RelX="0.3137254901960784" RelY="-1.0943396226415094"/>
+      <Point X="855.0" Y="385.0" GraphId="e_34_o1_1" GraphRef="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1745.0" Y="463.0" GraphId="e_34_c__0_0" GraphRef="n6_REACTOME_75145" RelX="-0.01680672268907563" RelY="-1.1578947368421053"/>
+      <Point X="1744.0" Y="172.0" GraphId="e_34_c__0_1"/>
+      <Point X="896.0" Y="173.0" GraphId="e_34_c__0_2"/>
+      <Point X="897.0" Y="385.0" GraphId="e_34_c__0_3" GraphRef="e_34_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_REACTOME_83560">
+    <Comment Source="WikiPathways-description">Recruitment of MDC1 to nuclear foci is mediated by H2AX. MDC1 forms complexes with phosphorylated H2AX, promotes efficient phosphorylation of H2AX and controls the formation of BRCA1 and MRN foci  (Stewart et al.,2003).</Comment>
+    <BiopaxRef>lit_83563</BiopaxRef>
+    <BiopaxRef>lit_83562</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1054.0" Y="681.0" GraphId="e_58_0"/>
+      <Point X="1124.0" Y="681.0" GraphId="e_58_1"/>
+      <Point X="1175.0" Y="719.0" GraphId="e_58_2" GraphRef="n60_REACTOME_110400" RelX="-0.6564885496183206" RelY="-1.088235294117647" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_58_a_i"/>
+      <Anchor Position="0.5239508625447991" GraphId="e_58_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1054.0" Y="828.0" GraphId="e_58_i0_0" GraphRef="n59_REACTOME_110399" RelX="-0.0196078431372549" RelY="-1.0704225352112675"/>
+      <Point X="1054.0" Y="681.0" GraphId="e_58_i0_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1050.0" Y="494.0" GraphId="e_58_i1_0" GraphRef="n24_REACTOME_75231" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="1054.0" Y="681.0" GraphId="e_58_i1_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1823.0" Y="680.0" GraphId="e_58_a__0_0" GraphRef="n15_REACTOME_56151" RelX="-1.0588235294117647" RelY="0.0"/>
+      <Point X="1124.0" Y="681.0" GraphId="e_58_a__0_1" GraphRef="e_58_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_REACTOME_83592">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'MDC1/NFBD1:gamma-H2AX complex', and 1 molecule of 'phospho-ATM (Ser 1981)' are present. At the end of this reaction, 1 molecule of 'ATM associated with DNA double-strand break ends' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_83540</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1791.0" Y="312.0" GraphId="e_61_0"/>
+      <Point X="1803.0" Y="285.0" GraphId="e_61_1"/>
+      <Point X="1815.0" Y="244.0" GraphId="e_61_2" GraphRef="n63_REACTOME_110403" RelX="-0.12213740458015267" RelY="1.1071428571428572" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_61_a_i"/>
+      <Anchor Position="0.4088552197318126" GraphId="e_61_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1833.0" Y="313.0" GraphId="e_61_i0_0" GraphRef="n62_REACTOME_83566" RelX="-1.0588235294117647" RelY="-0.06896551724137931"/>
+      <Point X="1791.0" Y="312.0" GraphId="e_61_i0_1" GraphRef="e_61_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1750.0" Y="463.0" GraphId="e_61_i1_0" GraphRef="n6_REACTOME_75145" RelX="0.06722689075630252" RelY="-1.1578947368421053"/>
+      <Point X="1791.0" Y="312.0" GraphId="e_61_i1_1" GraphRef="e_61_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_REACTOME_110404">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of '53BP1', and 1 molecule of 'gamma H2AX:MDC1/NFBD1 complex at site of DNA double-strand break' are present. At the end of this reaction, 1 molecule of '53BP1:H2AX complex at site of double-strand break' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_83540</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1366.0" Y="756.0" GraphId="e_64_0"/>
+      <Point X="1396.0" Y="756.0" GraphId="e_64_1"/>
+      <Point X="1444.0" Y="756.0" GraphId="e_64_2" GraphRef="n66_REACTOME_110401" RelX="-1.0381679389312977" RelY="-0.03773584905660377" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_64_a_i"/>
+      <Anchor Position="0.38461538461538464" GraphId="e_64_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1287.0" Y="756.0" GraphId="e_64_i0_0" GraphRef="n60_REACTOME_110400" RelX="1.0534351145038168" RelY="0.0"/>
+      <Point X="1366.0" Y="756.0" GraphId="e_64_i0_1" GraphRef="e_64_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1366.0" Y="734.0" GraphId="e_64_i1_0" GraphRef="n65_REACTOME_61175" RelX="0.0" RelY="1.375"/>
+      <Point X="1366.0" Y="756.0" GraphId="e_64_i1_1" GraphRef="e_64_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_REACTOME_75191">
+    <Comment Source="WikiPathways-description">NBS1 binds  to H2AX and functions in the relocalization of MRE11/RAD50 nuclease complex to the double-strand break (Kobayashi, J. et al., 2002).</Comment>
+    <BiopaxRef>lit_75193</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="973.0" Y="866.0" GraphId="e_71_0"/>
+      <Point X="933.0" Y="866.0" GraphId="e_71_1"/>
+      <Point X="899.0" Y="866.0" GraphId="e_71_2" GraphRef="n72_REACTOME_75171" RelX="1.0483870967741935" RelY="-0.07692307692307693" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_71_a_i"/>
+      <Anchor Position="0.5405405405405406" GraphId="e_71_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1001.0" Y="866.0" GraphId="e_71_i0_0" GraphRef="n59_REACTOME_110399" RelX="-1.0588235294117647" RelY="0.0"/>
+      <Point X="973.0" Y="866.0" GraphId="e_71_i0_1" GraphRef="e_71_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="991.0" Y="343.0" GraphId="e_71_i1_0" GraphRef="n30_REACTOME_75163" RelX="-0.03225806451612903" RelY="1.2307692307692308"/>
+      <Point X="973.0" Y="866.0" GraphId="e_71_i1_1" GraphRef="e_71_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_77_REACTOME_75172">
+    <Comment Source="WikiPathways-description">MRE11 has both manganese dependent ss DNA 3'-5' exonuclease  and endonuclease activities.  MRE11 associates with RAD50 resulting in increased 3'-5' exonuclease activity.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1267.0" Y="995.0" GraphId="e_77_0"/>
+      <Point X="1297.0" Y="995.0" GraphId="e_77_1"/>
+      <Point X="1349.0" Y="995.0" GraphId="e_77_2" GraphRef="n80_REACTOME_75161" RelX="-1.0588235294117647" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_77_a_i"/>
+      <Anchor Position="0.36585365853658536" GraphId="e_77_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_77_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1267.0" Y="966.0" GraphId="e_77_i0_0" GraphRef="n78_REACTOME_59544" RelX="0.0" RelY="1.1111111111111112"/>
+      <Point X="1267.0" Y="995.0" GraphId="e_77_i0_1" GraphRef="e_77_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_77_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1241.0" Y="995.0" GraphId="e_77_i1_0" GraphRef="n79_REACTOME_75160" RelX="1.0588235294117647" RelY="-0.10526315789473684"/>
+      <Point X="1267.0" Y="995.0" GraphId="e_77_i1_1" GraphRef="e_77_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_REACTOME_75174">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'RAD50:MRE11 complex', and 1 molecule of 'NBS1' are present. At the end of this reaction, 1 molecule of 'MRE11:RAD50:NBS1 complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1544.0" Y="995.0" GraphId="e_81_0"/>
+      <Point X="1584.0" Y="995.0" GraphId="e_81_1"/>
+      <Point X="1640.0" Y="995.0" GraphId="e_81_2" GraphRef="n82_REACTOME_75164" RelX="-1.0467289719626167" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_81_a_i"/>
+      <Anchor Position="0.4166666666666667" GraphId="e_81_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="991.0" Y="343.0" GraphId="e_81_i0_0" GraphRef="n30_REACTOME_75163" RelX="-0.03225806451612903" RelY="1.2307692307692308"/>
+      <Point X="944.0" Y="1037.0" GraphId="e_81_i0_1"/>
+      <Point X="1544.0" Y="1037.0" GraphId="e_81_i0_2"/>
+      <Point X="1544.0" Y="995.0" GraphId="e_81_i0_3" GraphRef="e_81_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1457.0" Y="995.0" GraphId="e_81_i1_0" GraphRef="n80_REACTOME_75161" RelX="1.0588235294117647" RelY="0.0"/>
+      <Point X="1544.0" Y="995.0" GraphId="e_81_i1_1" GraphRef="e_81_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_REACTOME_75176">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'MRE11:RAD50:NBS1 complex', and 1 molecule of 'gamma-H2AX:NBS1 complex at the site of double-strand break' are present. At the end of this reaction, 1 molecule of 'DNA double-strand break ends: MRN complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="833.0" Y="1065.0" GraphId="e_83_0"/>
+      <Point X="803.0" Y="1065.0" GraphId="e_83_1"/>
+      <Point X="767.0" Y="1065.0" GraphId="e_83_2" GraphRef="n84_REACTOME_75166" RelX="1.0534351145038168" RelY="-0.03571428571428571" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_83_a_i"/>
+      <Anchor Position="0.45454545454545453" GraphId="e_83_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1696.0" Y="1020.0" GraphId="e_83_i0_0" GraphRef="n82_REACTOME_75164" RelX="0.0" RelY="1.1627906976744187"/>
+      <Point X="1696.0" Y="1065.0" GraphId="e_83_i0_1"/>
+      <Point X="833.0" Y="1065.0" GraphId="e_83_i0_2" GraphRef="e_83_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="833.0" Y="897.0" GraphId="e_83_i1_0" GraphRef="n72_REACTOME_75171" RelX="-0.016129032258064516" RelY="1.1153846153846154"/>
+      <Point X="833.0" Y="1065.0" GraphId="e_83_i1_1" GraphRef="e_83_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_REACTOME_83570">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of '53BP1:H2AX complex at site of double-strand break', and 1 molecule of 'Breast cancer type 1 susceptibility protein' are present. At the end of this reaction, 1 molecule of 'BRCA1:53BP1 complex at site of DNA double-strand break' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_69358</BiopaxRef>
+    <BiopaxRef>lit_83552</BiopaxRef>
+    <BiopaxRef>lit_110405</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1409.0" Y="656.0" GraphId="e_85_0"/>
+      <Point X="1089.0" Y="656.0" GraphId="e_85_1"/>
+      <Point X="936.0" Y="656.0" GraphId="e_85_2" GraphRef="n86_REACTOME_110402" RelX="1.054263565891473" RelY="-0.0273972602739726" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_85_a_i"/>
+      <Anchor Position="0.6765327695560254" GraphId="e_85_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1510.0" Y="728.0" GraphId="e_85_i0_0" GraphRef="n66_REACTOME_110401" RelX="-0.030534351145038167" RelY="-1.0943396226415094"/>
+      <Point X="1510.0" Y="715.0" GraphId="e_85_i0_1"/>
+      <Point X="1409.0" Y="656.0" GraphId="e_85_i0_2" GraphRef="e_85_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1251.0" Y="426.0" GraphId="e_85_i1_0" GraphRef="n21_REACTOME_50949" RelX="1.088235294117647" RelY="0.0"/>
+      <Point X="1408.0" Y="427.0" GraphId="e_85_i1_1"/>
+      <Point X="1409.0" Y="656.0" GraphId="e_85_i1_2" GraphRef="e_85_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1054.0" Y="494.0" GraphId="e_85_a__0_0" GraphRef="n24_REACTOME_75231" RelX="0.0784313725490196" RelY="1.1578947368421053"/>
+      <Point X="1089.0" Y="656.0" GraphId="e_85_a__0_1" GraphRef="e_85_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_REACTOME_83897">
+    <Comment Source="WikiPathways-description">In order for repair of the double-strand break to occur, the 5' ends of the break must first be resected to produce single-strands that  invade homologous duplex DNA. Although the enzymatic activities responsible for end-processing in humans are not known with certainty,  the  MRE11-RAD50-NBS1 (MRN) complex has been implicated in this process     (Thompson and Schild, 2001). The MRN complex may function as a bridge between double-strand break ends through interactions between the coiled-coil domains of RAD50 (Hoptner et al., 2002).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1220.0" Y="1144.0" GraphId="e_95_0" GraphRef="n96_REACTOME_75165" RelX="1.0534351145038168" RelY="-0.07547169811320754"/>
+      <Point X="1257.0" Y="1144.0" GraphId="e_95_1"/>
+      <Point X="1297.0" Y="1144.0" GraphId="e_95_2" GraphRef="n97_REACTOME_75156" RelX="-1.0420168067226891" RelY="-0.058823529411764705" ArrowHead="Arrow"/>
+      <Anchor Position="0.4805194805194805" GraphId="e_95_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_REACTOME_75994">
+    <Comment Source="WikiPathways-description">Human replication protein A (RPA) is a single-stranded DNA (ssDNA) binding protein required for DNA replication, recombination, and repair. RPA is a stable heterotrimer consisting of subunits with molecular masses of 14, 32 and 70 kDa (p14, p32 and p70, respectively). Association of RPA with ssDNA is thought to contribute to both the protection and removal of secondary structure from single-stranded DNA.</Comment>
+    <BiopaxRef>lit_83607</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1598.0" Y="1156.0" GraphId="e_98_0"/>
+      <Point X="1660.0" Y="1156.0" GraphId="e_98_1"/>
+      <Point X="1714.0" Y="1156.0" GraphId="e_98_2" GraphRef="n101_REACTOME_75993" RelX="-1.0588235294117647" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_98_a_i"/>
+      <Anchor Position="0.5344827586206896" GraphId="e_98_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1557.0" Y="1136.0" GraphId="e_98_i0_0" GraphRef="n99_REACTOME_75155" RelX="1.0654205607476634" RelY="0.6470588235294118"/>
+      <Point X="1598.0" Y="1156.0" GraphId="e_98_i0_1" GraphRef="e_98_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1556.0" Y="1176.0" GraphId="e_98_i1_0" GraphRef="n100_REACTOME_68462" RelX="0.5714285714285714" RelY="-1.1578947368421053"/>
+      <Point X="1598.0" Y="1156.0" GraphId="e_98_i1_1" GraphRef="e_98_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_REACTOME_83648">
+    <Comment Source="WikiPathways-description">BRCA2 and RAD51 interact directly through the highly conserved BRC repeats in BRCA2 (Venkitaraman, 2002).</Comment>
+    <BiopaxRef>lit_83617</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2160.0" Y="1248.0" GraphId="e_103_0"/>
+      <Point X="2222.0" Y="1248.0" GraphId="e_103_1"/>
+      <Point X="2256.0" Y="1248.0" GraphId="e_103_2" GraphRef="n106_REACTOME_83621" RelX="-1.0588235294117647" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_103_a_i"/>
+      <Anchor Position="0.6458333333333334" GraphId="e_103_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2088.0" Y="1248.0" GraphId="e_103_i0_0" GraphRef="n104_REACTOME_62637" RelX="1.09375" RelY="-0.06666666666666667"/>
+      <Point X="2160.0" Y="1248.0" GraphId="e_103_i0_1" GraphRef="e_103_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2160.0" Y="1228.0" GraphId="e_103_i1_0" GraphRef="n105_REACTOME_50951" RelX="0.0" RelY="1.2"/>
+      <Point X="2160.0" Y="1248.0" GraphId="e_103_i1_1" GraphRef="e_103_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_107_REACTOME_75998">
+    <Comment Source="WikiPathways-description">RAD52 interacts with ssDNA forming heptameric ring structure complexes. The conformation of the RAD52-ssDNA complex is thought to place the ssDNA on an exposed surface of the protein, in a configuration that may promote the DNA-DNA annealing of complementary DNA strands.</Comment>
+    <BiopaxRef>lit_83611</BiopaxRef>
+    <BiopaxRef>lit_83612</BiopaxRef>
+    <BiopaxRef>lit_83613</BiopaxRef>
+    <BiopaxRef>lit_83614</BiopaxRef>
+    <BiopaxRef>lit_109575</BiopaxRef>
+    <BiopaxRef>lit_109576</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1768.0" Y="1237.0" GraphId="e_107_0"/>
+      <Point X="1782.0" Y="1237.0" GraphId="e_107_1"/>
+      <Point X="1823.0" Y="1237.0" GraphId="e_107_2" GraphRef="n109_REACTOME_83900" RelX="-1.0535714285714286" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_107_a_i"/>
+      <Anchor Position="0.2545454545454545" GraphId="e_107_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_107_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1712.0" Y="1237.0" GraphId="e_107_i0_0" GraphRef="n108_REACTOME_62639" RelX="1.0508474576271187" RelY="0.0"/>
+      <Point X="1768.0" Y="1237.0" GraphId="e_107_i0_1" GraphRef="e_107_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_107_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1768.0" Y="1201.0" GraphId="e_107_i1_0" GraphRef="n101_REACTOME_75993" RelX="0.0" RelY="1.0843373493975903"/>
+      <Point X="1768.0" Y="1237.0" GraphId="e_107_i1_1" GraphRef="e_107_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_REACTOME_83644">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'RAD52', and 1 molecule of 'RPA heterotrimer' are present. At the end of this reaction, 1 molecule of 'RAD52:RPA complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1523.0" Y="1237.0" GraphId="e_110_0"/>
+      <Point X="1451.0" Y="1237.0" GraphId="e_110_1"/>
+      <Point X="1406.0" Y="1237.0" GraphId="e_110_2" GraphRef="n111_REACTOME_83620" RelX="1.0588235294117647" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_110_a_i"/>
+      <Anchor Position="0.6153846153846154" GraphId="e_110_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1588.0" Y="1237.0" GraphId="e_110_i0_0" GraphRef="n108_REACTOME_62639" RelX="-1.0508474576271187" RelY="0.0"/>
+      <Point X="1523.0" Y="1237.0" GraphId="e_110_i0_1" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1522.0" Y="1220.0" GraphId="e_110_i1_0" GraphRef="n100_REACTOME_68462" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="1523.0" Y="1237.0" GraphId="e_110_i1_1" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_REACTOME_109779">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of '3' overhanging DNA  at resected DSB ends', and 1 molecule of 'RAD52' are present. At the end of this reaction, 1 molecule of 'RAD52:DNA double-strand break' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_83611</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1125.0" Y="1277.0" GraphId="e_112_0"/>
+      <Point X="1095.0" Y="1278.0" GraphId="e_112_1"/>
+      <Point X="1050.0" Y="1278.0" GraphId="e_112_2" GraphRef="n113_REACTOME_109778" RelX="1.0588235294117647" RelY="-0.029411764705882353" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_112_a_i"/>
+      <Anchor Position="0.4001332667102554" GraphId="e_112_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1650.0" Y="1252.0" GraphId="e_112_i0_0" GraphRef="n108_REACTOME_62639" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="1650.0" Y="1278.0" GraphId="e_112_i0_1"/>
+      <Point X="1125.0" Y="1277.0" GraphId="e_112_i0_2" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1297.0" Y="1160.0" GraphId="e_112_i1_0" GraphRef="n97_REACTOME_75156" RelX="-1.0420168067226891" RelY="0.4117647058823529"/>
+      <Point X="1125.0" Y="1204.0" GraphId="e_112_i1_1"/>
+      <Point X="1125.0" Y="1277.0" GraphId="e_112_i1_2" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_118_REACTOME_83642">
+    <Comment Source="WikiPathways-description">Binding of the RAD51:RAD52 complex to ssDNA may provide nucleation sites promoting the association of free RAD51 with the growing nucleoprotein filament.   This interaction may also play a role in stimulating the strand transfer reactions mediated by RAD51 (Baumann, 1999).</Comment>
+    <BiopaxRef>lit_83614</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="996.0" Y="1355.0" GraphId="e_118_0"/>
+      <Point X="942.0" Y="1355.0" GraphId="e_118_1"/>
+      <Point X="900.0" Y="1355.0" GraphId="e_118_2" GraphRef="n119_REACTOME_83619" RelX="1.0551181102362204" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_118_a_i"/>
+      <Anchor Position="0.5625" GraphId="e_118_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_118_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2052.0" Y="1267.0" GraphId="e_118_i0_0" GraphRef="n104_REACTOME_62637" RelX="-0.03125" RelY="1.2"/>
+      <Point X="2052.0" Y="1355.0" GraphId="e_118_i0_1"/>
+      <Point X="996.0" Y="1355.0" GraphId="e_118_i0_2" GraphRef="e_118_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_118_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="996.0" Y="1316.0" GraphId="e_118_i1_0" GraphRef="n113_REACTOME_109778" RelX="0.0" RelY="1.088235294117647"/>
+      <Point X="996.0" Y="1355.0" GraphId="e_118_i1_1" GraphRef="e_118_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_120_REACTOME_83638">
+    <Comment Source="WikiPathways-description">The binding of RAD51 to ssDNA may be facilitated by association with RPA (Golub et al., 1998).</Comment>
+    <BiopaxRef>lit_83639</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2052.0" Y="1156.0" GraphId="e_120_0"/>
+      <Point X="2146.0" Y="1157.0" GraphId="e_120_1"/>
+      <Point X="2185.0" Y="1156.0" GraphId="e_120_2" GraphRef="n121_REACTOME_83618" RelX="-1.0588235294117647" RelY="0.04878048780487805" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_120_a_i"/>
+      <Anchor Position="0.706710534612547" GraphId="e_120_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_120_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2052.0" Y="1231.0" GraphId="e_120_i0_0" GraphRef="n104_REACTOME_62637" RelX="-0.03125" RelY="-1.2"/>
+      <Point X="2052.0" Y="1156.0" GraphId="e_120_i0_1" GraphRef="e_120_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_120_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1822.0" Y="1156.0" GraphId="e_120_i1_0" GraphRef="n101_REACTOME_75993" RelX="1.0588235294117647" RelY="0.0"/>
+      <Point X="2052.0" Y="1156.0" GraphId="e_120_i1_1" GraphRef="e_120_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_REACTOME_109780">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'RAD51', and 1 molecule of '3' overhanging DNA  at resected DSB ends' are present. At the end of this reaction, 1 molecule of 'RAD51:resected ends of DNA double-strand break' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_83607</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1198.0" Y="1392.0" GraphId="e_122_0"/>
+      <Point X="1140.0" Y="1393.0" GraphId="e_122_1"/>
+      <Point X="1141.0" Y="1451.0" GraphId="e_122_2" GraphRef="n123_REACTOME_109777" RelX="-0.034782608695652174" RelY="-1.0602409638554218" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_122_a_i"/>
+      <Anchor Position="0.5" GraphId="e_122_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2057.0" Y="1267.0" GraphId="e_122_i0_0" GraphRef="n104_REACTOME_62637" RelX="0.125" RelY="1.2"/>
+      <Point X="2098.0" Y="1393.0" GraphId="e_122_i0_1"/>
+      <Point X="1198.0" Y="1392.0" GraphId="e_122_i0_2" GraphRef="e_122_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1305.0" Y="1183.0" GraphId="e_122_i1_0" GraphRef="n97_REACTOME_75156" RelX="-0.907563025210084" RelY="1.088235294117647"/>
+      <Point X="1198.0" Y="1249.0" GraphId="e_122_i1_1"/>
+      <Point X="1198.0" Y="1392.0" GraphId="e_122_i1_2" GraphRef="e_122_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_132_REACTOME_73947">
+    <Comment Source="WikiPathways-description">Branch migration or strand exchange occurs as the complimentary duplex DNA strand is progressively  taken up into the nucleoprotein filament to base pair with the invading single-strand sequence (Sung et al., 2003).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1361.0" Y="1497.0" GraphId="e_132_0" GraphRef="n133_REACTOME_83891" RelX="1.0551181102362204" RelY="0.0"/>
+      <Point X="1386.0" Y="1497.0" GraphId="e_132_1"/>
+      <Point X="1424.0" Y="1497.0" GraphId="e_132_2" GraphRef="n134_REACTOME_83893" RelX="-1.0393700787401574" RelY="-0.014705882352941176" ArrowHead="Arrow"/>
+      <Anchor Position="0.3968253968253968" GraphId="e_132_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_132_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1386.0" Y="1577.0" GraphId="e_132_i__0_0" GraphRef="n199_REACTOME_419540" RelX="-0.019230769230769232" RelY="-1.1851851851851851"/>
+      <Point X="1386.0" Y="1497.0" GraphId="e_132_i__0_1" GraphRef="e_132_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_REACTOME_76011">
+    <Comment Source="WikiPathways-description">Following branch migration, the invading 3Ã¢â¬â¢ resected ends of the double-strand break act as primers for repair DNA synthesis using the complementary strand of the invaded duplex as a template.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1618.0" Y="1498.0" GraphId="e_135_0"/>
+      <Point X="1681.0" Y="1498.0" GraphId="e_135_1"/>
+      <Point X="1715.0" Y="1498.0" GraphId="e_135_2" GraphRef="n137_REACTOME_83898" RelX="-1.0381679389312977" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_135_a_i"/>
+      <Anchor Position="0.6494845360824743" GraphId="e_135_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1618.0" Y="1479.0" GraphId="e_135_i0_0" GraphRef="n136_REACTOME_110300" RelX="-0.03225806451612903" RelY="1.2"/>
+      <Point X="1618.0" Y="1498.0" GraphId="e_135_i0_1" GraphRef="e_135_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1557.0" Y="1498.0" GraphId="e_135_i1_0" GraphRef="n134_REACTOME_83893" RelX="1.0551181102362204" RelY="0.0"/>
+      <Point X="1618.0" Y="1498.0" GraphId="e_135_i1_1" GraphRef="e_135_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_REACTOME_75227">
+    <Comment Source="WikiPathways-description">Ligation of the crossed-strand intermediate results in the formation of  Holliday structures with two crossovers. In humans, the identity of this ligase activity involved in this process is not known.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1852.0" Y="1498.0" GraphId="e_142_0" GraphRef="n137_REACTOME_83898" RelX="1.0534351145038168" RelY="0.0"/>
+      <Point X="1922.0" Y="1498.0" GraphId="e_142_1"/>
+      <Point X="1982.0" Y="1498.0" GraphId="e_142_2" GraphRef="n143_REACTOME_75220" RelX="-1.0393700787401574" RelY="-0.05263157894736842" ArrowHead="Arrow"/>
+      <Anchor Position="0.5384615384615384" GraphId="e_142_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1923.0" Y="1463.0" GraphId="e_142_c__0_0" GraphRef="n144_REACTOME_53787" RelX="-0.02564102564102564" RelY="1.1666666666666667"/>
+      <Point X="1922.0" Y="1498.0" GraphId="e_142_c__0_1" GraphRef="e_142_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_REACTOME_73949">
+    <Comment Source="WikiPathways-description">The enzymatic activities that cleave Holliday junctions have not yet been identified in human. Resolution of the D-loop through cleavage of the two Holliday junctions in the same orientation (i.e.: sites a and b or c and c) results in non-recombinant chromatids.  Cleavage in opposite orientation (a and c or b and d) does not produce recombinants.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2115.0" Y="1498.0" GraphId="e_145_0" GraphRef="n143_REACTOME_75220" RelX="1.0551181102362204" RelY="-0.05263157894736842"/>
+      <Point X="2147.0" Y="1498.0" GraphId="e_145_1"/>
+      <Point X="2187.0" Y="1498.0" GraphId="e_145_2" GraphRef="n146_REACTOME_83636" RelX="-1.0406504065040652" RelY="-0.07547169811320754" ArrowHead="Arrow"/>
+      <Anchor Position="0.4444444444444444" GraphId="e_145_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_147_REACTOME_83663">
+    <Comment Source="WikiPathways-description">Following repair synthesis, the extended strands may disassociate  from their compliments within the duplex DNA and reanneal with their original complimentary strands through sequence acquired in repair synthesis .</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1781.0" Y="1578.0" GraphId="e_147_0" GraphRef="n137_REACTOME_83898" RelX="-0.030534351145038167" RelY="1.0457516339869282"/>
+      <Point X="1781.0" Y="1631.0" GraphId="e_147_1"/>
+      <Point X="1839.0" Y="1631.0" GraphId="e_147_2"/>
+      <Anchor Position="0.4774774774774775" GraphId="e_147_a_p"/>
+      <Anchor Position="1.0" GraphId="e_147_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_147_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1871.0" Y="1614.0" GraphId="e_147_o0_0" ArrowHead="Arrow" GraphRef="n148_REACTOME_84009" RelX="-1.0381679389312977" RelY="0.6122448979591837"/>
+      <Point X="1839.0" Y="1631.0" GraphId="e_147_o0_1" GraphRef="e_147_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_147_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1867.0" Y="1646.0" GraphId="e_147_o1_0" ArrowHead="Arrow" GraphRef="n149_REACTOME_84008" RelX="-1.0588235294117647" RelY="-0.9433962264150944"/>
+      <Point X="1839.0" Y="1631.0" GraphId="e_147_o1_1" GraphRef="e_147_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_150_REACTOME_83665">
+    <Comment Source="WikiPathways-description">DNA synthesis occurs to fill in remaining single-stranded gaps present in the reannealed DNA duplex.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2008.0" Y="1583.0" GraphId="e_150_0" GraphRef="n148_REACTOME_84009" RelX="1.0534351145038168" RelY="-0.02040816326530612"/>
+      <Point X="2050.0" Y="1583.0" GraphId="e_150_1"/>
+      <Point X="2093.0" Y="1583.0" GraphId="e_150_2" GraphRef="n151_REACTOME_84010" RelX="-1.0588235294117647" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.49411764705882355" GraphId="e_150_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_REACTOME_75917">
+    <Comment Source="WikiPathways-description">Ionizing radiation (IR) induces single-strand breaks i.e. cleavage of the phosphodiester backbone. When two single-strand breaks occur within approximately 10 base pairs, a DNA double-strand break results. IR-induced DSBs are complex DNA damage lesions, containing base damage and frequently containing 5'-OH groups and 3'-hydroxy or phosphoglycolate groups that must be removed prior to ligation in the final step of NHEJ  (Friedberg et al, 1995; Nikjoo et al, 2001; Valerie and Povirk, 2003). The Ku70/80 heterodimer (Walker et al., 2001) binds to the ends of the double-strand break. Ku can translocate inwards from the site of the break in an ATP-independent manner (reviewed in Dynan and Yoo, 1998).</Comment>
+    <BiopaxRef>lit_76260</BiopaxRef>
+    <BiopaxRef>lit_76262</BiopaxRef>
+    <BiopaxRef>lit_76314</BiopaxRef>
+    <BiopaxRef>lit_76287</BiopaxRef>
+    <BiopaxRef>lit_76534</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1016.0" Y="1146.0" GraphId="e_152_0"/>
+      <Point X="946.0" Y="1146.0" GraphId="e_152_1"/>
+      <Point X="902.0" Y="1146.0" GraphId="e_152_2" GraphRef="n154_REACTOME_75906" RelX="1.0491803278688525" RelY="-0.10526315789473684" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_152_a_i"/>
+      <Anchor Position="0.6140350877192983" GraphId="e_152_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1016.0" Y="1129.0" GraphId="e_152_i0_0" GraphRef="n153_REACTOME_75905" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="1016.0" Y="1146.0" GraphId="e_152_i0_1" GraphRef="e_152_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1083.0" Y="1146.0" GraphId="e_152_i1_0" GraphRef="n96_REACTOME_75165" RelX="-1.0381679389312977" RelY="0.0"/>
+      <Point X="1016.0" Y="1146.0" GraphId="e_152_i1_1" GraphRef="e_152_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_REACTOME_76303">
+    <Comment Source="WikiPathways-description">Autophosphorylation of DNA-PKcs is required for NHEJ in vivo (Chan et al, 2002; Ding et al, 2003).</Comment>
+    <BiopaxRef>lit_76304</BiopaxRef>
+    <BiopaxRef>lit_76305</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="523.0" Y="936.0" GraphId="e_159_0"/>
+      <Point X="605.0" Y="936.0" GraphId="e_159_1"/>
+      <Point X="643.0" Y="936.0" GraphId="e_159_2"/>
+      <Anchor Position="0.0" GraphId="e_159_a_i"/>
+      <Anchor Position="0.6833333333333333" GraphId="e_159_a_p"/>
+      <Anchor Position="1.0" GraphId="e_159_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="505.0" Y="925.0" GraphId="e_159_i0_0" GraphRef="n160_REACTOME_29358" RelX="1.2121212121212122" RelY="0.45161290322580644"/>
+      <Point X="523.0" Y="936.0" GraphId="e_159_i0_1" GraphRef="e_159_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="545.0" Y="969.0" GraphId="e_159_i1_0" GraphRef="n161_REACTOME_62161" RelX="-0.265625" RelY="-1.1111111111111112"/>
+      <Point X="523.0" Y="936.0" GraphId="e_159_i1_1" GraphRef="e_159_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="685.0" Y="961.0" GraphId="e_159_o0_0" ArrowHead="Arrow" GraphRef="n162_REACTOME_76302" RelX="-0.3875968992248062" RelY="-1.1612903225806452"/>
+      <Point X="643.0" Y="936.0" GraphId="e_159_o0_1" GraphRef="e_159_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="667.0" Y="915.0" GraphId="e_159_o1_0" ArrowHead="Arrow" GraphRef="n163_REACTOME_113582" RelX="-0.9696969696969697" RelY="1.2258064516129032"/>
+      <Point X="643.0" Y="936.0" GraphId="e_159_o1_1" GraphRef="e_159_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="580.0" Y="969.0" GraphId="e_159_c__0_0" GraphRef="n161_REACTOME_62161" RelX="0.28125" RelY="-1.1111111111111112"/>
+      <Point X="605.0" Y="936.0" GraphId="e_159_c__0_1" GraphRef="e_159_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_REACTOME_75916">
+    <Comment Source="WikiPathways-description">DNA-PKcs is recruited to the Ku-DNA end complex (Gottlieb and Jackson, 1993), causing Ku to translocate inwards (away from the break) approximately 10 bp (Yoo and Dynan, 1999). This forms the DNA-PK complex (DNA-PKcs plus Ku70/Ku80) at each end of the DNA double strand break.</Comment>
+    <BiopaxRef>lit_76264</BiopaxRef>
+    <BiopaxRef>lit_76267</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="560.0" Y="1147.0" GraphId="e_164_0"/>
+      <Point X="522.0" Y="1147.0" GraphId="e_164_1"/>
+      <Point X="483.0" Y="1147.0" GraphId="e_164_2" GraphRef="n165_REACTOME_75907" RelX="1.063063063063063" RelY="-0.05128205128205128" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_164_a_i"/>
+      <Anchor Position="0.4935064935064935" GraphId="e_164_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="774.0" Y="1147.0" GraphId="e_164_i0_0" GraphRef="n154_REACTOME_75906" RelX="-1.0491803278688525" RelY="-0.05263157894736842"/>
+      <Point X="560.0" Y="1147.0" GraphId="e_164_i0_1" GraphRef="e_164_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="561.0" Y="1029.0" GraphId="e_164_i1_0" GraphRef="n161_REACTOME_62161" RelX="-0.015625" RelY="1.1111111111111112"/>
+      <Point X="560.0" Y="1147.0" GraphId="e_164_i1_1" GraphRef="e_164_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_166_REACTOME_75920">
+    <Comment Source="WikiPathways-description">Two DNA-PK-DNA complexes, one on either side of the break, interact to bring the DNA ends together in synaptic complex (DeFazio et al., 2002).</Comment>
+    <BiopaxRef>lit_76270</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="424.0" Y="1126.0" GraphId="e_166_0" GraphRef="n165_REACTOME_75907" RelX="0.0" RelY="-1.1282051282051282"/>
+      <Point X="424.0" Y="1063.0" GraphId="e_166_1"/>
+      <Point X="424.0" Y="1030.0" GraphId="e_166_2" GraphRef="n167_REACTOME_75908" RelX="-0.021505376344086023" RelY="1.1153846153846154" ArrowHead="Arrow"/>
+      <Anchor Position="0.65625" GraphId="e_166_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_172_REACTOME_175588">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'DNA-PK synaptic complex' is present. At the end of this reaction, 1 molecule of 'DNA-PK:DNA synaptic complex with ligatable ends' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleoplasm' and  is mediated by the 'endonuclease activity' of 'nucleases removing 3' phosphoglycolate'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_175594</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="424.0" Y="972.0" GraphId="e_172_0" GraphRef="n167_REACTOME_75908" RelX="-0.021505376344086023" RelY="-1.1153846153846154"/>
+      <Point X="424.0" Y="932.0" GraphId="e_172_1"/>
+      <Point X="374.0" Y="932.0" GraphId="e_172_2" GraphRef="n173_REACTOME_76324" RelX="1.0517241379310345" RelY="-0.07547169811320754" ArrowHead="Arrow"/>
+      <Anchor Position="0.4444444444444444" GraphId="e_172_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_172_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="424.0" Y="882.0" GraphId="e_172_c__0_0" GraphRef="n174_REACTOME_175597" RelX="-0.01639344262295082" RelY="1.1578947368421053"/>
+      <Point X="424.0" Y="932.0" GraphId="e_172_c__0_1" GraphRef="e_172_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_175_REACTOME_175585">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'DNA-PK synaptic complex' is present. At the end of this reaction, 1 molecule of 'DNA-PK:DNA synaptic complex with ligatable ends' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleoplasm' and  is mediated by the 'endonuclease activity' of 'unknown endonuclease'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="376.0" Y="1001.0" GraphId="e_175_0" GraphRef="n167_REACTOME_75908" RelX="-1.053763440860215" RelY="0.0"/>
+      <Point X="312.0" Y="1001.0" GraphId="e_175_1"/>
+      <Point X="312.0" Y="964.0" GraphId="e_175_2" GraphRef="n173_REACTOME_76324" RelX="-0.017241379310344827" RelY="1.1320754716981132" ArrowHead="Arrow"/>
+      <Anchor Position="0.6336633663366337" GraphId="e_175_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_175_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="263.0" Y="1000.0" GraphId="e_175_c__0_0" GraphRef="n176_REACTOME_177947" RelX="1.0517241379310345" RelY="0.0"/>
+      <Point X="312.0" Y="1001.0" GraphId="e_175_c__0_1" GraphRef="e_175_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_181_REACTOME_75922">
+    <Comment Source="WikiPathways-description">A complex consisting of XRCC4 and DNA ligase IV is recruited to the DNA-PK-DNA complex (Critchlow and Jackson, 1997; Leber et al., 1998).</Comment>
+    <BiopaxRef>lit_76289</BiopaxRef>
+    <BiopaxRef>lit_76291</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="313.0" Y="845.0" GraphId="e_181_0"/>
+      <Point X="313.0" Y="811.0" GraphId="e_181_1"/>
+      <Point X="312.0" Y="779.0" GraphId="e_181_2" GraphRef="n183_REACTOME_75915" RelX="0.0" RelY="1.0681818181818181" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_181_a_i"/>
+      <Anchor Position="0.5150296155451582" GraphId="e_181_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_181_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="313.0" Y="905.0" GraphId="e_181_i0_0" GraphRef="n173_REACTOME_76324" RelX="0.0" RelY="-1.0943396226415094"/>
+      <Point X="313.0" Y="845.0" GraphId="e_181_i0_1" GraphRef="e_181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_181_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="287.0" Y="846.0" GraphId="e_181_i1_0" GraphRef="n182_REACTOME_75912" RelX="1.063063063063063" RelY="-0.10526315789473684"/>
+      <Point X="313.0" Y="845.0" GraphId="e_181_i1_1" GraphRef="e_181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_REACTOME_75928">
+    <Comment Source="WikiPathways-description">Presumably the proteins must be released from the DNA prior to end joining but precisely when this step occurs is not known. Mg-ATP and the protein kinase activity of DNA-PKcs are required for repair of DNA double strand breaks (Kurimasa et al, 1999; Kienker et al, 2000; Baumann and West, 1998). In vitro,  DNA-PK undergoes autophosphorylation which correlates with loss of protein kinase activity and disruption of the DNA-PKcs-Ku-DNA complex  (Chan and Lees-Miller, 1996; Douglas et al, 2001; 2002; Merkle et al, 2002). Moreover, autophosphorylation of DNA-PKcs is required for NHEJ in vivo  (Chan et al, 2002; Ding et al, 2003), suggesting that autophosphorylation may serve as a mechanism to remove DNA-PKcs from DNA prior to end joining.</Comment>
+    <BiopaxRef>lit_76310</BiopaxRef>
+    <BiopaxRef>lit_76311</BiopaxRef>
+    <BiopaxRef>lit_76322</BiopaxRef>
+    <BiopaxRef>lit_76321</BiopaxRef>
+    <BiopaxRef>lit_76318</BiopaxRef>
+    <BiopaxRef>lit_76313</BiopaxRef>
+    <BiopaxRef>lit_76319</BiopaxRef>
+    <BiopaxRef>lit_76304</BiopaxRef>
+    <BiopaxRef>lit_76305</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="382.0" Y="732.0" GraphId="e_184_0" GraphRef="n183_REACTOME_75915" RelX="1.0526315789473684" RelY="0.0"/>
+      <Point X="481.0" Y="732.0" GraphId="e_184_1"/>
+      <Point X="562.0" Y="668.0" GraphId="e_184_2"/>
+      <Anchor Position="0.48953496204083097" GraphId="e_184_a_p"/>
+      <Anchor Position="1.0" GraphId="e_184_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="562.0" Y="969.0" GraphId="e_184_o0_0" ArrowHead="Arrow" GraphRef="n161_REACTOME_62161" RelX="0.0" RelY="-1.1111111111111112"/>
+      <Point X="562.0" Y="668.0" GraphId="e_184_o0_1" GraphRef="e_184_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="615.0" Y="635.0" GraphId="e_184_o1_0" ArrowHead="Arrow" GraphRef="n186_REACTOME_58274" RelX="-0.7207207207207207" RelY="1.1320754716981132"/>
+      <Point X="562.0" Y="668.0" GraphId="e_184_o1_1" GraphRef="e_184_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="562.0" Y="555.0" GraphId="e_184_o2_0" ArrowHead="Arrow" GraphRef="n185_REACTOME_75927" RelX="-0.01904761904761905" RelY="1.125"/>
+      <Point X="562.0" Y="668.0" GraphId="e_184_o2_1" GraphRef="e_184_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="622.0" Y="687.0" GraphId="e_184_o3_0" ArrowHead="Arrow" GraphRef="n189_REACTOME_75911" RelX="-1.0476190476190477" RelY="-0.8947368421052632"/>
+      <Point X="562.0" Y="668.0" GraphId="e_184_o3_1" GraphRef="e_184_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="508.0" Y="631.0" GraphId="e_184_o4_0" ArrowHead="Arrow" GraphRef="n187_REACTOME_58272" RelX="0.6306306306306306" RelY="1.1320754716981132"/>
+      <Point X="562.0" Y="668.0" GraphId="e_184_o4_1" GraphRef="e_184_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="485.0" Y="683.0" GraphId="e_184_o5_0" ArrowHead="Arrow" GraphRef="n188_REACTOME_53791" RelX="1.0666666666666667" RelY="-0.5142857142857142"/>
+      <Point X="562.0" Y="668.0" GraphId="e_184_o5_1" GraphRef="e_184_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_184_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="456.0" Y="713.0" GraphId="e_184_c__0_0" GraphRef="n188_REACTOME_53791" RelX="0.4222222222222222" RelY="1.2"/>
+      <Point X="481.0" Y="732.0" GraphId="e_184_c__0_1" GraphRef="e_184_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_11" GroupRef="group_comp_11" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="112.0" CenterY="1663.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_11" GroupRef="group_comp_11">
+    <Graphics Color="000000" CenterX="1569.0" CenterY="1067.5" Width="3086.0" Height="2115.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83540" rdf:id="lit_83540">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12556884</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DNA damage activates ATM through intermolecular autophosphorylation and dimer dissociation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bakkenist, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kastan, MB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 421:499-506</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83547" rdf:id="lit_83547">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10959836</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A critical role for histone H2AX in recruitment of repair factors to nuclear foci after DNA damage.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paull, TT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rogakou, EP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamazaki, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kirchgessner, CU</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gellert, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bonner, WM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 10:886-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83579" rdf:id="lit_83579">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10550055</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Requirement of ATM-dependent phosphorylation of brca1 in the DNA damage response to double-strand breaks</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cortez, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qin, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 286:1162-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83563" rdf:id="lit_83563">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12607003</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MDC1 is required for the intra-S-phase DNA damage checkpoint.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldberg, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stucki, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Amours, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rahman, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pappin, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 421:952-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83562" rdf:id="lit_83562">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12607005</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MDC1 is a mediator of the mammalian DNA damage checkpoint.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stewart, GS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bignell, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taylor, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 421:961-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_75193" rdf:id="lit_75193">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12419185</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NBS1 localizes to gamma-H2AX foci through interaction with the FHA/BRCT domain.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tauchi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakamoto, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakamura, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morishima, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuura, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanimoto, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Komatsu, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 12:1846-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_69358" rdf:id="lit_69358">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11756551</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A DNA damage-regulated BRCT-containing protein, TopBP1, is required for cell survival.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamane, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 22:555-66</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83552" rdf:id="lit_83552">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12778123</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular views of recombination proteins and their control.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 4:435-45</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110405" rdf:id="lit_110405">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12364621</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">53BP1, a mediator of the DNA damage checkpoint.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuoka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carpenter, PB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elledge, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 298:1435-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83607" rdf:id="lit_83607">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11080452</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reconstitution of the strand invasion step of double-strand break repair using human Rad51 Rad52 and RPA proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McIlwraith, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Dyck, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Masson, JY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stasiak, AZ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stasiak, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 304:151-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83617" rdf:id="lit_83617">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12606939</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BRCA2-dependent and independent formation of RAD51 nuclear foci.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tarsounas, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davies, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 22:1115-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83611" rdf:id="lit_83611">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10921897</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Precise binding of single-stranded DNA termini by human RAD52 protein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parsons, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumann, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Dyck, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 19:4175-81</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83612" rdf:id="lit_83612">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10744977</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human Rad52 protein exists as a heptameric ring.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stasiak, AZ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Larquet, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stasiak, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MÃ¼ller, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Engel, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Dyck, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Egelman, EH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 10:337-40</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83613" rdf:id="lit_83613">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9837724</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Visualisation of human rad52 protein and its complexes with hRad51 and DNA.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Dyck, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hajibagheri, NM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stasiak, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 284:1027-38</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83614" rdf:id="lit_83614">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10438626</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heteroduplex formation by human Rad51 protein: effects of DNA end-structure, hRP-A and hRad52.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumann, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 291:363-74</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_109575" rdf:id="lit_109575">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12370410</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of the single-strand annealing domain of human RAD52 protein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Singleton, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wentzell, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wigley, DB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 99:13492-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_109576" rdf:id="lit_109576">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12191481</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of the homologous-pairing domain from the human Rad52 recombinase in the undecameric form.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kagawa, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurumizaka, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishitani, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukai, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nureki, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shibata, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yokoyama, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 10:359-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83639" rdf:id="lit_83639">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9826763</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction of human rad51 recombination protein with single-stranded DNA binding protein, RPA.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Golub, EI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gupta, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haaf, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wold, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Radding, CM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 26:5388-93</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76260" rdf:id="lit_76260">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11493912</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of the Ku heterodimer bound to DNA and its implications for double-strand break repair.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walker, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Corpina, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldberg, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 412:607-14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76262" rdf:id="lit_76262">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9512523</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction of Ku protein and DNA-dependent protein kinase catalytic subunit with nucleic acids.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dynan, WS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoo, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 26:1551-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76314" rdf:id="lit_76314">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11604075</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Computational approach for determining the spectrum of DNA damage induced by ionizing radiation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nikjoo, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Neill, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilson, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodhead, DT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Radiat Res 156:577-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76287" rdf:id="lit_76287">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12947387</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation and mechanisms of mammalian double-strand break repair.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Valerie, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Povirk, LF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 22:5792-812</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76534" rdf:id="lit_76534">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DNA Repair and Mutagenesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walker, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Friedberg, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Siede, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ASM Press, Washington, D.C</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76304" rdf:id="lit_76304">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12231622</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Autophosphorylation of the DNA-dependent protein kinase catalytic subunit is required for rejoining of DNA double-strand breaks.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, BP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prithivirajsingh, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurimasa, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Story, MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qin, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, DJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 16:2333-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76305" rdf:id="lit_76305">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12897153</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Autophosphorylation of the catalytic subunit of the DNA-dependent protein kinase is required for efficient end processing during DNA double-strand break repair.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ding, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reddy, YV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Woods, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Douglas, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ramsden, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meek, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 23:5836-48</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76264" rdf:id="lit_76264">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8422676</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The DNA-dependent protein kinase: requirement for DNA ends and association with Ku antigen.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gottlieb, TM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 72:131-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76267" rdf:id="lit_76267">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10572166</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Geometry of a complex formed by double strand break repair proteins at a single DNA end: recruitment of DNA-PKcs induces inward translocation of Ku protein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoo, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dynan, WS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 27:4679-86</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76270" rdf:id="lit_76270">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12065431</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Synapsis of DNA ends by DNA-dependent protein kinase.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DeFazio, LG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stansel, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chu, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 21:3192-200</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_175594" rdf:id="lit_175594">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12023295</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conversion of phosphoglycolate to phosphate termini on 3' overhangs of DNA double strand breaks by the human tyrosyl-DNA phosphodiesterase hTdp1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inamdar, KV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pouliot, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rasouli-Nia, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Povirk, LF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:27162-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76289" rdf:id="lit_76289">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9259561</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mammalian DNA double-strand break repair protein XRCC4 interacts with DNA ligase IV.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Critchlow, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bowater, RP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 7:588-98</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76291" rdf:id="lit_76291">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9430729</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The XRCC4 gene product is a target for and interacts with the DNA-dependent protein kinase.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leber, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wise, TW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizuta, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meek, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:1794-801</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76310" rdf:id="lit_76310">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10207111</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Requirement for the kinase activity of human DNA-dependent protein kinase catalytic subunit in DNA strand break rejoining.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurimasa, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumano, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boubnov, NV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Story, MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tung, CS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peterson, SR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, DJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 19:3877-84</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76311" rdf:id="lit_76311">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10908332</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Both V(D)J recombination and radioresistance require DNA-PK kinase activity, though minimal levels suffice for V(D)J recombination.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kienker, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shin, EK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meek, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 28:2752-61</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76322" rdf:id="lit_76322">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9826654</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DNA end-joining catalyzed by human cell-free extracts.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumann, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 95:14066-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76321" rdf:id="lit_76321">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8621537</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The DNA-dependent protein kinase is inactivated by autophosphorylation of the catalytic subunit.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:8936-41</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76318" rdf:id="lit_76318">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12186630</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of in vitro and in vivo phosphorylation sites in the catalytic subunit of the DNA-dependent protein kinase.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Douglas, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sapkota, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morrice, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodarzi, AA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merkle, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meek, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alessi, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 368:243-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76313" rdf:id="lit_76313">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11376007</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protein phosphatases regulate DNA-dependent protein kinase activity.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Douglas, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moorhead, GB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ye, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:18992-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76319" rdf:id="lit_76319">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12379113</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The DNA-dependent protein kinase interacts with DNA to form a protein-DNA complex that is disrupted by phosphorylation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merkle, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Douglas, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moorhead, GB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leonenko, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cramb, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bazett-Jones, DP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees-Miller, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 41:12706-14</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>DNA repair pathway</bp:TERM><bp:ID>PW:0000099</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

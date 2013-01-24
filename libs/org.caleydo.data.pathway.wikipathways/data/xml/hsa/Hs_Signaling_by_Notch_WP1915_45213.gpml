@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Signaling by Notch" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Jassal, B">
+  <Comment Source="WikiPathways-description">The Notch Signaling Pathway (NSP) is a highly conserved pathway  for cell-cell communication. NSP is involved in the regulation of cellular differentiation, proliferation, and specification. For example, it is utilised by continually renewing adult tissues such as blood, skin, and gut epithelium not only to maintain stem cells in a proliferative, pluripotent, and undifferentiated state but also to direct the cellular progeny to adopt different developmental cell fates. Analogously, it is used during embryonic development to create fine-grained patterns of differentiated cells, notably during neurogenesis where the NSP controls patches such as that of the vertebrate inner ear where individual hair cells are surrounded by supporting cells.&lt;br&gt;This process is known as lateral inhibition: a molecular mechanism whereby individual cells within a field are stochastically selected to adopt particular cell fates and the NSP inhibits their direct neighbours from doing the same. The NSP has been adopted by several other biological systems for binary cell fate choice. In addition, the NSP is also used during vertebrate segmentation to divide the growing embryo into regular blocks called somites which eventually form the vertebrae. The core of this process relies on regular pulses of Notch signaling generated from a molecular oscillator in the presomatic mesoderm.&lt;br&gt;The Notch receptor is synthesized in the rough endoplasmic reticulum as a single polypeptide precursor.  Newly synthesized Notch receptor is proteolytically cleaved in the trans-golgi network, creating a heterodimeric mature receptor comprising of non-covalently associated extracellular and transmembrane subunits. This assembly travels to the cell surface ready to interact with specific ligands. Following ligand activation and further proteolytic cleavage,  an intracellular domain is released and translocates to the nucleus where it regulates gene expression.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n7_REACTOME_157070" TextLabel="Notch 3 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="484.5" CenterY="322.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UM47"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_157104" TextLabel="Notch 1 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="195.5" CenterY="322.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46531"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_157019" TextLabel="Notch 4 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="640.5" CenterY="322.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q99466"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_157102" TextLabel="Notch 3 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="484.5" CenterY="189.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UM47"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_157025" TextLabel="Notch 2 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="339.5" CenterY="189.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04721"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_157024" TextLabel="Notch 1 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="195.5" CenterY="189.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46531"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_157121" TextLabel="Notch 4 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="640.5" CenterY="189.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q99466"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_157010" TextLabel="Notch 2 receptor &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="339.5" CenterY="322.0" Width="99.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04721"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_157091" TextLabel="NTM-NEC 1 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="195.5" CenterY="425.0" Width="81.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5481"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_157061" TextLabel="NTM-NEC 3 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="484.5" CenterY="424.0" Width="81.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5620"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_157049" TextLabel="furin&#10;" Type="Protein">
+    <BiopaxRef>lit_159838</BiopaxRef>
+    <Graphics Color="000000" CenterX="83.5" CenterY="396.5" Width="51.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P09958"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_157037" TextLabel="NTM-NEC 2 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="339.5" CenterY="424.0" Width="81.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5420"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_157054" TextLabel="NTM-NEC 4 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="642.5" CenterY="424.0" Width="81.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4796"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_157053" TextLabel="NTM-NEC 4 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="807.0" CenterY="641.0" Width="76.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3481"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_157005" TextLabel="NTM-NEC 2 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="344.0" CenterY="640.5" Width="76.0" Height="41.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5316"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_157048" TextLabel="NTM-NEC 3 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="572.5" CenterY="646.0" Width="77.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4341"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_157027" TextLabel="NTM-NEC 1 &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="105.5" CenterY="638.0" Width="83.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4661"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_157653" TextLabel="NTM-NEC4-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="932.5" CenterY="745.0" Width="105.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2938"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_157643" TextLabel="Notch &#10;Ligand&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="461.0" CenterY="841.5" Width="70.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_5356"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_157655" TextLabel="NTM-NEC1-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="242.5" CenterY="744.5" Width="103.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5547"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_157638" TextLabel="NTM-NEC3-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="717.5" CenterY="746.0" Width="103.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2798"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_157637" TextLabel="NTM-NEC2-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="468.5" CenterY="747.0" Width="103.0" Height="48.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3398"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_157650" TextLabel="Notch 3 ligand-&#10;bound fragment-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="688.5" CenterY="639.0" Width="103.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2424"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_157200" TextLabel="Notch 1 NEXT &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1436.0" CenterY="618.0" Width="90.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46531"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_157658" TextLabel="Notch 1 ligand-&#10;bound fragment-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="223.5" CenterY="639.0" Width="103.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3700"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_157641" TextLabel="Notch 4 NEXT &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1434.0" CenterY="226.0" Width="90.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q99466"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_157630" TextLabel="Notch 2 ligand-&#10;bound fragment-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="458.5" CenterY="639.0" Width="103.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4751"/>
+  </DataNode>
+  <DataNode GraphId="n50_REACTOME_157225" TextLabel="Notch 2 NEXT &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1436.0" CenterY="481.0" Width="90.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04721"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_157627" TextLabel="Notch 4 ligand-&#10;bound fragment-&#10;Notch ligand &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="926.5" CenterY="639.0" Width="103.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5162"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_157203" TextLabel="Notch 3 NEXT &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1436.0" CenterY="348.0" Width="90.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UM47"/>
+  </DataNode>
+  <DataNode GraphId="n53_REACTOME_157186" TextLabel="ADAM 10 &#10;metalloprotease (Zn &#10;cofactor)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="70.5" CenterY="514.5" Width="125.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3937"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_157635" TextLabel="Transmembrane &#10;remnant 4&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1459.0" CenterY="170.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q99466"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_157656" TextLabel="Transmembrane &#10;remnant 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1459.0" CenterY="564.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46531"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_157657" TextLabel="Transmembrane &#10;remnant 3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1459.0" CenterY="289.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UM47"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_157343" TextLabel="gamma-&#10;secretase &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1280.5" CenterY="62.5" Width="93.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5292"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_157628" TextLabel="Transmembrane &#10;remnant 2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1459.0" CenterY="415.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04721"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_157636" TextLabel="NICD 4 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1168.5" CenterY="334.5" Width="61.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q99466"/>
+  </DataNode>
+  <DataNode GraphId="n64_REACTOME_157634" TextLabel="NICD 1 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="860.0" CenterY="338.0" Width="72.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46531"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_157642" TextLabel="NICD 2 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="946.0" CenterY="338.0" Width="64.0" Height="40.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04721"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_157647" TextLabel="NICD 3 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1069.5" CenterY="336.5" Width="69.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UM47"/>
+  </DataNode>
+  <DataNode GraphId="n71_REACTOME_157942" TextLabel="NICD 2 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="975.5" CenterY="248.5" Width="71.0" Height="41.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04721"/>
+  </DataNode>
+  <DataNode GraphId="n72_REACTOME_157928" TextLabel="NICD 3 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1070.0" CenterY="249.5" Width="70.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UM47"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_157939" TextLabel="NICD 1 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="959.5" CenterY="189.5" Width="77.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46531"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_157945" TextLabel="NICD 4 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1081.0" CenterY="182.0" Width="74.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q99466"/>
+  </DataNode>
+  <Line GraphId="e_15_REACTOME_157077">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'Notch 2 receptor precursor' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157055</BiopaxRef>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="339.0" Y="211.0" GraphId="e_15_0" GraphRef="n11_REACTOME_157025" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="339.0" Y="257.0" GraphId="e_15_1"/>
+      <Point X="339.0" Y="300.0" GraphId="e_15_2" GraphRef="n14_REACTOME_157010" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.5168539325842697" GraphId="e_15_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_156990">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'Notch 4 receptor precursor' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157003</BiopaxRef>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="640.0" Y="211.0" GraphId="e_16_0" GraphRef="n13_REACTOME_157121" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="640.0" Y="259.0" GraphId="e_16_1"/>
+      <Point X="640.0" Y="300.0" GraphId="e_16_2" GraphRef="n9_REACTOME_157019" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.5393258426966292" GraphId="e_16_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_157144">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'Notch 1 receptor precursor' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157153</BiopaxRef>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="195.0" Y="211.0" GraphId="e_17_0" GraphRef="n12_REACTOME_157024" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="195.0" Y="256.0" GraphId="e_17_1"/>
+      <Point X="195.0" Y="300.0" GraphId="e_17_2" GraphRef="n8_REACTOME_157104" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.5056179775280899" GraphId="e_17_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_REACTOME_157034">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'Notch 3 receptor precursor' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157105</BiopaxRef>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="484.0" Y="211.0" GraphId="e_18_0" GraphRef="n10_REACTOME_157102" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="484.0" Y="258.0" GraphId="e_18_1"/>
+      <Point X="484.0" Y="300.0" GraphId="e_18_2" GraphRef="n7_REACTOME_157070" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.5280898876404494" GraphId="e_18_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_REACTOME_157131">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 3 receptor precursor' is present. At the end of this reaction, 1 molecule of 'NTM-NEC 3 heterodimer' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi lumen' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157112</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="484.0" Y="344.0" GraphId="e_24_0" GraphRef="n7_REACTOME_157070" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="484.0" Y="368.0" GraphId="e_24_1"/>
+      <Point X="484.0" Y="402.0" GraphId="e_24_2" GraphRef="n20_REACTOME_157061" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.41379310344827586" GraphId="e_24_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="112.0" Y="394.0" GraphId="e_24_c__0_0" GraphRef="n21_REACTOME_157049" RelX="1.1372549019607843" RelY="-0.17391304347826086"/>
+      <Point X="484.0" Y="368.0" GraphId="e_24_c__0_1" GraphRef="e_24_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_REACTOME_157013">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 4 receptor precursor' is present. At the end of this reaction, 1 molecule of 'NTM-NEC 4 heterodimer' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi lumen' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157112</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="640.0" Y="344.0" GraphId="e_25_0" GraphRef="n9_REACTOME_157019" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="640.0" Y="373.0" GraphId="e_25_1"/>
+      <Point X="641.0" Y="402.0" GraphId="e_25_2" GraphRef="n23_REACTOME_157054" RelX="-0.024691358024691357" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.49985145572069795" GraphId="e_25_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="112.0" Y="394.0" GraphId="e_25_c__0_0" GraphRef="n21_REACTOME_157049" RelX="1.1372549019607843" RelY="-0.17391304347826086"/>
+      <Point X="640.0" Y="373.0" GraphId="e_25_c__0_1" GraphRef="e_25_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_REACTOME_157042">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 1 receptor precursor' is present. At the end of this reaction, 1 molecule of 'NTM-NEC 1 heterodimer' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi lumen' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157112</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="195.0" Y="344.0" GraphId="e_26_0" GraphRef="n8_REACTOME_157104" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="195.0" Y="372.0" GraphId="e_26_1"/>
+      <Point X="195.0" Y="403.0" GraphId="e_26_2" GraphRef="n19_REACTOME_157091" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.4745762711864407" GraphId="e_26_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="112.0" Y="390.0" GraphId="e_26_c__0_0" GraphRef="n21_REACTOME_157049" RelX="1.1372549019607843" RelY="-0.5217391304347826"/>
+      <Point X="195.0" Y="372.0" GraphId="e_26_c__0_1" GraphRef="e_26_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_REACTOME_156994">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 2 receptor precursor' is present. At the end of this reaction, 1 molecule of 'NTM-NEC 2 heterodimer' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi lumen' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157112</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="339.0" Y="344.0" GraphId="e_27_0" GraphRef="n14_REACTOME_157010" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="339.0" Y="371.0" GraphId="e_27_1"/>
+      <Point X="339.0" Y="402.0" GraphId="e_27_2" GraphRef="n22_REACTOME_157037" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.46551724137931033" GraphId="e_27_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="112.0" Y="393.0" GraphId="e_27_c__0_0" GraphRef="n21_REACTOME_157049" RelX="1.1372549019607843" RelY="-0.2608695652173913"/>
+      <Point X="339.0" Y="371.0" GraphId="e_27_c__0_1" GraphRef="e_27_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_157076">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NTM-NEC 4 heterodimer' is translocated from Golgi lumen to plasma membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157051</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="664.0" Y="446.0" GraphId="e_32_0" GraphRef="n23_REACTOME_157054" RelX="0.5432098765432098" RelY="1.1578947368421053"/>
+      <Point X="757.0" Y="522.0" GraphId="e_32_1"/>
+      <Point X="799.0" Y="619.0" GraphId="e_32_2" GraphRef="n28_REACTOME_157053" RelX="-0.21052631578947367" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.5318894869464925" GraphId="e_32_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_157151">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NTM-NEC 1 heterodimer' is translocated from Golgi lumen to plasma membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157051</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="187.0" Y="447.0" GraphId="e_33_0" GraphRef="n19_REACTOME_157091" RelX="-0.19753086419753085" RelY="1.1578947368421053"/>
+      <Point X="143.0" Y="562.0" GraphId="e_33_1"/>
+      <Point X="115.0" Y="614.0" GraphId="e_33_2" GraphRef="n31_REACTOME_157027" RelX="0.24096385542168675" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.6758355695122538" GraphId="e_33_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_157000">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NTM-NEC 3 heterodimer' is translocated from Golgi lumen to plasma membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157051</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="492.0" Y="446.0" GraphId="e_34_0" GraphRef="n20_REACTOME_157061" RelX="0.19753086419753085" RelY="1.1578947368421053"/>
+      <Point X="543.0" Y="562.0" GraphId="e_34_1"/>
+      <Point X="564.0" Y="622.0" GraphId="e_34_2" GraphRef="n30_REACTOME_157048" RelX="-0.2077922077922078" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.6659282969400244" GraphId="e_34_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_REACTOME_157117">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NTM-NEC 2 heterodimer' is translocated from Golgi lumen to plasma membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157138</BiopaxRef>
+    <BiopaxRef>lit_157051</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="339.0" Y="446.0" GraphId="e_35_0" GraphRef="n22_REACTOME_157037" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="340.0" Y="567.0" GraphId="e_35_1"/>
+      <Point X="342.0" Y="617.0" GraphId="e_35_2" GraphRef="n29_REACTOME_157005" RelX="-0.05263157894736842" RelY="-1.1219512195121952" ArrowHead="Arrow"/>
+      <Anchor Position="0.7074439908708162" GraphId="e_35_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_REACTOME_157645">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch Ligand', and 1 molecule of 'NTM-NEC 1 heterodimer' are present. At the end of this reaction, 1 molecule of 'NTM-NEC1-Notch ligand complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157078</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="127.0" Y="758.0" GraphId="e_41_0"/>
+      <Point X="129.0" Y="753.0" GraphId="e_41_1"/>
+      <Point X="188.0" Y="748.0" GraphId="e_41_2" GraphRef="n38_REACTOME_157655" RelX="-1.0485436893203883" RelY="0.1509433962264151" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_41_a_i"/>
+      <Anchor Position="0.08336600724916245" GraphId="e_41_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="423.0" Y="836.0" GraphId="e_41_i0_0" GraphRef="n37_REACTOME_157643" RelX="-1.0857142857142856" RelY="-0.43478260869565216"/>
+      <Point X="204.0" Y="807.0" GraphId="e_41_i0_1"/>
+      <Point X="127.0" Y="758.0" GraphId="e_41_i0_2" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="108.0" Y="662.0" GraphId="e_41_i1_0" GraphRef="n31_REACTOME_157027" RelX="0.07228915662650602" RelY="1.1428571428571428"/>
+      <Point X="127.0" Y="758.0" GraphId="e_41_i1_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_REACTOME_157644">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch Ligand', and 1 molecule of 'NTM-NEC 3 heterodimer' are present. At the end of this reaction, 1 molecule of 'NTM-NEC3-Notch ligand complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157078</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="570.0" Y="748.0" GraphId="e_42_0"/>
+      <Point X="568.0" Y="748.0" GraphId="e_42_1"/>
+      <Point X="663.0" Y="746.0" GraphId="e_42_2" GraphRef="n39_REACTOME_157638" RelX="-1.0485436893203883" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_42_a_i"/>
+      <Anchor Position="0.020614083168840815" GraphId="e_42_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="571.0" Y="670.0" GraphId="e_42_i0_0" GraphRef="n30_REACTOME_157048" RelX="-0.025974025974025976" RelY="1.1428571428571428"/>
+      <Point X="570.0" Y="748.0" GraphId="e_42_i0_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="474.0" Y="827.0" GraphId="e_42_i1_0" GraphRef="n37_REACTOME_157643" RelX="0.37142857142857144" RelY="-1.2173913043478262"/>
+      <Point X="570.0" Y="748.0" GraphId="e_42_i1_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_REACTOME_157633">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch Ligand', and 1 molecule of 'NTM-NEC 4 heterodimer' are present. At the end of this reaction, 1 molecule of 'NTM-NEC4-Notch ligand complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157078</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="815.0" Y="747.0" GraphId="e_43_0"/>
+      <Point X="816.0" Y="747.0" GraphId="e_43_1"/>
+      <Point X="877.0" Y="745.0" GraphId="e_43_2" GraphRef="n36_REACTOME_157653" RelX="-1.0476190476190477" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_43_a_i"/>
+      <Anchor Position="0.016120509688149442" GraphId="e_43_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="808.0" Y="663.0" GraphId="e_43_i0_0" GraphRef="n28_REACTOME_157053" RelX="0.02631578947368421" RelY="1.1578947368421053"/>
+      <Point X="815.0" Y="747.0" GraphId="e_43_i0_1" GraphRef="e_43_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="499.0" Y="837.0" GraphId="e_43_i1_0" GraphRef="n37_REACTOME_157643" RelX="1.0857142857142856" RelY="-0.34782608695652173"/>
+      <Point X="733.0" Y="813.0" GraphId="e_43_i1_1"/>
+      <Point X="815.0" Y="747.0" GraphId="e_43_i1_2" GraphRef="e_43_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_REACTOME_157651">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'NTM-NEC 2 heterodimer', and 1 molecule of 'Notch Ligand' are present. At the end of this reaction, 1 molecule of 'NTM-NEC2-Notch ligand complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157078</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="341.0" Y="747.0" GraphId="e_44_0"/>
+      <Point X="341.0" Y="748.0" GraphId="e_44_1"/>
+      <Point X="414.0" Y="747.0" GraphId="e_44_2" GraphRef="n40_REACTOME_157637" RelX="-1.0485436893203883" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_44_a_i"/>
+      <Anchor Position="0.013512262899939186" GraphId="e_44_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="343.0" Y="664.0" GraphId="e_44_i0_0" GraphRef="n29_REACTOME_157005" RelX="-0.02631578947368421" RelY="1.170731707317073"/>
+      <Point X="341.0" Y="747.0" GraphId="e_44_i0_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="446.0" Y="827.0" GraphId="e_44_i1_0" GraphRef="n37_REACTOME_157643" RelX="-0.42857142857142855" RelY="-1.2173913043478262"/>
+      <Point X="341.0" Y="747.0" GraphId="e_44_i1_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_REACTOME_157629">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'NTM-NEC2-Notch ligand complex' is present. At the end of this reaction, 1 molecule of 'Notch 2 ligand-bound fragment-Notch ligand complex', and 1 molecule of 'Notch 2 NEXT fragment' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region' and  is mediated by the 'metallopeptidase activity' of 'ADAM 10 metalloprotease (Zn cofactor)'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157210</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="488.0" Y="720.0" GraphId="e_54_0" GraphRef="n40_REACTOME_157637" RelX="0.3883495145631068" RelY="-1.125"/>
+      <Point X="520.0" Y="686.0" GraphId="e_54_1"/>
+      <Point X="520.0" Y="597.0" GraphId="e_54_2"/>
+      <Point X="487.0" Y="558.0" GraphId="e_54_3"/>
+      <Point X="488.0" Y="559.0" GraphId="e_54_4"/>
+      <Anchor Position="0.9924852957132523" GraphId="e_54_a_p"/>
+      <Anchor Position="1.0" GraphId="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1388.0" Y="486.0" GraphId="e_54_o0_0" ArrowHead="Arrow" GraphRef="n50_REACTOME_157225" RelX="-1.0666666666666667" RelY="0.2631578947368421"/>
+      <Point X="851.0" Y="557.0" GraphId="e_54_o0_1"/>
+      <Point X="488.0" Y="559.0" GraphId="e_54_o0_2" GraphRef="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="470.0" Y="602.0" GraphId="e_54_o1_0" ArrowHead="Arrow" GraphRef="n49_REACTOME_157630" RelX="0.23300970873786409" RelY="-1.088235294117647"/>
+      <Point X="488.0" Y="559.0" GraphId="e_54_o1_1" GraphRef="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="136.0" Y="520.0" GraphId="e_54_c__0_0" GraphRef="n53_REACTOME_157186" RelX="1.056" RelY="0.22641509433962265"/>
+      <Point X="487.0" Y="558.0" GraphId="e_54_c__0_1" GraphRef="e_54_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_REACTOME_157649">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'NTM-NEC4-Notch ligand complex' is present. At the end of this reaction, 1 molecule of 'Notch 4 NEXT fragment', and 1 molecule of 'Notch 4 ligand-bound fragment-Notch ligand complex' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region' and  is mediated by the 'metallopeptidase activity' of 'ADAM 10 metalloprotease (Zn cofactor)'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157210</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="907.0" Y="716.0" GraphId="e_55_0" GraphRef="n36_REACTOME_157653" RelX="-0.47619047619047616" RelY="-1.1153846153846154"/>
+      <Point X="867.0" Y="677.0" GraphId="e_55_1"/>
+      <Point X="854.0" Y="475.0" GraphId="e_55_2"/>
+      <Point X="856.0" Y="476.0" GraphId="e_55_3"/>
+      <Anchor Position="0.9914169002400404" GraphId="e_55_a_p"/>
+      <Anchor Position="1.0" GraphId="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="911.0" Y="602.0" GraphId="e_55_o0_0" ArrowHead="Arrow" GraphRef="n51_REACTOME_157627" RelX="-0.2912621359223301" RelY="-1.088235294117647"/>
+      <Point X="856.0" Y="476.0" GraphId="e_55_o0_1" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1415.0" Y="248.0" GraphId="e_55_o1_0" ArrowHead="Arrow" GraphRef="n48_REACTOME_157641" RelX="-0.4222222222222222" RelY="1.1578947368421053"/>
+      <Point X="1355.0" Y="305.0" GraphId="e_55_o1_1"/>
+      <Point X="1164.0" Y="405.0" GraphId="e_55_o1_2"/>
+      <Point X="856.0" Y="476.0" GraphId="e_55_o1_3" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="136.0" Y="510.0" GraphId="e_55_c__0_0" GraphRef="n53_REACTOME_157186" RelX="1.056" RelY="-0.1509433962264151"/>
+      <Point X="854.0" Y="475.0" GraphId="e_55_c__0_1" GraphRef="e_55_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_REACTOME_157626">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'NTM-NEC3-Notch ligand complex' is present. At the end of this reaction, 1 molecule of 'Notch 3 ligand-bound fragment-Notch ligand complex', and 1 molecule of 'Notch 3 NEXT fragment' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region' and  is mediated by the 'metallopeptidase activity' of 'ADAM 10 metalloprotease (Zn cofactor)'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157210</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="685.0" Y="718.0" GraphId="e_56_0" GraphRef="n39_REACTOME_157638" RelX="-0.6213592233009708" RelY="-1.12"/>
+      <Point X="629.0" Y="676.0" GraphId="e_56_1"/>
+      <Point X="618.0" Y="523.0" GraphId="e_56_2"/>
+      <Point X="618.0" Y="525.0" GraphId="e_56_3"/>
+      <Anchor Position="0.9911266853624809" GraphId="e_56_a_p"/>
+      <Anchor Position="1.0" GraphId="e_56_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="667.0" Y="602.0" GraphId="e_56_o0_0" ArrowHead="Arrow" GraphRef="n45_REACTOME_157650" RelX="-0.4077669902912621" RelY="-1.088235294117647"/>
+      <Point X="618.0" Y="525.0" GraphId="e_56_o0_1" GraphRef="e_56_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1388.0" Y="361.0" GraphId="e_56_o1_0" ArrowHead="Arrow" GraphRef="n52_REACTOME_157203" RelX="-1.0666666666666667" RelY="0.6842105263157895"/>
+      <Point X="860.0" Y="523.0" GraphId="e_56_o1_1"/>
+      <Point X="618.0" Y="525.0" GraphId="e_56_o1_2" GraphRef="e_56_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="136.0" Y="515.0" GraphId="e_56_c__0_0" GraphRef="n53_REACTOME_157186" RelX="1.056" RelY="0.03773584905660377"/>
+      <Point X="618.0" Y="523.0" GraphId="e_56_c__0_1" GraphRef="e_56_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_REACTOME_157632">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'NTM-NEC1-Notch ligand complex' is present. At the end of this reaction, 1 molecule of 'Notch 1 NEXT fragment', and 1 molecule of 'Notch 1 ligand-bound fragment-Notch ligand complex' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'extracellular region' and  is mediated by the 'metallopeptidase activity' of 'ADAM 10 metalloprotease (Zn cofactor)'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157022</BiopaxRef>
+    <BiopaxRef>lit_157133</BiopaxRef>
+    <BiopaxRef>lit_157210</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="275.0" Y="715.0" GraphId="e_57_0" GraphRef="n38_REACTOME_157655" RelX="0.6407766990291263" RelY="-1.0943396226415094"/>
+      <Point X="292.0" Y="705.0" GraphId="e_57_1"/>
+      <Point X="295.0" Y="569.0" GraphId="e_57_2"/>
+      <Point X="296.0" Y="570.0" GraphId="e_57_3"/>
+      <Anchor Position="0.9910020351410813" GraphId="e_57_a_p"/>
+      <Anchor Position="1.0" GraphId="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1388.0" Y="613.0" GraphId="e_57_o0_0" ArrowHead="Arrow" GraphRef="n46_REACTOME_157200" RelX="-1.0666666666666667" RelY="-0.2631578947368421"/>
+      <Point X="948.0" Y="573.0" GraphId="e_57_o0_1"/>
+      <Point X="296.0" Y="570.0" GraphId="e_57_o0_2" GraphRef="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="258.0" Y="602.0" GraphId="e_57_o1_0" ArrowHead="Arrow" GraphRef="n47_REACTOME_157658" RelX="0.6796116504854369" RelY="-1.088235294117647"/>
+      <Point X="296.0" Y="570.0" GraphId="e_57_o1_1" GraphRef="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="136.0" Y="529.0" GraphId="e_57_c__0_0" GraphRef="n53_REACTOME_157186" RelX="1.056" RelY="0.5660377358490566"/>
+      <Point X="295.0" Y="569.0" GraphId="e_57_c__0_1" GraphRef="e_57_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_REACTOME_157648">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 4 NEXT fragment' is present. At the end of this reaction, 1 molecule of 'Transmembrane remnant 4', and 1 molecule of 'NICD 4 fragment' are present.&lt;br&gt;&lt;br&gt; This reaction takes place on the 'plasma membrane' and  is mediated by the 'aspartic-type endopeptidase activity' of 'gamma-secretase complex'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157796</BiopaxRef>
+    <BiopaxRef>lit_163904</BiopaxRef>
+    <BiopaxRef>lit_163911</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1386.0" Y="229.0" GraphId="e_67_0" GraphRef="n48_REACTOME_157641" RelX="-1.0666666666666667" RelY="0.15789473684210525"/>
+      <Point X="1344.0" Y="233.0" GraphId="e_67_1"/>
+      <Point X="1339.0" Y="234.0" GraphId="e_67_2"/>
+      <Anchor Position="0.8921733928435589" GraphId="e_67_a_p"/>
+      <Anchor Position="1.0" GraphId="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1423.0" Y="192.0" GraphId="e_67_o0_0" ArrowHead="Arrow" GraphRef="n58_REACTOME_157635" RelX="-0.7346938775510204" RelY="1.1578947368421053"/>
+      <Point X="1339.0" Y="234.0" GraphId="e_67_o0_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1199.0" Y="313.0" GraphId="e_67_o1_0" ArrowHead="Arrow" GraphRef="n63_REACTOME_157636" RelX="1.0163934426229508" RelY="-1.135135135135135"/>
+      <Point X="1339.0" Y="234.0" GraphId="e_67_o1_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1289.0" Y="90.0" GraphId="e_67_c__0_0" GraphRef="n61_REACTOME_157343" RelX="0.1935483870967742" RelY="1.1428571428571428"/>
+      <Point X="1344.0" Y="233.0" GraphId="e_67_c__0_1" GraphRef="e_67_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_REACTOME_157640">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 2 NEXT fragment' is present. At the end of this reaction, 1 molecule of 'NICD 2 fragment', and 1 molecule of 'Transmembrane remnant 2' are present.&lt;br&gt;&lt;br&gt; This reaction takes place on the 'plasma membrane' and  is mediated by the 'aspartic-type endopeptidase activity' of 'gamma-secretase complex'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157796</BiopaxRef>
+    <BiopaxRef>lit_163904</BiopaxRef>
+    <BiopaxRef>lit_163911</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1388.0" Y="464.0" GraphId="e_68_0" GraphRef="n50_REACTOME_157225" RelX="-1.0666666666666667" RelY="-0.8947368421052632"/>
+      <Point X="1343.0" Y="446.0" GraphId="e_68_1"/>
+      <Point X="1342.0" Y="446.0" GraphId="e_68_2"/>
+      <Anchor Position="0.9797842916251233" GraphId="e_68_a_p"/>
+      <Anchor Position="1.0" GraphId="e_68_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="981.0" Y="356.0" GraphId="e_68_o0_0" ArrowHead="Arrow" GraphRef="n65_REACTOME_157642" RelX="1.09375" RelY="0.9"/>
+      <Point X="1147.0" Y="456.0" GraphId="e_68_o0_1"/>
+      <Point X="1342.0" Y="446.0" GraphId="e_68_o0_2" GraphRef="e_68_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1407.0" Y="427.0" GraphId="e_68_o1_0" ArrowHead="Arrow" GraphRef="n62_REACTOME_157628" RelX="-1.0612244897959184" RelY="0.631578947368421"/>
+      <Point X="1342.0" Y="446.0" GraphId="e_68_o1_1" GraphRef="e_68_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1277.0" Y="90.0" GraphId="e_68_c__0_0" GraphRef="n61_REACTOME_157343" RelX="-0.06451612903225806" RelY="1.1428571428571428"/>
+      <Point X="1264.0" Y="233.0" GraphId="e_68_c__0_1"/>
+      <Point X="1343.0" Y="446.0" GraphId="e_68_c__0_2" GraphRef="e_68_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_REACTOME_157353">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 1 NEXT fragment' is present. At the end of this reaction, 1 molecule of 'Transmembrane remnant 1', and 1 molecule of 'NICD 1 fragment' are present.&lt;br&gt;&lt;br&gt; This reaction takes place on the 'plasma membrane' and  is mediated by the 'aspartic-type endopeptidase activity' of 'gamma-secretase complex'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157796</BiopaxRef>
+    <BiopaxRef>lit_163904</BiopaxRef>
+    <BiopaxRef>lit_163911</BiopaxRef>
+    <BiopaxRef>lit_163903</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1415.0" Y="596.0" GraphId="e_69_0" GraphRef="n46_REACTOME_157200" RelX="-0.4666666666666667" RelY="-1.1578947368421053"/>
+      <Point X="1357.0" Y="543.0" GraphId="e_69_1"/>
+      <Point X="1357.0" Y="544.0" GraphId="e_69_2"/>
+      <Anchor Position="0.9874322032563737" GraphId="e_69_a_p"/>
+      <Anchor Position="1.0" GraphId="e_69_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1407.0" Y="554.0" GraphId="e_69_o0_0" ArrowHead="Arrow" GraphRef="n59_REACTOME_157656" RelX="-1.0612244897959184" RelY="-0.5263157894736842"/>
+      <Point X="1357.0" Y="544.0" GraphId="e_69_o0_1" GraphRef="e_69_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="872.0" Y="360.0" GraphId="e_69_o1_0" ArrowHead="Arrow" GraphRef="n64_REACTOME_157634" RelX="0.3333333333333333" RelY="1.1578947368421053"/>
+      <Point X="908.0" Y="409.0" GraphId="e_69_o1_1"/>
+      <Point X="1357.0" Y="544.0" GraphId="e_69_o1_2" GraphRef="e_69_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1274.0" Y="90.0" GraphId="e_69_c__0_0" GraphRef="n61_REACTOME_157343" RelX="-0.12903225806451613" RelY="1.1428571428571428"/>
+      <Point X="1239.0" Y="246.0" GraphId="e_69_c__0_1"/>
+      <Point X="1357.0" Y="543.0" GraphId="e_69_c__0_2" GraphRef="e_69_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_REACTOME_157659">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Notch 3 NEXT fragment' is present. At the end of this reaction, 1 molecule of 'Transmembrane remnant 3', and 1 molecule of 'NICD 3 fragment' are present.&lt;br&gt;&lt;br&gt; This reaction takes place on the 'plasma membrane' and  is mediated by the 'aspartic-type endopeptidase activity' of 'gamma-secretase complex'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_157796</BiopaxRef>
+    <BiopaxRef>lit_163904</BiopaxRef>
+    <BiopaxRef>lit_163911</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1388.0" Y="354.0" GraphId="e_70_0" GraphRef="n52_REACTOME_157203" RelX="-1.0666666666666667" RelY="0.3157894736842105"/>
+      <Point X="1328.0" Y="364.0" GraphId="e_70_1"/>
+      <Point X="1326.0" Y="362.0" GraphId="e_70_2"/>
+      <Anchor Position="0.9555670353898016" GraphId="e_70_a_p"/>
+      <Anchor Position="1.0" GraphId="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1424.0" Y="311.0" GraphId="e_70_o0_0" ArrowHead="Arrow" GraphRef="n60_REACTOME_157657" RelX="-0.7142857142857143" RelY="1.1578947368421053"/>
+      <Point X="1326.0" Y="362.0" GraphId="e_70_o0_1" GraphRef="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1092.0" Y="358.0" GraphId="e_70_o1_0" ArrowHead="Arrow" GraphRef="n66_REACTOME_157647" RelX="0.6666666666666666" RelY="1.1891891891891893"/>
+      <Point X="1118.0" Y="375.0" GraphId="e_70_o1_1"/>
+      <Point X="1326.0" Y="362.0" GraphId="e_70_o1_2" GraphRef="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1283.0" Y="90.0" GraphId="e_70_c__0_0" GraphRef="n61_REACTOME_157343" RelX="0.06451612903225806" RelY="1.1428571428571428"/>
+      <Point X="1328.0" Y="364.0" GraphId="e_70_c__0_1" GraphRef="e_70_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_REACTOME_157941">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NICD 4 fragment' is translocated from cytosol to nucleoplasm.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'nuclear envelope'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1170.0" Y="313.0" GraphId="e_75_0" GraphRef="n63_REACTOME_157636" RelX="0.06557377049180328" RelY="-1.135135135135135"/>
+      <Point X="1174.0" Y="291.0" GraphId="e_75_1"/>
+      <Point X="1096.0" Y="203.0" GraphId="e_75_2" GraphRef="n74_REACTOME_157945" RelX="0.40540540540540543" RelY="1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.15977255487704511" GraphId="e_75_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_76_REACTOME_157933">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NICD 2 fragment' is translocated from cytosol to nucleoplasm.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'nuclear envelope'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="946.0" Y="315.0" GraphId="e_76_0" GraphRef="n65_REACTOME_157642" RelX="0.0" RelY="-1.15"/>
+      <Point X="946.0" Y="300.0" GraphId="e_76_1"/>
+      <Point X="963.0" Y="272.0" GraphId="e_76_2" GraphRef="n71_REACTOME_157942" RelX="-0.3380281690140845" RelY="1.170731707317073" ArrowHead="Arrow"/>
+      <Anchor Position="0.3140921941329906" GraphId="e_76_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_77_REACTOME_157926">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NICD 1 fragment' is translocated from cytosol to nucleoplasm.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'nuclear envelope'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="870.0" Y="316.0" GraphId="e_77_0" GraphRef="n64_REACTOME_157634" RelX="0.2777777777777778" RelY="-1.1578947368421053"/>
+      <Point X="882.0" Y="297.0" GraphId="e_77_1"/>
+      <Point X="947.0" Y="209.0" GraphId="e_77_2" GraphRef="n73_REACTOME_157939" RelX="-0.3116883116883117" RelY="1.2121212121212122" ArrowHead="Arrow"/>
+      <Anchor Position="0.17040517832191604" GraphId="e_77_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_REACTOME_157937">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'NICD 3 fragment' is translocated from cytosol to nucleoplasm.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'nuclear envelope'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1069.0" Y="315.0" GraphId="e_78_0" GraphRef="n66_REACTOME_157647" RelX="0.0" RelY="-1.135135135135135"/>
+      <Point X="1071.0" Y="297.0" GraphId="e_78_1"/>
+      <Point X="1070.0" Y="270.0" GraphId="e_78_2" GraphRef="n72_REACTOME_157928" RelX="0.0" RelY="1.2" ArrowHead="Arrow"/>
+      <Anchor Position="0.40130862477034224" GraphId="e_78_a_p"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="endoplasmic reticulum lumen">
+    <Graphics Color="000000" CenterX="167.5" CenterY="145.5" Width="189.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_2" GroupRef="group_comp_2" TextLabel="Golgi lumen">
+    <Graphics Color="000000" CenterX="118.0" CenterY="448.5" Width="88.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_3" GroupRef="group_comp_3" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="84.5" CenterY="87.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_4" GroupRef="group_comp_4" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="906.0" CenterY="133.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_5" GroupRef="group_comp_5" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="262.5" CenterY="868.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_6" GroupRef="group_comp_6" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="749.0" CenterY="900.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="406.0" CenterY="181.5" Width="684.0" Height="111.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics Color="000000" CenterX="404.0" CenterY="376.0" Width="684.0" Height="192.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics Color="000000" CenterX="740.5" CenterY="360.5" Width="1403.0" Height="595.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_4" GroupRef="group_comp_4">
+    <Graphics Color="000000" CenterX="1014.5" CenterY="207.0" Width="347.0" Height="186.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_5" GroupRef="group_comp_5">
+    <Graphics Color="000000" CenterX="560.5" CenterY="904.5" Width="711.0" Height="121.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_6" GroupRef="group_comp_6">
+    <Graphics Color="000000" CenterX="749.0" CenterY="902.0" Width="242.0" Height="72.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159838" rdf:id="lit_159838">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1629222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of human furin precursor processing endoprotease occurs by an intramolecular autoproteolytic cleavage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leduc, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molloy, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thorne, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 267:14304-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157055" rdf:id="lit_157055">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1295745</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Notch2: a second mammalian Notch gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinmaster, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberts, VJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemke, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Development 116:931-41</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157138" rdf:id="lit_157138">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9244302</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Intracellular cleavage of Notch leads to a heterodimeric receptor on the plasma membrane</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blaumueller, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zagouras, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Artavanis-Tsakonas, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 90:281-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157003" rdf:id="lit_157003">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8681805</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Notch4/int-3, a mammary proto-oncogene, is an endothelial cell-specific mammalian Notch gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uyttendaele, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marazzi, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yan, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sassoon, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitajewski, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Development 122:2251-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157153" rdf:id="lit_157153">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1764995</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A homolog of Drosophila Notch expressed during mammalian development</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinmaster, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberts, VJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemke, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Development 113:199-205</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157105" rdf:id="lit_157105">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7918097</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The novel Notch homologue mouse Notch 3 lacks specific epidermal growth factor-repeats and is expressed in proliferating neuroepithelium</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lardelli, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dahlstrand, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lendahl, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mech Dev 46:123-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157112" rdf:id="lit_157112">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9653148</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Notch1 receptor is cleaved constitutively by a furin-like convertase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Logeat, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LeBail, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jarriault, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seidah, NG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 95:8108-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157051" rdf:id="lit_157051">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11135303</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oh no, Notch again!</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frisen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lendahl, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bioessays 23:3-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157133" rdf:id="lit_157133">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10958687</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Binding of Delta1, Jagged1, and Jagged2 to Notch2 rapidly induces cleavage, nuclear translocation, and hyperphosphorylation of Notch2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimizu, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chiba, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hosoya, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumano, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurokawa, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kanda, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hamada, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirai, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 20:6913-22</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157022" rdf:id="lit_157022">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12794186</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Notch ligand Delta1 is sequentially cleaved by an ADAM protease and gamma-secretase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Six, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ndiaye, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Laabi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gupta-Rossi, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Logeat, F</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 100:7638-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157078" rdf:id="lit_157078">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10079256</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human ligands of the Notch receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gray, GE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, RS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitsiadis, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henrique, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carcangiu, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Banks, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leiman, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ward, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ish-Horowitz, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Artavanis-Tsakonas, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Pathol 154:785-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157210" rdf:id="lit_157210">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10882063</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A novel proteolytic cleavage involved in Notch signaling: the role of the disintegrin-metalloprotease TACE</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brou, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Logeat, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gupta, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bessia, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LeBail, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Doedens, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cumano, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roux, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Black, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Israel, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 5:207-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157796" rdf:id="lit_157796">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12209127</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gamma-secretase-mediated proteolysis in cell-surface-receptor signalling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fortini, ME</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 3:673-84</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_163904" rdf:id="lit_163904">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10206645</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A presenilin-1-dependent gamma-secretase-like protease mediates release of Notch intracellular domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Strooper, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annaert, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cupers, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saftig, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Craessaerts, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mumm, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schroeter, EH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schrijvers, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolfe, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ray, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goate, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kopan, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 398:518-22</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_163911" rdf:id="lit_163911">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9620803</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Notch-1 signalling requires ligand-induced proteolytic release of intracellular domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schroeter, EH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kisslinger, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kopan, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 393:382-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_163903" rdf:id="lit_163903">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10879540</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Embryonic lethality in mice homozygous for a processing-deficient allele of Notch1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huppert, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Le, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schroeter, EH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mumm, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saxena, MT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Milner, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kopan, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 405:966-70</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>Notch signaling pathway</bp:TERM><bp:ID>PW:0000204</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

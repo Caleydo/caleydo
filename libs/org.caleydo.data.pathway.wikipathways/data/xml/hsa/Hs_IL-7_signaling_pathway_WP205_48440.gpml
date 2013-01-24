@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="IL-7 signaling pathway" Organism="Homo sapiens" License="Freely available under Creative Commons license">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">Interleukin-7 (IL-7) was discovered in the year 1988 as a factor that enhanced the growth of murine B-cell precursors in bone marrow culture system. It was also known as lymphopoietin 1and pre-B cell factor. IL-7 plays an important role in the development of B and T cells in mouse and T cells in humans. It is also essential for mature and naive T-cell’s survival and proliferation. Human IL-7 gene maps to chromosome 8 and is about 72kb in length. The protein encoded by this gene is 177 amino acids in length with a molecular weight of 20 kDa. The active form of IL-7 in humans is a glycoprotein of 25 kDa. In humans IL-7 has been shown to be produced from intestinal epithelial cells, keratinocytes , hepatic tissues, peripheral blood dendritic cells, follicular dendritic cells, endothelial cells, smooth muscle cells and fibroblasts. The IL-7 receptor consists of IL-7 receptor alpha chain (IL-7Rα) and a common gamma chain (γc). The gamma chain is also shared by IL-2, IL-4, IL-9, IL-15 and IL-21 receptors. The signaling pathways activated upon IL-7 binding to the receptor complex are JAK-STAT, PI-3 kinase and Src kinase pathways. JAK3, a protein tyrosine kinase is constitutively associated with the carboxy-terminal region of the gamma chain. Studies in mice lacking JAK3 have shown that it is required for transducing γc dependent signals. Mutations in JAK3 and γc have been shown to be associated with the autosomal recessive form of T-B + SCID. JAK1, another protein tyrosine kinase is associated with IL-7Rα chain and is activated upon IL-7 binding. JAK1 deficient mice shows severely impaired thymic development and no hematopoietic colony formation in response to IL-7. IL-7 would first bind to IL-7Rα and then associates with the gamma chain, bringing their intracellular domains bearing JAK1 and JAK3 together. JAK3 phosphorylates IL-7Rα chain creating docking sites for the transcription factors, STAT1, STAT3, and STAT5. JAK1 and JAK3 phosphorylate these STAT molecules and induces their dimerization and translocation to the nucleus where they activate specific target genes. PTK2B, a protein tyrosine kinase has been shown to be associated with JAK1 and plays an important role in the survival of thymocyte cell line. The enzymatic activity and its phosphorylation are highly induced by IL-7. PI-3 kinase pathway is also activated by IL-7 and this pathway is essential for the survival and proliferation of human T cell precursors. PI-3 kinase interacts with IL-7Rα upon IL-7 stimulation and activates its downstream target, AKT and its activation is mediated by γc. AKT in turn activates GSK3 beta and Bad, the death protein. Survival of pro T-cell survival by regulating Bad via PI3 kinase/AKT pathway is mediated by IL-7. IL-7 also mediates the downregulation of cyclin-dependent kinase inhibitor 1B through the PI-3 kinase pathway and this effect is required for cell proliferation. IL-7 also induces the phosphorylation of a Src kinase family member, Fyn which is constitutively associated with IL7RA. In addition, IL-7 induces phosphorylation of MAPK family members including MAPK1 and MAPK3.
+
+Please access this pathway at [http://www.netpath.org/netslim/IL_7_pathway.html NetSlim] database.
+
+If you use this pathway, you must cite following paper:
+Kandasamy, K., Mohan, S. S., Raju, R., Keerthikumar, S., Kumar, G. S. S., Venugopal, A. K., Telikicherla, D., Navarro, J. D., Mathivanan, S., Pecquet, C., Gollapudi, S. K., Tattikota, S. G., Mohan, S., Padhukasahasram, H., Subbannayya, Y., Goel, R., Jacob, H. K. C., Zhong, J., Sekhar, R., Nanjappa, V., Balakrishnan, L., Subbaiah, R., Ramachandra, Y. L., Rahiman, B. A., Prasad, T. S. K., Lin, J., Houtman, J. C. D., Desiderio, S., Renauld, J., Constantinescu, S. N., Ohara, O., Hirano, T., Kubo, M., Singh, S., Khatri, P., Draghici, S., Bader, G. D., Sander, C., Leonard, W. J. and Pandey, A. (2010). NetPath: A public resource of curated signal transduction pathways. &lt;i&gt;Genome Biology&lt;/i&gt;. 11:R3.</Comment>
+  <Attribute Key="org.pathvisio.model.WindowHeight" Value="11190.0"/>
+  <Attribute Key="org.pathvisio.model.WindowWidth" Value="15480.0"/>
+  <Graphics BoardWidth="1063.0" BoardHeight="1276.0"/>
+  <DataNode TextLabel="FYN" GraphId="fda52" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FYN"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="350.0" CenterY="581.0" Width="44.0" Height="20.0" ZOrder="33100" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2534"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K1" GraphId="c934f" Type="Protein" GroupRef="aad1a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP2K2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="543.3333333333333" CenterY="600.6666666666666" Width="60.0" Height="20.0" ZOrder="33101" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5604"/>
+  </DataNode>
+  <DataNode TextLabel="BCL2L1" GraphId="ed3bd" Type="Rna">
+    <Graphics CenterX="85.5" CenterY="1009.0" Width="49.0" Height="20.0" ZOrder="33102" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="598"/>
+  </DataNode>
+  <DataNode TextLabel="PTK2B" GraphId="e1526" Type="Protein">
+    <Comment> IL-7 stimulation induces the phosphorylation of PTK2B in human chondrocytes.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTK2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="71.00922565033278" CenterY="582.9074410163339" Width="47.83333333333344" Height="20.0" ZOrder="33103" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2185"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN1B" GraphId="b9489" Type="Rna">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5B"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="447.33333333333337" CenterY="1011.6666666666667" Width="60.0" Height="20.0" ZOrder="33104" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1027"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5A" GraphId="fc188" Type="Protein">
+    <Comment> IL-7 stimulation induces phosphorylation and nuclear transport of STAT5A in human peripheral blood T lymphoblasts.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="216.09255898366607" CenterY="678.0" Width="58.0" Height="20.0" ZOrder="33105" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6776"/>
+  </DataNode>
+  <DataNode TextLabel="CCND1" GraphId="e261e" Type="Rna">
+    <Graphics CenterX="140.0" CenterY="1009.0" Width="50.0" Height="20.0" ZOrder="33106" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="595"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K2" GraphId="c13c0" Type="Protein" GroupRef="aad1a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP2K2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="543.3333333333333" CenterY="623.6666666666666" Width="60.0" Height="20.0" ZOrder="33108" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5605"/>
+  </DataNode>
+  <DataNode TextLabel="MYC" GraphId="a40be" Type="Rna">
+    <Graphics CenterX="188.0" CenterY="1009.0" Width="40.0" Height="20.0" ZOrder="33109" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4609"/>
+  </DataNode>
+  <DataNode TextLabel="GSK3B" GraphId="b0e46" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GSK3B"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="448.6666666666667" CenterY="824.6666666666667" Width="53.333333333333336" Height="20.0" ZOrder="33110" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2932"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5B" GraphId="eebc8" Type="Protein">
+    <Comment> IL-7 stimulation leads to phosphorylation of STAT5B in CD8 T cells and human peripheral blood T lymphoblasts respectively.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="119.92589231699932" CenterY="678.7592256503328" Width="57.66666666666653" Height="20.0" ZOrder="33111" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6777"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R2" GraphId="d78ce" Type="Protein" GroupRef="c445f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PIK3R2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="447.99999999999994" CenterY="603.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="33112" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5296"/>
+  </DataNode>
+  <DataNode TextLabel="IL2RG" GraphId="a2b76" Type="Protein" GroupRef="ea5b8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6ST"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="261.43038376149696" CenterY="420.0" Width="65.33333333333326" Height="20.0" ZOrder="33113" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3561"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK3" GraphId="a560f" Type="Protein" GroupRef="a4e08">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="543.9193846339987" CenterY="717.4252873563223" Width="52.53146666666656" Height="20.0" ZOrder="33115" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5595"/>
+  </DataNode>
+  <DataNode TextLabel="JAK1" GraphId="e5b3c" Type="Protein">
+    <Comment>IL-7 stimulation induces tyrosine phosphorylation of the kinase JAK1 in human thymocytes</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="185.58711433756807" CenterY="582.907441016334" Width="62.58257713248632" Height="20.0" ZOrder="33116" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3716"/>
+  </DataNode>
+  <DataNode TextLabel="IL7" GraphId="c2649" Type="Protein" GroupRef="ea5b8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="231.83333333333348" CenterY="276.0" Width="34.33333333333303" Height="20.0" ZOrder="33118" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3574"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5A" GraphId="b0f00" Type="Protein" GroupRef="b2564">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5A"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="136.66666666666663" CenterY="880.6666666666667" Width="60.0" Height="20.0" ZOrder="33119" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="STAT5A"/>
+  </DataNode>
+  <DataNode TextLabel="IL7R" GraphId="fc04b" Type="Protein" GroupRef="ea5b8">
+    <Comment>The common gamma chain augments IL-7 binding affinity and internalization of IL-7, which may explain the defects in X-linked severe combined immunodeficiency.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6R"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="200.0" CenterY="420.0" Width="58.0" Height="20.0" ZOrder="33120" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3575"/>
+  </DataNode>
+  <DataNode TextLabel="STAT3" GraphId="da094" Type="Protein">
+    <Comment>IL7 stimulation induces increased phosphorylation of STAT3 in normal human chondrocytes and T lymphoblasts.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="311.7592256503327" CenterY="675.0925589836661" Width="53.333333333333336" Height="20.0" ZOrder="33121" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <DataNode TextLabel="BAD" GraphId="c8e14" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="BAD"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="504.0" CenterY="824.6666666666666" Width="40.0" Height="20.0" ZOrder="33122" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="572"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK1" GraphId="a5ace" Type="Protein" GroupRef="a4e08">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="543.7592256503327" CenterY="695.2401693889901" Width="53.333333333333336" Height="20.0" ZOrder="33123" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="AKT1" GraphId="f0c19" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FGR"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="448.00000000000006" CenterY="712.6666666666667" Width="46.666666666666664" Height="20.0" ZOrder="33124" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="207"/>
+  </DataNode>
+  <DataNode TextLabel="JAK3" GraphId="af910" Type="Protein">
+    <Comment> IL7 stimulation induces increased phosphorylation of JAK3 in normal human chondrocytes and thymocytes.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="261.6814882032668" CenterY="583.7223230490017" Width="49.36297640653356" Height="20.0" ZOrder="33125" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3718"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R1" GraphId="d8f40" Type="Protein" GroupRef="c445f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PIK3R3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="448.0000000000003" CenterY="581.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="33126" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5295"/>
+  </DataNode>
+  <DataNode TextLabel="IL2RA" GraphId="f4b62" Type="Rna">
+    <Graphics CenterX="244.5" CenterY="1009.0" Width="51.0" Height="20.0" ZOrder="33127" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3559"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5B" GraphId="d1934" Type="Protein" GroupRef="b2564">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5B"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="197.33333333333337" CenterY="880.6666666666667" Width="60.0" Height="20.0" ZOrder="33128" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="STAT5B"/>
+  </DataNode>
+  <DataNode TextLabel="STAT1" GraphId="b511f" Type="Protein">
+    <Comment>IL-7 stimulation leads to tyrosine phosphorylation of STAT1 in human CD4 T cells and murine YT-5 cells</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="404.7592256503327" CenterY="676.0925589836661" Width="53.333333333333336" Height="20.0" ZOrder="33214" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6772"/>
+  </DataNode>
+  <State GraphRef="fda52" TextLabel="P" GraphId="de455">
+    <Comment>IL-7 stimulates the tyrosine phophorylation of FYN in pre-B cells and cultured embryonic neurons.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.5" Height="17.5" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c934f" TextLabel="P" GraphId="ca90f">
+    <Graphics RelX="1.0" RelY="0.4" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e1526" TextLabel="P" GraphId="c19ad">
+    <Comment>Stimulation of IL-7 receptor induces the phosphorylation of PYK2 in D1 murine embryonic thymocytes and human chondrocytes.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.666666666666515" Height="17.5" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fc188" TextLabel="P" GraphId="be048">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c13c0" TextLabel="P" GraphId="ae875">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="eebc8" TextLabel="P" GraphId="d18ef">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a560f" TextLabel="P" GraphId="d1bea">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e5b3c" TextLabel="P" GraphId="a4074">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="da094" TextLabel="P" GraphId="f81bd">
+    <Graphics RelX="1.0" RelY="1.0" Width="16.166666666666742" Height="17.5" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c8e14" TextLabel="P" GraphId="e67d8">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.5" Height="16.833333333333428" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a5ace" TextLabel="P" GraphId="ccea0">
+    <Graphics RelX="1.0" RelY="1.0" Width="13.166666666666515" Height="15.833333333333485" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f0c19" TextLabel="P" GraphId="e8041">
+    <Comment>IL-7 stimulates the phosphorylation of AKT1 at Ser 473 in TAIL7 and BaF-3 cells</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.166666666666515" Height="16.833333333333258" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="af910" TextLabel="P" GraphId="ed9ae">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b511f" TextLabel="P" GraphId="b8b75">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <Line GraphId="id8bab165">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="471.3333333333335" Y="712.6666666666667" GraphRef="f0c19" RelX="1.0" RelY="0.0"/>
+      <Point X="504.0" Y="814.6666666666666" GraphRef="c8e14" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id2782c9f7">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="185.58711433756804" Y="592.907441016334" GraphRef="e5b3c" RelX="0.0" RelY="1.0"/>
+      <Point X="159.964836660617" Y="627.0"/>
+      <Point X="134.34255898366598" Y="668.7592256503328" GraphRef="eebc8" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idda8ce8fb">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0">
+      <Point X="182.33333333333337" Y="890.6666666666667" GraphRef="d1934" RelX="-0.5" RelY="1.0"/>
+      <Point X="161.16666666666669" Y="940.0"/>
+      <Point X="140.0" Y="999.0" GraphRef="e261e" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id842095c2">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0">
+      <Point X="136.66666666666663" Y="890.6666666666667" GraphRef="b0f00" RelX="0.0" RelY="1.0"/>
+      <Point X="111.08333333333331" Y="930.0"/>
+      <Point X="85.5" Y="999.0" GraphRef="ed3bd" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7529739d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0">
+      <Point X="212.33333333333337" Y="890.6666666666667" GraphRef="d1934" RelX="0.5" RelY="1.0"/>
+      <Point X="228.41666666666669" Y="940.0"/>
+      <Point X="244.5" Y="999.0" GraphRef="f4b62" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3473">
+    <Comment>FOXO inactivation by PI3K-AKT pathway contributes to the downregulation of p27KIP1</Comment>
+    <Graphics ZOrder="33058" LineThickness="2.0">
+      <Point X="448.66666666666663" Y="834.6666666666667" GraphRef="b0e46" RelX="0.0" RelY="1.0"/>
+      <Point X="449.0" Y="901.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3bce">
+    <Comment>IL-7 stimulates the tyrosine phosphorylation of STAT5B and its interaction with IL-7 receptor phosphorylated at Tyr 449 in peripheral blood lymphocytes.</Comment>
+    <Graphics ZOrder="33059" LineThickness="2.0" Color="00cc00">
+      <Point X="119.0" Y="496.0"/>
+      <Point X="119.92589231699934" Y="668.7592256503328" GraphRef="eebc8" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a39ea">
+    <Graphics ZOrder="33060" LineThickness="2.0" Color="00cc00">
+      <Point X="119.0" Y="495.0"/>
+      <Point X="447.0" Y="495.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dabf1">
+    <Comment>IL-7 stimulates the interaction of STAT3 with IL-7R phosphorylated at Tyr 449 in peripheral blood lymphocytes.</Comment>
+    <Graphics ZOrder="33061" LineThickness="2.0" Color="00cc00">
+      <Point X="311.0" Y="495.0"/>
+      <Point X="311.7592256503327" Y="665.0925589836661" GraphRef="da094" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e930f">
+    <Comment>IL-7 stimulates the binding of intracellular domain of IL7 receptor alpha chain to JAK1 followed by tyrosine phosphorylation of STAT5A at Tyr 694 in various cell lines such as D1 cells, murine CT6 cells and  NAG8/7 cells.</Comment>
+    <Graphics ZOrder="33062" LineThickness="2.0" Color="0000cc">
+      <Point X="201.23275862068962" Y="592.907441016334" GraphRef="e5b3c" RelX="0.5" RelY="1.0"/>
+      <Point X="201.59255898366607" Y="668.0" GraphRef="fc188" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cc04b">
+    <Comment>IL-7 stimulates the phosphorylation of MEK1 at Ser 218 and MEK2 at Ser 222 in TAIL-7 cells.</Comment>
+    <Graphics ZOrder="33063" LineStyle="Broken" LineThickness="2.0">
+      <Point X="543.0" Y="420.0"/>
+      <Point X="543.3333333333333" Y="590.6666666666666" GraphRef="c934f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a842f">
+    <Comment>IL-7 stimulates the phosphorylation and heterodimerisation of STAT5A and 5B and its translocation from cytoplasm to the nucleus in human peripheral blood lymphocytes.</Comment>
+    <Graphics ZOrder="33064" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="167.967890320791" Y="678.3787810174688" GraphRef="e8b08" RelX="0.0" RelY="0.0"/>
+      <Point X="167.0" Y="869.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eefc4">
+    <Comment>IL-7 stimulation leads to tyrosine phosphorylation of JAK3 and its association with the common gamma chain.</Comment>
+    <Graphics ZOrder="33065" LineThickness="2.0" Color="00cc00">
+      <Point X="261.43038376149696" Y="430.0" GraphRef="a2b76" RelX="0.0" RelY="1.0"/>
+      <Point X="261.6814882032668" Y="573.7223230490017" GraphRef="af910" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cec2f">
+    <Graphics ZOrder="33066" LineThickness="2.0">
+      <Point X="447.0" Y="902.0"/>
+      <Point X="447.33333333333337" Y="1001.6666666666667" GraphRef="b9489" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="acc51">
+    <Comment>IL-7 stimulates the tyrosine phosphorylation of STAT5A and its interaction with IL-7 receptor phosphorylated at Tyr 449 in peripheral blood lymphocytes.</Comment>
+    <Graphics ZOrder="33068" LineThickness="2.0" Color="00cc00">
+      <Point X="230.0" Y="496.0"/>
+      <Point X="230.59255898366607" Y="668.0" GraphRef="fc188" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e6e53">
+    <Comment>IL-7 stimulates the interaction of cytoplasmic tail of IL-7 receptor with phosphorylated Fyn in human pre B-cell line Nalm-6 which in turn activates phosphatidylinositol 3-kinase.</Comment>
+    <Graphics ZOrder="33070" LineThickness="2.0" Color="00cc00">
+      <Point X="350.0" Y="495.0"/>
+      <Point X="350.0" Y="571.0" GraphRef="fda52" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="be82f">
+    <Comment>IL-7 stimulates the activation of NFkB pathway and the expression of NFkB responsive genes in primary T lymphocytes.</Comment>
+    <Graphics ZOrder="33071" LineStyle="Broken" LineThickness="2.0">
+      <Point X="619.1851179673322" Y="420.90744101633385"/>
+      <Point X="619.1851179673322" Y="714.9074410163341" GraphRef="fd4b3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f506e">
+    <Comment>IL-7 stimulates the phosphorylation of ERK1 and ERK2 in TAIL-7, murine pBCR and YT5 cells.</Comment>
+    <Graphics ZOrder="33076" LineStyle="Broken" LineThickness="2.0">
+      <Point X="543.3333333333333" Y="633.6666666666666" GraphRef="c13c0" RelX="0.0" RelY="1.0"/>
+      <Point X="543.7592256503328" Y="685.2401693889901" GraphRef="a5ace" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5e74">
+    <Comment>IL-7 stimulation induces the tyrosine phosphorylation of STAT5A and STAT5B leading to their heterodimerisation in human peripheral blood T lymphoblasts.</Comment>
+    <Graphics ZOrder="33079" LineThickness="2.0" Color="00cc00">
+      <Point X="187.09255898366607" Y="678.0" GraphRef="fc188" RelX="-1.0" RelY="0.0"/>
+      <Point X="148.7592256503326" Y="678.7592256503328" GraphRef="eebc8" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.49890439990108676" Shape="None" GraphId="e8b08"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b0964">
+    <Graphics ZOrder="33080" LineStyle="Broken" LineThickness="2.0">
+      <Point X="294.0970504281636" Y="420.0" GraphRef="a2b76" RelX="1.0" RelY="0.0"/>
+      <Point X="621.0" Y="420.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="db6f2" GroupRef="ea5b8">
+    <Comment>IL-7 binds with the recombinant IL-7 receptor alpha chain with the same affinity as the native receptor in COS-7 cells.</Comment>
+    <Graphics ZOrder="33082" LineThickness="3.0" Color="ff3399">
+      <Point X="231.83333333333348" Y="286.0" GraphRef="c2649" RelX="0.0" RelY="1.0"/>
+      <Point X="231.0" Y="324.0" GraphRef="b55bf" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ab4a4" GroupRef="ea5b8">
+    <Graphics ZOrder="33083" LineThickness="3.0">
+      <Point X="261.0925589836661" Y="356.0" GraphRef="aa7c4" RelX="0.0" RelY="1.0"/>
+      <Point X="261.43038376149696" Y="410.0" GraphRef="a2b76" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e1863">
+    <Graphics ZOrder="33086" LineStyle="Broken" LineThickness="2.0">
+      <Point X="447.9999999999999" Y="613.6666666666666" GraphRef="d78ce" RelX="0.0" RelY="1.0"/>
+      <Point X="448.0000000000001" Y="702.6666666666667" GraphRef="f0c19" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ea559">
+    <Comment>IL-7 stimulates the phosphorylation and activation of AKT1 which phosphorylates GSK3-beta at Ser 9 in TAIL7 cells.</Comment>
+    <Graphics ZOrder="33087" LineThickness="2.0" Color="0000ff">
+      <Point X="448.0000000000001" Y="722.6666666666667" GraphRef="f0c19" RelX="0.0" RelY="1.0"/>
+      <Point X="448.66666666666663" Y="814.6666666666667" GraphRef="b0e46" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ff703" GroupRef="ea5b8">
+    <Comment/>
+    <Graphics ZOrder="33089" LineThickness="3.0">
+      <Point X="200.0" Y="356.0" GraphRef="de753" RelX="0.0" RelY="1.0"/>
+      <Point X="200.0" Y="410.0" GraphRef="fc04b" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2c05">
+    <Comment>PYK2 is constitutively associated with JAK1 and the stimulation of IL-7 receptor induces the phosphorylation of PYK2 in D1 cells.</Comment>
+    <Graphics ZOrder="33090" LineThickness="2.0" Color="00cc00">
+      <Point X="94.9258923169995" Y="582.9074410163339" GraphRef="e1526" RelX="1.0" RelY="0.0"/>
+      <Point X="154.29582577132487" Y="582.907441016334" GraphRef="e5b3c" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dc567">
+    <Comment>IL-7 stimulates the interaction of  the p85 subunit of PI3-kinase with the IL7 receptor alpha chain via SH2 domain, to a motif based upon a phosphorylated tyrosine 449 residue in the cytoplasmic tail of IL7R in  murine pre B-cell 8-18 cells and human thymocytes.</Comment>
+    <Graphics ZOrder="33091" LineThickness="2.0" Color="00cc00">
+      <Point X="448.0" Y="495.0"/>
+      <Point X="448.0000000000002" Y="571.6666666666666" GraphRef="d8f40" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b9d68">
+    <Graphics ZOrder="33141" LineThickness="2.0">
+      <Point X="197.33333333333337" Y="890.6666666666667" GraphRef="d1934" RelX="0.0" RelY="1.0"/>
+      <Point X="198.0" Y="999.0" GraphRef="a40be" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cae1d">
+    <Graphics ZOrder="33206" LineThickness="3.0" Color="ff00ff">
+      <Point X="186.0" Y="813.0"/>
+      <Point X="186.0" Y="828.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ff2df">
+    <Graphics ZOrder="33207" LineThickness="3.0" Color="ff00ff">
+      <Point X="185.0" Y="820.0"/>
+      <Point X="186.0" Y="796.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a2ada">
+    <Graphics ZOrder="33210" LineThickness="2.0" Color="00cc00">
+      <Point X="200.0" Y="495.0"/>
+      <Point X="200.0" Y="430.0" GraphRef="fc04b" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df1c8">
+    <Comment>JAK1 constitutively associates with the cytoplasmic domain of  IL-7R alpha chain  in human peripheral blood leukocytes and CD4 T cells.</Comment>
+    <Graphics ZOrder="33212" LineThickness="2.0" Color="00cc00">
+      <Point X="185.0" Y="496.0"/>
+      <Point X="185.58711433756804" Y="572.907441016334" GraphRef="e5b3c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b53f7">
+    <Graphics ZOrder="33213" LineStyle="Broken" LineThickness="2.0">
+      <Point X="404.0" Y="420.0"/>
+      <Point X="404.7592256503327" Y="666.0925589836661" GraphRef="b511f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f12e6">
+    <Graphics ZOrder="33216" LineStyle="Broken" LineThickness="2.0">
+      <Point X="72.0" Y="420.0"/>
+      <Point X="171.0" Y="420.0" GraphRef="fc04b" RelX="-1.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a39a5">
+    <Graphics ZOrder="33217" LineStyle="Broken" LineThickness="2.0">
+      <Point X="71.0" Y="421.0"/>
+      <Point X="71.00922565033278" Y="572.9074410163339" GraphRef="e1526" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2214">
+    <Graphics ZOrder="33671" LineThickness="2.0">
+      <Point X="707.999999999997" Y="644.4652880354461"/>
+      <Point X="728.9999999999964" Y="644.4652880354461" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ff798">
+    <Graphics ZOrder="33672" LineThickness="2.0" Color="00cc00">
+      <Point X="706.6666666666642" Y="583.79862136878"/>
+      <Point X="765.6666666666642" Y="583.79862136878" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f6041">
+    <Graphics ZOrder="33673" LineThickness="2.0">
+      <Point X="736.6666666666642" Y="588.79862136878"/>
+      <Point X="736.6666666666642" Y="578.79862136878"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed34b">
+    <Graphics ZOrder="33684" LineThickness="2.0" Color="ff0033">
+      <Point X="708.999999999997" Y="928.9999999999945"/>
+      <Point X="773.9999999999964" Y="928.9999999999945" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ac301">
+    <Graphics ZOrder="33685" LineThickness="2.0" Color="9900cc">
+      <Point X="708.999999999997" Y="829.9999999999945"/>
+      <Point X="766.9999999999964" Y="830.5024647292369" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e6ef9">
+    <Graphics ZOrder="33686" LineThickness="2.0" Color="cc00cc">
+      <Point X="708.999999999997" Y="810.6582084822985"/>
+      <Point X="766.9999999999964" Y="810.6582084822985" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aa32b">
+    <Graphics ZOrder="33687" LineThickness="2.0" Color="999900">
+      <Point X="708.999999999997" Y="770.6593972779065"/>
+      <Point X="766.9999999999964" Y="770.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ffb91">
+    <Graphics ZOrder="33688" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="709.9999999999969" Y="948.9999999999945"/>
+      <Point X="767.9999999999964" Y="949.5012759336287" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b0b5e">
+    <Graphics ZOrder="33689" LineThickness="2.0" Color="00ffff">
+      <Point X="708.999999999997" Y="750.6593972779065"/>
+      <Point X="766.9999999999964" Y="750.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7e68">
+    <Graphics ZOrder="33690" LineThickness="2.0" Color="ffcc33">
+      <Point X="708.999999999997" Y="689.9999999999945"/>
+      <Point X="767.0000017000161" Y="690.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a5ced">
+    <Graphics ZOrder="33691" LineThickness="3.0">
+      <Point X="809.0952380952347" Y="478.04761904761654" GraphRef="e9559" RelX="0.0" RelY="1.0"/>
+      <Point X="809.4285714285679" Y="504.6666666666631"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="beb43">
+    <Graphics ZOrder="33709" LineThickness="2.0" Color="0000ff">
+      <Point X="708.999999999997" Y="730.6593972779065"/>
+      <Point X="766.9999999999964" Y="730.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6c03">
+    <Graphics ZOrder="33710" LineThickness="2.0" Color="ff9933">
+      <Point X="708.999999999997" Y="710.6593972779065"/>
+      <Point X="766.9999999999964" Y="710.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6b29">
+    <Graphics ZOrder="33717" LineThickness="2.0" Color="cccc00">
+      <Point X="707.999999999997" Y="789.9999999999945"/>
+      <Point X="766.9999999999964" Y="790.5036535248448" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f0d80">
+    <Graphics ZOrder="33719" LineThickness="2.0" Color="770000">
+      <Point X="708.999999999997" Y="850.6570196866903"/>
+      <Point X="766.9999999999964" Y="850.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0114">
+    <Graphics ZOrder="33721" LineThickness="2.0" Color="775200">
+      <Point X="708.999999999997" Y="870.6570196866903"/>
+      <Point X="766.9999999999964" Y="870.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a09be">
+    <Graphics ZOrder="33723" LineThickness="2.0" Color="ff6666">
+      <Point X="708.999999999997" Y="890.6570196866903"/>
+      <Point X="766.9999999999964" Y="890.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a8513">
+    <Graphics ZOrder="33737" LineThickness="2.0" Color="999999">
+      <Point X="708.999999999997" Y="910.6570196866903"/>
+      <Point X="766.9999999999964" Y="910.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f9b92">
+    <Graphics ZOrder="33739" LineThickness="2.0">
+      <Point X="726.9999999999964" Y="644.4652880354461"/>
+      <Point X="764.6666666666642" Y="644.79862136878" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5363">
+    <Graphics ZOrder="33740" LineThickness="2.0">
+      <Point X="707.999999999997" Y="621.9999999999958"/>
+      <Point X="765.9999999999964" Y="621.9999999999958" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e181d">
+    <Graphics ZOrder="33741" LineThickness="2.0" Color="00cc00">
+      <Point X="707.999999999997" Y="561.9999999999964"/>
+      <Point X="765.9999999999964" Y="561.9999999999964" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f8387">
+    <Graphics ZOrder="33742" LineStyle="Broken" LineThickness="2.0">
+      <Point X="707.999999999997" Y="603.9999999999961"/>
+      <Point X="765.9999999999964" Y="603.9999999999961" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5420">
+    <Graphics ZOrder="33743" LineThickness="2.0">
+      <Point X="755.3333333333298" Y="670.3333333333275"/>
+      <Point X="761.9999999999964" Y="676.9999999999939" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="abfb5">
+    <Graphics ZOrder="33746" LineThickness="2.0" Color="ff00ff">
+      <Point X="763.4837201898356" Y="1066.0887265873953"/>
+      <Point X="763.4837201898356" Y="1091.0887265873953" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ca5fb">
+    <Graphics ZOrder="33747" LineThickness="2.0" Color="ff00ff">
+      <Point X="763.4546258735204" Y="1077.8977880629868"/>
+      <Point X="763.4546258735204" Y="1057.0266446873065" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a3fc5">
+    <Graphics ZOrder="33748" LineThickness="3.0" Color="ff3399">
+      <Point X="734.9999999999977" Y="479.465288035447" GraphRef="c4734" RelX="0.0" RelY="1.0"/>
+      <Point X="735.6533496707339" Y="497.4288583797635" GraphRef="d6046" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="IL-7 Signaling Pathway" GraphId="d3ba7">
+    <Graphics CenterX="233.33333333333343" CenterY="191.66666666666663" Width="250.66666666666686" Height="31.333333333333258" ZOrder="32984" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="18" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="NFkB" GraphId="fd4b3" GroupRef="fdf0a">
+    <Graphics CenterX="619.1851179673322" CenterY="724.9074410163341" Width="36.0" Height="20.0" ZOrder="33098" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="pathway" GraphId="b9199" GroupRef="fdf0a">
+    <Graphics CenterX="619.1851179673322" CenterY="739.9537205081671" Width="54.0" Height="22.092558983665867" ZOrder="33099" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="a369b">
+    <Graphics CenterX="186.0" CenterY="839.0" Width="24.0" Height="20.0" ZOrder="33208" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="f47c5">
+    <Graphics CenterX="185.5" CenterY="788.0" Width="27.0" Height="20.0" ZOrder="33209" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="f2e83">
+    <Graphics CenterX="737.6666666666642" CenterY="968.79862136878" Width="60.0" Height="20.0" ZOrder="33674" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="d3613">
+    <Graphics CenterX="737.6666666666642" CenterY="1002.29862136878" Width="60.0" Height="20.0" ZOrder="33675" FillColor="99ffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="mRNA" GraphId="a69c8">
+    <Graphics CenterX="964.4999999999964" CenterY="471.46528803544686" Width="41.0" Height="20.0" ZOrder="33676" FillColor="ffffff" FontStyle="Italic" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Ligand" GraphId="c4734">
+    <Graphics CenterX="734.9999999999977" CenterY="469.465288035447" Width="60.0" Height="20.0" ZOrder="33677" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Receptor" GraphId="e69b2">
+    <Graphics CenterX="808.9999999999964" CenterY="515.4652880354461" Width="64.0" Height="20.0" ZOrder="33678" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="dc001">
+    <Graphics CenterX="900.4999999999964" CenterY="471.46528803544686" Width="60.0" Height="20.0" ZOrder="33679" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein - protein dissociation" GraphId="a3d52">
+    <Graphics CenterX="868.6666666666642" CenterY="583.29862136878" Width="186.0" Height="13.0" ZOrder="33680" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Enzyme Complex" GraphId="e9f21">
+    <Graphics CenterX="927.9999999999964" CenterY="515.4652880354461" Width="114.0" Height="20.0" ZOrder="33681" FillColor="99ff33" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Small molecule" GraphId="e9628">
+    <Graphics CenterX="825.9999999999964" CenterY="1033.6402508551844" Width="104.0" Height="21.0" ZOrder="33682" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Induced activation" GraphId="ab88d">
+    <Graphics CenterX="834.0450127599462" CenterY="1002.3887712439521" Width="142.8571428571425" Height="29.52380952380917" ZOrder="33683" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Inhibition" GraphId="b27bd">
+    <Graphics CenterX="807.3437584840058" CenterY="926.8597491448064" Width="66.0" Height="20.0" ZOrder="33693" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Auto catalysis" GraphId="d5b73">
+    <Graphics CenterX="819.7194982896201" CenterY="671.999999999995" Width="94.0" Height="20.0" ZOrder="33694" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Transport" GraphId="e5130">
+    <Graphics CenterX="807.3437584840058" CenterY="949.2805017103708" Width="66.0" Height="20.0" ZOrder="33695" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Positive regulation of gene expression" GraphId="e3ebb">
+    <Graphics CenterX="896.30952380952" CenterY="630.9999999999959" Width="247.0" Height="20.0" ZOrder="33696" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Leads to through unknown mechanism" GraphId="f7232">
+    <Graphics CenterX="897.7485203887675" CenterY="604.9999999999964" Width="243.0" Height="20.0" ZOrder="33697" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Negative regulation of gene expression" GraphId="dd401">
+    <Graphics CenterX="897.0290220991437" CenterY="652.9999999999955" Width="247.0" Height="20.0" ZOrder="33698" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Translocation " GraphId="bd805">
+    <Graphics CenterX="820.7194982896199" CenterY="1071.7168920019512" Width="92.0" Height="20.0" ZOrder="33699" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ubiquitination" GraphId="b299a">
+    <Graphics CenterX="819.6480697181914" CenterY="811.9999999999945" Width="93.66666666666663" Height="20.0" ZOrder="33700" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deubiquitination" GraphId="e3534">
+    <Graphics CenterX="827.7961394363865" CenterY="830.9999999999945" Width="111.0" Height="20.0" ZOrder="33701" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Sumoylation" GraphId="e2f62">
+    <Graphics CenterX="814.3437584840058" CenterY="770.9999999999945" Width="86.0" Height="20.0" ZOrder="33702" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Induced catalysis" GraphId="cd274">
+    <Graphics CenterX="831.0792474344316" CenterY="971.9999999999944" Width="111.0" Height="20.0" ZOrder="33703" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein-protein interaction" GraphId="ec8f6">
+    <Graphics CenterX="860.8727805831531" CenterY="561.9999999999964" Width="172.66666666666663" Height="20.0" ZOrder="33704" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Acetylation" GraphId="f6408">
+    <Graphics CenterX="810.9999999999964" CenterY="689.8597491448065" Width="74.0" Height="20.0" ZOrder="33705" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Dephosphorylation" GraphId="f8856">
+    <Graphics CenterX="833.8861649562866" CenterY="750.9999999999945" Width="127.0" Height="20.0" ZOrder="33706" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="LEGEND" GraphId="dacf3">
+    <Graphics CenterX="847.9999999999964" CenterY="434.99999999999716" Width="80.0" Height="20.0" ZOrder="33707" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="14" Valign="Middle" Color="3333ff"/>
+  </Label>
+  <Label TextLabel="Phosphorylation" GraphId="eb4dc">
+    <Graphics CenterX="825.5104251506723" CenterY="727.9999999999945" Width="111.0" Height="20.0" ZOrder="33708" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deacetylation" GraphId="f4ec0">
+    <Graphics CenterX="817.124260194382" CenterY="708.9999999999945" Width="89.0" Height="20.0" ZOrder="33711" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Golgi apparatus" GraphId="aecf2">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="827.3835586686179" CenterY="1197.3835586686212" Width="106.33333333333333" Height="16.0" ZOrder="33713" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Endosome" GraphId="a2a2c">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="809.3861649562865" CenterY="1163.0848129445608" Width="71.33333333333333" Height="16.0" ZOrder="33714" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="a8822">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="804.9125807677648" CenterY="1232.5238095238099" Width="55.333333333333336" Height="16.0" ZOrder="33715" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Mitochondrion" GraphId="b4b2e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="823.9549872400463" CenterY="1215.3835586686216" Width="96.33333333333333" Height="16.0" ZOrder="33716" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Desumoylation" GraphId="facfd">
+    <Graphics CenterX="821.9389965792438" CenterY="789.9999999999945" Width="99.0" Height="20.0" ZOrder="33718" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Methylation" GraphId="baffe">
+    <Graphics CenterX="812.9389965792438" CenterY="850.7194982896183" Width="75.0" Height="20.0" ZOrder="33720" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Demethylation" GraphId="ab498">
+    <Graphics CenterX="822.9389965792438" CenterY="869.7194982896183" Width="93.0" Height="20.0" ZOrder="33722" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Palmitoylation" GraphId="c3183">
+    <Graphics CenterX="821.4389965792438" CenterY="889.9999999999945" Width="90.0" Height="20.0" ZOrder="33724" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="e9b2c">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="810.3861649562865" CenterY="1123.2433078134304" Width="71.33333333333333" Height="16.0" ZOrder="33725" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="EC" GraphId="d3d36">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="757.9999999999965" CenterY="1144.5238095238071" Width="22.333333333333332" Height="16.0" ZOrder="33726" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Plasma membrane" GraphId="da2cf">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="836.1930824781379" CenterY="1103.5238095238064" Width="120.66666666666674" Height="16.0" ZOrder="33727" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="MT" GraphId="f0269">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="758.9999999999965" CenterY="1214.5238095238099" Width="24.333333333333332" Height="16.0" ZOrder="33728" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Endoplasmic reticulum" GraphId="c9901">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="849.5316283868125" CenterY="1181.5238095238085" Width="150.33333333333334" Height="16.0" ZOrder="33729" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="cbe65">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="757.9999999999965" CenterY="1123.5238095238064" Width="22.333333333333332" Height="16.0" ZOrder="33730" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="PM" GraphId="b2034">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="758.9999999999965" CenterY="1103.5238095238064" Width="25.333333333333332" Height="16.0" ZOrder="33731" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="GO" GraphId="af281">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="757.9999999999965" CenterY="1197.5238095238094" Width="25.333333333333332" Height="16.0" ZOrder="33732" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="c4136">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="757.9999999999965" CenterY="1234.5238095238099" Width="23.333333333333332" Height="16.0" ZOrder="33733" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Extracellular" GraphId="d5854">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="816.1982950534795" CenterY="1143.8969430417526" Width="86.33333333333333" Height="16.0" ZOrder="33734" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="ER" GraphId="a6523">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="757.9999999999965" CenterY="1180.5238095238087" Width="22.333333333333332" Height="16.0" ZOrder="33735" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="EN" GraphId="a6bdd">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="757.9999999999965" CenterY="1163.5238095238083" Width="22.333333333333332" Height="16.0" ZOrder="33736" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Proteolytic cleavage" GraphId="ef3d9">
+    <Graphics CenterX="838.3437584840058" CenterY="910.2805017103708" Width="122.0" Height="20.0" ZOrder="33738" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="de753" GroupRef="ea5b8">
+    <Graphics CenterX="200.0" CenterY="340.5" Width="30.0" Height="31.0" ZOrder="33093" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b55bf" GroupRef="ea5b8">
+    <Graphics CenterX="231.0" CenterY="338.0" Width="28.0" Height="28.0" ZOrder="33095" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" Color="ff0066" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="aa7c4" GroupRef="ea5b8">
+    <Graphics CenterX="261.0925589836661" CenterY="340.5" Width="30.0" Height="31.0" ZOrder="33097" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e9559">
+    <Graphics CenterX="809.0952380952347" CenterY="462.54761904761654" Width="30.0" Height="31.0" ZOrder="33692" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ff2f8">
+    <Graphics CenterX="855.5" CenterY="833.5" Width="355.0" Height="825.0" ZOrder="33712" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ed913">
+    <Graphics CenterX="750.666666666663" CenterY="673.666666666661" Width="14.907119999999999" Height="20.0" ZOrder="33744" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="2.0" Rotation="2.554867"/>
+  </Shape>
+  <Shape TextLabel="Molecule" GraphId="c95dd">
+    <Graphics CenterX="740.1666666666642" CenterY="1034.5567928730597" Width="59.0" Height="19.113585746102444" ZOrder="33745" FillColor="ffccff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="d6046">
+    <Graphics CenterX="735.6533496707339" CenterY="512.9288583797635" Width="30.0" Height="31.0" ZOrder="33749" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" Color="ff0066" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f0450">
+    <Graphics CenterX="765.6666666666642" CenterY="980.79862136878" Width="14.0" Height="14.0" ZOrder="33750" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="fdf0a" Style="Group"/>
+  <Group GroupId="a4e08" GraphId="b777e" Style="Group"/>
+  <Group GroupId="aad1a" GraphId="ccaba" Style="Group"/>
+  <Group GroupId="c445f" Style="Group"/>
+  <Group GroupId="b2564" GraphId="b2130" Style="Group"/>
+  <Group GroupId="ea5b8" Style="Group"/>
+  <InfoBox CenterX="15.0" CenterY="8.333333333333334"/>
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>Interleukin mediated signaling pathway</bp:TERM>
+      <bp:ID>PW:0000512</bp:ID>
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+    </bp:openControlledVocabulary>
+  </Biopax>
+</Pathway>

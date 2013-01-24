@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Interferon Signaling" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">Interferons (IFNs) are cytokines that play a central role in initiating immune responses, especially antiviral and antitumor effects. There are three types of IFNs:Type I (IFN-alpha, -beta and others, such as omega, epsilon, and kappa), Type II (IFN-gamma) and Type III (IFN-lamda). In this module we are mainly focusing on type I IFNs alpha and beta and type II IFN-gamma. Both type I and type II IFNs exert their actions through cognate receptor complexes, IFNAR and IFNGR respectively, present on cell surface membranes. Type I IFNs are broadly expressed heterodimeric receptors composed of the IFNAR1 and IFNAR2 subunits, while the type II IFN receptor consists of IFNGR1 and IFNGR2. Type III interferon lambda has three members: lamda1 (IL-29), lambda2 (IL-28A), and lambda3 (IL-28B) respectively. IFN-lambda signaling is initiated through unique heterodimeric receptor composed of IFN-LR1/IF-28Ralpha and IL10R2 chains. &lt;br&gt;Type I IFNs typically recruit JAK1 and TYK2 proteins to transduce their signals to STAT1 and 2; in combination with IRF9 (IFN-regulatory factor 9), these proteins form the heterotrimeric complex ISGF3. In nucleus ISGF3 binds to IFN-stimulated response elements (ISRE) to promote gene induction. &lt;br&gt;Type II IFNs in turn rely upon the activation of JAKs 1 and 2 and STAT1. Once activated, STAT1 dimerizes to form the transcriptional regulator GAF (IFNG activated factor) and this binds to the IFNG activated sequence (GAS) elements and initiate the transcription of IFNG-responsive genes. &lt;br&gt;Like type I IFNs, IFN-lambda recruits TYK2 and JAK1 kinases and then promote the phosphorylation of STAT1/2, and induce the ISRE3 complex formation.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_918290</BiopaxRef>
+  <BiopaxRef>lit_873893</BiopaxRef>
+  <BiopaxRef>lit_873858</BiopaxRef>
+  <BiopaxRef>lit_913518</BiopaxRef>
+  <BiopaxRef>lit_918287</BiopaxRef>
+  <Graphics BoardWidth="3902.5" BoardHeight="6380.0" />
+  <DataNode TextLabel="Interferon &#xA;alpha/beta &#xA;signaling&#xA;" GraphId="n1_REACTOME_909733" Type="Pathway">
+    <Comment Source="WikiPathways-description">Type I interferons (IFNs) are composed of various genes including IFN alpha (IFNA), beta (IFNB), omega, epsilon, and kappa. In humans the IFNA genes are composed of more than 13 subfamily genes, whereas there is only one IFNB gene. The large family of IFNA/B proteins all bind to a single receptor which is composed of two distinct chains: IFNAR1 and IFNAR2. The IFNA/B stimulation of the IFNA receptor complex leads to the formation of two transcriptional activator complexes: IFNA-activated-factor (AAF), which is a homodimer of STAT1 and IFN-stimulated gene factor 3 (ISGF3), which comprises STAT1, STAT2 and a member of the IRF family, IRF9/P48. AAF mediates activation of the IRF-1 gene by binding to GAS (IFNG-activated site), whereas ISGF3 activates several IFN-inducible genes including IRF3 and IRF7.</Comment>
+    <BiopaxRef>lit_909583</BiopaxRef>
+    <BiopaxRef>lit_909642</BiopaxRef>
+    <BiopaxRef>lit_909612</BiopaxRef>
+    <BiopaxRef>lit_909588</BiopaxRef>
+    <Graphics CenterX="291.0" CenterY="198.0" Width="84.0" Height="58.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_25162" />
+  </DataNode>
+  <DataNode TextLabel="Interferon gamma &#xA;signaling&#xA;" GraphId="n2_REACTOME_877300" Type="Pathway">
+    <Comment Source="WikiPathways-description">Interferon-gamma (IFN-gamma) belongs to the type II interferon family and is secreted by activated immune cells-primarily T and NK cells, but also B-cells and APC. INFG exerts its effect on cells by interacting with the specific IFN-gamma receptor (IFNGR). IFNGR consists of two chains, namely IFNGR1 (also known as the IFNGR alpha chain) and IFNGR2 (also known as the IFNGR beta chain). IFNGR1 is the ligand binding receptor and is required but not sufficient for signal transduction, whereas IFNGR2 do not bind IFNG independently but mainly plays a role in IFNG signaling and is generally the limiting factor in IFNG responsiveness. Both IFNGR chains lack intrinsic kinase/phosphatase activity and thus rely on other signaling proteins like Janus-activated kinase 1 (JAK1), JAK2 and Signal transducer and activator of transcription 1 (STAT-1) for signal transduction. IFNGR complex in its resting state is a preformed tetramer and upon IFNG association undergoes a conformational change. This conformational change induces the phosphorylation and activation of JAK1, JAK2, and STAT1 which in turn induces genes containing the gamma-interferon activation sequence (GAS) in the promoter.</Comment>
+    <BiopaxRef>lit_873893</BiopaxRef>
+    <BiopaxRef>lit_873880</BiopaxRef>
+    <BiopaxRef>lit_873861</BiopaxRef>
+    <BiopaxRef>lit_873858</BiopaxRef>
+    <Graphics CenterX="414.5" CenterY="193.0" Width="123.0" Height="44.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_25078" />
+  </DataNode>
+  <DataNode TextLabel="Interferon &#xA;lambda&#xA;signaling&#xA;" GraphId="f38e5" Type="Pathway">
+    <Comment Source="WikiPathways-description">Type I interferons (IFNs) are composed of various genes including IFN alpha (IFNA), beta (IFNB), omega, epsilon, and kappa. In humans the IFNA genes are composed of more than 13 subfamily genes, whereas there is only one IFNB gene. The large family of IFNA/B proteins all bind to a single receptor which is composed of two distinct chains: IFNAR1 and IFNAR2. The IFNA/B stimulation of the IFNA receptor complex leads to the formation of two transcriptional activator complexes: IFNA-activated-factor (AAF), which is a homodimer of STAT1 and IFN-stimulated gene factor 3 (ISGF3), which comprises STAT1, STAT2 and a member of the IRF family, IRF9/P48. AAF mediates activation of the IRF-1 gene by binding to GAS (IFNG-activated site), whereas ISGF3 activates several IFN-inducible genes including IRF3 and IRF7.</Comment>
+    <BiopaxRef>b93</BiopaxRef>
+    <Graphics CenterX="580.0" CenterY="197.0" Width="84.0" Height="58.0" ZOrder="32769" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="" />
+  </DataNode>
+  <Label TextLabel="cytosol" GraphId="comp_text_3" GroupRef="group_comp_3">
+    <Graphics CenterX="390.5" CenterY="247.5" Width="59.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle" />
+  </Label>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics CenterX="453.5" CenterY="248.0" Width="501.0" Height="104.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>immune response pathway</bp:TERM>
+      <bp:ID>PW:0000023</bp:ID>
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_873858">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14525967</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferon-gamma: an overview of signals, mechanisms and functions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schroder, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hertzog, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ravasi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hume, DA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Leukoc Biol 75:163-89</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_918290">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15864272</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms of type-I- and type-II-interferon-mediated signalling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platanias, LC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Immunol 5:375-86</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_918287">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15607020</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms of type-I interferon signal transduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uddin, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platanias, LC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem Mol Biol 37:635-41</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_913518">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19059436</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferons: signaling, antiviral and viral evasion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bonjardim, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferreira, PC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kroon, EG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunol Lett 122:1-11</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_873861">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9143700</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The IFN gamma receptor: a paradigm for cytokine receptor signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bach, EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aguet, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreiber, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Immunol 15:563-91</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_873880">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9462485</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The interferon gamma (IFN-gamma) receptor: a paradigm for the multichain cytokine receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pestka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kotenko, SV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muthukumaran, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Izotova, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cook, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garotta, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 8:189-206</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_873893">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18929502</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IFNgamma signaling-does it mean JAK-STAT?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gough, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levy, DE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnstone, RW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clarke, CJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 19:383-94</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_909612">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8605876</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylated interferon-alpha receptor 1 subunit (IFNaR1) acts as a docking site for the latent form of the 113 kDa STAT2 protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yan, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krishnan, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greenlund, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gupta, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lim, JT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreiber, RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schindler, CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krolewski, JJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 15:1064-74</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_909583">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17969444</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The receptor of the type I interferon family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">UzÃ©, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreiber, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piehler, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellegrini, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Top Microbiol Immunol 316:71-95</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_909642">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8702790</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferon-alpha-dependent activation of Tyk2 requires phosphorylation of positive regulatory tyrosines by another kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gauzzi, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Velazquez, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McKendry, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mogensen, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fellous, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellegrini, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:20494-500</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_909588">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8621447</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Formation of STAT1-STAT2 heterodimers and their role in the activation of IRF-1 gene transcription by interferon-alpha</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leung, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qureshi, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell JE, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stark, GR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:5790-4</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b93">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20712453</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferon-lambda: a new addition to an old family.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Interferon Cytokine Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Donnelly RP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kotenko SV</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

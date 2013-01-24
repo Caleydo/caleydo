@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Adipogenesis" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Comment Source="WikiPathways-description">The different classess of factors involved in adipogenesis are shown. Adipogenesis is the process by which fat cells differentiate from predadipocytes to adipocytes (fat cells). Adipose tissue, composed of white and brown adipose tissue, is composed of adipocytes. This pathway is primarily studied to understand factors that contribute to obesity and diabetes. Transcriptional and hormonal regulators of adipocyte formation are indicated.
+
+</Comment>
+  <BiopaxRef>b10</BiopaxRef>
+  <Graphics BoardWidth="21851.5" BoardHeight="16852.0"/>
+  <DataNode BackpageHead="IGF1 | insulin-like growth factor 1 (somatomedi..." TextLabel="IGF1" Type="GeneProduct" GraphId="b3c" GroupRef="ff818">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IGF1 | insulin-like growth factor 1 (somatomedi..."/>
+    <Graphics Color="000000" CenterX="13035.0" CenterY="5905.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3479"/>
+  </DataNode>
+  <DataNode BackpageHead="PTGIS | prostaglandin I2 (prostacyclin) synthas..." TextLabel="PTGIS" Type="GeneProduct" GraphId="bef" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGIS | prostaglandin I2 (prostacyclin) synthas..."/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="12700.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5740"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARD | peroxisome proliferative activated rece..." TextLabel="PPARD" Type="GeneProduct" GraphId="f7c" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARD | peroxisome proliferative activated rece..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="7100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5467"/>
+  </DataNode>
+  <DataNode BackpageHead="CREB1 | cAMP responsive element binding protein..." TextLabel="CREB1" Type="GeneProduct" GraphId="feb" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREB1 | cAMP responsive element binding protein..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="8600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1385"/>
+  </DataNode>
+  <DataNode BackpageHead="MIXL1 | Mix1 homeobox-like 1 (Xenopus laevis)" TextLabel="MIXL1" Type="GeneProduct" GraphId="a7f" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MIXL1 | Mix1 homeobox-like 1 (Xenopus laevis)"/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="11800.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="83881"/>
+  </DataNode>
+  <DataNode BackpageHead="GH1 | growth hormone 1" TextLabel="GH1" Type="GeneProduct" GraphId="f9e" GroupRef="ff818">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GH1 | growth hormone 1"/>
+    <Graphics Color="000000" CenterX="13035.0" CenterY="6505.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2688"/>
+  </DataNode>
+  <DataNode BackpageHead="ID3 | inhibitor of DNA binding 3 dominant nega..." TextLabel="ID3" Type="GeneProduct" GraphId="af5" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ID3 | inhibitor of DNA binding 3 dominant nega..."/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="14600.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3399"/>
+  </DataNode>
+  <DataNode BackpageHead="WNT10B | wingless-type MMTV integration site fa..." TextLabel="WNT10B" Type="GeneProduct" GraphId="e91" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="WNT10B | wingless-type MMTV integration site fa..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="7300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7480"/>
+  </DataNode>
+  <DataNode BackpageHead="STAT5A | signal transducer and activator of tra..." TextLabel="STAT5A" Type="GeneProduct" GraphId="a05" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5A | signal transducer and activator of tra..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="12100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6776"/>
+  </DataNode>
+  <DataNode BackpageHead="STAT5B | signal transducer and activator of tra..." TextLabel="STAT5B" Type="GeneProduct" GraphId="bae" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5B | signal transducer and activator of tra..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="12400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6777"/>
+  </DataNode>
+  <DataNode BackpageHead="DLK1 | delta-like 1 homolog (Drosophila)" TextLabel="DLK1" Type="GeneProduct" GraphId="c97" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DLK1 | delta-like 1 homolog (Drosophila)"/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="5500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8788"/>
+  </DataNode>
+  <DataNode BackpageHead="NR3C1 | nuclear receptor subfamily 3 group C ..." TextLabel="NR3C1" Type="GeneProduct" GraphId="a67" GroupRef="ff818">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR3C1 | nuclear receptor subfamily 3 group C ..."/>
+    <Graphics Color="000000" CenterX="13035.0" CenterY="6205.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2908"/>
+  </DataNode>
+  <DataNode BackpageHead="DDIT3 | DNA-damage-inducible transcript 3" TextLabel="DDIT3" Type="GeneProduct" GraphId="a2d" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DDIT3 | DNA-damage-inducible transcript 3"/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="13200.0" Width="960.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1649"/>
+  </DataNode>
+  <DataNode BackpageHead="LIF | leukemia inhibitory factor (cholinergic d..." TextLabel="LIF" Type="GeneProduct" GraphId="f23" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LIF | leukemia inhibitory factor (cholinergic d..."/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="11200.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3976"/>
+  </DataNode>
+  <DataNode BackpageHead="CEBPB | CCAAT/enhancer binding protein (C/EBP)..." TextLabel="CEBPB" Type="GeneProduct" GraphId="c55" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CEBPB | CCAAT/enhancer binding protein (C/EBP)..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="5900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1051"/>
+  </DataNode>
+  <DataNode BackpageHead="CYP26A1 | cytochrome P450 family 26 subfamily..." TextLabel="CYP26A1" Type="GeneProduct" GraphId="fc9" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP26A1 | cytochrome P450 family 26 subfamily..."/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="13900.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1592"/>
+  </DataNode>
+  <DataNode BackpageHead="CYP26B1 | cytochrome P450 family 26 subfamily..." TextLabel="CYP26B1" Type="GeneProduct" GraphId="ed4" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP26B1 | cytochrome P450 family 26 subfamily..."/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="14200.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56603"/>
+  </DataNode>
+  <DataNode BackpageHead="RXRA | retinoid X receptor alpha" TextLabel="RXRA" Type="GeneProduct" GraphId="f67" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRA | retinoid X receptor alpha"/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="7400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6256"/>
+  </DataNode>
+  <DataNode BackpageHead="RARA | retinoic acid receptor alpha" TextLabel="RARA" Type="GeneProduct" GraphId="b4c" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARA | retinoic acid receptor alpha"/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="8000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5914"/>
+  </DataNode>
+  <DataNode BackpageHead="NR1H3 | nuclear receptor subfamily 1 group H ..." TextLabel="NR1H3" Type="GeneProduct" GraphId="ed6" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR1H3 | nuclear receptor subfamily 1 group H ..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="8300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10062"/>
+  </DataNode>
+  <DataNode BackpageHead="LPL | lipoprotein lipase" TextLabel="LPL" Type="GeneProduct" GraphId="c04" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LPL | lipoprotein lipase"/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="6790.0" Width="1007.5000000000011" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4023"/>
+  </DataNode>
+  <DataNode BackpageHead="SREBF1 | sterol regulatory element binding tran..." TextLabel="SREBF1" Type="GeneProduct" GraphId="ca6" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SREBF1 | sterol regulatory element binding tran..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="6800.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6720"/>
+  </DataNode>
+  <DataNode BackpageHead="FAS | Fas (TNF receptor superfamily member 6)" TextLabel="FAS" Type="GeneProduct" GraphId="e1e" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FAS | Fas (TNF receptor superfamily member 6)"/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="5890.0" Width="1007.5000000000011" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="355"/>
+  </DataNode>
+  <DataNode BackpageHead="RBL1 | retinoblastoma-like 1 (p107)" TextLabel="RBL1" Type="GeneProduct" GraphId="d01" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RBL1 | retinoblastoma-like 1 (p107)"/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="11800.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5933"/>
+  </DataNode>
+  <DataNode BackpageHead="GATA3 | GATA binding protein 3" TextLabel="GATA3" Type="GeneProduct" GraphId="e99" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GATA3 | GATA binding protein 3"/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="6100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2625"/>
+  </DataNode>
+  <DataNode BackpageHead="GATA2 | GATA binding protein 2" TextLabel="GATA2" Type="GeneProduct" GraphId="cbf" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GATA2 | GATA binding protein 2"/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="5800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2624"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARG | peroxisome proliferative activated rece..." TextLabel="PPARG" Type="GeneProduct" GraphId="b0f" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARG | peroxisome proliferative activated rece..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="6800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5468"/>
+  </DataNode>
+  <DataNode BackpageHead="MEF2A | MADS box transcription enhancer factor ..." TextLabel="MEF2A" Type="GeneProduct" GraphId="cd6" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MEF2A | MADS box transcription enhancer factor ..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="5600.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4205"/>
+  </DataNode>
+  <DataNode BackpageHead="MEF2B | MADS box transcription enhancer factor ..." TextLabel="MEF2B" Type="GeneProduct" GraphId="f8b" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MEF2B | MADS box transcription enhancer factor ..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="5900.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4207"/>
+  </DataNode>
+  <DataNode BackpageHead="MEF2C | MADS box transcription enhancer factor ..." TextLabel="MEF2C" Type="GeneProduct" GraphId="fd9" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MEF2C | MADS box transcription enhancer factor ..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="6200.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4208"/>
+  </DataNode>
+  <DataNode BackpageHead="MEF2D | MADS box transcription enhancer factor ..." TextLabel="MEF2D" Type="GeneProduct" GraphId="bd9" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MEF2D | MADS box transcription enhancer factor ..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="6500.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4209"/>
+  </DataNode>
+  <DataNode BackpageHead="ASIP | agouti signaling protein nonagouti homo..." TextLabel="ASIP" Type="GeneProduct" GraphId="b5f" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ASIP | agouti signaling protein nonagouti homo..."/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="12900.0" Width="960.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="434"/>
+  </DataNode>
+  <DataNode BackpageHead="TNF | tumor necrosis factor (TNF superfamily m..." TextLabel="TNF" Type="GeneProduct" GraphId="e4f" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TNF | tumor necrosis factor (TNF superfamily m..."/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="11100.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7124"/>
+  </DataNode>
+  <DataNode BackpageHead="MIF | macrophage migration inhibitory factor (g..." TextLabel="MIF" Type="GeneProduct" GraphId="cc1" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MIF | macrophage migration inhibitory factor (g..."/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="11500.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4282"/>
+  </DataNode>
+  <DataNode BackpageHead="TGFB1 | transforming growth factor beta 1 (Cam..." TextLabel="TGFB1" Type="GeneProduct" GraphId="ebd" GroupRef="ff818">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TGFB1 | transforming growth factor beta 1 (Cam..."/>
+    <Graphics Color="000000" CenterX="13035.0" CenterY="6805.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7040"/>
+  </DataNode>
+  <DataNode BackpageHead="SERPINE1 | serine (or cysteine) proteinase inhi..." TextLabel="SERPINE1" Type="GeneProduct" GraphId="e06" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SERPINE1 | serine (or cysteine) proteinase inhi..."/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="12400.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5054"/>
+  </DataNode>
+  <DataNode BackpageHead="SLC2A4 | solute carrier family 2 (facilitated g..." TextLabel="SLC2A4" Type="GeneProduct" GraphId="ed2" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLC2A4 | solute carrier family 2 (facilitated g..."/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="6190.0" Width="1007.5000000000011" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6517"/>
+  </DataNode>
+  <DataNode BackpageHead="SCD | stearoyl-CoA desaturase (delta-9-desatura..." TextLabel="SCD" Type="GeneProduct" GraphId="fec" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SCD | stearoyl-CoA desaturase (delta-9-desatura..."/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="13000.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6319"/>
+  </DataNode>
+  <DataNode BackpageHead="TWIST1 | twist homolog 1 (acrocephalosyndactyly..." TextLabel="TWIST1" Type="GeneProduct" GraphId="dc3" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TWIST1 | twist homolog 1 (acrocephalosyndactyly..."/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="13600.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7291"/>
+  </DataNode>
+  <DataNode BackpageHead="LEP | leptin (obesity homolog mouse)" TextLabel="LEP" Type="GeneProduct" GraphId="f72" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LEP | leptin (obesity homolog mouse)"/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="10200.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3952"/>
+  </DataNode>
+  <DataNode BackpageHead="RETN | resistin" TextLabel="RETN" Type="GeneProduct" GraphId="fe1" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RETN | resistin"/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="11400.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56729"/>
+  </DataNode>
+  <DataNode BackpageHead="DF | D component of complement (adipsin)" TextLabel="DF" Type="GeneProduct" GraphId="d0f" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DF | D component of complement (adipsin)"/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="11700.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1675"/>
+  </DataNode>
+  <DataNode BackpageHead="GTF3A | general transcription factor IIIA" TextLabel="GTF3A" Type="GeneProduct" GraphId="ef2" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GTF3A | general transcription factor IIIA"/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="5590.0" Width="1007.5000000000011" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2971"/>
+  </DataNode>
+  <DataNode BackpageHead="RB1 | retinoblastoma 1 (including osteosarcoma)..." TextLabel="RB1" Type="GeneProduct" GraphId="edd" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RB1 | retinoblastoma 1 (including osteosarcoma)..."/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="12400.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5925"/>
+  </DataNode>
+  <DataNode BackpageHead="RBL2 | retinoblastoma-like 2 (p130)" TextLabel="RBL2" Type="GeneProduct" GraphId="ea1" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RBL2 | retinoblastoma-like 2 (p130)"/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="12100.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5934"/>
+  </DataNode>
+  <DataNode BackpageHead="ADIPOQ | adiponectin C1Q and collagen domain c..." TextLabel="ADIPOQ" Type="GeneProduct" GraphId="b3d" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ADIPOQ | adiponectin C1Q and collagen domain c..."/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="10500.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="9370"/>
+  </DataNode>
+  <DataNode BackpageHead="ADFP | adipose differentiation-related protein" TextLabel="ADFP" Type="GeneProduct" GraphId="c25" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ADFP | adipose differentiation-related protein"/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="12000.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="123"/>
+  </DataNode>
+  <DataNode BackpageHead="AGT | angiotensinogen (serine (or cysteine) pro..." TextLabel="AGT" Type="GeneProduct" GraphId="b01" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="AGT | angiotensinogen (serine (or cysteine) pro..."/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="12600.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="183"/>
+  </DataNode>
+  <DataNode BackpageHead="CDKN1A | cyclin-dependent kinase inhibitor 1A (..." TextLabel="CDKN1A" Type="GeneProduct" GraphId="fd8" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN1A | cyclin-dependent kinase inhibitor 1A (..."/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="12100.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1026"/>
+  </DataNode>
+  <DataNode BackpageHead="E2F1 | E2F transcription factor 1" TextLabel="E2F1" Type="GeneProduct" GraphId="e29" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F1 | E2F transcription factor 1"/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="11200.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1869"/>
+  </DataNode>
+  <DataNode BackpageHead="SP1 | Sp1 transcription factor" TextLabel="SP1" Type="GeneProduct" GraphId="c3d" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SP1 | Sp1 transcription factor"/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="13300.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6667"/>
+  </DataNode>
+  <DataNode BackpageHead="HMGA1 | high mobility group AT-hook 1" TextLabel="HMGA1" Type="GeneProduct" GraphId="cac" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HMGA1 | high mobility group AT-hook 1"/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="14300.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3159"/>
+  </DataNode>
+  <DataNode BackpageHead="PLIN | perilipin" TextLabel="PLIN" Type="GeneProduct" GraphId="d3c" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PLIN | perilipin"/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="6490.0" Width="1007.5000000000011" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5346"/>
+  </DataNode>
+  <DataNode BackpageHead="IL6 | interleukin 6 (interferon beta 2)" TextLabel="IL6" Type="GeneProduct" GraphId="fcb" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6 | interleukin 6 (interferon beta 2)"/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="10800.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3569"/>
+  </DataNode>
+  <DataNode BackpageHead="GADD45A | growth arrest and DNA-damage-inducibl..." TextLabel="GADD45A" Type="GeneProduct" GraphId="de5" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GADD45A | growth arrest and DNA-damage-inducibl..."/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="13700.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1647"/>
+  </DataNode>
+  <DataNode BackpageHead="GADD45B | growth arrest and DNA-damage-inducibl..." TextLabel="GADD45B" Type="GeneProduct" GraphId="dd2" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GADD45B | growth arrest and DNA-damage-inducibl..."/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="14000.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4616"/>
+  </DataNode>
+  <DataNode BackpageHead="CEBPD | CCAAT/enhancer binding protein (C/EBP)..." TextLabel="CEBPD" Type="GeneProduct" GraphId="d1c" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CEBPD | CCAAT/enhancer binding protein (C/EBP)..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="6200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1052"/>
+  </DataNode>
+  <DataNode BackpageHead="BMP1 | bone morphogenetic protein 1" TextLabel="BMP1" Type="GeneProduct" GraphId="e08" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="BMP1 | bone morphogenetic protein 1"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="11200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="649"/>
+  </DataNode>
+  <DataNode BackpageHead="BMP2 | bone morphogenetic protein 2" TextLabel="BMP2" Type="GeneProduct" GraphId="c64" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="BMP2 | bone morphogenetic protein 2"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="11500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="650"/>
+  </DataNode>
+  <DataNode BackpageHead="BMP3 | bone morphogenetic protein 3 (osteogenic..." TextLabel="BMP3" Type="GeneProduct" GraphId="fb8" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="BMP3 | bone morphogenetic protein 3 (osteogenic..."/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="11800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="651"/>
+  </DataNode>
+  <DataNode BackpageHead="BMP4 | bone morphogenetic protein 4" TextLabel="BMP4" Type="GeneProduct" GraphId="abc" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="BMP4 | bone morphogenetic protein 4"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="12400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="652"/>
+  </DataNode>
+  <DataNode BackpageHead="NDN | necdin homolog (mouse)" TextLabel="NDN" Type="GeneProduct" GraphId="d8a" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDN | necdin homolog (mouse)"/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="7600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4692"/>
+  </DataNode>
+  <DataNode BackpageHead="FOXO1A | forkhead box O1A (rhabdomyosarcoma)" TextLabel="FOXO1A" Type="GeneProduct" GraphId="a6c" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FOXO1A | forkhead box O1A (rhabdomyosarcoma)"/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="11200.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2308"/>
+  </DataNode>
+  <DataNode BackpageHead="KLF5 | Kruppel-like factor 5 (intestinal)" TextLabel="KLF5" Type="GeneProduct" GraphId="f6a" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="KLF5 | Kruppel-like factor 5 (intestinal)"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="12900.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="688"/>
+  </DataNode>
+  <DataNode BackpageHead="FOXC2 | forkhead box C2 (MFH-1 mesenchyme fork..." TextLabel="FOXC2" Type="GeneProduct" GraphId="bcc" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FOXC2 | forkhead box C2 (MFH-1 mesenchyme fork..."/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="11500.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2303"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARGC1A | peroxisome proliferative activated r..." TextLabel="PPARGC1A" Type="GeneProduct" GraphId="f00" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARGC1A | peroxisome proliferative activated r..."/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="7090.0" Width="1007.5" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10891"/>
+  </DataNode>
+  <DataNode BackpageHead="NCOA1 | nuclear receptor coactivator 1" TextLabel="NCOA1" Type="GeneProduct" GraphId="cee" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NCOA1 | nuclear receptor coactivator 1"/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="7400.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8648"/>
+  </DataNode>
+  <DataNode BackpageHead="NCOA2 | nuclear receptor coactivator 2" TextLabel="NCOA2" Type="GeneProduct" GraphId="e1d" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NCOA2 | nuclear receptor coactivator 2"/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="13550.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10499"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARA | peroxisome proliferative activated rece..." TextLabel="PPARA" Type="GeneProduct" GraphId="dbf" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARA | peroxisome proliferative activated rece..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="6500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5465"/>
+  </DataNode>
+  <DataNode BackpageHead="STAT3 | signal transducer and activator of tran..." TextLabel="STAT3" Type="GeneProduct" GraphId="f53" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3 | signal transducer and activator of tran..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="11800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <DataNode BackpageHead="STAT2 | signal transducer and activator of tran..." TextLabel="STAT2" Type="GeneProduct" GraphId="b9d" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT2 | signal transducer and activator of tran..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="11500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6773"/>
+  </DataNode>
+  <DataNode BackpageHead="STAT1 | signal transducer and activator of tran..." TextLabel="STAT1" Type="GeneProduct" GraphId="fef" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT1 | signal transducer and activator of tran..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="11200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6772"/>
+  </DataNode>
+  <DataNode BackpageHead="STAT6 | signal transducer and activator of tran..." TextLabel="STAT6" Type="GeneProduct" GraphId="ec1" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT6 | signal transducer and activator of tran..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="12700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6778"/>
+  </DataNode>
+  <DataNode BackpageHead="SOCS1 | suppressor of cytokine signaling 1" TextLabel="SOCS1" Type="GeneProduct" GraphId="a8b" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SOCS1 | suppressor of cytokine signaling 1"/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="12250.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8651"/>
+  </DataNode>
+  <DataNode BackpageHead="SOCS3 | suppressor of cytokine signaling 3" TextLabel="SOCS3" Type="GeneProduct" GraphId="b9f" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SOCS3 | suppressor of cytokine signaling 3"/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="12550.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="9021"/>
+  </DataNode>
+  <DataNode BackpageHead="CNTFR | ciliary neurotrophic factor receptor" TextLabel="CNTFR" Type="GeneProduct" GraphId="bb5" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CNTFR | ciliary neurotrophic factor receptor"/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="11200.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1271"/>
+  </DataNode>
+  <DataNode BackpageHead="LIFR | leukemia inhibitory factor receptor" TextLabel="LIFR" Type="GeneProduct" GraphId="f69" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LIFR | leukemia inhibitory factor receptor"/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="11500.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3977"/>
+  </DataNode>
+  <DataNode BackpageHead="IL6ST | interleukin 6 signal transducer (gp130..." TextLabel="IL6ST" Type="GeneProduct" GraphId="f80" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6ST | interleukin 6 signal transducer (gp130..."/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="11800.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3572"/>
+  </DataNode>
+  <DataNode BackpageHead="MBNL1 | muscleblind-like (Drosophila)" TextLabel="MBNL1" Type="GeneProduct" GraphId="d4c" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MBNL1 | muscleblind-like (Drosophila)"/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="7100.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4154"/>
+  </DataNode>
+  <DataNode BackpageHead="OSM | oncostatin M" TextLabel="OSM" Type="GeneProduct" GraphId="af3" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="OSM | oncostatin M"/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="12100.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5008"/>
+  </DataNode>
+  <DataNode BackpageHead="CTNNB1 | catenin (cadherin-associated protein)..." TextLabel="CTNNB1" Type="GeneProduct" GraphId="bdd" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CTNNB1 | catenin (cadherin-associated protein)..."/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="12400.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1499"/>
+  </DataNode>
+  <DataNode BackpageHead="UCP1 | uncoupling protein 1 (mitochondrial pro..." TextLabel="UCP1" Type="GeneProduct" GraphId="d38" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UCP1 | uncoupling protein 1 (mitochondrial pro..."/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="7390.0" Width="1007.5000000000011" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7350"/>
+  </DataNode>
+  <DataNode BackpageHead="WNT5B | wingless-type MMTV integration site fam..." TextLabel="WNT5B" Type="GeneProduct" GraphId="a58" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="WNT5B | wingless-type MMTV integration site fam..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="7000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="81029"/>
+  </DataNode>
+  <DataNode BackpageHead="WNT1 | wingless-type MMTV integration site fami..." TextLabel="WNT1" Type="GeneProduct" GraphId="b69" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="WNT1 | wingless-type MMTV integration site fami..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="6700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7471"/>
+  </DataNode>
+  <DataNode BackpageHead="SMAD3 | SMAD mothers against DPP homolog 3 (Dr..." TextLabel="SMAD3" Type="GeneProduct" GraphId="ed0" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SMAD3 | SMAD mothers against DPP homolog 3 (Dr..."/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="12700.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4088"/>
+  </DataNode>
+  <DataNode BackpageHead="FZD1 | frizzled homolog 1 (Drosophila)" TextLabel="FZD1" Type="GeneProduct" GraphId="d56" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FZD1 | frizzled homolog 1 (Drosophila)"/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="13850.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8321"/>
+  </DataNode>
+  <DataNode BackpageHead="DVL1 | dishevelled dsh homolog 1 (Drosophila)" TextLabel="DVL1" Type="GeneProduct" GraphId="a88" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DVL1 | dishevelled dsh homolog 1 (Drosophila)"/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="13000.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1855"/>
+  </DataNode>
+  <DataNode BackpageHead="TCF1 | transcription factor 1 hepatic; LF-B1 ..." TextLabel="TCF1" Type="GeneProduct" GraphId="c29" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TCF1 | transcription factor 1 hepatic; LF-B1 ..."/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="13300.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6927"/>
+  </DataNode>
+  <DataNode BackpageHead="RXRG | retinoid X receptor gamma" TextLabel="RXRG" Type="GeneProduct" GraphId="efd" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRG | retinoid X receptor gamma"/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="7700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6258"/>
+  </DataNode>
+  <DataNode BackpageHead="FRZB | frizzled-related protein" TextLabel="FRZB" Type="GeneProduct" GraphId="f62" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FRZB | frizzled-related protein"/>
+    <Graphics Color="000000" CenterX="4900.0" CenterY="13600.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2487"/>
+  </DataNode>
+  <DataNode BackpageHead="INS | insulin" TextLabel="INS" Type="GeneProduct" GraphId="b84" GroupRef="ff818">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="INS | insulin"/>
+    <Graphics Color="000000" CenterX="13035.0" CenterY="5605.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3630"/>
+  </DataNode>
+  <DataNode BackpageHead="PBEF1 | pre-B-cell colony enhancing factor 1" TextLabel="PBEF1" Type="GeneProduct" GraphId="dfc" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PBEF1 | pre-B-cell colony enhancing factor 1"/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="12900.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10135"/>
+  </DataNode>
+  <DataNode BackpageHead="SPOCK | sparc/osteonectin cwcv and kazal-like ..." TextLabel="SPOCK" Type="GeneProduct" GraphId="b5b" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SPOCK | sparc/osteonectin cwcv and kazal-like ..."/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="13200.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6695"/>
+  </DataNode>
+  <DataNode BackpageHead="TRIB3 | tribbles homolog 3 (Drosophila)" TextLabel="TRIB3" Type="GeneProduct" GraphId="e5a" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TRIB3 | tribbles homolog 3 (Drosophila)"/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="12850.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="57761"/>
+  </DataNode>
+  <DataNode BackpageHead="GATA4 | GATA binding protein 4" TextLabel="GATA4" Type="GeneProduct" GraphId="f63" GroupRef="ba160">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GATA4 | GATA binding protein 4"/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="6400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2626"/>
+  </DataNode>
+  <DataNode BackpageHead="NR2F1 | nuclear receptor subfamily 2 group F ..." TextLabel="NR2F1" Type="GeneProduct" GraphId="b5a" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR2F1 | nuclear receptor subfamily 2 group F ..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="7700.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7025"/>
+  </DataNode>
+  <DataNode BackpageHead="NRIP1 | nuclear receptor interacting protein 1" TextLabel="NRIP1" Type="GeneProduct" GraphId="cf3" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NRIP1 | nuclear receptor interacting protein 1"/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="8300.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8204"/>
+  </DataNode>
+  <DataNode BackpageHead="RORA | RAR-related orphan receptor A" TextLabel="RORA" Type="GeneProduct" GraphId="a5c" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RORA | RAR-related orphan receptor A"/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="8000.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6095"/>
+  </DataNode>
+  <DataNode BackpageHead="PRLR | prolactin receptor" TextLabel="PRLR" Type="GeneProduct" GraphId="bf6" GroupRef="ff818">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRLR | prolactin receptor"/>
+    <Graphics Color="000000" CenterX="13035.0" CenterY="7105.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5618"/>
+  </DataNode>
+  <DataNode BackpageHead="ADPN | adiponutrin" TextLabel="ADPN" Type="GeneProduct" GraphId="bf0" GroupRef="dbd59">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ADPN | adiponutrin"/>
+    <Graphics Color="000000" CenterX="17800.0" CenterY="12300.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="80339"/>
+  </DataNode>
+  <DataNode BackpageHead="CUGBP1 | CUG triplet repeat RNA binding protei..." TextLabel="CUGBP1" Type="GeneProduct" GraphId="fa4" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CUGBP1 | CUG triplet repeat RNA binding protei..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="13300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10658"/>
+  </DataNode>
+  <DataNode BackpageHead="HIF1A | hypoxia-inducible factor 1 alpha subun..." TextLabel="HIF1A" Type="GeneProduct" GraphId="c5d" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HIF1A | hypoxia-inducible factor 1 alpha subun..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="13000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3091"/>
+  </DataNode>
+  <DataNode BackpageHead="KLF6 | Kruppel-like factor 6" TextLabel="KLF6" Type="GeneProduct" GraphId="aad" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="KLF6 | Kruppel-like factor 6"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="13200.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1316"/>
+  </DataNode>
+  <DataNode BackpageHead="KLF7 | Kruppel-like factor 7 (ubiquitous)" TextLabel="KLF7" Type="GeneProduct" GraphId="b06" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="KLF7 | Kruppel-like factor 7 (ubiquitous)"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="13500.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8609"/>
+  </DataNode>
+  <DataNode BackpageHead="SFRP4 | secreted frizzled-related protein 4" TextLabel="SFRP4" Type="GeneProduct" GraphId="c11" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SFRP4 | secreted frizzled-related protein 4"/>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="13900.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6424"/>
+  </DataNode>
+  <DataNode BackpageHead="NCOR1 | nuclear receptor co-repressor 1" TextLabel="NCOR1" Type="GeneProduct" GraphId="c8e" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NCOR1 | nuclear receptor co-repressor 1"/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="8600.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="9611"/>
+  </DataNode>
+  <DataNode BackpageHead="NCOR2 | nuclear receptor co-repressor 2" TextLabel="NCOR2" Type="GeneProduct" GraphId="c3a" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NCOR2 | nuclear receptor co-repressor 2"/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="8900.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="9612"/>
+  </DataNode>
+  <DataNode BackpageHead="KLF15 | Kruppel-like factor 15" TextLabel="KLF15" Type="GeneProduct" GraphId="b3b" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="KLF15 | Kruppel-like factor 15"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="13800.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="28999"/>
+  </DataNode>
+  <DataNode BackpageHead="EGR2 | early growth response 2 (Krox-20 homolog..." TextLabel="EGR2" Type="GeneProduct" GraphId="cf6" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="EGR2 | early growth response 2 (Krox-20 homolog..."/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="14450.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1959"/>
+  </DataNode>
+  <DataNode BackpageHead="EBF | early B-cell factor" TextLabel="EBF" Type="GeneProduct" GraphId="baf" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="EBF | early B-cell factor"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="14750.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1879"/>
+  </DataNode>
+  <DataNode BackpageHead="EPAS1 | endothelial PAS domain protein 1" TextLabel="EPAS1" Type="GeneProduct" GraphId="f28" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="EPAS1 | endothelial PAS domain protein 1"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="15050.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2034"/>
+  </DataNode>
+  <DataNode BackpageHead="AHR | aryl hydrocarbon receptor" TextLabel="AHR" Type="GeneProduct" GraphId="d07" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="AHR | aryl hydrocarbon receptor"/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="13850.0" Width="1300.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="196"/>
+  </DataNode>
+  <DataNode BackpageHead="C10orf70 | chromosome 10 open reading frame 70" TextLabel="C10orf70" Type="GeneProduct" GraphId="c96" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C10orf70 | chromosome 10 open reading frame 70"/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="14150.0" Width="1300.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="55847"/>
+  </DataNode>
+  <DataNode BackpageHead="WWTR1 | WW domain containing transcription regu..." TextLabel="WWTR1" Type="GeneProduct" GraphId="d40" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="WWTR1 | WW domain containing transcription regu..."/>
+    <Graphics Color="000000" CenterX="8500.0" CenterY="14450.0" Width="1300.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="25937"/>
+  </DataNode>
+  <DataNode BackpageHead="GDF10 | growth differentiation factor 10" TextLabel="GDF10" Type="GeneProduct" GraphId="bd0" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GDF10 | growth differentiation factor 10"/>
+    <Graphics Color="000000" CenterX="1350.0" CenterY="12100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2662"/>
+  </DataNode>
+  <DataNode BackpageHead="IRS1 | insulin receptor substrate 1" TextLabel="IRS1" Type="GeneProduct" GraphId="acc" GroupRef="d90e3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IRS1 | insulin receptor substrate 1"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="10150.0" Width="699.9999999999994" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3667"/>
+  </DataNode>
+  <DataNode BackpageHead="IRS4 | insulin receptor substrate 4" TextLabel="IRS4" Type="GeneProduct" GraphId="f41" GroupRef="d90e3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IRS4 | insulin receptor substrate 4"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="11050.0" Width="699.9999999999994" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8471"/>
+  </DataNode>
+  <DataNode BackpageHead="BSCL2 | Bernardinelli-Seip congenital lipodystr..." TextLabel="BSCL2" Type="GeneProduct" GraphId="de2" GroupRef="d7365">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="BSCL2 | Bernardinelli-Seip congenital lipodystr..."/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="13120.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26580"/>
+  </DataNode>
+  <DataNode BackpageHead="LMNA | lamin A/C" TextLabel="LMNA" Type="GeneProduct" GraphId="c7b" GroupRef="d7365">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LMNA | lamin A/C"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="13420.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4000"/>
+  </DataNode>
+  <DataNode BackpageHead="AGPAT2 | 1-acylglycerol-3-phosphate O-acyltrans..." TextLabel="AGPAT2" Type="GeneProduct" GraphId="dd9" GroupRef="d7365">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="AGPAT2 | 1-acylglycerol-3-phosphate O-acyltrans..."/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="13720.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10555"/>
+  </DataNode>
+  <DataNode BackpageHead="ZMPSTE24 | zinc metallopeptidase (STE24 homolog..." TextLabel="ZMPSTE24" Type="GeneProduct" GraphId="d69" GroupRef="d7365">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ZMPSTE24 | zinc metallopeptidase (STE24 homolog..."/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="14020.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10269"/>
+  </DataNode>
+  <DataNode BackpageHead="LPIN1 | lipin 1" TextLabel="LPIN1" Type="GeneProduct" GraphId="f37" GroupRef="d7365">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LPIN1 | lipin 1"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="14320.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23175"/>
+  </DataNode>
+  <DataNode BackpageHead="LPIN2 | lipin 2" TextLabel="LPIN2" Type="GeneProduct" GraphId="a29" GroupRef="d7365">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LPIN2 | lipin 2"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="14620.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="9663"/>
+  </DataNode>
+  <DataNode BackpageHead="LIPE | lipase hormone-sensitive" TextLabel="LIPE" Type="GeneProduct" GraphId="ecb" GroupRef="a0dff">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LIPE | lipase hormone-sensitive"/>
+    <Graphics Color="000000" CenterX="17773.75" CenterY="7690.0" Width="1007.5000000000011" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3991"/>
+  </DataNode>
+  <DataNode BackpageHead="PCK1 | phosphoenolpyruvate carboxykinase 1 (sol..." TextLabel="PCK1" Type="GeneProduct" GraphId="dee" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PCK1 | phosphoenolpyruvate carboxykinase 1 (sol..."/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="14500.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5105"/>
+  </DataNode>
+  <DataNode BackpageHead="PCK2 | phosphoenolpyruvate carboxykinase 2 (mit..." TextLabel="PCK2" Type="GeneProduct" GraphId="cad" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PCK2 | phosphoenolpyruvate carboxykinase 2 (mit..."/>
+    <Graphics Color="000000" CenterX="3050.0" CenterY="14800.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5106"/>
+  </DataNode>
+  <DataNode BackpageHead="CEBPA | CCAAT/enhancer binding protein (C/EBP)..." TextLabel="CEBPA" Type="GeneProduct" GraphId="e6c" GroupRef="c0fc4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CEBPA | CCAAT/enhancer binding protein (C/EBP)..."/>
+    <Graphics Color="000000" CenterX="7200.0" CenterY="5600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1050"/>
+  </DataNode>
+  <DataNode BackpageHead="IRS2 | insulin receptor substrate 2" TextLabel="IRS2" Type="GeneProduct" GraphId="c01" GroupRef="d90e3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IRS2 | insulin receptor substrate 2"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="10450.0" Width="699.9999999999994" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8660"/>
+  </DataNode>
+  <DataNode BackpageHead="IRS3L | insulin receptor substrate 3-like" TextLabel="IRS3L" Type="GeneProduct" GraphId="f98" GroupRef="d90e3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IRS3L | insulin receptor substrate 3-like"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="10750.0" Width="700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3668"/>
+  </DataNode>
+  <DataNode BackpageHead="LPIN3 | lipin 3" TextLabel="LPIN3" Type="GeneProduct" GraphId="f06" GroupRef="d7365">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LPIN3 | lipin 3"/>
+    <Graphics Color="000000" CenterX="13500.0" CenterY="14920.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="64900"/>
+  </DataNode>
+  <DataNode BackpageHead="E2F4 | E2F transcription factor 4 p107/p130-bi..." TextLabel="E2F4" Type="GeneProduct" GraphId="ff3" GroupRef="f92ab">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F4 | E2F transcription factor 4 p107/p130-bi..."/>
+    <Graphics Color="000000" CenterX="6900.0" CenterY="11500.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1874"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="bd8e5">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3000.0002892134326" y="3300.0000740247597" GraphRef="eaf" relX="0.6036120700435403" relY="0.7223485852169845"/>
+      <Point x="15899.99991766335" y="3300.000009743945" GraphRef="edf" relX="-2.5965343106754077" relY="0.4988900022248675" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Inhibitors of Preadipocyte to &#10;Adipocyte Transition" GraphId="b47" GroupRef="ba160">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="2263.75" CenterY="5082.5" Width="2282.5" Height="485.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Transcription Factors/Modulators" GraphId="be7" GroupRef="c0fc4">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="8075.0" CenterY="5100.0" Width="3185.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Growth Factors/Hormones" GraphId="bee" GroupRef="ff818">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="13185.0" CenterY="5155.0" Width="2540.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Fully Differentiated&#10;Adipocyte Markers" GraphId="ebb" GroupRef="a0dff">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="17770.0" CenterY="5177.5" Width="2600.0" Height="455.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Miscellaneous Factors" GraphId="be1" GroupRef="f92ab">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="5732.5" CenterY="10475.0" Width="2275.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Preadipocyte" GraphId="fd4">
+    <Graphics FontName="" FontWeight="Bold" FontSize="210" Color="0000ff" CenterX="2450.0" CenterY="1950.0" Width="1820.0" Height="315.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Differentiated adipocyte" GraphId="d42">
+    <Graphics FontName="" FontWeight="Bold" FontSize="210" Color="0000ff" CenterX="18250.0" CenterY="1950.0" Width="3230.0" Height="315.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Adipocyte Secretory Products" GraphId="f0a" GroupRef="dbd59">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="17760.0" CenterY="9775.0" Width="2885.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Possible Lipodystrophy Genes" GraphId="aaf" GroupRef="d7365">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="13480.0" CenterY="12700.0" Width="2930.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Insulin Action Genes" GraphId="a91" GroupRef="d90e3">
+    <Graphics FontName="" FontWeight="Bold" FontSize="150" Color="000000" CenterX="13525.0" CenterY="9730.0" Width="2030.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Oval" Style="Solid" GraphId="a0e">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="1000.0" CenterY="3750.0" Width="1282.7802" Height="360.595" ZOrder="16384" Rotation="5.593227"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="f90">
+    <Graphics FillColor="000000" Color="000000" CenterX="1000.0" CenterY="3750.0" Width="213.6" Height="213.6" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="bfd">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="1750.0" CenterY="3850.0" Width="1328.6446" Height="377.654" ZOrder="16384" Rotation="5.585551"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="ec6">
+    <Graphics FillColor="000000" Color="000000" CenterX="1700.0" CenterY="3900.0" Width="200.0" Height="188.64486" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="f27">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="1900.0" CenterY="2750.0" Width="400.0" Height="1278.2222" ZOrder="16384" Rotation="0.7871787"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="ee5">
+    <Graphics FillColor="000000" Color="000000" CenterX="1900.0" CenterY="2700.0" Width="175.83648" Height="176.97014" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="eaf">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="2650.0" CenterY="2900.0" Width="1221.9496" Height="382.7444" ZOrder="16384" Rotation="5.541774"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="c06">
+    <Graphics FillColor="000000" Color="000000" CenterX="2650.0" CenterY="2900.0" Width="200.4046" Height="224.2062" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="cfa">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="18250.0" CenterY="3200.0" Width="1000.3124" Height="683.4924" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="fda">
+    <Graphics FillColor="000000" Color="000000" CenterX="18150.0" CenterY="3150.0" Width="223.0136" Height="167.11854" ZOrder="16384" Rotation="0.1018156"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="d14">
+    <Graphics FillColor="ffffff" Color="000000" CenterX="18600.0" CenterY="3850.0" Width="1024.0066" Height="679.1538" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="dbc">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="19250.0" CenterY="3300.0" Width="981.659" Height="675.4148" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e73">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="17650.0" CenterY="3750.0" Width="949.9136" Height="651.8192" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e7b">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="17750.0" CenterY="2600.0" Width="1001.3794" Height="625.0014" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="c67">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="18800.0" CenterY="2650.0" Width="1031.3244" Height="604.6694" ZOrder="16384" Rotation="0.2778281"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="edf">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="17200.0" CenterY="3150.0" Width="1001.3348" Height="601.335" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="b23">
+    <Graphics FillColor="000000" Color="000000" CenterX="18450.0" CenterY="3700.0" Width="183.28388" Height="195.25624" ZOrder="16384" Rotation="0.1167462"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a00">
+    <Graphics FillColor="000000" Color="000000" CenterX="19150.0" CenterY="3250.0" Width="200.0" Height="200.0" ZOrder="16384" Rotation="0.05269976"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a74">
+    <Graphics FillColor="000000" Color="000000" CenterX="17750.0" CenterY="2550.0" Width="200.2328" Height="200.0" ZOrder="16384" Rotation="6.131688"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a53">
+    <Graphics FillColor="000000" Color="000000" CenterX="17650.0" CenterY="3750.0" Width="197.33204" Height="200.0" ZOrder="16384" Rotation="0.1136603"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a82">
+    <Graphics FillColor="000000" Color="000000" CenterX="18800.0" CenterY="2650.0" Width="226.334" Height="200.0" ZOrder="16384" Rotation="0.2101824"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e1f">
+    <Graphics FillColor="000000" Color="000000" CenterX="17250.0" CenterY="3150.0" Width="256.7458" Height="200.0" ZOrder="16384" Rotation="6.129748"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e4a">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17600.0" CenterY="3550.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="d4f">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17950.0" CenterY="3150.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="b2e">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="19400.0" CenterY="3500.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="f43">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18300.0" CenterY="3950.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="c38">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17400.0" CenterY="3950.0" Width="141.43428" Height="107.36212" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="d23">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18600.0" CenterY="2500.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a86">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18800.0" CenterY="4000.0" Width="161.77796" Height="166.3627" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="f0c">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17800.0" CenterY="3650.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a2f">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18400.0" CenterY="3050.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e15">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17050.0" CenterY="3000.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="d0b">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17100.0" CenterY="3350.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="b10">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18850.0" CenterY="3800.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="c93">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18700.0" CenterY="2800.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="fc2">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17950.0" CenterY="2650.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="d75">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17750.0" CenterY="2800.0" Width="166.30462" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="ef1">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="19450.0" CenterY="3300.0" Width="100.0" Height="165.88958" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="c1f">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="17500.0" CenterY="2750.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e7f">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="16900.0" CenterY="3150.0" Width="166.52498" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="fbc">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18450.0" CenterY="3350.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="caa">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="18450.0" CenterY="2550.0" Width="100.0" Height="166.26352" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a46">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="19600.0" CenterY="3400.0" Width="100.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="ba160" Style="Group"/>
+  <Group GroupId="c0fc4" Style="Group"/>
+  <Group GroupId="f92ab" Style="Group"/>
+  <Group GroupId="dbd59" Style="Group"/>
+  <Group GroupId="d90e3" Style="Group"/>
+  <Group GroupId="d7365" Style="Group"/>
+  <Group GroupId="a0dff" Style="Group"/>
+  <Group GroupId="ff818" Style="Group"/>
+  <InfoBox CenterX="76.5" CenterY="125.0"/>
+  <Legend CenterX="5120.0" CenterY="1778.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b10">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11031233</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular regulation of adipogenesis.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Cell Dev Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosen ED</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spiegelman BM</bp:AUTHORS>
+    </bp:PublicationXRef>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#"><bp:TERM>signaling pathway pertinent to development</bp:TERM><bp:ID>PW:0000650</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

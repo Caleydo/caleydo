@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Eukaryotic Transcription Initiation" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes">Reference: http://www.web-books.com/MoBio/Free/Ch4E.htm</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">In eukaryotes, RNA polymerase, and therefore the initiation of transcription, requires the presence of a core promoter sequence in the DNA. RNA polymerase is able to bind to core promoters in the presence of various specific transcription factors. The most common type of core promoter in eukaryotes is a short DNA sequence known as a TATA box. The TATA box, as a core promoter, is the binding site for a transcription factor known as TATA binding protein (TBP), which is itself a subunit of another transcription factor, called Transcription Factor II D (TFIID). After TFIID binds to the TATA box via the TBP, five more transcription factors and RNA polymerase combine around the TATA box in a series of stages to form a preinitiation complex. One transcription factor, DNA helicase, has helicase activity and so is involved in the separating of opposing strands of double-stranded DNA to provide access to a single-stranded DNA template. However, only a low, or basal, rate of transcription is driven by the preinitiation complex alone. Other proteins known as activators and repressors, along with any associated coactivators or corepressors, are responsible for modulating transcription rate.
+
+Source: [[wikipedia:Transcription_(genetics)|Wikipedia]]</Comment>
+  <BiopaxRef>b2a</BiopaxRef>
+  <BiopaxRef>eee</BiopaxRef>
+  <Graphics BoardWidth="18942.0" BoardHeight="11376.75"/>
+  <DataNode BackpageHead="Tbp | TATA box binding protein" TextLabel="Tbp" Type="GeneProduct" GraphId="f67">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Tbp | TATA box binding protein"/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="4450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21374"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2b | general transcription factor IIB" TextLabel="Gtf2b" Type="GeneProduct" GraphId="a7b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2b | general transcription factor IIB"/>
+    <Graphics Color="000000" CenterX="3750.0" CenterY="1750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="229906"/>
+  </DataNode>
+  <DataNode BackpageHead="Taf5 | TAF5 RNA polymerase II TATA box bindin..." TextLabel="Taf5" Type="GeneProduct" GraphId="eeb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Taf5 | TAF5 RNA polymerase II TATA box bindin..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="1750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="226182"/>
+  </DataNode>
+  <DataNode BackpageHead="Taf6 | TAF6 RNA polymerase II TATA box bindin..." TextLabel="Taf6" Type="GeneProduct" GraphId="cd0">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Taf6 | TAF6 RNA polymerase II TATA box bindin..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="2050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21343"/>
+  </DataNode>
+  <DataNode BackpageHead="Taf7 | TAF7 RNA polymerase II TATA box bindin..." TextLabel="Taf7" Type="GeneProduct" GraphId="a58">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Taf7 | TAF7 RNA polymerase II TATA box bindin..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="2350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="24074"/>
+  </DataNode>
+  <DataNode BackpageHead="Taf9 | TAF9 RNA polymerase II TATA box bindin..." TextLabel="Taf9" Type="GeneProduct" GraphId="ae8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Taf9 | TAF9 RNA polymerase II TATA box bindin..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="2650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="108143"/>
+  </DataNode>
+  <DataNode BackpageHead="Ilk | integrin linked kinase" TextLabel="Ilk" Type="GeneProduct" GraphId="d1f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ilk | integrin linked kinase"/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="2950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16202"/>
+  </DataNode>
+  <DataNode BackpageHead="Taf12 | TAF12 RNA polymerase II TATA box bind..." TextLabel="Taf12" Type="GeneProduct" GraphId="cd4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Taf12 | TAF12 RNA polymerase II TATA box bind..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="3250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66464"/>
+  </DataNode>
+  <DataNode BackpageHead="Taf13 | TAF13 RNA polymerase II TATA box bind..." TextLabel="Taf13" Type="GeneProduct" GraphId="c11">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Taf13 | TAF13 RNA polymerase II TATA box bind..."/>
+    <Graphics Color="000000" CenterX="2200.0" CenterY="3550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="99730"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2e1 | general transcription factor II E po..." TextLabel="Gtf2e1" Type="GeneProduct" GraphId="b08">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2e1 | general transcription factor II E po..."/>
+    <Graphics Color="000000" CenterX="3750.0" CenterY="2400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="74197"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2a2 | general transcription factor II A 2..." TextLabel="Gtf2a2" Type="GeneProduct" GraphId="a49">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2a2 | general transcription factor II A 2..."/>
+    <Graphics Color="000000" CenterX="3750.0" CenterY="3450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="235459"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2f2 | general transcription factor IIF pol..." TextLabel="Gtf2f2" Type="GeneProduct" GraphId="a70">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2f2 | general transcription factor IIF pol..."/>
+    <Graphics Color="000000" CenterX="3750.0" CenterY="4150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68705"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2e2 | general transcription factor II E po..." TextLabel="Gtf2e2" Type="GeneProduct" GraphId="afd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2e2 | general transcription factor II E po..."/>
+    <Graphics Color="000000" CenterX="3750.0" CenterY="2700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68153"/>
+  </DataNode>
+  <DataNode BackpageHead="Cdk7 | cyclin-dependent kinase 7 (homolog of Xe..." TextLabel="Cdk7" Type="GeneProduct" GraphId="ebe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cdk7 | cyclin-dependent kinase 7 (homolog of Xe..."/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="1750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12572"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2h1 | general transcription factor II H po..." TextLabel="Gtf2h1" Type="GeneProduct" GraphId="e80">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2h1 | general transcription factor II H po..."/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="2050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14884"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2h2 | general transcription factor II H po..." TextLabel="Gtf2h2" Type="GeneProduct" GraphId="abf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2h2 | general transcription factor II H po..."/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="2350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23894"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2h3 | general transcription factor IIH pol..." TextLabel="Gtf2h3" Type="GeneProduct" GraphId="be5">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2h3 | general transcription factor IIH pol..."/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="2650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="209357"/>
+  </DataNode>
+  <DataNode BackpageHead="Gtf2h4 | general transcription factor II H po..." TextLabel="Gtf2h4" Type="GeneProduct" GraphId="fbb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Gtf2h4 | general transcription factor II H po..."/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="2950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14885"/>
+  </DataNode>
+  <DataNode BackpageHead="Ercc3 | excision repair cross-complementing ro..." TextLabel="Ercc3" Type="GeneProduct" GraphId="a66">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ercc3 | excision repair cross-complementing ro..."/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="3250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13872"/>
+  </DataNode>
+  <DataNode BackpageHead="Ercc2 | excision repair cross-complementing ro..." TextLabel="Ercc2" Type="GeneProduct" GraphId="ff4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ercc2 | excision repair cross-complementing ro..."/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="3550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13871"/>
+  </DataNode>
+  <DataNode BackpageHead="Rpo1-2 | RNA polymerase 1-2" TextLabel="Rpo1-2" Type="GeneProduct" GraphId="ecd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Rpo1-2 | RNA polymerase 1-2"/>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="2700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20017"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2a | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2a" Type="GeneProduct" GraphId="dfb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2a | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="11400.0" CenterY="2400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20020"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2f | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2f" Type="GeneProduct" GraphId="a9e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2f | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="11400.0" CenterY="3600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="110812"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2c | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2c" Type="GeneProduct" GraphId="ff1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2c | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="11400.0" CenterY="3000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20021"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2e | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2e" Type="GeneProduct" GraphId="f39">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2e | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="11400.0" CenterY="3300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66420"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2k | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2k" Type="GeneProduct" GraphId="d87">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2k | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="12800.0" CenterY="2400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17749"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr3d | polymerase (RNA) III (DNA directed) po..." TextLabel="Polr3d" Type="GeneProduct" GraphId="b57">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr3d | polymerase (RNA) III (DNA directed) po..."/>
+    <Graphics Color="000000" CenterX="14750.0" CenterY="2700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67065"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr3e | polymerase (RNA) III (DNA directed) po..." TextLabel="Polr3e" Type="GeneProduct" GraphId="c99">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr3e | polymerase (RNA) III (DNA directed) po..."/>
+    <Graphics Color="000000" CenterX="14750.0" CenterY="3000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26939"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr3k | polymerase (RNA) III (DNA directed) po..." TextLabel="Polr3k" Type="GeneProduct" GraphId="f19">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr3k | polymerase (RNA) III (DNA directed) po..."/>
+    <Graphics Color="000000" CenterX="14750.0" CenterY="3600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67005"/>
+  </DataNode>
+  <DataNode BackpageHead="Rpo1-4 | RNA polymerase 1-4" TextLabel="Rpo1-4" Type="GeneProduct" GraphId="bc1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Rpo1-4 | RNA polymerase 1-4"/>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="2400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20019"/>
+  </DataNode>
+  <DataNode BackpageHead="Rpo1-1 | RNA polymerase 1-1" TextLabel="Rpo1-1" Type="GeneProduct" GraphId="c9a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Rpo1-1 | RNA polymerase 1-1"/>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="3300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20016"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2i | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2i" Type="GeneProduct" GraphId="e42">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2i | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="12800.0" CenterY="3000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="69920"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2g | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2g" Type="GeneProduct" GraphId="ac1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2g | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="11400.0" CenterY="3900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67710"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2h | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2h" Type="GeneProduct" GraphId="b46">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2h | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="12800.0" CenterY="2700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="245841"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2j | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2j" Type="GeneProduct" GraphId="af5">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2j | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="12800.0" CenterY="3300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20022"/>
+  </DataNode>
+  <DataNode BackpageHead="Rpo1-3 | RNA polymerase 1-3" TextLabel="Rpo1-3" Type="GeneProduct" GraphId="d70">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Rpo1-3 | RNA polymerase 1-3"/>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="3000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20018"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr2b | polymerase (RNA) II (DNA directed) pol..." TextLabel="Polr2b" Type="GeneProduct" GraphId="f88">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr2b | polymerase (RNA) II (DNA directed) pol..."/>
+    <Graphics Color="000000" CenterX="11400.0" CenterY="2700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="231329"/>
+  </DataNode>
+  <DataNode BackpageHead="Ccnh | cyclin H" TextLabel="Ccnh" Type="GeneProduct" GraphId="eb9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ccnh | cyclin H"/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="3850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66671"/>
+  </DataNode>
+  <DataNode BackpageHead="Mnat1 | menage a trois 1" TextLabel="Mnat1" Type="GeneProduct" GraphId="fe3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Mnat1 | menage a trois 1"/>
+    <Graphics Color="000000" CenterX="5200.0" CenterY="4150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17420"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr3b | polymerase (RNA) III (DNA directed) po..." TextLabel="Polr3b" Type="GeneProduct" GraphId="f7c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr3b | polymerase (RNA) III (DNA directed) po..."/>
+    <Graphics Color="000000" CenterX="14750.0" CenterY="2400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="70428"/>
+  </DataNode>
+  <DataNode BackpageHead="Polr3h | polymerase (RNA) III (DNA directed) po..." TextLabel="Polr3h" Type="GeneProduct" GraphId="e99">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Polr3h | polymerase (RNA) III (DNA directed) po..."/>
+    <Graphics Color="000000" CenterX="14750.0" CenterY="3300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="78929"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="idbcb5343" GroupRef="f9849">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5950.0" y="6225.0"/>
+      <Point x="7250.0" y="6225.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id180bb163" GroupRef="f9849">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7550.0" y="6075.0"/>
+      <Point x="7550.0" y="6125.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id6c6d49af" GroupRef="f9849">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4850.0" y="6075.0"/>
+      <Point x="4850.0" y="6125.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idd97fb617" GroupRef="f9849">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4900.0" y="6375.0"/>
+      <Point x="7250.0" y="6375.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id3829c128" GroupRef="f9849">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7550.0" y="6325.0"/>
+      <Point x="7550.0" y="6375.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id8c8b5974" GroupRef="f9849">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4850.0" y="6325.0"/>
+      <Point x="4850.0" y="6375.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id3cd65342" GroupRef="f4086">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10350.0" y="6150.0"/>
+      <Point x="11700.0" y="6150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ida3071915" GroupRef="f4086">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="12000.0" y="6000.0"/>
+      <Point x="12000.0" y="6050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idbc08c81f" GroupRef="f4086">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9000.0" y="6000.0"/>
+      <Point x="9000.0" y="6050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id6aaa221d" GroupRef="f4086">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9250.0" y="6300.0"/>
+      <Point x="11700.0" y="6300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id477bca40" GroupRef="f4086">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="12000.0" y="6250.0"/>
+      <Point x="12000.0" y="6300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="iddc26d7e4" GroupRef="f4086">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9000.0" y="6250.0"/>
+      <Point x="9000.0" y="6300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id788910a" GroupRef="a08f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3000.0" y="7550.0"/>
+      <Point x="4250.0" y="7550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idec30066f" GroupRef="a08f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4550.0" y="7400.0"/>
+      <Point x="4550.0" y="7450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id40919ebb" GroupRef="a08f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1850.0" y="7400.0"/>
+      <Point x="1850.0" y="7450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idada40b23" GroupRef="a08f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1900.0" y="7700.0"/>
+      <Point x="4250.0" y="7700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idc4e1634" GroupRef="a08f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4550.0" y="7650.0"/>
+      <Point x="4550.0" y="7700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id60afae80" GroupRef="a08f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1850.0" y="7650.0"/>
+      <Point x="1850.0" y="7700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id826457bd" GroupRef="a08f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2300.0" y="7550.0"/>
+      <Point x="1900.0" y="7550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idddaa0e09" GroupRef="f9849">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5050.0" y="6225.0"/>
+      <Point x="4900.0" y="6225.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id6b3c9c03">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3078.75" y="7010.0" GraphRef="a5ece" relX="0.0" relY="-1.0"/>
+      <Point x="4487.5" y="6328.75" GraphRef="b570d" relX="-1.0" relY="0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ida6d9378a">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7670.0" y="6328.75" GraphRef="b570d" relX="1.0" relY="0.5"/>
+      <Point x="8637.5" y="6319.375" GraphRef="c1d0f" relX="-1.0" relY="0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idd2a3e157" GroupRef="e6f46">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13350.0" y="6150.0"/>
+      <Point x="15250.0" y="6150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idd71e0435" GroupRef="e6f46">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="15550.0" y="6000.0"/>
+      <Point x="15550.0" y="6050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id1f36e295" GroupRef="e6f46">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13250.0" y="6000.0"/>
+      <Point x="13250.0" y="6050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ide01280b7" GroupRef="e6f46">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13350.0" y="6300.0"/>
+      <Point x="15250.0" y="6300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id7b92b560" GroupRef="e6f46">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="15550.0" y="6250.0"/>
+      <Point x="15550.0" y="6300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idc3ab93c0" GroupRef="e6f46">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13250.0" y="6250.0"/>
+      <Point x="13250.0" y="6300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id83bfb627">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="12300.0" y="6200.0"/>
+      <Point x="12850.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id6ca32b99">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="14278.75" y="6582.5" GraphRef="fbcef" relX="0.0" relY="1.0"/>
+      <Point x="14945.625" y="7210.0" GraphRef="a3b99" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id940c8e40" GroupRef="e6f46">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13750.0" y="5050.0"/>
+      <Point x="13750.0" y="5100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id4f4992e1" GroupRef="d5a8b">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="14550.0" y="7700.0"/>
+      <Point x="16900.0" y="7700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id1ef3ff00" GroupRef="d5a8b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="17100.0" y="7550.0"/>
+      <Point x="17100.0" y="7600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id7dbb7660" GroupRef="d5a8b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="14500.0" y="7550.0"/>
+      <Point x="14500.0" y="7600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="id49aa7344">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="12000.0" y="1050.0"/>
+      <Point x="12000.0" y="1350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idfe3c24d9">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1540.0" y="6545.0" GraphRef="bed" relX="0.0" relY="1.0"/>
+      <Point x="2475.0" y="7358.5786499999995" GraphRef="b1d" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id981f2cf8" GroupRef="f4086">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9450.0" y="6150.0"/>
+      <Point x="9250.0" y="6150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id4aae900c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8950.0" y="5520.0" GraphRef="e7c" relX="1.0" relY="0.0"/>
+      <Point x="9750.0" y="5750.0" GraphRef="b9c" relX="-1.0" relY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id8bcee909">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="12750.0229" y="5650.0" GraphRef="e03" relX="1.0" relY="0.0"/>
+      <Point x="13645.048999999999" y="6050.0" GraphRef="f26" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id30e43637">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10095.0" y="5207.5" GraphRef="b24b7" relX="0.0" relY="1.0"/>
+      <Point x="10378.75" y="5530.0" GraphRef="c1d0f" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="TATA" GraphId="e3c" GroupRef="f9849">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="5500.0" CenterY="6175.0" Width="530.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="df3" GroupRef="f9849">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="7400.0" CenterY="6175.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="d75" GroupRef="f9849">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="4700.0" CenterY="6175.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="fcd" GroupRef="f9849">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="7400.0" CenterY="6425.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="acf" GroupRef="f9849">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="4700.0" CenterY="6425.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="c36" GroupRef="f4086">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="11850.0" CenterY="6100.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="d96" GroupRef="f4086">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="8850.0" CenterY="6100.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="cc3" GroupRef="f4086">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="8850.0" CenterY="6350.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="d48" GroupRef="f4086">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="11850.0" CenterY="6350.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TATA" GraphId="e33" GroupRef="a08f2">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="2650.0" CenterY="7500.0" Width="530.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="e4a" GroupRef="a08f2">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="4400.0" CenterY="7500.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="c13" GroupRef="a08f2">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="1700.0" CenterY="7500.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="c4b" GroupRef="a08f2">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="1700.0" CenterY="7750.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="e30" GroupRef="a08f2">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="4400.0" CenterY="7750.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="dsDNA" GraphId="b2b" GroupRef="a08f2">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="165" Color="000000" CenterX="3600.0" CenterY="7250.0" Width="740.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="b62" GroupRef="e6f46">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="15400.0" CenterY="6100.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="cc5" GroupRef="e6f46">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="13100.0" CenterY="6100.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="dfe" GroupRef="e6f46">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="13100.0" CenterY="6350.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="ae1" GroupRef="e6f46">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="15400.0" CenterY="6350.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="a89" GroupRef="e6f46">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="13600.0" CenterY="5150.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="3" GraphId="be7" GroupRef="d5a8b">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="17000.0" CenterY="7700.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="5" GraphId="ad4" GroupRef="d5a8b">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="14400.0" CenterY="7700.0" Width="185.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Primary RNA transcript" GraphId="f1f" GroupRef="d5a8b">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="165" Color="000000" CenterX="15750.0" CenterY="7450.0" Width="2405.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="RNA polymerase II" GraphId="e64">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12100.0" CenterY="1750.0" Width="2180.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(mRNA, snRNPs)" GraphId="d59">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="12100.0" CenterY="2050.0" Width="1610.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="RNA polymerase I" GraphId="a0d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="9300.0" CenterY="1750.0" Width="2120.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(large ribosomal RNAs)" GraphId="dc2">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="9300.0" CenterY="2050.0" Width="2255.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="RNA polymerase III" GraphId="ed3">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="14800.0" CenterY="1750.0" Width="2240.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(small stable RNAs)" GraphId="dae">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="14800.0" CenterY="2050.0" Width="1895.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="cell growth" GraphId="b3e">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12000.0" CenterY="850.0" Width="1340.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gene Regulatory Proteins" GraphId="ee1">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1600.0" CenterY="5700.0" Width="2525.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(recognize surface DNA geometry)" GraphId="a7c">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="1600.0" CenterY="5950.0" Width="3005.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIID" GraphId="d69">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="180" Color="008080" CenterX="2200.0" CenterY="1450.0" Width="710.0" Height="270.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIB" GraphId="fe6">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="180" Color="008080" CenterX="3750.0" CenterY="1450.0" Width="695.0" Height="270.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Transcription Initiation Factors (TIFs)" GraphId="bc3">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="3750.0" CenterY="1050.0" Width="4280.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIE" GraphId="df4">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="180" Color="008080" CenterX="3750.0" CenterY="2100.0" Width="695.0" Height="270.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIA" GraphId="eb5">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="180" Color="008080" CenterX="3750.0" CenterY="3150.0" Width="710.0" Height="270.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIF" GraphId="d3f">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="180" Color="008080" CenterX="3750.0" CenterY="3850.0" Width="680.0" Height="270.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIID" GraphId="bfd" GroupRef="f9849">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="5150.0" CenterY="5775.0" Width="485.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIB" GraphId="ae2" GroupRef="f9849">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="6050.0" CenterY="5575.0" Width="485.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIH" GraphId="b00">
+    <Graphics FontWeight="Bold" FontStyle="Italic" FontSize="180" Color="008080" CenterX="5200.0" CenterY="1450.0" Width="710.0" Height="270.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIF" GraphId="ba6">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="10100.0" CenterY="5850.0" Width="455.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TATA" GraphId="af9" GroupRef="f4086">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="9900.0" CenterY="6100.0" Width="530.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIF" GraphId="ed2" GroupRef="b0d2a">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="9165.0" CenterY="4975.0" Width="455.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="RNA pol II" GraphId="a8a" GroupRef="b0d2a">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="10815.0" CenterY="4575.0" Width="875.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIH" GraphId="a0f">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="12050.0" CenterY="5400.0" Width="485.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIE" GraphId="cb9">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="8400.0" CenterY="5400.0" Width="470.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TATA Box binding" GraphId="a8d">
+    <Graphics FontStyle="Italic" FontSize="135" Color="000000" CenterX="2200.0" CenterY="3900.0" Width="1565.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="protein" GraphId="b27">
+    <Graphics FontStyle="Italic" FontSize="135" Color="000000" CenterX="2200.0" CenterY="4150.0" Width="650.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steps 1) TBP binds TATA box" GraphId="c47">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="2000.0" CenterY="8650.0" Width="3455.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steps 2) Association of TIFs and RNA polymerase" GraphId="dd6">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="3150.0" CenterY="9000.0" Width="5735.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steps 3) DNA melting by association with TFIIH" GraphId="abe">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="3000.0" CenterY="9400.0" Width="5420.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steps 4) Transcription elongation by NTPs" GraphId="bef">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="2750.0" CenterY="9800.0" Width="4910.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steps 5) RNA elongation with CDT phosphorylation" GraphId="ec6">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="3250.0" CenterY="10200.0" Width="5930.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TFIIA" GraphId="f5e">
+    <Graphics FontWeight="Bold" FontSize="135" Color="000000" CenterX="8150.0" CenterY="4700.0" Width="485.0" Height="225.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Rectangle" Style="Solid" GraphId="e25" GroupRef="f9849">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="5500.0" CenterY="6175.0" Width="900.0" Height="282.8427" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="f71" GroupRef="f9849">
+    <Graphics FillColor="efefef" Color="000000" CenterX="6600.0" CenterY="6225.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="b16" GroupRef="f9849">
+    <Graphics FillColor="efefef" Color="000000" CenterX="6600.0" CenterY="6375.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="af0" GroupRef="f4086">
+    <Graphics FillColor="efefef" Color="000000" CenterX="11050.0" CenterY="6150.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="eff" GroupRef="f4086">
+    <Graphics FillColor="efefef" Color="000000" CenterX="11050.0" CenterY="6300.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="b1d" GroupRef="a08f2">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="2650.0" CenterY="7500.0" Width="700.0" Height="282.8427" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="fdc" GroupRef="a08f2">
+    <Graphics FillColor="efefef" Color="000000" CenterX="3600.0" CenterY="7550.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="bc4" GroupRef="a08f2">
+    <Graphics FillColor="efefef" Color="000000" CenterX="3600.0" CenterY="7700.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="a48" GroupRef="e6f46">
+    <Graphics FillColor="efefef" Color="000000" CenterX="14600.0" CenterY="6300.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="afa" GroupRef="e6f46">
+    <Graphics FillColor="efefef" Color="000000" CenterX="14600.0" CenterY="6150.0" Width="799.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Arc" Style="Solid" GraphId="ef1" GroupRef="e6f46">
+    <Graphics FillColor="000000" Color="ff0000" CenterX="13800.0" CenterY="5650.0" Width="781.025" Height="400.0" ZOrder="16384" Rotation="1.107149"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="eef" GroupRef="e6f46">
+    <Graphics FillColor="7f7f7f" Color="000000" CenterX="14200.0" CenterY="6100.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="f26" GroupRef="e6f46">
+    <Graphics FillColor="7f7f7f" Color="000000" CenterX="13900.0" CenterY="6050.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="cf1" GroupRef="e6f46">
+    <Graphics FillColor="c0c0c0" Color="000000" CenterX="14250.0" CenterY="6250.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="d3e" GroupRef="e6f46">
+    <Graphics FillColor="c0c0c0" Color="000000" CenterX="13950.0" CenterY="6200.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="ca6" GroupRef="d5a8b">
+    <Graphics FillColor="efefef" Color="000000" CenterX="15800.0" CenterY="7700.0" Width="1400.0" Height="100.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="e56">
+    <Graphics FillColor="000000" Color="000000" CenterX="12000.0" CenterY="1350.0" Width="7800.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="bed">
+    <Graphics FillColor="00ffff" Color="000000" CenterX="1540.0" CenterY="6345.0" Width="824.6212" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="de8" GroupRef="f9849">
+    <Graphics FillColor="804000" Color="000000" CenterX="6000.0" CenterY="5875.0" Width="316.2278" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="d99" GroupRef="f9849">
+    <Graphics FillColor="00ff00" Color="000000" CenterX="5650.0" CenterY="5925.0" Width="600.0" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="b37">
+    <Graphics FillColor="804000" Color="000000" CenterX="10400.0" CenterY="5800.0" Width="316.2278" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="ae0" GroupRef="f4086">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="9900.0" CenterY="6100.0" Width="900.0" Height="282.8427" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="b9c" GroupRef="f4086">
+    <Graphics FillColor="00ff00" Color="000000" CenterX="10050.0" CenterY="5850.0" Width="600.0" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="a9b" GroupRef="b0d2a">
+    <Graphics FillColor="7f7f7f" Color="000000" CenterX="10015.0" CenterY="4725.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="b8f" GroupRef="b0d2a">
+    <Graphics FillColor="7f7f7f" Color="000000" CenterX="9715.0" CenterY="4675.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="f0b" GroupRef="b0d2a">
+    <Graphics FillColor="c0c0c0" Color="000000" CenterX="10065.0" CenterY="4875.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="c68" GroupRef="b0d2a">
+    <Graphics FillColor="c0c0c0" Color="000000" CenterX="9765.0" CenterY="4825.0" Width="509.902" Height="400.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e9e" GroupRef="b0d2a">
+    <Graphics FillColor="ffff00" Color="000000" CenterX="9565.0" CenterY="4925.0" Width="300.0" Height="223.6068" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e03">
+    <Graphics FillColor="ff8080" Color="000000" CenterX="12500.0" CenterY="5650.0" Width="500.0458" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e7c">
+    <Graphics FillColor="ff8000" Color="000000" CenterX="8800.0" CenterY="5520.0" Width="300.0" Height="223.6068" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="fe2">
+    <Graphics FillColor="0000ff" Color="000000" CenterX="8550.0" CenterY="4850.0" Width="300.0" Height="223.6068" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="a08f2" GraphId="a5ece" Style="Group" TextLabel="Group object"/>
+  <Group GroupId="f9849" GraphId="b570d" Style="Group" TextLabel="Group object"/>
+  <Group GroupId="f4086" GraphId="c1d0f" Style="Group" TextLabel="Group object"/>
+  <Group GroupId="b0d2a" GraphId="b24b7" Style="Group" TextLabel="Group object"/>
+  <Group GroupId="d5a8b" GraphId="a3b99" Style="Group" TextLabel="Group object"/>
+  <Group GroupId="e6f46" GraphId="fbcef" Style="Group" TextLabel="Group object"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Legend CenterX="8225.0" CenterY="7125.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b2a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11040209</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Orchestrated response: a symphony of transcription factors for gene control.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemon B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tjian R</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="eee">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9585500</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of gene expression by TBP-associated proteins.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee TI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Young RA</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

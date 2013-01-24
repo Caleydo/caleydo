@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Vitamin A and carotenoid metabolism" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"></Comment>
+  <Comment Source="GenMAPP remarks"></Comment>
+  <Comment Source="WikiPathways-description">This pathway is about carotenoid and vitamin A metabolism. The initial version was created by the NuGO focusteam on Carotenoid metabolism. It was used to test a text mining workflow which added some additional entities (see Waagmeester et al. 2009).</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <BiopaxRef>f7b</BiopaxRef>
+  <BiopaxRef>e98</BiopaxRef>
+  <BiopaxRef>d20</BiopaxRef>
+  <Graphics BoardWidth="1717.6666564941406" BoardHeight="769.0" />
+  <DataNode TextLabel="Scarb1" GraphId="df9cb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SRB1" />
+    <Graphics CenterX="1239.0919540229904" CenterY="146.58045959472656" Width="52.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="949" />
+  </DataNode>
+  <DataNode TextLabel="Rdh8" GraphId="eae89">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol dehydrogenase 8" />
+    <Graphics CenterX="784.6870026525197" CenterY="525.3862942612942" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="50700" />
+  </DataNode>
+  <DataNode TextLabel="RARg" GraphId="dd52d" GroupRef="f026a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARg" />
+    <Graphics CenterX="1392.6697612732162" CenterY="475.1989389920417" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5916" />
+  </DataNode>
+  <DataNode TextLabel="Aldh1a2" GraphId="a5ee0" Type="GeneProduct" GroupRef="a67ed">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Aldehyde dehydrogenase family 1, subfamily A2" />
+    <Graphics CenterX="1056.0406719717112" CenterY="445.74358974358745" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8854" />
+  </DataNode>
+  <DataNode TextLabel="Npc1l1" GraphId="ac273">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Npc1l1" />
+    <Graphics CenterX="1194.7586206896556" CenterY="146.58045959472656" Width="45.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="29881" />
+  </DataNode>
+  <DataNode TextLabel="RXRa" GraphId="ca8ba" GroupRef="f026a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRa" />
+    <Graphics CenterX="1476.1697612732162" CenterY="436.9748010610072" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6256" />
+  </DataNode>
+  <DataNode TextLabel="Rbp7" GraphId="a2c14" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol binding protein 7, cellular" />
+    <Graphics CenterX="601.4406719717061" CenterY="693.6691086691086" Width="80.0" Height="16.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="116362" />
+  </DataNode>
+  <DataNode TextLabel="Abcg5" GraphId="af7a1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Abcg5" />
+    <Graphics CenterX="1347.4252873563275" CenterY="135.33333333333334" Width="45.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="64240" />
+  </DataNode>
+  <DataNode TextLabel="Cd36" GraphId="d8d94">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cd36" />
+    <Graphics CenterX="1289.758620689659" CenterY="146.58045959472656" Width="41.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="948" />
+  </DataNode>
+  <DataNode TextLabel="Rdh10" GraphId="c937f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol dehydrogenase 10" />
+    <Graphics CenterX="784.6870026525197" CenterY="545.3862942612942" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="157506" />
+  </DataNode>
+  <DataNode TextLabel="Rbp2" GraphId="f933c" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol binding protein 2, cellular" />
+    <Graphics CenterX="601.4406719717061" CenterY="660.3357753357755" Width="80.0" Height="16.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5948" />
+  </DataNode>
+  <DataNode TextLabel="Aldh1a1" GraphId="e5fb8" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Aldehyde dehydrogenase family 1, subfamily A1" />
+    <Graphics CenterX="1055.245800176834" CenterY="567.7179487179487" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="216" />
+  </DataNode>
+  <DataNode TextLabel="Adh4" GraphId="caa5e" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Alcohol dehydrogenase 4 (class II), pi polypeptide" />
+    <Graphics CenterX="784.6870026525199" CenterY="485.38629426129415" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="127" />
+  </DataNode>
+  <DataNode TextLabel="Rdh12" GraphId="a6e8e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol dehydrogenase 12" />
+    <Graphics CenterX="784.6870026525197" CenterY="565.3862942612941" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="145226" />
+  </DataNode>
+  <DataNode TextLabel="RXRg" GraphId="ef3c3" GroupRef="f026a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRg" />
+    <Graphics CenterX="1476.1697612732162" CenterY="474.9748010610072" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6258" />
+  </DataNode>
+  <DataNode TextLabel="Lpl" GraphId="b0eea">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Lpl" />
+    <Graphics CenterX="484.59195402298826" CenterY="271.3333333333333" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="4023" />
+  </DataNode>
+  <DataNode TextLabel="Abcg8" GraphId="a631d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Abcg8" />
+    <Graphics CenterX="1347.4252873563275" CenterY="155.33333333333334" Width="45.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="64241" />
+  </DataNode>
+  <DataNode TextLabel="Bcdo2" GraphId="b60c6" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Beta-carotene 9', 10'-dioxygenase 2" />
+    <Graphics CenterX="1011.9124668435006" CenterY="349.9166666666662" Width="51.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="83875" />
+  </DataNode>
+  <DataNode TextLabel="RXRb" GraphId="c3ba7" GroupRef="f026a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRb" />
+    <Graphics CenterX="1476.1697612732162" CenterY="454.9748010610072" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6257" />
+  </DataNode>
+  <DataNode TextLabel="Adh1" GraphId="edcfc" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Alcohol dehydrogenase 1 (class I)" />
+    <Graphics CenterX="784.6870026525199" CenterY="465.38629426129415" Width="80.62599469496006" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="124" />
+  </DataNode>
+  <DataNode TextLabel="Crabp1" GraphId="f3fcd" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cellular retinoic acid binding protein I" />
+    <Graphics CenterX="1182.6124668435004" CenterY="647.5897435897438" Width="80.0" Height="16.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1381" />
+  </DataNode>
+  <DataNode TextLabel="Lrat" GraphId="e5e97">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Lrat" />
+    <Graphics CenterX="892.758620689655" CenterY="218.0" Width="44.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000121207" />
+  </DataNode>
+  <DataNode TextLabel="Lrat" GraphId="c1e29" Type="GeneProduct" GroupRef="ca852">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Lecithin-retinol acyltransferase" />
+    <Graphics CenterX="498.0406719717062" CenterY="407.55311355311363" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000121207" />
+  </DataNode>
+  <DataNode TextLabel="Aldh1a3" GraphId="aeaa5" GroupRef="a67ed">
+    <Graphics CenterX="1056.0406719717112" CenterY="465.7435897435855" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="220" />
+  </DataNode>
+  <DataNode TextLabel="Sult1a1" GraphId="d104f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sult1a1" />
+    <Graphics CenterX="1562.4005305039861" CenterY="595.538461538461" Width="79.99999999999997" Height="20.000000000000043" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6817" />
+  </DataNode>
+  <DataNode TextLabel="Crabp2" GraphId="f2b81" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cellular retinoic acid binding protein II" />
+    <Graphics CenterX="1182.6124668435004" CenterY="664.2564102564104" Width="80.0" Height="16.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1382" />
+  </DataNode>
+  <DataNode TextLabel="Cyp2e1" GraphId="b3750" GroupRef="efd49">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cyp2e1" />
+    <Graphics CenterX="1294.4286135320654" CenterY="575.8691086691089" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1571" />
+  </DataNode>
+  <DataNode TextLabel="Dhrs3" GraphId="aa8f9" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Dehydrogenase/reductase (SDR family) member 3" />
+    <Graphics CenterX="781.3740053050404" CenterY="418.87692307692356" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="9249" />
+  </DataNode>
+  <DataNode TextLabel="RARa" GraphId="a4628" GroupRef="f026a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARa" />
+    <Graphics CenterX="1392.6697612732162" CenterY="435.1989389920417" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5914" />
+  </DataNode>
+  <DataNode TextLabel="Scarb1" GraphId="bb02c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SRB1" />
+    <Graphics CenterX="933.25" CenterY="295.6666666666667" Width="52.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="949" />
+  </DataNode>
+  <DataNode TextLabel="Rbp1" GraphId="ca197" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol binding protein 1, cellular" />
+    <Graphics CenterX="601.4406719717061" CenterY="643.6691086691088" Width="80.0" Height="16.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5947" />
+  </DataNode>
+  <DataNode TextLabel="Cyp26b1" GraphId="abd14" GroupRef="efd49">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cyp26b1" />
+    <Graphics CenterX="1294.4286135320654" CenterY="555.8691086691089" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="56603" />
+  </DataNode>
+  <DataNode TextLabel="Rbp4" GraphId="fa5bd" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol binding protein 4, plasma" />
+    <Graphics CenterX="601.4406719717061" CenterY="677.0024420024421" Width="80.0" Height="16.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5950" />
+  </DataNode>
+  <DataNode TextLabel="Cyp26a1" GraphId="d1a73" GroupRef="efd49">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cytochrome P450 26A1 " />
+    <Graphics CenterX="1294.4286135320654" CenterY="535.8357753357755" Width="74.06666666666666" Height="20.066666666666666" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1592" />
+  </DataNode>
+  <DataNode TextLabel="Bcmo1" GraphId="d7d44">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Bcmo1" />
+    <Graphics CenterX="1186.0919540229884" CenterY="218.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="53630" />
+  </DataNode>
+  <DataNode TextLabel="Rdh5" GraphId="aa7cc" GroupRef="c8035">
+    <Graphics CenterX="362.558620689655" CenterY="618.000000000001" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5959" />
+  </DataNode>
+  <DataNode TextLabel="Aldh1a1" GraphId="a44fb" Type="GeneProduct" GroupRef="a67ed">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Aldehyde dehydrogenase family 1, subfamily A1" />
+    <Graphics CenterX="1056.0406719717112" CenterY="425.74358974358745" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="216" />
+  </DataNode>
+  <DataNode TextLabel="Rlbp1" GraphId="f5020">
+    <Graphics CenterX="227.44067197170637" CenterY="643.3333333333343" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6017" />
+  </DataNode>
+  <DataNode TextLabel="ARAT" GraphId="a29e9" Type="Protein" GroupRef="ca852">
+    <Graphics CenterX="498.0406719717062" CenterY="387.55311355311363" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="EC Number" ID="2.3.1.76" />
+  </DataNode>
+  <DataNode TextLabel="RPE65" GraphId="b5d6e">
+    <Graphics CenterX="293.8919540229879" CenterY="524.6666666666657" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6121" />
+  </DataNode>
+  <DataNode TextLabel="Rdh12" GraphId="ca572" GroupRef="c8035">
+    <Graphics CenterX="362.558620689655" CenterY="638.000000000001" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="145226" />
+  </DataNode>
+  <DataNode TextLabel="Aldh1a2" GraphId="dd561" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Aldehyde dehydrogenase family 1, subfamily A2" />
+    <Graphics CenterX="1055.245800176834" CenterY="587.7179487179487" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="8854" />
+  </DataNode>
+  <DataNode TextLabel="RARb" GraphId="fc7ce" GroupRef="f026a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARb" />
+    <Graphics CenterX="1392.6697612732162" CenterY="455.1989389920417" Width="74.06666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5915" />
+  </DataNode>
+  <DataNode TextLabel="Rdh5" GraphId="e944a" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Retinol dehydrogenase 5" />
+    <Graphics CenterX="784.6870026525198" CenterY="505.38629426129415" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5959" />
+  </DataNode>
+  <DataNode TextLabel="Sult2b1" GraphId="bcaf2">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sult2b1" />
+    <Graphics CenterX="1562.4005305039861" CenterY="615.538461538461" Width="79.99999999999997" Height="20.000000000000043" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6820" />
+  </DataNode>
+  <DataNode TextLabel="Aldh1a3" GraphId="ad473">
+    <Graphics CenterX="1055.245800176834" CenterY="607.7179487179487" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="220" />
+  </DataNode>
+  <DataNode TextLabel="Bcmo1" GraphId="fa279" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Beta-carotene 15,15'-monooxygenase" />
+    <Graphics CenterX="888.5833333333342" CenterY="377.0" Width="52.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="53630" />
+  </DataNode>
+  <DataNode TextLabel="Retsat" GraphId="ca165" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="All-trans-retinol 13,14-reductase " />
+    <Graphics CenterX="561.4509283819625" CenterY="505.3846153846154" Width="46.153846153846416" Height="19.89743589743614" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="54884" />
+  </DataNode>
+  <DataNode TextLabel="Alpha-Carotene" GraphId="f5db8" Type="Metabolite">
+    <BiopaxRef>c78</BiopaxRef>
+    <BiopaxRef>e56</BiopaxRef>
+    <BiopaxRef>bbd</BiopaxRef>
+    <BiopaxRef>e92</BiopaxRef>
+    <BiopaxRef>e3d</BiopaxRef>
+    <BiopaxRef>e5f</BiopaxRef>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="alpha-carotene" />
+    <Graphics CenterX="63.666666666666664" CenterY="366.0" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03993" />
+  </DataNode>
+  <DataNode TextLabel="Astaxanthin" GraphId="e58bb" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="astaxanthin" />
+    <Graphics CenterX="63.666666666666664" CenterY="436.0" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02204" />
+  </DataNode>
+  <DataNode TextLabel="Violaxanthin" GraphId="dcbc5" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="violaxanthin" />
+    <Graphics CenterX="64.66666666666667" CenterY="470.0" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03101" />
+  </DataNode>
+  <DataNode TextLabel="Zeaxanthin" GraphId="b8047" Type="Metabolite">
+    <BiopaxRef>da5</BiopaxRef>
+    <BiopaxRef>d8f</BiopaxRef>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="zeaxanthin" />
+    <Graphics CenterX="62.666666666666664" CenterY="400.0" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02789" />
+  </DataNode>
+  <DataNode TextLabel="Beta-Cryptoxanthin" GraphId="b3b6b" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="beta-cryptoxanthin" />
+    <Graphics CenterX="826.6666666666666" CenterY="331.25" Width="100.0" Height="19.99999237060547" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02268" />
+  </DataNode>
+  <DataNode TextLabel="Canthaxanthin" GraphId="df783" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="canthaxanthin" />
+    <Graphics CenterX="791.6666666666666" CenterY="377.0" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03154" />
+  </DataNode>
+  <DataNode TextLabel="Lutein" GraphId="b8e2b" Type="Metabolite">
+    <BiopaxRef>da5</BiopaxRef>
+    <BiopaxRef>d87</BiopaxRef>
+    <BiopaxRef>f30</BiopaxRef>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="lutein" />
+    <Graphics CenterX="1283.6666666666667" CenterY="52.0" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03233" />
+  </DataNode>
+  <DataNode TextLabel="Vitamin D3" GraphId="cae4c" Type="Metabolite">
+    <BiopaxRef>cd1</BiopaxRef>
+    <BiopaxRef>e17</BiopaxRef>
+    <BiopaxRef>c13</BiopaxRef>
+    <BiopaxRef>fe3</BiopaxRef>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Vitamin D3" />
+    <Graphics CenterX="1637.6666564941406" CenterY="433.33333079020184" Width="100.0" Height="20.0" ZOrder="32768" FillColor="Transparent" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00876" />
+  </DataNode>
+  <DataNode TextLabel="Lycopene" GraphId="bc1f4" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="lycopene" />
+    <Graphics CenterX="1184.999999999999" CenterY="379.1666666666667" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03000" />
+  </DataNode>
+  <DataNode TextLabel="Bcmo1" GraphId="a0454" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Beta-carotene 15,15'-monooxygenase" />
+    <Graphics CenterX="1098.4959159614334" CenterY="379.1666666666663" Width="52.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="53630" />
+  </DataNode>
+  <DataNode TextLabel="MAPK" GraphId="b67a1" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK" />
+    <Graphics CenterX="1284.6666666666667" CenterY="334.8333333333333" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="enzyme" ID="2.7.11.24" />
+  </DataNode>
+  <DataNode TextLabel="Betacarotene" GraphId="a0009" Type="Metabolite">
+    <Graphics CenterX="933.25" CenterY="331.25" Width="87.5" Height="23.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00561" />
+  </DataNode>
+  <DataNode TextLabel="Betacarotene" GraphId="ba983" Type="Metabolite">
+    <Graphics CenterX="933.25" CenterY="267.25" Width="87.5" Height="23.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00561" />
+  </DataNode>
+  <DataNode TextLabel="Betacarotene" GraphId="f8808" Type="Metabolite">
+    <Graphics CenterX="1256.25" CenterY="187.75" Width="87.5" Height="27.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00561" />
+  </DataNode>
+  <DataNode TextLabel="Betacarotene" GraphId="fc14f" Type="Metabolite">
+    <Graphics CenterX="1268.5" CenterY="89.75" Width="249.0" Height="24.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00561" />
+  </DataNode>
+  <DataNode TextLabel="Retinal&#xA;Vitamin A aldehyde" GraphId="fa6ab" Type="Metabolite">
+    <Graphics CenterX="1098.75" CenterY="187.75" Width="106.5" Height="27.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01358" />
+  </DataNode>
+  <DataNode TextLabel="Retinol&#xA;Vitamin A" GraphId="f698d" Type="Metabolite">
+    <Graphics CenterX="956.25" CenterY="187.75" Width="73.5" Height="27.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00305" />
+  </DataNode>
+  <DataNode TextLabel="Retinol&#xA;Vitamin A" GraphId="a6725" Type="Metabolite">
+    <Graphics CenterX="955.25" CenterY="98.75" Width="73.5" Height="27.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00305" />
+  </DataNode>
+  <DataNode TextLabel="Retinol dehydrogenases" GraphId="fe9c7" Type="GeneProduct">
+    <Graphics CenterX="1024.5" CenterY="218.0" Width="117.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="enzyme" ID="1.1.1.105" />
+  </DataNode>
+  <DataNode TextLabel="Retinyl ester" GraphId="bc239" Type="Metabolite">
+    <Graphics CenterX="816.75" CenterY="187.75" Width="72.5" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03598" />
+  </DataNode>
+  <DataNode TextLabel="all-trans Retinal" GraphId="be432" Type="Metabolite">
+    <Graphics CenterX="935.2499999999999" CenterY="445.75000000000034" Width="99.33333333333371" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01358" />
+  </DataNode>
+  <DataNode TextLabel="all-trans Retinoic acid&#xA;Vitamin A acid" GraphId="d2c11" Type="Metabolite">
+    <Graphics CenterX="1182.583333333334" CenterY="445.7500000000004" Width="99.33333333333319" Height="29.166666666666135" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01852" />
+  </DataNode>
+  <DataNode TextLabel="all-trans Retinol&#xA;Vitamin A" GraphId="b100e" Type="Metabolite">
+    <Graphics CenterX="620.9166666666677" CenterY="445.75000000000034" Width="73.5" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00305" />
+  </DataNode>
+  <DataNode TextLabel="Retinyl ester" GraphId="f9a58" Type="Metabolite">
+    <Graphics CenterX="362.08333333333303" CenterY="445.75000000000085" Width="72.5" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03598" />
+  </DataNode>
+  <DataNode TextLabel="9-cis-Retinal" GraphId="c8b7e" Type="Metabolite">
+    <Graphics CenterX="935.9166666666662" CenterY="520.7500000000009" Width="99.33333333333371" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB06218" />
+  </DataNode>
+  <DataNode TextLabel="9-cis-Retinol" GraphId="f2294" Type="Metabolite">
+    <Graphics CenterX="656.0000000000002" CenterY="520.7500000000009" Width="63.999999999999396" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB06217" />
+  </DataNode>
+  <DataNode TextLabel="11-cis-Retinol" GraphId="b07e7" Type="Metabolite">
+    <Graphics CenterX="362.08333333333303" CenterY="576.7500000000002" Width="63.999999999999396" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB06216" />
+  </DataNode>
+  <DataNode TextLabel="11-cis-Retinal" GraphId="b92cb" Type="Metabolite">
+    <Graphics CenterX="362.0833333333343" CenterY="694.0833333333345" Width="63.999999999999396" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02152" />
+  </DataNode>
+  <DataNode TextLabel="9-cis-Retinoic acid" GraphId="e50bb" Type="Metabolite">
+    <Graphics CenterX="1182.583333333334" CenterY="520.7500000000009" Width="99.33333333333319" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02369" />
+  </DataNode>
+  <DataNode TextLabel="All-trans-13,14-dihydroretinol" GraphId="c25bf" Type="Metabolite">
+    <Graphics CenterX="603.1249999999991" CenterY="586.7500000000009" Width="135.08333333333297" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB11618" />
+  </DataNode>
+  <DataNode TextLabel="13,14 dehydroretinal" GraphId="ddf11" Type="Metabolite">
+    <Graphics CenterX="935.3333333333331" CenterY="586.7500000000009" Width="99.33333333333373" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="" />
+  </DataNode>
+  <DataNode TextLabel="13,14 dehydro RA" GraphId="e085b" Type="Metabolite">
+    <Graphics CenterX="1183.3333333333335" CenterY="586.7500000000009" Width="99.33333333333373" Height="30.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="" />
+  </DataNode>
+  <DataNode TextLabel="4-oxo-Retinoic acid" GraphId="b29bb" Type="Metabolite" GroupRef="ff2c2">
+    <Graphics CenterX="1342.75" CenterY="653.75" Width="120.5" Height="26.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB06285" />
+  </DataNode>
+  <DataNode TextLabel="all-transe 4-oxo RA" GraphId="abd6c" Type="Metabolite" GroupRef="ff2c2">
+    <Graphics CenterX="1342.75" CenterY="678.75" Width="120.5" Height="23.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="beta 10' apocorotenal" GraphId="f6cee" Type="Metabolite">
+    <Graphics CenterX="1123.75" CenterY="331.75" Width="120.5" Height="26.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Awat" GraphId="d3f08" Type="GeneProduct" GroupRef="ca852">
+    <Graphics CenterX="498.25" CenterY="367.25" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="158835" />
+  </DataNode>
+  <Line GraphId="e2ac5">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="109.33333333333333" Y="248.66666666666666" />
+      <Point X="1593.3333333333333" Y="243.33333333333334" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ff915">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="984.9166666666667" Y="445.75000000000034" GraphRef="be432" RelX="1.0" RelY="0.0" />
+      <Point X="1132.9166666666674" Y="445.75000000000034" GraphRef="d2c11" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="f4ed5" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a01bf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="886.2499999999993" Y="520.7500000000009" GraphRef="c8b7e" RelX="-1.0" RelY="0.0" />
+      <Point X="688.0" Y="520.7500000000009" GraphRef="f2294" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a259a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1212.5" Y="187.75" GraphRef="f8808" RelX="-1.0" RelY="0.0" />
+      <Point X="1152.0" Y="187.75" GraphRef="fa6ab" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.42857142857142855" Shape="None" GraphId="b15ba" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c1683">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1477.8114279398828" Y="417.1989389920417" GraphRef="e3eb2" RelX="0.5" RelY="-1.0" />
+      <Point X="1536.2236074270618" Y="381.384615384615" GraphRef="f46e4" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e9329">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1254.2403185350563" Y="506.0615176962125" GraphRef="f1642" RelX="1.0" RelY="0.0" />
+      <Point X="1342.75" Y="632.5" GraphRef="d3ed9" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bef7f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="670.6666666666656" Y="579.1250000000009" GraphRef="c25bf" RelX="1.0" RelY="-0.5" />
+      <Point X="885.6666666666663" Y="579.1250000000009" GraphRef="ddf11" RelX="-1.0" RelY="-0.5" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f9b7f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="657.6666666666677" Y="438.12500000000034" GraphRef="b100e" RelX="1.0" RelY="-0.5" />
+      <Point X="885.583333333333" Y="438.12500000000034" GraphRef="be432" RelX="-1.0" RelY="-0.5" ArrowHead="Arrow" />
+      <Anchor Position="0.5400291120815137" Shape="None" GraphId="e8c64" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b6471">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1393.0" Y="89.75" GraphRef="fc14f" RelX="1.0" RelY="0.0" />
+      <Point X="1300.0" Y="187.75" GraphRef="f8808" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b4096">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="985.583333333333" Y="520.7500000000009" GraphRef="c8b7e" RelX="1.0" RelY="0.0" />
+      <Point X="1132.9166666666674" Y="520.7500000000009" GraphRef="e50bb" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fa6b6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="602.5416666666677" Y="461.00000000000034" GraphRef="b100e" RelX="-0.5" RelY="1.0" />
+      <Point X="603.1249999999991" Y="571.5000000000009" GraphRef="c25bf" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="aa2bd" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bdca5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1045.5" Y="187.75" GraphRef="fa6ab" RelX="-1.0" RelY="0.0" />
+      <Point X="993.0" Y="187.75" GraphRef="f698d" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="bbd2f" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f9e96">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="933.25" Y="343.0" GraphRef="a0009" RelX="0.0" RelY="1.0" />
+      <Point X="935.2499999999999" Y="430.50000000000034" GraphRef="be432" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.3692870201096889" Shape="None" GraphId="f8176" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e1a3d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.08333333333303" Y="461.00000000000085" GraphRef="f9a58" RelX="0.0" RelY="1.0" />
+      <Point X="362.08333333333303" Y="561.5000000000002" GraphRef="b07e7" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.6400233456454758" Shape="None" GraphId="c6a04" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c35e9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="311.0" Y="148.05747126436782" />
+      <Point X="1587.3333333333333" Y="144.66666666666666" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ccbcf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="919.5" Y="187.75" GraphRef="f698d" RelX="-1.0" RelY="0.0" />
+      <Point X="853.0" Y="187.75" GraphRef="bc239" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="e2057" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e571a">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1256.25" Y="201.5" GraphRef="f8808" RelX="0.0" RelY="1.0" />
+      <Point X="1256.7586206896578" Y="264.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="eaefe">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="584.1666666666677" Y="445.75000000000034" GraphRef="b100e" RelX="-1.0" RelY="0.0" />
+      <Point X="398.33333333333303" Y="445.75000000000085" GraphRef="f9a58" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c232c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="985.0" Y="586.7500000000009" GraphRef="ddf11" RelX="1.0" RelY="0.0" />
+      <Point X="1133.6666666666665" Y="586.7500000000009" GraphRef="e085b" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f5a20">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="639.2916666666677" Y="461.00000000000034" GraphRef="b100e" RelX="0.5" RelY="1.0" />
+      <Point X="640.0000000000003" Y="505.5000000000009" GraphRef="f2294" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bf935">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.08333333333303" Y="279.76666666666665" GraphRef="e283f" RelX="0.0" RelY="1.0" />
+      <Point X="362.08333333333303" Y="430.50000000000085" GraphRef="f9a58" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f5d42">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="955.25" Y="112.5" GraphRef="a6725" RelX="0.0" RelY="1.0" />
+      <Point X="956.25" Y="174.0" GraphRef="f698d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f998a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="109.66666666666667" Y="296.9425287356322" />
+      <Point X="1590.827586206897" Y="297.7701149425287" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a152d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="933.25" Y="279.0" GraphRef="ba983" RelX="0.0" RelY="1.0" />
+      <Point X="933.25" Y="319.5" GraphRef="a0009" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="f4392" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c91f7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="398.33333333333303" Y="438.12500000000085" GraphRef="f9a58" RelX="1.0" RelY="-0.5" />
+      <Point X="584.1666666666677" Y="438.12500000000034" GraphRef="b100e" RelX="-1.0" RelY="-0.5" ArrowHead="Arrow" />
+      <Anchor Position="0.5399202399557906" Shape="None" GraphId="e5c5d" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cfdc8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="552.0586206896551" Y="272.83333333333326" GraphRef="fff04" RelX="-1.0" RelY="0.0" />
+      <Point X="415.9499999999997" Y="272.3333333333333" GraphRef="e283f" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f927c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="977.0" Y="331.25" GraphRef="a0009" RelX="1.0" RelY="0.0" />
+      <Point X="1063.5" Y="331.75" GraphRef="f6cee" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="acb3a" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cecd6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1144.0" Y="89.75" GraphRef="fc14f" RelX="-1.0" RelY="0.0" />
+      <Point X="1234.375" Y="174.0" GraphRef="f8808" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c8c65">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1093.625" Y="345.0" GraphRef="f6cee" RelX="-0.5" RelY="1.0" />
+      <Point X="960.0833333333333" Y="430.50000000000034" GraphRef="be432" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="cf07e" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a3ca7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.08333333333303" Y="592.0000000000002" GraphRef="b07e7" RelX="0.0" RelY="1.0" />
+      <Point X="362.0833333333343" Y="678.8333333333345" GraphRef="b92cb" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="d9380" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d368b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="885.583333333333" Y="445.75000000000034" GraphRef="be432" RelX="-1.0" RelY="0.0" />
+      <Point X="657.6666666666677" Y="445.75000000000034" GraphRef="b100e" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fa1ce">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1206.25" Y="77.5" GraphRef="fc14f" RelX="-0.5" RelY="-1.0" />
+      <Point X="1256.25" Y="174.0" GraphRef="f8808" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a49f5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="688.0" Y="513.1250000000009" GraphRef="f2294" RelX="1.0" RelY="-0.5" />
+      <Point X="886.2499999999993" Y="513.1250000000009" GraphRef="c8b7e" RelX="-1.0" RelY="-0.5" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c7f17">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="664.5752873563217" Y="228.36666666666667" GraphRef="b5d83" RelX="-0.5" RelY="1.0" />
+      <Point X="622.608620689655" Y="256.29999999999995" GraphRef="fff04" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="de821">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="780.5" Y="187.75" GraphRef="bc239" RelX="-1.0" RelY="0.0" />
+      <Point X="735.1252873563217" Y="203.56666666666666" GraphRef="b5d83" RelX="1.0" RelY="-0.5" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d4ed3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="885.6666666666663" Y="586.7500000000009" GraphRef="ddf11" RelX="-1.0" RelY="0.0" />
+      <Point X="670.6666666666656" Y="586.7500000000009" GraphRef="c25bf" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e4360">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1330.75" Y="77.5" GraphRef="fc14f" RelX="0.5" RelY="-1.0" />
+      <Point X="1278.125" Y="174.0" GraphRef="f8808" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c574e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="841.6666666666666" Y="377.0" GraphRef="df783" RelX="1.0" RelY="0.0" />
+      <Point X="862.5833333333342" Y="377.0" GraphRef="fa279" RelX="-1.0" RelY="0.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a05d3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1134.999999999999" Y="379.1666666666667" GraphRef="bc1f4" RelX="-1.0" RelY="0.0" />
+      <Point X="1124.4959159614334" Y="379.1666666666663" GraphRef="a0454" RelX="1.0" RelY="0.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="da3a7">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1359.0" Y="405.6666666666667" />
+      <Point X="1301.0" Y="348.6666666666667" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c3bb3">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1235.0" Y="403.6666666666667" />
+      <Point X="1264.0" Y="352.6666666666667" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="iddc6f9d6e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="907.25" Y="295.6666666666667" GraphRef="bb02c" RelX="-1.0" RelY="0.0" />
+      <Point X="933.25" Y="295.2" GraphRef="f4392" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id815aa511">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1186.0919540229884" Y="208.0" GraphRef="d7d44" RelX="0.0" RelY="-1.0" />
+      <Point X="1186.5714285714287" Y="187.75" GraphRef="b15ba" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfcddae72">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1024.5" Y="208.0" GraphRef="fe9c7" RelX="0.0" RelY="-1.0" />
+      <Point X="1024.5" Y="187.75" GraphRef="bbd2f" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id425e272c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="892.758620689655" Y="208.0" GraphRef="e5e97" RelX="0.0" RelY="-1.0" />
+      <Point X="892.9" Y="187.75" GraphRef="e2057" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idbd512c36">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="914.5833333333342" Y="377.0" GraphRef="fa279" RelX="1.0" RelY="0.0" />
+      <Point X="933.9885740402193" Y="375.3126142595979" GraphRef="f8176" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9067f6e3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1011.9124668435006" Y="339.9166666666662" GraphRef="b60c6" RelX="0.0" RelY="-1.0" />
+      <Point X="1011.6" Y="331.45" GraphRef="acb3a" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idc14c753a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1040.2083333333333" Y="379.20000000000016" GraphRef="cf07e" RelX="0.0" RelY="0.0" />
+      <Point X="1072.4959159614334" Y="379.1666666666663" GraphRef="a0454" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id6dcdecc6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="781.3740053050404" Y="428.87692307692356" GraphRef="aa8f9" RelX="0.0" RelY="1.0" />
+      <Point X="780.7483017952453" Y="438.12500000000034" GraphRef="e8c64" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id629aa9b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1044.116666666667" Y="445.75000000000034" GraphRef="f4ed5" RelX="0.0" RelY="0.0" />
+      <Point X="1104.0406719717112" Y="445.7435897435865" GraphRef="ea8ec" RelX="1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3d5c0c0e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="498.6685112584515" Y="438.12500000000057" GraphRef="e5c5d" RelX="0.0" RelY="0.0" />
+      <Point X="498.1453359858531" Y="425.5531135531137" GraphRef="d48d9" RelX="0.0" RelY="1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idbdb125c7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="333.8919540229879" Y="524.6666666666657" GraphRef="b5d6e" RelX="1.0" RelY="0.0" />
+      <Point X="362.08333333333303" Y="525.3223462373708" GraphRef="c6a04" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8a53db5f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="602.7750000000002" Y="505.20000000000056" GraphRef="aa2bd" RelX="0.0" RelY="0.0" />
+      <Point X="584.5278514588857" Y="505.3846153846154" GraphRef="ca165" RelX="1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida019a6f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.08333333333354" Y="626.7333333333339" GraphRef="d9380" RelX="0.0" RelY="0.0" />
+      <Point X="362.558620689655" Y="656.000000000001" GraphRef="c3cd9" RelX="0.0" RelY="1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d76f8">
+    <Graphics ZOrder="32769" LineThickness="1.0">
+      <Point X="1477.8114279398828" Y="493.1989389920417" GraphRef="e3eb2" RelX="0.5" RelY="1.0" />
+      <Point X="1562.4005305039861" Y="585.538461538461" GraphRef="d104f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b00bf">
+    <Graphics ZOrder="32770" LineThickness="1.0">
+      <Point X="1391.0280946065495" Y="493.1989389920417" GraphRef="e3eb2" RelX="-0.5" RelY="1.0" />
+      <Point X="1339.4619468653987" Y="555.8357753357755" GraphRef="a6a71" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b2026">
+    <Graphics ZOrder="32771" LineThickness="1.0">
+      <Point X="1254.2403185350563" Y="506.0615176962125" GraphRef="f1642" RelX="1.0" RelY="0.0" />
+      <Point X="1347.6364279398829" Y="455.1989389920417" GraphRef="e3eb2" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="?" GraphId="e4244">
+    <Graphics CenterX="965.2252873563216" CenterY="303.23333333333335" Width="26.4" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="PPAR pathways" GraphId="f46e4">
+    <Graphics CenterX="1536.2236074270616" CenterY="373.9512820512817" Width="96.2" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ROL=retinol; RAL=retinaldehyde, RA = retinoic acid, RE = retinyl ester, RPE = retinal pigment epithelium " GraphId="a68ae">
+    <Graphics CenterX="906.7770114942534" CenterY="694.0574712643677" Width="395.55402298850674" Height="14.551724137931403" ZOrder="28672" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="RE + dietary lipids" GraphId="e283f">
+    <Graphics CenterX="362.08333333333303" CenterY="272.3333333333333" Width="107.73333333333333" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="chylomicron" GraphId="a59dc">
+    <Graphics CenterX="688.2126436781608" CenterY="187.73333333333332" Width="73.75862068965495" Height="17.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="?" GraphId="accc9">
+    <Graphics CenterX="646.7124668435011" CenterY="478.2846153846154" Width="7.4" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="?" GraphId="fb570">
+    <Graphics CenterX="1498.3159151193684" CenterY="550.7974358974351" Width="28.938461538460494" Height="30.25128205128195" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Cytochrome P450 family" GraphId="bad15">
+    <Graphics CenterX="1342.0730579765125" CenterY="599.8675213675215" Width="145.2" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="" GraphId="d2abe">
+    <Graphics CenterX="1411.0" CenterY="203.56666666666666" Width="0.0" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Enterocyte" GraphId="e213d">
+    <Graphics CenterX="1552.9316091954038" CenterY="197.3425287356322" Width="72.80344827585915" Height="15.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="?" GraphId="d35e1">
+    <Graphics CenterX="1266.0586206896583" CenterY="227.56666666666666" Width="7.4" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Blood" GraphId="bbb8a">
+    <Graphics CenterX="1570.804597701149" CenterY="269.6758620689655" Width="37.733333333333334" Height="15.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ROL-binding proteins" GraphId="d77ac">
+    <Graphics CenterX="601.4406719717061" CenterY="624.5691086691089" Width="125.86666666666666" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Retinal pigment epithelium specific" GraphId="ff769">
+    <Graphics CenterX="286.0" CenterY="484.6666666666661" Width="244.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Liver/other organs" GraphId="dbb4c">
+    <Graphics CenterX="1530.666666666667" CenterY="316.6206896551725" Width="126.66666666666623" Height="20.75862068965513" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="ffe89">
+    <Graphics CenterX="1417.013085764813" CenterY="381.4128205128197" Width="65.97382847037458" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="RE + dietary lipids" GraphId="bf9ac">
+    <Graphics CenterX="689.2252873563216" CenterY="211.9" Width="107.73333333333333" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Nuclear receptors" GraphId="acb0e">
+    <Graphics CenterX="1428.569761273216" CenterY="413.48974358974294" Width="105.2" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="RE + dietary lipids" GraphId="dbb77">
+    <Graphics CenterX="602.0919540229883" CenterY="271.3333333333333" Width="90.0" Height="12.466666666666667" ZOrder="28672" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="11-cis binding protein" GraphId="e57a1">
+    <Graphics CenterX="227.44067197170637" CenterY="618.5691086691098" Width="125.86666666666666" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="RA-binding proteins" GraphId="d4783">
+    <Graphics CenterX="1182.6124668435004" CenterY="626.923076923077" Width="116.93333333333334" Height="14.866666666666667" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="?" GraphId="d0e57">
+    <Graphics CenterX="1258.0" CenterY="384.6666666666667" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontName="Helvetica" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="?" GraphId="be18b">
+    <Graphics CenterX="1344.0" CenterY="376.6666666666667" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontName="Helvetica" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Diet" GraphId="bde33">
+    <Graphics CenterX="1568.9316091954036" CenterY="74.67586206896551" Width="72.80344827585915" Height="15.2" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Rhodopsin formation" GraphId="c316f">
+    <Graphics CenterX="382.5" CenterY="717.0" Width="109.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="gap junction communication" GraphId="f3218">
+    <Graphics CenterX="1478.5" CenterY="651.0" Width="139.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Shape GraphId="b5d83">
+    <Graphics CenterX="688.0919540229883" CenterY="211.83333333333334" Width="94.06666666666666" Height="33.06666666666667" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="e25f2">
+    <Graphics CenterX="304.8333333333333" CenterY="616.4833333333338" Width="276.33333333333337" Height="245.0333333333324" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" LineStyle="Broken" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="dfe9c">
+    <Graphics CenterX="602.7740053050395" CenterY="610.4126984126984" Width="113.33333333333333" Height="8.666666666666666" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="3.141592653589793" />
+  </Shape>
+  <Shape GraphId="f1642">
+    <Graphics CenterX="1247.4554289470038" CenterY="506.06151769621243" Width="169.93346044554954" Height="13.066697348925565" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="1.5678355218147453" />
+  </Shape>
+  <Shape GraphId="cada1">
+    <Graphics CenterX="297.0482584519666" CenterY="636.0617492316503" Width="124.02181788783491" Height="12.54125842854974" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="4.70139890219736" />
+  </Shape>
+  <Shape GraphId="fff04">
+    <Graphics CenterX="599.0919540229883" CenterY="272.8333333333333" Width="94.06666666666666" Height="33.06666666666667" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="dffed">
+    <Graphics CenterX="1178.6666666666667" CenterY="611.3333333333334" Width="80.0" Height="8.0" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="3.141592653589793" />
+  </Shape>
+  <Shape GraphId="af32a">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="1432.5" CenterY="456.5" Width="229.0" Height="133.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="a67ed" GraphId="ea8ec" Style="Group" />
+  <Group GroupId="c8035" GraphId="c3cd9" Style="Group" />
+  <Group GroupId="ff2c2" GraphId="d3ed9" Style="Group" />
+  <Group GroupId="f026a" GraphId="e3eb2" Style="Group" />
+  <Group GroupId="efd49" GraphId="a6a71" Style="Group" />
+  <Group GroupId="ca852" GraphId="d48d9" Style="Group" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      <bp:TERM>metabolic pathway of cofactors and vitamins</bp:TERM>
+      
+      
+      
+      
+      <bp:ID>PW:0000135</bp:ID>
+      
+      
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+      
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e3d">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12806616</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Relation of elevated serum alanine aminotransferase activity with iron and antioxidant levels in the United States.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gastroenterology</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruhl CE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Everhart JE</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e56">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12937841</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Preliminary identification of carotenoids in malignant and benign neoplasms of the breast and surrounding fatty tissue.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neoplasma</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Czeczuga-Semeniuk E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolczynski S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Markiewicz W</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e92">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9453379</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vitamin A deficiency and nocturnal vision in teenagers with cystic fibrosis.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Pediatr</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huet F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Semama D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maingueneau C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Charavel A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nivelon JL</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="f30">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1416048</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Separation and identification of carotenoids and their oxidation products in the extracts of human plasma.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anal Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1992</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khachik F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beecher GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goli MB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lusby WR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith JC Jr</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d20">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19715393</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pathway enrichment based on text mining and its validation on carotenoid and vitamin A metabolism.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">OMICS</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waagmeester A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pezik P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coort S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tourniaire F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evelo C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rebholz-Schuhmann D</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="fe3">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3019190</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interrelationships among liposoluble vitamins in ruminants.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Vet Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1986</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hidiroglou M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams CJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e17">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10227052</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lycopene and 1,25-dihydroxyvitamin D3 cooperate in the inhibition of cell cycle progression and induction of differentiation in HL-60 leukemic cells.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nutr Cancer</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amir H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karas M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Giat J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Danilenko M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levy R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yermiahu T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levy J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharoni Y</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d8f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1444060</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antioxidant functions of vitamins. Vitamins E and C, beta-carotene, and other carotenoids.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ann N Y Acad Sci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1992</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sies H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stahl W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sundquist AR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="cd1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9627692</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vitamin D analogs affect the uptake and metabolism of retinol by human epidermal keratinocytes in culture.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Investig Dermatol Symp Proc</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Torma H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rollman O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Binderup L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michaelsson G</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c78">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8017322	8017322</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seasonal and sex-related variations in six serum carotenoids, retinol, and alpha-tocopherol.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Clin Nutr</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olmedilla B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Granado F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blanco I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rojas-Hidalgo E</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c13">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11585356</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vitamin A antagonizes calcium response to vitamin D in man.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Bone Miner Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johansson S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Melhus H</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e5f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8948389</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Influence of using different sources of carotenoid data in epidemiologic studies.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Diet Assoc</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">VandenLangenberg GM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brady WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nebeling LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Block G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Forman M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bowen PE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stacewicz-Sapuntzakis M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mares-Perlman JA</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e98">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2656356</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biological actions of carotenoids.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FASEB J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1989</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bendich A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olson JA</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="f7b">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12401878</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gene expression regulation by retinoic acid.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Lipid Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Balmer JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blomhoff R</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="bbd">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8878137</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Acute phase response and plasma carotenoid concentrations in older women: findings from the nun study.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nutrition</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boosalis MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Snowdon DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tully CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gross MD</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d87">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1595584</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Plasma carotenoid response to chronic intake of selected foods and beta-carotene supplements in men.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Clin Nutr</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1992</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Micozzi MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown ED</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Edwards BK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bieri JG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taylor PR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khachik F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beecher GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith JC Jr</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="da5">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3372162</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carotenoids in the human macula and whole retina.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Invest Ophthalmol Vis Sci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1988</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handelman GJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dratz EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reay CC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Kuijk JG</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

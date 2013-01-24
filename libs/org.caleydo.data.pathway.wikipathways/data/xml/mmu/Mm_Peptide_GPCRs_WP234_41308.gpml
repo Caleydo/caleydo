@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Peptide GPCRs" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Graphics BoardWidth="16178.25" BoardHeight="10679.9" WindowWidth="15480.0" WindowHeight="11220.0"/>
+  <DataNode TextLabel="Ntsr2" Type="GeneProduct" BackpageHead="Ntsr2 | neurotensin receptor 2" GraphId="d92" GroupRef="b4b92">
+    <Graphics Color="000000" CenterX="6950.0" CenterY="6450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18217"/>
+  </DataNode>
+  <DataNode TextLabel="Oprk1" Type="GeneProduct" BackpageHead="Oprk1 | opioid receptor kappa 1" GraphId="cf2" GroupRef="fa052">
+    <Graphics Color="000000" CenterX="9750.0" CenterY="6435.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18387"/>
+  </DataNode>
+  <DataNode TextLabel="Agtr1" Type="GeneProduct" BackpageHead="Agtr1 | angiotensin receptor 1" GraphId="f2e" GroupRef="f90e7">
+    <Graphics Color="000000" CenterX="1935.0" CenterY="1875.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11607"/>
+  </DataNode>
+  <DataNode TextLabel="Agtr1b" Type="GeneProduct" BackpageHead="Agtr1b | angiotensin receptor 1b" GraphId="f2b" GroupRef="f90e7">
+    <Graphics Color="000000" CenterX="1935.0" CenterY="2175.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11608"/>
+  </DataNode>
+  <DataNode TextLabel="Agtr2" Type="GeneProduct" BackpageHead="Agtr2 | angiotensin II receptor type 2" GraphId="cd0" GroupRef="f90e7">
+    <Graphics Color="000000" CenterX="1935.0" CenterY="2475.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11609"/>
+  </DataNode>
+  <DataNode TextLabel="Bdkrb2" Type="GeneProduct" BackpageHead="Bdkrb2 | bradykinin receptor beta 2" GraphId="e74" GroupRef="d0ca8">
+    <Graphics Color="000000" CenterX="4895.0" CenterY="2065.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12062"/>
+  </DataNode>
+  <DataNode TextLabel="Bdkrb1" Type="GeneProduct" BackpageHead="Bdkrb1 | bradykinin receptor beta 1" GraphId="ac1" GroupRef="d0ca8">
+    <Graphics Color="000000" CenterX="4895.0" CenterY="2365.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12061"/>
+  </DataNode>
+  <DataNode TextLabel="Nmbr" Type="GeneProduct" BackpageHead="Nmbr | neuromedin B receptor" GraphId="dc2" GroupRef="d4afe">
+    <Graphics Color="000000" CenterX="7565.0" CenterY="1825.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18101"/>
+  </DataNode>
+  <DataNode TextLabel="Grpr" Type="GeneProduct" BackpageHead="Grpr | gastrin releasing peptide receptor" GraphId="df2" GroupRef="d4afe">
+    <Graphics Color="000000" CenterX="7565.0" CenterY="2125.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14829"/>
+  </DataNode>
+  <DataNode TextLabel="Brs3" Type="GeneProduct" BackpageHead="Brs3 | bombesin-like receptor 3" GraphId="f72" GroupRef="d4afe">
+    <Graphics Color="000000" CenterX="7565.0" CenterY="2425.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12209"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr1" Type="GeneProduct" BackpageHead="Ccr1 | chemokine (C-C motif) receptor 1" GraphId="c42" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="1350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12768"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr2" Type="GeneProduct" BackpageHead="Ccr2 | chemokine (C-C motif) receptor 2" GraphId="f8f" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="1650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12772"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr3" Type="GeneProduct" BackpageHead="Ccr3 | chemokine (C-C motif) receptor 3" GraphId="ebe" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="1950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12771"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr4" Type="GeneProduct" BackpageHead="Ccr4 | chemokine (C-C motif) receptor 4" GraphId="bf2" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="2250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12773"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr5" Type="GeneProduct" BackpageHead="Ccr5 | chemokine (C-C motif) receptor 5" GraphId="eac" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="2550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12774"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr7" Type="GeneProduct" BackpageHead="Ccr7 | chemokine (C-C motif) receptor 7" GraphId="f65" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="12200.0" CenterY="1350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12775"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr8" Type="GeneProduct" BackpageHead="Ccr8 | chemokine (C-C motif) receptor 8" GraphId="a38" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="12200.0" CenterY="1650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12776"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr9" Type="GeneProduct" BackpageHead="Ccr9 | chemokine (C-C motif) receptor 9" GraphId="c27" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="12200.0" CenterY="1950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12769"/>
+  </DataNode>
+  <DataNode TextLabel="Gpr2" Type="GeneProduct" BackpageHead="Gpr2 | G protein-coupled receptor 2" GraphId="eb7" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="12200.0" CenterY="2250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12777"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr1l1" Type="GeneProduct" BackpageHead="Ccr1l1 | chemokine (C-C motif) receptor 1-like ..." GraphId="a42" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="12200.0" CenterY="2550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12770"/>
+  </DataNode>
+  <DataNode TextLabel="Cxcr6" Type="GeneProduct" BackpageHead="Cxcr6 | chemokine (C-X-C motif) receptor 6" GraphId="d9c" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="12200.0" CenterY="2850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="80901"/>
+  </DataNode>
+  <DataNode TextLabel="Blr1" Type="GeneProduct" BackpageHead="Blr1 | Burkitt lymphoma receptor 1" GraphId="bfc" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="13900.0" CenterY="1950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12145"/>
+  </DataNode>
+  <DataNode TextLabel="Cxcr4" Type="GeneProduct" BackpageHead="Cxcr4 | chemokine (C-X-C motif) receptor 4" GraphId="e84" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="13900.0" CenterY="1650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12767"/>
+  </DataNode>
+  <DataNode TextLabel="Cxcr3" Type="GeneProduct" BackpageHead="Cxcr3 | chemokine (C-X-C motif) receptor 3" GraphId="bfa" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="13900.0" CenterY="1350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12766"/>
+  </DataNode>
+  <DataNode TextLabel="C3ar1" Type="GeneProduct" BackpageHead="C3ar1 | complement component 3a receptor 1" GraphId="b66" GroupRef="b684a">
+    <Graphics Color="000000" CenterX="800.0" CenterY="4100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12267"/>
+  </DataNode>
+  <DataNode TextLabel="C5r1" Type="GeneProduct" BackpageHead="C5r1 | complement component 5 receptor 1" GraphId="ccd" GroupRef="b684a">
+    <Graphics Color="000000" CenterX="800.0" CenterY="4400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12273"/>
+  </DataNode>
+  <DataNode TextLabel="Cx3cr1" Type="GeneProduct" BackpageHead="Cx3cr1 | chemokine (C-X3-C) receptor 1" GraphId="e3a" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="13900.0" CenterY="2250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13051"/>
+  </DataNode>
+  <DataNode TextLabel="Il8rb" Type="GeneProduct" BackpageHead="Il8rb | interleukin 8 receptor beta" GraphId="e29" GroupRef="b684a">
+    <Graphics Color="000000" CenterX="800.0" CenterY="4700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12765"/>
+  </DataNode>
+  <DataNode TextLabel="Fpr1" Type="GeneProduct" BackpageHead="Fpr1 | formyl peptide receptor 1" GraphId="f83" GroupRef="b684a">
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14293"/>
+  </DataNode>
+  <DataNode TextLabel="Fprl1" Type="GeneProduct" BackpageHead="Fprl1 | formyl peptide receptor-like 1" GraphId="ea2" GroupRef="b684a">
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14294"/>
+  </DataNode>
+  <DataNode TextLabel="Cckar" Type="GeneProduct" BackpageHead="Cckar | cholecystokinin A receptor" GraphId="f4a" GroupRef="ebd89">
+    <Graphics Color="000000" CenterX="4645.0" CenterY="4165.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12425"/>
+  </DataNode>
+  <DataNode TextLabel="Cckbr" Type="GeneProduct" BackpageHead="Cckbr | cholecystokinin B receptor" GraphId="a0b" GroupRef="ebd89">
+    <Graphics Color="000000" CenterX="4645.0" CenterY="4465.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12426"/>
+  </DataNode>
+  <DataNode TextLabel="Ednra" Type="GeneProduct" BackpageHead="Ednra | endothelin receptor type A" GraphId="e6d" GroupRef="d7df3">
+    <Graphics Color="000000" CenterX="7460.0" CenterY="4030.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13617"/>
+  </DataNode>
+  <DataNode TextLabel="Ednrb" Type="GeneProduct" BackpageHead="Ednrb | endothelin receptor type B" GraphId="c2a" GroupRef="d7df3">
+    <Graphics Color="000000" CenterX="7460.0" CenterY="4330.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13618"/>
+  </DataNode>
+  <DataNode TextLabel="Galr1" Type="GeneProduct" BackpageHead="Galr1 | galanin receptor 1" GraphId="edd" GroupRef="d2ebf">
+    <Graphics Color="000000" CenterX="10300.0" CenterY="3995.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14427"/>
+  </DataNode>
+  <DataNode TextLabel="Galr2" Type="GeneProduct" BackpageHead="Galr2 | galanin receptor 2" GraphId="d5c" GroupRef="d2ebf">
+    <Graphics Color="000000" CenterX="10300.0" CenterY="4295.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14428"/>
+  </DataNode>
+  <DataNode TextLabel="Galr3" Type="GeneProduct" BackpageHead="Galr3 | galanin receptor 3" GraphId="cad" GroupRef="d2ebf">
+    <Graphics Color="000000" CenterX="10300.0" CenterY="4595.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14429"/>
+  </DataNode>
+  <DataNode TextLabel="Fshr" Type="GeneProduct" BackpageHead="Fshr | follicle stimulating hormone receptor" GraphId="b8e" GroupRef="ac3c1">
+    <Graphics Color="000000" CenterX="13370.0" CenterY="4215.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14309"/>
+  </DataNode>
+  <DataNode TextLabel="Lhcgr" Type="GeneProduct" BackpageHead="Lhcgr | luteinizing hormone/choriogonadotropin ..." GraphId="bab" GroupRef="ac3c1">
+    <Graphics Color="000000" CenterX="13370.0" CenterY="4515.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16867"/>
+  </DataNode>
+  <DataNode TextLabel="Tshr" Type="GeneProduct" BackpageHead="Tshr | thyroid stimulating hormone receptor" GraphId="a13" GroupRef="ac3c1">
+    <Graphics Color="000000" CenterX="13370.0" CenterY="4815.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22095"/>
+  </DataNode>
+  <DataNode TextLabel="Mc2r" Type="GeneProduct" BackpageHead="Mc2r | melanocortin 2 receptor" GraphId="b43" GroupRef="f81d1">
+    <Graphics Color="000000" CenterX="950.0" CenterY="6300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17200"/>
+  </DataNode>
+  <DataNode TextLabel="Mc1r" Type="GeneProduct" BackpageHead="Mc1r | melanocortin 1 receptor" GraphId="cc8" GroupRef="f81d1">
+    <Graphics Color="000000" CenterX="950.0" CenterY="6600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17199"/>
+  </DataNode>
+  <DataNode TextLabel="Mc3r" Type="GeneProduct" BackpageHead="Mc3r | melanocortin 3 receptor" GraphId="e65" GroupRef="f81d1">
+    <Graphics Color="000000" CenterX="950.0" CenterY="6900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17201"/>
+  </DataNode>
+  <DataNode TextLabel="Mc4r" Type="GeneProduct" BackpageHead="Mc4r | melanocortin 4 receptor" GraphId="c59" GroupRef="f81d1">
+    <Graphics Color="000000" CenterX="950.0" CenterY="7200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17202"/>
+  </DataNode>
+  <DataNode TextLabel="Mc5r" Type="GeneProduct" BackpageHead="Mc5r | melanocortin 5 receptor" GraphId="e58" GroupRef="f81d1">
+    <Graphics Color="000000" CenterX="950.0" CenterY="7500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17203"/>
+  </DataNode>
+  <DataNode TextLabel="Npy1r" Type="GeneProduct" BackpageHead="Npy1r | neuropeptide Y receptor Y1" GraphId="a4f" GroupRef="e1015">
+    <Graphics Color="000000" CenterX="3500.0" CenterY="6150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18166"/>
+  </DataNode>
+  <DataNode TextLabel="Npy2r" Type="GeneProduct" BackpageHead="Npy2r | neuropeptide Y receptor Y2" GraphId="b9b" GroupRef="e1015">
+    <Graphics Color="000000" CenterX="3500.0" CenterY="6450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18167"/>
+  </DataNode>
+  <DataNode TextLabel="Ppyr1" Type="GeneProduct" BackpageHead="Ppyr1 | pancreatic polypeptide receptor 1" GraphId="b5e" GroupRef="e1015">
+    <Graphics Color="000000" CenterX="3500.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19065"/>
+  </DataNode>
+  <DataNode TextLabel="Npy5r" Type="GeneProduct" BackpageHead="Npy5r | neuropeptide Y receptor Y5" GraphId="f33" GroupRef="e1015">
+    <Graphics Color="000000" CenterX="3500.0" CenterY="7050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18168"/>
+  </DataNode>
+  <DataNode TextLabel="Npy6r" Type="GeneProduct" BackpageHead="Npy6r | neuropeptide Y receptor Y6" GraphId="cb6" GroupRef="e1015">
+    <Graphics Color="000000" CenterX="3500.0" CenterY="7350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18169"/>
+  </DataNode>
+  <DataNode TextLabel="Ntsr1" Type="GeneProduct" BackpageHead="Ntsr1 | neurotensin receptor 1" GraphId="f4c" GroupRef="b4b92">
+    <Graphics Color="000000" CenterX="6950.0" CenterY="6150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18216"/>
+  </DataNode>
+  <DataNode TextLabel="Oprd1" Type="GeneProduct" BackpageHead="Oprd1 | opioid receptor delta 1" GraphId="c52" GroupRef="fa052">
+    <Graphics Color="000000" CenterX="9750.0" CenterY="6135.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18386"/>
+  </DataNode>
+  <DataNode TextLabel="Oprm1" Type="GeneProduct" BackpageHead="Oprm1 | opioid receptor mu 1" GraphId="cd4" GroupRef="fa052">
+    <Graphics Color="000000" CenterX="9750.0" CenterY="6735.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18390"/>
+  </DataNode>
+  <DataNode TextLabel="Oprl1" Type="GeneProduct" BackpageHead="Oprl1 | opioid receptor-like 1" GraphId="ebd" GroupRef="fa052">
+    <Graphics Color="000000" CenterX="9750.0" CenterY="7035.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18389"/>
+  </DataNode>
+  <DataNode TextLabel="Gnrhr" Type="GeneProduct" BackpageHead="Gnrhr | gonadotropin releasing hormone receptor..." GraphId="ff1" GroupRef="f250d">
+    <Graphics Color="000000" CenterX="12885.0" CenterY="6465.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14715"/>
+  </DataNode>
+  <DataNode TextLabel="Trhr" Type="GeneProduct" BackpageHead="Trhr | thyrotropin releasing hormone receptor" GraphId="d67" GroupRef="f250d">
+    <Graphics Color="000000" CenterX="12885.0" CenterY="6765.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22045"/>
+  </DataNode>
+  <DataNode TextLabel="Ghsr" Type="GeneProduct" BackpageHead="Ghsr | growth hormone secretagogue receptor" GraphId="e59" GroupRef="f250d">
+    <Graphics Color="000000" CenterX="12900.0" CenterY="7065.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="208188"/>
+  </DataNode>
+  <DataNode TextLabel="Tacr1" Type="GeneProduct" BackpageHead="Tacr1 | tachykinin receptor 1" GraphId="a33" GroupRef="e8958">
+    <Graphics Color="000000" CenterX="6950.0" CenterY="8150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21336"/>
+  </DataNode>
+  <DataNode TextLabel="Tacr2" Type="GeneProduct" BackpageHead="Tacr2 | tachykinin receptor 2" GraphId="d46" GroupRef="e8958">
+    <Graphics Color="000000" CenterX="6950.0" CenterY="8450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21337"/>
+  </DataNode>
+  <DataNode TextLabel="Tacr3" Type="GeneProduct" BackpageHead="Tacr3 | tachykinin receptor 3" GraphId="fbf" GroupRef="e8958">
+    <Graphics Color="000000" CenterX="6950.0" CenterY="8750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21338"/>
+  </DataNode>
+  <DataNode TextLabel="Sstr1" Type="GeneProduct" BackpageHead="Sstr1 | somatostatin receptor 1" GraphId="cc1" GroupRef="e2d6d">
+    <Graphics Color="000000" CenterX="9800.0" CenterY="8150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20605"/>
+  </DataNode>
+  <DataNode TextLabel="Sstr2" Type="GeneProduct" BackpageHead="Sstr2 | somatostatin receptor 2" GraphId="cd5" GroupRef="e2d6d">
+    <Graphics Color="000000" CenterX="9800.0" CenterY="8450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20606"/>
+  </DataNode>
+  <DataNode TextLabel="Sstr3" Type="GeneProduct" BackpageHead="Sstr3 | somatostatin receptor 3" GraphId="ff6" GroupRef="e2d6d">
+    <Graphics Color="000000" CenterX="9800.0" CenterY="8750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20607"/>
+  </DataNode>
+  <DataNode TextLabel="Sstr4" Type="GeneProduct" BackpageHead="Sstr4 | somatostatin receptor 4" GraphId="dc9" GroupRef="e2d6d">
+    <Graphics Color="000000" CenterX="9800.0" CenterY="9050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20608"/>
+  </DataNode>
+  <DataNode TextLabel="Sstr5" Type="GeneProduct" BackpageHead="Sstr5 | somatostatin receptor 5" GraphId="af0" GroupRef="e2d6d">
+    <Graphics Color="000000" CenterX="9800.0" CenterY="9350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20609"/>
+  </DataNode>
+  <DataNode TextLabel="Avpr1b" Type="GeneProduct" BackpageHead="Avpr1b | arginine vasopressin receptor 1B" GraphId="a88" GroupRef="fde9a">
+    <Graphics Color="000000" CenterX="12650.0" CenterY="8700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26361"/>
+  </DataNode>
+  <DataNode TextLabel="Avpr2" Type="GeneProduct" BackpageHead="Avpr2 | arginine vasopressin receptor 2" GraphId="b26" GroupRef="fde9a">
+    <Graphics Color="000000" CenterX="12650.0" CenterY="9000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12000"/>
+  </DataNode>
+  <DataNode TextLabel="Oxtr" Type="GeneProduct" BackpageHead="Oxtr | oxytocin receptor" GraphId="bee" GroupRef="fde9a">
+    <Graphics Color="000000" CenterX="12650.0" CenterY="9300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18430"/>
+  </DataNode>
+  <DataNode TextLabel="Ccr6" Type="GeneProduct" BackpageHead="Ccr6 | chemokine (C-C motif) receptor 6" GraphId="f05" GroupRef="efe7b">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="2850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12458"/>
+  </DataNode>
+  <DataNode TextLabel="Avpr1a" Type="GeneProduct" BackpageHead="Avpr1a | arginine vasopressin receptor 1A" GraphId="e20" GroupRef="fde9a">
+    <Graphics Color="000000" CenterX="12650.0" CenterY="8400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="54140"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="c3ab4">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6250.0" y="8450.0"/>
+      <Point x="7650.0" y="8450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fab18">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="1235.0" y="1875.0"/>
+      <Point x="2635.0" y="1875.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e747e">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6760.0" y="4330.0"/>
+      <Point x="8160.0" y="4330.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb9e6">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6760.0" y="4030.0"/>
+      <Point x="8160.0" y="4030.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ab548">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6250.0" y="8750.0"/>
+      <Point x="7650.0" y="8750.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c186a">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6250.0" y="6150.0"/>
+      <Point x="7650.0" y="6150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c80b7">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="12185.0" y="6415.0"/>
+      <Point x="13585.0" y="6415.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="db306">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6250.0" y="8150.0"/>
+      <Point x="7650.0" y="8150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bae67">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="12185.0" y="6715.0"/>
+      <Point x="13585.0" y="6715.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cdd9a">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="4195.0" y="2065.0"/>
+      <Point x="5595.0" y="2065.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a7464">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="3945.0" y="4465.0"/>
+      <Point x="5345.0" y="4465.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a369c">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="3945.0" y="4165.0"/>
+      <Point x="5345.0" y="4165.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b7fff">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6865.0" y="2125.0"/>
+      <Point x="8265.0" y="2125.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e4288">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="6865.0" y="1825.0"/>
+      <Point x="8265.0" y="1825.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a816c">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="11950.0" y="8700.0"/>
+      <Point x="13350.0" y="8700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cf5a9">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="11950.0" y="8400.0"/>
+      <Point x="13350.0" y="8400.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bbf5e">
+    <Graphics ZOrder="12288" Color="ff8000">
+      <Point x="8900.0" y="6150.0"/>
+      <Point x="10650.0" y="6150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e0329">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="300.0" y="6600.0"/>
+      <Point x="1700.0" y="6600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dffd8">
+    <Graphics ZOrder="12288" Color="ff8000">
+      <Point x="2700.0" y="6150.0"/>
+      <Point x="4450.0" y="6150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4540">
+    <Graphics ZOrder="12288" Color="ff8000">
+      <Point x="9450.0" y="3995.0"/>
+      <Point x="11200.0" y="3995.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a40a2">
+    <Graphics ZOrder="12288" Color="ff8000">
+      <Point x="8900.0" y="6450.0"/>
+      <Point x="10650.0" y="6450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b0008">
+    <Graphics ZOrder="12288" Color="ff8000">
+      <Point x="8900.0" y="6750.0"/>
+      <Point x="10650.0" y="6750.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="df2d1">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11950.0" y="9000.0"/>
+      <Point x="13350.0" y="9000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="edae1">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12620.0" y="4815.0"/>
+      <Point x="14120.0" y="4815.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dcc66">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12670.0" y="4215.0"/>
+      <Point x="14070.0" y="4215.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2c4d">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="300.0" y="6300.0"/>
+      <Point x="1700.0" y="6300.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Releasing Hormone" GraphId="cdd">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12935.0" CenterY="5665.0" Width="2345.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Receptors" GraphId="f57">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12935.0" CenterY="6015.0" Width="1265.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Opioid Receptors" GraphId="f9e">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="9750.0" CenterY="5700.0" Width="2075.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Neuropeptide Y Receptors" GraphId="e49">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="3550.0" CenterY="5700.0" Width="3095.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Neurotensin Receptors" GraphId="a90">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7050.0" CenterY="5700.0" Width="2735.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Chemokine Receptors" GraphId="e1c">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12050.0" CenterY="850.0" Width="2630.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Chemotactic Receptors" GraphId="f9d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1550.0" CenterY="3605.0" Width="2765.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Angiotensin Receptors" GraphId="f09">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1935.0" CenterY="1525.0" Width="2705.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Bombesin Receptors" GraphId="c66">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7715.0" CenterY="1375.0" Width="2495.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Endothelin Receptors" GraphId="c0d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7460.0" CenterY="3580.0" Width="2570.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Vasopressin and" GraphId="f0d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12650.0" CenterY="7650.0" Width="2015.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Oxytocin" GraphId="f94">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12600.0" CenterY="7950.0" Width="1100.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Galanin Receptors" GraphId="ae4">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="10400.0" CenterY="3595.0" Width="2195.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Receptors" GraphId="ecd">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="950.0" CenterY="5900.0" Width="1265.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Glycoprotein Hormone" GraphId="bae">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13370.0" CenterY="3565.0" Width="2675.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Receptors" GraphId="f1d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13420.0" CenterY="3815.0" Width="1265.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Cholecystokinin/" GraphId="e57">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4645.0" CenterY="3465.0" Width="2000.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Bradykinin Receptors" GraphId="c71">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4940.0" CenterY="1555.0" Width="2570.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Somatostatin Receptors" GraphId="d2c">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="9850.0" CenterY="7750.0" Width="2840.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Tachykinin Receptors" GraphId="fd4">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="6900.0" CenterY="7750.0" Width="2585.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gq Coupled" GraphId="e1f">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1800.0" CenterY="8500.0" Width="1445.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gi Coupled" GraphId="dd6">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4450.0" CenterY="8500.0" Width="1355.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gs Coupled" GraphId="b24">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1800.0" CenterY="8150.0" Width="1430.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gastrin Receptors" GraphId="c19">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4645.0" CenterY="3715.0" Width="2150.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Melanocortins" GraphId="d75">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="950.0" CenterY="5600.0" Width="1700.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Brace" Style="Solid" GraphId="d64">
+    <Graphics FillColor="000000" Color="000000" CenterX="12050.0" CenterY="1000.0" Width="4800.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="b44">
+    <Graphics FillColor="00ff00" Color="000000" CenterX="550.0" CenterY="8500.0" Width="910.4944" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="acd">
+    <Graphics FillColor="ff8000" Color="000000" CenterX="3200.0" CenterY="8500.0" Width="910.4944" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="e8e">
+    <Graphics FillColor="0000ff" Color="000000" CenterX="550.0" CenterY="8150.0" Width="910.4944" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="e1015" Style="Complex"/>
+  <Group GroupId="b684a" Style="Complex"/>
+  <Group GroupId="ebd89" Style="Complex"/>
+  <Group GroupId="f81d1" Style="Complex"/>
+  <Group GroupId="b4b92" Style="Complex"/>
+  <Group GroupId="d7df3" Style="Complex"/>
+  <Group GroupId="e8958" Style="Complex"/>
+  <Group GroupId="e2d6d" Style="Complex"/>
+  <Group GroupId="fa052" Style="Complex"/>
+  <Group GroupId="fde9a" Style="Complex"/>
+  <Group GroupId="f250d" Style="Complex"/>
+  <Group GroupId="ac3c1" Style="Complex"/>
+  <Group GroupId="d2ebf" Style="Complex"/>
+  <Group GroupId="efe7b" Style="Complex"/>
+  <Group GroupId="d4afe" Style="Complex"/>
+  <Group GroupId="d0ca8" Style="Complex"/>
+  <Group GroupId="f90e7" Style="Complex"/>
+  <InfoBox CenterX="4080.0" CenterY="9709.0"/>
+  <Legend CenterX="40.5" CenterY="8753.0"/>
+</Pathway>

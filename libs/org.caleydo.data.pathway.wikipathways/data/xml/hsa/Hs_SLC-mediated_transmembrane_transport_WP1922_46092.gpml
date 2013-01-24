@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="SLC-mediated transmembrane transport" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Jassal, B" Maintainer="Jassal, B">
+  <Comment Source="WikiPathways-description">Proteins with transporting functions can be roughly classified into 3 categories: ATP-powered pumps, ion channels, and transporters. Pumps utilize the energy released by ATP hydrolysis to power the movement of the substrates across the membrane, against their electrochemical gradient. Channels at the open state can transfer the substrates (ions or water) down their electrochemical gradient, at an extremely high efficiency (up to 108 s-1). Transporters facilitate the movement of a specific substrate âeither against or following their concentration gradient, at a lower speed (about 102 -104 s-1); as generally believed, conformational change of the transporter protein is involved in the transfer process.&lt;br&gt;&lt;br&gt;According to the Human Genome Organization (HGNC) Gene Nomenclature Committee, all human transporters can be grouped into the solute-carrier (SLC) superfamily. Currently, there are 55 SLC families in the superfamily, with a total of at least 362 putatively functional protein-coding genes (Hediger et al, 2004; He et al., 2009). At least 20-25% amino-acid sequence identity is shared by members belonging to the same SLC family.  No homology is shared between different SLC families. While the HGNC nomenclature system by definition only includes human genes, the nomenclature system has been informally extended to include rodent species through the use of lower cases letters (e.g., Slc1a1 denotes the rodent ortholog of the human SLC1A1 gene).  And it's worthwhile to mention that pumps, channels and aquporins are not included in SLC superfamily.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_427985</BiopaxRef>
+  <BiopaxRef>lit_427951</BiopaxRef>
+  <DataNode GraphId="n3_REACTOME_425393" TextLabel="Transport of inorganic &#10;cations/anions and &#10;amino &#10;acids/oligopeptides&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Teleologically, one might argue that inorganic cation and anion transport would be evolutionarily among the oldest transport functions. Eight families comprise the group that transports exclusively inorganic cations and anions across membranes : SLC4 plays a pivotal role in mediating Na+- and/or Clâ-dependent transport of basic anions [e.g. HCO3â, (CO3)2â] in various tissues and cell types (in addition to pH regulation, specific members of this family also contribute to vectorial trans-epithelial base transport in several organ systems including the kidney, pancreas, and eye) (Pushkin A and Kurtz I, 2006);  SLC8 is a group of Na+/Ca2+ exchangers (SLC8A1 is involved in cardiac contractility) (Quednau BD et al, 2004); SLC24 is a group of Na+/Ca2+ or Na+/K+ exchangers (Altimimi HF and Schnetkamp PP, 2007); SLC9 comprises Na+/H+ exchanger proteins involved in the electroneutral exchange of sodium ion and protons (Orlowski J and Grinstein S, 2004); SLC12 functions as Na+, K+ and Clâ ion electroneutral symporters (Hebert SC et al, 2004); SLC26 is the trans-epithelial multifunctional anion (e.g. sulfate, oxalate, HCO3â, Clâ) exchanger family, important in cartilage development, production of thyroid hormone, sound amplification in the cochlea etc (Sindic A et al, 2007; Dorwart MR et al, 2008; Ashmore J, 2008). SLC34 is an important Type II Na+/(HPO4)2â symporter (Forster IC et al, 2006; Virkki LV et al, 2007); SLC20 was originally identified as a viral receptor, and functions as a Type III Na+/(H2PO4)â symporter (Collins JF et al, 2004; Virkki LV et al, 2007). Eight SLC gene families are involved in the transport of amino acids and oligopeptides.</Comment>
+    <BiopaxRef>lit_427985</BiopaxRef>
+    <BiopaxRef>lit_433145</BiopaxRef>
+    <BiopaxRef>lit_425575</BiopaxRef>
+    <BiopaxRef>lit_426016</BiopaxRef>
+    <BiopaxRef>lit_426105</BiopaxRef>
+    <BiopaxRef>lit_427623</BiopaxRef>
+    <BiopaxRef>lit_433775</BiopaxRef>
+    <BiopaxRef>lit_427577</BiopaxRef>
+    <BiopaxRef>lit_433772</BiopaxRef>
+    <BiopaxRef>lit_433767</BiopaxRef>
+    <BiopaxRef>lit_433768</BiopaxRef>
+    <BiopaxRef>lit_427636</BiopaxRef>
+    <Graphics Color="000000" CenterX="214.5" CenterY="219.5" Width="139.0" Height="97.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_19397"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_425397" TextLabel="Transport of vitamins, &#10;nucleosides, and &#10;related molecules&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">This pathway groups the processes mediated by SLC transporters, by which vitamins and cofactors, as well as nucleosides, nucleotides, nucleobases, and related molecules cross lipid bilayer membranes.</Comment>
+    <Graphics Color="000000" CenterX="731.0" CenterY="218.5" Width="130.0" Height="95.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_22285"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_425366" TextLabel="Transport of glucose and other &#10;sugars, bile salts and organic &#10;acids, metal ions and amine &#10;compounds&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Hexoses like glucose, galactose and fructose serve as basic fuel molecules for eukaryotic cells. Indeed, glucose is the main energy source for mammalian cells. These sugars are unable to diffuse across cellular membranes, and require transporter proteins for entry into and exit out of cells. Four gene families encode hexose transporter proteins (He et al, 2009). SLC2 family contains 14 genes and encode facilitative glucose transporters (GLUTs) (Uldry M and Thorens B, 2004). SLC5 family contains 12 genes and encode Na+/glucose symporters (Wright EM and Turk E, 2004). SLC37 family contains 4 members and encode sugar-phosphate/phosphate exchangers (Bartoloni L and Antonarakis SE, 2004). SLC45 family has 4 members and encode putative sugar/H+ symporters.</Comment>
+    <BiopaxRef>lit_427985</BiopaxRef>
+    <BiopaxRef>lit_428756</BiopaxRef>
+    <BiopaxRef>lit_428758</BiopaxRef>
+    <BiopaxRef>lit_428761</BiopaxRef>
+    <Graphics Color="000000" CenterX="561.0" CenterY="217.5" Width="186.0" Height="95.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_19305"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_189200" TextLabel="Hexose transport&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Hexoses, notably fructose, glucose, and galactose, generated in the lumen of the small intestine by breakdown of dietary carbohydrate are taken up by enterocytes lining the microvilli of the small intestine and released from them into the blood. Uptake into enterocytes is mediated by two transporters localized on the lumenal surfaces of the cells, SGLT1 (glucose and galactose, together with sodium ions) and GLUT5 (fructose). GLUT2, localized on the basolateral surfaces of enterocytes, mediates the release of these hexoses into the blood (Wright et al. 2004). GLUT2 may also play a role in hexose uptake from the gut lumen into enterocytes when the lumenal content of monosaccharides is very high (e.g., Kellet and Brot-Laroche, 2005) and GLUT5 mediates fructose uptake from the blood into cells of the body, notably hepatocytes.&lt;p&gt;Cells take up glucose by facilitated diffusion, via glucose transporters (GLUTs) associated with the plasma membrane, a reversible reaction. Four tissue-specific GLUT isoforms are known. Glucose in the cytosol is phosphorylated by tissue-specific kinases to yield glucose 6-phosphate, which cannot cross the plasma membrane because of its negative charge. In the liver, this reaction is catalyzed by glucokinase which has a low affinity for glucose (Km about 10 mM) but is not inhibited by glucose 6-phosphate. In other tissues, this reaction is catalyzed by isoforms of hexokinase. Hexokinases are feedback-inhibited by glucose 6-phosphate and have a high affinity for glucose (Km about 0.1 mM). Liver cells can thus accumulate large amounts of glucose 6-phosphate but only when blood glucose concentrations are high, while most other tissues can take up glucose even when blood glucose concentrations are low but cannot accumulate much intracellular glucose 6-phosphate. These differences are consistent with the view that that the liver functions to buffer blood glucose concentrations, while most other tissues take up glucose to meet immediate metabolic needs.&lt;p&gt;Glucose 6-phosphatase, expressed in liver and kidney, allows glucose 6-phosphate generated by gluconeogenesis (both tissues) and glycogen breakdown (liver) to leave the cell. The absence of glucose 6-phosphatase from other tissues makes glucose uptake by these tissues essentially irreversible, consistent with the view that cells in these tissues take up glucose for local metabolic use.</Comment>
+    <BiopaxRef>lit_189251</BiopaxRef>
+    <BiopaxRef>lit_191107</BiopaxRef>
+    <Graphics Color="000000" CenterX="377.0" CenterY="221.0" Width="158.0" Height="96.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_9441"/>
+  </DataNode>
+  <Label GraphId="comp_text_6" GroupRef="group_comp_6" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="173.5" CenterY="307.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_6" GroupRef="group_comp_6">
+    <Graphics Color="000000" CenterX="480.0" CenterY="271.5" Width="722.0" Height="129.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427985" rdf:id="lit_427985">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19164095</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Analysis and update of the human solute carrier (SLC) gene superfamily</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">He, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vasiliou, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nebert, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Genomics 3:195-206</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427951" rdf:id="lit_427951">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14624363</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The ABCs of solute carriers: physiological, pathological and therapeutic implications of human membrane transport proteinsIntroduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hediger, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Romero, MF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rolfs, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takanaga, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bruford, EA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:465-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433145" rdf:id="lit_433145">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16461757</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SLC4 base (HCO3 -, CO3 2-) transporters: classification, function, structure, genetic diseases, and knockout models</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pushkin, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurtz, I</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Physiol Renal Physiol 290:F580-99</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_425575" rdf:id="lit_425575">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12734757</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The sodium/calcium exchanger family-SLC8</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quednau, BD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nicoll, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Philipson, KD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:543-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426016" rdf:id="lit_426016">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12845533</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diversity of the mammalian sodium/proton exchanger SLC9 gene family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Orlowski, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grinstein, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:549-65</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426105" rdf:id="lit_426105">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12739168</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular physiology of cation-coupled Cl- cotransport: the SLC12 family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hebert, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mount, DB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gamba, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:580-93</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427623" rdf:id="lit_427623">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12759754</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The SLC20 family of proteins: dual functions as sodium-phosphate cotransporters and viral receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Collins, JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bai, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ghishan, FK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:647-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433775" rdf:id="lit_433775">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17693766</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Renal physiology of SLC26 anion exchangers</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sindi?, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mount, DB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Romero, MF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Nephrol Hypertens 16:484-90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427577" rdf:id="lit_427577">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18400693</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The solute carrier 26 family of proteins in epithelial ion transport</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dorwart, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shcheynikov, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muallem, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiology (Bethesda) 23:104-14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433772" rdf:id="lit_433772">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18195086</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cochlear outer hair cell motility</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ashmore, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiol Rev 88:173-210</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433767" rdf:id="lit_433767">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18690016</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Na+/Ca2+-K+ exchangers (NCKX): functional properties and physiological roles</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Altimimi, HF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schnetkamp, PP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Channels (Austin) 1:62-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433768" rdf:id="lit_433768">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16955105</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proximal tubular handling of phosphate: A molecular perspective</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Forster, IC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hernando, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biber, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murer, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kidney Int 70:1548-59</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427636" rdf:id="lit_427636">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17581921</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphate transporters: a tale of two solute carrier families</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Virkki, LV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biber, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murer, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Forster, IC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Physiol Renal Physiol 293:F643-54</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428756" rdf:id="lit_428756">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12750891</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The SLC2 family of facilitated hexose and polyol transporters</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uldry, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thorens, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:480-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428758" rdf:id="lit_428758">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12748858</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The sodium/glucose cotransport family SLC5</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wright, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turk, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:510-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428761" rdf:id="lit_428761">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12811562</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human sugar-phosphate/phosphate exchanger family SLC37</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bartoloni, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antonarakis, SE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:780-3</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_189251" rdf:id="lit_189251">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15546855</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Surprising versatility of Na+-glucose cotransporters: SLC5</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wright, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loo, DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirayama, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turk, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiology (Bethesda) 19:370-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_191107" rdf:id="lit_191107">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16186415</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Apical GLUT2: a major pathway of intestinal sugar absorption</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kellett, GL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brot-Laroche, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diabetes 54:3056-62</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>transport pathway</bp:TERM><bp:ID>PW:0000103</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

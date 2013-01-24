@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Eukaryotic Translation Termination" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Bedwell, DM" Maintainer="Gillespie, ME" Email="gillespm@cshl.org">
+  <Comment Source="WikiPathways-description">The arrival of any of the three stop codons (UAA, UAG and UGA) into the ribosomal A-site triggers the binding of a release factor (RF) to the ribosome and subsequent polypeptide chain release. In eukaryotes, the RF is composed of two proteins, eRF1 and eRF3. eRF1 is responsible for the hydrolysis of the peptidyl-tRNA, while eRF3 provides a GTP-dependent function. The ribosome releases the mRNA and dissociates into its two complex subunits, which can reassemble on another molecule to begin a new round of protein synthesis. It should be noted that at present, there is no factor identified in eukaryotes that would be the functional equivalent of the bacterial ribosome release (or recycling) factor, RRF, that catalyzes dissociation of the ribosome from the mRNA following release of the polypeptide</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n2_REACTOME_54433" TextLabel="Eukaryotic peptide &#10;chain release factor &#10;subunit 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="185.5" CenterY="186.0" Width="125.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62495"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_141952" TextLabel="80S Ribosome:mRNA:&#10;peptidyl-tRNA with &#10;elongating peptide&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="95.5" CenterY="336.0" Width="131.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4835"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_143383" TextLabel="GTP bound eRF3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="127.0" CenterY="261.0" Width="110.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5462"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_143397" TextLabel="eRF3-GTP:eRF1:80S &#10;Ribosome:mRNA:&#10;peptidyl-tRNA &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="441.5" CenterY="287.0" Width="131.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4059"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="658.5" CenterY="238.0" Width="113.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_143381" TextLabel="eRF3-GDP:eRF1:80S &#10;Ribosome:mRNA:&#10;peptidyl-tRNA &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="688.0" CenterY="346.0" Width="132.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5057"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_143396" TextLabel="eRF3-GDP:eRF1:80S &#10;Ribosome:mRNA:tRNA &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="572.0" CenterY="516.0" Width="132.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4303"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_141681" TextLabel="polypeptide&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="752.0" CenterY="513.0" Width="128.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3573"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_141691">
+    <Comment Source="WikiPathways-description">Please note that this reaction was inferred from experiments performed using Saccharomyces cerevisiae.</Comment>
+    <BiopaxRef>lit_143391</BiopaxRef>
+    <BiopaxRef>lit_143367</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="266.0" Y="288.0" GraphId="e_1_0"/>
+      <Point X="324.0" Y="287.0" GraphId="e_1_1"/>
+      <Point X="373.0" Y="287.0" GraphId="e_1_2" GraphRef="n5_REACTOME_143397" RelX="-1.0381679389312977" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.5420929643096032" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="204.0" Y="214.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_54433" RelX="0.304" RelY="1.12"/>
+      <Point X="266.0" Y="288.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="164.0" Y="317.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_141952" RelX="1.0534351145038168" RelY="-0.59375"/>
+      <Point X="266.0" Y="288.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="185.0" Y="271.0" GraphId="e_1_i2_0" GraphRef="n4_REACTOME_143383" RelX="1.0545454545454545" RelY="0.5555555555555556"/>
+      <Point X="266.0" Y="288.0" GraphId="e_1_i2_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_REACTOME_141673">
+    <Comment Source="WikiPathways-description">Please note that this reaction was inferred from experiments performed using Saccharomyces cerevisiae.</Comment>
+    <BiopaxRef>lit_143393</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="510.0" Y="285.0" GraphId="e_6_0" GraphRef="n5_REACTOME_143397" RelX="1.0534351145038168" RelY="-0.0625"/>
+      <Point X="559.0" Y="285.0" GraphId="e_6_1"/>
+      <Point X="611.0" Y="285.0" GraphId="e_6_2"/>
+      <Anchor Position="0.48514851485148514" GraphId="e_6_a_p"/>
+      <Anchor Position="1.0" GraphId="e_6_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="636.0" Y="263.0" GraphId="e_6_o0_0" ArrowHead="Arrow" GraphRef="n7_REACTOME_29372" RelX="-0.3893805309734513" RelY="1.1363636363636365"/>
+      <Point X="611.0" Y="285.0" GraphId="e_6_o0_1" GraphRef="e_6_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="647.0" Y="311.0" GraphId="e_6_o1_0" ArrowHead="Arrow" GraphRef="n8_REACTOME_143381" RelX="-0.6212121212121212" RelY="-1.09375"/>
+      <Point X="611.0" Y="285.0" GraphId="e_6_o1_1" GraphRef="e_6_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_141671">
+    <Comment Source="WikiPathways-description">Please note that this reaction was inferred from experiments performed using Saccharomyces cerevisiae.</Comment>
+    <BiopaxRef>lit_143393</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="687.0" Y="381.0" GraphId="e_9_0" GraphRef="n8_REACTOME_143381" RelX="-0.015151515151515152" RelY="1.09375"/>
+      <Point X="687.0" Y="419.0" GraphId="e_9_1"/>
+      <Point X="687.0" Y="463.0" GraphId="e_9_2"/>
+      <Anchor Position="0.4634146341463415" GraphId="e_9_a_p"/>
+      <Anchor Position="1.0" GraphId="e_9_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="641.0" Y="485.0" GraphId="e_9_o0_0" ArrowHead="Arrow" GraphRef="n10_REACTOME_143396" RelX="1.0454545454545454" RelY="-0.96875"/>
+      <Point X="687.0" Y="463.0" GraphId="e_9_o0_1" GraphRef="e_9_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="737.0" Y="499.0" GraphId="e_9_o1_0" ArrowHead="Arrow" GraphRef="n11_REACTOME_141681" RelX="-0.234375" RelY="-1.2727272727272727"/>
+      <Point X="687.0" Y="463.0" GraphId="e_9_o1_1" GraphRef="e_9_a_o"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_12" GroupRef="group_comp_12" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="60.5" CenterY="547.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_12" GroupRef="group_comp_12">
+    <Graphics Color="000000" CenterX="425.5" CenterY="353.0" Width="841.0" Height="456.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_143391" rdf:id="lit_143391">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9712840</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular cloning of a novel member of the eukaryotic polypeptide chain-releasing factors (eRF). Its identification as eRF3 interacting with eRF1.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoshino, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Imai, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizutani, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kikuchi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanaoka, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ui, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Katada, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:22254-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_143367" rdf:id="lit_143367">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7990965</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A highly conserved eukaryotic protein family possessing properties of polypeptide chain release factor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frolova, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Le, Goff X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rasmussen, HH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cheperegin, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Drugeon, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kress, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arman, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haenni, AL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Celis, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Philippe, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 372:701-3</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_143393" rdf:id="lit_143393">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10358005</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The eukaryotic polypeptide chain releasing factor (eRF3/GSPT) carrying the translation termination signal to the 3'-Poly(A) tail of mRNA. Direct association of erf3/GSPT with polyadenylate-binding protein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoshino, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Imai, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uchida, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Katada, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 274:16677-80</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>translation termination pathway</bp:TERM><bp:ID>PW:0000582</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

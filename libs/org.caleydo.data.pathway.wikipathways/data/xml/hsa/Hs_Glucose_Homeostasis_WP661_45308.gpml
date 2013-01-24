@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Glucose Homeostasis" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">An organism-level overview of Glucose homeostasis. At this moment the focus is on metabolites that can be measured in the plasma, but it would be nice to show the interaction between the different organs (Adipose tissue, Liver, Intestine, Muscle) as well as the involvement of hormones other than insulin</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <BiopaxRef>e75</BiopaxRef>
+  <Graphics BoardWidth="807.4" BoardHeight="584.1"/>
+  <DataNode TextLabel="Insulin" GraphId="d26d2" Type="Metabolite">
+    <Graphics CenterX="362.0" CenterY="360.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Glucose" GraphId="b4f4c" Type="Metabolite">
+    <Graphics CenterX="362.0" CenterY="473.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00122"/>
+  </DataNode>
+  <DataNode TextLabel="Malate" GraphId="d11cf" Type="Metabolite">
+    <Graphics CenterX="158.0" CenterY="200.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00156"/>
+  </DataNode>
+  <DataNode TextLabel="Glycerol" GraphId="a3695" Type="Metabolite">
+    <Graphics CenterX="300.0" CenterY="239.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00131"/>
+  </DataNode>
+  <DataNode TextLabel="Isoleucine" GraphId="a87c1" Type="Metabolite">
+    <Graphics CenterX="575.0" CenterY="239.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00172"/>
+  </DataNode>
+  <DataNode TextLabel="Lactate" GraphId="b58bf" Type="Metabolite">
+    <Graphics CenterX="158.0" CenterY="239.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00190"/>
+  </DataNode>
+  <DataNode TextLabel="B-OH-butyrate" GraphId="c71cd" Type="Metabolite">
+    <Graphics CenterX="433.0" CenterY="239.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00011"/>
+  </DataNode>
+  <DataNode TextLabel="Hypoxanthine" GraphId="c0de7" Type="Metabolite">
+    <Graphics CenterX="239.0" CenterY="521.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00157"/>
+  </DataNode>
+  <DataNode TextLabel="Citrulline" GraphId="f042a" Type="Metabolite">
+    <Graphics CenterX="694.0" CenterY="160.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00904"/>
+  </DataNode>
+  <DataNode TextLabel="Methionine" GraphId="a9475" Type="Metabolite">
+    <Graphics CenterX="575.0" CenterY="101.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00696"/>
+  </DataNode>
+  <DataNode TextLabel="Tyrosine" GraphId="e0e6e" Type="Metabolite">
+    <Graphics CenterX="575.0" CenterY="121.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00158"/>
+  </DataNode>
+  <DataNode TextLabel="Ornithine" GraphId="b5667" Type="Metabolite">
+    <Graphics CenterX="694.0" CenterY="180.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00214"/>
+  </DataNode>
+  <DataNode TextLabel="Arginine" GraphId="b7e31" Type="Metabolite">
+    <Graphics CenterX="694.0" CenterY="200.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00517"/>
+  </DataNode>
+  <DataNode TextLabel="Phenylalanine" GraphId="ece63" Type="Metabolite">
+    <Graphics CenterX="575.0" CenterY="201.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00159"/>
+  </DataNode>
+  <DataNode TextLabel="Lysine" GraphId="f355c" Type="Metabolite">
+    <Graphics CenterX="575.0" CenterY="181.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00182"/>
+  </DataNode>
+  <DataNode TextLabel="Histidine" GraphId="c1d43" Type="Metabolite">
+    <Graphics CenterX="575.0" CenterY="161.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00177"/>
+  </DataNode>
+  <DataNode TextLabel="valine" GraphId="fb26b" Type="Metabolite">
+    <Graphics CenterX="575.0" CenterY="141.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00883"/>
+  </DataNode>
+  <DataNode TextLabel="Pyruvate" GraphId="c9c56" Type="Metabolite">
+    <Graphics CenterX="158.0" CenterY="180.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00243"/>
+  </DataNode>
+  <DataNode TextLabel="Hippuric acid" GraphId="f3575" Type="Metabolite">
+    <Graphics CenterX="239.0" CenterY="473.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00714"/>
+  </DataNode>
+  <DataNode TextLabel="GCA" GraphId="b3e70" Type="Metabolite">
+    <Graphics CenterX="644.5" CenterY="381.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00138"/>
+  </DataNode>
+  <DataNode TextLabel="GCDCA" GraphId="c88a9" Type="Metabolite">
+    <Graphics CenterX="644.5" CenterY="401.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00637"/>
+  </DataNode>
+  <DataNode TextLabel="TCDCA" GraphId="cae3d" Type="Metabolite">
+    <Graphics CenterX="644.5" CenterY="421.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00951"/>
+  </DataNode>
+  <DataNode TextLabel="Glycolysis" GraphId="b4868" Type="Pathway">
+    <Graphics CenterX="162.0" CenterY="274.0" Width="80.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP534"/>
+  </DataNode>
+  <DataNode TextLabel="Lipolysis" GraphId="cff47" Type="Pathway">
+    <Graphics CenterX="297.0" CenterY="274.0" Width="80.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ketogenesis" GraphId="d072b" Type="Pathway">
+    <Graphics CenterX="437.5" CenterY="270.0" Width="93.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Proteolysis" GraphId="e9424" Type="Pathway">
+    <Graphics CenterX="578.0" CenterY="268.0" Width="80.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Line GraphId="a1e20">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.0" Y="463.0" GraphRef="b4f4c" RelX="0.0" RelY="-1.0"/>
+      <Point X="362.0" Y="370.0" GraphRef="d26d2" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e55cf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.0" Y="350.0" GraphRef="d26d2" RelX="0.0" RelY="-1.0"/>
+      <Point X="162.0" Y="284.0" GraphRef="b4868" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ead31">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.0" Y="350.0" GraphRef="d26d2" RelX="0.0" RelY="-1.0"/>
+      <Point X="297.0" Y="284.0" GraphRef="cff47" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d965c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.0" Y="350.0" GraphRef="d26d2" RelX="0.0" RelY="-1.0"/>
+      <Point X="437.5" Y="280.0" GraphRef="d072b" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b155b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="362.0" Y="350.0" GraphRef="d26d2" RelX="0.0" RelY="-1.0"/>
+      <Point X="558.0" Y="278.0" GraphRef="e9424" RelX="-0.5" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df234">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="76.0" Y="219.0"/>
+      <Point X="693.0" Y="218.99999999999994"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="abf77">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="402.0" Y="360.0" GraphRef="d26d2" RelX="1.0" RelY="0.0"/>
+      <Point X="601.0" Y="359.0" GraphRef="a8c97" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Bile salts" GraphId="a8c97">
+    <Graphics CenterX="641.0" CenterY="359.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e75">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18682704</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Metabolic profiling of the human response to a glucose challenge reveals distinct axes of insulin sensitivity.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Syst Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shaham O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wei R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang TJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ricciardi C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lewis GD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vasan RS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carr SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thadhani R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerszten RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mootha VK</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>glucose homeostasis pathway</bp:TERM><bp:ID>PW:0000553</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

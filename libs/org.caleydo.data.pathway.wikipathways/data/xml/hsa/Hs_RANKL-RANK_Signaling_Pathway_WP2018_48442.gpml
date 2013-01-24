@@ -1,0 +1,1305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="RANKL/RANK Signaling Pathway" Organism="Homo sapiens" License="Creative Commons Attribution 2.5 License ">
+<Comment Source="WikiPathways-category">Cellular Process</Comment>
+<Comment Source="WikiPathways-description">RANKL (Receptor activator of nuclear factor-kappa B ligand), RANK (Receptor activator of nuclear factor-kappa B) and the natural decoy receptor of RANKL, OPG (Osteoprotegerin) are three important molecules identified to play a major role in osteoclastogenesis and bone remodelling. They are members of the tumor necrosis factor (TNF) superfamily. OPG was the first molecule to be discovered and proved to inhibit osteoclastogenesis both in vivo and in vitro. Unlike other members of TNF family, OPG lack a transmembrane domain and is secreted as a soluble protein by the cell. RANKL is the only known physiological agonist for its receptor, RANK. Genetic experiments have shown that mice lacking either rankl or rank suffer from severe osteoporosis and defective tooth eruption due to complete lack of osteoclasts. On the contrary, mice deficient of OPG shows osteoporosis due to increased number of osteoclasts. Binding of RANKL to RANK triggers downstream signaling events that leads to the activation of osteoclasts and controlling of lineage commitment. RANKL/RANK signaling is essential for skeletal homoeostasis and its interference leads to inhibition of bone resorption resulting in bone diseases including osteoporosis osteopetrosis and rheumatoid arthritis. RANK being a member of TNF family does not possess any kinase activity. It recruits adaptor molecules to transduce the signal after ligand binding. These adaptor molecules are called TNFR-associated factors or TRAF’s that binds to different regions in the cytoplasmic tail of the TNF family receptors and transduces the signal downstream. TRAF6 is the main adaptor molecule which activates NF-κB pathway downstream of RANKL signaling which is required for osteoclastogenesis and osteoclast activation. TRAF6 mutant mice have shown a partial block in osteoclastogenesis and defective activation of mature osteoclasts. Mice lacking NF-κB p50 and p52 proteins have been shown to be osteopetrotic. Catalytic subunits, IκB kinase α and IκB kinase β and the non-catalytic subunit IKKγ (also called NEMO) are also essential for RANKL-RANK signaling and osteoclastogenesis. IKKγ is required for osteoclastogenesis induced by RANKL in mice both in vivo and in vitro whereas IKKα was shown to be required in mice only in in vitro. Several mitogen activated protein kinases (MAPK’s) have been shown to be activated downstream of RANK. Studies have shown that pharmacological inhibition of p38 MAPK’s blocked RANKL induced osteoclast differentiation. JNK1/2, its upstream kinase MKK7 and c-Jun have also been shown by genetic experiments to be essential for RANKL induced osteoclastogenesis. MAPK1 and MAPK3 phosphorylation was also shown to be dispensable for RANKL mediated osteoclast differentiation in vitro, but another report also show that specific inhibitors to MEK increased RANKL induced osteoclastogenesis suggesting a cross talk between p38 and ERK signaling pathways. NFATc1 is an essential downstream target of RANK. Ca2+ oscillations induced by RANKL activated NFATc1 resulting in terminal differentiation of osteoclasts through the Ca2+- dependent calcineurin pathway. NFATc1 translocates to the nucleus where it interacts with other transcription factors leading to the activation of transcription of genes including ACP5, CTSK, TNFRSF11A and NFATc1 under RANKL stimulation. TRAF6 and c-Src interacts with each other and with RANK upon stimulation with RANKL. This interaction increases the kinase activity of c-Src leading to the tyrosine phosphorylation of downstream molecules such as c-Cbl and activation of Akt/PKB which in turn requires the PI3-Kinase activity. Genetic experiments have shown that c-Src is very important in osteoclastogenesis. In addition to these pathways, aPKC/p62 signaling is also reported to be essential for osteoclastogenesis. Apart from their role in osteoclast differentiation and function, RANKL-RANK signaling is also required for development of lymph node and lactating mammary glands in mice and in the establishment of thymic microenvironment.
+
+Please access this pathway at [http://www.netpath.org/netslim/rankl_pathway.html NetSlim] database.
+If you use this pathway, you must cite following paper: Raju, R., Balakrishnan, L., Nanjappa, V., Bhattacharjee, M., Getnet, D., Muthusamy, B., Thomas, J. K., Sharma, J., Rahiman, B. A., Harsha, H. C., Shankar, S., Prasad, T. S. K., Mohan, S. S., Bader, G. D., Wani, M. R. and Pandey, A. (2011). A comprehensive manually curated reaction map of RANKL/RANK signaling pathway. Database (Oxford). 2011, bar021.</Comment>
+  <Graphics BoardWidth="983.0" BoardHeight="1493.5"/>
+  <DataNode TextLabel="NFKB1" GraphId="c642d" Type="Protein" GroupRef="aa906">
+    <Graphics CenterX="313.5" CenterY="1268.5" Width="55.0" Height="20.0" ZOrder="-8" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4790"/>
+  </DataNode>
+  <DataNode TextLabel="FOS" GraphId="cb7c6" Type="Protein" GroupRef="d43d5">
+    <Graphics CenterX="433.25" CenterY="1307.0" Width="40.5" Height="20.0" ZOrder="-4" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2353"/>
+  </DataNode>
+  <DataNode TextLabel="RELB" GraphId="d5638" Type="Protein" GroupRef="f8dc1">
+    <Graphics CenterX="386.8333333333335" CenterY="1064.0" Width="50.0" Height="20.0" ZOrder="-2" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5971"/>
+  </DataNode>
+  <DataNode TextLabel="FHL2" GraphId="d144d" Type="Protein">
+    <Graphics CenterX="362.5" CenterY="593.0" Width="50.0" Height="20.0" ZOrder="32768" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2274"/>
+  </DataNode>
+  <DataNode TextLabel="LYN" GraphId="e4464" Type="Protein">
+    <Graphics CenterX="110.93881856540082" CenterY="533.0" Width="39.0" Height="20.0" ZOrder="32768" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4067"/>
+  </DataNode>
+  <DataNode TextLabel="MITF" GraphId="d7113" Type="Protein">
+    <Graphics CenterX="228.12184873949593" CenterY="1301.5812713974478" Width="54.24369747899186" Height="20.0" ZOrder="32768" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4286"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K6" GraphId="f15f7" Type="Protein">
+    <Graphics CenterX="228.66036414565866" CenterY="820.7226890756294" Width="59.166666666666515" Height="20.0" ZOrder="32768" FillColor="99ffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5608"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K1" GraphId="c7add" Type="Protein">
+    <Comment>RANKL stimulation induces MEK1 phosphorylation in RAW264.7 cells</Comment>
+    <Graphics CenterX="501.5" CenterY="758.0" Width="57.0" Height="20.0" ZOrder="32768" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5604"/>
+  </DataNode>
+  <DataNode TextLabel="RAC1" GraphId="b5eaf" Type="Protein" GroupRef="a410b">
+    <Graphics CenterX="181.90336134453787" CenterY="679.1008403361344" Width="47.0" Height="20.0" ZOrder="32768" FillColor="99ffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5879"/>
+  </DataNode>
+  <DataNode TextLabel="SYK" GraphId="fe456" Type="Protein">
+    <Comment>RANKL stimulation induces SYK phosphorylation at Tyr-323 and Tyr-352 in mouse derived bone marrow cells and RAW264.7 cells</Comment>
+    <Graphics CenterX="189.0" CenterY="572.0" Width="40.0" Height="20.0" ZOrder="32768" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6850"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB1" GraphId="eef9c" Type="Protein" GroupRef="ed6af">
+    <Graphics CenterX="313.0" CenterY="1084.135695764909" Width="50.0" Height="20.0" ZOrder="32768" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4790"/>
+  </DataNode>
+  <DataNode TextLabel="TNFRSF11B" GraphId="ad383" Type="Protein" GroupRef="e099f">
+    <Graphics CenterX="376.5" CenterY="362.0" Width="73.0" Height="20.0" ZOrder="32777" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4982"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K7" GraphId="c9c26" Type="Protein">
+    <Graphics CenterX="453.5" CenterY="853.0" Width="59.0" Height="20.0" ZOrder="32779" FillColor="99ffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5609"/>
+  </DataNode>
+  <DataNode TextLabel="TRAF6" GraphId="ebc51" Type="Protein" GroupRef="de6ac">
+    <Comment>TRAF6  undergoes polyubiquitination upon stimulation with RANKL which is further enhanced by IFN-gamma in mouse macrophage cell line RAW 264.7 and in mouse bone marrow derived macrophages. </Comment>
+    <Graphics CenterX="313.0" CenterY="687.5" Width="56.0" Height="20.0" ZOrder="32783" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7189"/>
+  </DataNode>
+  <DataNode TextLabel="TNFSF11" GraphId="e6197" Type="Protein" GroupRef="e099f">
+    <Graphics CenterX="306.5" CenterY="316.0" Width="73.0" Height="20.0" ZOrder="32786" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8600"/>
+  </DataNode>
+  <DataNode TextLabel="GAB2" GraphId="a6f66" Type="Protein">
+    <Graphics CenterX="155.5" CenterY="533.5" Width="41.0" Height="20.0" ZOrder="32788" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9846"/>
+  </DataNode>
+  <DataNode TextLabel="TNFRSF11A" GraphId="d3f0c" Type="Protein" GroupRef="e099f">
+    <Graphics CenterX="230.5" CenterY="426.0" Width="79.0" Height="20.0" ZOrder="32792" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8792"/>
+  </DataNode>
+  <DataNode TextLabel="TRAF2" GraphId="daee4" Type="Protein">
+    <Graphics CenterX="399.5" CenterY="535.0" Width="50.0" Height="20.0" ZOrder="32794" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7186"/>
+  </DataNode>
+  <DataNode TextLabel="TRAF3" GraphId="f71b6" Type="Protein">
+    <Graphics CenterX="344.0" CenterY="535.0" Width="50.0" Height="20.0" ZOrder="32796" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7187"/>
+  </DataNode>
+  <DataNode TextLabel="TRAF5" GraphId="dfe71" Type="Protein">
+    <Graphics CenterX="463.0" CenterY="535.5" Width="50.0" Height="20.0" ZOrder="32798" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7188"/>
+  </DataNode>
+  <DataNode TextLabel="TRAF1" GraphId="e2e87" Type="Protein">
+    <Graphics CenterX="282.5" CenterY="535.0" Width="50.0" Height="20.0" ZOrder="32800" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7185"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R1" GraphId="e2be3" Type="Protein" GroupRef="c192b">
+    <Graphics CenterX="135.5" CenterY="602.5" Width="50.0" Height="20.0" ZOrder="32804" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5295"/>
+  </DataNode>
+  <DataNode TextLabel="NFATC1" GraphId="de908" Type="Protein">
+    <Graphics CenterX="70.68881856540082" CenterY="953.5" Width="56.5" Height="20.0" ZOrder="32817" FillColor="99ffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4772"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R2" GraphId="c4fa4" Type="Protein" GroupRef="c192b">
+    <Graphics CenterX="135.5" CenterY="621.5" Width="50.0" Height="20.0" ZOrder="32821" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5296"/>
+  </DataNode>
+  <DataNode TextLabel="STAT1" GraphId="b86c8" Type="Protein">
+    <Comment>RANKL stimulation induces STAT1 phosphorylation at Ser-727 in mouse pre-osteoclasts and bone marrow macrophages</Comment>
+    <Graphics CenterX="430.5" CenterY="687.0" Width="50.0" Height="20.0" ZOrder="32838" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID=" 6772"/>
+  </DataNode>
+  <DataNode TextLabel="IKBKG" GraphId="f7de7" Type="Protein" GroupRef="a8415">
+    <Graphics CenterX="287.3333333333335" CenterY="857.0" Width="50.0" Height="20.0" ZOrder="32849" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8517"/>
+  </DataNode>
+  <DataNode TextLabel="IKBKB" GraphId="aabcc" Type="Protein" GroupRef="a8415">
+    <Graphics CenterX="338.3333333333335" CenterY="857.5" Width="50.0" Height="20.0" ZOrder="32869" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3551"/>
+  </DataNode>
+  <DataNode TextLabel="AKT1" GraphId="fc960" Type="Protein" GroupRef="f4b20">
+    <Comment>AKT1 undergoes induced phosphorylation upon stimulation with RANKL at Thr-308 and Ser-473 in mouse bone marrow derived macrophages  and in maouse macrophage cell line, RAW264.7.</Comment>
+    <Graphics CenterX="135.95786118440114" CenterY="730.260504201683" Width="50.0" Height="20.0" ZOrder="32874" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="207"/>
+  </DataNode>
+  <DataNode TextLabel="NFKBIA" GraphId="adaf1" Type="Protein">
+    <Comment>NFKBIA undergoes induced phosphorylation at Ser-32 in mouse bone marrow macrophages and in RAW264.7 cells.</Comment>
+    <Graphics CenterX="313.3333333333335" CenterY="943.0" Width="50.0" Height="20.0" ZOrder="32881" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4792"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK9" GraphId="d5368" Type="Protein" GroupRef="ee190">
+    <Comment>RANKL induces MAPK9 phosphorylation at Thr-183 and Tyr-185 in mouse bone marrow derived macrophages.</Comment>
+    <Graphics CenterX="453.9166666666665" CenterY="933.0" Width="59.83333333333303" Height="20.0" ZOrder="32884" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5601"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K7" GraphId="d68bf" Type="Protein" GroupRef="de6ac">
+    <Graphics CenterX="313.41666666666674" CenterY="707.5" Width="56.83333333333348" Height="20.0" ZOrder="32889" FillColor="99ffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6885"/>
+  </DataNode>
+  <DataNode TextLabel="PLCG1" GraphId="f2399" Type="Protein">
+    <Comment>RANKL stimulation induces PLCG1 phosphorylation in bone marrow derived macrophages and RAW264.7 cells.</Comment>
+    <Graphics CenterX="70.43881856540082" CenterY="581.5" Width="50.0" Height="20.0" ZOrder="32893" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5335"/>
+  </DataNode>
+  <DataNode TextLabel="JUN" GraphId="a9022" Type="Protein" GroupRef="d43d5">
+    <Comment>JUN undergoes induced phosphorylatin at Ser-63 and Ser-73 in mouse bone marrow derived macrophages, preosteoclasts and 293 cells. Amino acid residues 340-421 of TNFRSF11A are required for its activation</Comment>
+    <Graphics CenterX="473.9166666666665" CenterY="1307.0" Width="39.83333333333303" Height="20.0" ZOrder="32898" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3725"/>
+  </DataNode>
+  <DataNode TextLabel="PTK2" GraphId="dc008" Type="Protein">
+    <Comment>RANKL stimulation induces PTK2 phosphorylation in human umbilical vein endothelial (HUVEC) cells and RAW264.7 cells</Comment>
+    <Graphics CenterX="217.25" CenterY="534.5" Width="42.5" Height="20.0" ZOrder="32903" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5747"/>
+  </DataNode>
+  <DataNode TextLabel="RELA" GraphId="deaa2" Type="Protein" GroupRef="ed6af">
+    <Comment>RELA undergoes induced phosphorylation at Ser-276 and Ser-536 upon stimulation with RANKL in mouse bone marrow macrophages. </Comment>
+    <Graphics CenterX="313.8333333333335" CenterY="1065.0" Width="50.0" Height="20.0" ZOrder="32906" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5970"/>
+  </DataNode>
+  <DataNode TextLabel="AKT2" GraphId="c5f9c" Type="Protein" GroupRef="f4b20">
+    <Graphics CenterX="135.95786118440114" CenterY="750.8613445378171" Width="50.0" Height="20.0" ZOrder="32913" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="208"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK8" GraphId="ec581" Type="Protein" GroupRef="ee190">
+    <Comment>RANKL induces MAPK8 phosphorylation at Ser 183 and Tyr-185 in mouse bone marrow macrophages and preosteoclasts</Comment>
+    <Graphics CenterX="453.9166666666665" CenterY="912.5" Width="59.83333333333303" Height="20.0" ZOrder="32916" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5599"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK3" GraphId="cb8bc" Type="Protein" GroupRef="f5f42">
+    <Comment>MAPK3 undergoes induced phosphorylation upon stimulation with RANKL at Thr-202 and Tyr-204 in mouse macrophage cell line, RAW264.7, mouse bone marrow derived macrophages, osteoclasts and dendritic cells.</Comment>
+    <Graphics CenterX="501.0" CenterY="985.0" Width="58.0" Height="20.0" ZOrder="32919" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5595"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK1" GraphId="e186a" Type="Protein" GroupRef="f5f42">
+    <Comment>MAPK1 undergoes induced phosphorylation upon RANKL stimulation in mouse macrophage cell line, RAW264.7, mouse bone marrow derived macrophages, osteoclasts and in dendritic cells.</Comment>
+    <Comment>Type your comment here</Comment>
+    <Graphics CenterX="501.5" CenterY="1006.0" Width="59.0" Height="20.0" ZOrder="32922" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK14" GraphId="d0cf3" Type="Protein">
+    <Comment>MAPK14  undergoes  phosphorylation at Thr-180 and Tyr-182 upon stimulation with RANKL in mouse bone marrow macrophages and pre osteoclasts.</Comment>
+    <Graphics CenterX="228.10994397759129" CenterY="982.5588235294122" Width="60.166666666666515" Height="20.0" ZOrder="32927" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="CHUK" GraphId="b40d7" Type="Protein" GroupRef="a8415">
+    <Comment>CHUK undergoes induced phosphorylation upon stimulation with RANKL in human umbilical vein endothelial cells (HUVECs) and RAW264.7 cells</Comment>
+    <Graphics CenterX="313.8333333333335" CenterY="837.5" Width="50.0" Height="20.0" ZOrder="32946" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1147"/>
+  </DataNode>
+  <DataNode TextLabel="MTOR" GraphId="a2c7f" Type="Protein">
+    <Comment>MTOR undergoes autophosphorylation upon stimulation with RANKL in osteoclasts and RAW264.7 murine macrophage cells.</Comment>
+    <Graphics CenterX="135.75" CenterY="924.0925589836661" Width="66.5" Height="20.0" ZOrder="32949" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2475"/>
+  </DataNode>
+  <DataNode TextLabel="SRC" GraphId="b6d5d" Type="Protein">
+    <Comment>SRC undergoes induced phosphorylation at tyrosine residue upon stimulation with RANKL in murine bone marrow derived  macrophages, pre-osteoclasts and in RAW264.7 cells.</Comment>
+    <Graphics CenterX="250.0" CenterY="602.0" Width="50.0" Height="20.0" ZOrder="32954" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6714"/>
+  </DataNode>
+  <DataNode TextLabel="TNFSF11" GraphId="ad493" Type="Protein" GroupRef="e099f">
+    <Graphics CenterX="234.5" CenterY="316.0" Width="71.0" Height="20.0" ZOrder="32977" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8600"/>
+  </DataNode>
+  <DataNode TextLabel="TNFSF11" GraphId="b4023" Type="Protein" GroupRef="e099f">
+    <Comment>RANKL self associates to form a homotrimer.</Comment>
+    <Graphics CenterX="270.0" CenterY="296.0" Width="62.0" Height="20.0" ZOrder="32979" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8600"/>
+  </DataNode>
+  <DataNode TextLabel="TNFRSF11A" GraphId="dcb34" Type="Protein" GroupRef="e099f">
+    <Graphics CenterX="313.0" CenterY="426.0" Width="86.0" Height="20.0" ZOrder="32981" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8792"/>
+  </DataNode>
+  <DataNode TextLabel="TNFRSF11A" GraphId="b2cd5" Type="Protein" GroupRef="e099f">
+    <Comment>TNFRSF11A self assembled through its cytoplasmic domain at position 534-539 and formed a trimer in HEK293 cells transfected with TANFRF11A</Comment>
+    <Graphics CenterX="270.0" CenterY="405.0" Width="80.0" Height="20.0" ZOrder="32983" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8792"/>
+  </DataNode>
+  <DataNode TextLabel="TAB2" GraphId="b9e3b" Type="Protein" GroupRef="de6ac">
+    <Graphics CenterX="367.8333333333335" CenterY="687.5" Width="50.0" Height="20.0" ZOrder="33007" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23118"/>
+  </DataNode>
+  <DataNode TextLabel="TAB1" GraphId="c8094" Type="Protein" GroupRef="de6ac">
+    <Graphics CenterX="367.3333333333335" CenterY="707.5" Width="50.0" Height="20.0" ZOrder="33009" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10454"/>
+  </DataNode>
+  <DataNode TextLabel="IP3" GraphId="cf196" Type="Protein">
+    <Graphics CenterX="70.93881856540082" CenterY="667.5" Width="50.0" Height="20.0" ZOrder="33041" FillColor="ffccff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="NFATC1" GraphId="dd262" Type="Protein">
+    <Graphics CenterX="84.93881856540082" CenterY="1302.021008403363" Width="59.0" Height="20.0" ZOrder="33057" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4772"/>
+  </DataNode>
+  <DataNode TextLabel="RELA" GraphId="f0e9c" Type="Protein" GroupRef="aa906">
+    <Graphics CenterX="313.5" CenterY="1248.0" Width="55.0" Height="20.0" ZOrder="33061" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5970"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK14" GraphId="e63c5" Type="Protein">
+    <Graphics CenterX="228.49369747899186" CenterY="1214.0571857092004" Width="58.5" Height="20.0" ZOrder="33073" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="CBL" GraphId="cf028" Type="Protein">
+    <Comment>RANKL stimulation induced the phosphorylation of CBL at Tyr-731 in mouse macrophage-like cell line, RAW264.7</Comment>
+    <Graphics CenterX="250.5" CenterY="655.0" Width="41.0" Height="20.0" ZOrder="33109" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="867"/>
+  </DataNode>
+  <DataNode TextLabel="ROS" GraphId="a2df1" Type="Protein">
+    <Graphics CenterX="182.90336134453787" CenterY="780.4075630252097" Width="50.0" Height="20.0" ZOrder="33129" FillColor="ffccff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CDC42" GraphId="db4d9" Type="Protein" GroupRef="a410b">
+    <Graphics CenterX="182.15336134453787" CenterY="698.5" Width="46.5" Height="20.0" ZOrder="33132" FillColor="99ffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="998"/>
+  </DataNode>
+  <DataNode TextLabel="CALCR" GraphId="c48cf" Type="Rna">
+    <Graphics CenterX="417.25" CenterY="1427.5" Width="58.5" Height="20.0" ZOrder="33134" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="799"/>
+  </DataNode>
+  <DataNode TextLabel="NFATC1" GraphId="d9b82" Type="Rna">
+    <Graphics CenterX="125.0" CenterY="1429.5" Width="58.0" Height="20.0" ZOrder="33135" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4772"/>
+  </DataNode>
+  <DataNode TextLabel="ACP5" GraphId="d2652" Type="Rna">
+    <Graphics CenterX="193.5" CenterY="1430.0" Width="51.0" Height="20.0" ZOrder="33137" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="54"/>
+  </DataNode>
+  <DataNode TextLabel="SQSTM1" GraphId="fb220" Type="Protein">
+    <Comment>TRAF6  undergoes polyubiquitination upon stimulation with RANKL which is further enhanced by IFN-gamma in mouse macrophage cell line RAW 264.7 and in mouse bone marrow derived macrophages.</Comment>
+    <Graphics CenterX="393.0" CenterY="642.5" Width="56.0" Height="20.0" ZOrder="33138" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8878"/>
+  </DataNode>
+  <DataNode TextLabel="TNFRSF11A" GraphId="ab90e" Type="Rna">
+    <Graphics CenterX="270.0" CenterY="1429.5" Width="78.0" Height="20.0" ZOrder="33151" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8792"/>
+  </DataNode>
+  <DataNode TextLabel="ICAM1" GraphId="d2f82" Type="Rna">
+    <Graphics CenterX="350.0" CenterY="1428.5" Width="56.0" Height="20.0" ZOrder="33165" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3383"/>
+  </DataNode>
+  <DataNode TextLabel="VCAM1" GraphId="d1845" Type="Rna">
+    <Graphics CenterX="350.5" CenterY="1451.5" Width="57.0" Height="20.0" ZOrder="33166" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7412"/>
+  </DataNode>
+  <DataNode TextLabel="CTSK" GraphId="ced95" Type="Rna">
+    <Comment>Type your comment here</Comment>
+    <Graphics CenterX="194.0" CenterY="1453.5" Width="50.0" Height="20.0" ZOrder="33168" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1513"/>
+  </DataNode>
+  <DataNode TextLabel="SPI1" GraphId="a1f36" Type="Protein">
+    <Graphics CenterX="157.77138715341584" CenterY="1302.2397203031649" Width="36.45722569316831" Height="20.0" ZOrder="33171" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6688"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K14" GraphId="adf7a" Type="Protein">
+    <Comment>RANKL stimulation leads to the activation of alternative NF-kappa B pathway which induced the formation of p52/RELB heterodimers through the activation of MAP3K14 (NIK). NIK deficient mice impairs RANKL mediated osteoclastogenesis.</Comment>
+    <Graphics CenterX="386.59663865546224" CenterY="816.5588235294122" Width="63.193277310924486" Height="20.0" ZOrder="33175" FillColor="99ffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9060"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB2" GraphId="fca4e" Type="Protein" GroupRef="f8dc1">
+    <Comment>RANKL stimulation induces NFKB2 phosphorylation at Ser-866, Ser-870 in RAW264.7 cells.</Comment>
+    <Graphics CenterX="386.8643042350908" CenterY="1083.2713915298184" Width="50.0" Height="20.0" ZOrder="33176" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4791"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB2" GraphId="ee8db" Type="Protein" GroupRef="b603b">
+    <Graphics CenterX="386.8643042350908" CenterY="1268.5" Width="50.0" Height="20.0" ZOrder="33178" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4791"/>
+  </DataNode>
+  <DataNode TextLabel="RELB" GraphId="cd3ac" Type="Protein" GroupRef="b603b">
+    <Graphics CenterX="386.8333333333335" CenterY="1247.5" Width="50.0" Height="20.0" ZOrder="33185" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5971"/>
+  </DataNode>
+  <State GraphRef="c7add" TextLabel="P" GraphId="f1443">
+    <Graphics RelX="0.9298245614035088" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b5eaf" TextLabel="GTP" GraphId="a6e3b">
+    <Graphics RelX="1.0" RelY="-0.9" Width="27.84663865546213" Height="14.350840336134297" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fe456" TextLabel="P" GraphId="b7523">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ebc51" TextLabel="Ub" GraphId="e1d60">
+    <Graphics RelX="-1.0" RelY="-1.0" Width="15.0" Height="15.0" FillColor="cc00ff" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a6f66" TextLabel="P" GraphId="c74c4">
+    <Comment>Stimulation of RANK receptor with RANKL induces the phosphorylation of GAB2 at Tyr-452 in mouse preosteoclasts.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b86c8" TextLabel="P" GraphId="b14b6">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fc960" TextLabel="P" GraphId="d00c2">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="adaf1" TextLabel="P" GraphId="d3d27">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d5368" TextLabel="P" GraphId="d8315">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f2399" TextLabel="P" GraphId="d50c0">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a9022" TextLabel="P" GraphId="f2f86">
+    <Graphics RelX="-1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="dc008" TextLabel="P" GraphId="aff66">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="deaa2" TextLabel="P" GraphId="c87ff">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c5f9c" TextLabel="P" GraphId="cf4de">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ec581" TextLabel="P" GraphId="ebd9e">
+    <Graphics RelX="0.9665738161559887" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="cb8bc" TextLabel="P" GraphId="e74a1">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e186a" TextLabel="P" GraphId="ba42f">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d0cf3" TextLabel="P" GraphId="d238a">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b40d7" TextLabel="P" GraphId="b2fe4">
+    <Graphics RelX="-1.0" RelY="-1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a2c7f" TextLabel="P" GraphId="ec5b4">
+    <Graphics RelX="0.9183673469387755" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b6d5d" TextLabel="P" GraphId="e767e">
+    <Graphics RelX="0.9545454545454546" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff33" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f0e9c" TextLabel="P" GraphId="b9ba9">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="cf028" TextLabel="P" GraphId="c942e">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="db4d9" TextLabel="GTP" GraphId="ccdb6">
+    <Graphics RelX="1.0" RelY="1.0" Width="28.34663865546213" Height="12.75" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fca4e" TextLabel="P" GraphId="a2401">
+    <Graphics RelX="1.0" RelY="-0.8" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="cd3ac" TextLabel="P" GraphId="fb191">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <Line GraphId="e910d">
+    <Graphics ZOrder="-6" LineThickness="2.0">
+      <Point X="454.0" Y="1307.0" GraphRef="a9022" RelX="-1.0" RelY="0.0"/>
+      <Point X="454.0" Y="1340.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8c8e6d34">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="70.12095639943743" Y="464.8438818565401"/>
+      <Point X="501.0" Y="464.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ideff459f9">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="3.0">
+      <Point X="270.0" Y="426.0" GraphRef="d3f0c" RelX="1.0" RelY="0.0"/>
+      <Point X="270.0" Y="463.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id1a1f8bb6">
+    <Comment> LIM domain of FHL2 interacts with TRAF6 upon stimulation with RANKL in mouse bone marrow derived macrophages and mouse osteoclasts and thus attenuates TRAF6-mediated RANK signaling.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="ff3300">
+      <Point X="337.5" Y="593.0" GraphRef="d144d" RelX="-1.0" RelY="0.0"/>
+      <Point X="314.0" Y="593.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idf6a20b5f">
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="307.0" Y="1002.0"/>
+      <Point X="318.3333333333335" Y="1002.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idca12dc">
+    <Comment>Stimulation of RANK induces the production of reactive oxygen species in both RAW264.7 and BMM cells.</Comment>
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="182.15336134453787" Y="708.5" GraphRef="db4d9" RelX="0.0" RelY="1.0"/>
+      <Point X="182.90336134453787" Y="770.4075630252097" GraphRef="a2df1" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id52fd3b04">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="189.0" Y="465.0"/>
+      <Point X="189.0" Y="562.0" GraphRef="fe456" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9a2bb338">
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="159.0" Y="904.0925589836661"/>
+      <Point X="162.0" Y="914.0925589836661" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfbf0232c">
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="84.93881856540082" Y="1312.021008403363" GraphRef="dd262" RelX="0.0" RelY="1.0"/>
+      <Point X="84.0" Y="1340.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6876b09c">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="453.9166666666665" Y="943.0" GraphRef="d5368" RelX="0.0" RelY="1.0"/>
+      <Point X="453.0" Y="1220.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="iddfedba68" GroupRef="e099f">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="343.0" Y="316.0" GraphRef="e6197" RelX="1.0" RelY="0.0"/>
+      <Point X="376.5" Y="352.0" GraphRef="ad383" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idf4ace313">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="191.0" Y="426.0" GraphRef="d3f0c" RelX="-1.0" RelY="0.0"/>
+      <Point X="155.5" Y="523.5" GraphRef="a6f66" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.2237274065129618" Shape="None" GraphId="d1a43"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="iddf6c918f">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="161.2442549337761" Y="426.0" GraphRef="d1a43" RelX="0.0" RelY="0.0"/>
+      <Point X="136.09153674958844" Y="426.0"/>
+      <Point X="110.93881856540082" Y="523.0" GraphRef="e4464" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8cdd6c37">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="356.0" Y="426.0" GraphRef="dcb34" RelX="1.0" RelY="0.0"/>
+      <Point X="463.0" Y="525.5" GraphRef="dfe71" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.2104991978640935" Shape="None" GraphId="dc6f1"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id919cfdea">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="399.4680843589353" Y="426.0" GraphRef="dc6f1" RelX="0.0" RelY="0.0"/>
+      <Point X="399.5" Y="525.0" GraphRef="daee4" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id31924e76">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="275.0" Y="602.0" GraphRef="b6d5d" RelX="1.0" RelY="0.0"/>
+      <Point X="299.0" Y="677.5" GraphRef="ebc51" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idc99a1eac">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="199.24369747899186" Y="1214.0571857092004" GraphRef="e63c5" RelX="-1.0" RelY="0.0"/>
+      <Point X="99.68881856540082" Y="1292.021008403363" GraphRef="dd262" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfdaa36c2">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="299.20833333333337" Y="717.5" GraphRef="d68bf" RelX="-0.5" RelY="1.0"/>
+      <Point X="263.93434873949604" Y="760.4355716878403"/>
+      <Point X="228.66036414565866" Y="810.7226890756294" GraphRef="f15f7" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idc95b88e1">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="327.6250000000001" Y="717.5" GraphRef="d68bf" RelX="0.5" RelY="1.0"/>
+      <Point X="357.1108193277312" Y="760.0"/>
+      <Point X="386.59663865546224" Y="806.5588235294122" GraphRef="adf7a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6734338379568925" Shape="None" GraphId="b9e2c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id25b35670">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="384.81372228369264" Y="760.0" GraphRef="b9e2c" RelX="0.0" RelY="0.0"/>
+      <Point X="419.1568611418463" Y="760.0"/>
+      <Point X="453.5" Y="843.0" GraphRef="c9c26" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idc61fb2e8">
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="228.49369747899186" Y="1224.0571857092004" GraphRef="e63c5" RelX="0.0" RelY="1.0"/>
+      <Point X="228.12184873949593" Y="1291.5812713974478" GraphRef="d7113" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4cf59f">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="362.5" Y="603.0" GraphRef="d144d" RelX="0.0" RelY="1.0"/>
+      <Point X="344.75" Y="623.0"/>
+      <Point X="327.0" Y="677.5" GraphRef="ebc51" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6aa988a">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="313.0" Y="481.0" GraphRef="f40c4" RelX="0.0" RelY="0.0"/>
+      <Point X="344.0" Y="525.0" GraphRef="f71b6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.007248878149810777" Shape="None" GraphId="af96c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id5c5f574e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="313.5436658612358" Y="481.0" GraphRef="af96c" RelX="0.0" RelY="0.0"/>
+      <Point X="298.0218329306179" Y="481.0"/>
+      <Point X="282.5" Y="525.0" GraphRef="e2e87" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id1743fdb1" GroupRef="e099f">
+    <Comment>TNFSF11 and TNFRSF11A form a heterohexameric complex</Comment>
+    <Graphics ZOrder="12292" LineThickness="2.0" Color="00cc00">
+      <Point X="270.0" Y="316.0" GraphRef="e6197" RelX="-1.0" RelY="0.0"/>
+      <Point X="270.0" Y="395.0" GraphRef="b2cd5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5ce6">
+    <Comment>RANK forms a complex with TRAF6, TAB1, TAB2, and  MAP3K7 upon stimulation with RANKL in 293 cells and leads to the activation of MAP3K7.</Comment>
+    <Graphics ZOrder="32997" LineThickness="2.0" Color="00cc00">
+      <Point X="313.0" Y="436.0" GraphRef="dcb34" RelX="0.0" RelY="1.0"/>
+      <Point X="313.0" Y="677.5" GraphRef="ebc51" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.18633540372670807" Shape="None" GraphId="f40c4"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="be975">
+    <Comment>MAP2K7 phosphorylates MAPK9 upon stimulation with RANKL  in RAW264.7 cells</Comment>
+    <Graphics ZOrder="32999" LineThickness="2.0" Color="0000ff">
+      <Point X="453.5" Y="863.0" GraphRef="c9c26" RelX="0.0" RelY="1.0"/>
+      <Point X="453.9166666666665" Y="902.5" GraphRef="ec581" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dd3e4">
+    <Graphics ZOrder="33003" LineStyle="Broken" LineThickness="2.0">
+      <Point X="430.0" Y="465.0"/>
+      <Point X="430.5" Y="677.0" GraphRef="b86c8" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a5beb">
+    <Graphics ZOrder="33005" LineStyle="Broken" LineThickness="2.0">
+      <Point X="217.0" Y="464.0"/>
+      <Point X="217.25" Y="524.5" GraphRef="dc008" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d2f35">
+    <Comment>Activation of AKT by SRC in RANKL signaling requires the lipid kinase, phosphatidylinositol 3-kinase.</Comment>
+    <Comment>Type your comment here</Comment>
+    <Graphics ZOrder="33011" LineStyle="Broken" LineThickness="2.0">
+      <Point X="225.0" Y="602.0" GraphRef="b6d5d" RelX="-1.0" RelY="0.0"/>
+      <Point X="160.5" Y="602.5" GraphRef="e2be3" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a8200">
+    <Comment>Activation of AKT by PI3K by TNFRSF11A signaling promotes the survival of osteoclasts through MTOR</Comment>
+    <Graphics ZOrder="33013" LineStyle="Broken" LineThickness="2.0">
+      <Point X="135.95786118440114" Y="760.8613445378171" GraphRef="c5f9c" RelX="0.0" RelY="1.0"/>
+      <Point X="135.75" Y="914.0925589836661" GraphRef="a2c7f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c15b6">
+    <Graphics ZOrder="33015" LineStyle="Broken" LineThickness="2.0">
+      <Point X="313.41666666666674" Y="717.5" GraphRef="d68bf" RelX="0.0" RelY="1.0"/>
+      <Point X="313.8333333333335" Y="827.5" GraphRef="b40d7" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d9fa6">
+    <Comment>Cytoplasmic region of RANK interacts with SRC upon stimulation with RANKL in mouse dendritic cells and human 293T cells.</Comment>
+    <Graphics ZOrder="33017" LineThickness="2.0" Color="33cc00">
+      <Point X="250.25" Y="436.0" GraphRef="d3f0c" RelX="0.5" RelY="1.0"/>
+      <Point X="250.0" Y="592.0" GraphRef="b6d5d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ef9bd">
+    <Comment>AKT is activated by PI3K in a SRC dependent manner in RANKL signaling.</Comment>
+    <Graphics ZOrder="33025" LineStyle="Broken" LineThickness="2.0">
+      <Point X="135.5" Y="631.5" GraphRef="c4fa4" RelX="0.0" RelY="1.0"/>
+      <Point X="135.95786118440114" Y="720.260504201683" GraphRef="fc960" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c3b17">
+    <Graphics ZOrder="33027" LineStyle="Broken" LineThickness="2.0">
+      <Point X="70.12095639943743" Y="464.25035161744023"/>
+      <Point X="70.43881856540082" Y="571.5" GraphRef="f2399" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d04ec">
+    <Comment>IKBKB phosphorylates NFKBIA upon stimulation with RANKL in RAW264.7 cells</Comment>
+    <Graphics ZOrder="33033" LineThickness="2.0" Color="0000cc">
+      <Point X="313.0" Y="866.0"/>
+      <Point X="313.3333333333335" Y="933.0" GraphRef="adaf1" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4d44">
+    <Graphics ZOrder="33035" LineStyle="Broken" LineThickness="2.0">
+      <Point X="70.93881856540082" Y="741.0" GraphRef="d9081" RelX="0.0" RelY="1.0"/>
+      <Point X="70.93881856540082" Y="781.0" GraphRef="d36d1" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ab0ba">
+    <Graphics ZOrder="33037" LineStyle="Broken" LineThickness="2.0">
+      <Point X="70.43881856540082" Y="591.5" GraphRef="f2399" RelX="0.0" RelY="1.0"/>
+      <Point X="70.93881856540082" Y="657.5" GraphRef="cf196" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d3eb1">
+    <Comment>Cytoplasmic Ca2+ oscillations occur during TNFRSF11A mediated osteoclastogenesi which leads to the upregulation of NFATC1, a master regulator of osteoclastogenesis.</Comment>
+    <Graphics ZOrder="33039" LineStyle="Broken" LineThickness="2.0">
+      <Point X="70.93881856540082" Y="811.0" GraphRef="d36d1" RelX="0.0" RelY="1.0"/>
+      <Point X="70.68881856540082" Y="943.5" GraphRef="de908" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e6eae">
+    <Graphics ZOrder="33043" LineStyle="Broken" LineThickness="2.0">
+      <Point X="70.93881856540082" Y="677.5" GraphRef="cf196" RelX="0.0" RelY="1.0"/>
+      <Point X="70.93881856540082" Y="716.0" GraphRef="d9081" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af4ae">
+    <Graphics ZOrder="33049" LineStyle="Broken" LineThickness="2.0">
+      <Point X="501.0" Y="464.0"/>
+      <Point X="501.5" Y="748.0" GraphRef="c7add" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a3aa8">
+    <Comment>NFATC1 translocates from cytoplasm to nucleus upon stimulation with RANKL  in murine bone marrow derived macrophages, osteoclasts and RAW264.7 cells.</Comment>
+    <Graphics ZOrder="33055" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="70.68881856540082" Y="963.5" GraphRef="de908" RelX="0.0" RelY="1.0"/>
+      <Point X="70.18881856540082" Y="1292.021008403363" GraphRef="dd262" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d4cb4">
+    <Comment>RELA translocates from cytoplasm to nucleus upon stimulation with RANKL in RAW264.7 cells and murine osteoclasts. </Comment>
+    <Comment>NFKB1 translocated from cytoplasm to nucleus upon stimualtion with RANKL in RAW264.7 cells.</Comment>
+    <Graphics ZOrder="33059" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="313.0" Y="1094.135695764909" GraphRef="eef9c" RelX="0.0" RelY="1.0"/>
+      <Point X="313.5" Y="1238.0" GraphRef="f0e9c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e2016">
+    <Comment>MAPK14  translocates  from cytoplasm to nucleus upon stimulation with RANKL in murine bone marrow cells.</Comment>
+    <Graphics ZOrder="33071" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="228.10994397759129" Y="992.5588235294122" GraphRef="d0cf3" RelX="0.0" RelY="1.0"/>
+      <Point X="228.49369747899186" Y="1204.0571857092004" GraphRef="e63c5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df94b">
+    <Graphics ZOrder="33077" LineThickness="2.0" Color="ff00ff">
+      <Point X="85.43881856540082" Y="1147.0"/>
+      <Point X="85.43881856540082" Y="1174.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f426a">
+    <Graphics ZOrder="33079" LineThickness="2.0" Color="ff00ff">
+      <Point X="85.43881856540082" Y="1162.0"/>
+      <Point X="85.0" Y="1136.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eeff9">
+    <Graphics ZOrder="33081" LineThickness="2.0" Color="ff00ff">
+      <Point X="246.33333333333348" Y="1152.0"/>
+      <Point X="246.33333333333348" Y="1174.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bef8f">
+    <Graphics ZOrder="33087" LineThickness="2.0" Color="ff00ff">
+      <Point X="246.33333333333348" Y="1165.0"/>
+      <Point X="246.33333333333348" Y="1138.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e6068">
+    <Comment>Interaction of TRAF6 with SRC enhaced the kinase activity of  SRC which in turn leads to the tyrosine phosphorylation of downstream molecule, CBL</Comment>
+    <Graphics ZOrder="33112" LineStyle="Broken" LineThickness="2.0">
+      <Point X="250.0" Y="612.0" GraphRef="b6d5d" RelX="0.0" RelY="1.0"/>
+      <Point X="250.5" Y="645.0" GraphRef="cf028" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c90f9">
+    <Graphics ZOrder="33119" LineThickness="2.0" Color="33cc00">
+      <Point X="313.3333333333335" Y="953.0" GraphRef="adaf1" RelX="0.0" RelY="1.0"/>
+      <Point X="313.8333333333335" Y="1055.0" GraphRef="deaa2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c9e13">
+    <Graphics ZOrder="33120" LineThickness="2.0" Color="ff00ff">
+      <Point X="328.3333333333335" Y="1145.0"/>
+      <Point X="328.3333333333335" Y="1172.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bdac9">
+    <Graphics ZOrder="33121" LineThickness="2.0" Color="ff00ff">
+      <Point X="328.0" Y="1160.0"/>
+      <Point X="328.3333333333335" Y="1133.0" GraphRef="f58bb" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f66f9">
+    <Comment> LYN inhibits osteclastogenesis by inhibiting the activation of PLCG1 mediated calcium signaling.</Comment>
+    <Graphics ZOrder="33124" LineThickness="2.0" Color="ff3300">
+      <Point X="91.43881856540082" Y="533.0" GraphRef="e4464" RelX="-1.0" RelY="0.0"/>
+      <Point X="70.43881856540082" Y="533.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b98df">
+    <Graphics ZOrder="33127" LineStyle="Broken" LineThickness="2.0">
+      <Point X="228.66036414565866" Y="830.7226890756294" GraphRef="f15f7" RelX="0.0" RelY="1.0"/>
+      <Point X="228.10994397759129" Y="972.5588235294122" GraphRef="d0cf3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c19a7">
+    <Graphics ZOrder="33128" LineStyle="Broken" LineThickness="2.0">
+      <Point X="501.5" Y="768.0" GraphRef="c7add" RelX="0.0" RelY="1.0"/>
+      <Point X="501.0" Y="975.0" GraphRef="cb8bc" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de34c">
+    <Comment>RANK stimulation leads to the activation of RAC1 in osteoclasts</Comment>
+    <Graphics ZOrder="33130" LineStyle="Broken" LineThickness="2.0">
+      <Point X="285.0" Y="687.5" GraphRef="ebc51" RelX="-1.0" RelY="0.0"/>
+      <Point X="204.40336134453776" Y="687.0420168067227" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a72ab" GroupRef="e099f">
+    <Comment>TNFRSF11B (OPG)  is a negative regulator of RANK signaling pathway and inhibits  osteoclastogenesis  in vivo and in vitro</Comment>
+    <Graphics ZOrder="33131" LineThickness="2.0" Color="ff3300">
+      <Point X="340.0" Y="362.0" GraphRef="ad383" RelX="-1.0" RelY="0.0"/>
+      <Point X="271.0" Y="362.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ba0e3">
+    <Comment>UBA domain of TRAF6 interacts with SQSTM1upon stimulation with RANKL in mouse bone marrow derived cells , RAW264.7 cells and in 293 cells. SQSTM1 is an important mediator of RANK- actiavted osteoclastogenesis.</Comment>
+    <Graphics ZOrder="33139" LineThickness="2.0" Color="00cc00">
+      <Point X="379.0" Y="652.5" GraphRef="fb220" RelX="-0.5" RelY="1.0"/>
+      <Point X="341.0" Y="687.5" GraphRef="ebc51" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3a0f">
+    <Comment/>
+    <Graphics ZOrder="33141" LineStyle="Broken" LineThickness="2.0">
+      <Point X="473.0" Y="1222.0"/>
+      <Point X="473.9166666666665" Y="1297.0" GraphRef="a9022" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2e49">
+    <Graphics ZOrder="33153" LineThickness="2.0">
+      <Point X="193.0" Y="1341.0"/>
+      <Point X="193.5" Y="1420.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a8582">
+    <Graphics ZOrder="33155" LineThickness="2.0">
+      <Point X="453.0" Y="1341.0"/>
+      <Point X="84.0" Y="1341.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a3875">
+    <Graphics ZOrder="33157" LineThickness="2.0">
+      <Point X="313.5" Y="1278.5" GraphRef="c642d" RelX="0.0" RelY="1.0"/>
+      <Point X="313.0" Y="1339.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bef12">
+    <Graphics ZOrder="33158" LineThickness="2.0">
+      <Point X="228.12184873949593" Y="1311.5812713974478" GraphRef="d7113" RelX="0.0" RelY="1.0"/>
+      <Point X="228.0" Y="1340.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dca02">
+    <Graphics ZOrder="33159" LineThickness="2.0">
+      <Point X="269.0" Y="1341.0"/>
+      <Point X="270.0" Y="1419.5" GraphRef="ab90e" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d8ea8">
+    <Graphics ZOrder="33160" LineThickness="2.0">
+      <Point X="417.0" Y="1341.0"/>
+      <Point X="417.25" Y="1417.5" GraphRef="c48cf" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a72eb">
+    <Graphics ZOrder="33161" LineThickness="2.0">
+      <Point X="124.0" Y="1342.0"/>
+      <Point X="125.0" Y="1419.5" GraphRef="d9b82" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cfe45">
+    <Graphics ZOrder="33167" LineThickness="2.0">
+      <Point X="350.0" Y="1341.0"/>
+      <Point X="350.0" Y="1418.5" GraphRef="d2f82" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d3dcd">
+    <Comment>FOS is required for osteoclast differentiation and is an important regulator osteoclast-macrophage lineage determination and bone remodeling in vivo</Comment>
+    <Graphics ZOrder="33169" LineStyle="Broken" LineThickness="2.0">
+      <Point X="433.0" Y="1223.0"/>
+      <Point X="433.25" Y="1297.0" GraphRef="cb7c6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f62c3">
+    <Graphics ZOrder="33170" LineStyle="Broken" LineThickness="2.0">
+      <Point X="471.0" Y="1222.0"/>
+      <Point X="433.0" Y="1222.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d26c9">
+    <Graphics ZOrder="33172" LineThickness="2.0">
+      <Point X="157.77138715341584" Y="1312.2397203031649" GraphRef="a1f36" RelX="0.0" RelY="1.0"/>
+      <Point X="157.0" Y="1339.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cc18c">
+    <Comment>RELB gets activated through MAP3K14 in alternative NF-kappa B pathway. RELB forms a heterodimer with NFKB2. RELB knock-out mice studies have shown that it is required for RANKL induced osteoclastogenesis. </Comment>
+    <Graphics ZOrder="33177" LineStyle="Broken" LineThickness="2.0">
+      <Point X="386.59663865546224" Y="826.5588235294122" GraphRef="adf7a" RelX="0.0" RelY="1.0"/>
+      <Point X="386.8333333333335" Y="1054.0" GraphRef="d5638" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b1edf">
+    <Comment>RELB translocated from cytoplasm to nucleus upon stimulation with RANKL in RAW264.7 cells.</Comment>
+    <Comment>NFKB2 translocated from cytoplasm to nucleus upon stimulation with RANKL in RAW264.7 cells.</Comment>
+    <Graphics ZOrder="33179" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="386.8643042350908" Y="1093.2713915298184" GraphRef="fca4e" RelX="0.0" RelY="1.0"/>
+      <Point X="386.8333333333335" Y="1237.5" GraphRef="cd3ac" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ecb6d">
+    <Graphics ZOrder="33180" LineThickness="2.0" Color="ff00ff">
+      <Point X="402.3333333333335" Y="1145.0"/>
+      <Point X="402.3333333333335" Y="1172.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5bc6">
+    <Graphics ZOrder="33181" LineThickness="2.0" Color="ff00ff">
+      <Point X="402.0" Y="1160.0"/>
+      <Point X="402.3333333333335" Y="1133.0" GraphRef="b0f16" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fed26">
+    <Graphics ZOrder="33186" LineThickness="2.0">
+      <Point X="386.8643042350908" Y="1278.5" GraphRef="ee8db" RelX="0.0" RelY="1.0"/>
+      <Point X="386.0" Y="1339.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b6ded">
+    <Comment>Inhibitors of MEK's enhanced RANKL-mediated osteoclastogenesis.</Comment>
+    <Graphics ZOrder="33187" LineThickness="2.0" Color="ff3300">
+      <Point X="501.5" Y="1016.0" GraphRef="e186a" RelX="0.0" RelY="1.0"/>
+      <Point X="501.0" Y="1130.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e90c7">
+    <Comment>RANKL induces interaction of NFATC1 with PU1 in HEK 293, murine bone marrow derived macrophages and osteoclasts.</Comment>
+    <Graphics ZOrder="33188" LineThickness="2.0" Color="33cc00">
+      <Point X="114.43881856540082" Y="1302.021008403363" GraphRef="dd262" RelX="1.0" RelY="0.0"/>
+      <Point X="139.5427743068317" Y="1302.2397203031649" GraphRef="a1f36" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e3410">
+    <Graphics ZOrder="33751" LineThickness="2.0">
+      <Point X="627.999999999997" Y="686.4652880354461"/>
+      <Point X="648.9999999999964" Y="686.4652880354461" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bf550">
+    <Graphics ZOrder="33752" LineThickness="2.0" Color="00cc00">
+      <Point X="626.6666666666642" Y="625.79862136878"/>
+      <Point X="685.6666666666642" Y="625.79862136878" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d822e">
+    <Graphics ZOrder="33753" LineThickness="2.0">
+      <Point X="656.6666666666642" Y="630.79862136878"/>
+      <Point X="656.6666666666642" Y="620.79862136878"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b96a8">
+    <Graphics ZOrder="33764" LineThickness="2.0" Color="ff0033">
+      <Point X="628.999999999997" Y="970.9999999999945"/>
+      <Point X="693.9999999999964" Y="970.9999999999945" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5eb1">
+    <Graphics ZOrder="33765" LineThickness="2.0" Color="9900cc">
+      <Point X="628.999999999997" Y="871.9999999999945"/>
+      <Point X="686.9999999999964" Y="872.5024647292369" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3c3d">
+    <Graphics ZOrder="33766" LineThickness="2.0" Color="cc00cc">
+      <Point X="628.999999999997" Y="852.6582084822985"/>
+      <Point X="686.9999999999964" Y="852.6582084822985" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ee79d">
+    <Graphics ZOrder="33767" LineThickness="2.0" Color="999900">
+      <Point X="628.999999999997" Y="812.6593972779065"/>
+      <Point X="686.9999999999964" Y="812.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a2a86">
+    <Graphics ZOrder="33768" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="629.9999999999969" Y="990.9999999999945"/>
+      <Point X="687.9999999999964" Y="991.5012759336287" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ec88c">
+    <Graphics ZOrder="33769" LineThickness="2.0" Color="00ffff">
+      <Point X="628.999999999997" Y="792.6593972779065"/>
+      <Point X="686.9999999999964" Y="792.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de41f">
+    <Graphics ZOrder="33770" LineThickness="2.0" Color="ffcc33">
+      <Point X="628.999999999997" Y="731.9999999999945"/>
+      <Point X="687.0000017000161" Y="732.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f5cf8">
+    <Graphics ZOrder="33771" LineThickness="3.0">
+      <Point X="729.0952380952347" Y="520.0476190476165" GraphRef="d8839" RelX="0.0" RelY="1.0"/>
+      <Point X="729.4285714285679" Y="546.6666666666631"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a9a5e">
+    <Graphics ZOrder="33789" LineThickness="2.0" Color="0000ff">
+      <Point X="628.999999999997" Y="772.6593972779065"/>
+      <Point X="686.9999999999964" Y="772.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de1c3">
+    <Graphics ZOrder="33790" LineThickness="2.0" Color="ff9933">
+      <Point X="628.999999999997" Y="752.6593972779065"/>
+      <Point X="686.9999999999964" Y="752.6593972779065" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d8fea">
+    <Graphics ZOrder="33797" LineThickness="2.0" Color="cccc00">
+      <Point X="627.999999999997" Y="831.9999999999945"/>
+      <Point X="686.9999999999964" Y="832.5036535248448" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="abcf1">
+    <Graphics ZOrder="33799" LineThickness="2.0" Color="770000">
+      <Point X="628.999999999997" Y="892.6570196866903"/>
+      <Point X="686.9999999999964" Y="892.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b87ce">
+    <Graphics ZOrder="33801" LineThickness="2.0" Color="775200">
+      <Point X="628.999999999997" Y="912.6570196866903"/>
+      <Point X="686.9999999999964" Y="912.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c4927">
+    <Graphics ZOrder="33803" LineThickness="2.0" Color="ff6666">
+      <Point X="628.999999999997" Y="932.6570196866903"/>
+      <Point X="686.9999999999964" Y="932.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c63e3">
+    <Graphics ZOrder="33817" LineThickness="2.0" Color="999999">
+      <Point X="628.999999999997" Y="952.6570196866903"/>
+      <Point X="686.9999999999964" Y="952.6570196866903" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c1ca3">
+    <Graphics ZOrder="33819" LineThickness="2.0">
+      <Point X="646.9999999999964" Y="686.4652880354461"/>
+      <Point X="684.6666666666642" Y="686.79862136878" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="afc40">
+    <Graphics ZOrder="33820" LineThickness="2.0">
+      <Point X="627.999999999997" Y="663.9999999999958"/>
+      <Point X="685.9999999999964" Y="663.9999999999958" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d98f6">
+    <Graphics ZOrder="33821" LineThickness="2.0" Color="00cc00">
+      <Point X="627.999999999997" Y="603.9999999999964"/>
+      <Point X="685.9999999999964" Y="603.9999999999964" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cca98">
+    <Graphics ZOrder="33822" LineStyle="Broken" LineThickness="2.0">
+      <Point X="627.999999999997" Y="645.9999999999961"/>
+      <Point X="685.9999999999964" Y="645.9999999999961" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5a57">
+    <Graphics ZOrder="33823" LineThickness="2.0">
+      <Point X="675.3333333333298" Y="712.3333333333275"/>
+      <Point X="681.9999999999964" Y="718.9999999999939" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c9e14">
+    <Graphics ZOrder="33826" LineThickness="2.0" Color="ff00ff">
+      <Point X="683.4837201898356" Y="1108.0887265873953"/>
+      <Point X="683.4837201898356" Y="1133.0887265873953" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e55e4">
+    <Graphics ZOrder="33827" LineThickness="2.0" Color="ff00ff">
+      <Point X="683.4546258735204" Y="1119.8977880629868"/>
+      <Point X="683.4546258735204" Y="1099.0266446873065" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed12d">
+    <Graphics ZOrder="33828" LineThickness="3.0" Color="ff3399">
+      <Point X="654.9999999999977" Y="521.465288035447" GraphRef="a2ed1" RelX="0.0" RelY="1.0"/>
+      <Point X="655.6533496707339" Y="539.4288583797635" GraphRef="cae70" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="RANKL/RANK Signaling Pathway" GraphId="ae15d">
+    <Graphics CenterX="274.5" CenterY="205.0" Width="341.0" Height="28.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="18" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Osteoclastogenesis" GraphId="a4ef9">
+    <Graphics CenterX="523.013828867761" CenterY="1136.4658599827146" Width="120.1382886776144" Height="27.657735522903913" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="e2a2c">
+    <Graphics CenterX="246.83333333333348" CenterY="1126.0" Width="29.0" Height="20.0" ZOrder="33093" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="a63f3">
+    <Graphics CenterX="84.43881856540082" CenterY="1128.0" Width="28.0" Height="20.0" ZOrder="33095" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="a25b6">
+    <Graphics CenterX="245.33333333333348" CenterY="1184.0" Width="30.0" Height="20.0" ZOrder="33103" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="f45b0">
+    <Graphics CenterX="86.43881856540082" CenterY="1184.0" Width="30.0" Height="20.0" ZOrder="33116" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="f58bb">
+    <Graphics CenterX="328.3333333333335" CenterY="1123.0" Width="28.0" Height="20.0" ZOrder="33122" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="edae8">
+    <Graphics CenterX="328.3333333333335" CenterY="1182.0" Width="30.0" Height="20.0" ZOrder="33123" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="b0f16">
+    <Graphics CenterX="402.3333333333335" CenterY="1123.0" Width="28.0" Height="20.0" ZOrder="33182" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="a76aa">
+    <Graphics CenterX="403.3333333333335" CenterY="1182.0" Width="30.0" Height="20.0" ZOrder="33183" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="4.0" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="b7ab7">
+    <Graphics CenterX="657.6666666666642" CenterY="1010.79862136878" Width="60.0" Height="20.0" ZOrder="33754" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="c8ad5">
+    <Graphics CenterX="657.6666666666642" CenterY="1044.29862136878" Width="60.0" Height="20.0" ZOrder="33755" FillColor="99ffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="mRNA" GraphId="b15ef">
+    <Graphics CenterX="884.4999999999964" CenterY="513.4652880354469" Width="41.0" Height="20.0" ZOrder="33756" FillColor="ffffff" FontStyle="Italic" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Ligand" GraphId="a2ed1">
+    <Graphics CenterX="654.9999999999977" CenterY="511.465288035447" Width="60.0" Height="20.0" ZOrder="33757" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Receptor" GraphId="e41bd">
+    <Graphics CenterX="728.9999999999964" CenterY="557.4652880354461" Width="64.0" Height="20.0" ZOrder="33758" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="ea726">
+    <Graphics CenterX="820.4999999999964" CenterY="513.4652880354469" Width="60.0" Height="20.0" ZOrder="33759" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein - protein dissociation" GraphId="f341c">
+    <Graphics CenterX="788.6666666666642" CenterY="625.29862136878" Width="186.0" Height="13.0" ZOrder="33760" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Enzyme Complex" GraphId="c9f34">
+    <Graphics CenterX="847.9999999999964" CenterY="557.4652880354461" Width="114.0" Height="20.0" ZOrder="33761" FillColor="99ff33" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Small molecule" GraphId="b2469">
+    <Graphics CenterX="745.9999999999964" CenterY="1075.6402508551844" Width="104.0" Height="21.0" ZOrder="33762" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Induced activation" GraphId="c3487">
+    <Graphics CenterX="754.0450127599462" CenterY="1044.388771243952" Width="142.8571428571425" Height="29.52380952380917" ZOrder="33763" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Inhibition" GraphId="a300f">
+    <Graphics CenterX="727.3437584840058" CenterY="968.8597491448064" Width="66.0" Height="20.0" ZOrder="33773" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Auto catalysis" GraphId="fa2f3">
+    <Graphics CenterX="739.7194982896201" CenterY="713.999999999995" Width="94.0" Height="20.0" ZOrder="33774" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Transport" GraphId="dfdd1">
+    <Graphics CenterX="727.3437584840058" CenterY="991.2805017103708" Width="66.0" Height="20.0" ZOrder="33775" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Positive regulation of gene expression" GraphId="a204f">
+    <Graphics CenterX="816.30952380952" CenterY="672.9999999999959" Width="247.0" Height="20.0" ZOrder="33776" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Leads to through unknown mechanism" GraphId="d7c1e">
+    <Graphics CenterX="817.7485203887675" CenterY="646.9999999999964" Width="243.0" Height="20.0" ZOrder="33777" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Negative regulation of gene expression" GraphId="db738">
+    <Graphics CenterX="817.0290220991437" CenterY="694.9999999999955" Width="247.0" Height="20.0" ZOrder="33778" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Translocation " GraphId="fab40">
+    <Graphics CenterX="740.7194982896199" CenterY="1113.7168920019512" Width="92.0" Height="20.0" ZOrder="33779" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ubiquitination" GraphId="a0b07">
+    <Graphics CenterX="739.6480697181914" CenterY="853.9999999999945" Width="93.66666666666663" Height="20.0" ZOrder="33780" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deubiquitination" GraphId="db8f8">
+    <Graphics CenterX="747.7961394363865" CenterY="872.9999999999945" Width="111.0" Height="20.0" ZOrder="33781" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Sumoylation" GraphId="eac5c">
+    <Graphics CenterX="734.3437584840058" CenterY="812.9999999999945" Width="86.0" Height="20.0" ZOrder="33782" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Induced catalysis" GraphId="d17f1">
+    <Graphics CenterX="751.0792474344316" CenterY="1013.9999999999944" Width="111.0" Height="20.0" ZOrder="33783" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein-protein interaction" GraphId="db2c6">
+    <Graphics CenterX="780.8727805831531" CenterY="603.9999999999964" Width="172.66666666666663" Height="20.0" ZOrder="33784" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Acetylation" GraphId="c1495">
+    <Graphics CenterX="730.9999999999964" CenterY="731.8597491448065" Width="74.0" Height="20.0" ZOrder="33785" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Dephosphorylation" GraphId="cd647">
+    <Graphics CenterX="753.8861649562866" CenterY="792.9999999999945" Width="127.0" Height="20.0" ZOrder="33786" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="LEGEND" GraphId="bb660">
+    <Graphics CenterX="767.9999999999964" CenterY="476.99999999999716" Width="80.0" Height="20.0" ZOrder="33787" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="14" Valign="Middle" Color="3333ff"/>
+  </Label>
+  <Label TextLabel="Phosphorylation" GraphId="aebf8">
+    <Graphics CenterX="745.5104251506723" CenterY="769.9999999999945" Width="111.0" Height="20.0" ZOrder="33788" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deacetylation" GraphId="de20e">
+    <Graphics CenterX="737.124260194382" CenterY="750.9999999999945" Width="89.0" Height="20.0" ZOrder="33791" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Golgi apparatus" GraphId="ceb8f">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="747.3835586686179" CenterY="1239.3835586686212" Width="106.33333333333333" Height="16.0" ZOrder="33793" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Endosome" GraphId="f6c2c">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="729.3861649562865" CenterY="1205.0848129445608" Width="71.33333333333333" Height="16.0" ZOrder="33794" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="d49ae">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="724.9125807677648" CenterY="1274.5238095238099" Width="55.333333333333336" Height="16.0" ZOrder="33795" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Mitochondrion" GraphId="c2e01">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="743.9549872400463" CenterY="1257.3835586686216" Width="96.33333333333333" Height="16.0" ZOrder="33796" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Desumoylation" GraphId="c1f2c">
+    <Graphics CenterX="741.9389965792438" CenterY="831.9999999999945" Width="99.0" Height="20.0" ZOrder="33798" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Methylation" GraphId="a456b">
+    <Graphics CenterX="732.9389965792438" CenterY="892.7194982896183" Width="75.0" Height="20.0" ZOrder="33800" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Demethylation" GraphId="ed5af">
+    <Graphics CenterX="742.9389965792438" CenterY="911.7194982896183" Width="93.0" Height="20.0" ZOrder="33802" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Palmitoylation" GraphId="d4144">
+    <Graphics CenterX="741.4389965792438" CenterY="931.9999999999945" Width="90.0" Height="20.0" ZOrder="33804" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="b218e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="730.3861649562865" CenterY="1165.2433078134304" Width="71.33333333333333" Height="16.0" ZOrder="33805" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="EC" GraphId="fd2d9">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="677.9999999999965" CenterY="1186.5238095238071" Width="22.333333333333332" Height="16.0" ZOrder="33806" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Plasma membrane" GraphId="b4444">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="756.1930824781379" CenterY="1145.5238095238064" Width="120.66666666666674" Height="16.0" ZOrder="33807" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="MT" GraphId="f59ad">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="678.9999999999965" CenterY="1256.5238095238099" Width="24.333333333333332" Height="16.0" ZOrder="33808" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Endoplasmic reticulum" GraphId="cce62">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="769.5316283868125" CenterY="1223.5238095238085" Width="150.33333333333334" Height="16.0" ZOrder="33809" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="e1d17">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="677.9999999999965" CenterY="1165.5238095238064" Width="22.333333333333332" Height="16.0" ZOrder="33810" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="PM" GraphId="ecbcb">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="678.9999999999965" CenterY="1145.5238095238064" Width="25.333333333333332" Height="16.0" ZOrder="33811" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="GO" GraphId="c8b5d">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="677.9999999999965" CenterY="1239.5238095238094" Width="25.333333333333332" Height="16.0" ZOrder="33812" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="f47f3">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="677.9999999999965" CenterY="1276.5238095238099" Width="23.333333333333332" Height="16.0" ZOrder="33813" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Extracellular" GraphId="adc5d">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="736.1982950534795" CenterY="1185.8969430417526" Width="86.33333333333333" Height="16.0" ZOrder="33814" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="ER" GraphId="bf37b">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="677.9999999999965" CenterY="1222.5238095238087" Width="22.333333333333332" Height="16.0" ZOrder="33815" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="EN" GraphId="b3270">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="677.9999999999965" CenterY="1205.5238095238083" Width="22.333333333333332" Height="16.0" ZOrder="33816" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Proteolytic cleavage" GraphId="f28c4">
+    <Graphics CenterX="758.3437584840058" CenterY="952.2805017103708" Width="122.0" Height="20.0" ZOrder="33818" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape TextLabel="Calcineurin" GraphId="d36d1">
+    <Graphics CenterX="70.93881856540082" CenterY="796.0" Width="83.0" Height="30.0" ZOrder="16384" FillColor="99ff33" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="a74cc">
+    <Graphics CenterX="153.49427073586716" CenterY="912.5685213116403" Width="15.678381338062" Height="31.733599350666836" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="2.0" Color="0000ff" Rotation="2.9430866016695862"/>
+  </Shape>
+  <Shape TextLabel="Ca2+" GraphId="d9081">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="None"/>
+    <Graphics CenterX="70.93881856540082" CenterY="728.5" Width="45.0" Height="25.0" ZOrder="16388" FillColor="ffccff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="d8839">
+    <Graphics CenterX="729.0952380952347" CenterY="504.54761904761654" Width="30.0" Height="31.0" ZOrder="33772" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="c54b5">
+    <Graphics CenterX="775.5" CenterY="875.5" Width="355.0" Height="825.0" ZOrder="33792" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="d86af">
+    <Graphics CenterX="670.666666666663" CenterY="715.666666666661" Width="14.907119999999999" Height="20.0" ZOrder="33824" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="2.0" Rotation="2.554867"/>
+  </Shape>
+  <Shape TextLabel="Molecule" GraphId="ea094">
+    <Graphics CenterX="660.1666666666642" CenterY="1076.5567928730597" Width="59.0" Height="19.113585746102444" ZOrder="33825" FillColor="ffccff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="cae70">
+    <Graphics CenterX="655.6533496707339" CenterY="554.9288583797635" Width="30.0" Height="31.0" ZOrder="33829" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" Color="ff0066" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e6a91">
+    <Graphics CenterX="685.6666666666642" CenterY="1022.79862136878" Width="14.0" Height="14.0" ZOrder="33830" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="aa906" GraphId="a6401" Style="Group"/>
+  <Group GroupId="b603b" GraphId="b9b82" Style="Group"/>
+  <Group GroupId="d43d5" GraphId="dc0a7" Style="Group"/>
+  <Group GroupId="f5f42" Style="Group"/>
+  <Group GroupId="ee190" Style="Group"/>
+  <Group GroupId="f8dc1" Style="Group"/>
+  <Group GroupId="ed6af" Style="Group"/>
+  <Group GroupId="a8415" GraphId="a90b8" Style="Group"/>
+  <Group GroupId="f4b20" Style="Group"/>
+  <Group GroupId="c192b" Style="Group"/>
+  <Group GroupId="de6ac" GraphId="c4de6" Style="Group"/>
+  <Group GroupId="a410b" Style="Group"/>
+  <Group GroupId="e099f" GraphId="ba0ec" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+</Pathway>

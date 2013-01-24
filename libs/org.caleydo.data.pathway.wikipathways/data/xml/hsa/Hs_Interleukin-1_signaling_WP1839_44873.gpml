@@ -1,0 +1,1741 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Interleukin-1 signaling" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Ray, K" Maintainer="Jupe, S" Email="sjupe@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Interleukin 1 (IL1) signals via Interleukin 1 receptor 1 (IL1R1), the only signaling-capable IL1 receptor. This is a single chain type 1 transmembrane protein comprising an extracellular ligand binding domain and an intracellular  region called the Toll/Interleukin-1 receptor (TIR) domain that is structurally conserved and shared by other members of the two families of receptors (Xu et al. 2000). This domain is also shared by the downstream adapter molecule MyD88. IL1 binding to IL1R1 leads to the recruitment of a second receptor chain termed the IL1 receptor accessory protein (IL1RAP or IL1RAcP) enabling the formation of a high-affinity ligand-receptor complex that is capable of signal transduction. Intracellular signaling is initiated by the recruitment of MyD88 to the IL-1R1/IL1RAP complex. IL1RAP is only recruited to IL1R1 when IL1 is present; it is believed that a TIR domain signaling complex is formed between the receptor and the adapter TIR domains. The recruitment of MyD88 leads to the recruitment of Interleukin-1 receptor-associated kinase (IRAK)-1 and -4, probably via their death domains. IRAK4 then activates IRAK1, allowing IRAK1 to autophosphorylate. Both IRAK1 and IRAK4 then dissociate from MyD88 (Brikos et al. 2007) which remains stably complexed with IL-1R1 and IL1RAP. They in turn interact with Tumor Necrosis Factor Receptor (TNFR)-Associated Factor 6 (TRAF6), which is an E3 ubiquitin ligase (Deng et al. 2000). TRAF6 is then thought to auto-ubiquinate, attaching K63-polyubiquitin to itself with the assistance of the E2 conjugating complex Ubc13/Uev1a. K63-pUb-TRAF6 recruits Transforming Growth Factor (TGF) beta-activated protein kinase 1 (TAK1) in a complex with TAK1-binding protein 2 (TAB2) and TAB3, which both contain nuclear zinc finger motifs that interact with K63-polyubiquitin chains (Ninomiya-Tsuji et al. 1999). This activates TAK1, which then activates  inhibitor of NF-kappaB (IkappaB) kinase 2 (IKK2 or IKKB) within the IKK complex, the kinase responsible for phosphorylation of IkappaB. The IKK complex also contains the scaffold protein NF-kappa B essential modulator (NEMO). TAK1 also couples to the upstream kinases for p38 and c-jun N-terminal kinase (JNK). IRAK1 undergoes K63-linked polyubiquination; Pellino E3 ligases are important in this process. (Butler et al. 2007; Ordureau et al. 2008). The activity of these proteins is greatly enhanced by IRAK phosphorylation (Schauvliege et al. 2006), leading to K63-linked polyubiquitination of IRAK1. This recruits NEMO to IRAK1, with NEMO binding to polyubiquitin (Conze et al. 2008).&lt;br&gt;&lt;br&gt;TAK1 activates IKKB (and IKK), resulting in phosphorylation of the inhibitory IkB proteins and enabling translocation of NFkB to the nucleus; IKKB also phosphorylates NFkB p105, leading to its degradation and the subsequent release of active TPL2 that triggers the extracellular-signal regulated kinase (ERK)1/2 MAPK cascade. TAK1 can also trigger the p38 and JNK MAPK pathways via activating the upstream MKKs3, 4 and 6. The MAPK pathways activate a number of downstream kinases and transcription factors that co-operate with NFkB to induce the expression of a range of TLR/IL-1R-responsive genes. There are reports suggesting that IL1 stimulation increases nuclear localization of IRAK1 (Bol et al. 2000) and that nuclear IRAK1 binds to the promoter of NFkB-regulated gene and IkBa, enhancing binding of the NFkB p65 subunit to NFkB responsive elements within the IkBa promoter.  IRAK1 is required for IL1-induced Ser-10 phosphorylation of histone H3 in vivo (Liu et al. 2008). However, details of this aspect of IRAK1 signaling mechanisms remain unclear.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_451657</BiopaxRef>
+  <BiopaxRef>lit_451412</BiopaxRef>
+  <DataNode GraphId="n3_REACTOME_445744" TextLabel="Interleukin-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="335.5" CenterY="52.5" Width="85.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22576"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_197595" TextLabel="IL1R1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="368.5" CenterY="128.5" Width="43.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P14778"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_445755" TextLabel="Interleukin-1 &#10;receptor type 1:&#10;Interleukin-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="517.0" CenterY="122.5" Width="100.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23118"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_197598" TextLabel="IL1R2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="264.5" CenterY="128.5" Width="43.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P27930"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_446125" TextLabel="Interleukin 1 &#10;receptor type 2:&#10;interleukin 1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="136.0" CenterY="128.5" Width="100.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22786"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_445743" TextLabel="IL1RN&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="634.0" CenterY="129.5" Width="44.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18510"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_445750" TextLabel="Interleukin 1 &#10;receptors&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="755.0" CenterY="126.0" Width="84.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_23342"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_445751" TextLabel="Interleukin 1 &#10;receptors:IL1RN&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="898.5" CenterY="128.0" Width="101.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22878"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_445745" TextLabel="mIL1RAP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="78.0" CenterY="191.5" Width="64.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NPH3-1"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_445758" TextLabel="IL1R1:IL1:IL1RAP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="91.0" CenterY="258.5" Width="114.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22656"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_193932" TextLabel="MYD88 homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="310.5" CenterY="253.5" Width="123.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_14253"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_450120" TextLabel="IL1:IL1R1:IL1RAP:&#10;MYD88 homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="88.5" CenterY="335.0" Width="123.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23167"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_166081" TextLabel="IRAK4&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="275.5" CenterY="354.5" Width="45.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NWZ3"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_446637" TextLabel="IL1 receptor &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="99.5" CenterY="406.0" Width="83.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23029"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_446885" TextLabel="TOLLIP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="275.0" CenterY="411.5" Width="54.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9H0E2"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_446888" TextLabel="IL1 receptor &#10;complex:TOLLIP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="97.5" CenterY="481.0" Width="109.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23348"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="270.0" CenterY="483.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="272.0" CenterY="582.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_446643" TextLabel="IL1 receptor complex &#10;- activated IRAK4:&#10;TOLLIP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="100.5" CenterY="609.5" Width="129.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23002"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_446639" TextLabel="IRAK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="279.5" CenterY="634.5" Width="45.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P51617"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_446693" TextLabel="IL1 receptor &#10;complex-activated &#10;IRAK4:TOLLIP:IRAK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="103.5" CenterY="703.0" Width="121.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22771"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="283.0" CenterY="693.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_446689" TextLabel="IL1 receptor &#10;complex- activated &#10;IRAK4:TOLLIP:p-&#10;IRAK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="97.5" CenterY="840.0" Width="125.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23087"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="292.0" CenterY="819.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="294.0" CenterY="862.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_446696" TextLabel="IL1 receptor &#10;complex- activated &#10;IRAK4:TOLLIP:hp-&#10;IRAK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="99.5" CenterY="981.0" Width="125.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23332"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="261.0" CenterY="965.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_446636" TextLabel="p-IRAK2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="427.0" CenterY="661.5" Width="56.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43187"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_772534" TextLabel="IRAK2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="374.5" CenterY="551.5" Width="45.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43187"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_166366" TextLabel="TRAF6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="286.5" CenterY="1033.5" Width="49.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y4K3"/>
+  </DataNode>
+  <DataNode GraphId="n55_REACTOME_446864" TextLabel="IL1 receptor &#10;complex-activated &#10;IRAK4:TOLLIP:hp-&#10;IRAK:TRAF6&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="104.5" CenterY="1089.0" Width="121.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22757"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_507714" TextLabel="p62:MEKK3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="362.5" CenterY="1070.5" Width="79.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23211"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_507716" TextLabel="p62:MEKK3:TRAF6&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="510.0" CenterY="1031.5" Width="124.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23141"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_449046" TextLabel="IL1B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="429.5" CenterY="965.5" Width="35.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P01584"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_446649" TextLabel="Activated IRAK4&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="408.5" CenterY="1283.5" Width="105.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NWZ3"/>
+  </DataNode>
+  <DataNode GraphId="n64_REACTOME_450121" TextLabel="hp-IRAK1:TRAF6&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="92.5" CenterY="1277.5" Width="109.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22529"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_166103" TextLabel="IRAK-M&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="194.5" CenterY="1183.5" Width="53.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y616"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_450159" TextLabel="hp-IRAK1:oligo-&#10;TRAF6&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="287.5" CenterY="1417.0" Width="101.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22793"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_202463" TextLabel="Ubc13/Uev1A &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="460.5" CenterY="1554.0" Width="93.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_12995"/>
+  </DataNode>
+  <DataNode GraphId="n71_REACTOME_450152" TextLabel="K63-polyubiquitin&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="424.5" CenterY="1450.5" Width="113.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_21645"/>
+  </DataNode>
+  <DataNode GraphId="n72_REACTOME_450144" TextLabel="hp-IRAK1:K6 poly-&#10;Ub oligo-TRAF6&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="199.0" CenterY="1593.0" Width="124.0" Height="40.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23272"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_446878" TextLabel="TAK1 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="368.0" CenterY="1616.5" Width="96.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22633"/>
+  </DataNode>
+  <DataNode GraphId="n75_REACTOME_450185" TextLabel="hp-IRAK1:K6-poly-&#10;Ub oligo-TRAF6:&#10;TAK1 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="277.0" CenterY="1718.5" Width="116.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22797"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_450186" TextLabel="hp-IRAK1:K6-poly-&#10;Ub oligo-TRAF6:&#10;Activated TAK1 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="278.0" CenterY="1850.0" Width="116.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23314"/>
+  </DataNode>
+  <DataNode GraphId="n81_REACTOME_450810" TextLabel="hp-IRAK1, IRAK4&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="899.5" CenterY="1901.5" Width="109.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_23241"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_450814" TextLabel="Pellino 1,2,3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="884.0" CenterY="1708.5" Width="84.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22780"/>
+  </DataNode>
+  <DataNode GraphId="n83_REACTOME_451413" TextLabel="hp-IRAK1:Pellino, &#10;IRAK4:Pellino&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="714.0" CenterY="1773.0" Width="118.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23330"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="785.0" CenterY="1831.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="792.0" CenterY="1952.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_451425" TextLabel="hp-IRAK1:p-Pellino, &#10;IRAK4:p-Pellino&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="714.5" CenterY="2013.0" Width="129.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22769"/>
+  </DataNode>
+  <DataNode GraphId="n89_REACTOME_451411" TextLabel="hp-IRAK1: p-Pellino-&#10;1,2,(3)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="537.5" CenterY="1383.0" Width="129.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22866"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_450819" TextLabel="p-Pellino-1,2,(3)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="694.5" CenterY="1451.5" Width="109.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22733"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_451565" TextLabel="Poly-K6-Ub-&#10;hp-IRAK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="786.0" CenterY="1535.0" Width="96.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23323"/>
+  </DataNode>
+  <DataNode GraphId="n94_REACTOME_168113" TextLabel="IKK complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="645.0" CenterY="1581.5" Width="84.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7693"/>
+  </DataNode>
+  <DataNode GraphId="n95_REACTOME_451560" TextLabel="Poly-K6-Ub-hp-&#10;IRAK1:IKK complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="717.5" CenterY="1708.0" Width="125.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22624"/>
+  </DataNode>
+  <DataNode GraphId="n102_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="155.0" CenterY="1938.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n103_REACTOME_167998" TextLabel="MKK6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="265.0" CenterY="1938.5" Width="44.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P52564"/>
+  </DataNode>
+  <DataNode GraphId="n104_REACTOME_206255" TextLabel="Phospho MKK6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="281.5" CenterY="2115.5" Width="99.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P52564"/>
+  </DataNode>
+  <DataNode GraphId="n105_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="166.0" CenterY="2105.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n1557_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="501.0" CenterY="1616.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n1558_REACTOME_177663" TextLabel="Activated IKK &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="538.5" CenterY="2067.0" Width="93.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7826"/>
+  </DataNode>
+  <DataNode GraphId="n1559_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="477.0" CenterY="1982.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n1560_REACTOME_772536" TextLabel="Activated TAK &#10;complexes&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="493.0" CenterY="1813.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23279"/>
+  </DataNode>
+  <DataNode GraphId="n1562_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="435.0" CenterY="2205.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n1563_REACTOME_451607" TextLabel="NFkB p105&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="437.5" CenterY="2120.5" Width="71.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P19838"/>
+  </DataNode>
+  <DataNode GraphId="n1564_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="663.0" CenterY="2130.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n1565_REACTOME_451611" TextLabel="p-NFkB p105&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="672.5" CenterY="2204.5" Width="83.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P19838"/>
+  </DataNode>
+  <DataNode GraphId="n1573_REACTOME_206748" TextLabel="SCF beta-TrCP &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="746.0" CenterY="2323.0" Width="100.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22981"/>
+  </DataNode>
+  <DataNode GraphId="n1574_REACTOME_451614" TextLabel="SCF betaTrCP &#10;complex:p-NFKB &#10;p105&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="545.5" CenterY="2258.5" Width="111.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22646"/>
+  </DataNode>
+  <DataNode GraphId="n1576_REACTOME_451619" TextLabel="Ub-p-NFkB1 p105&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="565.5" CenterY="2432.0" Width="115.0" Height="40.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P19838"/>
+  </DataNode>
+  <DataNode GraphId="n1580_REACTOME_451661" TextLabel="ABIN2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="162.5" CenterY="2211.5" Width="45.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8NFZ5"/>
+  </DataNode>
+  <DataNode GraphId="n1581_REACTOME_389388" TextLabel="TPL2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="324.0" CenterY="2277.5" Width="40.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P41279"/>
+  </DataNode>
+  <DataNode GraphId="n1582_REACTOME_451638" TextLabel="NFKB p105:TPL2:&#10;ABIN2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="216.5" CenterY="2325.0" Width="115.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22747"/>
+  </DataNode>
+  <DataNode GraphId="n1585_REACTOME_451647" TextLabel="MEK1, SEK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="254.5" CenterY="2461.5" Width="85.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22657"/>
+  </DataNode>
+  <DataNode GraphId="n1586_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="239.0" CenterY="2385.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n1587_REACTOME_451654" TextLabel="Phospho-MEK1, &#10;phospho-SEK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="416.0" CenterY="2459.0" Width="106.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22945"/>
+  </DataNode>
+  <DataNode GraphId="n1588_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="395.0" CenterY="2380.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <Line GraphId="e_2_REACTOME_445753">
+    <Comment Source="WikiPathways-description">Interleukin-1 receptor type 1 (IL1R1) is the receptor responsible for transmitting the inflammatory effects of Interleukin-1 (IL1).</Comment>
+    <BiopaxRef>lit_446131</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="399.0" Y="81.0" GraphId="e_2_0"/>
+      <Point X="425.0" Y="81.0" GraphId="e_2_1"/>
+      <Point X="464.0" Y="99.0" GraphId="e_2_2" GraphRef="n5_REACTOME_445755" RelX="-1.06" RelY="-0.8679245283018868" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2_a_i"/>
+      <Anchor Position="0.37706590499192094" GraphId="e_2_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="360.0" Y="67.0" GraphId="e_2_i0_0" GraphRef="n3_REACTOME_445744" RelX="0.5882352941176471" RelY="1.3043478260869565"/>
+      <Point X="399.0" Y="81.0" GraphId="e_2_i0_1" GraphRef="e_2_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="375.0" Y="114.0" GraphId="e_2_i1_0" GraphRef="n4_REACTOME_197595" RelX="0.32558139534883723" RelY="-1.2173913043478262"/>
+      <Point X="399.0" Y="81.0" GraphId="e_2_i1_1" GraphRef="e_2_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_REACTOME_446130">
+    <Comment Source="WikiPathways-description">Interleukin-1 receptor type 2 (IL1R2) binds Interleukin-1 but does not participate in any signaling processes. IL1R2 is thought to be a decoy receptor, removing or neutralizing Interleukin-1 that could otherwise stimulate the type 1 receptor.</Comment>
+    <BiopaxRef>lit_446128</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="279.0" Y="80.0" GraphId="e_6_0"/>
+      <Point X="242.0" Y="80.0" GraphId="e_6_1"/>
+      <Point X="189.0" Y="105.0" GraphId="e_6_2" GraphRef="n8_REACTOME_446125" RelX="1.06" RelY="-0.8679245283018868" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_6_a_i"/>
+      <Anchor Position="0.38702790699737266" GraphId="e_6_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="267.0" Y="114.0" GraphId="e_6_i0_0" GraphRef="n7_REACTOME_197598" RelX="0.13953488372093023" RelY="-1.2173913043478262"/>
+      <Point X="279.0" Y="80.0" GraphId="e_6_i0_1" GraphRef="e_6_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="312.0" Y="67.0" GraphId="e_6_i1_0" GraphRef="n3_REACTOME_445744" RelX="-0.5411764705882353" RelY="1.3043478260869565"/>
+      <Point X="279.0" Y="80.0" GraphId="e_6_i1_1" GraphRef="e_6_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_445757">
+    <Comment Source="WikiPathways-description">The interleukin 1 receptor antagonist protein (ILRAP or IL1RN) is a member of the IL1 family that binds to IL1R1 (and with much lower affinity IL1R2) but does not elicit a signaling response. By competing with IL1 for IL1R1 binding  ILRAP acts as a natural antagonist, inhibiting the biological actions of both agonist forms of IL1 (IL1 alpha and IL1 beta).</Comment>
+    <BiopaxRef>lit_446156</BiopaxRef>
+    <BiopaxRef>lit_507729</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="700.0" Y="159.0" GraphId="e_9_0"/>
+      <Point X="817.0" Y="159.0" GraphId="e_9_1"/>
+      <Point X="848.0" Y="150.0" GraphId="e_9_2" GraphRef="n12_REACTOME_445751" RelX="-0.9900990099009901" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_9_a_i"/>
+      <Anchor Position="0.7837619277593786" GraphId="e_9_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="659.0" Y="139.0" GraphId="e_9_i0_0" GraphRef="n10_REACTOME_445743" RelX="1.1363636363636365" RelY="0.8695652173913043"/>
+      <Point X="700.0" Y="159.0" GraphId="e_9_i0_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="723.0" Y="148.0" GraphId="e_9_i1_0" GraphRef="n11_REACTOME_445750" RelX="-0.7619047619047619" RelY="1.1578947368421053"/>
+      <Point X="700.0" Y="159.0" GraphId="e_9_i1_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_445752">
+    <Comment Source="WikiPathways-description">Interleukin receptor 1 type 1 when bound to interleukin 1 binds interleukin 1 receptor accessory protein, essential for eliciting a signaling cascade.</Comment>
+    <BiopaxRef>lit_446145</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="224.0" Y="208.0" GraphId="e_13_0"/>
+      <Point X="224.0" Y="237.0" GraphId="e_13_1"/>
+      <Point X="151.0" Y="249.0" GraphId="e_13_2" GraphRef="n15_REACTOME_445758" RelX="1.0526315789473684" RelY="-0.782608695652174" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_13_a_i"/>
+      <Anchor Position="0.2816088259130127" GraphId="e_13_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="464.0" Y="136.0" GraphId="e_13_i0_0" GraphRef="n5_REACTOME_445755" RelX="-1.06" RelY="0.5283018867924528"/>
+      <Point X="224.0" Y="208.0" GraphId="e_13_i0_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="113.0" Y="194.0" GraphId="e_13_i1_0" GraphRef="n14_REACTOME_445745" RelX="1.09375" RelY="0.2608695652173913"/>
+      <Point X="224.0" Y="208.0" GraphId="e_13_i1_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_450133">
+    <Comment Source="WikiPathways-description">MYD88 is a cytoplasmic adaptor protein that is recruited to the intracellular region of the IL1 receptor complex following IL1 stimulation. MYD88 binds to the complex of the two receptor chains and subsequently to IL-1 receptor-associated kinase 4 (IRAK4). This complex is the minimum required for signaling (Brikos et al. 2007).</Comment>
+    <BiopaxRef>lit_165868</BiopaxRef>
+    <BiopaxRef>lit_446653</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="186.0" Y="288.0" GraphId="e_16_0"/>
+      <Point X="186.0" Y="315.0" GraphId="e_16_1"/>
+      <Point X="153.0" Y="322.0" GraphId="e_16_2" GraphRef="n18_REACTOME_450120" RelX="1.056910569105691" RelY="-0.6842105263157895" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_16_a_i"/>
+      <Anchor Position="0.44455965976866024" GraphId="e_16_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="269.0" Y="268.0" GraphId="e_16_i0_0" GraphRef="n17_REACTOME_193932" RelX="-0.6666666666666666" RelY="1.3043478260869565"/>
+      <Point X="186.0" Y="288.0" GraphId="e_16_i0_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="127.0" Y="273.0" GraphId="e_16_i1_0" GraphRef="n15_REACTOME_445758" RelX="0.631578947368421" RelY="1.3043478260869565"/>
+      <Point X="186.0" Y="288.0" GraphId="e_16_i1_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_446648">
+    <Comment Source="WikiPathways-description">MYD88 is a cytoplasmic adaptor protein that is recruited to the intracellular region of the IL1 receptor complex following IL1 stimulation. MYD88 binds to the complex of the two receptor chains and subsequently to IL-1 receptor-associated kinase 4 (IRAK4). This complex is the minimum required for signaling (Brikos et al. 2007).</Comment>
+    <BiopaxRef>lit_446683</BiopaxRef>
+    <BiopaxRef>lit_446653</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="192.0" Y="367.0" GraphId="e_19_0"/>
+      <Point X="192.0" Y="388.0" GraphId="e_19_1"/>
+      <Point X="144.0" Y="397.0" GraphId="e_19_2" GraphRef="n21_REACTOME_446637" RelX="1.0843373493975903" RelY="-0.47368421052631576" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_19_a_i"/>
+      <Anchor Position="0.30070251931804604" GraphId="e_19_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="250.0" Y="357.0" GraphId="e_19_i0_0" GraphRef="n20_REACTOME_166081" RelX="-1.1111111111111112" RelY="0.2608695652173913"/>
+      <Point X="192.0" Y="367.0" GraphId="e_19_i0_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="149.0" Y="357.0" GraphId="e_19_i1_0" GraphRef="n18_REACTOME_450120" RelX="0.991869918699187" RelY="1.1578947368421053"/>
+      <Point X="192.0" Y="367.0" GraphId="e_19_i1_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_REACTOME_446868">
+    <Comment Source="WikiPathways-description">Toll-interacting protein (TOLLIP) binds to IRAK1 and IL-1RAP within the receptor complex. TOLLIP has the capacity to act as an ubiquitin-binding receptor for ubiquitinated IL1R1, linking IL1R to endosomal degradation.</Comment>
+    <BiopaxRef>lit_446861</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="190.0" Y="435.0" GraphId="e_22_0"/>
+      <Point X="190.0" Y="473.0" GraphId="e_22_1"/>
+      <Point X="155.0" Y="476.0" GraphId="e_22_2" GraphRef="n24_REACTOME_446888" RelX="1.0642201834862386" RelY="-0.2631578947368421" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_22_a_i"/>
+      <Anchor Position="0.5196344126713215" GraphId="e_22_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="245.0" Y="418.0" GraphId="e_22_i0_0" GraphRef="n23_REACTOME_446885" RelX="-1.1111111111111112" RelY="0.6086956521739131"/>
+      <Point X="190.0" Y="435.0" GraphId="e_22_i0_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="144.0" Y="419.0" GraphId="e_22_i1_0" GraphRef="n21_REACTOME_446637" RelX="1.0843373493975903" RelY="0.6842105263157895"/>
+      <Point X="190.0" Y="435.0" GraphId="e_22_i1_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_REACTOME_446634">
+    <Comment Source="WikiPathways-description">IRAK4 is activated by autophosphorylation at 3 positions within the kinase activation loop, Thr-342, Thr-345 and Ser-346.</Comment>
+    <BiopaxRef>lit_446630</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="192.0" Y="514.0" GraphId="e_25_0"/>
+      <Point X="192.0" Y="539.0" GraphId="e_25_1"/>
+      <Point X="192.0" Y="558.0" GraphId="e_25_2"/>
+      <Anchor Position="0.0" GraphId="e_25_a_i"/>
+      <Anchor Position="0.5681818181818182" GraphId="e_25_a_p"/>
+      <Anchor Position="1.0" GraphId="e_25_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="151.0" Y="503.0" GraphId="e_25_i0_0" GraphRef="n24_REACTOME_446888" RelX="0.9908256880733946" RelY="1.1578947368421053"/>
+      <Point X="192.0" Y="514.0" GraphId="e_25_i0_1" GraphRef="e_25_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="246.0" Y="491.0" GraphId="e_25_i1_0" GraphRef="n26_REACTOME_113592" RelX="-1.1428571428571428" RelY="0.5161290322580645"/>
+      <Point X="192.0" Y="514.0" GraphId="e_25_i1_1" GraphRef="e_25_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="248.0" Y="575.0" GraphId="e_25_o0_0" ArrowHead="Arrow" GraphRef="n27_REACTOME_29370" RelX="-1.1428571428571428" RelY="-0.45161290322580644"/>
+      <Point X="192.0" Y="558.0" GraphId="e_25_o0_1" GraphRef="e_25_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="147.0" Y="580.0" GraphId="e_25_o1_0" ArrowHead="Arrow" GraphRef="n28_REACTOME_446643" RelX="0.7286821705426356" RelY="-1.0943396226415094"/>
+      <Point X="192.0" Y="558.0" GraphId="e_25_o1_1" GraphRef="e_25_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_REACTOME_446692">
+    <Comment Source="WikiPathways-description">MYD88 recruits unphosphorylated, inactive IRAK1 to the IL1 receptor complex.</Comment>
+    <BiopaxRef>lit_165868</BiopaxRef>
+    <BiopaxRef>lit_446699</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="193.0" Y="651.0" GraphId="e_29_0"/>
+      <Point X="194.0" Y="699.0" GraphId="e_29_1"/>
+      <Point X="167.0" Y="700.0" GraphId="e_29_2" GraphRef="n31_REACTOME_446693" RelX="1.0578512396694215" RelY="-0.08823529411764706" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_29_a_i"/>
+      <Anchor Position="0.6398920656701872" GraphId="e_29_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="254.0" Y="638.0" GraphId="e_29_i0_0" GraphRef="n30_REACTOME_446639" RelX="-1.1111111111111112" RelY="0.34782608695652173"/>
+      <Point X="193.0" Y="651.0" GraphId="e_29_i0_1" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="158.0" Y="639.0" GraphId="e_29_i1_0" GraphRef="n28_REACTOME_446643" RelX="0.8992248062015504" RelY="1.1320754716981132"/>
+      <Point X="193.0" Y="651.0" GraphId="e_29_i1_1" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_446694">
+    <Comment Source="WikiPathways-description">MyD88 recruits unphosphorylated IRAK1 to the signaling complex. IRAK1 is then rapidly activated and autophosphorylates in a region that is outside the kinase domain (Cao et al. 1996). Several pieces of evidence suggest that IRAK4 triggers IRAK1 activation by phosphorylating its kinase activation loop, leading to IRAK1 autophosphorylation (Suzuki et al. 2002): in vitro kinase assays indicate that IRAK1 can be a direct substrate of IRAK4 (Li et al. 2002); IRAK1 phosphorylation by IRAK4 is independent of and precedes IRAK1 activation and autophosphorylation; IRAK1 autophosphorylation is partially inhibited in cells overexpressing a kinase-inactive IRAK4 protein (Li et al. 2002).</Comment>
+    <BiopaxRef>lit_165891</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="197.0" Y="731.0" GraphId="e_33_0"/>
+      <Point X="196.0" Y="761.0" GraphId="e_33_1"/>
+      <Point X="197.0" Y="788.0" GraphId="e_33_2"/>
+      <Anchor Position="0.0" GraphId="e_33_a_i"/>
+      <Anchor Position="0.5262833410156688" GraphId="e_33_a_p"/>
+      <Anchor Position="1.0" GraphId="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="259.0" Y="702.0" GraphId="e_33_i0_0" GraphRef="n34_REACTOME_113592" RelX="-1.1428571428571428" RelY="0.5806451612903226"/>
+      <Point X="197.0" Y="731.0" GraphId="e_33_i0_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="167.0" Y="721.0" GraphId="e_33_i1_0" GraphRef="n31_REACTOME_446693" RelX="1.0578512396694215" RelY="0.5294117647058824"/>
+      <Point X="197.0" Y="731.0" GraphId="e_33_i1_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="163.0" Y="807.0" GraphId="e_33_o0_0" ArrowHead="Arrow" GraphRef="n35_REACTOME_446689" RelX="1.056" RelY="-0.9705882352941176"/>
+      <Point X="197.0" Y="788.0" GraphId="e_33_o0_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="268.0" Y="812.0" GraphId="e_33_o1_0" ArrowHead="Arrow" GraphRef="n36_REACTOME_29370" RelX="-1.1428571428571428" RelY="-0.45161290322580644"/>
+      <Point X="197.0" Y="788.0" GraphId="e_33_o1_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="137.0" Y="740.0" GraphId="e_33_c__0_0" GraphRef="n31_REACTOME_446693" RelX="0.5619834710743802" RelY="1.088235294117647"/>
+      <Point X="160.0" Y="760.0" GraphId="e_33_c__0_1"/>
+      <Point X="196.0" Y="761.0" GraphId="e_33_c__0_2" GraphRef="e_33_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_REACTOME_446701">
+    <Comment Source="WikiPathways-description">A series of sequential phosphorylation events lead to full or hyper-phopshorylation of IRAK1. Under in vitro conditions these are all autophosphorylation events. First, Thr-209 is phosphorylated resulting in a conformational change of the kinase domain. Next, Thr-387 in the activation loop is phosphorylated, leading to full enzymatic activity. Several additional residues are phosphorylated in the proline-, serine-, and threonine-rich (ProST) region between the N-terminal death domain and kinase domain. Hyperphosphorylation of this region leads to dissociation of IRAK1 from the upstream adapters MyD88 and Tollip. The significance of these phosphorylation events is not clear; the kinase activity of IRAK1 is dispensable for IL1-induced NFkB and MAP kinase activation (Knop &amp; Martin, 1999), unlike that of IRAK4 (Suzuki et al. 2002; Kozicak-Holbro et al. 2007), so IRAK1 is believed to act primarily as an adaptor for TRAF6 (Conze et al. 2008).</Comment>
+    <BiopaxRef>lit_165896</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="214.0" Y="861.0" GraphId="e_39_0"/>
+      <Point X="213.0" Y="891.0" GraphId="e_39_1"/>
+      <Point X="214.0" Y="926.0" GraphId="e_39_2"/>
+      <Anchor Position="0.0" GraphId="e_39_a_i"/>
+      <Anchor Position="0.46157505651547653" GraphId="e_39_a_p"/>
+      <Anchor Position="1.0" GraphId="e_39_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="163.0" Y="851.0" GraphId="e_39_i0_0" GraphRef="n35_REACTOME_446689" RelX="1.056" RelY="0.3235294117647059"/>
+      <Point X="214.0" Y="861.0" GraphId="e_39_i0_1" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="270.0" Y="861.0" GraphId="e_39_i1_0" GraphRef="n40_REACTOME_113592" RelX="-1.1428571428571428" RelY="-0.06451612903225806"/>
+      <Point X="214.0" Y="861.0" GraphId="e_39_i1_1" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="165.0" Y="951.0" GraphId="e_39_o0_0" ArrowHead="Arrow" GraphRef="n41_REACTOME_446696" RelX="1.056" RelY="-0.8823529411764706"/>
+      <Point X="214.0" Y="926.0" GraphId="e_39_o0_1" GraphRef="e_39_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="242.0" Y="947.0" GraphId="e_39_o1_0" ArrowHead="Arrow" GraphRef="n42_REACTOME_29370" RelX="-0.9047619047619048" RelY="-1.1612903225806452"/>
+      <Point X="214.0" Y="926.0" GraphId="e_39_o1_1" GraphRef="e_39_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="142.0" Y="877.0" GraphId="e_39_c__0_0" GraphRef="n35_REACTOME_446689" RelX="0.72" RelY="1.088235294117647"/>
+      <Point X="167.0" Y="892.0" GraphId="e_39_c__0_1"/>
+      <Point X="213.0" Y="891.0" GraphId="e_39_c__0_2" GraphRef="e_39_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_REACTOME_446684">
+    <Comment Source="WikiPathways-description">IRAK2 has been implicated in IL1R and TLR signaling by the observation that IRAK2 can associate with MyD88 and Mal (Muzio et al. 1997). Like IRAK1, IRAK2 is activated downstream of IRAK4 (Kawagoe et al. 2008). It has been suggested that IRAK1 activates IRAK2 (Wesche et al. 1999) but  IRAK2 phosphorylation is observed in IRAK1â/â mouse macrophages while IRAK4 deficiency abrogates IRAK2 phosphorylation (Kawagoe et al. 2008), suggesting that activated IRAK4 phosphorylates IRAK2 as it does IRAK1. IL6 production in response to IL1beta is impaired in embryonic fibroblasts from IRAK1 or IRAK2 knockout mice and abrogated in IRAK1/2 dual knockouts (Kawagoe et al. 2007) suggesting that IRAK1 and IRAK2 are both involved in IL1R signaling downstream of IRAK4.</Comment>
+    <BiopaxRef>lit_446698</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="352.0" Y="614.0" GraphId="e_50_0"/>
+      <Point X="367.0" Y="625.0" GraphId="e_50_1"/>
+      <Point X="407.0" Y="647.0" GraphId="e_50_2" GraphRef="n51_REACTOME_446636" RelX="-0.7142857142857143" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_50_a_i"/>
+      <Anchor Position="0.28950222898599015" GraphId="e_50_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="566.0" GraphId="e_50_i0_0" GraphRef="n52_REACTOME_772534" RelX="-0.2222222222222222" RelY="1.3043478260869565"/>
+      <Point X="352.0" Y="614.0" GraphId="e_50_i0_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="168.0" Y="610.0" GraphId="e_50_i1_0" GraphRef="n28_REACTOME_446643" RelX="1.054263565891473" RelY="0.03773584905660377"/>
+      <Point X="352.0" Y="614.0" GraphId="e_50_i1_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_53_REACTOME_446862">
+    <Comment Source="WikiPathways-description">Hyperphosphorylated IRAK1, still within the receptor complex, binds TRAF6 through multiple regions including the death domain, the undefined domain and the C-terminal C1 domain (Li et al. 2001). The C-terminal region of IRAK-1
+contains three potential TRAF6-binding sites; mutation of the amino acids (Glu544, Glu587, Glu706) in these sites to alanine greatly reduces activation of NFkappaB (Ye et al. 2002).</Comment>
+    <BiopaxRef>lit_446876</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="208.0" Y="1034.0" GraphId="e_53_0"/>
+      <Point X="205.0" Y="1085.0" GraphId="e_53_1"/>
+      <Point X="168.0" Y="1086.0" GraphId="e_53_2" GraphRef="n55_REACTOME_446864" RelX="1.0578512396694215" RelY="-0.08823529411764706" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_53_a_i"/>
+      <Anchor Position="0.5798773055497332" GraphId="e_53_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_53_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="165.0" Y="1011.0" GraphId="e_53_i0_0" GraphRef="n41_REACTOME_446696" RelX="1.056" RelY="0.8823529411764706"/>
+      <Point X="208.0" Y="1034.0" GraphId="e_53_i0_1" GraphRef="e_53_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_53_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="259.0" Y="1033.0" GraphId="e_53_i1_0" GraphRef="n54_REACTOME_166366" RelX="-1.1020408163265305" RelY="0.0"/>
+      <Point X="208.0" Y="1034.0" GraphId="e_53_i1_1" GraphRef="e_53_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_REACTOME_507719">
+    <Comment Source="WikiPathways-description">p62, MEKK3 and TRAF6 co-localize in cytoplasmic aggregates that are thought to be centres for organizing TRAF6-regulated NF-kappaB signaling and the assembly of polyubiquinated proteins sorting to sequestosomes and proteasomes. p62/Sequestosome-1 is a scaffold protein involved in the regulation of autophagy, trafficking of proteins to the proteasome and activation of NF-kB. p62 binds the basic region of MEKK3. MEKK3 is known to bind TRAF6 in response to IL1B (Huang et al. 2004). Recently p62 was shown to be required for the association of MEKK3 with TRAF6.  RNA knockdown of p62 inhibited IL1B and MEKK3 activation of NF-kB. IL1B stimulation resulted in dissociation of MEKK3 from p62:TRAF6 (Nakamura et al. 2010).</Comment>
+    <BiopaxRef>lit_507712</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="393.0" Y="1031.0" GraphId="e_57_0"/>
+      <Point X="430.0" Y="1030.0" GraphId="e_57_1"/>
+      <Point X="445.0" Y="1030.0" GraphId="e_57_2" GraphRef="n59_REACTOME_507716" RelX="-1.0483870967741935" RelY="-0.08695652173913043" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_57_a_i"/>
+      <Anchor Position="0.7116133924020502" GraphId="e_57_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="314.0" Y="1032.0" GraphId="e_57_i0_0" GraphRef="n54_REACTOME_166366" RelX="1.1428571428571428" RelY="-0.08695652173913043"/>
+      <Point X="393.0" Y="1031.0" GraphId="e_57_i0_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="371.0" Y="1056.0" GraphId="e_57_i1_0" GraphRef="n58_REACTOME_507714" RelX="0.22784810126582278" RelY="-1.2173913043478262"/>
+      <Point X="393.0" Y="1031.0" GraphId="e_57_i1_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="429.0" Y="980.0" GraphId="e_57_i__0_0" GraphRef="n60_REACTOME_449046" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="430.0" Y="1030.0" GraphId="e_57_i__0_1" GraphRef="e_57_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_REACTOME_446894">
+    <Comment Source="WikiPathways-description">MyD88 and Tollip only bind to non-phosphorylated IRAK1 [Wesche et al. 1997) so hyper-phosphorylated IRAK1 is predisposed to release from the receptor complex, a key step in this signaling cascade. It is believed that the interaction of IRAK1 with TRAF6 enables the release of IRAK1:TRAF6 from the receptor (Gottipati et al. 2007). Though released from the receptor complex, IRAK1:TRAF6 remains associated with the membrane, perhaps due to subsequent interaction with the TAK1 complex (Dong et al. 2006).</Comment>
+    <BiopaxRef>lit_450126</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="104.0" Y="1126.0" GraphId="e_62_0" GraphRef="n55_REACTOME_446864" RelX="0.0" RelY="1.088235294117647"/>
+      <Point X="104.0" Y="1183.0" GraphId="e_62_1"/>
+      <Point X="104.0" Y="1216.0" GraphId="e_62_2"/>
+      <Point X="314.0" Y="1258.0" GraphId="e_62_3"/>
+      <Anchor Position="0.18740209499897062" GraphId="e_62_a_p"/>
+      <Anchor Position="1.0" GraphId="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="305.0" Y="410.0" GraphId="e_62_o0_0" ArrowHead="Arrow" GraphRef="n23_REACTOME_446885" RelX="1.1111111111111112" RelY="-0.08695652173913043"/>
+      <Point X="596.0" Y="404.0" GraphId="e_62_o0_1"/>
+      <Point X="595.0" Y="1031.0" GraphId="e_62_o0_2"/>
+      <Point X="314.0" Y="1258.0" GraphId="e_62_o0_3" GraphRef="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="364.0" Y="1269.0" GraphId="e_62_o1_0" ArrowHead="Arrow" GraphRef="n63_REACTOME_446649" RelX="-0.8380952380952381" RelY="-1.2173913043478262"/>
+      <Point X="314.0" Y="1258.0" GraphId="e_62_o1_1" GraphRef="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="150.0" Y="1272.0" GraphId="e_62_o2_0" ArrowHead="Arrow" GraphRef="n64_REACTOME_450121" RelX="1.0642201834862386" RelY="-0.43478260869565216"/>
+      <Point X="314.0" Y="1258.0" GraphId="e_62_o2_1" GraphRef="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="153.0" Y="334.0" GraphId="e_62_o3_0" ArrowHead="Arrow" GraphRef="n18_REACTOME_450120" RelX="1.056910569105691" RelY="-0.05263157894736842"/>
+      <Point X="619.0" Y="330.0" GraphId="e_62_o3_1"/>
+      <Point X="619.0" Y="1030.0" GraphId="e_62_o3_2"/>
+      <Point X="314.0" Y="1258.0" GraphId="e_62_o3_3" GraphRef="e_62_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="165.0" Y="1183.0" GraphId="e_62_i__0_0" GraphRef="n65_REACTOME_166103" RelX="-1.0943396226415094" RelY="0.0"/>
+      <Point X="104.0" Y="1183.0" GraphId="e_62_i__0_1" GraphRef="e_62_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_REACTOME_450173">
+    <Comment Source="WikiPathways-description">TRAF6 oligomerization is induced by IRAK1. The TRAF6 oligomer consists of more than two molecules of TRAF6; thermodynamic data for TRAF2 strongly suggests that it is functionally a trimer (Rawlings et al. 2006). TRAF6 is represented here as a trimer, though the extent and significance of TRAF6 oligomerization is unclear. Oligomerisation may be assisted by TIFA (TRAF-interacting protein with a FHA domain; Takatsuna et al. 2003).</Comment>
+    <BiopaxRef>lit_450115</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="285.0" Y="1327.0" GraphId="e_66_0"/>
+      <Point X="389.0" Y="1406.0" GraphId="e_66_1"/>
+      <Point X="341.0" Y="1411.0" GraphId="e_66_2" GraphRef="n67_REACTOME_450159" RelX="1.0693069306930694" RelY="-0.3157894736842105" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_66_a_i"/>
+      <Anchor Position="0.7301848926567202" GraphId="e_66_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="285.0" Y="1048.0" GraphId="e_66_i0_0" GraphRef="n54_REACTOME_166366" RelX="-0.04081632653061224" RelY="1.3043478260869565"/>
+      <Point X="285.0" Y="1327.0" GraphId="e_66_i0_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="136.0" Y="1292.0" GraphId="e_66_i1_0" GraphRef="n64_REACTOME_450121" RelX="0.8073394495412844" RelY="1.3043478260869565"/>
+      <Point X="285.0" Y="1327.0" GraphId="e_66_i1_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_REACTOME_446877">
+    <Comment Source="WikiPathways-description">TRAF6 possesses ubiquitin ligase activity and undergoes K-63-linked auto-ubiquitination after its oligomerization. In the first step, ubiquitin is activated by a E1 ubiquitin activating enzyme. The activated ubiquitin is transferred to the E2 conjugating enzyme (a heterodimer of proteins Ubc13 and Uev1A) forming the E2-Ub thioester. Finally, in the presence of ubiquitin-protein ligase E3 (TRAF6, a RING-domain E3), ubiquitin is attached to the target protein (TRAF6 on residue Lysine 124) through an isopeptide bond between the C-terminus of ubiquitin and the epsilon-amino group of a lysine residue in the target protein. In contrast to K-48-linked ubiquitination that leads to the proteosome degradation of the target protein, K-63-linked polyubiquitin chains act as a scaffold to assemble protein kinase complexes and mediate their activation through proteosome-independent mechanisms. This K63 polyubiquitinated TRAF6 activates the TAK1 kinase complex.</Comment>
+    <BiopaxRef>lit_202511</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="320.0" Y="1510.0" GraphId="e_69_0"/>
+      <Point X="320.0" Y="1537.0" GraphId="e_69_1"/>
+      <Point X="320.0" Y="1572.0" GraphId="e_69_2"/>
+      <Anchor Position="0.0" GraphId="e_69_a_i"/>
+      <Anchor Position="0.43548387096774194" GraphId="e_69_a_p"/>
+      <Anchor Position="1.0" GraphId="e_69_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="411.0" Y="1539.0" GraphId="e_69_i0_0" GraphRef="n70_REACTOME_202463" RelX="-1.053763440860215" RelY="-0.7894736842105263"/>
+      <Point X="320.0" Y="1510.0" GraphId="e_69_i0_1" GraphRef="e_69_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="404.0" Y="1465.0" GraphId="e_69_i1_0" GraphRef="n71_REACTOME_450152" RelX="-0.35398230088495575" RelY="1.3043478260869565"/>
+      <Point X="320.0" Y="1510.0" GraphId="e_69_i1_1" GraphRef="e_69_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="293.0" Y="1439.0" GraphId="e_69_i2_0" GraphRef="n67_REACTOME_450159" RelX="0.1188118811881188" RelY="1.1578947368421053"/>
+      <Point X="320.0" Y="1510.0" GraphId="e_69_i2_1" GraphRef="e_69_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="264.0" Y="1582.0" GraphId="e_69_o0_0" ArrowHead="Arrow" GraphRef="n72_REACTOME_450144" RelX="1.0483870967741935" RelY="-0.55"/>
+      <Point X="320.0" Y="1572.0" GraphId="e_69_o0_1" GraphRef="e_69_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="411.0" Y="1559.0" GraphId="e_69_o1_0" ArrowHead="Arrow" GraphRef="n70_REACTOME_202463" RelX="-1.053763440860215" RelY="0.2631578947368421"/>
+      <Point X="320.0" Y="1572.0" GraphId="e_69_o1_1" GraphRef="e_69_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="285.0" Y="1439.0" GraphId="e_69_c__0_0" GraphRef="n67_REACTOME_450159" RelX="-0.039603960396039604" RelY="1.1578947368421053"/>
+      <Point X="275.0" Y="1537.0" GraphId="e_69_c__0_1"/>
+      <Point X="320.0" Y="1537.0" GraphId="e_69_c__0_2" GraphRef="e_69_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_73_REACTOME_446870">
+    <Comment Source="WikiPathways-description">TAK1-binding protein 2 (TAB2) and/or TAB3, as part of a complex that also contains TAK1 and TAB1, binds polyubiquitinated TRAF6. The TAB2 and TAB3 regulatory subunits of the TAK1 complex contain C-terminal nuclear zinc finger motifs that interact with K63-pUb chains (Kanayama et al. 2004).  TAK1 can be activated by unattached K63-polyubiquitinated chains when TRAF6 has no detectable polyubiquitination (Xia et al. 2009) and thus the synthesis of these chains by TRAF6 may be the signal transduction mechanism.</Comment>
+    <BiopaxRef>lit_208287</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="276.0" Y="1629.0" GraphId="e_73_0"/>
+      <Point X="277.0" Y="1658.0" GraphId="e_73_1"/>
+      <Point X="277.0" Y="1689.0" GraphId="e_73_2" GraphRef="n75_REACTOME_450185" RelX="0.0" RelY="-1.0943396226415094" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_73_a_i"/>
+      <Anchor Position="0.4834817140328432" GraphId="e_73_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_73_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="241.0" Y="1616.0" GraphId="e_73_i0_0" GraphRef="n72_REACTOME_450144" RelX="0.6774193548387096" RelY="1.15"/>
+      <Point X="276.0" Y="1629.0" GraphId="e_73_i0_1" GraphRef="e_73_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_73_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="317.0" Y="1622.0" GraphId="e_73_i1_0" GraphRef="n74_REACTOME_446878" RelX="-1.0625" RelY="0.5217391304347826"/>
+      <Point X="276.0" Y="1629.0" GraphId="e_73_i1_1" GraphRef="e_73_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_77_REACTOME_450187">
+    <Comment Source="WikiPathways-description">Binding of TAB2 and TAB3 to K63-linked polyubiquitin chains leads to the activation of TAK1 by an uncertain mechanism. Binding of multiple TAK1 complexes onto the same polyubiquitin chain may promote oligomerization of TAK1, facilitating TAK1 autophosphorylation and subsequent activation of its kinase activity (Kishimoto et al. 2000). The binding of TAB2/3 to polyubiquitinated TRAF6 may facilitate polyubiquitination of TAB2/3 by TRAF6 (Ishitani et al. 2003), which might result in conformational changes within the TAK1 complex that leads to the activation of TAK1. Another possibility is that TAB2/3 may recruit the IKK complex by binding to ubiquitinated NEMO; polyubiquitin chains may function as a scaffold for higher order signaling complexes that allow interaction between TAK1 and IKK (Kanayama et al. 2004).</Comment>
+    <BiopaxRef>lit_450183</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="277.0" Y="1748.0" GraphId="e_77_0" GraphRef="n75_REACTOME_450185" RelX="0.0" RelY="1.1320754716981132"/>
+      <Point X="277.0" Y="1782.0" GraphId="e_77_1"/>
+      <Point X="277.0" Y="1813.0" GraphId="e_77_2" GraphRef="n78_REACTOME_450186" RelX="-0.017241379310344827" RelY="-1.088235294117647" ArrowHead="Arrow"/>
+      <Anchor Position="0.5230769230769231" GraphId="e_77_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_REACTOME_450690">
+    <Comment Source="WikiPathways-description">IRAK1 and 4 interact with Pellino-1 (Jiang et al. 2003), 2 (Strellow et al. 2003) and 3 (Butler et al. 2005, 2007). Pellinos may act as scaffolding proteins, bringing signaling complexes into proximity. They are E3 ubiquitin ligases capable of ubiquitinating IRAK1, believed to mediate IL-1-stimulated formation of K63-polyubiquitinated IRAK1 in cells.&lt;br&gt;&lt;br&gt;Though not clearly demonstrated and therefore not shown here, the current models of IRAK1 involvement suggest it would be within a complex including TRAF6.</Comment>
+    <BiopaxRef>lit_450692</BiopaxRef>
+    <BiopaxRef>lit_450818</BiopaxRef>
+    <BiopaxRef>lit_450804</BiopaxRef>
+    <BiopaxRef>lit_450820</BiopaxRef>
+    <BiopaxRef>lit_450816</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="828.0" Y="1773.0" GraphId="e_80_0"/>
+      <Point X="799.0" Y="1774.0" GraphId="e_80_1"/>
+      <Point X="776.0" Y="1773.0" GraphId="e_80_2" GraphRef="n83_REACTOME_451413" RelX="1.0508474576271187" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_80_a_i"/>
+      <Anchor Position="0.5576059437040904" GraphId="e_80_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="892.0" Y="1887.0" GraphId="e_80_i0_0" GraphRef="n81_REACTOME_450810" RelX="-0.12844036697247707" RelY="-1.2173913043478262"/>
+      <Point X="828.0" Y="1773.0" GraphId="e_80_i0_1" GraphRef="e_80_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="874.0" Y="1723.0" GraphId="e_80_i1_0" GraphRef="n82_REACTOME_450814" RelX="-0.23809523809523808" RelY="1.3043478260869565"/>
+      <Point X="828.0" Y="1773.0" GraphId="e_80_i1_1" GraphRef="e_80_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_REACTOME_450827">
+    <Comment Source="WikiPathways-description">IRAK1 and 4 can phosphorylate Pellino-1 and -2 and probably -3. Phosphorylation enhances the E3 ligase activity of Pellino-1 in conjunction with several different E2-conjugating enzymes (Ubc13-Uev1a, UbcH4, or UbcH5a/5b). Phosphorylation at any of several different sites or a combination of other sites leads to full activation of Pellino-1 E3 ubiquitin ligase activity.&lt;br&gt;&lt;br&gt;Though not shown here, the current models of IRAK1 involvement suggest it is part of a complex that includes TRAF6.</Comment>
+    <BiopaxRef>lit_450812</BiopaxRef>
+    <BiopaxRef>lit_450804</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="713.0" Y="1872.0" GraphId="e_84_0"/>
+      <Point X="713.0" Y="1903.0" GraphId="e_84_1"/>
+      <Point X="713.0" Y="1932.0" GraphId="e_84_2"/>
+      <Anchor Position="0.0" GraphId="e_84_a_i"/>
+      <Anchor Position="0.5166666666666667" GraphId="e_84_a_p"/>
+      <Anchor Position="1.0" GraphId="e_84_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="761.0" Y="1842.0" GraphId="e_84_i0_0" GraphRef="n85_REACTOME_113592" RelX="-1.1428571428571428" RelY="0.7096774193548387"/>
+      <Point X="713.0" Y="1872.0" GraphId="e_84_i0_1" GraphRef="e_84_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="713.0" Y="1795.0" GraphId="e_84_i1_0" GraphRef="n83_REACTOME_451413" RelX="-0.01694915254237288" RelY="1.1578947368421053"/>
+      <Point X="713.0" Y="1872.0" GraphId="e_84_i1_1" GraphRef="e_84_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="768.0" Y="1946.0" GraphId="e_84_o0_0" ArrowHead="Arrow" GraphRef="n86_REACTOME_29370" RelX="-1.1428571428571428" RelY="-0.3870967741935484"/>
+      <Point X="713.0" Y="1932.0" GraphId="e_84_o0_1" GraphRef="e_84_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="713.0" Y="1991.0" GraphId="e_84_o1_0" ArrowHead="Arrow" GraphRef="n87_REACTOME_451425" RelX="-0.015503875968992248" RelY="-1.1578947368421053"/>
+      <Point X="713.0" Y="1932.0" GraphId="e_84_o1_1" GraphRef="e_84_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="842.0" Y="1901.0" GraphId="e_84_c__0_0" GraphRef="n81_REACTOME_450810" RelX="-1.0458715596330275" RelY="0.0"/>
+      <Point X="713.0" Y="1903.0" GraphId="e_84_c__0_1" GraphRef="e_84_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_451418">
+    <Comment Source="WikiPathways-description">IL1 induces the poly-ubiquitination and degradation of IRAK1. This was believed to be K48-linked polyubiquitination, targeting IRAK1 for proteolysis by the proteasome, but recently IL-1R signaling has been shown to lead to K63-linked polyubiquitination of IRAK1 (Windheim et al. 2008; Conze et al. 2008), and demonstrated to have a role in the activation of NF-kappaB. IRAK1 is ubiquitinated on K134 and K180; mutation of these sites impairs IL1R-mediated ubiquitylation of IRAK1 (Conze et al. 2008). Some authors have proposed a role for TRAF6 as the E3 ubiquitin ligase that catalyzes polyubiquitination of IRAK1 (Conze et al. 2008) but this view has been refuted (Windheim et al. 2008; Xiao et al. 2008). There is stronger agreement that Pellino proteins have a role as IRAK1 E3 ubiquitin ligases.  &lt;br&gt;Pellino1-3 possess E3 ligase activity and are believed to directly catalyse polyubiquitylation of IRAK1 (Xiao et al. 2008; Butler et al. 2007; Ordureau et al. 2008). They are capable of catalysing the formation of K63- and K48-linked polyubiquitin chains; the type of linkage is controlled by the collaborating E2 enzyme. All the Pellino proteins can combine with the E2 heterodimer UbcH13âUev1a to catalyze K63-linked ubiquitylation (Ordureau et al. 2008).</Comment>
+    <BiopaxRef>lit_450692</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="496.0" Y="1488.0" GraphId="e_88_0"/>
+      <Point X="538.0" Y="1487.0" GraphId="e_88_1"/>
+      <Point X="572.0" Y="1488.0" GraphId="e_88_2"/>
+      <Anchor Position="0.0" GraphId="e_88_a_i"/>
+      <Anchor Position="0.5525947481799998" GraphId="e_88_a_p"/>
+      <Anchor Position="1.0" GraphId="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="470.0" Y="1532.0" GraphId="e_88_i0_0" GraphRef="n70_REACTOME_202463" RelX="0.21505376344086022" RelY="-1.1578947368421053"/>
+      <Point X="496.0" Y="1488.0" GraphId="e_88_i0_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="445.0" Y="1465.0" GraphId="e_88_i1_0" GraphRef="n71_REACTOME_450152" RelX="0.37168141592920356" RelY="1.3043478260869565"/>
+      <Point X="496.0" Y="1488.0" GraphId="e_88_i1_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="529.0" Y="1405.0" GraphId="e_88_i2_0" GraphRef="n89_REACTOME_451411" RelX="-0.12403100775193798" RelY="1.1578947368421053"/>
+      <Point X="496.0" Y="1488.0" GraphId="e_88_i2_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="492.0" Y="1532.0" GraphId="e_88_o0_0" ArrowHead="Arrow" GraphRef="n70_REACTOME_202463" RelX="0.6881720430107527" RelY="-1.1578947368421053"/>
+      <Point X="572.0" Y="1488.0" GraphId="e_88_o0_1" GraphRef="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="649.0" Y="1468.0" GraphId="e_88_o1_0" ArrowHead="Arrow" GraphRef="n90_REACTOME_450819" RelX="-0.8256880733944955" RelY="1.2592592592592593"/>
+      <Point X="572.0" Y="1488.0" GraphId="e_88_o1_1" GraphRef="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="735.0" Y="1524.0" GraphId="e_88_o2_0" ArrowHead="Arrow" GraphRef="n91_REACTOME_451565" RelX="-1.0625" RelY="-0.5789473684210527"/>
+      <Point X="572.0" Y="1488.0" GraphId="e_88_o2_1" GraphRef="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="537.0" Y="1405.0" GraphId="e_88_c__0_0" GraphRef="n89_REACTOME_451411" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="538.0" Y="1487.0" GraphId="e_88_c__0_1" GraphRef="e_88_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_93_REACTOME_451561">
+    <Comment Source="WikiPathways-description">NF-kappa-B essential modulator (NEMO, also known as IKKG abbreviated from Inhibitor of nuclear factor kappa-B kinase subunit gamma) is the regulatory subunit of the IKK complex which phosphorylates inhibitors of NF-kappa-B leading to dissociation of the inhibitor/NF-kappa-B complex. NEMO binds to K63-pUb chains (Ea et al. 2006; Wu et al. 2006), linking K63-pUb-hp-IRAK1 with the IKK complex. Models of IL-1R dependent activation of NF-kappaB suggest that the polyubiquitination of both TRAF6 and IRAK1 within a TRAF6:IRAK1 complex and their subsequent interactions with the TAK1 complex and IKK complex respectively brings these complexes into proximity, facilitating the TAK1-catalyzed activation of IKK (Moynagh, 2008).</Comment>
+    <BiopaxRef>lit_451426</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="762.0" Y="1585.0" GraphId="e_93_0"/>
+      <Point X="762.0" Y="1655.0" GraphId="e_93_1"/>
+      <Point X="733.0" Y="1686.0" GraphId="e_93_2" GraphRef="n95_REACTOME_451560" RelX="0.256" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_93_a_i"/>
+      <Anchor Position="0.6224990514038872" GraphId="e_93_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_93_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="690.0" Y="1582.0" GraphId="e_93_i0_0" GraphRef="n94_REACTOME_168113" RelX="1.0714285714285714" RelY="0.08695652173913043"/>
+      <Point X="762.0" Y="1585.0" GraphId="e_93_i0_1" GraphRef="e_93_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_93_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="776.0" Y="1557.0" GraphId="e_93_i1_0" GraphRef="n91_REACTOME_451565" RelX="-0.20833333333333334" RelY="1.1578947368421053"/>
+      <Point X="762.0" Y="1585.0" GraphId="e_93_i1_1" GraphRef="e_93_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_REACTOME_727819">
+    <Comment Source="WikiPathways-description">Within the TAK1 complex (TAK1 plus TAB1 and TAB2/3) activated TAK1 phosphorylates IKKB and MAPK kinase 6 (MKK6) to activate the NFkappaB and MAPK signaling pathways. TAB2 within the TAK1 complex can be linked to polyubiquitinated TRAF6; current models of IL-1 signaling suggest that the TAK1 complex is linked to TRAF6, itself complexed with polyubiquitinated IRAK1 which is linked via NEMO to the IKK complex. The TAK1 complex also plays a role in NOD signaling; NOD receptors bind RIP2 which recruits the TAK1 complex.</Comment>
+    <BiopaxRef>lit_208156</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="229.0" Y="1983.0" GraphId="e_101_0"/>
+      <Point X="228.0" Y="2017.0" GraphId="e_101_1"/>
+      <Point X="228.0" Y="2050.0" GraphId="e_101_2"/>
+      <Anchor Position="0.0" GraphId="e_101_a_i"/>
+      <Anchor Position="0.5075707468843145" GraphId="e_101_a_p"/>
+      <Anchor Position="1.0" GraphId="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="179.0" Y="1950.0" GraphId="e_101_i0_0" GraphRef="n102_REACTOME_113592" RelX="1.1428571428571428" RelY="0.7741935483870968"/>
+      <Point X="229.0" Y="1983.0" GraphId="e_101_i0_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="255.0" Y="1953.0" GraphId="e_101_i1_0" GraphRef="n103_REACTOME_167998" RelX="-0.45454545454545453" RelY="1.3043478260869565"/>
+      <Point X="229.0" Y="1983.0" GraphId="e_101_i1_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="271.0" Y="2101.0" GraphId="e_101_o0_0" ArrowHead="Arrow" GraphRef="n104_REACTOME_206255" RelX="-0.20202020202020202" RelY="-1.2173913043478262"/>
+      <Point X="228.0" Y="2050.0" GraphId="e_101_o0_1" GraphRef="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="183.0" Y="2087.0" GraphId="e_101_o1_0" ArrowHead="Arrow" GraphRef="n105_REACTOME_29370" RelX="0.8095238095238095" RelY="-1.1612903225806452"/>
+      <Point X="228.0" Y="2050.0" GraphId="e_101_o1_1" GraphRef="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="367.0" Y="1631.0" GraphId="e_101_c__0_0" GraphRef="n74_REACTOME_446878" RelX="-0.020833333333333332" RelY="1.3043478260869565"/>
+      <Point X="365.0" Y="2012.0" GraphId="e_101_c__0_1"/>
+      <Point X="228.0" Y="2017.0" GraphId="e_101_c__0_2" GraphRef="e_101_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1556_REACTOME_168184">
+    <Comment Source="WikiPathways-description">In humans, the IKKs -  IkB kinase (IKK) complex serves as the master regulator for the activation of NF-kB by various stimuli. It contains two catalytic subunits, IKK alpha and IKK beta, and a regulatory subunit, IKKgamma/NEMO. The activation of the IKK complex and the NFkB mediated antiviral response are dependent on the phosphorylation of IKK alpha/beta at its activation loop and the ubiquitination of NEMO [Solt et al 2009; Li et al 2002]. NEMO ubiquitination by TRAF6 is required for optimal activation of IKKalpha/beta; it is unclear if NEMO subunit undergoes K63-linked or linear ubiquitination.&lt;p&gt;This basic trimolecular complex is referred to as the IKK complex. Each catalytic IKK subunit has a N-term kinase domain and leucine zipper (LZ) motifs, a helix-loop-helix (HLH) and a C-ter NEMO binding domain (NBD). IKK catalytic subunits are dimerized through their LZ motifs.&lt;p&gt;IKK beta is the major IKK catalytic subunit for NF-kB activation. Phosphorylation in the activation loop of IKK beta requires Ser177 and Ser181 and thus activates the IKK kinase activity, leading to the IkB alpha phosphorylation and NF-kB activation.</Comment>
+    <BiopaxRef>lit_169969</BiopaxRef>
+    <BiopaxRef>lit_208156</BiopaxRef>
+    <BiopaxRef>lit_202523</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="640.0" Y="1704.0" GraphId="e_1556_0"/>
+      <Point X="642.0" Y="1894.0" GraphId="e_1556_1"/>
+      <Point X="535.0" Y="1939.0" GraphId="e_1556_2"/>
+      <Anchor Position="0.0" GraphId="e_1556_a_i"/>
+      <Anchor Position="0.6207707340718183" GraphId="e_1556_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1556_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1556_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="525.0" Y="1629.0" GraphId="e_1556_i0_0" GraphRef="n1557_REACTOME_113592" RelX="1.1428571428571428" RelY="0.8387096774193549"/>
+      <Point X="640.0" Y="1704.0" GraphId="e_1556_i0_1" GraphRef="e_1556_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1556_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="644.0" Y="1596.0" GraphId="e_1556_i1_0" GraphRef="n94_REACTOME_168113" RelX="-0.023809523809523808" RelY="1.3043478260869565"/>
+      <Point X="640.0" Y="1704.0" GraphId="e_1556_i1_1" GraphRef="e_1556_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1556_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="537.0" Y="2045.0" GraphId="e_1556_o0_0" ArrowHead="Arrow" GraphRef="n1558_REACTOME_177663" RelX="-0.021505376344086023" RelY="-1.1578947368421053"/>
+      <Point X="535.0" Y="1939.0" GraphId="e_1556_o0_1" GraphRef="e_1556_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1556_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="497.0" Y="1964.0" GraphId="e_1556_o1_0" ArrowHead="Arrow" GraphRef="n1559_REACTOME_29370" RelX="0.9523809523809523" RelY="-1.1612903225806452"/>
+      <Point X="535.0" Y="1939.0" GraphId="e_1556_o1_1" GraphRef="e_1556_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1556_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="527.0" Y="1835.0" GraphId="e_1556_c__0_0" GraphRef="n1560_REACTOME_772536" RelX="0.6938775510204082" RelY="1.1578947368421053"/>
+      <Point X="642.0" Y="1894.0" GraphId="e_1556_c__0_1" GraphRef="e_1556_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1561_REACTOME_451603">
+    <Comment Source="WikiPathways-description">NFkappaB p105 protein (p105) is a precursor of the NFkappaB p50 subunit and an inhibitor of NFkappaB. The IkappaB kinase (IKK) complex phosphorylates p105 on S927 within the PEST region. TNF-alpha-induced p105 proteolysis additionally requires the phosphorylation of S932. Purified IKK (IKK1) or IKKB (IKK2) can phosphorylate both these regulatory serines in vitro.</Comment>
+    <BiopaxRef>lit_451595</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="501.0" Y="2165.0" GraphId="e_1561_0"/>
+      <Point X="540.0" Y="2165.0" GraphId="e_1561_1"/>
+      <Point X="585.0" Y="2164.0" GraphId="e_1561_2"/>
+      <Anchor Position="0.0" GraphId="e_1561_a_i"/>
+      <Anchor Position="0.46422431653187374" GraphId="e_1561_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1561_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1561_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="459.0" Y="2192.0" GraphId="e_1561_i0_0" GraphRef="n1562_REACTOME_113592" RelX="1.1428571428571428" RelY="-0.8387096774193549"/>
+      <Point X="501.0" Y="2165.0" GraphId="e_1561_i0_1" GraphRef="e_1561_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1561_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="453.0" Y="2135.0" GraphId="e_1561_i1_0" GraphRef="n1563_REACTOME_451607" RelX="0.4507042253521127" RelY="1.3043478260869565"/>
+      <Point X="501.0" Y="2165.0" GraphId="e_1561_i1_1" GraphRef="e_1561_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1561_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="639.0" Y="2139.0" GraphId="e_1561_o0_0" ArrowHead="Arrow" GraphRef="n1564_REACTOME_29370" RelX="-1.1428571428571428" RelY="0.5806451612903226"/>
+      <Point X="585.0" Y="2164.0" GraphId="e_1561_o0_1" GraphRef="e_1561_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1561_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="646.0" Y="2190.0" GraphId="e_1561_o1_0" ArrowHead="Arrow" GraphRef="n1565_REACTOME_451611" RelX="-0.6265060240963856" RelY="-1.2173913043478262"/>
+      <Point X="585.0" Y="2164.0" GraphId="e_1561_o1_1" GraphRef="e_1561_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1561_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="538.0" Y="2089.0" GraphId="e_1561_c__0_0" GraphRef="n1558_REACTOME_177663" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="540.0" Y="2165.0" GraphId="e_1561_c__0_1" GraphRef="e_1561_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1572_REACTOME_451609">
+    <Comment Source="WikiPathways-description">IKK-mediated NFkB p105 phosphorylation generates a binding site for betaTrCP, the receptor subunit of the SCF-type beta-TrCP ubiquitin E3 ligase complex.</Comment>
+    <BiopaxRef>lit_451620</BiopaxRef>
+    <BiopaxRef>lit_451595</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="668.0" Y="2255.0" GraphId="e_1572_0"/>
+      <Point X="642.0" Y="2255.0" GraphId="e_1572_1"/>
+      <Point X="604.0" Y="2256.0" GraphId="e_1572_2" GraphRef="n1574_REACTOME_451614" RelX="1.063063063063063" RelY="-0.07547169811320754" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1572_a_i"/>
+      <Anchor Position="0.40616650982432645" GraphId="e_1572_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1572_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="724.0" Y="2301.0" GraphId="e_1572_i0_0" GraphRef="n1573_REACTOME_206748" RelX="-0.44" RelY="-1.1578947368421053"/>
+      <Point X="668.0" Y="2255.0" GraphId="e_1572_i0_1" GraphRef="e_1572_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1572_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="671.0" Y="2219.0" GraphId="e_1572_i1_0" GraphRef="n1565_REACTOME_451611" RelX="-0.024096385542168676" RelY="1.3043478260869565"/>
+      <Point X="668.0" Y="2255.0" GraphId="e_1572_i1_1" GraphRef="e_1572_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1575_REACTOME_451617">
+    <Comment Source="WikiPathways-description">Beta-TrCP ubiquitinates p105 at several lysine residues within the C-terminal region 660-968. The level of ubiquitination is variable; in this reaction p105 is represented with 3 ubiquitinated lysine residues. Removal of all lysines within this region abolishes subsequent p105 degradation.</Comment>
+    <BiopaxRef>lit_451620</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="545.0" Y="2288.0" GraphId="e_1575_0" GraphRef="n1574_REACTOME_451614" RelX="0.0" RelY="1.1320754716981132"/>
+      <Point X="545.0" Y="2327.0" GraphId="e_1575_1"/>
+      <Point X="547.0" Y="2372.0" GraphId="e_1575_2"/>
+      <Anchor Position="0.46404031143821345" GraphId="e_1575_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1575_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1575_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="693.0" Y="2335.0" GraphId="e_1575_o0_0" ArrowHead="Arrow" GraphRef="n1573_REACTOME_206748" RelX="-1.06" RelY="0.631578947368421"/>
+      <Point X="547.0" Y="2372.0" GraphId="e_1575_o0_1" GraphRef="e_1575_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1575_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="559.0" Y="2409.0" GraphId="e_1575_o1_0" ArrowHead="Arrow" GraphRef="n1576_REACTOME_451619" RelX="-0.10434782608695652" RelY="-1.15"/>
+      <Point X="547.0" Y="2372.0" GraphId="e_1575_o1_1" GraphRef="e_1575_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1575_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="693.0" Y="2323.0" GraphId="e_1575_c__0_0" GraphRef="n1573_REACTOME_206748" RelX="-1.06" RelY="0.0"/>
+      <Point X="545.0" Y="2327.0" GraphId="e_1575_c__0_1" GraphRef="e_1575_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1579_REACTOME_451634">
+    <Comment Source="WikiPathways-description">The C-terminal half of NFKB1 p105 forms a high-affinity stoichiometric association with Tpl2 via two distinct interactions (Belich et al. 1999; Beinke et al. 2003). The Tpl2 C-terminus (residues 398â467) binds to a region N-terminal to the p105 ankyrin repeat region (human p105 residues 497â534), whereas the Tpl2 kinase domain interacts with the p105 death domain (Beinke et al. 2003). In unstimulated macrophages, all detectable Tpl2 is associated with p105 (Belich et al. 1999; Lang et al. 2004). Binding to p105 maintains the stability of  Tpl2 but inhibits Tpl2 MEK kinase activity by preventing access to MEK (Beinke et al. 2003; Waterfield et al. 2003). Tpl2 phosphorylation at Thr-290 may also play a role in the activation of Tpl2 (Cho &amp; Tsichlis 2005). &lt;br&gt;&lt;br&gt;A20-binding inhibitor of NFkappaB2 (ABIN-2) interacts with Tpl2 and p105 but preferentially forms a ternary complex with both proteins. As ABIN2 is a polyubiquitin binding protein, it has been suggested that it may facilitate recruitment of the p105/Tpl2 complex to the activated IKK complex, allowing  IKK2 induced p105 phosphorylation and consequent Tpl2 activation.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_451646</BiopaxRef>
+    <BiopaxRef>lit_451627</BiopaxRef>
+    <BiopaxRef>lit_451637</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="255.0" Y="2221.0" GraphId="e_1579_0"/>
+      <Point X="239.0" Y="2262.0" GraphId="e_1579_1"/>
+      <Point X="222.0" Y="2303.0" GraphId="e_1579_2" GraphRef="n1582_REACTOME_451638" RelX="0.10434782608695652" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1579_a_i"/>
+      <Anchor Position="0.4978883677638358" GraphId="e_1579_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1579_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="188.0" Y="2213.0" GraphId="e_1579_i0_0" GraphRef="n1580_REACTOME_451661" RelX="1.1555555555555554" RelY="0.17391304347826086"/>
+      <Point X="255.0" Y="2221.0" GraphId="e_1579_i0_1" GraphRef="e_1579_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1579_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="309.0" Y="2263.0" GraphId="e_1579_i1_0" GraphRef="n1581_REACTOME_389388" RelX="-0.75" RelY="-1.2173913043478262"/>
+      <Point X="255.0" Y="2221.0" GraphId="e_1579_i1_1" GraphRef="e_1579_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1579_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="416.0" Y="2135.0" GraphId="e_1579_i2_0" GraphRef="n1563_REACTOME_451607" RelX="-0.5915492957746479" RelY="1.3043478260869565"/>
+      <Point X="255.0" Y="2221.0" GraphId="e_1579_i2_1" GraphRef="e_1579_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1584_REACTOME_451649">
+    <Comment Source="WikiPathways-description">Tpl2 (also known as Cot) is constitutively bound to NFKB p105 (p105) which inhibits its MEK kinase activity in resting cells. Proteolysis of p105 frees Tpl2 from p105 and allows subsequent phosphorylation and activation of MEK1. Tpl2 can also activate SEK1. Phosphorylation of Tpl-2 is believed to play a role in its activation (Cho et al, 2005; Robinson et al. 2007). &lt;br&gt;Positions of phosphorylations represented here are inferred from general experimental data (Zheng &amp; Guan, 1994).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="297.0" Y="2417.0" GraphId="e_1584_0"/>
+      <Point X="324.0" Y="2417.0" GraphId="e_1584_1"/>
+      <Point X="350.0" Y="2417.0" GraphId="e_1584_2"/>
+      <Anchor Position="0.0" GraphId="e_1584_a_i"/>
+      <Anchor Position="0.5094339622641509" GraphId="e_1584_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1584_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1584_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="265.0" Y="2447.0" GraphId="e_1584_i0_0" GraphRef="n1585_REACTOME_451647" RelX="0.25882352941176473" RelY="-1.2173913043478262"/>
+      <Point X="297.0" Y="2417.0" GraphId="e_1584_i0_1" GraphRef="e_1584_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1584_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="263.0" Y="2396.0" GraphId="e_1584_i1_0" GraphRef="n1586_REACTOME_113592" RelX="1.1428571428571428" RelY="0.7096774193548387"/>
+      <Point X="297.0" Y="2417.0" GraphId="e_1584_i1_1" GraphRef="e_1584_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1584_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="386.0" Y="2437.0" GraphId="e_1584_o0_0" ArrowHead="Arrow" GraphRef="n1587_REACTOME_451654" RelX="-0.5660377358490566" RelY="-1.1578947368421053"/>
+      <Point X="350.0" Y="2417.0" GraphId="e_1584_o0_1" GraphRef="e_1584_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1584_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="376.0" Y="2399.0" GraphId="e_1584_o1_0" ArrowHead="Arrow" GraphRef="n1588_REACTOME_29370" RelX="-0.9047619047619048" RelY="1.2258064516129032"/>
+      <Point X="350.0" Y="2417.0" GraphId="e_1584_o1_1" GraphRef="e_1584_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1584_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="324.0" Y="2292.0" GraphId="e_1584_c__0_0" GraphRef="n1581_REACTOME_389388" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="324.0" Y="2417.0" GraphId="e_1584_c__0_1" GraphRef="e_1584_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="865.5" CenterY="1253.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="541.0" CenterY="1328.5" Width="946.0" Height="2409.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451657" rdf:id="lit_451657">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19302047</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunological and inflammatory functions of the interleukin-1 family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dinarello, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Immunol 27:519-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451412" rdf:id="lit_451412">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19022706</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Pellino family: IRAK E3 ligases with emerging roles in innate immune signalling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moynagh, PN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Immunol 30:33-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446131" rdf:id="lit_446131">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8327496</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interleukin 1 signaling occurs exclusively via the type I receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sims, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gayle, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slack, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alderson, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bird, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Giri, JG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colotta, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Re, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mantovani, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shanebeck, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 90:6155-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446128" rdf:id="lit_446128">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8332913</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interleukin-1 type II receptor: a decoy target for IL-1 that is regulated by IL-4</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colotta, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Re, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muzio, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bertini, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Polentarutti, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sironi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Giri, JG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dower, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sims, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mantovani, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 261:472-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446156" rdf:id="lit_446156">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2139180</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification, cloning, expression and biological characterization of an interleukin-1 receptor antagonist protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carter, DB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deibel MR, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dunn, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomich, CS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Laborde, AL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slightom, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berger, AE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bienkowski, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, FF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McEwan, RN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 344:633-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_507729" rdf:id="lit_507729">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1828071</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interleukin-1 (IL-1) receptor antagonist binds to the 80-kDa IL-1 receptor but does not initiate IL-1 signal transduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dripps, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brandhuber, BJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thompson, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eisenberg, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 266:10331-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446145" rdf:id="lit_446145">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9371760</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Recruitment of IRAK to the interleukin 1 receptor complex requires interleukin 1 receptor accessory protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gao, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, Z</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 94:12829-32</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_165868" rdf:id="lit_165868">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9430229</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MyD88: an adapter that recruits IRAK to the IL-1 receptor complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wesche, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henzel, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shillinglaw, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, Z</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunity 7:837-47</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446653" rdf:id="lit_446653">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17507369</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mass spectrometric analysis of the endogenous type I interleukin-1 (IL-1) receptor signaling complex formed after IL-1 binding identifies IL-1RAcP, MyD88, and IRAK-4 as the stable components</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brikos, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wait, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Begum, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Neill, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saklatvala, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Proteomics 6:1551-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446683" rdf:id="lit_446683">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12538665</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inhibition of interleukin 1 receptor/Toll-like receptor signaling through the alternatively spliced, short form of MyD88 is due to its failure to recruit IRAK-4</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burns, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Janssens, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brissoni, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olivos, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beyaert, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tschopp, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Exp Med 197:263-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446861" rdf:id="lit_446861">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10854325</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tollip, a new component of the IL-1RI pathway, links IRAK to the IL-1 receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burns, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clatworthy, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MartÃ­n, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martinon, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Plumpton, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maschera, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lewis, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ray, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tschopp, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Volpe, F</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Cell Biol 2:346-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446630" rdf:id="lit_446630">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17141195</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of IRAK-4 kinase activity via autophosphorylation within its activation loop</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cheng, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Addona, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keshishian, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dahlstrand, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lu, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dorsch, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ocain, TD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parsons, TF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jaffee, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 352:609-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446699" rdf:id="lit_446699">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8599092</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IRAK: a kinase associated with the interleukin-1 receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henzel, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gao, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 271:1128-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_165891" rdf:id="lit_165891">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11960013</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IRAK-4: a novel member of the IRAK family with the properties of an</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strelow, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fontana, EJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wesche, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 99:5567-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_165896" rdf:id="lit_165896">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14625308</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sequential autophosphorylation steps in the interleukin-1 Receptor-associated Kinase-1 Regulate its Availability as an Adapter in Interleukin-1 Signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kollewe, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mackensen, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neumann, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Knop, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wesche, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin, MU</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:5227-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446698" rdf:id="lit_446698">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18438411</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sequential control of Toll-like receptor-dependent responses by IRAK1 and IRAK2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawagoe, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sato, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsushita, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kato, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsui, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumagai, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saitoh, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawai, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takeuchi, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akira, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Immunol 9:684-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446876" rdf:id="lit_446876">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8837778</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TRAF6 is a signal transducer for interleukin-1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xiong, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takeuchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurama, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goeddel, DV</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 383:443-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_507712" rdf:id="lit_507712">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19903815</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PB1 domain interaction of p62/sequestosome 1 and MEKK3 regulates NF-kappaB activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakamura, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kimple, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Siderovski, DP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, GL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 285:2077-89</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450126" rdf:id="lit_450126">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17890055</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IRAK1: a critical signaling mediator of innate immunity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gottipati, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rao, NL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fung-Leung, WP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Signal 20:269-76</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450115" rdf:id="lit_450115">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18070982</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TRAF6 distinctively mediates MyD88- and IRAK-1-induced activation of NF-kappaB</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muroi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanamoto, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Leukoc Biol 83:702-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_202511" rdf:id="lit_202511">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17135271</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Site-specific Lys-63-linked tumor necrosis factor receptor-associated factor 6 auto-ubiquitination is a critical determinant of I kappa B kinase activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lamothe, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Besse, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Campos, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Webster, WK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnay, BG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 282:4102-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_208287" rdf:id="lit_208287">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10882101</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TAB2, a novel adaptor protein, mediates activation of TAK1 MAPKKK by linking TAK1 to TRAF6 in the IL-1 signal transduction pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takaesu, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kishida, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hiyama, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaguchi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shibuya, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Irie, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ninomiya-Tsuji, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsumoto, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 5:649-58</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450183" rdf:id="lit_450183">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10702308</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TAK1 mitogen-activated protein kinase kinase kinase is activated by autophosphorylation within its activation loop</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kishimoto, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsumoto, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ninomiya-Tsuji, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:7359-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450692" rdf:id="lit_450692">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17997719</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The IRAK-catalysed activation of the E3 ligase function of Pellino isoforms induces the Lys63-linked polyubiquitination of IRAK1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ordureau, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Windheim, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peggie, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carrick, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morrice, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohen, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 409:43-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450818" rdf:id="lit_450818">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12496252</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellino 1 is required for interleukin-1 (IL-1)-mediated signaling through its interaction with the IL-1 receptor-associated kinase 4 (IRAK4)-IRAK-tumor necrosis factor receptor-associated factor 6 (TRAF6) complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiang, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nie, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qin, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bird, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:10952-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450804" rdf:id="lit_450804">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12860405</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of Pellino2, a substrate of IRAK1 and IRAK4</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strelow, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kollewe, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wesche, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 547:157-61</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450820" rdf:id="lit_450820">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15917247</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellino3 is a novel upstream regulator of p38 MAPK and activates CREB in a p38-dependent manner</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butler, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanly, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moynagh, PN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:27759-68</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450816" rdf:id="lit_450816">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17675297</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinase-active interleukin-1 receptor-associated kinases promote polyubiquitination and degradation of the Pellino family: direct evidence for PELLINO proteins being ubiquitin-protein isopeptide ligases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butler, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanly, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moynagh, PN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 282:29729-37</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450812" rdf:id="lit_450812">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19264966</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of the phosphorylation sites on the E3 ubiquitin ligase Pellino that are critical for activation by IRAK1 and IRAK4</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peggie, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Campbell, DG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vandermoere, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carrick, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohen, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 106:4584-90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451426" rdf:id="lit_451426">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18180283</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interleukin-1 (IL-1) induces the Lys63-linked polyubiquitination of IL-1 receptor-associated kinase 1 to facilitate NEMO binding and the activation of IkappaBalpha kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Windheim, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stafford, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peggie, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohen, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 28:1783-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_208156" rdf:id="lit_208156">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11460167</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TAK1 is a ubiquitin-dependent kinase of MKK and IKK</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deng, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hong, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akkaraju, GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inoue, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, ZJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 412:346-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_169969" rdf:id="lit_169969">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9744859</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tumor necrosis factor receptor-associated factors (TRAFs)--a family of adapter proteins that regulates life and death</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arch, RH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gedrich, RW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thompson, CB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 12:2821-30</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_202523" rdf:id="lit_202523">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17496917</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ubiquitin-mediated activation of TAK1 and IKK</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adhikari, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, ZJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 26:3214-26</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451595" rdf:id="lit_451595">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12482991</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">betaTrCP-mediated proteolysis of NF-kappaB1 p105 requires phosphorylation of p105 serines 927 and 932</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lang, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Janzen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, GZ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soneji, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beinke, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salmeron, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Allen, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hay, RT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ben-Neriah, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ley, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 23:402-13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451620" rdf:id="lit_451620">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14673179</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dual effects of IkappaB kinase beta-mediated phosphorylation on p105 Fate: SCF(beta-TrCP)-dependent degradation and SCF(beta-TrCP)-independent processing</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Achbert-Weiner, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ciechanover, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 24:475-86</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451646" rdf:id="lit_451646">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9950430</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TPL-2 kinase regulates the proteolysis of the NF-kappaB-inhibitory protein NF-kappaB1 p105</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Belich, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salmeron, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnston, LH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ley, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 397:363-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451627" rdf:id="lit_451627">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12832462</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NF-kappaB1 p105 negatively regulates TPL-2 MEK kinase activity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beinke, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deka, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lang, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Belich, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walker, PA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Howell, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smerdon, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gamblin, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ley, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 23:4739-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451637" rdf:id="lit_451637">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15169888</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ABIN-2 forms a ternary complex with TPL-2 and NF-kappa B1 p105 and is essential for TPL-2 protein stability</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lang, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symons, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watton, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Janzen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soneji, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beinke, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Howell, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ley, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 24:5235-48</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>interleukin-1 signaling pathway</bp:TERM><bp:ID>PW:0000883</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

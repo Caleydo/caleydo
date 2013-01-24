@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="mRNA Capping" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35">
+  <Comment Source="WikiPathways-description">The 5'-ends of all eukaryotic pre-mRNAs studied thus far are converted to cap structures. The cap is thought to influence splicing of the first intron, and is bound by 'cap-binding' proteins, CBP80 and CBP20, in the nucleus. The cap is important for translation initiation, and it also interacts with the poly(A)terminus, via proteins, resulting in circularization of the mRNA to facilitate multiple rounds of translation. The cap is also important for mRNA stability, protecting it from 5' to 3' nucleases, and is required for mRNA export to the cytoplasm.&lt;BR&gt;The capping reaction usually occurs very rapidly on nascent transcripts; after the synthesis of only a few nucleotides by RNA polymerase II. The capping reaction involves the conversion of the 5'-end of the nascent transcript from a triphosphate to a diphosphate by a RNA 5'-triphosphatase, followed by the addition of a guanosine monophosphate by the mRNA guanylyltransferase, to form a 5'-5'-triphosphate linkage. This cap is then methylated by 2'-O-methyltransferases.&lt;P&gt;</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_72087</BiopaxRef>
+  <BiopaxRef>lit_72192</BiopaxRef>
+  <BiopaxRef>lit_77480</BiopaxRef>
+  <BiopaxRef>lit_77481</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_29428" TextLabel="DNA&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="136.0" CenterY="174.0" Width="34.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3913"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_72084" TextLabel="nascent pre-mRNA &#10;transcript&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="183.5" CenterY="264.0" Width="123.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_5393"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_77061" TextLabel="CE:Pol II CTD:Spt5 &#10;complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Spt5 reacts with Guanyl Transferase  (GT) of the capping enzyme (CE).</Comment>
+    <Graphics Color="000000" CenterX="293.5" CenterY="141.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2332"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_77063" TextLabel="Capping complex &#10;(initial)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="341.5" CenterY="211.0" Width="113.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4555"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_113550" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="252.5" CenterY="354.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_77064" TextLabel="Capping complex &#10;(hydrolyzed)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="403.5" CenterY="377.0" Width="113.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4969"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_113571" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="306.0" CenterY="410.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_111349" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="414.5" CenterY="588.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_77065" TextLabel="Capping complex  &#10;(intermediate)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="287.5" CenterY="586.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3580"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_77066" TextLabel="Capping complex &#10;(GpppN..)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="285.5" CenterY="734.0" Width="113.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2312"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_77067" TextLabel="Capping complex &#10;(with freed 5'- GMP)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="288.0" CenterY="873.0" Width="126.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4741"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_77087" TextLabel="S-adenosylmethionine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="384.0" CenterY="808.0" Width="130.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15414"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_109634" TextLabel="TFIIH&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="561.5" CenterY="927.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3832"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_113405" TextLabel="RNA Polymerase II &#10;(phosphorylated):&#10;TFIIF:capped pre-&#10;mRNA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="776.5" CenterY="873.0" Width="117.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3935"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_113403" TextLabel="mRNA capping &#10;factors&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="653.0" CenterY="828.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4925"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_350776" TextLabel="phospho-Spt5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="563.5" CenterY="766.0" Width="91.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14075"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_77502" TextLabel="S-&#10;adenosylhomocysteine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="686.0" CenterY="939.0" Width="138.0" Height="58.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16680"/>
+  </DataNode>
+  <DataNode GraphId="n32_REACTOME_77088" TextLabel="Cap Binding &#10;Complex (CBC)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="794.0" CenterY="733.0" Width="94.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3884"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_77089" TextLabel="capped pre-mRNA:&#10;CBC:RNA Pol II &#10;(phosphorylated) &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1014.5" CenterY="802.0" Width="123.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3243"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_51469" TextLabel="CBP80&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="751.0" CenterY="638.0" Width="46.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q09161"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_51463" TextLabel="CBP20&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="827.0" CenterY="634.0" Width="46.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P52298"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_77060" TextLabel="RNA (guanine-7-) &#10;methyltransferase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="479.0" CenterY="501.0" Width="116.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43148"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_77056" TextLabel="RNA Pol II with &#10;phosphorylated &#10;CTD: CE complex &#10;with activated GT&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="670.5" CenterY="496.0" Width="113.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3171"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_77053" TextLabel="RNA Pol II with &#10;phosphorylated &#10;CTD: CE complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="857.5" CenterY="496.0" Width="109.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2371"/>
+  </DataNode>
+  <DataNode GraphId="n43_REACTOME_72081" TextLabel="mRNA capping &#10;enzyme&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1048.0" CenterY="544.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60942"/>
+  </DataNode>
+  <DataNode GraphId="n44_REACTOME_157174" TextLabel="Pol II transcription &#10;complex with (ser5) &#10;phosphorylated CTD &#10;containing extruded &#10;transcript to +30&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1081.5" CenterY="432.0" Width="131.0" Height="78.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2595"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_77077">
+    <Comment Source="WikiPathways-description">The capping enzyme binds the 5'-end of the nascent transcript soon after it is synthesized on the DNA template, and results in the formation of the capping complex along with the C-terminal domain of RNA polymerase II, and Spt5.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="170.0" Y="209.0" GraphId="e_1_0"/>
+      <Point X="236.0" Y="209.0" GraphId="e_1_1"/>
+      <Point X="282.0" Y="209.0" GraphId="e_1_2" GraphRef="n5_REACTOME_77063" RelX="-1.0442477876106195" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.5892857142857143" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="146.0" Y="188.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_29428" RelX="0.5882352941176471" RelY="1.2727272727272727"/>
+      <Point X="170.0" Y="209.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="178.0" Y="243.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_72084" RelX="-0.08130081300813008" RelY="-1.1666666666666667"/>
+      <Point X="170.0" Y="209.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="260.0" Y="162.0" GraphId="e_1_i2_0" GraphRef="n4_REACTOME_77061" RelX="-0.5641025641025641" RelY="1.1666666666666667"/>
+      <Point X="170.0" Y="209.0" GraphId="e_1_i2_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_77078">
+    <Comment Source="WikiPathways-description">After the capping complex is formed, the RNA triphosphatase activity of the capping enzyme hydrolyzes the 5'-end phosphate group of the nascent mRNA transcript to a diphosphate.&lt;BR&gt;The RNA triphosphatase (RTP) domain of mammalian capping enzyme is a member of a superfamily of phosphatases that include the protein tyrosine phosphatases, some lipid phosphatases, and several nucleic acid phosphatases. This family uses a conserved nucleophilic cysteine residue to attack the target phosphate. A transient phospho-cysteinyl enzyme intermediate is then hydrolyzed to regenerate the enzyme active site. It should be noted that while higher eukaryotic capping enzymes use PTP-like triphosphatase domains, the yeast triphosphatases are a completely different class of enzymes. The yeast RTPs are metal-dependent phosphatases. RNA 5'-triphosphatase (RTP) catalyzed first reaction can be represented as:pppN(pN)n + GTP -&gt; ppN(pN)n + Pi; (n=20-25)&lt;P&gt;</Comment>
+    <BiopaxRef>lit_77482</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="339.0" Y="232.0" GraphId="e_13_0" GraphRef="n5_REACTOME_77063" RelX="-0.035398230088495575" RelY="1.1666666666666667"/>
+      <Point X="334.0" Y="291.0" GraphId="e_13_1"/>
+      <Point X="335.0" Y="330.0" GraphId="e_13_2"/>
+      <Anchor Position="0.6028190895178719" GraphId="e_13_a_p"/>
+      <Anchor Position="1.0" GraphId="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="303.0" Y="336.0" GraphId="e_13_o0_0" ArrowHead="Arrow" GraphRef="n14_REACTOME_113550" RelX="0.9357798165137615" RelY="-1.2"/>
+      <Point X="335.0" Y="330.0" GraphId="e_13_o0_1" GraphRef="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="376.0" Y="356.0" GraphId="e_13_o1_0" ArrowHead="Arrow" GraphRef="n15_REACTOME_77064" RelX="-0.4778761061946903" RelY="-1.1666666666666667"/>
+      <Point X="335.0" Y="330.0" GraphId="e_13_o1_1" GraphRef="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="346.0" Y="232.0" GraphId="e_13_c__0_0" GraphRef="n5_REACTOME_77063" RelX="0.08849557522123894" RelY="1.1666666666666667"/>
+      <Point X="365.0" Y="296.0" GraphId="e_13_c__0_1"/>
+      <Point X="334.0" Y="291.0" GraphId="e_13_c__0_2" GraphRef="e_13_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_77081">
+    <Comment Source="WikiPathways-description">A highly conserved lysine within the guanylyltransferase (GT) site of the mRNA capping enzyme attacks the alpha-phosphate of GTP. An enzyme-GMP covalent intermediate is formed.&lt;BR&gt;</Comment>
+    <BiopaxRef>lit_77482</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="360.0" Y="432.0" GraphId="e_16_0"/>
+      <Point X="360.0" Y="477.0" GraphId="e_16_1"/>
+      <Point X="360.0" Y="528.0" GraphId="e_16_2"/>
+      <Anchor Position="0.0" GraphId="e_16_a_i"/>
+      <Anchor Position="0.46875" GraphId="e_16_a_p"/>
+      <Anchor Position="1.0" GraphId="e_16_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="388.0" Y="398.0" GraphId="e_16_i0_0" GraphRef="n15_REACTOME_77064" RelX="-0.26548672566371684" RelY="1.1666666666666667"/>
+      <Point X="360.0" Y="432.0" GraphId="e_16_i0_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="329.0" Y="418.0" GraphId="e_16_i1_0" GraphRef="n17_REACTOME_113571" RelX="1.15" RelY="0.5333333333333333"/>
+      <Point X="360.0" Y="432.0" GraphId="e_16_i1_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="400.0" Y="570.0" GraphId="e_16_o0_0" ArrowHead="Arrow" GraphRef="n18_REACTOME_111349" RelX="-0.6829268292682927" RelY="-1.2"/>
+      <Point X="360.0" Y="528.0" GraphId="e_16_o0_1" GraphRef="e_16_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="309.0" Y="565.0" GraphId="e_16_o1_0" ArrowHead="Arrow" GraphRef="n19_REACTOME_77065" RelX="0.37606837606837606" RelY="-1.1666666666666667"/>
+      <Point X="360.0" Y="528.0" GraphId="e_16_o1_1" GraphRef="e_16_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="402.0" Y="398.0" GraphId="e_16_c__0_0" GraphRef="n15_REACTOME_77064" RelX="-0.017699115044247787" RelY="1.1666666666666667"/>
+      <Point X="402.0" Y="478.0" GraphId="e_16_c__0_1"/>
+      <Point X="360.0" Y="477.0" GraphId="e_16_c__0_2" GraphRef="e_16_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_REACTOME_77083">
+    <Comment Source="WikiPathways-description">The diphosphate 5'-end of the mRNA is joined to the GMP, releasing it from the enzyme. At this time, it is unclear how the RNA diphosphate end is transferred from the active site of the triphosphatase to the guanylyltransferase site. The covalent enzyme-GMP complex can form in the absence of RNA.&lt;BR&gt;Guanylyltransferase (GT) catalyzed second reaction can be represented as:ppN(pN)n + GTP -&gt; GpppN(pN)n + PPi&lt;P&gt;</Comment>
+    <BiopaxRef>lit_77482</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="286.0" Y="607.0" GraphId="e_20_0" GraphRef="n19_REACTOME_77065" RelX="-0.017094017094017096" RelY="1.1666666666666667"/>
+      <Point X="285.0" Y="660.0" GraphId="e_20_1"/>
+      <Point X="285.0" Y="713.0" GraphId="e_20_2" GraphRef="n21_REACTOME_77066" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.500044491902826" GraphId="e_20_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="278.0" Y="607.0" GraphId="e_20_c__0_0" GraphRef="n19_REACTOME_77065" RelX="-0.15384615384615385" RelY="1.1666666666666667"/>
+      <Point X="252.0" Y="661.0" GraphId="e_20_c__0_1"/>
+      <Point X="285.0" Y="660.0" GraphId="e_20_c__0_2" GraphRef="e_20_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_REACTOME_77085">
+    <Comment Source="WikiPathways-description">GMP capped mRNA transcript dissociates from GT for further modification.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="284.0" Y="755.0" GraphId="e_22_0" GraphRef="n21_REACTOME_77066" RelX="-0.017699115044247787" RelY="1.1666666666666667"/>
+      <Point X="284.0" Y="805.0" GraphId="e_22_1"/>
+      <Point X="286.0" Y="852.0" GraphId="e_22_2" GraphRef="n23_REACTOME_77067" RelX="-0.031746031746031744" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.5152379886138846" GraphId="e_22_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_REACTOME_77090">
+    <Comment Source="WikiPathways-description">In the final step of the capping reaction, the methyltransferase takes a methyl group from S-adenosyl-methionine to the N7 position of the cap guanine. N7G-methyltransferase (MT) mediated reaction can be represented as:&lt;BR&gt;GpppN(pN)n + S-adenosylmethionine (Adomet) -&gt;m7GpppN(pN)n + S-adenosylhomocysteine (Adohcy).&lt;P&gt;</Comment>
+    <BiopaxRef>lit_77483</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="434.0" Y="872.0" GraphId="e_24_0"/>
+      <Point X="481.0" Y="873.0" GraphId="e_24_1"/>
+      <Point X="518.0" Y="873.0" GraphId="e_24_2"/>
+      <Anchor Position="0.0" GraphId="e_24_a_i"/>
+      <Anchor Position="0.559579580874688" GraphId="e_24_a_p"/>
+      <Anchor Position="1.0" GraphId="e_24_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="354.0" Y="872.0" GraphId="e_24_i0_0" GraphRef="n23_REACTOME_77067" RelX="1.0476190476190477" RelY="-0.05555555555555555"/>
+      <Point X="434.0" Y="872.0" GraphId="e_24_i0_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="401.0" Y="833.0" GraphId="e_24_i1_0" GraphRef="n25_REACTOME_77087" RelX="0.26153846153846155" RelY="1.1363636363636365"/>
+      <Point X="434.0" Y="872.0" GraphId="e_24_i1_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="552.0" Y="913.0" GraphId="e_24_o0_0" ArrowHead="Arrow" GraphRef="n26_REACTOME_109634" RelX="-0.4864864864864865" RelY="-1.2727272727272727"/>
+      <Point X="518.0" Y="873.0" GraphId="e_24_o0_1" GraphRef="e_24_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="715.0" Y="873.0" GraphId="e_24_o1_0" ArrowHead="Arrow" GraphRef="n27_REACTOME_113405" RelX="-1.0427350427350428" RelY="0.0"/>
+      <Point X="518.0" Y="873.0" GraphId="e_24_o1_1" GraphRef="e_24_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="601.0" Y="844.0" GraphId="e_24_o2_0" ArrowHead="Arrow" GraphRef="n28_REACTOME_113403" RelX="-1.0612244897959184" RelY="0.8888888888888888"/>
+      <Point X="518.0" Y="873.0" GraphId="e_24_o2_1" GraphRef="e_24_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="558.0" Y="780.0" GraphId="e_24_o3_0" ArrowHead="Arrow" GraphRef="n29_REACTOME_350776" RelX="-0.10989010989010989" RelY="1.2727272727272727"/>
+      <Point X="518.0" Y="873.0" GraphId="e_24_o3_1" GraphRef="e_24_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="614.0" Y="911.0" GraphId="e_24_o4_0" ArrowHead="Arrow" GraphRef="n30_REACTOME_77502" RelX="-1.0434782608695652" RelY="-0.9655172413793104"/>
+      <Point X="518.0" Y="873.0" GraphId="e_24_o4_1" GraphRef="e_24_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="354.0" Y="884.0" GraphId="e_24_c__0_0" GraphRef="n23_REACTOME_77067" RelX="1.0476190476190477" RelY="0.6111111111111112"/>
+      <Point X="480.0" Y="909.0" GraphId="e_24_c__0_1"/>
+      <Point X="481.0" Y="873.0" GraphId="e_24_c__0_2" GraphRef="e_24_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_REACTOME_77095">
+    <Comment Source="WikiPathways-description">The cap binding complex binds to the methylated GMP cap on the nascent mRNA transcript.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="865.0" Y="801.0" GraphId="e_31_0"/>
+      <Point X="903.0" Y="800.0" GraphId="e_31_1"/>
+      <Point X="950.0" Y="800.0" GraphId="e_31_2" GraphRef="n33_REACTOME_77089" RelX="-1.0406504065040652" RelY="-0.0625" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_31_a_i"/>
+      <Anchor Position="0.44714439008158635" GraphId="e_31_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="815.0" Y="838.0" GraphId="e_31_i0_0" GraphRef="n27_REACTOME_113405" RelX="0.6666666666666666" RelY="-1.09375"/>
+      <Point X="865.0" Y="801.0" GraphId="e_31_i0_1" GraphRef="e_31_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="812.0" Y="754.0" GraphId="e_31_i1_0" GraphRef="n32_REACTOME_77088" RelX="0.3829787234042553" RelY="1.1666666666666667"/>
+      <Point X="865.0" Y="801.0" GraphId="e_31_i1_1" GraphRef="e_31_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_77094">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'CBP80', and 1 molecule of 'CBP20' are present. At the end of this reaction, 1 molecule of 'Cap Binding Complex (CBC)' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="790.0" Y="655.0" GraphId="e_34_0"/>
+      <Point X="790.0" Y="683.0" GraphId="e_34_1"/>
+      <Point X="792.0" Y="712.0" GraphId="e_34_2" GraphRef="n32_REACTOME_77088" RelX="-0.0425531914893617" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_34_a_i"/>
+      <Anchor Position="0.4906351444249746" GraphId="e_34_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="777.0" Y="648.0" GraphId="e_34_i0_0" GraphRef="n35_REACTOME_51469" RelX="1.1304347826086956" RelY="0.9090909090909091"/>
+      <Point X="790.0" Y="655.0" GraphId="e_34_i0_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="807.0" Y="648.0" GraphId="e_34_i1_0" GraphRef="n36_REACTOME_51463" RelX="-0.8695652173913043" RelY="1.2727272727272727"/>
+      <Point X="790.0" Y="655.0" GraphId="e_34_i1_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_77073">
+    <Comment Source="WikiPathways-description">The capping enzyme interacts with the Spt5 subunit of  transcription elongation factor DSIF.  This interaction may couple the capping reaction with promoter escape or elongation, thereby acting as a Ã¢â¬ÅcheckpointÃ¢â¬ï¿½ to assure that capping has occurred before the polymerase proceeds to make the rest of the  transcript.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="563.0" Y="363.0" GraphId="e_37_0"/>
+      <Point X="563.0" Y="140.0" GraphId="e_37_1"/>
+      <Point X="355.0" Y="140.0" GraphId="e_37_2" GraphRef="n4_REACTOME_77061" RelX="1.0598290598290598" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_37_a_i"/>
+      <Anchor Position="0.5174013921113689" GraphId="e_37_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="489.0" Y="480.0" GraphId="e_37_i0_0" GraphRef="n38_REACTOME_77060" RelX="0.1724137931034483" RelY="-1.1666666666666667"/>
+      <Point X="563.0" Y="363.0" GraphId="e_37_i0_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="644.0" Y="461.0" GraphId="e_37_i1_0" GraphRef="n39_REACTOME_77056" RelX="-0.46017699115044247" RelY="-1.09375"/>
+      <Point X="563.0" Y="363.0" GraphId="e_37_i1_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="563.0" Y="752.0" GraphId="e_37_i2_0" GraphRef="n29_REACTOME_350776" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="563.0" Y="363.0" GraphId="e_37_i2_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_77068">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'RNA Pol II with phosphorylated CTD: CE complex' is present. At the end of this reaction, 1 molecule of 'RNA Pol II with phosphorylated CTD: CE complex with activated GT' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="800.0" Y="496.0" GraphId="e_40_0" GraphRef="n41_REACTOME_77053" RelX="-1.0458715596330275" RelY="0.0"/>
+      <Point X="777.0" Y="496.0" GraphId="e_40_1"/>
+      <Point X="730.0" Y="496.0" GraphId="e_40_2" GraphRef="n39_REACTOME_77056" RelX="1.0619469026548674" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.32857142857142857" GraphId="e_40_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_REACTOME_77069">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'mRNA capping enzyme', and 1 molecule of 'Pol II transcription complex with (ser5) phosphorylated CTD containing extruded transcript to +30' are present. At the end of this reaction, 1 molecule of 'RNA Pol II with phosphorylated CTD: CE complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="994.0" Y="497.0" GraphId="e_42_0"/>
+      <Point X="956.0" Y="498.0" GraphId="e_42_1"/>
+      <Point X="915.0" Y="497.0" GraphId="e_42_2" GraphRef="n41_REACTOME_77053" RelX="1.0642201834862386" RelY="0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_42_a_i"/>
+      <Anchor Position="0.4810248373966709" GraphId="e_42_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1027.0" Y="523.0" GraphId="e_42_i0_0" GraphRef="n43_REACTOME_72081" RelX="-0.42857142857142855" RelY="-1.1666666666666667"/>
+      <Point X="994.0" Y="497.0" GraphId="e_42_i0_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1028.0" Y="474.0" GraphId="e_42_i1_0" GraphRef="n44_REACTOME_157174" RelX="-0.8091603053435115" RelY="1.0769230769230769"/>
+      <Point X="994.0" Y="497.0" GraphId="e_42_i1_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_6" GroupRef="group_comp_6" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="52.5" CenterY="1083.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_7" GroupRef="group_comp_7" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="106.0" CenterY="1033.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_6" GroupRef="group_comp_6">
+    <Graphics Color="000000" CenterX="803.0" CenterY="554.0" Width="1598.0" Height="1100.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_7" GroupRef="group_comp_7">
+    <Graphics Color="000000" CenterX="797.0" CenterY="548.0" Width="1510.0" Height="1020.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72087" rdf:id="lit_72087">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3326038</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Messenger RNA capping enzymes from eukaryotic cells.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizumoto, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaziro, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prog Nucleic Acid Res Mol Biol 34:1-28</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72192" rdf:id="lit_72192">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11909521</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrating mRNA processing with transcription.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proudfoot, NJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furger, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dye, MJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 108:501-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77480" rdf:id="lit_77480">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10395561</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coupling RNA polymerase II transcription with pre-mRNA processing.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bentley, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 11:347-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77481" rdf:id="lit_77481">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11017188</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The ends of the affair: capping and polyadenylation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shatkin, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Manley, JL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Biol 7:838-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77482" rdf:id="lit_77482">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9512541</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isolation and characterization of a human cDNA for mRNA 5'-capping enzyme.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamada-Okabe, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Doi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimmi, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arisawa, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamada-Okabe, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 26:1700-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77483" rdf:id="lit_77483">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9790902</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and characterization of three human cDNAs encoding mRNA (guanine-7-)-methyltransferase, an mRNA cap methylase.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsukamoto, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shibagaki, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Niikura, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizumoto, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 251:27-34</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>transcription pathway</bp:TERM><bp:ID>PW:0000100</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

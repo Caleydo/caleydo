@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Squamous cell  TarBase" Version="20110706" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">This catalogue pathway was created using the database from "http://diana.cslab.ece.ntua.gr/tarbase/" with exclusions based on evidance type. This pathway only incldes miR targeted genes expressed in Muscle cells. This pathway is meant for data mapping.</Comment>
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Graphics BoardWidth="943.6517845712401" BoardHeight="769.3613671756123" />
+  <DataNode TextLabel="AKAP8" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="95.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105127" />
+  </DataNode>
+  <DataNode TextLabel="ATP6V1F" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="115.00000000000001" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000128524" />
+  </DataNode>
+  <DataNode TextLabel="CHMP2A" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="135.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000130724" />
+  </DataNode>
+  <DataNode TextLabel="COMMD9" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="155.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000110442" />
+  </DataNode>
+  <DataNode TextLabel="DHX57" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="175.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000163214" />
+  </DataNode>
+  <DataNode TextLabel="FAM96A" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="195.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000166797" />
+  </DataNode>
+  <DataNode TextLabel="FNDC3A" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="215.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000102531" />
+  </DataNode>
+  <DataNode TextLabel="GYS1" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="235.00000000000003" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000104812" />
+  </DataNode>
+  <DataNode TextLabel="HMGA1" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="255.00000000000003" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000137309" />
+  </DataNode>
+  <DataNode TextLabel="MRPS33" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="275.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000090263" />
+  </DataNode>
+  <DataNode TextLabel="NEDD4" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="295.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000069869" />
+  </DataNode>
+  <DataNode TextLabel="OPRS1" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="315.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000147955" />
+  </DataNode>
+  <DataNode TextLabel="POLD2" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="335.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000106628" />
+  </DataNode>
+  <DataNode TextLabel="POLR2C" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="354.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000102978" />
+  </DataNode>
+  <DataNode TextLabel="POM121" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="374.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000135213" />
+  </DataNode>
+  <DataNode TextLabel="PPP1R7" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="394.9999999999999" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000115685" />
+  </DataNode>
+  <DataNode TextLabel="PXDN" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="414.9999999999999" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000130508" />
+  </DataNode>
+  <DataNode TextLabel="SPCS3" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="434.99999999999983" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000129128" />
+  </DataNode>
+  <DataNode TextLabel="THBS1" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="454.99999999999983" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000137801" />
+  </DataNode>
+  <DataNode TextLabel="AKAP8" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="537.2157633468048" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105127" />
+  </DataNode>
+  <DataNode TextLabel="DHX57" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="557.215763346805" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000163214" />
+  </DataNode>
+  <DataNode TextLabel="FAM96A" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="577.215763346805" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000166797" />
+  </DataNode>
+  <DataNode TextLabel="SLC38A1" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="597.215763346805" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000111371" />
+  </DataNode>
+  <DataNode TextLabel="THBS1" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="617.2157633468051" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000137801" />
+  </DataNode>
+  <DataNode TextLabel="ARFIP1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="94.73199329983228" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000164144" />
+  </DataNode>
+  <DataNode TextLabel="ATP6V1C1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="114.7319932998324" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000155097" />
+  </DataNode>
+  <DataNode TextLabel="BET1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="134.7319932998324" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105829" />
+  </DataNode>
+  <DataNode TextLabel="CBFB" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="154.7319932998324" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000067955" />
+  </DataNode>
+  <DataNode TextLabel="CUL4B" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="174.7319932998325" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000158290" />
+  </DataNode>
+  <DataNode TextLabel="DHX40" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="194.7319932998325" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000108406" />
+  </DataNode>
+  <DataNode TextLabel="DNAJB1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="214.7319932998325" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000132002" />
+  </DataNode>
+  <DataNode TextLabel="FMNL2" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="234.7319932998324" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000157827" />
+  </DataNode>
+  <DataNode TextLabel="HSD17B12" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="254.7319932998325" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000149084" />
+  </DataNode>
+  <DataNode TextLabel="MET" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="274.7319932998325" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105976" />
+  </DataNode>
+  <DataNode TextLabel="MPZL1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="294.73199329983237" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000197965" />
+  </DataNode>
+  <DataNode TextLabel="PICALM" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="314.7319932998326" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000073921" />
+  </DataNode>
+  <DataNode TextLabel="PODXL" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="334.7319932998326" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000128567" />
+  </DataNode>
+  <DataNode TextLabel="RAB34" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="354.7319932998327" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000109113" />
+  </DataNode>
+  <DataNode TextLabel="RAI14" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="374.7319932998328" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000039560" />
+  </DataNode>
+  <DataNode TextLabel="RHEB" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="394.7319932998328" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000106615" />
+  </DataNode>
+  <DataNode TextLabel="SDCBP" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="414.73199329983316" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000137575" />
+  </DataNode>
+  <DataNode TextLabel="SH3BP4" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="434.7319932998334" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000130147" />
+  </DataNode>
+  <DataNode TextLabel="SMAD1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="454.7319932998335" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000170365" />
+  </DataNode>
+  <DataNode TextLabel="SYNE2" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="474.7319932998334" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000054654" />
+  </DataNode>
+  <DataNode TextLabel="TBCA" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="494.7319932998336" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000171530" />
+  </DataNode>
+  <DataNode TextLabel="TRAM1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="514.7319932998337" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000067167" />
+  </DataNode>
+  <DataNode TextLabel="TXNRD1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="534.7319932998339" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000198431" />
+  </DataNode>
+  <DataNode TextLabel="UBE2J1" Type="GeneProduct">
+    <Graphics CenterX="192.30318257956452" CenterY="554.7319932998341" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000198833" />
+  </DataNode>
+  <DataNode TextLabel="FGF2" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="94.99999999999984" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000138685" />
+  </DataNode>
+  <DataNode TextLabel="FNDC3B" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="114.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000075420" />
+  </DataNode>
+  <DataNode TextLabel="GALNT7" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="134.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000109586" />
+  </DataNode>
+  <DataNode TextLabel="GFPT1" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="155.00000000000006" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000198380" />
+  </DataNode>
+  <DataNode TextLabel="HBXIP" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="175.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000134248" />
+  </DataNode>
+  <DataNode TextLabel="HMOX1" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="195.0000000000001" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000100292" />
+  </DataNode>
+  <DataNode TextLabel="LAMC1" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="215.00000000000006" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000135862" />
+  </DataNode>
+  <DataNode TextLabel="MRPL20" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="234.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000131586" />
+  </DataNode>
+  <DataNode TextLabel="PISD" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="254.99999999999991" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000100141" />
+  </DataNode>
+  <DataNode TextLabel="NP" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="274.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000198805" />
+  </DataNode>
+  <DataNode TextLabel="RARS" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="295.0000000000001" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000113643" />
+  </DataNode>
+  <DataNode TextLabel="RTN4" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="314.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000115310" />
+  </DataNode>
+  <DataNode TextLabel="SLC12A2" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="334.9999999999999" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000064651" />
+  </DataNode>
+  <DataNode TextLabel="SLC38A1" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="354.9999999999997" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000111371" />
+  </DataNode>
+  <DataNode TextLabel="SPTLC1" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="374.99999999999983" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000090054" />
+  </DataNode>
+  <DataNode TextLabel="SRPRB" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="394.99999999999966" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000144867" />
+  </DataNode>
+  <DataNode TextLabel="TMEM43" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="414.99999999999994" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000170876" />
+  </DataNode>
+  <DataNode TextLabel="TPM3" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="435.00000000000006" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000143549" />
+  </DataNode>
+  <DataNode TextLabel="UBE2V1" Type="GeneProduct">
+    <Graphics CenterX="309.7058823529411" CenterY="454.9999999999999" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000124208" />
+  </DataNode>
+  <DataNode TextLabel="ADAR" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="94.13524429917896" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000160710" />
+  </DataNode>
+  <DataNode TextLabel="ANP32B" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="114.13524429917894" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000136938" />
+  </DataNode>
+  <DataNode TextLabel="ANPEP" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="134.1352442991789" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000166825" />
+  </DataNode>
+  <DataNode TextLabel="ANXA2" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="154.135244299179" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000182718" />
+  </DataNode>
+  <DataNode TextLabel="AP3D1" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="174.13524429917885" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000065000" />
+  </DataNode>
+  <DataNode TextLabel="ARCN1" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="194.13524429917874" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000095139" />
+  </DataNode>
+  <DataNode TextLabel="ARF4" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="214.13524429917874" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000168374" />
+  </DataNode>
+  <DataNode TextLabel="AXL" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="234.13524429917882" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000167601" />
+  </DataNode>
+  <DataNode TextLabel="DNAJB1" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="254.13524429917868" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000132002" />
+  </DataNode>
+  <DataNode TextLabel="GOLGA7" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="274.13524429917857" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000147533" />
+  </DataNode>
+  <DataNode TextLabel="MET" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="294.13524429917857" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105976" />
+  </DataNode>
+  <DataNode TextLabel="MOV10" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="314.13524429917857" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000155363" />
+  </DataNode>
+  <DataNode TextLabel="MRC2" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="334.13524429917845" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000011028" />
+  </DataNode>
+  <DataNode TextLabel="NP" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="354.1352442991784" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000198805" />
+  </DataNode>
+  <DataNode TextLabel="NRP1" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="374.1352442991784" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000099250" />
+  </DataNode>
+  <DataNode TextLabel="PDLIM7" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="394.1352442991785" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000196923" />
+  </DataNode>
+  <DataNode TextLabel="PICALM" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="414.1352442991785" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000073921" />
+  </DataNode>
+  <DataNode TextLabel="POM121" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="434.13524429917845" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000135213" />
+  </DataNode>
+  <DataNode TextLabel="PTMA" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="454.13524429917845" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000187514" />
+  </DataNode>
+  <DataNode TextLabel="PWP1" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="474.13524429917845" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000136045" />
+  </DataNode>
+  <DataNode TextLabel="SFRS9" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="494.1352442991783" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000111786" />
+  </DataNode>
+  <DataNode TextLabel="SH3BGRL3" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="514.1352442991783" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000142669" />
+  </DataNode>
+  <DataNode TextLabel="THBS1" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="534.1352442991783" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000137801" />
+  </DataNode>
+  <DataNode TextLabel="TPM1" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="554.1352442991783" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000140416" />
+  </DataNode>
+  <DataNode TextLabel="TPM3" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="574.1352442991783" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000143549" />
+  </DataNode>
+  <DataNode TextLabel="YWHAQ" Type="GeneProduct">
+    <Graphics CenterX="432.5078864353313" CenterY="594.1352442991783" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000134308" />
+  </DataNode>
+  <DataNode TextLabel="ANPEP" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="92.56820337087834" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000166825" />
+  </DataNode>
+  <DataNode TextLabel="AP2A1" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="112.56820337087834" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000196961" />
+  </DataNode>
+  <DataNode TextLabel="ATP2A2" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="132.5682033708785" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000174437" />
+  </DataNode>
+  <DataNode TextLabel="ATRX" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="152.56820337087885" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000085224" />
+  </DataNode>
+  <DataNode TextLabel="CBFB" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="172.56820337087885" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000067955" />
+  </DataNode>
+  <DataNode TextLabel="NP" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="192.56820337087885" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000198805" />
+  </DataNode>
+  <DataNode TextLabel="CPNE8" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="212.56820337087885" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000139117" />
+  </DataNode>
+  <DataNode TextLabel="GALNT1" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="232.56820337087885" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000141429" />
+  </DataNode>
+  <DataNode TextLabel="GALNT7" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="252.56820337087893" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000109586" />
+  </DataNode>
+  <DataNode TextLabel="GNAI2" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="272.5682033708788" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000114353" />
+  </DataNode>
+  <DataNode TextLabel="HNRPM" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="292.568203370879" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000099783" />
+  </DataNode>
+  <DataNode TextLabel="IDH1" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="312.56820337087925" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000138413" />
+  </DataNode>
+  <DataNode TextLabel="KDELC2" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="332.56820337087925" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000178202" />
+  </DataNode>
+  <DataNode TextLabel="MET" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="352.56820337087925" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105976" />
+  </DataNode>
+  <DataNode TextLabel="NCL" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="372.56820337087925" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000115053" />
+  </DataNode>
+  <DataNode TextLabel="P4HA2" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="392.56820337087953" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000072682" />
+  </DataNode>
+  <DataNode TextLabel="PRPF40A" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="412.56820337087953" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000196504" />
+  </DataNode>
+  <DataNode TextLabel="SEC23A" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="432.56820337087976" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000100934" />
+  </DataNode>
+  <DataNode TextLabel="SLC38A1" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="452.56820337087976" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000111371" />
+  </DataNode>
+  <DataNode TextLabel="SLC38A2" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="472.56820337088" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000134294" />
+  </DataNode>
+  <DataNode TextLabel="SLC4A10" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="492.56820337087976" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000144290" />
+  </DataNode>
+  <DataNode TextLabel="TMED10" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="512.5682033708798" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000170348" />
+  </DataNode>
+  <DataNode TextLabel="TMED2" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="532.56820337088" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000086598" />
+  </DataNode>
+  <DataNode TextLabel="TMED7" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="552.56820337088" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000134970" />
+  </DataNode>
+  <DataNode TextLabel="TICAM2" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="572.56820337088" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000134970" />
+  </DataNode>
+  <DataNode TextLabel="TMEM59" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="592.5682033708803" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000116209" />
+  </DataNode>
+  <DataNode TextLabel="TNFRSF10B" Type="GeneProduct">
+    <Graphics CenterX="560.5156950672646" CenterY="612.5682033708803" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000120889" />
+  </DataNode>
+  <DataNode TextLabel="TGFB1" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="92.23901927386869" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105329" />
+  </DataNode>
+  <DataNode TextLabel="NRAS" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="474.9999999999998" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000009307" />
+  </DataNode>
+  <DataNode TextLabel="NF2" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="665.5903458669804" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000186575" />
+  </DataNode>
+  <DataNode TextLabel="MTPN " Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="718.7451939132902" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105887" />
+  </DataNode>
+  <DataNode TextLabel="FBXW1B" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="149.86564734912204" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000072803" />
+  </DataNode>
+  <DataNode TextLabel="MTPN " Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="206.63635586851376" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105887" />
+  </DataNode>
+  <DataNode TextLabel="ELOVL5" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="226.63635586851376" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000012660" />
+  </DataNode>
+  <DataNode TextLabel="GAS2L1" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="246.6363558685137" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000185340" />
+  </DataNode>
+  <DataNode TextLabel="ACAA2" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="266.6363558685134" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000167315" />
+  </DataNode>
+  <DataNode TextLabel="LAMC1 / laminin gamma " Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="286.6363558685134" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000135862" />
+  </DataNode>
+  <DataNode TextLabel="NM_032121" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="306.6363558685132" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000102158" />
+  </DataNode>
+  <DataNode TextLabel="ATP6V0E" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="326.63635586851336" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000113732" />
+  </DataNode>
+  <DataNode TextLabel="CTDSP1 " Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="377.57032239949336" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000144579" />
+  </DataNode>
+  <DataNode TextLabel="VCAM1" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="428.09271045919485" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000162692" />
+  </DataNode>
+  <DataNode TextLabel="ERG" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="478.6150985188962" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000157554" />
+  </DataNode>
+  <DataNode TextLabel="PKM2" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="527.2718149368065" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000067225" />
+  </DataNode>
+  <DataNode TextLabel="PKM2" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="577.7942029965072" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000067225" />
+  </DataNode>
+  <DataNode TextLabel="HOXA7" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="628.3165910562091" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000122592" />
+  </DataNode>
+  <DataNode TextLabel="MET" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="678.8389791159107" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105976" />
+  </DataNode>
+  <DataNode TextLabel="TGFBR2" Type="GeneProduct">
+    <Graphics CenterX="678.368004882321" CenterY="729.3613671756123" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000163513" />
+  </DataNode>
+  <DataNode TextLabel="TPM1" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="92.96729136499516" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000140416" />
+  </DataNode>
+  <DataNode TextLabel="PDCD4" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="112.96729136499516" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000150593" />
+  </DataNode>
+  <DataNode TextLabel="HES1 " Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="159.77673564570335" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000114315" />
+  </DataNode>
+  <DataNode TextLabel="SMAD1" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="213.46373829822278" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000170365" />
+  </DataNode>
+  <DataNode TextLabel="SMAD1" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="256.7263377677188" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000170365" />
+  </DataNode>
+  <DataNode TextLabel="LAMC1 / laminin gamma " Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="310.5990168128115" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000135862" />
+  </DataNode>
+  <DataNode TextLabel="tuba3" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="365.7979558048535" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000167552" />
+  </DataNode>
+  <DataNode TextLabel="THBS1 " Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="385.7979558048535" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000137801" />
+  </DataNode>
+  <DataNode TextLabel="VEZT / vezatin" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="405.7979558048535" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000028203" />
+  </DataNode>
+  <DataNode TextLabel="E2F3" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="459.77673564570256" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000112242" />
+  </DataNode>
+  <DataNode TextLabel="MAP3K8" Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="516.3019345846947" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000107968" />
+  </DataNode>
+  <DataNode TextLabel="MTPN " Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="572.4030176171858" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000105887" />
+  </DataNode>
+  <DataNode TextLabel="ADIPOR2 " Type="GeneProduct">
+    <Graphics CenterX="814.0653404985536" CenterY="592.4030176171858" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000006831" />
+  </DataNode>
+  <Label TextLabel="let-7b" GraphId="aae1d">
+    <Graphics CenterX="69.06830228102791" CenterY="70.61198328230103" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32831" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="LNA_let-7b" GraphId="dec82">
+    <Graphics CenterX="65.83123850244763" CenterY="513.8249796721936" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32832" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-155" GraphId="a4cde">
+    <Graphics CenterX="193.7614430752517" CenterY="70.75638761443233" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32833" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-16" GraphId="b178b">
+    <Graphics CenterX="309.657953303892" CenterY="71.12943213910154" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32834" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-1" GraphId="c0193">
+    <Graphics CenterX="430.3679412701977" CenterY="71.50247666377064" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32835" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-30" GraphId="be0bc">
+    <Graphics CenterX="563.7133082978753" CenterY="71.27383647123148" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32836" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="HSV1-miR-LAT" GraphId="aaeba">
+    <Graphics CenterX="677.2030796576822" CenterY="70.44351156148412" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32837" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-103-1" GraphId="ddde5">
+    <Graphics CenterX="680.5845477683923" CenterY="130.9850278069719" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32838" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="let-7a" GraphId="e3665">
+    <Graphics CenterX="66.20428302711669" CenterY="644.16192311383" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32839" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="let-7b" GraphId="cd7b9">
+    <Graphics CenterX="66.57732755178577" CenterY="695.6781686011943" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32840" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-124" GraphId="f1fe6">
+    <Graphics CenterX="682.7626464446861" CenterY="175.88274140504652" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32841" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-124a" GraphId="f047e">
+    <Graphics CenterX="680.7289521005227" CenterY="353.7527775061297" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32842" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-126" GraphId="d2c7d">
+    <Graphics CenterX="681.101996625192" CenterY="402.8622841246617" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32843" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-133" GraphId="a394f">
+    <Graphics CenterX="678.4666175638204" CenterY="452.57347546040177" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32844" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-133a" GraphId="de5b1">
+    <Graphics CenterX="680.043031522906" CenterY="501.6829820789336" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32845" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-133b" GraphId="f089b">
+    <Graphics CenterX="678.0093371787423" CenterY="551.3941734146737" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32846" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-196" GraphId="deee4">
+    <Graphics CenterX="678.9840664206197" CenterY="603.5121036192471" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32847" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-199a" GraphId="b4f31">
+    <Graphics CenterX="676.3486873592478" CenterY="654.4266643894039" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32848" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-20a" GraphId="ea2c7">
+    <Graphics CenterX="677.925101318333" CenterY="705.34122515956" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32849" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-21" GraphId="da591">
+    <Graphics CenterX="816.6856308008838" CenterY="72.74194718122084" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32850" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-23" GraphId="e51d4">
+    <Graphics CenterX="815.8553058911367" CenterY="135.6902022955413" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32851" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-26" GraphId="c5dd3">
+    <Graphics CenterX="813.2199268297649" CenterY="187.80813250011406" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32852" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-26a" GraphId="db6ca">
+    <Graphics CenterX="813.5929713544341" CenterY="235.1125849670213" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32853" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-29c" GraphId="e3f59">
+    <Graphics CenterX="815.7710700307279" CenterY="283.6204068683452" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32854" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-30a-3p" GraphId="ca03f">
+    <Graphics CenterX="814.9407451209808" CenterY="339.9501300933752" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32855" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-34a" GraphId="c3587">
+    <Graphics CenterX="812.9070507768171" CenterY="433.5843057853125" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32856" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-370" GraphId="b5569">
+    <Graphics CenterX="813.8817800186945" CenterY="490.51571372755063" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32857" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="miR-375" GraphId="b896c">
+    <Graphics CenterX="814.8565092605719" CenterY="545.6420675181644" Width="193.9323075407126" Height="36.61327231121278" ZOrder="32858" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000" />
+  </Label>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Fatty acid oxidation" Version="20121001" Organism="Mus musculus">
+  <Graphics BoardWidth="1239.990352811466" BoardHeight="907.7049591611725" />
+  <DataNode TextLabel="LCAD" GraphId="c59e5" Type="Protein">
+    <BiopaxRef>a55</BiopaxRef>
+    <Graphics CenterX="377.24104189636193" CenterY="512.1305992444696" Width="63.0" Height="22.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P51174" />
+  </DataNode>
+  <DataNode TextLabel="MCAD" GraphId="ef5f1" Type="Protein">
+    <Graphics CenterX="466.3726571113564" CenterY="512.1305992444696" Width="63.0" Height="22.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P45952" />
+  </DataNode>
+  <DataNode TextLabel="SCAD" GraphId="b8ef6" Type="Protein">
+    <Graphics CenterX="545.1717199558991" CenterY="512.1305992444696" Width="63.0" Height="22.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q07417" />
+  </DataNode>
+  <DataNode TextLabel="VLCAD" GraphId="ae9e3" Type="Protein">
+    <Graphics CenterX="1143.4126240352807" CenterY="512.1305992444696" Width="63.0" Height="22.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P50544" />
+  </DataNode>
+  <DataNode TextLabel="Acyl-CoA" GraphId="e9954" Type="Metabolite">
+    <Graphics CenterX="790.9117103597526" CenterY="445.8662050266629" Width="92.00000000000001" Height="20.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="Wikipedia" ID="Acyl-CoA" />
+  </DataNode>
+  <DataNode TextLabel="MTP" GraphId="ebb32" Type="Protein">
+    <Graphics CenterX="1143.4126240352807" CenterY="665.8017066804667" Width="121.79492833517111" Height="25.5" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="O08601" />
+  </DataNode>
+  <DataNode TextLabel="Crotonase" GraphId="d8147" Type="Protein">
+    <Graphics CenterX="434.89746416758544" CenterY="665.8017066804667" Width="121.79492833517105" Height="22.5" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q8BH95" />
+  </DataNode>
+  <DataNode TextLabel="M/SCHAD" GraphId="d3986" Type="Protein">
+    <Graphics CenterX="434.89746416758544" CenterY="791.5817507819005" Width="121.79492833517105" Height="22.5" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q61425" />
+  </DataNode>
+  <DataNode TextLabel="MCKAT" GraphId="fa9e6" Type="Protein">
+    <Graphics CenterX="752.3563947078297" CenterY="791.5817507819004" Width="76.5" Height="24.5" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Acetylcarnitine" GraphId="f4c86" Type="Metabolite">
+    <Graphics CenterX="419.1005859773778" CenterY="103.02056004320134" Width="92.0" Height="20.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00201" />
+  </DataNode>
+  <DataNode TextLabel="Malonyl-CoA" GraphId="c7c2b" Type="Metabolite">
+    <Graphics CenterX="229.6259443015224" CenterY="119.52056004320127" Width="92.0" Height="20.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01175" />
+  </DataNode>
+  <DataNode TextLabel="Carnitine" GraphId="fedce" Type="Metabolite">
+    <Graphics CenterX="150.29187594430175" CenterY="147.56449834619616" Width="92.0" Height="20.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00062" />
+  </DataNode>
+  <DataNode TextLabel="CoASH" GraphId="ee461" Type="Metabolite">
+    <Graphics CenterX="324.69044264771804" CenterY="147.56449834619616" Width="92.0" Height="20.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="Enoyl CoA" GraphId="aad82" Type="Protein">
+    <Graphics CenterX="434.8974641675855" CenterY="598.9782249173098" Width="121.794928335171" Height="22.5" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q8BH95" />
+  </DataNode>
+  <DataNode TextLabel="Hydroxyacyl CoA " GraphId="a536e" Type="Protein">
+    <Graphics CenterX="434.8974641675855" CenterY="719.7058985667034" Width="121.794928335171" Height="22.5" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q61425" />
+  </DataNode>
+  <DataNode TextLabel="H20" GraphId="ed70a" Type="Metabolite">
+    <Graphics CenterX="524.5570562293278" CenterY="629.8492282249173" Width="46.80650496141108" Height="17.0380374862184" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02111" />
+  </DataNode>
+  <DataNode TextLabel="NAD-" GraphId="e92b1" Type="Metabolite">
+    <Graphics CenterX="545.5052370452044" CenterY="758.8459206174201" Width="63.344542447629316" Height="18.14057331863294" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00902" />
+  </DataNode>
+  <DataNode TextLabel="NADH+H-" GraphId="a9e49" Type="Metabolite">
+    <Graphics CenterX="545.5052370452044" CenterY="821.1391951488424" Width="63.344542447629316" Height="18.14057331863294" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01487" />
+  </DataNode>
+  <DataNode TextLabel="Ketoacyl CoA" GraphId="c8af4" Type="Protein">
+    <Graphics CenterX="618.5226019845658" CenterY="863.0955324798055" Width="121.79492833517105" Height="22.5" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q8BWT1" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="d8ba9" Type="Metabolite">
+    <Graphics CenterX="714.7444873208374" CenterY="739.5515435501657" Width="58.934399117971225" Height="20.345644983461852" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="FAD+" GraphId="c277b" Type="Metabolite">
+    <Graphics CenterX="996.4423925027568" CenterY="483.2119625137816" Width="45.703969128996526" Height="20.345644983461796" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01248" />
+  </DataNode>
+  <DataNode TextLabel="FADH2" GraphId="f8116" Type="Metabolite">
+    <Graphics CenterX="994.7885887541349" CenterY="532.2748070562293" Width="45.703969128996505" Height="20.345644983461796" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01197" />
+  </DataNode>
+  <DataNode TextLabel="MTP" GraphId="ad5f6" Type="Protein">
+    <Graphics CenterX="1143.4126240352807" CenterY="791.5817507819004" Width="121.79492833517111" Height="25.5" ZOrder="32769" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="O08601" />
+  </DataNode>
+  <DataNode TextLabel="MTP" GraphId="a25ee" Type="Protein">
+    <Graphics CenterX="815.5647739801557" CenterY="863.0955324798055" Width="72.5" Height="25.5" ZOrder="32770" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="O08601" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="b1f77" Type="Metabolite">
+    <Graphics CenterX="56.09259259259279" CenterY="103.02056004320133" Width="92.0" Height="20.0" ZOrder="32771" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="Acylcarnitine" GraphId="a61ce" Type="Metabolite">
+    <Graphics CenterX="419.1005859773778" CenterY="437.0459183673465" Width="92.00000000000001" Height="20.0" ZOrder="32774" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="Wikipedia" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Carnitine" GraphId="b1fff" Type="Metabolite">
+    <Graphics CenterX="487.09543060149485" CenterY="168.16628873771623" Width="92.0" Height="20.0" ZOrder="32775" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00062" />
+  </DataNode>
+  <DataNode TextLabel="Carnitine" GraphId="d9891" Type="Metabolite">
+    <Graphics CenterX="487.09543060149485" CenterY="346.7218442932722" Width="92.0" Height="20.0" ZOrder="32776" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00062" />
+  </DataNode>
+  <DataNode TextLabel="CPT2" GraphId="fad09" Type="Protein">
+    <Graphics CenterX="640.3032892319006" CenterY="305.70246324672155" Width="92.0" Height="20.0" ZOrder="32778" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P52825" />
+  </DataNode>
+  <DataNode TextLabel="CPT1" GraphId="da35c" Type="Protein">
+    <Graphics CenterX="229.6259443015224" CenterY="219.04591836734642" Width="116.5" Height="27.5" ZOrder="32781" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P97742" />
+  </DataNode>
+  <DataNode TextLabel="CACT" GraphId="b7432" Type="Protein">
+    <Graphics CenterX="419.1005859773778" CenterY="262.2311035525322" Width="116.5" Height="27.5" ZOrder="32782" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q8BL03" />
+  </DataNode>
+  <DataNode TextLabel="Carnitine" GraphId="c864e" Type="Metabolite">
+    <Graphics CenterX="694.5629160031032" CenterY="372.5692757931282" Width="62.0" Height="20.0" ZOrder="32783" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00062" />
+  </DataNode>
+  <DataNode TextLabel="Co-ASH" GraphId="c9024" Type="Metabolite">
+    <Graphics CenterX="574.2144763975664" CenterY="372.56927579312816" Width="62.0" Height="20.0" ZOrder="32784" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="Co-ASH" GraphId="e1e4b" Type="Metabolite">
+    <Graphics CenterX="651.4691621748545" CenterY="783.8923187920259" Width="62.0" Height="20.0" ZOrder="32785" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" GraphId="a8edf" Type="Metabolite">
+    <Graphics CenterX="839.4082138919515" CenterY="772.7047960308714" Width="58.934399117971225" Height="20.345644983461852" ZOrder="32786" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="Co-ASH" GraphId="c32ba" Type="Metabolite">
+    <Graphics CenterX="895.2067586467407" CenterY="807.1227487810006" Width="62.0" Height="20.0" ZOrder="32787" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01206" />
+  </DataNode>
+  <DataNode TextLabel="Ketoacyl CoA" GraphId="fa83e" Type="Protein">
+    <Graphics CenterX="973.6163175303204" CenterY="863.0955324798055" Width="121.79492833517105" Height="22.5" ZOrder="32788" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q8BWT1" />
+  </DataNode>
+  <DataNode TextLabel="Hydroxyacyl CoA " GraphId="acb33" Type="Protein">
+    <Graphics CenterX="1143.4126240352807" CenterY="719.7058985667034" Width="121.79492833517111" Height="25.5" ZOrder="32789" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q61425" />
+  </DataNode>
+  <DataNode TextLabel="Enoyl CoA" GraphId="aa814" Type="Protein">
+    <Graphics CenterX="1143.4126240352807" CenterY="598.9782249173098" Width="121.79492833517111" Height="25.5" ZOrder="32790" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q8BH95" />
+  </DataNode>
+  <DataNode TextLabel="NAD+" GraphId="ee895" Type="Metabolite">
+    <Graphics CenterX="1025.1855016538038" CenterY="739.5515435501657" Width="63.344542447629316" Height="18.14057331863294" ZOrder="32791" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00902" />
+  </DataNode>
+  <DataNode TextLabel="NADH+H+" GraphId="b436e" Type="Metabolite">
+    <Graphics CenterX="1020.7753583241462" CenterY="783.8923187920259" Width="63.344542447629316" Height="18.14057331863294" ZOrder="32792" FontName="Bitstream Charter" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01487" />
+  </DataNode>
+  <Line GraphId="idb698c582">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="171.3759443015224" Y="219.04591836734642" GraphRef="da35c" RelX="-1.0" RelY="0.0" />
+      <Point X="79.09259259259278" Y="113.02056004320133" GraphRef="b1f77" RelX="0.5" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8758f669">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="229.6259443015224" Y="205.29591836734642" GraphRef="da35c" RelX="0.0" RelY="-1.0" />
+      <Point X="229.6259443015224" Y="129.52056004320127" GraphRef="c7c2b" RelX="0.0" RelY="1.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id5d7175f4">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="171.3759443015224" Y="212.17091836734642" GraphRef="da35c" RelX="-1.0" RelY="-0.5" />
+      <Point X="150.29187594430175" Y="157.56449834619616" GraphRef="fedce" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9594c097">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="419.1005859773778" Y="248.4811035525322" GraphRef="b7432" RelX="0.0" RelY="-1.0" />
+      <Point X="419.1005859773778" Y="113.02056004320134" GraphRef="f4c86" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd0070abf">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="419.1005859773778" Y="275.9811035525322" GraphRef="b7432" RelX="0.0" RelY="1.0" />
+      <Point X="419.1005859773778" Y="427.0459183673465" GraphRef="a61ce" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id2694c1b1">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="448.2255859773778" Y="248.4811035525322" GraphRef="b7432" RelX="0.5" RelY="-1.0" />
+      <Point X="464.09543060149485" Y="178.16628873771623" GraphRef="b1fff" RelX="-0.5" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id69fb54a8">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="448.2255859773778" Y="275.9811035525322" GraphRef="b7432" RelX="0.5" RelY="1.0" />
+      <Point X="464.09543060149485" Y="336.7218442932722" GraphRef="d9891" RelX="-0.5" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idbd57e5b9">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="686.3032892319006" Y="305.70246324672155" GraphRef="fad09" RelX="1.0" RelY="0.0" />
+      <Point X="790.9117103597526" Y="435.8662050266629" GraphRef="e9954" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfb28a86f">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="594.3032892319006" Y="305.70246324672155" GraphRef="fad09" RelX="-1.0" RelY="0.0" />
+      <Point X="465.1005859773778" Y="437.0459183673465" GraphRef="a61ce" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id7293436d">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="663.3032892319006" Y="315.70246324672155" GraphRef="fad09" RelX="0.5" RelY="1.0" />
+      <Point X="694.5629160031032" Y="362.5692757931282" GraphRef="c864e" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id363f335b">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="617.3032892319006" Y="315.70246324672155" GraphRef="fad09" RelX="-0.5" RelY="1.0" />
+      <Point X="574.2144763975664" Y="362.56927579312816" GraphRef="c9024" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="377.24104189636193" Y="501.13059924446964" GraphRef="c59e5" RelX="0.0" RelY="-1.0" />
+      <Point X="744.9117103597526" Y="445.8662050266629" GraphRef="e9954" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="466.3726571113564" Y="501.13059924446964" GraphRef="ef5f1" RelX="0.0" RelY="-1.0" />
+      <Point X="744.9117103597526" Y="445.8662050266629" GraphRef="e9954" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="545.1717199558991" Y="501.13059924446964" GraphRef="b8ef6" RelX="0.0" RelY="-1.0" />
+      <Point X="744.9117103597526" Y="445.8662050266629" GraphRef="e9954" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="377.24104189636193" Y="523.1305992444696" GraphRef="c59e5" RelX="0.0" RelY="1.0" />
+      <Point X="404.4487320837927" Y="587.7282249173098" GraphRef="aad82" RelX="-0.5" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="466.3726571113564" Y="523.1305992444696" GraphRef="ef5f1" RelX="0.0" RelY="1.0" />
+      <Point X="434.8974641675855" Y="587.7282249173098" GraphRef="aad82" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="545.1717199558991" Y="523.1305992444696" GraphRef="b8ef6" RelX="0.0" RelY="1.0" />
+      <Point X="465.3461962513783" Y="587.7282249173098" GraphRef="aad82" RelX="0.5" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="434.89746416758544" Y="654.5517066804667" GraphRef="d8147" RelX="0.0" RelY="-1.0" />
+      <Point X="434.8974641675855" Y="610.2282249173098" GraphRef="aad82" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="465.3461962513782" Y="654.5517066804667" GraphRef="d8147" RelX="0.5" RelY="-1.0" />
+      <Point X="501.1538037486223" Y="629.8492282249173" GraphRef="ed70a" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="434.89746416758544" Y="677.0517066804667" GraphRef="d8147" RelX="0.0" RelY="1.0" />
+      <Point X="434.8974641675855" Y="708.4558985667034" GraphRef="a536e" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="434.89746416758544" Y="780.3317507819005" GraphRef="d3986" RelX="0.0" RelY="-1.0" />
+      <Point X="434.8974641675855" Y="730.9558985667034" GraphRef="a536e" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="465.3461962513782" Y="780.3317507819005" GraphRef="d3986" RelX="0.5" RelY="-1.0" />
+      <Point X="513.8329658213897" Y="758.8459206174201" GraphRef="e92b1" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="465.3461962513782" Y="802.8317507819005" GraphRef="d3986" RelX="0.5" RelY="1.0" />
+      <Point X="513.8329658213897" Y="821.1391951488424" GraphRef="a9e49" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="434.89746416758544" Y="802.8317507819005" GraphRef="d3986" RelX="0.0" RelY="1.0" />
+      <Point X="557.6251378169802" Y="863.0955324798055" GraphRef="c8af4" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="752.3563947078297" Y="803.8317507819004" GraphRef="fa9e6" RelX="0.0" RelY="1.0" />
+      <Point X="679.4200661521513" Y="863.0955324798055" GraphRef="c8af4" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="771.4813947078297" Y="779.3317507819004" GraphRef="fa9e6" RelX="0.5" RelY="-1.0" />
+      <Point X="767.9117103597526" Y="455.8662050266629" GraphRef="e9954" RelX="-0.5" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="733.2313947078297" Y="779.3317507819004" GraphRef="fa9e6" RelX="-0.5" RelY="-1.0" />
+      <Point X="714.7444873208374" Y="749.7243660418966" GraphRef="d8ba9" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="714.1063947078297" Y="791.5817507819004" GraphRef="fa9e6" RelX="-1.0" RelY="0.0" />
+      <Point X="682.4691621748545" Y="783.8923187920259" GraphRef="e1e4b" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="797.4397739801557" Y="850.3455324798055" GraphRef="a25ee" RelX="-0.5" RelY="-1.0" />
+      <Point X="790.9117103597526" Y="455.8662050266629" GraphRef="e9954" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="815.5647739801557" Y="850.3455324798055" GraphRef="a25ee" RelX="0.0" RelY="-1.0" />
+      <Point X="839.4082138919515" Y="782.8776185226023" GraphRef="a8edf" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="833.6897739801557" Y="850.3455324798055" GraphRef="a25ee" RelX="0.5" RelY="-1.0" />
+      <Point X="864.2067586467407" Y="807.1227487810006" GraphRef="c32ba" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="851.8147739801557" Y="863.0955324798055" GraphRef="a25ee" RelX="1.0" RelY="0.0" />
+      <Point X="912.718853362735" Y="863.0955324798055" GraphRef="fa83e" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1111.9126240352807" Y="506.63059924446964" GraphRef="ae9e3" RelX="-1.0" RelY="-0.5" />
+      <Point X="1019.294377067255" Y="483.2119625137816" GraphRef="c277b" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1111.9126240352807" Y="517.6305992444696" GraphRef="ae9e3" RelX="-1.0" RelY="0.5" />
+      <Point X="1017.6405733186332" Y="532.2748070562293" GraphRef="f8116" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1143.4126240352807" Y="523.1305992444696" GraphRef="ae9e3" RelX="0.0" RelY="1.0" />
+      <Point X="1143.4126240352807" Y="586.2282249173098" GraphRef="aa814" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1143.4126240352807" Y="653.0517066804667" GraphRef="ebb32" RelX="0.0" RelY="-1.0" />
+      <Point X="1143.4126240352807" Y="611.7282249173098" GraphRef="aa814" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1143.4126240352807" Y="678.5517066804667" GraphRef="ebb32" RelX="0.0" RelY="1.0" />
+      <Point X="1143.4126240352807" Y="706.9558985667034" GraphRef="acb33" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1143.4126240352807" Y="778.8317507819004" GraphRef="ad5f6" RelX="0.0" RelY="-1.0" />
+      <Point X="1143.4126240352807" Y="732.4558985667034" GraphRef="acb33" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="1143.4126240352807" Y="804.3317507819004" GraphRef="ad5f6" RelX="0.0" RelY="1.0" />
+      <Point X="1034.5137816979059" Y="863.0955324798055" GraphRef="fa83e" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1112.963891951488" Y="778.8317507819004" GraphRef="ad5f6" RelX="-0.5" RelY="-1.0" />
+      <Point X="1056.8577728776186" Y="739.5515435501657" GraphRef="ee895" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1082.5151598676953" Y="797.9567507819004" GraphRef="ad5f6" RelX="-1.0" RelY="0.5" />
+      <Point X="1052.4476295479608" Y="783.8923187920259" GraphRef="b436e" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="1143.4126240352807" Y="501.13059924446964" GraphRef="ae9e3" RelX="0.0" RelY="-1.0" />
+      <Point X="836.9117103597526" Y="445.8662050266629" GraphRef="e9954" RelX="1.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d41ae">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="32772" LineThickness="1.0">
+      <Point X="287.8759443015224" Y="219.04591836734642" GraphRef="da35c" RelX="1.0" RelY="0.0" />
+      <Point X="396.1005859773778" Y="113.02056004320134" GraphRef="f4c86" RelX="-0.5" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e6c91">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="32773" LineThickness="1.0">
+      <Point X="287.8759443015224" Y="212.17091836734642" GraphRef="da35c" RelX="1.0" RelY="-0.5" />
+      <Point X="324.69044264771804" Y="157.56449834619616" GraphRef="ee461" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a55">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1015826</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Acyl coenzyme A dehydrogenases and electron-transferring flavoprotein from beef hart mitochondria.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arch Biochem Biophys</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1976</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hall CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heijkenskjöld L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bártfai T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ernster L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamin H</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="miRs in Muscle Cell Differentiation" Version="20110803" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="1227.784275636427" BoardHeight="673.3824568884867"/>
+  <DataNode TextLabel="Skeletal Muscle Differentiation" GraphId="a2575" Type="Pathway">
+    <Graphics CenterX="628.1535602503911" CenterY="327.99726134585285" Width="177.18270735524277" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="MYF5" GraphId="da86b" Type="GeneProduct">
+    <Graphics CenterX="470.8287292442335" CenterY="429.6682066658263" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000111049"/>
+  </DataNode>
+  <DataNode TextLabel="MYOD1" GraphId="cde38" Type="GeneProduct">
+    <Graphics CenterX="379.1907514450867" CenterY="430.05780346820814" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000129152"/>
+  </DataNode>
+  <DataNode TextLabel="ELSPBP1" GraphId="bcaee" Type="GeneProduct">
+    <Graphics CenterX="269.80782409895755" CenterY="361.6847993115741" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000169393"/>
+  </DataNode>
+  <DataNode TextLabel="MIR1-1" GraphId="f5fd8" Type="GeneProduct">
+    <Graphics CenterX="826.6468826463159" CenterY="326.58626888990744" Width="80.0" Height="20.0" ZOrder="32796" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000199017"/>
+  </DataNode>
+  <DataNode TextLabel="MYOD1" GraphId="d3335" Type="GeneProduct">
+    <Graphics CenterX="628.9590198330661" CenterY="53.59144904841238" Width="80.0" Height="20.0" ZOrder="32797" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000129152"/>
+  </DataNode>
+  <DataNode TextLabel="PAX7" GraphId="b36e5" Type="GeneProduct">
+    <Graphics CenterX="628.9590198330661" CenterY="229.6166543375538" Width="80.0" Height="20.0" ZOrder="32798" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000009709"/>
+  </DataNode>
+  <DataNode TextLabel="MIR486" GraphId="cd516" Type="GeneProduct">
+    <Graphics CenterX="677.2093192830127" CenterY="275.834511206431" Width="80.0" Height="20.0" ZOrder="32799" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000221035"/>
+  </DataNode>
+  <DataNode TextLabel="MIR214" GraphId="c3787" Type="GeneProduct">
+    <Graphics CenterX="482.3983437271298" CenterY="297.85351201838085" Width="80.0" Height="20.0" ZOrder="32800" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000207949"/>
+  </DataNode>
+  <DataNode TextLabel="MIR26A1" GraphId="d66ba" Type="GeneProduct" GroupRef="a3159">
+    <Graphics CenterX="826.6862936488827" CenterY="247.1276974808373" Width="80.0" Height="20.0" ZOrder="32801" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000199075"/>
+  </DataNode>
+  <DataNode TextLabel="MEF2C" GraphId="e7dd7" Type="GeneProduct" GroupRef="c9b90">
+    <Graphics CenterX="1157.784275636427" CenterY="388.10804380089326" Width="80.0" Height="20.0" ZOrder="32802" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000081189"/>
+  </DataNode>
+  <DataNode TextLabel="SRF" GraphId="ce2c1" Type="GeneProduct">
+    <Graphics CenterX="984.8642103835699" CenterY="374.2091857258521" Width="80.0" Height="20.0" ZOrder="32803" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000112658"/>
+  </DataNode>
+  <DataNode TextLabel="MIR206" GraphId="fb626" Type="GeneProduct">
+    <Graphics CenterX="576.5592982186504" CenterY="275.02714346109104" Width="80.0" Height="20.0" ZOrder="32804" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000207604"/>
+  </DataNode>
+  <DataNode TextLabel="MIR26A2" GraphId="e1abc" Type="GeneProduct" GroupRef="a3159">
+    <Graphics CenterX="826.6862936488827" CenterY="267.12769748083696" Width="80.0" Height="20.0" ZOrder="32805" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000207789"/>
+  </DataNode>
+  <DataNode TextLabel="MEF2D" GraphId="b2ef3" Type="GeneProduct" GroupRef="c9b90">
+    <Graphics CenterX="1157.784275636427" CenterY="408.1080438008932" Width="80.0" Height="20.0" ZOrder="32806" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000116604"/>
+  </DataNode>
+  <DataNode TextLabel="MIR222" GraphId="cc625" Type="GeneProduct">
+    <Graphics CenterX="583.2051197921713" CenterY="389.82913064093987" Width="80.0" Height="20.0" ZOrder="32807" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000207725"/>
+  </DataNode>
+  <DataNode TextLabel="MEF2A" GraphId="a4575" Type="GeneProduct" GroupRef="c9b90">
+    <Graphics CenterX="1157.784275636427" CenterY="348.10804380089326" Width="80.0" Height="20.0" ZOrder="32808" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000068305"/>
+  </DataNode>
+  <DataNode TextLabel="EZH2" GraphId="fb1cf" Type="GeneProduct">
+    <Graphics CenterX="482.3983437271298" CenterY="241.65938685873832" Width="80.0" Height="20.0" ZOrder="32809" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000106462"/>
+  </DataNode>
+  <DataNode TextLabel="ID2" GraphId="a7c37" Type="GeneProduct">
+    <Graphics CenterX="628.9590198330661" CenterY="190.136637467872" Width="80.0" Height="20.0" ZOrder="32810" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000115738"/>
+  </DataNode>
+  <DataNode TextLabel="MIR221" GraphId="c17a1" Type="GeneProduct">
+    <Graphics CenterX="628.3257913556546" CenterY="423.5647881079583" Width="80.0" Height="20.0" ZOrder="32811" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000207870"/>
+  </DataNode>
+  <DataNode TextLabel="MEF2B" GraphId="a6492" Type="GeneProduct" GroupRef="c9b90">
+    <Graphics CenterX="1157.784275636427" CenterY="368.10804380089326" Width="80.0" Height="20.0" ZOrder="32812" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000213999"/>
+  </DataNode>
+  <DataNode TextLabel="MIR133A1" GraphId="eece3" Type="GeneProduct" GroupRef="c7441">
+    <Graphics CenterX="826.6468826463159" CenterY="408.8190418809199" Width="80.0" Height="20.0" ZOrder="32813" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000207786"/>
+  </DataNode>
+  <DataNode TextLabel="MIR133A2" GraphId="bda9f" Type="GeneProduct" GroupRef="c7441">
+    <Graphics CenterX="826.6468826463159" CenterY="428.81904188091977" Width="80.0" Height="20.0" ZOrder="32814" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000207764"/>
+  </DataNode>
+  <DataNode TextLabel="MIR133B" GraphId="dc537" Type="GeneProduct" GroupRef="c7441">
+    <Graphics CenterX="826.6468826463159" CenterY="448.8190418809198" Width="80.0" Height="20.0" ZOrder="32815" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000199080"/>
+  </DataNode>
+  <DataNode TextLabel="PRKAR1B" GraphId="a0c4d" Type="GeneProduct" GroupRef="da111">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKAR1B | protein kinase cAMP-dependent regul..."/>
+    <Graphics CenterX="423.3834296724471" CenterY="517.9576107899811" Width="80.0" Height="19.99999999999997" ZOrder="32817" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5575"/>
+  </DataNode>
+  <DataNode TextLabel="PRKAR2A" GraphId="fb050" Type="GeneProduct" GroupRef="da111">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKAR2A | protein kinase cAMP-dependent regul..."/>
+    <Graphics CenterX="423.3834296724471" CenterY="537.957610789981" Width="80.0" Height="19.99999999999997" ZOrder="32818" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5576"/>
+  </DataNode>
+  <DataNode TextLabel="PRKACA" GraphId="f5931" Type="GeneProduct" GroupRef="da111">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKACA | protein kinase cAMP-dependent cataly..."/>
+    <Graphics CenterX="423.3834296724471" CenterY="577.957610789981" Width="80.0" Height="19.99999999999997" ZOrder="32819" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5566"/>
+  </DataNode>
+  <DataNode TextLabel="PRKAR2B" GraphId="bd9ce" Type="GeneProduct" GroupRef="da111">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKAR2B | protein kinase cAMP-dependent regul..."/>
+    <Graphics CenterX="423.3834296724471" CenterY="557.957610789981" Width="80.0" Height="19.99999999999997" ZOrder="32820" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5577"/>
+  </DataNode>
+  <DataNode TextLabel="PRKACB" GraphId="b4f37" Type="GeneProduct" GroupRef="da111">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKACB | protein kinase cAMP-dependent cataly..."/>
+    <Graphics CenterX="423.3834296724471" CenterY="597.957610789981" Width="80.0" Height="19.99999999999997" ZOrder="32821" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5567"/>
+  </DataNode>
+  <DataNode TextLabel="PRKAR1A" GraphId="ceaa1" Type="GeneProduct" GroupRef="da111">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKAR1A | protein kinase cAMP-dependent regul..."/>
+    <Graphics CenterX="423.3834296724471" CenterY="497.95761078998083" Width="80.0" Height="19.99999999999997" ZOrder="32822" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5573"/>
+  </DataNode>
+  <DataNode TextLabel="PRKACG" GraphId="bd0bc" Type="GeneProduct" GroupRef="da111">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKACG | protein kinase cAMP-dependent cataly..."/>
+    <Graphics CenterX="423.3834296724471" CenterY="617.957610789981" Width="80.0" Height="19.99999999999997" ZOrder="32823" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5568"/>
+  </DataNode>
+  <DataNode TextLabel="PRKD3" GraphId="ea726" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKD3 | protein kinase D3"/>
+    <Graphics CenterX="269.80782409895755" CenterY="593.3824568884863" Width="80.0" Height="19.99999999999997" ZOrder="32826" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23683"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCA" GraphId="c364c" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCA | protein kinase C alpha"/>
+    <Graphics CenterX="269.80782409895755" CenterY="433.3824568884863" Width="80.0" Height="19.99999999999997" ZOrder="32827" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5578"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCI" GraphId="c0ef6" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCI | protein kinase C iota"/>
+    <Graphics CenterX="269.80782409895755" CenterY="533.3824568884864" Width="80.0" Height="19.99999999999997" ZOrder="32828" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5584"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCB1" GraphId="fd07a" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCB1 | protein kinase C beta 1"/>
+    <Graphics CenterX="269.80782409895755" CenterY="453.38245688848616" Width="80.0" Height="19.99999999999997" ZOrder="32829" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5579"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCQ" GraphId="f120c" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCQ | protein kinase C theta"/>
+    <Graphics CenterX="269.80782409895755" CenterY="613.3824568884863" Width="80.0" Height="19.99999999999997" ZOrder="32830" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5588"/>
+  </DataNode>
+  <DataNode TextLabel="PRKD1" GraphId="aad76" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKD1 | protein kinase D1"/>
+    <Graphics CenterX="269.80782409895755" CenterY="573.3824568884863" Width="80.0" Height="19.99999999999997" ZOrder="32831" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5587"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCG" GraphId="c67a6" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCG | protein kinase C gamma"/>
+    <Graphics CenterX="269.80782409895755" CenterY="473.3824568884868" Width="80.0" Height="19.99999999999997" ZOrder="32832" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5582"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCE" GraphId="ffcf0" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCE | protein kinase C epsilon"/>
+    <Graphics CenterX="269.80782409895755" CenterY="513.3824568884875" Width="80.0" Height="19.99999999999997" ZOrder="32833" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5581"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCH" GraphId="ae828" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCH | protein kinase C eta"/>
+    <Graphics CenterX="269.80782409895755" CenterY="553.3824568884863" Width="80.0" Height="19.99999999999997" ZOrder="32834" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5583"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCZ" GraphId="fe486" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCZ | protein kinase C zeta"/>
+    <Graphics CenterX="269.80782409895755" CenterY="633.3824568884867" Width="80.0" Height="19.99999999999997" ZOrder="32835" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5590"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCD" GraphId="c536a" Type="GeneProduct" GroupRef="f20fe">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRKCD | protein kinase C delta"/>
+    <Graphics CenterX="269.80782409895755" CenterY="493.3824568884874" Width="80.0" Height="19.99999999999997" ZOrder="32836" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5580"/>
+  </DataNode>
+  <Line GraphId="id3797425">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="470.8287292442335" Y="419.6682066658263" GraphRef="da86b" RelX="0.0" RelY="-1.0"/>
+      <Point X="539.5622065727698" Y="327.99726134585285" GraphRef="a2575" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4d9c5a8f">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="379.1907514450867" Y="420.05780346820814" GraphRef="cde38" RelX="0.0" RelY="-1.0"/>
+      <Point X="539.5622065727698" Y="327.99726134585285" GraphRef="a2575" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id777e8865">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="423.3834296724471" Y="479.9576107899808" GraphRef="e580a" RelX="0.0" RelY="-1.0"/>
+      <Point X="379.1907514450867" Y="440.05780346820814" GraphRef="cde38" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e14ca">
+    <Graphics ZOrder="32776" LineThickness="1.0">
+      <Point X="502.3983437271298" Y="251.65938685873832" GraphRef="fb1cf" RelX="0.5" RelY="1.0"/>
+      <Point X="502.3983437271298" Y="287.85351201838085" GraphRef="c3787" RelX="0.5" RelY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d87d4">
+    <Graphics ZOrder="32777" LineThickness="1.0">
+      <Point X="677.2093192830127" Y="285.834511206431" GraphRef="cd516" RelX="0.0" RelY="1.0"/>
+      <Point X="628.1535602503911" Y="317.99726134585285" GraphRef="a2575" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d45ab">
+    <Graphics ZOrder="32778" LineThickness="1.0">
+      <Point X="628.3257913556546" Y="413.5647881079583" GraphRef="c17a1" RelX="0.0" RelY="-1.0"/>
+      <Point X="628.1535602503911" Y="337.99726134585285" GraphRef="a2575" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="da93e">
+    <Graphics ZOrder="32779" LineThickness="1.0">
+      <Point X="502.3983437271298" Y="307.85351201838085" GraphRef="c3787" RelX="0.5" RelY="1.0"/>
+      <Point X="539.5622065727698" Y="327.99726134585285" GraphRef="a2575" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e00af">
+    <Graphics ZOrder="32780" LineStyle="Broken" LineThickness="1.0">
+      <Point X="866.6468826463159" Y="326.58626888990744" GraphRef="f5fd8" RelX="1.0" RelY="0.0"/>
+      <Point X="1109.784275636427" Y="354.10804380089326" GraphRef="b6c5d" RelX="-1.0" RelY="-0.5"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a232b">
+    <Graphics ZOrder="32781" LineThickness="1.0">
+      <Point X="628.9590198330661" Y="180.136637467872" GraphRef="a7c37" RelX="0.0" RelY="-1.0"/>
+      <Point X="628.9590198330661" Y="63.59144904841238" GraphRef="d3335" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bd972">
+    <Graphics ZOrder="32782" LineThickness="1.0">
+      <Point X="778.6862936488827" Y="257.1276974808371" GraphRef="fa72a" RelX="-1.0" RelY="0.0"/>
+      <Point X="672.4492370892018" Y="317.99726134585285" GraphRef="a2575" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f98a9">
+    <Graphics ZOrder="32783" LineThickness="1.0">
+      <Point X="786.6468826463159" Y="326.58626888990744" GraphRef="f5fd8" RelX="-1.0" RelY="0.0"/>
+      <Point X="716.7449139280125" Y="327.99726134585285" GraphRef="a2575" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cbd69">
+    <Graphics ZOrder="32784" LineThickness="1.0">
+      <Point X="778.6468826463159" Y="428.8190418809198" GraphRef="bc241" RelX="-1.0" RelY="0.0"/>
+      <Point X="672.4492370892018" Y="337.99726134585285" GraphRef="a2575" RelX="0.5" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d20fd">
+    <Graphics ZOrder="32785" LineThickness="1.0">
+      <Point X="657.2093192830127" Y="265.834511206431" GraphRef="cd516" RelX="-0.5" RelY="-1.0"/>
+      <Point X="628.9590198330661" Y="239.6166543375538" GraphRef="b36e5" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dde5e">
+    <Graphics ZOrder="32786" LineThickness="1.0">
+      <Point X="576.5592982186504" Y="285.02714346109104" GraphRef="fb626" RelX="0.0" RelY="1.0"/>
+      <Point X="628.1535602503911" Y="317.99726134585285" GraphRef="a2575" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e4130">
+    <Graphics ZOrder="32787" LineThickness="1.0">
+      <Point X="628.9590198330661" Y="219.6166543375538" GraphRef="b36e5" RelX="0.0" RelY="-1.0"/>
+      <Point X="628.9590198330661" Y="200.136637467872" GraphRef="a7c37" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b4619">
+    <Graphics ZOrder="32788" LineThickness="1.0">
+      <Point X="583.2051197921713" Y="379.82913064093987" GraphRef="cc625" RelX="0.0" RelY="-1.0"/>
+      <Point X="583.8578834115805" Y="337.99726134585285" GraphRef="a2575" RelX="-0.5" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7979">
+    <Graphics ZOrder="32789" LineThickness="1.0">
+      <Point X="648.9590198330661" Y="63.59144904841238" GraphRef="d3335" RelX="0.5" RelY="1.0"/>
+      <Point X="697.2093192830127" Y="265.834511206431" GraphRef="cd516" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2fbf">
+    <Graphics ZOrder="32790" LineThickness="1.0">
+      <Point X="462.3983437271298" Y="287.85351201838085" GraphRef="c3787" RelX="-0.5" RelY="-1.0"/>
+      <Point X="462.3983437271298" Y="251.65938685873832" GraphRef="fb1cf" RelX="-0.5" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="daa8b">
+    <Graphics ZOrder="32791" LineThickness="1.0">
+      <Point X="608.9590198330661" Y="63.59144904841238" GraphRef="d3335" RelX="-0.5" RelY="1.0"/>
+      <Point X="556.5592982186504" Y="265.02714346109104" GraphRef="fb626" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b6212">
+    <Graphics ZOrder="32792" LineThickness="1.0">
+      <Point X="596.5592982186504" Y="265.02714346109104" GraphRef="fb626" RelX="0.5" RelY="-1.0"/>
+      <Point X="628.9590198330661" Y="239.6166543375538" GraphRef="b36e5" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e87b3">
+    <Graphics ZOrder="32793" LineThickness="1.0">
+      <Point X="944.86421038357" Y="374.2091857258521" GraphRef="ce2c1" RelX="-1.0" RelY="0.0"/>
+      <Point X="866.6468826463159" Y="326.58626888990744" GraphRef="f5fd8" RelX="1.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e6638">
+    <Graphics ZOrder="32794" LineThickness="1.0">
+      <Point X="944.8642103835699" Y="374.2091857258521" ArrowHead="TBar"/>
+      <Point X="874.6468826463159" Y="428.8190418809198" GraphRef="bc241" RelX="1.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ca95f">
+    <Graphics ZOrder="32795" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1109.784275636427" Y="402.10804380089326" GraphRef="b6c5d" RelX="-1.0" RelY="0.5"/>
+      <Point X="874.6468826463159" Y="428.8190418809198" GraphRef="bc241" RelX="1.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eeaca">
+    <Graphics ZOrder="32824" LineThickness="1.0">
+      <Point X="423.3834296724471" Y="479.9576107899808" GraphRef="e580a" RelX="0.0" RelY="-1.0"/>
+      <Point X="470.8287292442335" Y="439.6682066658263" GraphRef="da86b" RelX="0.0" RelY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aa9a9">
+    <Graphics ZOrder="32837" LineStyle="Broken" LineThickness="1.0">
+      <Point X="293.80782409895755" Y="415.3824568884862" GraphRef="cb903" RelX="0.5" RelY="-1.0"/>
+      <Point X="539.5622065727698" Y="327.99726134585285" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dfc81">
+    <Graphics ZOrder="32838" LineStyle="Broken" LineThickness="1.0">
+      <Point X="309.80782409895755" Y="361.6847993115741" GraphRef="bcaee" RelX="1.0" RelY="0.0"/>
+      <Point X="538.7700534759358" Y="332.88770053475935" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Group GroupId="c7441" GraphId="bc241" Style="Group"/>
+  <Group GroupId="c9b90" GraphId="b6c5d" Style="Group"/>
+  <Group GroupId="a3159" GraphId="fa72a" Style="Group"/>
+  <Group GroupId="da111" GraphId="e580a"/>
+  <Group GroupId="f20fe" GraphId="cb903"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>miRNA pathway</bp:TERM><bp:ID>PW:0000808</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>muscle cell</bp:TERM><bp:ID>CL:0000187</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

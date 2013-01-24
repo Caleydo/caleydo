@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Physiological and Pathological Hypertrophy  of the Heart" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">Pathways in physiological and pathological hypertrophy of the heart. Largely based on the article from Wang Y; ''Signal transduction in cardiac hypertrophy--dissecting compensatory versus pathological pathways utilizing a transgenic approach."
+Hypertrohpy of the heart can be a physiological compensation for exercise, but it can also be a pathological compensation for hypertension and stress.</Comment>
+  <BiopaxRef>a6d</BiopaxRef>
+  <BiopaxRef>ca4</BiopaxRef>
+  <BiopaxRef>a68</BiopaxRef>
+  <Graphics BoardWidth="1837.0" BoardHeight="715.0"/>
+  <DataNode TextLabel="CTF1" GraphId="bdc06" Type="GeneProduct">
+    <Graphics CenterX="369.0" CenterY="59.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1489"/>
+  </DataNode>
+  <DataNode TextLabel="LIFR" GraphId="b78fc" Type="GeneProduct" GroupRef="bc6f3">
+    <Graphics CenterX="409.0" CenterY="125.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3977"/>
+  </DataNode>
+  <DataNode TextLabel="gp130" GraphId="fdf5c" Type="GeneProduct" GroupRef="bc6f3">
+    <Graphics CenterX="329.0" CenterY="125.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3572"/>
+  </DataNode>
+  <DataNode TextLabel="STAT3" GraphId="e649f" Type="GeneProduct" GroupRef="c30d5">
+    <Graphics CenterX="202.0" CenterY="317.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <DataNode TextLabel="erk" GraphId="fc658" Type="GeneProduct" GroupRef="c30d5">
+    <Graphics CenterX="282.0" CenterY="317.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="p38b" GraphId="dc043" Type="GeneProduct" GroupRef="c30d5">
+    <Graphics CenterX="362.0" CenterY="317.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5600"/>
+  </DataNode>
+  <DataNode TextLabel="PKCE" GraphId="c6c37" Type="GeneProduct" GroupRef="c30d5">
+    <Graphics CenterX="442.0" CenterY="317.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5581"/>
+  </DataNode>
+  <DataNode TextLabel="Ang II" GraphId="fd921" Type="GeneProduct" GroupRef="fc368">
+    <Graphics CenterX="913.0" CenterY="53.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="183"/>
+  </DataNode>
+  <DataNode TextLabel="ET-1" GraphId="ce5ef" Type="GeneProduct" GroupRef="fc368">
+    <Graphics CenterX="1073.0" CenterY="53.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1906"/>
+  </DataNode>
+  <DataNode TextLabel="Rac1" GraphId="c7980" Type="GeneProduct" GroupRef="cbfa5">
+    <Graphics CenterX="913.0" CenterY="135.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5879"/>
+  </DataNode>
+  <DataNode TextLabel="MKK3" GraphId="a285b" Type="GeneProduct" GroupRef="d4921">
+    <Graphics CenterX="1491.0" CenterY="142.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5606"/>
+  </DataNode>
+  <DataNode TextLabel="JNK" GraphId="ba5bd" Type="GeneProduct" GroupRef="f9bdb">
+    <Graphics CenterX="1335.0" CenterY="294.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5599"/>
+  </DataNode>
+  <DataNode TextLabel="RhoA" GraphId="def9a" Type="GeneProduct" GroupRef="f9bdb">
+    <Graphics CenterX="1415.0" CenterY="294.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="387"/>
+  </DataNode>
+  <DataNode TextLabel="PKCb" GraphId="b715e" Type="GeneProduct" GroupRef="f9bdb">
+    <Graphics CenterX="1495.0" CenterY="294.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5579"/>
+  </DataNode>
+  <DataNode TextLabel="p38a" GraphId="b4fc0" Type="GeneProduct" GroupRef="f9bdb">
+    <Graphics CenterX="1575.0" CenterY="294.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="Calmodulin" GraphId="ffa8e" Type="Protein">
+    <Graphics CenterX="991.0" CenterY="271.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="801"/>
+  </DataNode>
+  <DataNode TextLabel="Calcium" GraphId="f7a5f" Type="Metabolite">
+    <Graphics CenterX="991.0" CenterY="216.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00464"/>
+  </DataNode>
+  <DataNode TextLabel="JNK" GraphId="e2439" Type="GeneProduct" GroupRef="f1dad">
+    <Graphics CenterX="855.0" CenterY="397.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5599"/>
+  </DataNode>
+  <DataNode TextLabel="CalNA" GraphId="e42bb" Type="GeneProduct" GroupRef="a37bf">
+    <Graphics CenterX="948.0" CenterY="396.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5530"/>
+  </DataNode>
+  <DataNode TextLabel="CamK" GraphId="bac3d" Type="GeneProduct" GroupRef="f1dad">
+    <Graphics CenterX="1038.0" CenterY="395.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="817"/>
+  </DataNode>
+  <DataNode TextLabel="p38" GraphId="f3041" Type="GeneProduct" GroupRef="f1dad">
+    <Graphics CenterX="1123.0" CenterY="395.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="C-JUN" GraphId="bebf3" Type="GeneProduct" GroupRef="dbf39">
+    <Graphics CenterX="735.0" CenterY="486.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3725"/>
+  </DataNode>
+  <DataNode TextLabel="FOS" GraphId="d212a" Type="GeneProduct" GroupRef="dbf39">
+    <Graphics CenterX="815.0" CenterY="486.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2353"/>
+  </DataNode>
+  <DataNode TextLabel="NFAT3" GraphId="dff64" Type="GeneProduct" GroupRef="d53b1">
+    <Graphics CenterX="953.0" CenterY="486.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4776"/>
+  </DataNode>
+  <DataNode TextLabel="GATA-4" GraphId="f592a" Type="GeneProduct" GroupRef="d53b1">
+    <Graphics CenterX="1033.0" CenterY="486.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2626"/>
+  </DataNode>
+  <DataNode TextLabel="MEF-2" GraphId="af2d1" Type="GeneProduct" GroupRef="bfe01">
+    <Graphics CenterX="1144.0" CenterY="486.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="50804"/>
+  </DataNode>
+  <DataNode TextLabel="CalNB" GraphId="c05cf" Type="GeneProduct" GroupRef="a37bf">
+    <Graphics CenterX="948.0" CenterY="416.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5532"/>
+  </DataNode>
+  <DataNode TextLabel="PE" GraphId="e8269" Type="Metabolite">
+    <Graphics CenterX="992.0" CenterY="53.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB02182"/>
+  </DataNode>
+  <Line GraphId="id6b58dcbd">
+    <BiopaxRef>ebd</BiopaxRef>
+    <BiopaxRef>efd</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="369.0" Y="69.0" GraphRef="bdc06" RelX="0.0" RelY="1.0"/>
+      <Point X="369.0" Y="107.0" GraphRef="a79c2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb9b84245">
+    <BiopaxRef>d0a</BiopaxRef>
+    <BiopaxRef>a29</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="369.0" Y="417.0" GraphRef="b0f29" RelX="0.0" RelY="1.0"/>
+      <Point X="369.0" Y="469.0" GraphRef="fd054" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb8a5cfad">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="369.0" Y="143.0" GraphRef="a79c2" RelX="0.0" RelY="1.0"/>
+      <Point X="369.0" Y="223.0" GraphRef="b0f29" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id85723603" GroupRef="ee4c5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="330.0" Y="495.0"/>
+      <Point X="330.0" Y="477.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id567446f6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="369.0" Y="551.0" GraphRef="fd054" RelX="0.0" RelY="1.0"/>
+      <Point X="369.0" Y="630.0" GraphRef="ee1a3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id58f7dfb1">
+    <BiopaxRef>c5f</BiopaxRef>
+    <BiopaxRef>e83</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="993.0" Y="71.0"/>
+      <Point X="993.0" Y="117.0" GraphRef="ab1b3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ida2ed24c6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1451.0" Y="160.0" GraphRef="d764b" RelX="0.0" RelY="1.0"/>
+      <Point X="1451.75" Y="207.0" GraphRef="c412f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id79d90ea9" GroupRef="ebbea">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1410.0" Y="430.0"/>
+      <Point X="1410.0" Y="450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id56606217">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1451.75" Y="366.0" GraphRef="c412f" RelX="0.0" RelY="1.0"/>
+      <Point X="1451.0" Y="422.0" GraphRef="ad2f1" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id956dbbd1">
+    <BiopaxRef>ad7</BiopaxRef>
+    <BiopaxRef>e83</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1121.0" Y="135.0" GraphRef="ab1b3" RelX="1.0" RelY="0.0"/>
+      <Point X="1342.625" Y="207.0" GraphRef="c412f" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idc3bad0d4">
+    <BiopaxRef>ad7</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="865.0" Y="135.0" GraphRef="ab1b3" RelX="-1.0" RelY="0.0"/>
+      <Point X="485.5" Y="223.0" GraphRef="b0f29" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idaa18e8a6">
+    <BiopaxRef>b12</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="991.0" Y="226.0" GraphRef="f7a5f" RelX="0.0" RelY="1.0"/>
+      <Point X="991.0" Y="261.0" GraphRef="ffa8e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id11cd5914">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="602.0" Y="271.5" GraphRef="b0f29" RelX="1.0" RelY="-0.5"/>
+      <Point X="951.0" Y="271.0" GraphRef="ffa8e" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id95873b64">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1233.5" Y="286.5" GraphRef="c412f" RelX="-1.0" RelY="0.0"/>
+      <Point X="1031.0" Y="271.0" GraphRef="ffa8e" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4910f871">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1451.0" Y="501.0" GraphRef="ad2f1" RelX="0.0" RelY="1.0"/>
+      <Point X="1451.5" Y="630.0" GraphRef="bcff2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4cf27147">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="867.0" Y="415.0"/>
+      <Point X="775.0" Y="468.0" GraphRef="fbc0a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4c179a35">
+    <BiopaxRef>e1a</BiopaxRef>
+    <BiopaxRef>ed4</BiopaxRef>
+    <BiopaxRef>be1</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="949.0" Y="415.0"/>
+      <Point X="949.0" Y="468.0" GraphRef="fdd70" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id354a67af">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1030.0" Y="414.0"/>
+      <Point X="1037.0" Y="468.0" GraphRef="fdd70" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id20eac086">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1113.0" Y="414.0"/>
+      <Point X="1144.0" Y="468.0" GraphRef="c5d4d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb1e5b34f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="971.0" Y="281.0" GraphRef="ffa8e" RelX="-0.5" RelY="1.0"/>
+      <Point X="817.75" Y="359.5" GraphRef="d9f58" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id811dbead">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1011.0" Y="281.0" GraphRef="ffa8e" RelX="0.5" RelY="1.0"/>
+      <Point X="1079.25" Y="359.5" GraphRef="d9f58" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id92d52513">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="452.0" Y="640.0" GraphRef="ee1a3" RelX="1.0" RelY="0.0"/>
+      <Point X="1372.0" Y="640.0" GraphRef="bcff2" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6558b8e5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="817.75" Y="597.0" GraphRef="d9f58" RelX="-0.5" RelY="1.0"/>
+      <Point X="410.5" Y="630.0" GraphRef="ee1a3" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id914d0c16">
+    <BiopaxRef>e1a</BiopaxRef>
+    <BiopaxRef>b2b</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1079.25" Y="597.0" GraphRef="d9f58" RelX="0.5" RelY="1.0"/>
+      <Point X="1411.75" Y="630.0" GraphRef="bcff2" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="iddd9d9a63">
+    <BiopaxRef>e83</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="993.0" Y="153.0" GraphRef="ab1b3" RelX="0.0" RelY="1.0"/>
+      <Point X="991.0" Y="206.0" GraphRef="f7a5f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3af30581">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1451.0" Y="77.0" GraphRef="a180d" RelX="0.0" RelY="1.0"/>
+      <Point X="1451.0" Y="124.0" GraphRef="d764b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Physioclogical Hypertrophy" GraphId="bf69b">
+    <Graphics CenterX="365.0" CenterY="261.0" Width="146.0" Height="20.0" ZOrder="28672" FillColor="ffff00" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Contractility" GraphId="b76e0" GroupRef="ee4c5">
+    <Graphics CenterX="369.0" CenterY="493.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cellular growth" GraphId="c027a" GroupRef="ee4c5">
+    <Graphics CenterX="369.0" CenterY="513.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Survival" GraphId="f092f" GroupRef="ee4c5">
+    <Graphics CenterX="369.0" CenterY="533.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Compensatory hypertrophy" GraphId="ee1a3">
+    <Graphics CenterX="369.0" CenterY="640.0" Width="166.0" Height="20.0" ZOrder="28672" FillColor="ffff00" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Pathological remodeling" GraphId="b3c4a">
+    <Graphics CenterX="1453.0" CenterY="244.0" Width="122.0" Height="20.0" ZOrder="28672" FillColor="ff3300" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Contractility" GraphId="f3317" GroupRef="ebbea">
+    <Graphics CenterX="1451.0" CenterY="443.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Electrophysiology defects" GraphId="faec0" GroupRef="ebbea">
+    <Graphics CenterX="1451.0" CenterY="463.0" Width="134.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Apoptosis" GraphId="e1beb" GroupRef="ebbea">
+    <Graphics CenterX="1451.0" CenterY="483.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Decompensated heart failure" GraphId="bcff2">
+    <Graphics CenterX="1451.5" CenterY="640.0" Width="159.0" Height="20.0" ZOrder="28672" FillColor="ff3300" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Hypertrophic gene expression" GraphId="dc824">
+    <Graphics CenterX="998.5" CenterY="546.0" Width="175.0" Height="20.0" ZOrder="28672" FillColor="ffff00" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Label" GraphId="dc879">
+    <Graphics CenterX="955.0" CenterY="398.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytokines" GraphId="ba646">
+    <Graphics CenterX="369.0" CenterY="29.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="GPCR agonists" GraphId="a03a6">
+    <Graphics CenterX="993.0" CenterY="26.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Stress" GraphId="cb744">
+    <Graphics CenterX="1450.0" CenterY="32.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="(mechanical, oxidative, metabolic)" GraphId="a180d">
+    <Graphics CenterX="1451.0" CenterY="67.0" Width="198.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="PAK" GraphId="b84e4" GroupRef="c30d5">
+    <Graphics CenterX="522.0" CenterY="317.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="RAS" GraphId="a6c1b" GroupRef="cbfa5">
+    <Graphics CenterX="1073.0" CenterY="135.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Gi&#10;" GraphId="c74ab" GroupRef="d4921">
+    <Graphics CenterX="1411.0" CenterY="142.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Gq" GraphId="ae23e" GroupRef="cbfa5">
+    <Graphics CenterX="993.0" CenterY="135.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Shape GraphId="b0f29">
+    <Graphics CenterX="369.0" CenterY="320.0" Width="466.0" Height="194.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="c412f">
+    <Graphics CenterX="1451.75" CenterY="286.5" Width="436.5" Height="159.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="d9f58">
+    <Graphics CenterX="948.5" CenterY="478.25" Width="523.0" Height="237.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="bc6f3" GraphId="a79c2" Style="Group"/>
+  <Group GroupId="ee4c5" GraphId="fd054" Style="Group"/>
+  <Group GroupId="fc368" GraphId="fd656" Style="Group"/>
+  <Group GroupId="ebbea" GraphId="ad2f1" Style="Group"/>
+  <Group GroupId="dbf39" GraphId="fbc0a" Style="Group"/>
+  <Group GroupId="d53b1" GraphId="fdd70" Style="Group"/>
+  <Group GroupId="bfe01" GraphId="c5d4d" Style="Group"/>
+  <Group GroupId="f9bdb" Style="Group"/>
+  <Group GroupId="f1dad" GraphId="a62bf" Style="Group"/>
+  <Group GroupId="a37bf" Style="Complex"/>
+  <Group GroupId="c30d5" Style="Group"/>
+  <Group GroupId="d4921" GraphId="d764b" Style="Group"/>
+  <Group GroupId="cbfa5" GraphId="ab1b3" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e1a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11055975</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calcineurin and beyond: cardiac hypertrophic signaling.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Circ Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molkentin JD</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a68">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10952417</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Advances in the molecular mechanisms of heart failure.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cardiol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MacLellan WR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="ad7">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10615383</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signal transduction during cardiac hypertrophy: the role of G alpha q, PLC beta I, and PKC.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cardiovasc Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jalili T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takeishi Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walsh RA</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="efd">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8621626</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cardiotrophin-1 activates a distinct form of cardiac muscle cell hypertrophy. Assembly of sarcomeric units in series VIA gp130/leukemia inhibitory factor receptor-dependent pathways.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wollert KC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taga T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Narazaki M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kishimoto T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glembotski CC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vernallis AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heath JK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pennica D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wood WI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chien KR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a6d">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11714087</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signal transduction in cardiac hypertrophy--dissecting compensatory versus pathological pathways utilizing a transgenic approach.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Pharmacol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang Y</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="ed4">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10189350</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prevention of cardiac hypertrophy by calcineurin inhibition: hope or hype?</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Circ Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olson EN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molkentin JD</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="d0a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10864911</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transgenic overexpression of constitutively active protein kinase C epsilon causes concentric cardiac hypertrophy.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Circ Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takeishi Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ping P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bolli R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kirkpatrick DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoit BD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walsh RA</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="c5f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10827130</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Small guanine nucleotide-binding proteins and myocardial hypertrophy.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Circ Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clerk A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sugden PH</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="be1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9568714</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A calcineurin-dependent transcriptional pathway for cardiac hypertrophy.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molkentin JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lu JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antos CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Markham B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Richardson J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robbins J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grant SR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olson EN</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="b12">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10086361</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calcineurin and human heart failure.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Med</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lim HW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molkentin JD</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="ca4">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10528039</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signaling pathways for cardiac hypertrophy and failure.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N Engl J Med</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hunter JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chien KR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="ebd">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9253712</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cardiotrophin-1 and the role of gp130-dependent signaling pathways in cardiac growth and development.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Med</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wollert KC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chien KR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="b2b">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9488659</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cardiac hypertrophy induced by mitogen-activated protein kinase kinase 7, a specific activator for c-Jun NH2-terminal kinase in ventricular muscle cells.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Su B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sah VP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Han J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chien KR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a29">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11101507</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The MEK1-ERK1/2 signaling pathway promotes compensated cardiac hypertrophy in transgenic mice.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bueno OF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Windt LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tymitz KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Witt SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kimball TR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klevitsky R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hewett TE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lefer DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng CF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitsis RN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molkentin JD</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e83">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16936699</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of cardiac hypertrophy by intracellular signalling pathways.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heineke J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molkentin JD</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>heart disease</bp:TERM><bp:ID>DOID:114</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

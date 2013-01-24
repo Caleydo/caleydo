@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Nephrin interactions" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="de Bono, B, Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Nephrin is a member of the Super-IgG-Molecule family and is most prominently expressed in kidney podocytes. It is a major if not the most important structural component of the slit diaphragm, a modified adherens junction in between these cells. Nephrin is composed of an extracellular domain with eight distal IgG like domains and one proximal fibronectin type III domain, a transmembrane domain and a short intracellular domain. Nephrin molecules show both homophilic and heterophilic interactions.  Among heterophilic interaction partners slit diaphragm proteins such as NEPH1, NEPH2 and NEPH3 were shown to stabilize the slit diaphragm structure. Intracellularly Podocin, CD2 associated protein (CD2AP) and adherins junction associated proteins like IQGAP, MAGI, CASK and spectrins were all shown to interact with nephrin. Hence nephrin seems to play a major role in organizing the molecular structure of the slit diaphragm itself and via its binding partners links it to the actin cytoskeleton. Nephrin does not only fulfill static properties within the slit diaphragm but by tyrosine phosphorylation of its cytoplasmic tail by the Src kinase Fyn it initiates the PI3K AKT signaling cascade which seems to promote antiapoptotic signals.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_451749</BiopaxRef>
+  <BiopaxRef>lit_451745</BiopaxRef>
+  <BiopaxRef>lit_451748</BiopaxRef>
+  <BiopaxRef>lit_375810</BiopaxRef>
+  <BiopaxRef>lit_451753</BiopaxRef>
+  <BiopaxRef>lit_936051</BiopaxRef>
+  <BiopaxRef>lit_451378</BiopaxRef>
+  <BiopaxRef>lit_937359</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_197692" TextLabel="Nephrin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="330.0" CenterY="43.0" Width="54.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60500-1"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_373670" TextLabel="Nephrin dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="515.0" CenterY="43.0" Width="92.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24735"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_451427" TextLabel="NEPH1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="524.0" CenterY="60.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96J84"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_373679" TextLabel="Nephrin dimer:&#10;NEPH1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="721.0" CenterY="52.0" Width="96.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24342"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_451719" TextLabel="Nephrin dimer:&#10;NEPH2/NEPH3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="81.0" CenterY="47.0" Width="96.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24383"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_200917" TextLabel="FYN&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="840.0" CenterY="133.0" Width="30.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P06241"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="753.5" CenterY="104.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_374555" TextLabel="NEPH1:p-Nephrin:&#10;Fyn&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="979.5" CenterY="52.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24538"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="933.0" CenterY="108.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_381949" TextLabel="NCK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1018.5" CenterY="114.0" Width="33.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17190"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_373677" TextLabel="NEPH1:p-Nephrin:&#10;Fyn:NCK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1196.5" CenterY="54.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24581"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_201873" TextLabel="N-WASP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1183.5" CenterY="126.0" Width="55.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O00401"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_532605" TextLabel="NEPH1:p-Nephrin:&#10;Fyn:NCK:N-WASP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1300.5" CenterY="153.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24683"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_451771" TextLabel="Podocin oligomer&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1299.5" CenterY="197.0" Width="107.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_24198"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_373691" TextLabel="Podocin:p-Nephrin:&#10;Fyn:NEPH1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1298.0" CenterY="323.0" Width="122.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24571"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_373620" TextLabel="CD2AP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1117.0" CenterY="421.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y5K6"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_373680" TextLabel="CD2AP:p-Nephrin:&#10;Fyn:NEPH1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1302.5" CenterY="382.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24742"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_74693" TextLabel="PI3K&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1208.0" CenterY="422.0" Width="34.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4240"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_451720" TextLabel="PI3K:CD2AP:p-&#10;Nephrin:Fyn:NEPH1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1303.5" CenterY="525.0" Width="121.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24519"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_373631" TextLabel="CASK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="369.0" CenterY="182.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14936"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_373681" TextLabel="Nephrin dimer:CASK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="88.0" CenterY="154.0" Width="126.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24544"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_381681" TextLabel="IQGAP1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="294.0" CenterY="289.0" Width="52.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46940"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_451398" TextLabel="Nephrin dimer:&#10;IQGAP1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="92.0" CenterY="263.0" Width="96.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24686"/>
+  </DataNode>
+  <DataNode GraphId="n43_REACTOME_451386" TextLabel="adherens junction-&#10;associated proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="378.0" CenterY="384.0" Width="120.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24771"/>
+  </DataNode>
+  <DataNode GraphId="n44_REACTOME_451387" TextLabel="Nephrin dimer:&#10;adherins junction-&#10;associated proteins&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="98.0" CenterY="359.0" Width="120.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24676"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_936056" TextLabel="NEPH2/NEPH3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="251.0" CenterY="45.0" Width="94.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24799"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_373732">
+    <Comment Source="WikiPathways-description">Foot processes are long slender, actin rich protrusions of the cytoplasm that are anchored to the glomerular basement membrane. Adjacent foot processes are laterally interconnected by a highly specialized cell cell junction, the so called slit diaphragm (SD). Nephrin is the critical structural component within the slit diaphragm. Nephrin molecules of adjacent foot processes from neighboring podocytes interact with each other in the middle of the slit diaphragm forming a filter with a zipper like structure and with pores just the size of albumin on both sides of the midline density.</Comment>
+    <BiopaxRef>lit_373510</BiopaxRef>
+    <BiopaxRef>lit_451745</BiopaxRef>
+    <BiopaxRef>lit_451748</BiopaxRef>
+    <BiopaxRef>lit_936053</BiopaxRef>
+    <BiopaxRef>lit_373414</BiopaxRef>
+    <BiopaxRef>lit_937355</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="360.0" Y="43.0" GraphId="e_1_0" GraphRef="n2_REACTOME_197692" RelX="1.1111111111111112" RelY="0.0"/>
+      <Point X="431.0" Y="43.0" GraphId="e_1_1"/>
+      <Point X="466.0" Y="43.0" GraphId="e_1_2" GraphRef="n3_REACTOME_373670" RelX="-1.065217391304348" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6698113207547169" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_REACTOME_373714">
+    <Comment Source="WikiPathways-description">Nephrin forms heterodimers with NEPH1 molecules in a cis-configuration within the SD. This heterologous protein protein interaction seems to be an important factor in maintaining the normal permeability characteristics of the slit diaphragm by relaying signals from the extracellular side into the podocyte. Interestingly, the Nephrin-NEPH heterodimer formation is highly conserved from C.elegans to human and serves different functions in different species and different tissues.</Comment>
+    <BiopaxRef>lit_373414</BiopaxRef>
+    <BiopaxRef>lit_373519</BiopaxRef>
+    <BiopaxRef>lit_374459</BiopaxRef>
+    <BiopaxRef>lit_936070</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="596.0" Y="52.0" GraphId="e_4_0"/>
+      <Point X="627.0" Y="51.0" GraphId="e_4_1"/>
+      <Point X="670.0" Y="51.0" GraphId="e_4_2" GraphRef="n6_REACTOME_373679" RelX="-1.0625" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_4_a_i"/>
+      <Anchor Position="0.4190455107748487" GraphId="e_4_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="564.0" Y="48.0" GraphId="e_4_i0_0" GraphRef="n3_REACTOME_373670" RelX="1.065217391304348" RelY="0.45454545454545453"/>
+      <Point X="596.0" Y="52.0" GraphId="e_4_i0_1" GraphRef="e_4_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="551.0" Y="57.0" GraphId="e_4_i1_0" GraphRef="n5_REACTOME_451427" RelX="1.125" RelY="-0.2727272727272727"/>
+      <Point X="596.0" Y="52.0" GraphId="e_4_i1_1" GraphRef="e_4_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_REACTOME_451757">
+    <Comment Source="WikiPathways-description">NEPH2 and NEPH3 specifically interact with the extracellular domains of nephrin in the slit diaphragm of podocytes and potentially other tissues as well (eg. brain). The functional significance of these interactions is unknown.</Comment>
+    <BiopaxRef>lit_451747</BiopaxRef>
+    <BiopaxRef>lit_936070</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="183.0" Y="45.0" GraphId="e_7_0"/>
+      <Point X="165.0" Y="45.0" GraphId="e_7_1"/>
+      <Point X="132.0" Y="45.0" GraphId="e_7_2" GraphRef="n9_REACTOME_451719" RelX="1.0625" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_7_a_i"/>
+      <Anchor Position="0.35294117647058826" GraphId="e_7_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="201.0" Y="45.0" GraphId="e_7_i0_0" GraphRef="n45_REACTOME_936056" RelX="-1.0638297872340425" RelY="0.0"/>
+      <Point X="183.0" Y="45.0" GraphId="e_7_i0_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="495.0" Y="57.0" GraphId="e_7_i1_0" GraphRef="n3_REACTOME_373670" RelX="-0.43478260869565216" RelY="1.2727272727272727"/>
+      <Point X="452.0" Y="79.0" GraphId="e_7_i1_1"/>
+      <Point X="183.0" Y="79.0" GraphId="e_7_i1_2"/>
+      <Point X="183.0" Y="45.0" GraphId="e_7_i1_3" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_373747">
+    <Comment Source="WikiPathways-description">Nephrin has eight putative phosphorylation sites, which nicely match with substrate sites for the Src kinase family. Nephrin, is tyrosine phosphorylated by the Src family tyrosine kinase, Fyn in developing and injured podocytes. Phosphorylation of three of these tyrosines (1176, 1193 and 1217) results in the formation of a preferred binding motif (YDXV) for the SH2 domain of the adaptor protein NCK, which is one of the bricks linking Nephrin to the cytoskeleton. Phosphorylation of tyrosine 1158 results in a binding motif for the p85 regulatory subunit of PI3K.</Comment>
+    <BiopaxRef>lit_654765</BiopaxRef>
+    <BiopaxRef>lit_373517</BiopaxRef>
+    <BiopaxRef>lit_654761</BiopaxRef>
+    <BiopaxRef>lit_374484</BiopaxRef>
+    <BiopaxRef>lit_451752</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="803.0" Y="50.0" GraphId="e_13_0"/>
+      <Point X="841.0" Y="50.0" GraphId="e_13_1"/>
+      <Point X="876.0" Y="50.0" GraphId="e_13_2"/>
+      <Anchor Position="0.0" GraphId="e_13_a_i"/>
+      <Anchor Position="0.5205479452054794" GraphId="e_13_a_p"/>
+      <Anchor Position="1.0" GraphId="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="835.0" Y="119.0" GraphId="e_13_i0_0" GraphRef="n14_REACTOME_200917" RelX="-0.3333333333333333" RelY="-1.2727272727272727"/>
+      <Point X="803.0" Y="50.0" GraphId="e_13_i0_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="772.0" Y="50.0" GraphId="e_13_i1_0" GraphRef="n6_REACTOME_373679" RelX="1.0625" RelY="-0.1111111111111111"/>
+      <Point X="803.0" Y="50.0" GraphId="e_13_i1_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="766.0" Y="86.0" GraphId="e_13_i2_0" GraphRef="n15_REACTOME_113592" RelX="0.6666666666666666" RelY="-1.2"/>
+      <Point X="803.0" Y="50.0" GraphId="e_13_i2_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="918.0" Y="50.0" GraphId="e_13_o0_0" ArrowHead="Arrow" GraphRef="n16_REACTOME_374555" RelX="-1.0427350427350428" RelY="-0.1111111111111111"/>
+      <Point X="876.0" Y="50.0" GraphId="e_13_o0_1" GraphRef="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="918.0" Y="90.0" GraphId="e_13_o1_0" ArrowHead="Arrow" GraphRef="n17_REACTOME_29370" RelX="-0.75" RelY="-1.2"/>
+      <Point X="876.0" Y="50.0" GraphId="e_13_o1_1" GraphRef="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="840.0" Y="119.0" GraphId="e_13_c__0_0" GraphRef="n14_REACTOME_200917" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="841.0" Y="50.0" GraphId="e_13_c__0_1" GraphRef="e_13_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_373724">
+    <Comment Source="WikiPathways-description">Nephrin tyrosine phophorylation regulates podocyte cell morphology via NCK adaptor proteins. NCK via its SH2 domain interacts with the three phosphotyrosines (1176, 1193 and 1217) on nephrin, and through its SH3 domain can recruit several other proteins involved in the regulation of the actin cytoskeleton such as N WASP, WIP, ARP2/3 and PAK to the slit diaphragm. The importance of this mechanism is the maintenance of the filtration barrier. When rapid actin polymerization and cytoskeletal reorganization is needed, for example during development or injury and repair, the level of nephrin phosphorylation increases and leads to recruitment of NCK and its downstream effectors to the cytoplasmic side of the slit diaphragm.</Comment>
+    <BiopaxRef>lit_373563</BiopaxRef>
+    <BiopaxRef>lit_451743</BiopaxRef>
+    <BiopaxRef>lit_936061</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1070.0" Y="52.0" GraphId="e_19_0"/>
+      <Point X="1098.0" Y="52.0" GraphId="e_19_1"/>
+      <Point X="1135.0" Y="52.0" GraphId="e_19_2" GraphRef="n21_REACTOME_373677" RelX="-1.0427350427350428" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_19_a_i"/>
+      <Anchor Position="0.4307692307692308" GraphId="e_19_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1041.0" Y="52.0" GraphId="e_19_i0_0" GraphRef="n16_REACTOME_374555" RelX="1.0598290598290598" RelY="0.0"/>
+      <Point X="1070.0" Y="52.0" GraphId="e_19_i0_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1027.0" Y="100.0" GraphId="e_19_i1_0" GraphRef="n20_REACTOME_381949" RelX="0.5454545454545454" RelY="-1.2727272727272727"/>
+      <Point X="1070.0" Y="52.0" GraphId="e_19_i1_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_REACTOME_532603">
+    <Comment Source="WikiPathways-description">The NCK adaptor protein binds to a proline rich region on WASP and N-WASP through its SH3 domains and has been implicated in the recruitment of WASP/N-WASP to sites of tyrosine phosphorylation. NCK stimulates actin nucleation by N WASP:Arp2/3 complexes. Recruitment of NCK to phosphorylated YDxV sites on nephrin could therefore directly control the cytoskeletal actin architecture of podocytes.</Comment>
+    <BiopaxRef>lit_373563</BiopaxRef>
+    <BiopaxRef>lit_203036</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1300.0" Y="52.0" GraphId="e_22_0"/>
+      <Point X="1300.0" Y="92.0" GraphId="e_22_1"/>
+      <Point X="1300.0" Y="132.0" GraphId="e_22_2" GraphRef="n24_REACTOME_532605" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_22_a_i"/>
+      <Anchor Position="0.5" GraphId="e_22_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1258.0" Y="52.0" GraphId="e_22_i0_0" GraphRef="n21_REACTOME_373677" RelX="1.0598290598290598" RelY="-0.1111111111111111"/>
+      <Point X="1300.0" Y="52.0" GraphId="e_22_i0_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1200.0" Y="112.0" GraphId="e_22_i1_0" GraphRef="n23_REACTOME_201873" RelX="0.6181818181818182" RelY="-1.2727272727272727"/>
+      <Point X="1300.0" Y="52.0" GraphId="e_22_i1_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_REACTOME_373734">
+    <Comment Source="WikiPathways-description">NPHS2 encodes podocin, a protein exclusively expressed in podocytes in developing and mature glomeruli. Podocin is a member of the stomatin protein family with a short N terminal domain, a membrane-anchoring region, and a cytosolic C-terminal domain. Podocin accumulates in an oligomeric form in lipid rafts of the slit diaphragm. The C-terminal domain of Podocin binds to the cytoplasmic domain of nephrin thus it may function as a scaffolding protein connecting nephrin with the actin cytoskeleton. Beside nephrin it was shown that podocin also interacts with several other SD proteins, hence forming functional microdomains</Comment>
+    <BiopaxRef>lit_373482</BiopaxRef>
+    <BiopaxRef>lit_373554</BiopaxRef>
+    <BiopaxRef>lit_936057</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1298.0" Y="239.0" GraphId="e_25_0"/>
+      <Point X="1298.0" Y="265.0" GraphId="e_25_1"/>
+      <Point X="1298.0" Y="302.0" GraphId="e_25_2" GraphRef="n27_REACTOME_373691" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_25_a_i"/>
+      <Anchor Position="0.4126984126984127" GraphId="e_25_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1298.0" Y="211.0" GraphId="e_25_i0_0" GraphRef="n26_REACTOME_451771" RelX="-0.018691588785046728" RelY="1.2727272727272727"/>
+      <Point X="1298.0" Y="239.0" GraphId="e_25_i0_1" GraphRef="e_25_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="982.0" Y="73.0" GraphId="e_25_i1_0" GraphRef="n16_REACTOME_374555" RelX="0.05128205128205128" RelY="1.1666666666666667"/>
+      <Point X="1001.0" Y="158.0" GraphId="e_25_i1_1"/>
+      <Point X="1298.0" Y="239.0" GraphId="e_25_i1_2" GraphRef="e_25_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_REACTOME_373727">
+    <Comment Source="WikiPathways-description">CD2-associated protein (CD2AP) is an adapter molecule of the immunoglobulin superfamily that was first identified as an SH3-containing protein that binds to the cytoplasmic domain of CD2. In the glomerulus, CD2AP is located in the cytoplasm beneath the slit-diaphragm, where it binds to the cytoplasmic domain of nephrin. CD2AP acts as a linker protein and may be involved in connecting nephrin to the actin cytoskeleton in podocytes, although direct evidence of this is still lacking. Interaction with CD2AP might be important in the steady-state situation. In addition CD2AP can facilitate nephrin-induced PI3K-AKT signaling, a pathway that has been shown to be important for nephrin-mediated actin reorganization in podocytes and protection of podocytes from apoptosis.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1150.0" Y="382.0" GraphId="e_29_0"/>
+      <Point X="1193.0" Y="382.0" GraphId="e_29_1"/>
+      <Point X="1241.0" Y="382.0" GraphId="e_29_2" GraphRef="n31_REACTOME_373680" RelX="-1.0427350427350428" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_29_a_i"/>
+      <Anchor Position="0.4725274725274725" GraphId="e_29_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="980.0" Y="73.0" GraphId="e_29_i0_0" GraphRef="n16_REACTOME_374555" RelX="0.017094017094017096" RelY="1.1666666666666667"/>
+      <Point X="997.0" Y="268.0" GraphId="e_29_i0_1"/>
+      <Point X="1150.0" Y="382.0" GraphId="e_29_i0_2" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1126.0" Y="407.0" GraphId="e_29_i1_0" GraphRef="n30_REACTOME_373620" RelX="0.375" RelY="-1.2727272727272727"/>
+      <Point X="1150.0" Y="382.0" GraphId="e_29_i1_1" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_451758">
+    <Comment Source="WikiPathways-description">The regulatory p85 subunit of PI3K recognizes and binds to both phosphorylated nephrin and its binding partner, CD2AP. By mutation analysis, nephrin Y1158 was shown to be necessary for the interaction. This interaction allows the catalytic subunit p110 to act on phospholipids of the inner leaflet of the cell membrane. This leads to downstream phosphorylation and inactivation of the apoptotic factor Bad via the serine-threonine kinase AKT.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1302.0" Y="431.0" GraphId="e_32_0"/>
+      <Point X="1302.0" Y="465.0" GraphId="e_32_1"/>
+      <Point X="1302.0" Y="504.0" GraphId="e_32_2" GraphRef="n34_REACTOME_451720" RelX="-0.01652892561983471" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_32_a_i"/>
+      <Anchor Position="0.4657534246575342" GraphId="e_32_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1228.0" Y="423.0" GraphId="e_32_i0_0" GraphRef="n33_REACTOME_74693" RelX="1.1764705882352942" RelY="0.09090909090909091"/>
+      <Point X="1302.0" Y="431.0" GraphId="e_32_i0_1" GraphRef="e_32_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1302.0" Y="403.0" GraphId="e_32_i1_0" GraphRef="n31_REACTOME_373680" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="1302.0" Y="431.0" GraphId="e_32_i1_1" GraphRef="e_32_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_REACTOME_373722">
+    <Comment Source="WikiPathways-description">CASK is a scaffolding protein that participates in maintenance of polarized epithelial cell architecture by linking membrane proteins and signaling molecules to the actin cytoskeleton. CASK is identified as one of the binding partners of nephrin and this interaction likely plays an important role in establishing the structural integrity and functional properties of the glomerular slit diaphragm.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="295.0" Y="154.0" GraphId="e_35_0"/>
+      <Point X="198.0" Y="154.0" GraphId="e_35_1"/>
+      <Point X="154.0" Y="154.0" GraphId="e_35_2" GraphRef="n37_REACTOME_373681" RelX="1.0476190476190477" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_35_a_i"/>
+      <Anchor Position="0.6879432624113475" GraphId="e_35_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="347.0" Y="174.0" GraphId="e_35_i0_0" GraphRef="n36_REACTOME_373631" RelX="-1.1578947368421053" RelY="-0.7272727272727273"/>
+      <Point X="295.0" Y="154.0" GraphId="e_35_i0_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="670.0" Y="63.0" GraphId="e_35_i1_0" GraphRef="n6_REACTOME_373679" RelX="-1.0625" RelY="0.6111111111111112"/>
+      <Point X="295.0" Y="154.0" GraphId="e_35_i1_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_REACTOME_451377">
+    <Comment Source="WikiPathways-description">IQGAP1, an effector protein of the small GTPases Rac1 and Cdc42 and a putative regulator of cell-cell adherens junctions, is expressed in podocytes at significant levels, and located in the immediate vicinity of the slit diaphragm. IQGAP1 is identified as one of the interacting partners of nephrin. This interaction takes place strictly and specifically between the C-terminal half of the nephrin intracellular domain and IQGAP1.
+IQGAP1 knock-out mouse does not have any obvious nephrotic phenotype, hence IQGAP1 function can either be substituted by other proteins or its role in vivo is much less important than that attributed to it from cell culture experiments.</Comment>
+    <BiopaxRef>lit_451389</BiopaxRef>
+    <BiopaxRef>lit_373484</BiopaxRef>
+    <BiopaxRef>lit_451378</BiopaxRef>
+    <BiopaxRef>lit_936072</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="231.0" Y="262.0" GraphId="e_38_0"/>
+      <Point X="194.0" Y="263.0" GraphId="e_38_1"/>
+      <Point X="143.0" Y="263.0" GraphId="e_38_2" GraphRef="n40_REACTOME_451398" RelX="1.0625" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_38_a_i"/>
+      <Anchor Position="0.42054351208677354" GraphId="e_38_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="268.0" Y="275.0" GraphId="e_38_i0_0" GraphRef="n39_REACTOME_381681" RelX="-1.0" RelY="-1.2727272727272727"/>
+      <Point X="231.0" Y="262.0" GraphId="e_38_i0_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="679.0" Y="73.0" GraphId="e_38_i1_0" GraphRef="n6_REACTOME_373679" RelX="-0.875" RelY="1.1666666666666667"/>
+      <Point X="231.0" Y="262.0" GraphId="e_38_i1_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_REACTOME_451403">
+    <Comment Source="WikiPathways-description">The nephrin-slit diaphragm protein complex contains a group of scaffolding proteins that function to connect junctional membrane proteins to the actin cytoskeleton and signaling cascades. By mass spectrometry four of the proteins identified, alphaII spectrin, betaII spectrin, alpha-actinin, and IQGAP1, represent adherens junction-associated proteins, and two, MAGI-2/S-SCAM and CASK, represent MAGUK family scaffolding proteins that associate with Ig superfamily proteins. The presence of these proteins in slit diaphragms and their association with nephrin suggests that they may form a scaffolding protein complex in the podocyte slit diaphragm and thus contribute to the regulation of ultrafiltration by binding slit membrane proteins and establishing their cytosolic connections.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="277.0" Y="357.0" GraphId="e_42_0"/>
+      <Point X="217.0" Y="357.0" GraphId="e_42_1"/>
+      <Point X="161.0" Y="357.0" GraphId="e_42_2" GraphRef="n44_REACTOME_451387" RelX="1.05" RelY="-0.08" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_42_a_i"/>
+      <Anchor Position="0.5172413793103449" GraphId="e_42_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="315.0" Y="367.0" GraphId="e_42_i0_0" GraphRef="n43_REACTOME_451386" RelX="-1.05" RelY="-0.9444444444444444"/>
+      <Point X="277.0" Y="357.0" GraphId="e_42_i0_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="694.0" Y="73.0" GraphId="e_42_i1_0" GraphRef="n6_REACTOME_373679" RelX="-0.5625" RelY="1.1666666666666667"/>
+      <Point X="277.0" Y="357.0" GraphId="e_42_i1_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_10" GroupRef="group_comp_10" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="691.5" CenterY="303.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_10" GroupRef="group_comp_10">
+    <Graphics Color="000000" CenterX="692.0" CenterY="304.0" Width="1228.0" Height="530.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451749" rdf:id="lit_451749">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17766183</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin--a unique structural and signaling protein of the kidney filter</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patrakka, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Mol Med 13:396-403</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451745" rdf:id="lit_451745">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10393930</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin is specifically located at the slit diaphragm of glomerular podocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruotsalainen, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ljungberg, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wartiovaara, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lenkkeri, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">KestilÃ¤, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jalanko, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holmberg, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 96:7962-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451748" rdf:id="lit_451748">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10541305</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Unraveling the mechanisms of glomerular ultrafiltration: nephrin, a key component of the slit diaphragm</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Soc Nephrol 10:2440-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375810" rdf:id="lit_375810">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16571882</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hereditary proteinuria syndromes and mechanisms of proteinuria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patrakka, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wartiovaara, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N Engl J Med 354:1387-401</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451753" rdf:id="lit_451753">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12832477</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin and CD2AP associate with phosphoinositide 3-OH kinase and stimulate AKT-dependent signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hartleben, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmidts, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schermer, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keil, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Egger, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lecha, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borner, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PavenstÃ¤dt, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shaw, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 23:4917-28</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_936051" rdf:id="lit_936051">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15821412</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The slit diaphragm: a signaling platform to regulate podocyte function</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Nephrol Hypertens 14:211-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451378" rdf:id="lit_451378">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15994232</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell junction-associated proteins IQGAP1, MAGI-2, CASK, spectrins, and alpha-actinin are components of the nephrin multiprotein complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lehtonen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ryan, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kudlicka, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iino, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Farquhar, MG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 102:9814-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_937359" rdf:id="lit_937359">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19649571</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetics of nephrotic syndrome: new insights into molecules acting at the glomerular filtration barrier</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zenker, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Machuca, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antignac, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Med 87:849-57</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373510" rdf:id="lit_373510">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14633607</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin promotes cell-cell adhesion through homophilic interactions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khoshnoodi, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sigmundsson, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ofverstedt, LG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Skoglund, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obrink, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wartiovaara, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Pathol 163:2337-46</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_936053" rdf:id="lit_936053">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15545998</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin strands contribute to a porous slit diaphragm scaffold as revealed by electron tomography</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wartiovaara, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ofverstedt, LG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khoshnoodi, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MÃ¤kelÃ¤, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sandin, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruotsalainen, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cheng, RH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jalanko, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Skoglund, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 114:1475-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373414" rdf:id="lit_373414">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12660326</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Homodimerization and heterodimerization of the glomerular podocyte proteins nephrin and NEPH1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerke, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sellin, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Soc Nephrol 14:918-26</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_937355" rdf:id="lit_937355">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17893108</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The nephrin-based slit diaphragm: new insight into the signalling platform identifies targets for therapy</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aaltonen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HolthÃ¶fer, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrol Dial Transplant 22:3408-10</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373519" rdf:id="lit_373519">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12865409</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neph1 and nephrin interaction in the slit diaphragm is an important determinant of glomerular permeability</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaw, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurfis, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rahmanuddin, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kanwar, YS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chugh, SS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 112:209-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_374459" rdf:id="lit_374459">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17923684</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neph1 cooperates with nephrin to transduce a signal that induces actin polymerization</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garg, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verma, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nihalani, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnstone, DB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holzman, LB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 27:8698-712</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_936070" rdf:id="lit_936070">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20233749</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A model organism approach: defining the role of Neph proteins as regulators of neuron and kidney morphogenesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neumann-Haefelin, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kramer-Zucker, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slanchev, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hartleben, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noutsou, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanner, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ritter, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GÃ¶del, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pagel, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MÃ¼ller, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumeister, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 19:2347-59</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451747" rdf:id="lit_451747">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15843475</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NEPH2 is located at the glomerular slit diaphragm, interacts with nephrin and is cleaved from podocytes by metalloproteinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerke, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sellin, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kretz, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Petraschka, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zentgraf, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Soc Nephrol 16:1693-702</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_654765" rdf:id="lit_654765">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16543952</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin ectodomain engagement results in Src kinase activation, nephrin phosphorylation, Nck recruitment, and actin polymerization</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verma, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kovari, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soofi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nihalani, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patrie, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holzman, LB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 116:1346-59</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373517" rdf:id="lit_373517">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12846735</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clustering-induced tyrosine phosphorylation of nephrin by Src family kinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LahdenperÃ¤, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">KilpelÃ¤inen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, XL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pikkarainen, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reponen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruotsalainen, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kidney Int 64:404-13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_654761" rdf:id="lit_654761">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12668668</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fyn binds to and phosphorylates the kidney slit diaphragm component Nephrin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verma, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wharram, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kovari, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kunkel, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nihalani, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wary, KK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wiggins, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Killen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holzman, LB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:20716-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_374484" rdf:id="lit_374484">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15579503</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SRC-family kinase Fyn phosphorylates the cytoplasmic domain of nephrin and modulates its interaction with podocin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemay, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aoudjit, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawachi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takano, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Soc Nephrol 15:3006-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451752" rdf:id="lit_451752">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18033240</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin mediates actin reorganization via phosphoinositide 3-kinase in podocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aoudjit, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawachi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemay, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takano, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kidney Int 73:556-66</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373563" rdf:id="lit_373563">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16525419</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nck adaptor proteins link nephrin to the actin cytoskeleton of kidney podocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blasutig, IM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eremina, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruston, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bladt, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Larose, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takano, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quaggin, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pawson, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 440:818-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451743" rdf:id="lit_451743">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16630808</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nck links nephrin to actin in kidney podocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pikkarainen, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patrakka, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 125:221-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_936061" rdf:id="lit_936061">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19443634</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nck proteins maintain the adult glomerular filtration barrier</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fortino, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eremina, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruston, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blasutig, IM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aoudjit, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zou, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yu, GL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takano, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quaggin, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pawson, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Soc Nephrol 20:1533-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_203036" rdf:id="lit_203036">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11340081</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nck and phosphatidylinositol 4,5-bisphosphate synergistically activate actin polymerization through the N-WASP-Arp2/3 pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rohatgi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nollau, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ho, HY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kirschner, MW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mayer, BJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:26448-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373482" rdf:id="lit_373482">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11562357</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction with podocin facilitates nephrin signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kottgen, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schilling, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:41543-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373554" rdf:id="lit_373554">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11733557</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Podocin, a raft-associated component of the glomerular slit diaphragm, interacts with CD2AP and nephrin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schwarz, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Simons, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reiser, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saleem, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Faul, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kriz, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shaw, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holzman, LB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mundel, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 108:1621-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_936057" rdf:id="lit_936057">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14570703</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular basis of the functional podocin-nephrin complex: mutations in the NPHS2 gene disrupt nephrin targeting to lipid raft microdomains</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huber, TB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Simons, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hartleben, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sernetz, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmidts, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gundlach, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saleem, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benzing, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 12:3397-405</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_451389" rdf:id="lit_451389">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15634346</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of the interactions of the nephrin intracellular domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, XL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">KilpelÃ¤inen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hellman, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wartiovaara, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morgunova, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pikkarainen, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yan, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jonsson, AP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tryggvason, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS J 272:228-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373484" rdf:id="lit_373484">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15331416</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrin forms a complex with adherens junction proteins and CASK in podocytes and in Madin-Darby canine kidney cells expressing nephrin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lehtonen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lehtonen, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kudlicka, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HolthÃ¶fer, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Farquhar, MG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Pathol 165:923-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_936072" rdf:id="lit_936072">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10611248</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gastric hyperplasia in mice lacking the putative Cdc42 effector IQGAP1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chakladar, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bronson, RT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bernards, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 20:697-701</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

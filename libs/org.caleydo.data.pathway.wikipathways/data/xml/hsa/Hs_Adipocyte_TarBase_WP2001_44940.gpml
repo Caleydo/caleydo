@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Adipocyte TarBase" Version="20110706" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">This cataloge pathway was created using the database from "http://diana.cslab.ece.ntua.gr/tarbase/" with exclusions based on evidance type. This pathway only incldes miR targeted genes expressed in Adipocyte cells. This pathway is meant for data mapping.</Comment>
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Graphics BoardWidth="723.0477362513097" BoardHeight="351.9191722766403"/>
+  <DataNode TextLabel="CEBPB" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="95.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000172216"/>
+  </DataNode>
+  <DataNode TextLabel="FADS1" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="115.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000149485"/>
+  </DataNode>
+  <DataNode TextLabel="FADS3" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="135.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000149485"/>
+  </DataNode>
+  <DataNode TextLabel="LPL" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="154.99999999999997" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000175445"/>
+  </DataNode>
+  <DataNode TextLabel="PHC2" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="175.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000134686"/>
+  </DataNode>
+  <DataNode TextLabel="PICALM" Type="GeneProduct">
+    <Graphics CenterX="65.0" CenterY="195.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000073921"/>
+  </DataNode>
+  <DataNode TextLabel="IGF2R" Type="GeneProduct">
+    <Graphics CenterX="197.09733487833142" CenterY="96.5527230590962" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000197081"/>
+  </DataNode>
+  <DataNode TextLabel="TMEM43" Type="GeneProduct">
+    <Graphics CenterX="197.09733487833142" CenterY="116.5527230590962" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000170876"/>
+  </DataNode>
+  <DataNode TextLabel="CAP1" Type="GeneProduct">
+    <Graphics CenterX="197.09733487833142" CenterY="202.90266512166858" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000131236"/>
+  </DataNode>
+  <DataNode TextLabel="CSRP1" Type="GeneProduct">
+    <Graphics CenterX="197.09733487833142" CenterY="222.90266512166855" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000159176"/>
+  </DataNode>
+  <DataNode TextLabel="PICALM" Type="GeneProduct">
+    <Graphics CenterX="197.09733487833142" CenterY="242.90266512166852" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000073921"/>
+  </DataNode>
+  <DataNode TextLabel="SFRS9" Type="GeneProduct">
+    <Graphics CenterX="197.09733487833142" CenterY="262.9026651216685" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000111786"/>
+  </DataNode>
+  <DataNode TextLabel="TMED10" Type="GeneProduct">
+    <Graphics CenterX="336.1471610660486" CenterY="95.78794901506356" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000170348"/>
+  </DataNode>
+  <DataNode TextLabel="SMAD3" Type="GeneProduct">
+    <Graphics CenterX="336.1471610660486" CenterY="172.1378910776361" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000166949"/>
+  </DataNode>
+  <DataNode TextLabel="HIPK3 " Type="GeneProduct">
+    <Graphics CenterX="336.1471610660486" CenterY="248.48783314020866" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000110422"/>
+  </DataNode>
+  <DataNode TextLabel="ELOVL5" Type="GeneProduct">
+    <Graphics CenterX="475.19698725376577" CenterY="97.72305909617617" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000012660"/>
+  </DataNode>
+  <DataNode TextLabel="HIPK3 " Type="GeneProduct">
+    <Graphics CenterX="475.19698725376577" CenterY="171.75550405561998" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000110422"/>
+  </DataNode>
+  <DataNode TextLabel="TGFBR2" Type="GeneProduct">
+    <Graphics CenterX="475.19698725376577" CenterY="248.1054461181926" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000163513"/>
+  </DataNode>
+  <DataNode TextLabel="HIPK3 " Type="GeneProduct">
+    <Graphics CenterX="611.9293163383543" CenterY="99.65816917728871" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000110422"/>
+  </DataNode>
+  <DataNode TextLabel="CYP1B1" Type="GeneProduct">
+    <Graphics CenterX="612.7943682414675" CenterY="169.83117955791158" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000138061"/>
+  </DataNode>
+  <DataNode TextLabel="FUSIP1" Type="GeneProduct">
+    <Graphics CenterX="611.9293163383543" CenterY="246.84698103902485" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000188529"/>
+  </DataNode>
+  <DataNode TextLabel="HIPK3 " Type="GeneProduct">
+    <Graphics CenterX="610.1992125321248" CenterY="311.9191722766403" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Human" ID="ENSG00000110422"/>
+  </DataNode>
+  <Label TextLabel="miR-155&#10;&#10;" GraphId="e13d5">
+    <Graphics CenterX="62.409225640065316" CenterY="65.71108209011402" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32770" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-16" GraphId="ff9dd">
+    <Graphics CenterX="198.71281776057526" CenterY="66.53234512603518" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32771" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-1" GraphId="eff99">
+    <Graphics CenterX="195.9665836933678" CenterY="176.18472056056595" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32772" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-30" GraphId="ef092">
+    <Graphics CenterX="337.4544729667245" CenterY="65.9425060276939" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32773" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="HSV1-miR-LAT" GraphId="c0133">
+    <Graphics CenterX="336.20879822624" CenterY="145.14665827682887" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32774" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-106a" GraphId="de37a">
+    <Graphics CenterX="337.55827919509824" CenterY="220.89060291350705" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32775" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-124" GraphId="fbba7">
+    <Graphics CenterX="473.85585704976967" CenterY="69.99094893426829" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32776" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-19b-2" GraphId="f37ed">
+    <Graphics CenterX="473.47523421239936" CenterY="149.19510118340324" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32777" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-20a" GraphId="dc3ad">
+    <Graphics CenterX="474.82471518125755" CenterY="224.9390458200814" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32778" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-20b" GraphId="bb0f7">
+    <Graphics CenterX="611.1222930359288" CenterY="70.57918422838608" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32779" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-29c" GraphId="b06fb">
+    <Graphics CenterX="611.6067221016733" CenterY="221.58264443599847" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32780" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-27b" GraphId="ef57e">
+    <Graphics CenterX="612.9562030705317" CenterY="144.21240222146568" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32781" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="miR-92-2" GraphId="b6b20">
+    <Graphics CenterX="611.226099264303" CenterY="281.7556548166213" Width="160.18306636155606" Height="36.61327231121278" ZOrder="32782" FillColor="ffffff" FontSize="20" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>miRNA pathway</bp:TERM><bp:ID>PW:0000808</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

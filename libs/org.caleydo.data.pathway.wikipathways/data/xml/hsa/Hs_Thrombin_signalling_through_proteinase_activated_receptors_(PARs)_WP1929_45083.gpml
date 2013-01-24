@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Thrombin signalling through proteinase activated receptors (PARs)" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Akkerman, JW" Maintainer="Jupe, S" Email="sjupe@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Thrombin activates proteinase activated receptors (PARs) that signal through heterotrimeric G proteins of the G12/13 and Gq families, thereby connecting to a host of intracellular signaling pathways. Thrombin activates PARs by cleaving an N-terminal peptide that then binds to the body of the receptor to effect transmembrane signaling. Intermolecular ligation of one PAR molecule by another can occur but is less efficient than self-ligation. A synthetic peptide of sequence SFLLRN, the first six amino acids of the new N-terminus generated when thrombin cleaves PAR1, can activate PAR1 independent of protease and receptor cleavage. PARs are key to platelet activation. Four PARs have been identified, of which PARs 1 ,3 and 4 are substrates for thrombin. In humans PAR 1 is the predominant thrombin receptor followed by PAR4 which is less responsive to thrombin. PAR 3 is not considered important for human platelet responses as it is minimally expressed, though this is not the case for mouse. PAR2 is not expressed in platelets. In mouse platelets, Gq is necessary for platelet secretion and aggregation in response to thrombin but is not necessary for thrombin-triggered shape change. G13 appears to contribute to platelet aggregation as well as shape change in response to low concentrations of thrombin but to be unnecessary at higher agonist concentrations; G12 appears to be dispensable for thrombin signaling in platelets. G alpha (q) activates phospholipase C beta thereby triggering phosphoinositide hydrolysis, calcium mobilization and protein kinase C activation. This provides a path to calcium-regulated kinases and phosphatases, GEFs, MAP kinase cassettes and other proteins that mediate cellular responses ranging from granule secretion, integrin activation, and aggregation in platelets. Gbeta:gamma subunits can activate phosphoinositide-3 kinase and other lipid modifying enzymes, protein kinases, and channels. PAR1 activation indirectly leads to activation of cell surface 'sheddases' that liberate ligands for receptor tyrosine kinases, providing a link between thrombin and receptor tyrosine kinases involved in cell growth and differentiation. The pleiotrophic effects of PAR activation are consistent with many of thrombin's diverse actions on cells.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_140168</BiopaxRef>
+  <DataNode GraphId="n3_REACTOME_453302" TextLabel="PAR1, 3, 4&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="73.5" CenterY="122.5" Width="81.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21743"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_114530" TextLabel="Thrombin-&#10;activated PAR&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="320.0" CenterY="110.5" Width="112.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_5629"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_453303" TextLabel="PAR N-teminal &#10;fragments&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="310.0" CenterY="40.5" Width="108.0" Height="41.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21736"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_156786" TextLabel="Activated thrombin &#10;(factor IIa)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="184.0" CenterY="44.5" Width="118.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3298"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_114557" TextLabel="Heterotrimeric G-&#10;protein Gq/11 &#10;(inactive)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="471.5" CenterY="102.5" Width="117.0" Height="55.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5130"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_397803" TextLabel="Thrombin-activated &#10;PAR:Gq (inactive)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="610.5" CenterY="113.0" Width="117.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17676"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="595.5" CenterY="253.0" Width="43.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_397802" TextLabel="Thrombin-activated &#10;PAR:Gq (active)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="791.5" CenterY="117.0" Width="115.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17562"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_29420" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="747.0" CenterY="247.5" Width="46.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_114534" TextLabel="G-protein alpha &#10;(q/11): GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1057.5" CenterY="109.0" Width="115.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5863"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_167434" TextLabel="G-protein beta-&#10;gamma complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1047.0" CenterY="198.0" Width="130.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15674"/>
+  </DataNode>
+  <DataNode GraphId="n57_REACTOME_398082" TextLabel="G-protein &#10;G12/G13 &#10;(inactive)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="82.5" CenterY="195.0" Width="83.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17117"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_397883" TextLabel="Thrombin activated &#10;PAR:G12/13 (inactive)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="83.5" CenterY="334.0" Width="131.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18059"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_397884" TextLabel="Thrombin activated &#10;PAR:G12/13 (active)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="83.0" CenterY="457.0" Width="120.0" Height="40.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17549"/>
+  </DataNode>
+  <DataNode GraphId="n88_REACTOME_398080" TextLabel="G-protein &#10;G12/G13 (active)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="134.0" CenterY="513.0" Width="112.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17446"/>
+  </DataNode>
+  <DataNode GraphId="n103_REACTOME_264470" TextLabel="Beta-arrestin-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="300.0" CenterY="411.0" Width="92.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P49407"/>
+  </DataNode>
+  <DataNode GraphId="n104_REACTOME_114531" TextLabel="Activated PAR1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="266.5" CenterY="511.0" Width="111.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P25116"/>
+  </DataNode>
+  <DataNode GraphId="n105_REACTOME_418080" TextLabel="Activated PAR1:Beta-&#10;arrestin-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="423.5" CenterY="511.0" Width="125.0" Height="44.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24414"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_416464" TextLabel="Beta-arrestin-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="415.5" CenterY="405.0" Width="91.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P32121"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_418167" TextLabel="Activated PAR1:Beta-&#10;arrestin-2&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Following receptor activation, PAR1 complexes with beta-arrestin. Beta-arrestins are adaptor proteins that play a central role in GPCR  desensitization and internalization, and also act as scaffolds for the formation of signalling complexes that are independent of G-protein signalling.</Comment>
+    <Graphics Color="000000" CenterX="594.5" CenterY="514.0" Width="125.0" Height="44.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24025"/>
+  </DataNode>
+  <DataNode GraphId="n123_REACTOME_354153" TextLabel="SRC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="598.0" CenterY="399.5" Width="48.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12931-1"/>
+  </DataNode>
+  <DataNode GraphId="n124_REACTOME_169291" TextLabel="ERK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="694.5" CenterY="399.0" Width="53.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24485"/>
+  </DataNode>
+  <DataNode GraphId="n125_REACTOME_418103" TextLabel="Activated PAR1:Beta-&#10;arrestin-1:Src:ERK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="762.0" CenterY="514.0" Width="126.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24135"/>
+  </DataNode>
+  <DataNode GraphId="n127_REACTOME_418179" TextLabel="Activated PAR1:Beta-&#10;arrestin-2:Src:ERK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="921.0" CenterY="513.5" Width="126.0" Height="41.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24842"/>
+  </DataNode>
+  <DataNode GraphId="n142_REACTOME_418144" TextLabel="Activated PAR1:Beta-&#10;arrestin-1:Activated &#10;Src:ERK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1072.0" CenterY="506.0" Width="126.0" Height="56.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24357"/>
+  </DataNode>
+  <DataNode GraphId="n143_REACTOME_418210" TextLabel="Activated PAR1:Beta-&#10;arrestin-1:Activated &#10;Src:Activated ERK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1071.0" CenterY="385.0" Width="124.0" Height="56.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24392"/>
+  </DataNode>
+  <DataNode GraphId="n146_REACTOME_418572" TextLabel="G-protein alpha &#10;(12/13):GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1061.0" CenterY="306.0" Width="96.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20092"/>
+  </DataNode>
+  <Line GraphId="e_2_REACTOME_114697">
+    <Comment Source="WikiPathways-description">Thrombin signaling is mediated at least in part by a small family of G protein-coupled Proteinase Activated Receptors (PARs). Human platelet activation by thrombin is mediated predominantly by PAR1;  PAR4-induced platelet responses are less pronounced. PAR2 is not present in human platelets. PARs 1, 3 and 4 are activated when thrombin cleaves an N-terminal exodomain. This cleavage event unmasks a new N-terminus that serves as a tethered ligand that binds intramolecularly to the body of the receptor to effect transmembrane signaling. Intermolecular ligation of one PAR molecule by another can occur but, not surprisingly, appears to be less efficient than self-ligation. A synthetic peptide of sequence SFLLRN, the first six amino acids of the new N-terminus generated when thrombin cleaves PAR1, can activate PAR1 independent of protease and receptor cleavage. In addition to providing evidence for the tethered ligand mechanism, such tethered ligand-mimicking peptides have provided a convenient pharmacological tool for probing the effects of PAR activation in cells and tissues.</Comment>
+    <BiopaxRef>lit_140151</BiopaxRef>
+    <BiopaxRef>lit_140157</BiopaxRef>
+    <BiopaxRef>lit_140075</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="117.0" Y="118.0" GraphId="e_2_0" GraphRef="n3_REACTOME_453302" RelX="1.0864197530864197" RelY="-0.21621621621621623"/>
+      <Point X="192.0" Y="111.0" GraphId="e_2_1"/>
+      <Point X="219.0" Y="110.0" GraphId="e_2_2"/>
+      <Anchor Position="0.7360041823783032" GraphId="e_2_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="261.0" Y="110.0" GraphId="e_2_o0_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_114530" RelX="-1.0535714285714286" RelY="0.0"/>
+      <Point X="219.0" Y="110.0" GraphId="e_2_o0_1" GraphRef="e_2_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="283.0" Y="64.0" GraphId="e_2_o1_0" ArrowHead="Arrow" GraphRef="n5_REACTOME_453303" RelX="-0.5" RelY="1.170731707317073"/>
+      <Point X="219.0" Y="110.0" GraphId="e_2_o1_1" GraphRef="e_2_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="186.0" Y="67.0" GraphId="e_2_c__0_0" GraphRef="n6_REACTOME_156786" RelX="0.03389830508474576" RelY="1.1794871794871795"/>
+      <Point X="192.0" Y="111.0" GraphId="e_2_c__0_1" GraphRef="e_2_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_REACTOME_396996">
+    <Comment Source="WikiPathways-description">Thrombin signalling through PARs is mediated in part through the Gq family of G-proteins. Gq knockout mice have defective platelet responses to thrombin (as well as to ADP and thromboxane).</Comment>
+    <BiopaxRef>lit_428740</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="427.0" Y="158.0" GraphId="e_20_0"/>
+      <Point X="592.0" Y="158.0" GraphId="e_20_1"/>
+      <Point X="601.0" Y="137.0" GraphId="e_20_2" GraphRef="n22_REACTOME_397803" RelX="-0.15384615384615385" RelY="1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_20_a_i"/>
+      <Anchor Position="0.878372928607174" GraphId="e_20_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="449.0" Y="133.0" GraphId="e_20_i0_0" GraphRef="n21_REACTOME_114557" RelX="-0.37606837606837606" RelY="1.1272727272727272"/>
+      <Point X="427.0" Y="158.0" GraphId="e_20_i0_1" GraphRef="e_20_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="361.0" Y="132.0" GraphId="e_20_i1_0" GraphRef="n4_REACTOME_114530" RelX="0.7321428571428571" RelY="1.1891891891891893"/>
+      <Point X="427.0" Y="158.0" GraphId="e_20_i1_1" GraphRef="e_20_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_114558">
+    <Comment Source="WikiPathways-description">Activated PAR stimulates the G alpha (q) subunit to release GDP and bind GTP (which is present in much greater concentrations physiologically). This activation is required for Gq to participate in downstream signalling events.</Comment>
+    <BiopaxRef>lit_397801</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="664.0" Y="142.0" GraphId="e_23_0"/>
+      <Point X="688.0" Y="143.0" GraphId="e_23_1"/>
+      <Point X="709.0" Y="142.0" GraphId="e_23_2"/>
+      <Anchor Position="0.0" GraphId="e_23_a_i"/>
+      <Anchor Position="0.533267327315017" GraphId="e_23_a_p"/>
+      <Anchor Position="1.0" GraphId="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="649.0" Y="137.0" GraphId="e_23_i0_0" GraphRef="n22_REACTOME_397803" RelX="0.6666666666666666" RelY="1.1428571428571428"/>
+      <Point X="664.0" Y="142.0" GraphId="e_23_i0_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="601.0" Y="239.0" GraphId="e_23_i1_0" GraphRef="n24_REACTOME_29438" RelX="0.27906976744186046" RelY="-1.2727272727272727"/>
+      <Point X="664.0" Y="142.0" GraphId="e_23_i1_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="731.0" Y="134.0" GraphId="e_23_o0_0" ArrowHead="Arrow" GraphRef="n25_REACTOME_397802" RelX="-1.0434782608695652" RelY="0.8095238095238095"/>
+      <Point X="709.0" Y="142.0" GraphId="e_23_o0_1" GraphRef="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="742.0" Y="233.0" GraphId="e_23_o1_0" ArrowHead="Arrow" GraphRef="n26_REACTOME_29420" RelX="-0.21739130434782608" RelY="-1.2173913043478262"/>
+      <Point X="709.0" Y="142.0" GraphId="e_23_o1_1" GraphRef="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="333.0" Y="132.0" GraphId="e_23_c__0_0" GraphRef="n4_REACTOME_114530" RelX="0.23214285714285715" RelY="1.1891891891891893"/>
+      <Point X="369.0" Y="178.0" GraphId="e_23_c__0_1"/>
+      <Point X="689.0" Y="175.0" GraphId="e_23_c__0_2"/>
+      <Point X="688.0" Y="143.0" GraphId="e_23_c__0_3" GraphRef="e_23_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_397835">
+    <Comment Source="WikiPathways-description">The classical view of G-protein signalling is that the G-protein alpha subunit dissociates from the beta:gamma dimer. Activated G alpha (s) and the beta:gamma dimer then participate in separate signaling cascades. Although G protein dissociation has been contested (e.g. Bassi et al. 1996), recent in vivo experiments have demonstrated that dissociation does occur, though possibly not to completion (Lambert 2008).</Comment>
+    <BiopaxRef>lit_427945</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="817.0" Y="141.0" GraphId="e_40_0" GraphRef="n25_REACTOME_397802" RelX="0.45217391304347826" RelY="1.1428571428571428"/>
+      <Point X="866.0" Y="176.0" GraphId="e_40_1"/>
+      <Point X="897.0" Y="201.0" GraphId="e_40_2"/>
+      <Anchor Position="0.6019166307005441" GraphId="e_40_a_p"/>
+      <Anchor Position="1.0" GraphId="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="325.0" Y="132.0" GraphId="e_40_o0_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_114530" RelX="0.08928571428571429" RelY="1.1891891891891893"/>
+      <Point X="347.0" Y="205.0" GraphId="e_40_o0_1"/>
+      <Point X="897.0" Y="201.0" GraphId="e_40_o0_2" GraphRef="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1023.0" Y="131.0" GraphId="e_40_o1_0" ArrowHead="Arrow" GraphRef="n41_REACTOME_114534" RelX="-0.591304347826087" RelY="1.1578947368421053"/>
+      <Point X="897.0" Y="201.0" GraphId="e_40_o1_1" GraphRef="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="979.0" Y="199.0" GraphId="e_40_o2_0" ArrowHead="Arrow" GraphRef="n42_REACTOME_167434" RelX="-1.0461538461538462" RelY="0.05263157894736842"/>
+      <Point X="897.0" Y="201.0" GraphId="e_40_o2_1" GraphRef="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_REACTOME_396941">
+    <Comment Source="WikiPathways-description">Thrombin receptors activate G-proteins in the G12/13 family. Gq knockout mice exhibit defective platelet activation, but retain shape change responses to thrombin, mediated by G12/13.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="83.0" Y="256.0" GraphId="e_56_0"/>
+      <Point X="83.0" Y="279.0" GraphId="e_56_1"/>
+      <Point X="83.0" Y="310.0" GraphId="e_56_2" GraphRef="n58_REACTOME_397883" RelX="0.0" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_56_a_i"/>
+      <Anchor Position="0.42592592592592593" GraphId="e_56_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="289.0" Y="132.0" GraphId="e_56_i0_0" GraphRef="n4_REACTOME_114530" RelX="-0.5535714285714286" RelY="1.1891891891891893"/>
+      <Point X="83.0" Y="256.0" GraphId="e_56_i0_1" GraphRef="e_56_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="82.0" Y="224.0" GraphId="e_56_i1_0" GraphRef="n57_REACTOME_398082" RelX="0.0" RelY="1.1153846153846154"/>
+      <Point X="83.0" Y="256.0" GraphId="e_56_i1_1" GraphRef="e_56_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_REACTOME_114552">
+    <Comment Source="WikiPathways-description">PAR1, 3 and 4 have been shown to directly couple with G12/13 (Offermanns et al. 1994). G12 and G13 have overlapping but distinct signalling roles (Suzuki et al. 2009). Evidence from conditional knockout mice (KOs) suggests that G13 is the subtype responsible for platelet shape change and aggregation responses  in response to low and intermediate concentrations of thrombin, thromboxane and collagen. Platelets from G12 KOs were indistinguishable from wild-type, while those from mice with disrupted G13 had impaired shape change and aggregation responses, failed to form stable thrombi ex vivo, and exhibited a large increase in tailbleeding times  (Moers et al. 2003). Both subtypes of G12/13 are unnecessary for platelet shape change and aggregation at higher agonist concentrations. The alpha-subunits of G12 and 13 bind RhoGEFs (guanine nucleotide exchange factors, which activate small G proteins) providing a path to Rho-mediated cytoskeletal responses that are involved in shape change in platelets and permeability and migration in endothelial cells.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_428920</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="82.0" Y="377.0" GraphId="e_72_0"/>
+      <Point X="83.0" Y="395.0" GraphId="e_72_1"/>
+      <Point X="83.0" Y="417.0" GraphId="e_72_2"/>
+      <Anchor Position="0.0" GraphId="e_72_a_i"/>
+      <Anchor Position="0.45038138554112467" GraphId="e_72_a_p"/>
+      <Anchor Position="1.0" GraphId="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="82.0" Y="358.0" GraphId="e_72_i0_0" GraphRef="n58_REACTOME_397883" RelX="-0.015267175572519083" RelY="1.1428571428571428"/>
+      <Point X="82.0" Y="377.0" GraphId="e_72_i0_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="571.0" Y="258.0" GraphId="e_72_i1_0" GraphRef="n24_REACTOME_29438" RelX="-1.1162790697674418" RelY="0.45454545454545453"/>
+      <Point X="82.0" Y="377.0" GraphId="e_72_i1_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="83.0" Y="434.0" GraphId="e_72_o0_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_397884" RelX="0.0" RelY="-1.15"/>
+      <Point X="83.0" Y="417.0" GraphId="e_72_o0_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="721.0" Y="252.0" GraphId="e_72_o1_0" ArrowHead="Arrow" GraphRef="n26_REACTOME_29420" RelX="-1.1304347826086956" RelY="0.43478260869565216"/>
+      <Point X="83.0" Y="417.0" GraphId="e_72_o1_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="312.0" Y="132.0" GraphId="e_72_c__0_0" GraphRef="n4_REACTOME_114530" RelX="-0.14285714285714285" RelY="1.1891891891891893"/>
+      <Point X="217.0" Y="362.0" GraphId="e_72_c__0_1"/>
+      <Point X="83.0" Y="395.0" GraphId="e_72_c__0_2" GraphRef="e_72_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_REACTOME_397891">
+    <Comment Source="WikiPathways-description">The classical view of G-protein signalling is that the G-protein alpha subunit dissociates from the beta:gamma dimer. Activated G alpha (s) and the beta:gamma dimer then participate in separate signaling cascades. Although G protein dissociation has been contested (e.g. Bassi et al. 1996), recent in vivo experiments have demonstrated that dissociation does occur, though possibly not to completion (Lambert 2008).</Comment>
+    <BiopaxRef>lit_427945</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="132.0" Y="434.0" GraphId="e_87_0" GraphRef="n73_REACTOME_397884" RelX="0.8166666666666667" RelY="-1.15"/>
+      <Point X="157.0" Y="427.0" GraphId="e_87_1"/>
+      <Point X="602.0" Y="312.0" GraphId="e_87_2"/>
+      <Anchor Position="0.053464848026108305" GraphId="e_87_a_p"/>
+      <Anchor Position="1.0" GraphId="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1010.0" Y="306.0" GraphId="e_87_o0_0" ArrowHead="Arrow" GraphRef="n146_REACTOME_418572" RelX="-1.0625" RelY="0.0"/>
+      <Point X="602.0" Y="312.0" GraphId="e_87_o0_1" GraphRef="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="345.0" Y="132.0" GraphId="e_87_o1_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_114530" RelX="0.44642857142857145" RelY="1.1891891891891893"/>
+      <Point X="602.0" Y="312.0" GraphId="e_87_o1_1" GraphRef="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="979.0" Y="214.0" GraphId="e_87_o2_0" ArrowHead="Arrow" GraphRef="n42_REACTOME_167434" RelX="-1.0461538461538462" RelY="0.8421052631578947"/>
+      <Point X="602.0" Y="312.0" GraphId="e_87_o2_1" GraphRef="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_REACTOME_418091">
+    <Comment Source="WikiPathways-description">Following receptor activation, PAR1 complexes with beta-arrestin. Beta-arrestins are adaptor proteins that play a central role in GPCR  desensitization and internalization, and also act as scaffolds for the formation of signalling complexes that are independent of G-protein signalling.</Comment>
+    <BiopaxRef>lit_418092</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="310.0" Y="453.0" GraphId="e_102_0"/>
+      <Point X="343.0" Y="468.0" GraphId="e_102_1"/>
+      <Point X="382.0" Y="486.0" GraphId="e_102_2" GraphRef="n105_REACTOME_418080" RelX="-0.656" RelY="-1.1363636363636365" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_102_a_i"/>
+      <Anchor Position="0.4576761042248965" GraphId="e_102_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="303.0" Y="429.0" GraphId="e_102_i0_0" GraphRef="n103_REACTOME_264470" RelX="0.06521739130434782" RelY="1.2"/>
+      <Point X="310.0" Y="453.0" GraphId="e_102_i0_1" GraphRef="e_102_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="280.0" Y="489.0" GraphId="e_102_i1_0" GraphRef="n104_REACTOME_114531" RelX="0.25225225225225223" RelY="-1.1578947368421053"/>
+      <Point X="310.0" Y="453.0" GraphId="e_102_i1_1" GraphRef="e_102_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_REACTOME_418172">
+    <Comment Source="WikiPathways-description">Following receptor activation, PAR1 complexes with beta-arrestin. Beta-arrestins are adaptor proteins that play a central role in GPCR  desensitization and internalization, and also act as scaffolds for the formation of signalling complexes that are independent of G-protein signalling.</Comment>
+    <BiopaxRef>lit_418092</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="439.0" Y="444.0" GraphId="e_106_0"/>
+      <Point X="476.0" Y="460.0" GraphId="e_106_1"/>
+      <Point X="545.0" Y="489.0" GraphId="e_106_2" GraphRef="n108_REACTOME_418167" RelX="-0.784" RelY="-1.1363636363636365" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_106_a_i"/>
+      <Anchor Position="0.3500526175424277" GraphId="e_106_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="423.0" Y="422.0" GraphId="e_106_i0_0" GraphRef="n107_REACTOME_416464" RelX="0.17582417582417584" RelY="1.2142857142857142"/>
+      <Point X="439.0" Y="444.0" GraphId="e_106_i0_1" GraphRef="e_106_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="315.0" Y="489.0" GraphId="e_106_i1_0" GraphRef="n104_REACTOME_114531" RelX="0.8828828828828829" RelY="-1.1578947368421053"/>
+      <Point X="439.0" Y="444.0" GraphId="e_106_i1_1" GraphRef="e_106_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_REACTOME_418170">
+    <Comment Source="WikiPathways-description">Beta-arrestins can serve as scaffolding molecules that facilitate G-protein independent cell signaling</Comment>
+    <BiopaxRef>lit_418092</BiopaxRef>
+    <BiopaxRef>lit_418153</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="675.0" Y="449.0" GraphId="e_122_0"/>
+      <Point X="705.0" Y="474.0" GraphId="e_122_1"/>
+      <Point X="732.0" Y="490.0" GraphId="e_122_2" GraphRef="n125_REACTOME_418103" RelX="-0.47619047619047616" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_122_a_i"/>
+      <Anchor Position="0.5544220518946245" GraphId="e_122_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="617.0" Y="415.0" GraphId="e_122_i0_0" GraphRef="n123_REACTOME_354153" RelX="0.7916666666666666" RelY="1.28"/>
+      <Point X="675.0" Y="449.0" GraphId="e_122_i0_1" GraphRef="e_122_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="489.0" Y="495.0" GraphId="e_122_i1_0" GraphRef="n105_REACTOME_418080" RelX="1.056" RelY="-0.7272727272727273"/>
+      <Point X="675.0" Y="449.0" GraphId="e_122_i1_1" GraphRef="e_122_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="689.0" Y="413.0" GraphId="e_122_i2_0" GraphRef="n124_REACTOME_169291" RelX="-0.18867924528301888" RelY="1.2727272727272727"/>
+      <Point X="675.0" Y="449.0" GraphId="e_122_i2_1" GraphRef="e_122_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_126_REACTOME_418176">
+    <Comment Source="WikiPathways-description">Beta-arrestins can serve as scaffolding molecules that facilitate G-protein independent cell signaling</Comment>
+    <BiopaxRef>lit_418092</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="733.0" Y="443.0" GraphId="e_126_0"/>
+      <Point X="775.0" Y="460.0" GraphId="e_126_1"/>
+      <Point X="864.0" Y="490.0" GraphId="e_126_2" GraphRef="n127_REACTOME_418179" RelX="-0.9047619047619048" RelY="-1.1219512195121952" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_126_a_i"/>
+      <Anchor Position="0.3254325276115374" GraphId="e_126_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_126_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="625.0" Y="406.0" GraphId="e_126_i0_0" GraphRef="n123_REACTOME_354153" RelX="1.125" RelY="0.56"/>
+      <Point X="733.0" Y="443.0" GraphId="e_126_i0_1" GraphRef="e_126_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_126_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="637.0" Y="489.0" GraphId="e_126_i1_0" GraphRef="n108_REACTOME_418167" RelX="0.688" RelY="-1.1363636363636365"/>
+      <Point X="733.0" Y="443.0" GraphId="e_126_i1_1" GraphRef="e_126_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_126_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="703.0" Y="413.0" GraphId="e_126_i2_0" GraphRef="n124_REACTOME_169291" RelX="0.33962264150943394" RelY="1.2727272727272727"/>
+      <Point X="733.0" Y="443.0" GraphId="e_126_i2_1" GraphRef="e_126_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_REACTOME_418163">
+    <Comment Source="WikiPathways-description">Within the beta-arrestin-1:Src:ERK complex, activated Src phosphorylates and activates ERK. ERK activation requires dual Thr and Tyr phosphorylations, at Thr202/Tyr204 for human ERK1 and Thr185/Tyr187 for human ERK2. Significant ERK activation requires phosphorylation at both sites, with Tyr phosphorylation preceding that of Thr. This reaction is given as a black-box event because the phosphorylation state of ERK on binding to beta-arrestin-1 is unknown.</Comment>
+    <BiopaxRef>lit_418092</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1063.0" Y="475.0" GraphId="e_141_0" GraphRef="n142_REACTOME_418144" RelX="-0.14285714285714285" RelY="-1.1071428571428572"/>
+      <Point X="1069.0" Y="447.0" GraphId="e_141_1"/>
+      <Point X="1070.0" Y="416.0" GraphId="e_141_2" GraphRef="n143_REACTOME_418210" RelX="-0.016129032258064516" RelY="1.1071428571428572" ArrowHead="Arrow"/>
+      <Anchor Position="0.48004683823211897" GraphId="e_141_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1070.0" Y="475.0" GraphId="e_141_c__0_0" GraphRef="n142_REACTOME_418144" RelX="-0.031746031746031744" RelY="-1.1071428571428572"/>
+      <Point X="1069.0" Y="447.0" GraphId="e_141_c__0_1" GraphRef="e_141_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_144_REACTOME_418158">
+    <Comment Source="WikiPathways-description">The activity of Src-kinase is increased when bound to Beta-arrestin-1. The mechanism for this activation is not clear. Src bound to beta -arrestin 1 is substantially dephosphorylated at Tyr530 and this is often associated with Src activation. Binding results with Y530F mutants of Src suggest that binding of Src to arrestin causes a conformational activation of the kinase, rather than a change in phosphorylation. However, increased phosphorylation of Src Tyr419 in cells overexpressing beta-arrestin-1 has been reported to correlate with PAR1 activation, beta-arrestin signalling complex formation, and increased ERK activation.</Comment>
+    <BiopaxRef>lit_418092</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="801.0" Y="490.0" GraphId="e_144_0" GraphRef="n125_REACTOME_418103" RelX="0.6190476190476191" RelY="-1.1428571428571428"/>
+      <Point X="917.0" Y="432.0" GraphId="e_144_1"/>
+      <Point X="1013.0" Y="475.0" GraphId="e_144_2" GraphRef="n142_REACTOME_418144" RelX="-0.9365079365079365" RelY="-1.1071428571428572" ArrowHead="Arrow"/>
+      <Anchor Position="0.5521572816414722" GraphId="e_144_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_REACTOME_418200">
+    <Comment Source="WikiPathways-description">Activated PAR1 can induce the formation of signalling complexes with a beta-arrestin scaffold. When  beta-arrestin-1 is incorporated this leads to Src and subsequent ERK activation. In contrast, complexes containing beta-arrestin-2 do not lead to Src and ERK activation.</Comment>
+    <BiopaxRef>lit_418092</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="912.0" Y="490.0" GraphId="e_145_0" GraphRef="n127_REACTOME_418179" RelX="-0.14285714285714285" RelY="-1.1219512195121952"/>
+      <Point X="918.0" Y="463.0" GraphId="e_145_1"/>
+      <Point X="919.0" Y="490.0" GraphId="e_145_2" GraphRef="n127_REACTOME_418179" RelX="-0.031746031746031744" RelY="-1.1219512195121952" ArrowHead="Arrow"/>
+      <Anchor Position="0.5058536450037419" GraphId="e_145_a_p"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="960.5" CenterY="352.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="558.5" CenterY="312.5" Width="1013.0" Height="409.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140168" rdf:id="lit_140168">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11001069</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thrombin signalling and protease-activated receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coughlin, SR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 407:258-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140151" rdf:id="lit_140151">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1672265</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular cloning of a functional thrombin receptor reveals a novel proteolytic mechanism of receptor activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vu, TK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hung, DT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wheaton, VI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coughlin, SR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 64:1057-68</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140157" rdf:id="lit_140157">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9087410</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protease-activated receptor 3 is a second thrombin receptor in humans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishihara, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Connolly, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zeng, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kahn, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zheng, YW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Timmons, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tram, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coughlin, SR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 386:502-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140075" rdf:id="lit_140075">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9618465</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and characterization of human protease-activated receptor 4</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, WF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andersen, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Whitmore, TE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Presnell, SR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yee, DP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ching, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gilbert, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foster, DC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 95:6642-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428740" rdf:id="lit_428740">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8982657</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Direct evidence for two distinct G proteins coupling with thrombin receptors in human neuroblastoma SH-EP cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ogino, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimizu, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Pharmacol 316:105-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_397801" rdf:id="lit_397801">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16102047</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protease-activated receptors in hemostasis, thrombosis and vascular biology</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coughlin, SR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost 3:1800-14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427945" rdf:id="lit_427945">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18577758</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dissociation of heterotrimeric g proteins in cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lambert, NA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sci Signal 1:re5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428920" rdf:id="lit_428920">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8290554</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">G proteins of the G12 family are activated via thromboxane A2 and thrombin receptors in human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Offermanns, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Laugwitz, KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spicher, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schultz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 91:504-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418092" rdf:id="lit_418092">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16580177</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Opposing effects of beta-arrestin1 and beta-arrestin2 on activation and degradation of Src induced by protease-activated receptor 1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kuo, FT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lu, TL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, HW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Signal 18:1914-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418153" rdf:id="lit_418153">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9924018</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beta-arrestin-dependent formation of beta2 adrenergic receptor-Src protein kinase complexes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luttrell, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferguson, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Daaka, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miller, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maudsley, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Della Rocca, GJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lin, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawakatsu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Owada, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luttrell, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Caron, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lefkowitz, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 283:655-61</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>G protein mediated signaling pathway</bp:TERM><bp:ID>PW:0000125</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

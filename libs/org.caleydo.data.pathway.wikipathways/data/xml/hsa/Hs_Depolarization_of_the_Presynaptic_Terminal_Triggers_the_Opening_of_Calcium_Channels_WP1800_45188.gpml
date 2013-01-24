@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Depolarization of the Presynaptic Terminal Triggers the Opening of Calcium Channels" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Mahajan, SS" Maintainer="Mahajan, SS" Email="mahajs01@med.nyu.edu">
+  <Comment Source="WikiPathways-description">The action potential travels down the axon and reaches the pre-synaptic terminal depolarizing the membrane in the pre-synaptic terminal. The depolarization causes the voltage-gated Ca2+  channels to open allowing the influx of Ca2+ that signals the release of neurotransmitter into the synaptic cleft.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n2_REACTOME_74112" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="228.5" CenterY="208.0" Width="61.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_74016" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="444.5" CenterY="211.0" Width="61.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_210378" TextLabel="Voltage Gated Ca2+ &#10;Channel&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="341.5" CenterY="138.0" Width="131.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_12910"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_210420">
+    <Comment Source="WikiPathways-description">Ca2+ influx from the extracellular space into the presynaptic neuron through the Voltage Gated Ca2+ Channels (VGCC), is dependant on the arrival of an action potential at the synaptic bulb. The vesicle fusion and subsequent release of glutamate into the synapse is triggered by this influx of Ca2+. The VGCCs involved here could be of the N, P/Q or R type.&lt;p&gt;Hyperpolarization of the cell membrane due to KIR3 potassium channel activity inhibits this influx of Ca2+.</Comment>
+    <BiopaxRef>lit_210367</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="262.0" Y="208.0" GraphId="e_1_0" GraphRef="n2_REACTOME_74112" RelX="1.1147540983606556" RelY="0.0"/>
+      <Point X="342.0" Y="210.0" GraphId="e_1_1"/>
+      <Point X="411.0" Y="210.0" GraphId="e_1_2" GraphRef="n3_REACTOME_74016" RelX="-1.0819672131147542" RelY="-0.06666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.5369904257133623" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="341.0" Y="159.0" GraphId="e_1_c__0_0" GraphRef="n4_REACTOME_210378" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="342.0" Y="210.0" GraphId="e_1_c__0_1" GraphRef="e_1_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_5" GroupRef="group_comp_5" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="352.5" CenterY="458.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_5" GroupRef="group_comp_5">
+    <Graphics Color="000000" CenterX="604.0" CenterY="264.5" Width="594.0" Height="447.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210367" rdf:id="lit_210367">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8825650</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chromosomal localization of the human genes for alpha 1A, alpha 1B, and alpha 1E voltage-dependent Ca2+ channel subunits</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diriong, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lory, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, ME</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ellis, SB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harpold, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taviaux, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genomics 30:605-9</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>neuron-to-neuron signaling pathways</bp:TERM><bp:ID>PW:0000272</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

@@ -1,0 +1,1456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Eukaryotic Translation Initiation" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35">
+  <Comment Source="WikiPathways-description">Initiation of translation in the majority of eukaryotic cellular mRNAs depends on the 5'-cap (m7GpppN) and involves ribosomal scanning of the 5' untranslated region (5'-UTR) for an initiating AUG start codon. Therefore, this mechanism is often called cap-dependent translation initiation. Proximity to the cap, as well as the nucleotides surrounding an AUG codon, influence the efficiency of the start site recognition during the scanning process. However, if the recognition site is poor enough, scanning ribosomal subunits will ignore and skip potential starting AUGs, a phenomenon called leaky scanning. Leaky scanning allows a single mRNA to encode several proteins that differ in their amino-termini. Several eukaryotic cell and viral mRNAs initiate translation by an alternative mechanism that involves internal initiation rather than ribosomal scanning. These mRNAs contain complex nucleotide sequences, called internal ribosomal entry sites, where ribosomes bind in a cap-independent manner and start translation at the closest downstream AUG codon.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n2_REACTOME_72557" TextLabel="eIF1A&#10;" Type="Protein">
+    <BiopaxRef>lit_72558</BiopaxRef>
+    <BiopaxRef>lit_72567</BiopaxRef>
+    <Graphics Color="000000" CenterX="309.0" CenterY="473.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P47813"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_72500" TextLabel="80S ribosome&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="232.0" CenterY="379.0" Width="88.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4330"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_72499" TextLabel="60S ribosomal &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="273.5" CenterY="312.0" Width="95.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2629"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_72392" TextLabel="40S ribosomal &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="409.5" CenterY="419.0" Width="95.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5094"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_72555" TextLabel="eIF3 subunits &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="398.0" CenterY="283.0" Width="88.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4891"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_72570" TextLabel="40S:eIF3:eIF1A&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="619.0" CenterY="352.0" Width="94.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2456"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="182.0" CenterY="624.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_72515" TextLabel="eIF2 subunit &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="200.0" CenterY="549.0" Width="82.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5135"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_72531" TextLabel="eIF2:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="373.0" CenterY="590.0" Width="60.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3909"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_72393" TextLabel="Met-tRNAi&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="425.0" CenterY="545.0" Width="68.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_4829"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_72532" TextLabel="ternary complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="593.0" CenterY="586.0" Width="102.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4168"/>
+  </DataNode>
+  <DataNode GraphId="n32_REACTOME_72571" TextLabel="43S complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="775.5" CenterY="485.0" Width="83.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3677"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_72581" TextLabel="eIF4E:4E-BP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="173.5" CenterY="738.0" Width="79.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3978"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_72580" TextLabel="4E-BP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="363.0" CenterY="700.0" Width="44.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13541"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_72578" TextLabel="eIF4E&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="372.5" CenterY="767.0" Width="39.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P06730"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_72584" TextLabel="eIF4G&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="423.5" CenterY="804.0" Width="41.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q04637"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_72576" TextLabel="eIF4A subunits &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="472.0" CenterY="726.0" Width="96.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5786"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_72587" TextLabel="eIF4F&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="662.0" CenterY="765.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4441"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_72596" TextLabel="mRNP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="661.5" CenterY="804.0" Width="43.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3493"/>
+  </DataNode>
+  <DataNode GraphId="n43_REACTOME_72597" TextLabel="eIF4F:mRNP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="864.5" CenterY="764.0" Width="77.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4731"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_72591" TextLabel="eIF4H&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="914.5" CenterY="804.0" Width="41.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15056"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="885.5" CenterY="704.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_72589" TextLabel="eIF4B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="942.5" CenterY="837.0" Width="39.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P23588"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_72595" TextLabel="RNA-binding protein &#10;in RNP &#10;(ribonucleoprotein) &#10;complexes&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1280.0" CenterY="758.0" Width="132.0" Height="64.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3670"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_72593" TextLabel="mRNA:eIF4F:eIF4B:&#10;eIF4H&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1114.5" CenterY="635.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2596"/>
+  </DataNode>
+  <DataNode GraphId="n50_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1179.0" CenterY="781.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1088.5" CenterY="794.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n55_REACTOME_72592" TextLabel="43S:mRNA:eIF4F:&#10;eIF4B:eIF4H&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1099.0" CenterY="485.0" Width="108.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4439"/>
+  </DataNode>
+  <DataNode GraphId="n56_REACTOME_72557" TextLabel="eIF1A&#10;" Type="Protein">
+    <BiopaxRef>lit_72558</BiopaxRef>
+    <BiopaxRef>lit_72567</BiopaxRef>
+    <Graphics Color="000000" CenterX="1046.0" CenterY="435.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P47813"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_72557" TextLabel="eIF1A&#10;" Type="Protein">
+    <BiopaxRef>lit_72558</BiopaxRef>
+    <BiopaxRef>lit_72567</BiopaxRef>
+    <Graphics Color="000000" CenterX="861.0" CenterY="446.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P47813"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_156803" TextLabel="PABP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="780.5" CenterY="394.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P11940"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_156809" TextLabel="Ceruloplasmin &#10;mRNA:eIF4F:eIF4B:&#10;eIF4H&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="807.5" CenterY="328.0" Width="117.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2288"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_156804" TextLabel="43S: Ceruloplasmin &#10;mRNA:eIF4F:eIF4B:&#10;eIF4H:PABP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1080.0" CenterY="340.0" Width="124.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3267"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1160.5" CenterY="432.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1336.0" CenterY="532.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1396.5" CenterY="482.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n69_REACTOME_72594" TextLabel="48S complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1357.5" CenterY="407.0" Width="83.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5152"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_72617" TextLabel="eIF1&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1246.0" CenterY="417.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3030"/>
+  </DataNode>
+  <DataNode GraphId="n71_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1238.5" CenterY="526.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_72616" TextLabel="eIF5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1485.0" CenterY="271.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55010"/>
+  </DataNode>
+  <DataNode GraphId="n75_REACTOME_72515" TextLabel="eIF2 subunit &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1415.0" CenterY="258.0" Width="82.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5135"/>
+  </DataNode>
+  <DataNode GraphId="n76_REACTOME_72617" TextLabel="eIF1&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1476.0" CenterY="322.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3030"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_72557" TextLabel="eIF1A&#10;" Type="Protein">
+    <BiopaxRef>lit_72558</BiopaxRef>
+    <BiopaxRef>lit_72567</BiopaxRef>
+    <Graphics Color="000000" CenterX="1471.0" CenterY="414.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P47813"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1748.5" CenterY="245.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n81_REACTOME_72508" TextLabel="40S:Met-tRNAi:&#10;mRNA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1833.0" CenterY="296.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3073"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_72530" TextLabel="eIF2:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1781.5" CenterY="358.0" Width="61.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2996"/>
+  </DataNode>
+  <DataNode GraphId="n83_REACTOME_72616" TextLabel="eIF5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1221.0" CenterY="294.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55010"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_72616" TextLabel="eIF5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1568.0" CenterY="475.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55010"/>
+  </DataNode>
+  <DataNode GraphId="n88_REACTOME_72504" TextLabel="80S:Met-tRNAi:&#10;mRNA:eIF5B:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2003.5" CenterY="213.0" Width="107.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2486"/>
+  </DataNode>
+  <DataNode GraphId="n89_REACTOME_72505" TextLabel="80S:Met-tRNAi:&#10;mRNA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1903.0" CenterY="414.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4537"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2002.5" CenterY="371.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_72502" TextLabel="eIF5B:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1865.0" CenterY="369.0" Width="68.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4697"/>
+  </DataNode>
+  <DataNode GraphId="n93_REACTOME_72503" TextLabel="eIF5B:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1831.5" CenterY="156.0" Width="67.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3457"/>
+  </DataNode>
+  <DataNode GraphId="n95_REACTOME_72526" TextLabel="eIF2B subunits &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1724.5" CenterY="589.0" Width="95.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3897"/>
+  </DataNode>
+  <DataNode GraphId="n96_REACTOME_72529" TextLabel="eIF2:GDP: eIF2B&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1904.0" CenterY="487.0" Width="100.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3553"/>
+  </DataNode>
+  <DataNode GraphId="n98_REACTOME_29420" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1806.5" CenterY="721.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1822.0" CenterY="523.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n101_REACTOME_72531" TextLabel="eIF2:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1731.0" CenterY="690.0" Width="60.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3909"/>
+  </DataNode>
+  <DataNode GraphId="n120_REACTOME_72412" TextLabel="60S ribosomal &#10;protein L13a&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="194.5" CenterY="164.0" Width="119.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P40429"/>
+  </DataNode>
+  <DataNode GraphId="n121_REACTOME_156817" TextLabel="60s ribosomal &#10;complex lacking &#10;L13a subunit&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="376.0" CenterY="169.0" Width="124.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4690"/>
+  </DataNode>
+  <DataNode GraphId="n123_REACTOME_156829" TextLabel="phospho-L13a &#10;60S ribosomal &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="98.0" CenterY="349.0" Width="102.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P40429"/>
+  </DataNode>
+  <DataNode GraphId="n124_REACTOME_170641" TextLabel="L13a &#10;kinase&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="173.5" CenterY="302.5" Width="63.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_6440"/>
+  </DataNode>
+  <DataNode GraphId="n126_REACTOME_156824" TextLabel="phospho-L13a &#10;associated wth the  3' &#10;UTR GAIT element of &#10;ceruloplasmin mRNA &#10;within  the translation &#10;initiation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="570.5" CenterY="156.0" Width="131.0" Height="98.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5151"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_72673">
+    <Comment Source="WikiPathways-description">80S monosomes dissociate into 40S and 60S ribosomal subunits. eIF1A promotes this dissociation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="288.0" Y="417.0" GraphId="e_1_0"/>
+      <Point X="313.0" Y="417.0" GraphId="e_1_1"/>
+      <Point X="336.0" Y="417.0" GraphId="e_1_2"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.5208333333333334" GraphId="e_1_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="304.0" Y="459.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_72557" RelX="-0.25" RelY="-1.2727272727272727"/>
+      <Point X="288.0" Y="417.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="248.0" Y="393.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_72500" RelX="0.36363636363636365" RelY="1.2727272727272727"/>
+      <Point X="288.0" Y="417.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="283.0" Y="333.0" GraphId="e_1_o0_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_72499" RelX="0.21052631578947367" RelY="1.1666666666666667"/>
+      <Point X="336.0" Y="417.0" GraphId="e_1_o0_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="314.0" Y="459.0" GraphId="e_1_o1_0" ArrowHead="Arrow" GraphRef="n2_REACTOME_72557" RelX="0.25" RelY="-1.2727272727272727"/>
+      <Point X="336.0" Y="417.0" GraphId="e_1_o1_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="359.0" Y="417.0" GraphId="e_1_o2_0" ArrowHead="Arrow" GraphRef="n5_REACTOME_72392" RelX="-1.0526315789473684" RelY="-0.1111111111111111"/>
+      <Point X="336.0" Y="417.0" GraphId="e_1_o2_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_REACTOME_72676">
+    <Comment Source="WikiPathways-description">eIF3 and eIF1A bind to the 40S ribosomal subunit.</Comment>
+    <BiopaxRef>lit_72677</BiopaxRef>
+    <BiopaxRef>lit_72650</BiopaxRef>
+    <BiopaxRef>lit_72652</BiopaxRef>
+    <BiopaxRef>lit_72679</BiopaxRef>
+    <BiopaxRef>lit_72684</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="500.0" Y="351.0" GraphId="e_7_0"/>
+      <Point X="538.0" Y="352.0" GraphId="e_7_1"/>
+      <Point X="569.0" Y="352.0" GraphId="e_7_2" GraphRef="n9_REACTOME_72570" RelX="-1.0638297872340425" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_7_a_i"/>
+      <Anchor Position="0.550810280697543" GraphId="e_7_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="425.0" Y="304.0" GraphId="e_7_i0_0" GraphRef="n8_REACTOME_72555" RelX="0.6136363636363636" RelY="1.1666666666666667"/>
+      <Point X="500.0" Y="351.0" GraphId="e_7_i0_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="332.0" Y="473.0" GraphId="e_7_i1_0" GraphRef="n2_REACTOME_72557" RelX="1.15" RelY="0.0"/>
+      <Point X="461.0" Y="473.0" GraphId="e_7_i1_1"/>
+      <Point X="500.0" Y="351.0" GraphId="e_7_i1_2" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="433.0" Y="398.0" GraphId="e_7_i2_0" GraphRef="n5_REACTOME_72392" RelX="0.5052631578947369" RelY="-1.1666666666666667"/>
+      <Point X="500.0" Y="351.0" GraphId="e_7_i2_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_REACTOME_72663">
+    <Comment Source="WikiPathways-description">Activation of eIF2 through direct binding of GTP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="239.0" Y="590.0" GraphId="e_24_0"/>
+      <Point X="284.0" Y="590.0" GraphId="e_24_1"/>
+      <Point X="340.0" Y="590.0" GraphId="e_24_2" GraphRef="n27_REACTOME_72531" RelX="-1.1" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_24_a_i"/>
+      <Anchor Position="0.44554455445544555" GraphId="e_24_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="205.0" Y="612.0" GraphId="e_24_i0_0" GraphRef="n25_REACTOME_29438" RelX="1.15" RelY="-0.8"/>
+      <Point X="239.0" Y="590.0" GraphId="e_24_i0_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="217.0" Y="570.0" GraphId="e_24_i1_0" GraphRef="n26_REACTOME_72515" RelX="0.4146341463414634" RelY="1.1666666666666667"/>
+      <Point X="239.0" Y="590.0" GraphId="e_24_i1_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_REACTOME_72669">
+    <Comment Source="WikiPathways-description">The ternary complex forms upon binding of the initiator methionyl-tRNA to the active eIF2:GTP complex.</Comment>
+    <BiopaxRef>lit_72665</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="459.0" Y="587.0" GraphId="e_28_0"/>
+      <Point X="503.0" Y="587.0" GraphId="e_28_1"/>
+      <Point X="539.0" Y="586.0" GraphId="e_28_2" GraphRef="n30_REACTOME_72532" RelX="-1.0588235294117647" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_28_a_i"/>
+      <Anchor Position="0.5499045488693562" GraphId="e_28_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="433.0" Y="559.0" GraphId="e_28_i0_0" GraphRef="n29_REACTOME_72393" RelX="0.23529411764705882" RelY="1.2727272727272727"/>
+      <Point X="459.0" Y="587.0" GraphId="e_28_i0_1" GraphRef="e_28_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="406.0" Y="588.0" GraphId="e_28_i1_0" GraphRef="n27_REACTOME_72531" RelX="1.1" RelY="-0.18181818181818182"/>
+      <Point X="459.0" Y="587.0" GraphId="e_28_i1_1" GraphRef="e_28_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="205.0" Y="623.0" GraphId="e_28_a__0_0" GraphRef="n25_REACTOME_29438" RelX="1.15" RelY="-0.06666666666666667"/>
+      <Point X="427.0" Y="623.0" GraphId="e_28_a__0_1"/>
+      <Point X="503.0" Y="587.0" GraphId="e_28_a__0_2" GraphRef="e_28_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_REACTOME_72691">
+    <Comment Source="WikiPathways-description">The ternary complex (Met-tRNAi:eIF2:GTP) binds to the complex formed by the 40S subunit, eIF3 and eIF1A, to form the 43S complex. eIF1A promotes binding of the ternary complex to the 40S subunit within 43S. The initiator methionyl-tRNA from the ternary complex is positioned at the ribosomal P site.</Comment>
+    <BiopaxRef>lit_72677</BiopaxRef>
+    <BiopaxRef>lit_72650</BiopaxRef>
+    <BiopaxRef>lit_72652</BiopaxRef>
+    <BiopaxRef>lit_72692</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="670.0" Y="486.0" GraphId="e_31_0"/>
+      <Point X="700.0" Y="486.0" GraphId="e_31_1"/>
+      <Point X="731.0" Y="485.0" GraphId="e_31_2" GraphRef="n32_REACTOME_72571" RelX="-1.0602409638554218" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_31_a_i"/>
+      <Anchor Position="0.49167330897176387" GraphId="e_31_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="601.0" Y="572.0" GraphId="e_31_i0_0" GraphRef="n30_REACTOME_72532" RelX="0.1568627450980392" RelY="-1.2727272727272727"/>
+      <Point X="670.0" Y="486.0" GraphId="e_31_i0_1" GraphRef="e_31_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="623.0" Y="366.0" GraphId="e_31_i1_0" GraphRef="n9_REACTOME_72570" RelX="0.0851063829787234" RelY="1.2727272727272727"/>
+      <Point X="670.0" Y="486.0" GraphId="e_31_i1_1" GraphRef="e_31_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_72622">
+    <Comment Source="WikiPathways-description">eIF4E gets released from the inactive eIF4E:4EBP complex.</Comment>
+    <BiopaxRef>lit_72623</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="216.0" Y="736.0" GraphId="e_33_0" GraphRef="n34_REACTOME_72581" RelX="1.0886075949367089" RelY="-0.18181818181818182"/>
+      <Point X="276.0" Y="735.0" GraphId="e_33_1"/>
+      <Point X="310.0" Y="735.0" GraphId="e_33_2"/>
+      <Anchor Position="0.6383299330633376" GraphId="e_33_a_p"/>
+      <Anchor Position="1.0" GraphId="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="346.0" Y="714.0" GraphId="e_33_o0_0" ArrowHead="Arrow" GraphRef="n35_REACTOME_72580" RelX="-0.7727272727272727" RelY="1.2727272727272727"/>
+      <Point X="310.0" Y="735.0" GraphId="e_33_o0_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="350.0" Y="756.0" GraphId="e_33_o1_0" ArrowHead="Arrow" GraphRef="n36_REACTOME_72578" RelX="-1.1282051282051282" RelY="-1.0"/>
+      <Point X="310.0" Y="735.0" GraphId="e_33_o1_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_72631">
+    <Comment Source="WikiPathways-description">eIF4A interacts with eIF4G, and eIF4E interacts with the amino-terminal domain of eIF4G to form the  cap-binding complex eIF4F.</Comment>
+    <BiopaxRef>lit_72632</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="516.0" Y="766.0" GraphId="e_37_0"/>
+      <Point X="582.0" Y="766.0" GraphId="e_37_1"/>
+      <Point X="640.0" Y="765.0" GraphId="e_37_2" GraphRef="n40_REACTOME_72587" RelX="-1.1578947368421053" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_37_a_i"/>
+      <Anchor Position="0.5322210663570953" GraphId="e_37_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="447.0" Y="795.0" GraphId="e_37_i0_0" GraphRef="n38_REACTOME_72584" RelX="1.170731707317073" RelY="-0.8181818181818182"/>
+      <Point X="516.0" Y="766.0" GraphId="e_37_i0_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="491.0" Y="747.0" GraphId="e_37_i1_0" GraphRef="n39_REACTOME_72576" RelX="0.3958333333333333" RelY="1.1666666666666667"/>
+      <Point X="516.0" Y="766.0" GraphId="e_37_i1_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="395.0" Y="766.0" GraphId="e_37_i2_0" GraphRef="n36_REACTOME_72578" RelX="1.1794871794871795" RelY="-0.09090909090909091"/>
+      <Point X="516.0" Y="766.0" GraphId="e_37_i2_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_REACTOME_72635">
+    <Comment Source="WikiPathways-description">The factor eIF4E within the eIF4F (cap-binding) complex directly binds the 5'-cap on eukaryotic mRNAs. Note that the mRNA is in complex with cytoplasmic proteins constituting an mRNP complex.</Comment>
+    <BiopaxRef>lit_72636</BiopaxRef>
+    <BiopaxRef>lit_72641</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="733.0" Y="764.0" GraphId="e_41_0"/>
+      <Point X="764.0" Y="764.0" GraphId="e_41_1"/>
+      <Point X="823.0" Y="764.0" GraphId="e_41_2" GraphRef="n43_REACTOME_72597" RelX="-1.0649350649350648" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_41_a_i"/>
+      <Anchor Position="0.34444444444444444" GraphId="e_41_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="684.0" Y="764.0" GraphId="e_41_i0_0" GraphRef="n40_REACTOME_72587" RelX="1.1578947368421053" RelY="-0.09090909090909091"/>
+      <Point X="733.0" Y="764.0" GraphId="e_41_i0_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="680.0" Y="790.0" GraphId="e_41_i1_0" GraphRef="n42_REACTOME_72596" RelX="0.8837209302325582" RelY="-1.2727272727272727"/>
+      <Point X="733.0" Y="764.0" GraphId="e_41_i1_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_REACTOME_72647">
+    <Comment Source="WikiPathways-description">The DEAD-box RNA helicase eIF4A, together with the RNA-binding proteins eIF4B or eIF4H, is thought to unwind RNA secondary structures near the 5'-end of the mRNA and in the presence of ATP.</Comment>
+    <BiopaxRef>lit_72636</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="950.0" Y="729.0" GraphId="e_44_0"/>
+      <Point X="1017.0" Y="730.0" GraphId="e_44_1"/>
+      <Point X="1058.0" Y="730.0" GraphId="e_44_2"/>
+      <Anchor Position="0.0" GraphId="e_44_a_i"/>
+      <Anchor Position="0.6203965991060318" GraphId="e_44_a_p"/>
+      <Anchor Position="1.0" GraphId="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="919.0" Y="790.0" GraphId="e_44_i0_0" GraphRef="n45_REACTOME_72591" RelX="0.24390243902439024" RelY="-1.2727272727272727"/>
+      <Point X="950.0" Y="729.0" GraphId="e_44_i0_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="523.0" Y="726.0" GraphId="e_44_i1_0" GraphRef="n39_REACTOME_72576" RelX="1.0625" RelY="0.0"/>
+      <Point X="950.0" Y="729.0" GraphId="e_44_i1_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="908.0" Y="711.0" GraphId="e_44_i2_0" GraphRef="n46_REACTOME_113592" RelX="1.1794871794871795" RelY="0.4666666666666667"/>
+      <Point X="950.0" Y="729.0" GraphId="e_44_i2_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="942.0" Y="823.0" GraphId="e_44_i3_0" GraphRef="n47_REACTOME_72589" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="950.0" Y="729.0" GraphId="e_44_i3_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="891.0" Y="750.0" GraphId="e_44_i4_0" GraphRef="n43_REACTOME_72597" RelX="0.7012987012987013" RelY="-1.2727272727272727"/>
+      <Point X="950.0" Y="729.0" GraphId="e_44_i4_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1211.0" Y="749.0" GraphId="e_44_o0_0" ArrowHead="Arrow" GraphRef="n48_REACTOME_72595" RelX="-1.0454545454545454" RelY="-0.28125"/>
+      <Point X="1058.0" Y="730.0" GraphId="e_44_o0_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1103.0" Y="656.0" GraphId="e_44_o1_0" ArrowHead="Arrow" GraphRef="n49_REACTOME_72593" RelX="-0.18803418803418803" RelY="1.1666666666666667"/>
+      <Point X="1058.0" Y="730.0" GraphId="e_44_o1_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1156.0" Y="772.0" GraphId="e_44_o2_0" ArrowHead="Arrow" GraphRef="n50_REACTOME_29370" RelX="-1.15" RelY="-0.6"/>
+      <Point X="1058.0" Y="730.0" GraphId="e_44_o2_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1080.0" Y="776.0" GraphId="e_44_o3_0" ArrowHead="Arrow" GraphRef="n51_REACTOME_29372" RelX="-0.14678899082568808" RelY="-1.2"/>
+      <Point X="1058.0" Y="730.0" GraphId="e_44_o3_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="472.0" Y="705.0" GraphId="e_44_o4_0" ArrowHead="Arrow" GraphRef="n39_REACTOME_72576" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="473.0" Y="672.0" GraphId="e_44_o4_1"/>
+      <Point X="1058.0" Y="673.0" GraphId="e_44_o4_2"/>
+      <Point X="1058.0" Y="730.0" GraphId="e_44_o4_3" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="483.0" Y="705.0" GraphId="e_44_c__0_0" GraphRef="n39_REACTOME_72576" RelX="0.22916666666666666" RelY="-1.1666666666666667"/>
+      <Point X="499.0" Y="682.0" GraphId="e_44_c__0_1"/>
+      <Point X="1018.0" Y="682.0" GraphId="e_44_c__0_2"/>
+      <Point X="1017.0" Y="730.0" GraphId="e_44_c__0_3" GraphRef="e_44_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_c__1">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="949.0" Y="823.0" GraphId="e_44_c__1_0" GraphRef="n47_REACTOME_72589" RelX="0.358974358974359" RelY="-1.2727272727272727"/>
+      <Point X="1017.0" Y="730.0" GraphId="e_44_c__1_1" GraphRef="e_44_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_c__2">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="929.0" Y="790.0" GraphId="e_44_c__2_0" GraphRef="n45_REACTOME_72591" RelX="0.7317073170731707" RelY="-1.2727272727272727"/>
+      <Point X="1017.0" Y="730.0" GraphId="e_44_c__2_1" GraphRef="e_44_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_REACTOME_157849">
+    <Comment Source="WikiPathways-description">The translation initiation complex forms when the 43S complex binds the mRNA that is associated with eIF4F, eIF4B and eIF4H. eIF4G in the eIF4F complex can directly contact eIF3 in the 43S complex. eIF1A is necessary for the formation of this complex.</Comment>
+    <BiopaxRef>lit_72650</BiopaxRef>
+    <BiopaxRef>lit_72652</BiopaxRef>
+    <BiopaxRef>lit_72636</BiopaxRef>
+    <BiopaxRef>lit_72657</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="901.0" Y="485.0" GraphId="e_54_0"/>
+      <Point X="957.0" Y="485.0" GraphId="e_54_1"/>
+      <Point X="1002.0" Y="485.0" GraphId="e_54_2"/>
+      <Anchor Position="0.0" GraphId="e_54_a_i"/>
+      <Anchor Position="0.5544554455445545" GraphId="e_54_a_p"/>
+      <Anchor Position="1.0" GraphId="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1088.0" Y="614.0" GraphId="e_54_i0_0" GraphRef="n49_REACTOME_72593" RelX="-0.4444444444444444" RelY="-1.1666666666666667"/>
+      <Point X="901.0" Y="485.0" GraphId="e_54_i0_1" GraphRef="e_54_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="820.0" Y="485.0" GraphId="e_54_i1_0" GraphRef="n32_REACTOME_72571" RelX="1.0843373493975903" RelY="0.0"/>
+      <Point X="901.0" Y="485.0" GraphId="e_54_i1_1" GraphRef="e_54_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="872.0" Y="460.0" GraphId="e_54_i2_0" GraphRef="n58_REACTOME_72557" RelX="0.55" RelY="1.2727272727272727"/>
+      <Point X="901.0" Y="485.0" GraphId="e_54_i2_1" GraphRef="e_54_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1042.0" Y="485.0" GraphId="e_54_o0_0" ArrowHead="Arrow" GraphRef="n55_REACTOME_72592" RelX="-1.0555555555555556" RelY="0.0"/>
+      <Point X="1002.0" Y="485.0" GraphId="e_54_o0_1" GraphRef="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1036.0" Y="449.0" GraphId="e_54_o1_0" ArrowHead="Arrow" GraphRef="n56_REACTOME_72557" RelX="-0.5" RelY="1.2727272727272727"/>
+      <Point X="1002.0" Y="485.0" GraphId="e_54_o1_1" GraphRef="e_54_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_REACTOME_156808">
+    <Comment Source="WikiPathways-description">The precise order of events leading to the circularization of poly (A) mRNA during translation initiation is unknown. Here the association of PABP with the poly (A) mRNA and the association of PABP with eIF4F are represented as occuring simultaneously after formation of the initiation complex.  However, it is also possible that these interactions occur during the formation of the translation initiation complex. The binding of eIF4F to the cap and binding of PABP to the poly (A) tail,  for example,  may occur at the same time. In fact, the eIF4G-PABP interaction helps eIF4F to bind tighter to the cap (Borman et al. 2000.)  In addition, eIF4B and eIF4H bind more transiently to the mRNA and may not be part of an initial complex in which PABP has not yet touched eIF4G.</Comment>
+    <BiopaxRef>lit_157289</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="861.0" Y="386.0" GraphId="e_60_0"/>
+      <Point X="953.0" Y="385.0" GraphId="e_60_1"/>
+      <Point X="1016.0" Y="384.0" GraphId="e_60_2"/>
+      <Anchor Position="0.0" GraphId="e_60_a_i"/>
+      <Anchor Position="0.5935322498185576" GraphId="e_60_a_p"/>
+      <Anchor Position="1.0" GraphId="e_60_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="802.0" Y="392.0" GraphId="e_60_i0_0" GraphRef="n61_REACTOME_156803" RelX="1.1891891891891893" RelY="-0.18181818181818182"/>
+      <Point X="861.0" Y="386.0" GraphId="e_60_i0_1" GraphRef="e_60_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="830.0" Y="356.0" GraphId="e_60_i1_0" GraphRef="n62_REACTOME_156809" RelX="0.39316239316239315" RelY="1.12"/>
+      <Point X="861.0" Y="386.0" GraphId="e_60_i1_1" GraphRef="e_60_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="784.0" Y="471.0" GraphId="e_60_i2_0" GraphRef="n32_REACTOME_72571" RelX="0.21686746987951808" RelY="-1.2727272727272727"/>
+      <Point X="861.0" Y="386.0" GraphId="e_60_i2_1" GraphRef="e_60_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="861.0" Y="432.0" GraphId="e_60_i3_0" GraphRef="n58_REACTOME_72557" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="861.0" Y="386.0" GraphId="e_60_i3_1" GraphRef="e_60_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1043.0" Y="368.0" GraphId="e_60_o0_0" ArrowHead="Arrow" GraphRef="n63_REACTOME_156804" RelX="-0.5967741935483871" RelY="1.12"/>
+      <Point X="1016.0" Y="384.0" GraphId="e_60_o0_1" GraphRef="e_60_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1039.0" Y="421.0" GraphId="e_60_o1_0" ArrowHead="Arrow" GraphRef="n56_REACTOME_72557" RelX="-0.35" RelY="-1.2727272727272727"/>
+      <Point X="1016.0" Y="384.0" GraphId="e_60_o1_1" GraphRef="e_60_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_REACTOME_72621">
+    <Comment Source="WikiPathways-description">The mRNA-bound ribosomal complex moves along the 5'-untranslated region (5'-UTR) of the mRNA from its initial site to the initiation codon to form a 48S complex, in which the initiation codon (AUG) is base paired to the anticodon of the Met-tRNAi.  It is not known whether eIF4A (or another ATPase, such as DED1) facilitates scanning by melting mRNA secondary structures or by actively propelling the ribosome.</Comment>
+    <BiopaxRef>lit_72704</BiopaxRef>
+    <BiopaxRef>lit_72650</BiopaxRef>
+    <BiopaxRef>lit_72652</BiopaxRef>
+    <BiopaxRef>lit_72744</BiopaxRef>
+    <BiopaxRef>lit_72746</BiopaxRef>
+    <BiopaxRef>lit_72750</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1203.0" Y="481.0" GraphId="e_65_0"/>
+      <Point X="1252.0" Y="480.0" GraphId="e_65_1"/>
+      <Point X="1291.0" Y="481.0" GraphId="e_65_2"/>
+      <Anchor Position="0.0" GraphId="e_65_a_i"/>
+      <Anchor Position="0.5567884653991079" GraphId="e_65_a_p"/>
+      <Anchor Position="1.0" GraphId="e_65_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1156.0" Y="482.0" GraphId="e_65_i0_0" GraphRef="n55_REACTOME_72592" RelX="1.0555555555555556" RelY="-0.16666666666666666"/>
+      <Point X="1203.0" Y="481.0" GraphId="e_65_i0_1" GraphRef="e_65_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1173.0" Y="450.0" GraphId="e_65_i1_0" GraphRef="n66_REACTOME_113592" RelX="0.6666666666666666" RelY="1.2"/>
+      <Point X="1203.0" Y="481.0" GraphId="e_65_i1_1" GraphRef="e_65_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1322.0" Y="514.0" GraphId="e_65_o0_0" ArrowHead="Arrow" GraphRef="n67_REACTOME_29370" RelX="-0.7" RelY="-1.2"/>
+      <Point X="1291.0" Y="481.0" GraphId="e_65_o0_1" GraphRef="e_65_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1339.0" Y="481.0" GraphId="e_65_o1_0" ArrowHead="Arrow" GraphRef="n68_REACTOME_29372" RelX="-1.0458715596330275" RelY="-0.06666666666666667"/>
+      <Point X="1291.0" Y="481.0" GraphId="e_65_o1_1" GraphRef="e_65_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1347.0" Y="421.0" GraphId="e_65_o2_0" ArrowHead="Arrow" GraphRef="n69_REACTOME_72594" RelX="-0.24096385542168675" RelY="1.2727272727272727"/>
+      <Point X="1291.0" Y="481.0" GraphId="e_65_o2_1" GraphRef="e_65_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1247.0" Y="431.0" GraphId="e_65_c__0_0" GraphRef="n70_REACTOME_72617" RelX="0.0625" RelY="1.2727272727272727"/>
+      <Point X="1252.0" Y="480.0" GraphId="e_65_c__0_1" GraphRef="e_65_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1242.0" Y="508.0" GraphId="e_65_a__0_0" GraphRef="n71_REACTOME_113592" RelX="0.20512820512820512" RelY="-1.2"/>
+      <Point X="1252.0" Y="480.0" GraphId="e_65_a__0_1" GraphRef="e_65_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_REACTOME_72697">
+    <Comment Source="WikiPathways-description">The AUG initiation codon in the mRNA is recognized by base pairing with the anticodon of the Met-tRNAi. This reaction requires eIF1, eIF1A, eIF2 and eIF5.</Comment>
+    <BiopaxRef>lit_72657</BiopaxRef>
+    <BiopaxRef>lit_72698</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1272.0" Y="336.0" GraphId="e_72_0"/>
+      <Point X="1361.0" Y="335.0" GraphId="e_72_1"/>
+      <Point X="1429.0" Y="334.0" GraphId="e_72_2"/>
+      <Anchor Position="0.0" GraphId="e_72_a_i"/>
+      <Anchor Position="0.5668679320267525" GraphId="e_72_a_p"/>
+      <Anchor Position="1.0" GraphId="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1249.0" Y="403.0" GraphId="e_72_i0_0" GraphRef="n70_REACTOME_72617" RelX="0.1875" RelY="-1.2727272727272727"/>
+      <Point X="1272.0" Y="336.0" GraphId="e_72_i0_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1343.0" Y="393.0" GraphId="e_72_i1_0" GraphRef="n69_REACTOME_72594" RelX="-0.3373493975903614" RelY="-1.2727272727272727"/>
+      <Point X="1272.0" Y="336.0" GraphId="e_72_i1_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1371.0" Y="258.0" GraphId="e_72_i2_0" GraphRef="n75_REACTOME_72515" RelX="-1.0731707317073171" RelY="0.0"/>
+      <Point X="1270.0" Y="258.0" GraphId="e_72_i2_1"/>
+      <Point X="1272.0" Y="336.0" GraphId="e_72_i2_2" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1069.0" Y="426.0" GraphId="e_72_i3_0" GraphRef="n56_REACTOME_72557" RelX="1.15" RelY="-0.8181818181818182"/>
+      <Point X="1272.0" Y="336.0" GraphId="e_72_i3_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1234.0" Y="308.0" GraphId="e_72_i4_0" GraphRef="n83_REACTOME_72616" RelX="0.8125" RelY="1.2727272727272727"/>
+      <Point X="1272.0" Y="336.0" GraphId="e_72_i4_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1475.0" Y="285.0" GraphId="e_72_o0_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_72616" RelX="-0.625" RelY="1.2727272727272727"/>
+      <Point X="1429.0" Y="334.0" GraphId="e_72_o0_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1367.0" Y="393.0" GraphId="e_72_o1_0" ArrowHead="Arrow" GraphRef="n69_REACTOME_72594" RelX="0.24096385542168675" RelY="-1.2727272727272727"/>
+      <Point X="1429.0" Y="334.0" GraphId="e_72_o1_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1418.0" Y="279.0" GraphId="e_72_o2_0" ArrowHead="Arrow" GraphRef="n75_REACTOME_72515" RelX="0.07317073170731707" RelY="1.1666666666666667"/>
+      <Point X="1429.0" Y="334.0" GraphId="e_72_o2_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1457.0" Y="326.0" GraphId="e_72_o3_0" ArrowHead="Arrow" GraphRef="n76_REACTOME_72617" RelX="-1.1875" RelY="0.36363636363636365"/>
+      <Point X="1429.0" Y="334.0" GraphId="e_72_o3_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1465.0" Y="400.0" GraphId="e_72_o4_0" ArrowHead="Arrow" GraphRef="n78_REACTOME_72557" RelX="-0.3" RelY="-1.2727272727272727"/>
+      <Point X="1429.0" Y="334.0" GraphId="e_72_o4_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1261.0" Y="403.0" GraphId="e_72_c__0_0" GraphRef="n70_REACTOME_72617" RelX="0.9375" RelY="-1.2727272727272727"/>
+      <Point X="1361.0" Y="335.0" GraphId="e_72_c__0_1" GraphRef="e_72_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_REACTOME_72619">
+    <Comment Source="WikiPathways-description">Once the Met-tRNAi has recognized the AUG, eIF2-bound GTP is hydrolyzed. The reaction is catalyzed by eIF5 (or eIF5B) and is thought to cause dissociation of all other initiation factors and allow joining of the large 60S ribosomal subunit.  Release of the initiation factors from 40S leaves the Met-tRNAi in the ribosomal P-site base-paired to the start codon on the mRNA.</Comment>
+    <BiopaxRef>lit_72677</BiopaxRef>
+    <BiopaxRef>lit_72650</BiopaxRef>
+    <BiopaxRef>lit_72652</BiopaxRef>
+    <BiopaxRef>lit_72713</BiopaxRef>
+    <BiopaxRef>lit_72715</BiopaxRef>
+    <BiopaxRef>lit_72708</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1638.0" Y="310.0" GraphId="e_79_0"/>
+      <Point X="1666.0" Y="310.0" GraphId="e_79_1"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_2"/>
+      <Anchor Position="0.0" GraphId="e_79_a_i"/>
+      <Anchor Position="0.4666666666666667" GraphId="e_79_a_p"/>
+      <Anchor Position="1.0" GraphId="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1388.0" Y="393.0" GraphId="e_79_i0_0" GraphRef="n69_REACTOME_72594" RelX="0.7469879518072289" RelY="-1.2727272727272727"/>
+      <Point X="1638.0" Y="310.0" GraphId="e_79_i0_1" GraphRef="e_79_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1495.0" Y="320.0" GraphId="e_79_i1_0" GraphRef="n76_REACTOME_72617" RelX="1.1875" RelY="-0.18181818181818182"/>
+      <Point X="1638.0" Y="310.0" GraphId="e_79_i1_1" GraphRef="e_79_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1504.0" Y="275.0" GraphId="e_79_i2_0" GraphRef="n73_REACTOME_72616" RelX="1.1875" RelY="0.36363636363636365"/>
+      <Point X="1638.0" Y="310.0" GraphId="e_79_i2_1" GraphRef="e_79_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="413.0" Y="262.0" GraphId="e_79_o0_0" ArrowHead="Arrow" GraphRef="n8_REACTOME_72555" RelX="0.3409090909090909" RelY="-1.1666666666666667"/>
+      <Point X="444.0" Y="231.0" GraphId="e_79_o0_1"/>
+      <Point X="1660.0" Y="225.0" GraphId="e_79_o0_2"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o0_3" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="422.0" Y="818.0" GraphId="e_79_o1_0" ArrowHead="Arrow" GraphRef="n38_REACTOME_72584" RelX="-0.04878048780487805" RelY="1.2727272727272727"/>
+      <Point X="422.0" Y="880.0" GraphId="e_79_o1_1"/>
+      <Point X="1578.0" Y="881.0" GraphId="e_79_o1_2"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o1_3" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1736.0" Y="263.0" GraphId="e_79_o2_0" ArrowHead="Arrow" GraphRef="n80_REACTOME_29372" RelX="-0.22018348623853212" RelY="1.2"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o2_1" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1781.0" Y="301.0" GraphId="e_79_o3_0" ArrowHead="Arrow" GraphRef="n81_REACTOME_72508" RelX="-1.0612244897959184" RelY="0.2777777777777778"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o3_1" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="913.0" Y="818.0" GraphId="e_79_o4_0" ArrowHead="Arrow" GraphRef="n45_REACTOME_72591" RelX="-0.04878048780487805" RelY="1.2727272727272727"/>
+      <Point X="913.0" Y="866.0" GraphId="e_79_o4_1"/>
+      <Point X="1557.0" Y="866.0" GraphId="e_79_o4_2"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o4_3" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="471.0" Y="747.0" GraphId="e_79_o5_0" ArrowHead="Arrow" GraphRef="n39_REACTOME_72576" RelX="-0.020833333333333332" RelY="1.1666666666666667"/>
+      <Point X="471.0" Y="872.0" GraphId="e_79_o5_1"/>
+      <Point X="1567.0" Y="872.0" GraphId="e_79_o5_2"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o5_3" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o6">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1761.0" Y="344.0" GraphId="e_79_o6_0" ArrowHead="Arrow" GraphRef="n82_REACTOME_72530" RelX="-0.6557377049180327" RelY="-1.2727272727272727"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o6_1" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o7">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="371.0" Y="781.0" GraphId="e_79_o7_0" ArrowHead="Arrow" GraphRef="n36_REACTOME_72578" RelX="-0.05128205128205128" RelY="1.2727272727272727"/>
+      <Point X="371.0" Y="889.0" GraphId="e_79_o7_1"/>
+      <Point X="1588.0" Y="889.0" GraphId="e_79_o7_2"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o7_3" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o8">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="965.0" Y="844.0" GraphId="e_79_o8_0" ArrowHead="Arrow" GraphRef="n47_REACTOME_72589" RelX="1.1794871794871795" RelY="0.6363636363636364"/>
+      <Point X="993.0" Y="856.0" GraphId="e_79_o8_1"/>
+      <Point X="1549.0" Y="856.0" GraphId="e_79_o8_2"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o8_3" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o9">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1494.0" Y="404.0" GraphId="e_79_o9_0" ArrowHead="Arrow" GraphRef="n78_REACTOME_72557" RelX="1.15" RelY="-0.9090909090909091"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o9_1" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_o10">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1576.0" Y="461.0" GraphId="e_79_o10_0" ArrowHead="Arrow" GraphRef="n86_REACTOME_72616" RelX="0.5" RelY="-1.2727272727272727"/>
+      <Point X="1698.0" Y="310.0" GraphId="e_79_o10_1" GraphRef="e_79_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1504.0" Y="271.0" GraphId="e_79_a__0_0" GraphRef="n73_REACTOME_72616" RelX="1.1875" RelY="0.0"/>
+      <Point X="1666.0" Y="271.0" GraphId="e_79_a__0_1"/>
+      <Point X="1666.0" Y="310.0" GraphId="e_79_a__0_2" GraphRef="e_79_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_REACTOME_72671">
+    <Comment Source="WikiPathways-description">Once the 60S subunit joins the translation initiation complex, eIF5B hydrolyzes its GTP and is released from the now 80S monosome. The fully assembled 80s ribosome is now ready to start elongation of the polypeptide chain.</Comment>
+    <BiopaxRef>lit_72715</BiopaxRef>
+    <BiopaxRef>lit_72719</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1995.0" Y="234.0" GraphId="e_87_0" GraphRef="n88_REACTOME_72504" RelX="-0.14953271028037382" RelY="1.1666666666666667"/>
+      <Point X="1973.0" Y="283.0" GraphId="e_87_1"/>
+      <Point X="1937.0" Y="341.0" GraphId="e_87_2"/>
+      <Anchor Position="0.44034912488386146" GraphId="e_87_a_p"/>
+      <Anchor Position="1.0" GraphId="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1911.0" Y="393.0" GraphId="e_87_o0_0" ArrowHead="Arrow" GraphRef="n89_REACTOME_72505" RelX="0.16326530612244897" RelY="-1.1666666666666667"/>
+      <Point X="1937.0" Y="341.0" GraphId="e_87_o0_1" GraphRef="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1969.0" Y="353.0" GraphId="e_87_o1_0" ArrowHead="Arrow" GraphRef="n90_REACTOME_29372" RelX="-0.6055045871559633" RelY="-1.2"/>
+      <Point X="1937.0" Y="341.0" GraphId="e_87_o1_1" GraphRef="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1893.0" Y="355.0" GraphId="e_87_o2_0" ArrowHead="Arrow" GraphRef="n91_REACTOME_72502" RelX="0.8235294117647058" RelY="-1.2727272727272727"/>
+      <Point X="1937.0" Y="341.0" GraphId="e_87_o2_1" GraphRef="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_REACTOME_72672">
+    <Comment Source="WikiPathways-description">Joining of the 60S subunit to form the 80S ribosome is catalyzed by the presence of GTP-bound eIF5B.</Comment>
+    <BiopaxRef>lit_72721</BiopaxRef>
+    <BiopaxRef>lit_72719</BiopaxRef>
+    <BiopaxRef>lit_72715</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1864.0" Y="211.0" GraphId="e_92_0"/>
+      <Point X="1911.0" Y="211.0" GraphId="e_92_1"/>
+      <Point X="1947.0" Y="211.0" GraphId="e_92_2" GraphRef="n88_REACTOME_72504" RelX="-1.0467289719626167" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_92_a_i"/>
+      <Anchor Position="0.5662650602409639" GraphId="e_92_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="295.0" Y="291.0" GraphId="e_92_i0_0" GraphRef="n4_REACTOME_72499" RelX="0.4631578947368421" RelY="-1.1666666666666667"/>
+      <Point X="387.0" Y="219.0" GraphId="e_92_i0_1"/>
+      <Point X="1864.0" Y="211.0" GraphId="e_92_i0_2" GraphRef="e_92_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1839.0" Y="275.0" GraphId="e_92_i1_0" GraphRef="n81_REACTOME_72508" RelX="0.12244897959183673" RelY="-1.1666666666666667"/>
+      <Point X="1864.0" Y="211.0" GraphId="e_92_i1_1" GraphRef="e_92_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1837.0" Y="170.0" GraphId="e_92_i2_0" GraphRef="n93_REACTOME_72503" RelX="0.1791044776119403" RelY="1.2727272727272727"/>
+      <Point X="1864.0" Y="211.0" GraphId="e_92_i2_1" GraphRef="e_92_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_REACTOME_72670">
+    <Comment Source="WikiPathways-description">Inactive eIF2:GDP binds eIF2B to form an eIF2:GDP:eIF2B intermediate.</Comment>
+    <BiopaxRef>lit_72723</BiopaxRef>
+    <BiopaxRef>lit_72727</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1770.0" Y="482.0" GraphId="e_94_0"/>
+      <Point X="1796.0" Y="485.0" GraphId="e_94_1"/>
+      <Point X="1851.0" Y="486.0" GraphId="e_94_2" GraphRef="n96_REACTOME_72529" RelX="-1.06" RelY="-0.09090909090909091" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_94_a_i"/>
+      <Anchor Position="0.32239456143239553" GraphId="e_94_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1780.0" Y="372.0" GraphId="e_94_i0_0" GraphRef="n82_REACTOME_72530" RelX="-0.03278688524590164" RelY="1.2727272727272727"/>
+      <Point X="1770.0" Y="482.0" GraphId="e_94_i0_1" GraphRef="e_94_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1731.0" Y="568.0" GraphId="e_94_i1_0" GraphRef="n95_REACTOME_72526" RelX="0.14736842105263157" RelY="-1.1666666666666667"/>
+      <Point X="1770.0" Y="482.0" GraphId="e_94_i1_1" GraphRef="e_94_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_REACTOME_72722">
+    <Comment Source="WikiPathways-description">eIF2B is a guanine nucleotide releasing factor that is required to cause GDP release so that a new GTP molecule can bind and activate eIF2, so that it can be reused.</Comment>
+    <BiopaxRef>lit_72723</BiopaxRef>
+    <BiopaxRef>lit_72727</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1871.0" Y="555.0" GraphId="e_97_0"/>
+      <Point X="1843.0" Y="596.0" GraphId="e_97_1"/>
+      <Point X="1808.0" Y="632.0" GraphId="e_97_2"/>
+      <Anchor Position="0.0" GraphId="e_97_a_i"/>
+      <Anchor Position="0.4971920494310393" GraphId="e_97_a_p"/>
+      <Anchor Position="1.0" GraphId="e_97_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1898.0" Y="501.0" GraphId="e_97_i0_0" GraphRef="n96_REACTOME_72529" RelX="-0.12" RelY="1.2727272727272727"/>
+      <Point X="1871.0" Y="555.0" GraphId="e_97_i0_1" GraphRef="e_97_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1845.0" Y="536.0" GraphId="e_97_i1_0" GraphRef="n100_REACTOME_29438" RelX="1.15" RelY="0.8666666666666667"/>
+      <Point X="1871.0" Y="555.0" GraphId="e_97_i1_1" GraphRef="e_97_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1806.0" Y="703.0" GraphId="e_97_o0_0" ArrowHead="Arrow" GraphRef="n98_REACTOME_29420" RelX="0.0" RelY="-1.2"/>
+      <Point X="1808.0" Y="632.0" GraphId="e_97_o0_1" GraphRef="e_97_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1759.0" Y="610.0" GraphId="e_97_o1_0" ArrowHead="Arrow" GraphRef="n95_REACTOME_72526" RelX="0.7368421052631579" RelY="1.1666666666666667"/>
+      <Point X="1808.0" Y="632.0" GraphId="e_97_o1_1" GraphRef="e_97_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1745.0" Y="676.0" GraphId="e_97_o2_0" ArrowHead="Arrow" GraphRef="n101_REACTOME_72531" RelX="0.4666666666666667" RelY="-1.2727272727272727"/>
+      <Point X="1808.0" Y="632.0" GraphId="e_97_o2_1" GraphRef="e_97_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1775.0" Y="591.0" GraphId="e_97_c__0_0" GraphRef="n95_REACTOME_72526" RelX="1.0736842105263158" RelY="0.1111111111111111"/>
+      <Point X="1843.0" Y="596.0" GraphId="e_97_c__0_1" GraphRef="e_97_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_119_REACTOME_156826">
+    <Comment Source="WikiPathways-description">The L13a subunit of the 60s ribosome is phosphorylated about 16 hours after INF gamma induction by an unknown kinase.  At this time, L13a is also released from the 60s subunit (Mazumder et al.,2003). It is unclear, however, whether phosphorylation occurs before or after the release of L13a. Here, phosphorylation is shown  as occurring after release.</Comment>
+    <BiopaxRef>lit_156946</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="272.0" Y="291.0" GraphId="e_119_0" GraphRef="n4_REACTOME_72499" RelX="-0.021052631578947368" RelY="-1.1666666666666667"/>
+      <Point X="272.0" Y="236.0" GraphId="e_119_1"/>
+      <Point X="272.0" Y="203.0" GraphId="e_119_2"/>
+      <Anchor Position="0.625" GraphId="e_119_a_p"/>
+      <Anchor Position="1.0" GraphId="e_119_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_119_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="232.0" Y="186.0" GraphId="e_119_o0_0" ArrowHead="Arrow" GraphRef="n120_REACTOME_72412" RelX="0.6386554621848739" RelY="1.1578947368421053"/>
+      <Point X="272.0" Y="203.0" GraphId="e_119_o0_1" GraphRef="e_119_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_119_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="317.0" Y="191.0" GraphId="e_119_o1_0" ArrowHead="Arrow" GraphRef="n121_REACTOME_156817" RelX="-0.9516129032258065" RelY="1.1578947368421053"/>
+      <Point X="272.0" Y="203.0" GraphId="e_119_o1_1" GraphRef="e_119_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_REACTOME_156832">
+    <Comment Source="WikiPathways-description">The L13a subunit of the 60s ribosome is phosphorylated about 16 hours after INF gamma induction by an unknown kinase.  At this time, L13a is also released from the 60s subunit (Mazumder et al.,2003). It is unclear, however, whether phosphorylation occurs before or after the release of L13a. Here, phosphorylation is shown  as occurring after release.</Comment>
+    <BiopaxRef>lit_156946</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="187.0" Y="186.0" GraphId="e_122_0" GraphRef="n120_REACTOME_72412" RelX="-0.11764705882352941" RelY="1.1578947368421053"/>
+      <Point X="173.0" Y="226.0" GraphId="e_122_1"/>
+      <Point X="109.0" Y="327.0" GraphId="e_122_2" GraphRef="n123_REACTOME_156829" RelX="0.21568627450980393" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.26168213956982517" GraphId="e_122_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="173.0" Y="288.0" GraphId="e_122_c__0_0" GraphRef="n124_REACTOME_170641" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="173.0" Y="226.0" GraphId="e_122_c__0_1" GraphRef="e_122_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_REACTOME_156823">
+    <Comment Source="WikiPathways-description">Although the  mechanism through which L13a  prevents  translation initiation has not been determined, Mazumder et al. (2003) have described four alternatives. L13a could (1) inhibit the function of eIF4F,  (2) block the recruitment of the 43S preinitiation complex, (3) prevent scanning of the 43S complex to the initiation codon, or 4) interfere with joining of the 60S ribosomal subunit.</Comment>
+    <BiopaxRef>lit_157261</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="98.0" Y="95.0" GraphId="e_125_0"/>
+      <Point X="401.0" Y="122.0" GraphId="e_125_1"/>
+      <Point X="502.0" Y="142.0" GraphId="e_125_2" GraphRef="n126_REACTOME_156824" RelX="-1.0381679389312977" RelY="-0.2857142857142857" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_125_a_i"/>
+      <Anchor Position="0.7471246798938103" GraphId="e_125_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="98.0" Y="327.0" GraphId="e_125_i0_0" GraphRef="n123_REACTOME_156829" RelX="0.0" RelY="-1.1578947368421053"/>
+      <Point X="98.0" Y="95.0" GraphId="e_125_i0_1" GraphRef="e_125_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1080.0" Y="312.0" GraphId="e_125_i1_0" GraphRef="n63_REACTOME_156804" RelX="0.0" RelY="-1.12"/>
+      <Point X="1080.0" Y="95.0" GraphId="e_125_i1_1"/>
+      <Point X="98.0" Y="95.0" GraphId="e_125_i1_2" GraphRef="e_125_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_6" GroupRef="group_comp_6" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="79.5" CenterY="898.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_6" GroupRef="group_comp_6">
+    <Graphics Color="000000" CenterX="1052.0" CenterY="474.5" Width="2040.0" Height="907.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72558" rdf:id="lit_72558">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8106356</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Determination of the amino acid sequence of rabbit, human, and wheat germ protein synthesis factor eIF-4C by cloning and chemical sequencing.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dever, TE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wei, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benkowski, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Browning, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hershey, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:3212-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72567" rdf:id="lit_72567">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9381176</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional coherence of the human Y chromosome.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lahn, BT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Page, DC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 278:675-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72677" rdf:id="lit_72677">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">429297</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1979</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Binding and release of radiolabeled eukaryotic initiation factors 2 and 3 during 80 S initiation complex formation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peterson, DT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Safer, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 254:2509-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72650" rdf:id="lit_72650">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">641056</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1978</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The mechanism of action of protein synthesis initiation factors from rabbit reticulocytes.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benne, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hershey, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 253:3078-87</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72652" rdf:id="lit_72652">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">592399</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1978</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Initiation of mammalian protein synthesis. II. The assembly of the initiation complex with purified initiation factors.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trachsel, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Erni, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreier, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Staehelin, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 116:755-67</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72679" rdf:id="lit_72679">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6901506</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1980</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of eIF-4C in protein synthesis initiation complex formation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goumans, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verhoeven, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Voorma, HO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benne, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 608:39-46</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72684" rdf:id="lit_72684">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12493757</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mammalian translation initiation factor eIF1 functions with eIF1A and eIF3 in the formation of a stable 40 S preinitiation complex.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Majumdar, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bandyopadhyay, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maitra, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:6580-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72665" rdf:id="lit_72665">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1104615</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1976</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Binding of MET-TRNAf and GTP to homogeneous initiation factor MP.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Safer, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adams, SL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anderson, WF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 250:9076-82</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72692" rdf:id="lit_72692">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New insights into an old problem: ternary complex (Met-tRNAf.eIF.GTP) formation in animal cells.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gupta, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roy, AL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nag, MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinzy, TG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MacMillan, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hileman, RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dever, TE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hershey, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Post-transcriptional control of gene expression.  J.E. McCarty and M.F.Tuite (eds).521-526</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72623" rdf:id="lit_72623">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7935836</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insulin-dependent stimulation of protein synthesis by phosphorylation of a regulator of 5'-cap function.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pause, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Belsham, GJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gingras, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DonzÃ©, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lin, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lawrence, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonenberg, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 371:762-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72632" rdf:id="lit_72632">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8449919</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The p46 subunit of eukaryotic initiation factor (eIF)-4F exchanges with eIF-4A.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoder-Hill, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pause, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonenberg, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 268:5566-73</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72636" rdf:id="lit_72636">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6853548</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1983</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New initiation factor activity required for globin mRNA translation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grifo, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tahara, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morgan, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shatkin, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 258:5804-10</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72641" rdf:id="lit_72641">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">291969</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1980</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eukaryotic mRNA cap binding protein: purification by affinity chromatography on sepharose-coupled m7GDP.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonenberg, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rupprecht, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hecht, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shatkin, AJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 76:4345-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72657" rdf:id="lit_72657">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9732867</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eukaryotic ribosomes require initiation factors 1 and 1A to locate initiation codons.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pestova, TV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borukhov, SI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hellen, CU</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 394:854-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157289" rdf:id="lit_157289">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9857202</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A newly identified N-terminal amino acid sequence of human eIF4G binds poly(A)-binding protein and functions in poly(A)-dependent translation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Imataka, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gradi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonenberg, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 17:7480-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72704" rdf:id="lit_72704">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7000367</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1981</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evaluation of the "scanning model" for initiation of protein synthesis in eucaryotes.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kozak, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 22:7-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72744" rdf:id="lit_72744">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8943342</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional dissection of eukaryotic initiation factor 4F: the 4A subunit and the central domain of the 4G subunit are sufficient to mediate internal entry of 43S preinitiation complexes.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pestova, TV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shatsky, IN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hellen, CU</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 16:6870-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72746" rdf:id="lit_72746">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9045610</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Requirement of the DEAD-Box protein ded1p for messenger RNA translation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chuang, RY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weaver, PL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, TH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 275:1468-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72750" rdf:id="lit_72750">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10364207</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ded1p, a DEAD-box protein required for translation initiation in Saccharomyces cerevisiae, is an RNA helicase.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iost, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dreyfus, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Linder, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 274:17677-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72698" rdf:id="lit_72698">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetic approaches to translation initiation in Saccharomyces cerevisiae.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Donahue, TF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Translational Control of Gene Expression.  N. Sonenberg, J.W. Hershey and M.B. Mathews (eds.)487-502</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72713" rdf:id="lit_72713">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1856230</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Function of eukaryotic initiation factor 5 in the formation of an 80 S ribosomal polypeptide chain initiation complex.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chakrabarti, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maitra, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 266:14039-45</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72715" rdf:id="lit_72715">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10659855</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The joining of ribosomal subunits in eukaryotes requires eIF5B.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pestova, TV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lomakin, IB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Choi, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dever, TE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hellen, CU</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 403:332-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72708" rdf:id="lit_72708">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11018020</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A multifactor complex of eukaryotic initiation factors, eIF1, eIF2, eIF3, eIF5, and initiator tRNA(Met) is an important translation initiation intermediate in vivo.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Asano, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clayton, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shalev, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hinnebusch, AG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 14:2534-46</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72719" rdf:id="lit_72719">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1095581</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1975</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and characterization of homogeneous initiation factor M2A from rabbit reticulocytes.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kemper, WM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anderson, WF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 250:5556-62</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72721" rdf:id="lit_72721">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">592398</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1978</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Initiation of mammalian protein synthesis. I. Purification and characterization of seven initiation factors.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreier, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Erni, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Staehelin, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 116:727-53</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72723" rdf:id="lit_72723">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3356695</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The catalytic mechanism of guanine nucleotide exchange factor action and competitive inhibition by phosphorylated eukaryotic initiation factor 2.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rowlands, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Panniers, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henshaw, EC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 263:5526-33</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72727" rdf:id="lit_72727">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2491852</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanism of the nucleotide exchange reaction in eukaryotic polypeptide chain initiation. Characterization of the guanine nucleotide exchange factor as a GTP-binding protein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dholakia, JN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wahba, AJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 264:546-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_156946" rdf:id="lit_156946">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14567916</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulated release of L13a from the 60S ribosomal subunit as a mechanism of transcript-specific translational control</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mazumder, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sampath, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seshadri, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maitra, RK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DiCorleto, PE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fox, PL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 115:187-98</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_157261" rdf:id="lit_157261">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12588972</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcript-selective translational silencing by gamma interferon is directed by a novel structural element in the ceruloplasmin mRNA 3' untranslated region</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sampath, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mazumder, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seshadri, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fox, PL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 23:1509-19</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>translation initiation pathway</bp:TERM><bp:ID>PW:0000580</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

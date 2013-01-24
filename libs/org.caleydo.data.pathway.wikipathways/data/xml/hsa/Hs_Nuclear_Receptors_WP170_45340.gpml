@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Nuclear Receptors" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Comment Source="WikiPathways-description">Nuclear receptors are a class of proteins found within the interior of cells that are responsible for sensing the presence of steroid and thyroid hormones and certain other molecules. In response, these receptors work in concert with other proteins to regulate the expression of specific genes thereby controlling the development, homeostasis, and metabolism of the organism. Nuclear receptors have the ability to directly bind to DNA and regulate the expression of adjacent genes, hence these receptors are classified as transcription factors. The regulation of gene expression by nuclear receptors only happens when a liganda molecule which affects the receptor's behavioris present. More specifically, ligand binding to a nuclear receptor results in a conformational change in the receptor which in turn activates the receptor resulting in up-regulation of gene expression. A unique property of nuclear receptors which differentiate them from other classes of receptors is their ability to directly interact with and control the expression of genomic DNA. Consequently nuclear receptors play key roles in both embryonic development and adult homeostasis.
+Source: Wikipedia ([[wikipedia:Nuclear_receptor]])</Comment>
+  <BiopaxRef>d1f</BiopaxRef>
+  <Graphics BoardWidth="16057.25" BoardHeight="12870.0"/>
+  <DataNode BackpageHead="THRA | thyroid hormone receptor alpha (erythro..." TextLabel="THRA" Type="GeneProduct" GraphId="c8b" GroupRef="e9bc1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="THRA | thyroid hormone receptor alpha (erythro..."/>
+    <Graphics Color="000000" CenterX="1250.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7067"/>
+  </DataNode>
+  <DataNode BackpageHead="THRB | thyroid hormone receptor beta (erythrob..." TextLabel="THRB" Type="GeneProduct" GraphId="db9" GroupRef="e9bc1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="THRB | thyroid hormone receptor beta (erythrob..."/>
+    <Graphics Color="000000" CenterX="1250.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7068"/>
+  </DataNode>
+  <DataNode BackpageHead="THRB | thyroid hormone receptor beta (erythrob..." TextLabel="THRB" Type="GeneProduct" GraphId="c5e" GroupRef="e9bc1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="THRB | thyroid hormone receptor beta (erythrob..."/>
+    <Graphics Color="000000" CenterX="1250.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7068"/>
+  </DataNode>
+  <DataNode BackpageHead="RARA | retinoic acid receptor alpha" TextLabel="RARA" Type="GeneProduct" GraphId="ec8" GroupRef="f82df">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARA | retinoic acid receptor alpha"/>
+    <Graphics Color="000000" CenterX="4750.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5914"/>
+  </DataNode>
+  <DataNode BackpageHead="RARB | retinoic acid receptor beta" TextLabel="RARB" Type="GeneProduct" GraphId="a3b" GroupRef="f82df">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARB | retinoic acid receptor beta"/>
+    <Graphics Color="000000" CenterX="4750.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5915"/>
+  </DataNode>
+  <DataNode BackpageHead="RARG | retinoic acid receptor gamma" TextLabel="RARG" Type="GeneProduct" GraphId="e14" GroupRef="f82df">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARG | retinoic acid receptor gamma"/>
+    <Graphics Color="000000" CenterX="4750.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5916"/>
+  </DataNode>
+  <DataNode BackpageHead="RARG | retinoic acid receptor gamma" TextLabel="RARG" Type="GeneProduct" GraphId="b12" GroupRef="f82df">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RARG | retinoic acid receptor gamma"/>
+    <Graphics Color="000000" CenterX="4750.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5916"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARA | peroxisome proliferative activated rece..." TextLabel="PPARA" Type="GeneProduct" GraphId="f19" GroupRef="c10c6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARA | peroxisome proliferative activated rece..."/>
+    <Graphics Color="000000" CenterX="8300.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5465"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARD | peroxisome proliferative activated rece..." TextLabel="PPARD" Type="GeneProduct" GraphId="cf2" GroupRef="c10c6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARD | peroxisome proliferative activated rece..."/>
+    <Graphics Color="000000" CenterX="8300.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5467"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARG | peroxisome proliferative activated rece..." TextLabel="PPARG" Type="GeneProduct" GraphId="fbc" GroupRef="c10c6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARG | peroxisome proliferative activated rece..."/>
+    <Graphics Color="000000" CenterX="8300.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5468"/>
+  </DataNode>
+  <DataNode BackpageHead="PPARG | peroxisome proliferative activated rece..." TextLabel="PPARG" Type="GeneProduct" GraphId="d7c" GroupRef="c10c6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PPARG | peroxisome proliferative activated rece..."/>
+    <Graphics Color="000000" CenterX="8300.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5468"/>
+  </DataNode>
+  <DataNode BackpageHead="NR1D2 | nuclear receptor subfamily 1 group D ..." TextLabel="NR1D2" Type="GeneProduct" GraphId="c6d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR1D2 | nuclear receptor subfamily 1 group D ..."/>
+    <Graphics Color="000000" CenterX="11000.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="9975"/>
+  </DataNode>
+  <DataNode BackpageHead="NR0B1 | nuclear receptor subfamily 0 group B ..." TextLabel="NR0B1" Type="GeneProduct" GraphId="d7f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR0B1 | nuclear receptor subfamily 0 group B ..."/>
+    <Graphics Color="000000" CenterX="13400.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="190"/>
+  </DataNode>
+  <DataNode BackpageHead="ROR1 | receptor tyrosine kinase-like orphan rec..." TextLabel="ROR1" Type="GeneProduct" GraphId="d7d" GroupRef="ca73c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ROR1 | receptor tyrosine kinase-like orphan rec..."/>
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4919"/>
+  </DataNode>
+  <DataNode BackpageHead="RORA | RAR-related orphan receptor A" TextLabel="RORA" Type="GeneProduct" GraphId="cd4" GroupRef="ca73c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RORA | RAR-related orphan receptor A"/>
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6095"/>
+  </DataNode>
+  <DataNode BackpageHead="RORC | RAR-related orphan receptor C" TextLabel="RORC" Type="GeneProduct" GraphId="c98" GroupRef="ca73c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RORC | RAR-related orphan receptor C"/>
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6097"/>
+  </DataNode>
+  <DataNode BackpageHead="NR1H2 | nuclear receptor subfamily 1 group H ..." TextLabel="NR1H2" Type="GeneProduct" GraphId="e39" GroupRef="c0325">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR1H2 | nuclear receptor subfamily 1 group H ..."/>
+    <Graphics Color="000000" CenterX="5800.0" CenterY="4250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7376"/>
+  </DataNode>
+  <DataNode BackpageHead="NR1H3 | nuclear receptor subfamily 1 group H ..." TextLabel="NR1H3" Type="GeneProduct" GraphId="e7c" GroupRef="c0325">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR1H3 | nuclear receptor subfamily 1 group H ..."/>
+    <Graphics Color="000000" CenterX="5800.0" CenterY="4550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="10062"/>
+  </DataNode>
+  <DataNode BackpageHead="VDR | vitamin D (125- dihydroxyvitamin D3) rec..." TextLabel="VDR" Type="GeneProduct" GraphId="c07" GroupRef="e72ee">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="VDR | vitamin D (125- dihydroxyvitamin D3) rec..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="4250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7421"/>
+  </DataNode>
+  <DataNode BackpageHead="HNF4A | hepatocyte nuclear factor 4 alpha" TextLabel="HNF4A" Type="GeneProduct" GraphId="f78">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HNF4A | hepatocyte nuclear factor 4 alpha"/>
+    <Graphics Color="000000" CenterX="1850.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3172"/>
+  </DataNode>
+  <DataNode BackpageHead="RXRA | retinoid X receptor alpha" TextLabel="RXRA" Type="GeneProduct" GraphId="db6" GroupRef="e957e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRA | retinoid X receptor alpha"/>
+    <Graphics Color="000000" CenterX="5250.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6256"/>
+  </DataNode>
+  <DataNode BackpageHead="RXRB | retinoid X receptor beta" TextLabel="RXRB" Type="GeneProduct" GraphId="a09" GroupRef="e957e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRB | retinoid X receptor beta"/>
+    <Graphics Color="000000" CenterX="5250.0" CenterY="7050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6257"/>
+  </DataNode>
+  <DataNode BackpageHead="RXRG | retinoid X receptor gamma" TextLabel="RXRG" Type="GeneProduct" GraphId="ca3" GroupRef="e957e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RXRG | retinoid X receptor gamma"/>
+    <Graphics Color="000000" CenterX="5250.0" CenterY="7350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="6258"/>
+  </DataNode>
+  <DataNode BackpageHead="NR2C2 | nuclear receptor subfamily 2 group C ..." TextLabel="NR2C2" Type="GeneProduct" GraphId="ac1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR2C2 | nuclear receptor subfamily 2 group C ..."/>
+    <Graphics Color="000000" CenterX="8650.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7182"/>
+  </DataNode>
+  <DataNode BackpageHead="NR2F1 | nuclear receptor subfamily 2 group F ..." TextLabel="NR2F1" Type="GeneProduct" GraphId="d0c" GroupRef="e8fcd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR2F1 | nuclear receptor subfamily 2 group F ..."/>
+    <Graphics Color="000000" CenterX="11950.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7025"/>
+  </DataNode>
+  <DataNode BackpageHead="NR2F2 | nuclear receptor subfamily 2 group F ..." TextLabel="NR2F2" Type="GeneProduct" GraphId="be9" GroupRef="e8fcd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR2F2 | nuclear receptor subfamily 2 group F ..."/>
+    <Graphics Color="000000" CenterX="11950.0" CenterY="7050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7026"/>
+  </DataNode>
+  <DataNode BackpageHead="NR2F6 | nuclear receptor subfamily 2 group F ..." TextLabel="NR2F6" Type="GeneProduct" GraphId="f18" GroupRef="e8fcd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR2F6 | nuclear receptor subfamily 2 group F ..."/>
+    <Graphics Color="000000" CenterX="11950.0" CenterY="7350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2063"/>
+  </DataNode>
+  <DataNode BackpageHead="NR2E1 | nuclear receptor subfamily 2 group E ..." TextLabel="NR2E1" Type="GeneProduct" GraphId="bde">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR2E1 | nuclear receptor subfamily 2 group E ..."/>
+    <Graphics Color="000000" CenterX="1850.0" CenterY="7800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="7101"/>
+  </DataNode>
+  <DataNode BackpageHead="ESR1 | estrogen receptor 1" TextLabel="ESR1" Type="GeneProduct" GraphId="ed2" GroupRef="d285f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ESR1 | estrogen receptor 1"/>
+    <Graphics Color="000000" CenterX="1150.0" CenterY="9750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2099"/>
+  </DataNode>
+  <DataNode BackpageHead="ESR2 | estrogen receptor 2 (ER beta)" TextLabel="ESR2" Type="GeneProduct" GraphId="df6" GroupRef="d285f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ESR2 | estrogen receptor 2 (ER beta)"/>
+    <Graphics Color="000000" CenterX="1150.0" CenterY="10050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2100"/>
+  </DataNode>
+  <DataNode BackpageHead="ESRRA | estrogen-related receptor alpha" TextLabel="ESRRA" Type="GeneProduct" GraphId="a34" GroupRef="baf7a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ESRRA | estrogen-related receptor alpha"/>
+    <Graphics Color="000000" CenterX="4050.0" CenterY="9750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2101"/>
+  </DataNode>
+  <DataNode BackpageHead="ESRRB | estrogen-related receptor beta" TextLabel="ESRRB" Type="GeneProduct" GraphId="fbe" GroupRef="baf7a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ESRRB | estrogen-related receptor beta"/>
+    <Graphics Color="000000" CenterX="4050.0" CenterY="10050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2103"/>
+  </DataNode>
+  <DataNode BackpageHead="NR3C1 | nuclear receptor subfamily 3 group C ..." TextLabel="NR3C1" Type="GeneProduct" GraphId="a53">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR3C1 | nuclear receptor subfamily 3 group C ..."/>
+    <Graphics Color="000000" CenterX="7250.0" CenterY="9600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2908"/>
+  </DataNode>
+  <DataNode BackpageHead="PGR | progesterone receptor" TextLabel="PGR" Type="GeneProduct" GraphId="bc1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PGR | progesterone receptor"/>
+    <Graphics Color="000000" CenterX="7250.0" CenterY="10650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="5241"/>
+  </DataNode>
+  <DataNode BackpageHead="AR | androgen receptor (dihydrotestosterone rec..." TextLabel="AR" Type="GeneProduct" GraphId="b83">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="AR | androgen receptor (dihydrotestosterone rec..."/>
+    <Graphics Color="000000" CenterX="7250.0" CenterY="11550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="367"/>
+  </DataNode>
+  <DataNode BackpageHead="NR4A1 | nuclear receptor subfamily 4 group A ..." TextLabel="NR4A1" Type="GeneProduct" GraphId="d8d" GroupRef="ad669">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR4A1 | nuclear receptor subfamily 4 group A ..."/>
+    <Graphics Color="000000" CenterX="10500.0" CenterY="9650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3164"/>
+  </DataNode>
+  <DataNode BackpageHead="NR4A2 | nuclear receptor subfamily 4 group A ..." TextLabel="NR4A2" Type="GeneProduct" GraphId="b33" GroupRef="ad669">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR4A2 | nuclear receptor subfamily 4 group A ..."/>
+    <Graphics Color="000000" CenterX="10500.0" CenterY="9950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="4929"/>
+  </DataNode>
+  <DataNode BackpageHead="NR5A1 | nuclear receptor subfamily 5 group A ..." TextLabel="NR5A1" Type="GeneProduct" GraphId="c43" GroupRef="cb7b1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR5A1 | nuclear receptor subfamily 5 group A ..."/>
+    <Graphics Color="000000" CenterX="13200.0" CenterY="9650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2516"/>
+  </DataNode>
+  <DataNode BackpageHead="NR5A2 | nuclear receptor subfamily 5 group A ..." TextLabel="NR5A2" Type="GeneProduct" GraphId="abf" GroupRef="cb7b1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR5A2 | nuclear receptor subfamily 5 group A ..."/>
+    <Graphics Color="000000" CenterX="13200.0" CenterY="9950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2494"/>
+  </DataNode>
+  <DataNode BackpageHead="NR1I2 | nuclear receptor subfamily 1 group I ..." TextLabel="NR1I2" Type="GeneProduct" GraphId="ee5" GroupRef="e72ee">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR1I2 | nuclear receptor subfamily 1 group I ..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="4550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="8856"/>
+  </DataNode>
+  <DataNode BackpageHead="NR1I3 | nuclear receptor subfamily 1 group I ..." TextLabel="NR1I3" Type="GeneProduct" GraphId="fcc" GroupRef="e72ee">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NR1I3 | nuclear receptor subfamily 1 group I ..."/>
+    <Graphics Color="000000" CenterX="9000.0" CenterY="4850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="9970"/>
+  </DataNode>
+  <Label TextLabel="Thyroid Receptor" GraphId="a28">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1250.0" CenterY="1600.0" Width="2075.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Peroxisome Proliferator&#10;Activated Receptor" GraphId="ec4">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="8297.5" CenterY="1621.25" Width="2365.0" Height="507.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nuclear Receptor ROR" GraphId="bec">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="2250.0" CenterY="3750.0" Width="2675.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Oxysterols Receptor" GraphId="eca">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5750.0" CenterY="3750.0" Width="2420.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Vitamin D3 Receptor" GraphId="a63">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="8950.0" CenterY="3750.0" Width="2420.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Hepatocyte Nuclear Factor" GraphId="eab">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1850.0" CenterY="6250.0" Width="3125.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Retinoic Acid Receptor RXR" GraphId="c8f">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5250.0" CenterY="6250.0" Width="3290.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Nuclear Receptor" GraphId="a6f">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="8650.0" CenterY="6250.0" Width="2990.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nuclear receptor TLX" GraphId="d46">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1850.0" CenterY="7350.0" Width="2510.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Coup Transcription Factor" GraphId="a05">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="11950.0" CenterY="6250.0" Width="3095.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Estrogen Receptor" GraphId="e80">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1200.0" CenterY="9235.0" Width="2240.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steroid Hormone Receptor" GraphId="ab2">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4050.0" CenterY="9235.0" Width="3140.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Glucocorticoid Receptor" GraphId="a89">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7280.0" CenterY="9190.0" Width="2870.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Progesterone Receptor" GraphId="a8a">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7250.0" CenterY="10225.0" Width="2750.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Androgen Receptor" GraphId="fde">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7250.0" CenterY="11175.0" Width="2330.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR5 SUPERFAMILY" Outline="Rectangle" GraphId="b1e">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13205.0" CenterY="8581.25" Width="2140.0" Height="447.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steroidogenic Receptor" GraphId="d42">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13200.0" CenterY="9100.0" Width="2795.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Receptor" GraphId="e07">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13400.0" CenterY="1600.0" Width="2045.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR0 SUPERFAMILY" Outline="Rectangle" GraphId="a4d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13272.5" CenterY="1098.75" Width="2105.0" Height="382.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR1 SUPERFAMILY" Outline="Rectangle" GraphId="fd0">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5837.5" CenterY="1083.75" Width="2035.0" Height="382.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR2 SUPERFAMILY" Outline="Rectangle" GraphId="cde">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="6900.0" CenterY="5701.25" Width="2360.0" Height="387.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR3 SUPERFAMILY" Outline="Rectangle" GraphId="f8d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4240.0" CenterY="8566.25" Width="2140.0" Height="417.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR4 SUPERFAMILY" Outline="Rectangle" GraphId="d37">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="10487.5" CenterY="8588.75" Width="2095.0" Height="402.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Receptor" GraphId="a62">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="10500.0" CenterY="9100.0" Width="2045.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Nuclear&#10;Receptor" GraphId="fc2">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="10995.0" CenterY="1693.75" Width="1740.0" Height="477.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Retinoic Acid Receptor" GraphId="d53">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4750.0" CenterY="1600.0" Width="2705.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="d285f" GraphId="dcef5"/>
+  <Group GroupId="baf7a" GraphId="fc4ef"/>
+  <Group GroupId="ad669" GraphId="dc68c"/>
+  <Group GroupId="cb7b1" GraphId="e16fd"/>
+  <Group GroupId="e8fcd" GraphId="d8159"/>
+  <Group GroupId="e957e" GraphId="a563d"/>
+  <Group GroupId="ca73c" GraphId="e37a4"/>
+  <Group GroupId="e9bc1" GraphId="db9ff"/>
+  <Group GroupId="f82df" GraphId="a9c4a"/>
+  <Group GroupId="c10c6" GraphId="cf6b4"/>
+  <Group GroupId="e72ee" GraphId="c22e3"/>
+  <Group GroupId="c0325" GraphId="b7469"/>
+  <InfoBox CenterX="10581.0" CenterY="3529.0"/>
+  <Legend CenterX="9850.0" CenterY="10364.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d1f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16729019</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Twenty years of nuclear receptors: Conference on Nuclear Receptors: from Chromatin to Disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO Rep</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagy L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SchÃ¼le R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gronemeyer H</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

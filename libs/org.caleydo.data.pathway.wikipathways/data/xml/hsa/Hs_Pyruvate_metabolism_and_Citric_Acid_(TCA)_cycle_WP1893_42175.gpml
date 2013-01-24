@@ -1,0 +1,2355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Pyruvate metabolism and Citric Acid (TCA) cycle" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Birney, E, D'Eustachio, P, Schmidt, EE" Maintainer="D'Eustachio, P" Email="deustp01@nyumc.org" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">Pyruvate metabolism and the citric acid (TCA) cycle together link the processes of energy metabolism in a human cell with one another and with key biosynthetic reactions. Pyruvate, derived from the reversible oxidation of lactate or transamination of alanine, can be converted to acetyl CoA. Other sources of acetyl CoA include breakdown of free fatty acids and ketone bodies in the fasting state. Acetyl CoA can enter the citric acid cycle, a major source of reducing equivalents used to synthesize ATP, or enter biosynthetic pathways.&lt;p&gt;In addition to its role in energy generation, the citric acid cycle is a source of carbon skeletons for amino acid metabolism and other biosynthetic processes. One such process included here is the interconversion of 2-hydroxyglutarate, probably derived from porphyrin and amino acid metabolism, and 2-oxoglutarate (alpha-ketoglutarate), a citric acid cycle intermediate.</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0" />
+  <DataNode TextLabel="NADH&#xA;" GraphId="n3_REACTOME_73473" Type="Metabolite">
+    <Graphics CenterX="395.5" CenterY="535.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <DataNode TextLabel="Pyruvate&#xA;" GraphId="n4_REACTOME_29398" Type="Metabolite">
+    <Graphics CenterX="395.0" CenterY="457.5" Width="68.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="32816" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n5_REACTOME_70106" Type="Metabolite">
+    <Graphics CenterX="322.5" CenterY="485.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="NAD+&#xA;" GraphId="n6_REACTOME_29360" Type="Metabolite">
+    <Graphics CenterX="480.5" CenterY="657.5" Width="51.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15846" />
+  </DataNode>
+  <DataNode TextLabel="(S)-Lactate&#xA;" GraphId="n7_REACTOME_29708" Type="Metabolite">
+    <Graphics CenterX="324.5" CenterY="657.5" Width="81.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="422" />
+  </DataNode>
+  <DataNode TextLabel="lactate &#xA;dehydrogenase &#xA;complex&#xA;" GraphId="n8_REACTOME_184549">
+    <Graphics CenterX="399.5" CenterY="585.5" Width="105.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_8212" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n11_REACTOME_351626" Type="Metabolite">
+    <Graphics CenterX="58.5" CenterY="575.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="(S)-Lactate&#xA;" GraphId="n12_REACTOME_373863" Type="Metabolite">
+    <Graphics CenterX="67.5" CenterY="659.5" Width="81.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="422" />
+  </DataNode>
+  <DataNode TextLabel="Basigin bound to &#xA;MCTs&#xA;" GraphId="n13_REACTOME_204396" Type="Complex">
+    <Graphics CenterX="179.5" CenterY="609.0" Width="105.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_15052" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n17_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="608.5" CenterY="352.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="Pyruvate&#xA;" GraphId="n18_REACTOME_113557" Type="Metabolite">
+    <Graphics CenterX="646.0" CenterY="405.5" Width="68.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="32816" />
+  </DataNode>
+  <DataNode TextLabel="mitochondrial &#xA;pyruvate carrier&#xA;" GraphId="n19_REACTOME_372337">
+    <Graphics CenterX="524.5" CenterY="471.0" Width="103.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_15090" />
+  </DataNode>
+  <DataNode TextLabel="CoA-SH&#xA;" GraphId="n21_REACTOME_29374" Type="Metabolite">
+    <Graphics CenterX="1313.5" CenterY="1028.5" Width="63.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15346" />
+  </DataNode>
+  <DataNode TextLabel="NAD+&#xA;" GraphId="n22_REACTOME_113526" Type="Metabolite">
+    <Graphics CenterX="1285.5" CenterY="760.5" Width="51.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15846" />
+  </DataNode>
+  <DataNode TextLabel="NADH&#xA;" GraphId="n23_REACTOME_29362" Type="Metabolite">
+    <Graphics CenterX="683.5" CenterY="201.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <DataNode TextLabel="CO2&#xA;" GraphId="n24_REACTOME_29376" Type="Metabolite">
+    <Graphics CenterX="1281.5" CenterY="869.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16526" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA&#xA;" GraphId="n25_REACTOME_113559" Type="Metabolite">
+    <Graphics CenterX="1017.5" CenterY="404.5" Width="81.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15351" />
+  </DataNode>
+  <DataNode TextLabel="pyruvate &#xA;dehydrogenase &#xA;complex&#xA;" GraphId="n26_REACTOME_70070" Type="Complex">
+    <BiopaxRef>lit_69983</BiopaxRef>
+    <BiopaxRef>lit_69972</BiopaxRef>
+    <BiopaxRef>lit_70060</BiopaxRef>
+    <BiopaxRef>lit_70066</BiopaxRef>
+    <Graphics CenterX="811.5" CenterY="347.5" Width="105.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5500" />
+  </DataNode>
+  <DataNode TextLabel="ATP&#xA;" GraphId="n28_REACTOME_113593" Type="Metabolite">
+    <Graphics CenterX="695.0" CenterY="314.5" Width="38.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15422" />
+  </DataNode>
+  <DataNode TextLabel="ADP&#xA;" GraphId="n29_REACTOME_113581" Type="Metabolite">
+    <Graphics CenterX="716.5" CenterY="125.5" Width="41.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16761" />
+  </DataNode>
+  <DataNode TextLabel="phosphorylated &#xA;pyruvate &#xA;dehydrogenase &#xA;complex&#xA;" GraphId="n30_REACTOME_210342" Type="Complex">
+    <BiopaxRef>lit_69983</BiopaxRef>
+    <BiopaxRef>lit_69972</BiopaxRef>
+    <BiopaxRef>lit_70060</BiopaxRef>
+    <BiopaxRef>lit_70066</BiopaxRef>
+    <Graphics CenterX="811.5" CenterY="130.0" Width="105.0" Height="68.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_12644" />
+  </DataNode>
+  <DataNode TextLabel="PDK isoforms&#xA;" GraphId="n31_REACTOME_203947">
+    <Graphics CenterX="671.5" CenterY="244.5" Width="85.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_12749" />
+  </DataNode>
+  <DataNode TextLabel="H2O&#xA;" GraphId="n33_REACTOME_113521" Type="Metabolite">
+    <Graphics CenterX="927.5" CenterY="148.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15377" />
+  </DataNode>
+  <DataNode TextLabel="Orthophosphate&#xA;" GraphId="n34_REACTOME_113548" Type="Metabolite">
+    <Graphics CenterX="934.5" CenterY="332.5" Width="111.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="18367" />
+  </DataNode>
+  <DataNode TextLabel="PDP complex&#xA;" GraphId="n35_REACTOME_204219">
+    <Graphics CenterX="937.5" CenterY="240.5" Width="85.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_13240" />
+  </DataNode>
+  <DataNode TextLabel="Mg++&#xA;" GraphId="n36_REACTOME_109496" Type="Metabolite">
+    <Graphics CenterX="941.0" CenterY="200.5" Width="48.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="18420" />
+  </DataNode>
+  <DataNode TextLabel="Oxaloacetate&#xA;" GraphId="n38_REACTOME_113587" Type="Metabolite">
+    <Graphics CenterX="880.5" CenterY="739.5" Width="93.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="30744" />
+  </DataNode>
+  <DataNode TextLabel="H2O&#xA;" GraphId="n39_REACTOME_113521" Type="Metabolite">
+    <Graphics CenterX="949.5" CenterY="529.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15377" />
+  </DataNode>
+  <DataNode TextLabel="Citrate&#xA;" GraphId="n40_REACTOME_29654" Type="Metabolite">
+    <Graphics CenterX="1166.5" CenterY="511.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="30769" />
+  </DataNode>
+  <DataNode TextLabel="Citrate Synthase &#xA;Holoenzyme&#xA;" GraphId="n41_REACTOME_70973" Type="Complex">
+    <Graphics CenterX="1081.5" CenterY="464.0" Width="105.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3312" />
+  </DataNode>
+  <DataNode TextLabel="Isocitrate&#xA;" GraphId="n49_REACTOME_29938" Type="Metabolite">
+    <Graphics CenterX="1445.0" CenterY="598.5" Width="68.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="151" />
+  </DataNode>
+  <DataNode TextLabel="aconitase 2, &#xA;mitochondrial&#xA;" GraphId="n50_REACTOME_70968" Type="Protein">
+    <Graphics CenterX="1313.5" CenterY="552.0" Width="85.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q99798" />
+  </DataNode>
+  <DataNode TextLabel="2-Oxoglutarate&#xA;" GraphId="n59_REACTOME_113594" Type="Metabolite">
+    <Graphics CenterX="1462.5" CenterY="754.5" Width="103.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="30915" />
+  </DataNode>
+  <DataNode TextLabel="IDH3 complex&#xA;" GraphId="n60_REACTOME_70965" Type="Complex">
+    <Graphics CenterX="1538.0" CenterY="675.5" Width="90.0" Height="23.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3944" />
+  </DataNode>
+  <DataNode TextLabel="ADP&#xA;" GraphId="n61_REACTOME_113581" Type="Metabolite">
+    <Graphics CenterX="1513.5" CenterY="620.5" Width="41.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16761" />
+  </DataNode>
+  <DataNode TextLabel="NADP+&#xA;" GraphId="n69_REACTOME_113563" Type="Metabolite">
+    <Graphics CenterX="1501.0" CenterY="422.5" Width="58.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="18009" />
+  </DataNode>
+  <DataNode TextLabel="NADPH&#xA;" GraphId="n70_REACTOME_113600" Type="Metabolite">
+    <Graphics CenterX="1613.5" CenterY="427.5" Width="61.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16474" />
+  </DataNode>
+  <DataNode TextLabel="IDH2 dimer&#xA;" GraphId="n71_REACTOME_450982" Type="Complex">
+    <Graphics CenterX="1532.5" CenterY="513.5" Width="73.0" Height="23.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_21933" />
+  </DataNode>
+  <DataNode TextLabel="NNT dimer&#xA;" GraphId="n79_REACTOME_451008" Type="Complex">
+    <Graphics CenterX="1562.0" CenterY="316.5" Width="70.0" Height="23.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_21826" />
+  </DataNode>
+  <DataNode TextLabel="Succinyl-CoA&#xA;" GraphId="n99_REACTOME_70958" Type="Metabolite">
+    <Graphics CenterX="1461.0" CenterY="908.5" Width="96.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15380" />
+  </DataNode>
+  <DataNode TextLabel="alpha-ketoglutarate &#xA;dehydrogenase &#xA;complex&#xA;" GraphId="n100_REACTOME_69996" Type="Complex">
+    <BiopaxRef>lit_69983</BiopaxRef>
+    <BiopaxRef>lit_69985</BiopaxRef>
+    <Graphics CenterX="1363.5" CenterY="815.5" Width="123.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5646" />
+  </DataNode>
+  <DataNode TextLabel="GDP&#xA;" GraphId="n123_REACTOME_113525" Type="Metabolite">
+    <Graphics CenterX="1400.5" CenterY="948.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="17552" />
+  </DataNode>
+  <DataNode TextLabel="Orthophosp&#xA;hate&#xA;" GraphId="n124_REACTOME_113548" Type="Metabolite">
+    <Graphics CenterX="1517.0" CenterY="945.0" Width="70.0" Height="34.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="18367" />
+  </DataNode>
+  <DataNode TextLabel="GTP&#xA;" GraphId="n125_REACTOME_113573" Type="Metabolite">
+    <Graphics CenterX="1370.5" CenterY="1135.5" Width="41.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15996" />
+  </DataNode>
+  <DataNode TextLabel="Succinate&#xA;" GraphId="n126_REACTOME_113536" Type="Metabolite">
+    <Graphics CenterX="1276.5" CenterY="1109.5" Width="73.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15741" />
+  </DataNode>
+  <DataNode TextLabel="Succinyl-CoA &#xA;synthetase &#xA;heterodimer&#xA;" GraphId="n127_REACTOME_156627" Type="Complex">
+    <Graphics CenterX="1551.0" CenterY="1043.5" Width="90.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5345" />
+  </DataNode>
+  <DataNode TextLabel="ADP&#xA;" GraphId="n135_REACTOME_113581" Type="Metabolite">
+    <Graphics CenterX="1526.5" CenterY="991.5" Width="41.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16761" />
+  </DataNode>
+  <DataNode TextLabel="ATP&#xA;" GraphId="n137_REACTOME_113593" Type="Metabolite">
+    <Graphics CenterX="1444.0" CenterY="1123.5" Width="38.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15422" />
+  </DataNode>
+  <DataNode TextLabel="Succinyl-CoA &#xA;synthetase &#xA;heterodimer&#xA;" GraphId="n138_REACTOME_156625" Type="Complex">
+    <Graphics CenterX="1547.0" CenterY="1121.5" Width="90.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5440" />
+  </DataNode>
+  <DataNode TextLabel="Fumarate&#xA;" GraphId="n143_REACTOME_113588" Type="Metabolite">
+    <Graphics CenterX="1126.5" CenterY="1109.5" Width="71.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="18012" />
+  </DataNode>
+  <DataNode TextLabel="Succinate &#xA;dehydrogenase &#xA;complex (oxidised)&#xA;" GraphId="n144_REACTOME_70990" Type="Complex">
+    <Graphics CenterX="1190.0" CenterY="1203.5" Width="120.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3127" />
+  </DataNode>
+  <DataNode TextLabel="H2O&#xA;" GraphId="n152_REACTOME_113521" Type="Metabolite">
+    <Graphics CenterX="1058.5" CenterY="1106.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15377" />
+  </DataNode>
+  <DataNode TextLabel="(S)-Malate&#xA;" GraphId="n153_REACTOME_113544" Type="Metabolite">
+    <Graphics CenterX="880.0" CenterY="1065.5" Width="76.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="30797" />
+  </DataNode>
+  <DataNode TextLabel="fumarate hydratase &#xA;tetramer&#xA;" GraphId="n154_REACTOME_451041" Type="Complex">
+    <Graphics CenterX="962.5" CenterY="1112.0" Width="123.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_21885" />
+  </DataNode>
+  <DataNode TextLabel="malate &#xA;dehydrogenase 2 &#xA;dimer&#xA;" GraphId="n164_REACTOME_198511" Type="Complex">
+    <Graphics CenterX="880.5" CenterY="918.5" Width="115.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_11471" />
+  </DataNode>
+  <DataNode TextLabel="NAD+&#xA;" GraphId="n179_REACTOME_113526" Type="Metabolite">
+    <Graphics CenterX="880.5" CenterY="971.5" Width="51.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15846" />
+  </DataNode>
+  <DataNode TextLabel="CoA-SH&#xA;" GraphId="n180_REACTOME_29374" Type="Metabolite">
+    <Graphics CenterX="1282.5" CenterY="722.5" Width="63.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15346" />
+  </DataNode>
+  <DataNode TextLabel="CoA-SH&#xA;" GraphId="n182_REACTOME_29374" Type="Metabolite">
+    <Graphics CenterX="697.5" CenterY="355.5" Width="63.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15346" />
+  </DataNode>
+  <DataNode TextLabel="CoA-SH&#xA;" GraphId="n184_REACTOME_29374" Type="Metabolite">
+    <Graphics CenterX="1151.5" CenterY="600.5" Width="63.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15346" />
+  </DataNode>
+  <DataNode TextLabel="NAD+&#xA;" GraphId="n186_REACTOME_113526" Type="Metabolite">
+    <Graphics CenterX="707.5" CenterY="430.5" Width="51.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15846" />
+  </DataNode>
+  <DataNode TextLabel="NAD+&#xA;" GraphId="n191_REACTOME_113526" Type="Metabolite">
+    <Graphics CenterX="1641.5" CenterY="305.5" Width="51.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15846" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n192_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="1623.5" CenterY="499.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="CO2&#xA;" GraphId="n193_REACTOME_29376" Type="Metabolite">
+    <Graphics CenterX="1648.5" CenterY="463.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16526" />
+  </DataNode>
+  <DataNode TextLabel="NADH&#xA;" GraphId="n194_REACTOME_29362" Type="Metabolite">
+    <Graphics CenterX="1374.5" CenterY="729.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <DataNode TextLabel="NAD+&#xA;" GraphId="n196_REACTOME_113526" Type="Metabolite">
+    <Graphics CenterX="1387.5" CenterY="640.5" Width="51.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15846" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n198_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="1495.5" CenterY="712.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n200_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="1376.5" CenterY="904.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="NADH&#xA;" GraphId="n202_REACTOME_29362" Type="Metabolite">
+    <Graphics CenterX="1311.5" CenterY="907.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <DataNode TextLabel="CO2&#xA;" GraphId="n207_REACTOME_29376" Type="Metabolite">
+    <Graphics CenterX="1373.5" CenterY="690.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16526" />
+  </DataNode>
+  <DataNode TextLabel="CO2&#xA;" GraphId="n209_REACTOME_29376" Type="Metabolite">
+    <Graphics CenterX="934.5" CenterY="466.5" Width="43.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16526" />
+  </DataNode>
+  <DataNode TextLabel="NADH&#xA;" GraphId="n214_REACTOME_29362" Type="Metabolite">
+    <Graphics CenterX="1467.5" CenterY="332.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n216_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="1464.5" CenterY="387.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="NADH&#xA;" GraphId="n218_REACTOME_29362" Type="Metabolite">
+    <Graphics CenterX="880.5" CenterY="863.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <DataNode TextLabel="NADH&#xA;" GraphId="n224_REACTOME_29362" Type="Metabolite">
+    <Graphics CenterX="877.5" CenterY="465.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n229_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="943.5" CenterY="428.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n234_REACTOME_113529" Type="Metabolite">
+    <Graphics CenterX="880.5" CenterY="814.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n242_REACTOME_70106" Type="Metabolite">
+    <Graphics CenterX="1933.5" CenterY="325.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <DataNode TextLabel="FAD&#xA;" GraphId="n245_REACTOME_113596" Type="Metabolite">
+    <Graphics CenterX="1677.5" CenterY="757.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16238" />
+  </DataNode>
+  <DataNode TextLabel="(S)-2-&#xA;hydroxyglutarate&#xA;" GraphId="n246_REACTOME_880013" Type="Metabolite">
+    <Graphics CenterX="1754.5" CenterY="723.5" Width="109.0" Height="41.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="32797" />
+  </DataNode>
+  <DataNode TextLabel="FADH2&#xA;" GraphId="n247_REACTOME_31649" Type="Metabolite">
+    <Graphics CenterX="1591.5" CenterY="757.5" Width="51.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="17877" />
+  </DataNode>
+  <DataNode TextLabel="L2HGDH&#xA;" GraphId="n248_REACTOME_879993" Type="Protein">
+    <Graphics CenterX="1637.0" CenterY="679.0" Width="64.0" Height="24.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q9H9P8" />
+  </DataNode>
+  <DataNode TextLabel="(R)-2-&#xA;hydroxyglutarate&#xA;" GraphId="n251_REACTOME_879997" Type="Metabolite">
+    <Graphics CenterX="1759.0" CenterY="791.0" Width="120.0" Height="34.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="32796" />
+  </DataNode>
+  <DataNode TextLabel="D2HGDH&#xA;" GraphId="n252_REACTOME_880006" Type="Protein">
+    <Graphics CenterX="1643.5" CenterY="849.5" Width="67.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q8N465" />
+  </DataNode>
+  <DataNode TextLabel="Co2+&#xA;" GraphId="n253_REACTOME_880069" Type="Metabolite">
+    <Graphics CenterX="1565.0" CenterY="805.0" Width="40.0" Height="26.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="27638" />
+  </DataNode>
+  <DataNode TextLabel="Zn2+&#xA;" GraphId="n254_REACTOME_880067" Type="Metabolite">
+    <Graphics CenterX="1588.0" CenterY="837.0" Width="40.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="29105" />
+  </DataNode>
+  <DataNode TextLabel="Mn2+&#xA;" GraphId="n255_REACTOME_113527" Type="Metabolite">
+    <Graphics CenterX="1692.0" CenterY="817.5" Width="42.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="18291" />
+  </DataNode>
+  <DataNode TextLabel="succinate &#xA;semialdehyde&#xA;" GraphId="n258_REACTOME_880046" Type="Metabolite">
+    <Graphics CenterX="1825.5" CenterY="835.0" Width="95.0" Height="42.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16265" />
+  </DataNode>
+  <DataNode TextLabel="4-&#xA;hydroxy&#xA;butyrate&#xA;" GraphId="n259_REACTOME_880041" Type="Metabolite">
+    <Graphics CenterX="1506.5" CenterY="859.5" Width="53.0" Height="63.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16724" />
+  </DataNode>
+  <DataNode TextLabel="ADHFE1&#xA;" GraphId="n260_REACTOME_880020" Type="Protein">
+    <Graphics CenterX="1788.5" CenterY="904.5" Width="67.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q8IWW8" />
+  </DataNode>
+  <DataNode TextLabel="NADPH&#xA;" GraphId="n267_REACTOME_29364" Type="Metabolite">
+    <Graphics CenterX="299.0" CenterY="290.5" Width="54.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="16474" />
+  </DataNode>
+  <DataNode TextLabel="2-oxoglutarate&#xA;" GraphId="n268_REACTOME_29406" Type="Metabolite">
+    <Graphics CenterX="253.5" CenterY="255.5" Width="93.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="30915" />
+  </DataNode>
+  <DataNode TextLabel="(R)-2-&#xA;hydroxyglutarate&#xA;" GraphId="n269_REACTOME_880042" Type="Metabolite">
+    <Graphics CenterX="445.0" CenterY="255.0" Width="104.0" Height="46.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="32796" />
+  </DataNode>
+  <DataNode TextLabel="NADP+&#xA;" GraphId="n270_REACTOME_29366" Type="Metabolite">
+    <Graphics CenterX="380.5" CenterY="290.5" Width="53.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="18009" />
+  </DataNode>
+  <DataNode TextLabel="IDH1 &#xA;R132mutant &#xA;dimers&#xA;" GraphId="n271_REACTOME_880004">
+    <Graphics CenterX="343.0" CenterY="174.5" Width="76.0" Height="51.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_25808" />
+  </DataNode>
+  <DataNode TextLabel="H+&#xA;" GraphId="n273_REACTOME_70106" Type="Metabolite">
+    <Graphics CenterX="292.5" CenterY="219.5" Width="33.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval" />
+    <Xref Database="ChEBI" ID="15378" />
+  </DataNode>
+  <Line GraphId="e_9_REACTOME_71849">
+    <Comment Source="WikiPathways-description">Cytosolic lactate dehydrogenase catalyzes the reversible reaction of pyruvate and NADH + H+ to form lactate and NAD+. In the body under anaerobic conditions such as are found in red blood cells or rapidly exercising skeletal muscle, this reaction regenerates NAD+,  allowing the continuation of glycolysis.&lt;p&gt;Lactate dehydrogenase is active as a tetramer. Two isoforms of lactate dehydrogenase, A and B, are widely expressed in human tissues, and all five tetramers - A4, A3B, A2B2, AB3, and B4 - are found. A third isoform, C, and its tetramer, C4, are found in testis.</Comment>
+    <BiopaxRef>lit_179524</BiopaxRef>
+    <BiopaxRef>lit_179539</BiopaxRef>
+    <BiopaxRef>lit_179533</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="320.0" Y="548.0" />
+      <Point X="320.0" Y="582.0" />
+      <Point X="320.0" Y="615.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_9_a_i" />
+      <Anchor Position="0.5074626865671642" Shape="None" GraphId="e_9_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_9_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="366.5" Y="539.5" GraphRef="n3_REACTOME_73473" RelX="-1.0943396226415094" RelY="0.25806451612903225" />
+      <Point X="320.0" Y="548.0" GraphRef="e_9_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="382.0" Y="476.5" GraphRef="n4_REACTOME_29398" RelX="-0.38235294117647056" RelY="1.2258064516129032" />
+      <Point X="320.0" Y="548.0" GraphRef="e_9_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="321.5" Y="504.5" GraphRef="n5_REACTOME_70106" RelX="-0.06060606060606061" RelY="1.2258064516129032" />
+      <Point X="320.0" Y="548.0" GraphRef="e_9_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="452.5" Y="650.5" GraphRef="n6_REACTOME_29360" RelX="-1.0980392156862746" RelY="-0.45161290322580644" ArrowHead="Arrow" />
+      <Point X="320.0" Y="615.0" GraphRef="e_9_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="322.5" Y="639.5" GraphRef="n7_REACTOME_29708" RelX="-0.04938271604938271" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="320.0" Y="615.0" GraphRef="e_9_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="344.5" Y="583.5" GraphRef="n8_REACTOME_184549" RelX="-1.0476190476190477" RelY="-0.07547169811320754" />
+      <Point X="320.0" Y="582.0" GraphRef="e_9_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_REACTOME_373875">
+    <Comment Source="WikiPathways-description">The membrane-associated MCT:basigin complex mediates the reversible export of cytosolic lactate and H+ (Wilson et al. 2005).</Comment>
+    <BiopaxRef>lit_373868</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="233.0" Y="567.0" />
+      <Point X="174.0" Y="567.0" />
+      <Point X="171.0" Y="567.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_10_a_i" />
+      <Anchor Position="0.9516129032258065" Shape="None" GraphId="e_10_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_10_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="303.5" Y="500.5" GraphRef="n5_REACTOME_70106" RelX="-1.1515151515151516" RelY="0.967741935483871" />
+      <Point X="233.0" Y="567.0" GraphRef="e_10_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="308.5" Y="639.5" GraphRef="n7_REACTOME_29708" RelX="-0.3950617283950617" RelY="-1.1612903225806452" />
+      <Point X="233.0" Y="567.0" GraphRef="e_10_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="78.5" Y="573.5" GraphRef="n11_REACTOME_351626" RelX="1.2121212121212122" RelY="-0.12903225806451613" ArrowHead="Arrow" />
+      <Point X="171.0" Y="567.0" GraphRef="e_10_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="77.5" Y="641.5" GraphRef="n12_REACTOME_373863" RelX="0.24691358024691357" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="119.0" Y="585.0" />
+      <Point X="171.0" Y="567.0" GraphRef="e_10_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="176.5" Y="587.0" GraphRef="n13_REACTOME_204396" RelX="-0.05714285714285714" RelY="-1.1578947368421053" />
+      <Point X="174.0" Y="567.0" GraphRef="e_10_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_373867">
+    <Comment Source="WikiPathways-description">The membrane-associated MCT:basigin complex mediates the reversible uptake of extracellular lactate and H+ (Wilson et al. 2005).</Comment>
+    <BiopaxRef>lit_373868</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="172.0" Y="654.0" />
+      <Point X="176.0" Y="654.0" />
+      <Point X="239.0" Y="654.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_14_a_i" />
+      <Anchor Position="0.05970149253731343" Shape="None" GraphId="e_14_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_14_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="73.5" Y="594.5" GraphRef="n11_REACTOME_351626" RelX="0.9090909090909091" RelY="1.2258064516129032" />
+      <Point X="119.0" Y="635.0" />
+      <Point X="172.0" Y="654.0" GraphRef="e_14_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="111.5" Y="657.5" GraphRef="n12_REACTOME_373863" RelX="1.0864197530864197" RelY="-0.12903225806451613" />
+      <Point X="172.0" Y="654.0" GraphRef="e_14_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="314.5" Y="504.5" GraphRef="n5_REACTOME_70106" RelX="-0.48484848484848486" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="239.0" Y="654.0" GraphRef="e_14_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="281.5" Y="655.5" GraphRef="n7_REACTOME_29708" RelX="-1.0617283950617284" RelY="-0.12903225806451613" ArrowHead="Arrow" />
+      <Point X="239.0" Y="654.0" GraphRef="e_14_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="177.5" Y="631.0" GraphRef="n13_REACTOME_204396" RelX="-0.0380952380952381" RelY="1.1578947368421053" />
+      <Point X="176.0" Y="654.0" GraphRef="e_14_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_REACTOME_70510">
+    <Comment Source="WikiPathways-description">Cytosolic lactate dehydrogenase catalyzes the freely reversible reaction of lactate and NAD+ to form pyruvate and NADH + H+. In liver parenchymal cells, this reaction allows lactate from red blood cells and exercising muscle to be converted to pyruvate which in turn is typically used for gluconeogenesis which also consumes the NADH from the reaction.&lt;p&gt;Lactate dehydrogenase is active as a tetramer. Two isoforms of lactate dehydrogenase, A and B, are widely expressed in human tissues, and all five tetramers - A4, A3B, A2B2, AB3, and B4 - are found. A third isoform, C, and its tetramer, C4, are found in testis.</Comment>
+    <BiopaxRef>lit_179524</BiopaxRef>
+    <BiopaxRef>lit_179539</BiopaxRef>
+    <BiopaxRef>lit_179533</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="480.0" Y="615.0" />
+      <Point X="481.0" Y="582.0" />
+      <Point X="482.0" Y="542.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_15_a_i" />
+      <Anchor Position="0.452091088895199" Shape="None" GraphId="e_15_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_15_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="480.5" Y="639.5" GraphRef="n6_REACTOME_29360" RelX="0.0" RelY="-1.1612903225806452" />
+      <Point X="480.0" Y="615.0" GraphRef="e_15_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="368.5" Y="646.5" GraphRef="n7_REACTOME_29708" RelX="1.0864197530864197" RelY="-0.7096774193548387" />
+      <Point X="480.0" Y="615.0" GraphRef="e_15_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="425.5" Y="537.5" GraphRef="n3_REACTOME_73473" RelX="1.1320754716981132" RelY="0.12903225806451613" ArrowHead="Arrow" />
+      <Point X="482.0" Y="542.0" GraphRef="e_15_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="342.5" Y="490.5" GraphRef="n5_REACTOME_70106" RelX="1.2121212121212122" RelY="0.3225806451612903" ArrowHead="Arrow" />
+      <Point X="482.0" Y="542.0" GraphRef="e_15_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="410.0" Y="476.5" GraphRef="n4_REACTOME_29398" RelX="0.4411764705882353" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="482.0" Y="542.0" GraphRef="e_15_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="455.5" Y="583.5" GraphRef="n8_REACTOME_184549" RelX="1.0666666666666667" RelY="-0.07547169811320754" />
+      <Point X="481.0" Y="582.0" GraphRef="e_15_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_372342">
+    <Comment Source="WikiPathways-description">Pyruvate and a proton are transported from the cytosol into the mitochondrial matrix. The transport protein that mediates this uptake has not been identified but studies of pyruvate uptake in rat indicate that it is specific, saturable, and competitively inhibitable, indicating a specific role for a membrane transport protein. The human reaction is inferred from its better-studied rat counterpart (Papa et al. 1971).</Comment>
+    <BiopaxRef>lit_372336</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="415.0" Y="404.0" />
+      <Point X="524.0" Y="403.0" />
+      <Point X="589.0" Y="403.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_16_a_i" />
+      <Anchor Position="0.626446629376533" Shape="None" GraphId="e_16_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_16_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="333.5" Y="467.5" GraphRef="n5_REACTOME_70106" RelX="0.6666666666666666" RelY="-1.1612903225806452" />
+      <Point X="381.0" Y="405.0" />
+      <Point X="415.0" Y="404.0" GraphRef="e_16_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="400.0" Y="439.5" GraphRef="n4_REACTOME_29398" RelX="0.14705882352941177" RelY="-1.1612903225806452" />
+      <Point X="415.0" Y="404.0" GraphRef="e_16_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="602.5" Y="371.5" GraphRef="n17_REACTOME_113529" RelX="-0.36363636363636365" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="589.0" Y="403.0" GraphRef="e_16_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="609.0" Y="403.5" GraphRef="n18_REACTOME_113557" RelX="-1.088235294117647" RelY="-0.12903225806451613" ArrowHead="Arrow" />
+      <Point X="589.0" Y="403.0" GraphRef="e_16_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="524.5" Y="449.0" GraphRef="n19_REACTOME_372337" RelX="0.0" RelY="-1.1578947368421053" />
+      <Point X="524.0" Y="403.0" GraphRef="e_16_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_REACTOME_71397">
+    <Comment Source="WikiPathways-description">The mitochondrial pyruvate dehydrogenase complex catalyzes the reaction of pyruvate, CoASH, and NAD+ to form acetylCoA, CO2, and NADH + H+. The enzyme complex contains multiple copies of three different proteins, E1 alpha, E1 beta, E2, and E3, each with distinct catalytic activities (Reed and Hackert 1990; Zhou et al 2001). The reaction starts with the oxidative decarboxylation of pyruvate catalyzed by E1 alpha and beta (pyruvate dehydrogenase). Lipoamide cofactor associated with E1 is reduced at the same time. Next, the acetyl group derived from pyruvate is transferred to coenzyme A in two steps catalyzed by E2 (dihydrolipolyl transacetylase). Finally, the oxidized form of lipoamide is regenerated and electrons are transferred to NAD+ in two steps catalyzed by E3 (dihydrolipoyl dehydrogenase). The biochemical details of this reaction have been worked out with pyruvate dehydrogenase complex and subunits purified from bovine tissue and other non-human sources. Direct evidence for the roles of the corresponding human proteins comes from studies of patients expressing mutant forms of E1 alpha (Lissens et al. 2000), E1 beta (Brown et al. 2004), E2 (Head et al. 2005), and E3 (Brautigam et al. 2005).</Comment>
+    <BiopaxRef>lit_450848</BiopaxRef>
+    <BiopaxRef>lit_450840</BiopaxRef>
+    <BiopaxRef>lit_450841</BiopaxRef>
+    <BiopaxRef>lit_450837</BiopaxRef>
+    <BiopaxRef>lit_69983</BiopaxRef>
+    <BiopaxRef>lit_69972</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="774.0" Y="403.0" />
+      <Point X="813.0" Y="402.0" />
+      <Point X="849.0" Y="401.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_20_a_i" />
+      <Anchor Position="0.5199857651407801" Shape="None" GraphId="e_20_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_20_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="683.0" Y="404.5" GraphRef="n18_REACTOME_113557" RelX="1.088235294117647" RelY="-0.06451612903225806" />
+      <Point X="774.0" Y="403.0" GraphRef="e_20_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="721.5" Y="374.5" GraphRef="n182_REACTOME_29374" RelX="0.7619047619047619" RelY="1.2258064516129032" />
+      <Point X="774.0" Y="403.0" GraphRef="e_20_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="736.5" Y="419.5" GraphRef="n186_REACTOME_113526" RelX="1.1372549019607843" RelY="-0.7096774193548387" />
+      <Point X="774.0" Y="403.0" GraphRef="e_20_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="974.5" Y="403.5" GraphRef="n25_REACTOME_113559" RelX="-1.0617283950617284" RelY="-0.06451612903225806" ArrowHead="Arrow" />
+      <Point X="849.0" Y="401.0" GraphRef="e_20_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="913.5" Y="448.5" GraphRef="n209_REACTOME_29376" RelX="-0.9767441860465116" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="849.0" Y="401.0" GraphRef="e_20_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="870.5" Y="447.5" GraphRef="n224_REACTOME_29362" RelX="-0.2641509433962264" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="849.0" Y="401.0" GraphRef="e_20_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="924.5" Y="423.5" GraphRef="n229_REACTOME_113529" RelX="-1.1515151515151516" RelY="-0.3225806451612903" ArrowHead="Arrow" />
+      <Point X="849.0" Y="401.0" GraphRef="e_20_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="811.5" Y="377.5" GraphRef="n26_REACTOME_70070" RelX="0.0" RelY="1.1320754716981132" />
+      <Point X="813.0" Y="402.0" GraphRef="e_20_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_REACTOME_203946">
+    <Comment Source="WikiPathways-description">Pyruvate Dehydrogenase Kinase (PDK) in the mitochondrial matrix catalyzes the phosphorylation of serine residues of the E1 alpha subunit of the pyruvate dehydrogenase complex, inactivating it. Pyruvate negatively regulates this reaction, and NADH and acetyl CoA positively regulate it (Bao et al. 2004). Four PDK isoforms have been identified and shown to catalyze the phosphorylation of E1 alpha in vitro (Gudi et al. 1995; Kolobova et al. 2001; Rowles et al. 1996). They differ in their expression patterns and quantitative responses to regulatory small molecules. All four isoforms catalyze the phosphorylation of serine residues 293 ("site 1") and 300 ("site 2"); PDK1 also catalyzes the phosphorylation of serine 232 ("site 3"). Phosphorylation of a single site in a single E1 alpha subunit is sufficient for enzyme inactivation (Bowker-Kinley et al. 1998; Gudi et al. 1995; Kolobova et al. 2001; Korotchkina and Patel, 2001).</Comment>
+    <BiopaxRef>lit_210337</BiopaxRef>
+    <BiopaxRef>lit_204153</BiopaxRef>
+    <BiopaxRef>lit_204164</BiopaxRef>
+    <BiopaxRef>lit_450877</BiopaxRef>
+    <BiopaxRef>lit_204152</BiopaxRef>
+    <BiopaxRef>lit_450881</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="776.0" Y="295.0" />
+      <Point X="776.0" Y="247.0" />
+      <Point X="775.0" Y="204.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_27_a_i" />
+      <Anchor Position="0.5274051451757039" Shape="None" GraphId="e_27_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_27_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="793.5" Y="318.5" GraphRef="n26_REACTOME_70070" RelX="-0.34285714285714286" RelY="-1.0943396226415094" />
+      <Point X="776.0" Y="295.0" GraphRef="e_27_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="717.0" Y="309.5" GraphRef="n28_REACTOME_113593" RelX="1.1578947368421053" RelY="-0.3225806451612903" />
+      <Point X="776.0" Y="295.0" GraphRef="e_27_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="727.5" Y="144.5" GraphRef="n29_REACTOME_113581" RelX="0.5365853658536586" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="775.0" Y="204.0" GraphRef="e_27_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="794.5" Y="167.0" GraphRef="n30_REACTOME_210342" RelX="-0.3238095238095238" RelY="1.088235294117647" ArrowHead="Arrow" />
+      <Point X="775.0" Y="204.0" GraphRef="e_27_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="717.5" Y="245.5" GraphRef="n31_REACTOME_203947" RelX="1.0823529411764705" RelY="0.08695652173913043" />
+      <Point X="776.0" Y="247.0" GraphRef="e_27_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="646.0" Y="387.5" GraphRef="n18_REACTOME_113557" RelX="0.0" RelY="-1.1612903225806452" />
+      <Point X="646.0" Y="295.0" />
+      <Point X="776.0" Y="247.0" GraphRef="e_27_a_p" RelX="0.0" RelY="0.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_a__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1017.5" Y="386.5" GraphRef="n25_REACTOME_113559" RelX="0.0" RelY="-1.1612903225806452" />
+      <Point X="1017.0" Y="309.0" />
+      <Point X="776.0" Y="247.0" GraphRef="e_27_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_a__1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="713.5" Y="214.5" GraphRef="n23_REACTOME_29362" RelX="1.1320754716981132" RelY="0.8387096774193549" />
+      <Point X="776.0" Y="247.0" GraphRef="e_27_a_p" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_204169">
+    <Comment Source="WikiPathways-description">Pyruvate dehydrogenase phosphatase (PDP) in the mitochondrial matrix catalyzes the hydrolytic removal of phosphate groups from phosphoserine residues in the E1 alpha subunit of the pyruvate dehydrogenase complex. The active form of PDP is a heterodimer of a catalytic subunit and a regulatory one. Two isoforms of the catalytic subunit have been identified and biochemically characterized (Huang et al. 1998) and mutations in PDP1 have been associated with PDP deficiency in vivo (Maj et al. 2005). The properties of the human regulatory subunit have been deduced from those of its bovine homologue (Lawson et al. 1997). The activity of PDP1 is greatly enhanced through Ca2+ -dependent binding of the catalytic subunit (PDP1c) to the L2 (inner lipoyl) domain of dihydrolipoyl acetyltransferase (E2), which is also integrated in the pyruvate dehydrogenase complex. PDP activity requires Mg2+ (Huang et al. 1998).</Comment>
+    <BiopaxRef>lit_210346</BiopaxRef>
+    <BiopaxRef>lit_210340</BiopaxRef>
+    <BiopaxRef>lit_204177</BiopaxRef>
+    <BiopaxRef>lit_204179</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="847.0" Y="205.0" />
+      <Point X="846.0" Y="243.0" />
+      <Point X="845.0" Y="293.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_32_a_i" />
+      <Anchor Position="0.4318540477513649" Shape="None" GraphId="e_32_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_32_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="827.5" Y="167.0" GraphRef="n30_REACTOME_210342" RelX="0.3047619047619048" RelY="1.088235294117647" />
+      <Point X="847.0" Y="205.0" GraphRef="e_32_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="903.5" Y="163.5" GraphRef="n33_REACTOME_113521" RelX="-1.1162790697674418" RelY="0.967741935483871" />
+      <Point X="847.0" Y="205.0" GraphRef="e_32_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="827.5" Y="318.5" GraphRef="n26_REACTOME_70070" RelX="0.3047619047619048" RelY="-1.0943396226415094" ArrowHead="Arrow" />
+      <Point X="845.0" Y="293.0" GraphRef="e_32_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="898.5" Y="314.5" GraphRef="n34_REACTOME_113548" RelX="-0.6486486486486487" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="845.0" Y="293.0" GraphRef="e_32_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="892.5" Y="241.5" GraphRef="n35_REACTOME_204219" RelX="-1.0588235294117647" RelY="0.08695652173913043" />
+      <Point X="846.0" Y="243.0" GraphRef="e_32_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_a__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="914.0" Y="210.5" GraphRef="n36_REACTOME_109496" RelX="-1.125" RelY="0.6451612903225806" />
+      <Point X="846.0" Y="243.0" GraphRef="e_32_a_p" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_70975">
+    <Comment Source="WikiPathways-description">Mitochondrial citrate synthase dimer catalyzes the irreversible reaction of acetyl-CoA, water, and oxaloacetate to form citrate and coenzyme A. This reaction is the entry point of two-carbon units into the citric acid cycle. The reaction is subject to allosteric regulation. The gene encoding the human enzyme has been cloned (Goldenthal et al. 1998), but the enzyme has not been characterized in detail - its properties are inferred from those of the well-studied homologous pig enzyme (e.g., Morgunov and Srere 1998).</Comment>
+    <BiopaxRef>lit_198413</BiopaxRef>
+    <BiopaxRef>lit_198427</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1017.0" Y="513.0" />
+      <Point X="1080.0" Y="512.0" />
+      <Point X="1100.0" Y="511.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_37_a_i" />
+      <Anchor Position="0.7588307830507773" Shape="None" GraphId="e_37_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_37_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="889.5" Y="721.5" GraphRef="n38_REACTOME_113587" RelX="0.1935483870967742" RelY="-1.1612903225806452" />
+      <Point X="1017.0" Y="513.0" GraphRef="e_37_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="974.5" Y="523.5" GraphRef="n39_REACTOME_113521" RelX="1.1627906976744187" RelY="-0.3870967741935484" />
+      <Point X="1017.0" Y="513.0" GraphRef="e_37_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1017.5" Y="423.5" GraphRef="n25_REACTOME_113559" RelX="0.0" RelY="1.2258064516129032" />
+      <Point X="1017.0" Y="513.0" GraphRef="e_37_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1137.5" Y="511.5" GraphRef="n40_REACTOME_29654" RelX="-1.0943396226415094" RelY="0.0" ArrowHead="Arrow" />
+      <Point X="1100.0" Y="511.0" GraphRef="e_37_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1142.5" Y="582.5" GraphRef="n184_REACTOME_29374" RelX="-0.2857142857142857" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1100.0" Y="511.0" GraphRef="e_37_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1080.5" Y="486.0" GraphRef="n41_REACTOME_70973" RelX="-0.01904761904761905" RelY="1.1578947368421053" />
+      <Point X="1080.0" Y="512.0" GraphRef="e_37_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_48_REACTOME_70971">
+    <Comment Source="WikiPathways-description">Mitochondrial aconitase reversibly converts citrate to isocitrate via a cis-aconitate intermediate. Mitochondrial aconitase activity has been demonstrated in diverse human tissue extracts (Slaughter et al. 1975) and a protein homologous to the well-characterized porcine enzyme has been purified from human tissues (Baldwin et al. 1991).</Comment>
+    <BiopaxRef>lit_198411</BiopaxRef>
+    <BiopaxRef>lit_450996</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1185.5" Y="530.5" GraphRef="n40_REACTOME_29654" RelX="0.7169811320754716" RelY="1.2258064516129032" />
+      <Point X="1272.0" Y="596.0" />
+      <Point X="1408.0" Y="597.5" GraphRef="n49_REACTOME_29938" RelX="-1.088235294117647" RelY="-0.06451612903225806" ArrowHead="Arrow" />
+      <Anchor Position="0.4453477853551699" Shape="None" GraphId="e_48_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_48_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1295.5" Y="574.0" GraphRef="n50_REACTOME_70968" RelX="-0.4235294117647059" RelY="1.1578947368421053" />
+      <Point X="1272.0" Y="596.0" GraphRef="e_48_a_p" RelX="-0.3905545991767667" RelY="-0.004307587490870901" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_REACTOME_450975">
+    <Comment Source="WikiPathways-description">Mitochondrial aconitase reversibly converts isocitrate to citrate via a cis-aconitate intermediate. Mitochondrial aconitase activity has been demonstrated in diverse human tissue extracts (Slaughter et al. 1975) and a protein homologous to the well-characterized porcine enzyme has been purified from human tissues (Baldwin et al. 1991).</Comment>
+    <BiopaxRef>lit_198411</BiopaxRef>
+    <BiopaxRef>lit_450996</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1429.0" Y="580.5" GraphRef="n49_REACTOME_29938" RelX="-0.47058823529411764" RelY="-1.1612903225806452" />
+      <Point X="1360.0" Y="511.0" />
+      <Point X="1196.5" Y="511.5" GraphRef="n40_REACTOME_29654" RelX="1.1320754716981132" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.3730425159326548" Shape="None" GraphId="e_54_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1334.5" Y="530.0" GraphRef="n50_REACTOME_70968" RelX="0.49411764705882355" RelY="-1.1578947368421053" />
+      <Point X="1360.0" Y="511.0" GraphRef="e_54_a_p" RelX="-0.2876669198142281" RelY="-0.2897514627114788" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_REACTOME_70967">
+    <Comment Source="WikiPathways-description">Mitochondrial isocitrate dehydrogenase IDH3 catalyzes the irreversible reaction of isocitrate and NAD+ to form alpha ketoglutarate, CO2, and NADH + H+. The enzyme is a heteromer containing four polypeptide chains, two IDH3A, one IDH3B, and one IDH3G, and two Mn++. It is activated by ADP (Soundar et al. 2003, 2006; Bzymek and Colman 2007). This is the first of four oxidation reactions in the citric acid cycle, and the first decarboxylation.</Comment>
+    <BiopaxRef>lit_450990</BiopaxRef>
+    <BiopaxRef>lit_198407</BiopaxRef>
+    <BiopaxRef>lit_451003</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1460.0" Y="641.0" />
+      <Point X="1459.0" Y="675.0" />
+      <Point X="1460.0" Y="695.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_58_a_i" />
+      <Anchor Position="0.62943929785851" Shape="None" GraphId="e_58_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_58_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1450.0" Y="617.5" GraphRef="n49_REACTOME_29938" RelX="0.14705882352941177" RelY="1.2258064516129032" />
+      <Point X="1460.0" Y="641.0" GraphRef="e_58_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1416.5" Y="640.5" GraphRef="n196_REACTOME_113526" RelX="1.1372549019607843" RelY="0.0" />
+      <Point X="1460.0" Y="641.0" GraphRef="e_58_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1461.5" Y="736.5" GraphRef="n59_REACTOME_113594" RelX="-0.019417475728155338" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="695.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1404.5" Y="718.5" GraphRef="n194_REACTOME_29362" RelX="1.1320754716981132" RelY="-0.7096774193548387" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="695.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1476.5" Y="703.5" GraphRef="n198_REACTOME_113529" RelX="-1.1515151515151516" RelY="-0.5806451612903226" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="695.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1398.5" Y="691.5" GraphRef="n207_REACTOME_29376" RelX="1.1627906976744187" RelY="0.06451612903225806" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="695.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1490.0" Y="675.5" GraphRef="n60_REACTOME_70965" RelX="-1.0666666666666667" RelY="0.0" />
+      <Point X="1459.0" Y="675.0" GraphRef="e_58_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_a__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1497.5" Y="639.5" GraphRef="n61_REACTOME_113581" RelX="-0.7804878048780488" RelY="1.2258064516129032" />
+      <Point X="1459.0" Y="675.0" GraphRef="e_58_a_p" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_REACTOME_450984">
+    <Comment Source="WikiPathways-description">Mitochondrial isocitrate dehydrogenase IDH2 catalyzes the irreversible reaction of isocitrate and NADP+ to form alpha ketoglutarate, CO2, and NADPH + H+ (Hartong et al. 2008). The structure of the active human enzyme has not been determined experimentally, but is inferred to be a homodimer with one Mn++ bound to each subunit based on detailed studies of the homologous pig enzyme (Ceccarelli et al. 2002). NADP-specific IDH2 was the first isocitrate dehydrogenase isoenzyme to be characterized in biochemical studies of the mammalian TCA cycle (Ochoa 1948). Later work with yeast revealed the existence of both NADP-specific (IDH2-homologous) and NAD-specific (IDH3-homologous) enzymes and demonstrated the ADP-dependence of the latter (Kornberg and Pricer 1951), consistent with the now widely accepted view that IDH3 mediates the conversion of isocitrate to alpha-ketoglutarate in the TCA cycle. The physiological function of IDH2 is thus unclear. The recent observation that individuals homozygous for IDH3 mutations that sharply reduce its activity do not show symptoms of deficient energy metabolism in most tissues raises the possibility that the IDH2 reaction may play an accessory role in the TCA cycle (Hartong et al. 2008).</Comment>
+    <BiopaxRef>lit_451000</BiopaxRef>
+    <BiopaxRef>lit_450998</BiopaxRef>
+    <BiopaxRef>lit_450968</BiopaxRef>
+    <BiopaxRef>lit_450970</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1502.0" Y="470.0" />
+      <Point X="1534.0" Y="469.0" />
+      <Point X="1566.0" Y="468.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_68_a_i" />
+      <Anchor Position="0.5" Shape="None" GraphId="e_68_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_68_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1501.0" Y="441.5" GraphRef="n69_REACTOME_113563" RelX="0.0" RelY="1.2258064516129032" />
+      <Point X="1502.0" Y="470.0" GraphRef="e_68_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1451.0" Y="580.5" GraphRef="n49_REACTOME_29938" RelX="0.17647058823529413" RelY="-1.1612903225806452" />
+      <Point X="1502.0" Y="470.0" GraphRef="e_68_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1498.5" Y="736.5" GraphRef="n59_REACTOME_113594" RelX="0.6990291262135923" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1595.0" Y="698.0" />
+      <Point X="1595.0" Y="519.0" />
+      <Point X="1566.0" Y="468.0" GraphRef="e_68_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1595.5" Y="446.5" GraphRef="n70_REACTOME_113600" RelX="-0.5901639344262295" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="1566.0" Y="468.0" GraphRef="e_68_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1604.5" Y="490.5" GraphRef="n192_REACTOME_113529" RelX="-1.1515151515151516" RelY="-0.5806451612903226" ArrowHead="Arrow" />
+      <Point X="1566.0" Y="468.0" GraphRef="e_68_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1624.5" Y="464.5" GraphRef="n193_REACTOME_29376" RelX="-1.1162790697674418" RelY="0.06451612903225806" ArrowHead="Arrow" />
+      <Point X="1566.0" Y="468.0" GraphRef="e_68_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1532.5" Y="499.5" GraphRef="n71_REACTOME_450982" RelX="0.0" RelY="-1.2173913043478262" />
+      <Point X="1534.0" Y="469.0" GraphRef="e_68_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_REACTOME_450971">
+    <Comment Source="WikiPathways-description">NNT (nicotinamide nucleotide transhydrogenase) associated with the inner mitochondrial membrane catalyzes the reaction of mitochondrial NADPH and NAD+ to form NADP+ and NADH. The reaction is coupled to the translocation of a proton across the inner mitochondrial membrane into the mitochondrial matrix (White et al, 2000). The active form of NNT is inferred to be a homodimer based on the known structure of its bovine homolog (Yamaguchi and Hatefi 1991).</Comment>
+    <BiopaxRef>lit_450980</BiopaxRef>
+    <BiopaxRef>lit_450981</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1594.0" Y="361.0" />
+      <Point X="1560.0" Y="360.0" />
+      <Point X="1525.0" Y="361.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_78_a_i" />
+      <Anchor Position="0.4927597074667723" Shape="None" GraphId="e_78_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_78_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1608.5" Y="409.5" GraphRef="n70_REACTOME_113600" RelX="-0.16393442622950818" RelY="-1.1612903225806452" />
+      <Point X="1594.0" Y="361.0" GraphRef="e_78_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1627.5" Y="324.5" GraphRef="n191_REACTOME_113526" RelX="-0.5490196078431373" RelY="1.2258064516129032" />
+      <Point X="1594.0" Y="361.0" GraphRef="e_78_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1914.5" Y="326.5" GraphRef="n242_REACTOME_70106" RelX="-1.1515151515151516" RelY="0.06451612903225806" />
+      <Point X="1594.0" Y="361.0" GraphRef="e_78_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1507.0" Y="404.5" GraphRef="n69_REACTOME_113563" RelX="0.20689655172413793" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1525.0" Y="361.0" GraphRef="e_78_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1497.5" Y="345.5" GraphRef="n214_REACTOME_29362" RelX="1.1320754716981132" RelY="0.8387096774193549" ArrowHead="Arrow" />
+      <Point X="1525.0" Y="361.0" GraphRef="e_78_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1484.5" Y="379.5" GraphRef="n216_REACTOME_113529" RelX="1.2121212121212122" RelY="-0.5161290322580645" ArrowHead="Arrow" />
+      <Point X="1525.0" Y="361.0" GraphRef="e_78_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1561.0" Y="331.5" GraphRef="n79_REACTOME_451008" RelX="-0.02857142857142857" RelY="1.3043478260869565" />
+      <Point X="1560.0" Y="360.0" GraphRef="e_78_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_REACTOME_71401">
+    <Comment Source="WikiPathways-description">The mitochondrial alpha-ketoglutarate dehydrogenase complex catalyzes the reaction of alpha-ketoglutarate, CoASH, and NAD+ to form succinyl-CoA, CO2, and NADH + H+. The enzyme complex contains multiple copies of three different proteins, E1 (OGDH), E2 (DLST), and E3 (DLD), each with distinct catalytic activities (Reed and Hackert 1990; Zhou et al 2001). The reaction starts with the oxidative decarboxylation of alpha ketoglutarate catalyzed by E1alpha and beta (alpha ketoglutarate dehydrogenase). Lipoamide cofactor associated with E1 is reduced at the same time. Next, the succinyl group derived from alpha ketoglutarate is transferred to coenzyme A in two steps catalyzed E2 (dihydrolipolyl transacetylase). Finally, the oxidized form of lipoamide is regenerated and electrons are transferred to NAD+ in two steps catalyzed by E3 (dihydrolipoyl dehydrogenase). The biochemical details of this reaction have been worked out with alpha ketoglutarate dehydrogenase complex and subunits purified from bovine tissue (McCartney et al. 1998). While all of the human proteins are known as predicted protein products of cloned genes, direct experimental evidence for their functions is available only for E3 (DLD) (Brautigam et al. 2005).</Comment>
+    <BiopaxRef>lit_450848</BiopaxRef>
+    <BiopaxRef>lit_69985</BiopaxRef>
+    <BiopaxRef>lit_69983</BiopaxRef>
+    <BiopaxRef>lit_69972</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1460.0" Y="790.0" />
+      <Point X="1460.0" Y="822.0" />
+      <Point X="1460.0" Y="842.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_98_a_i" />
+      <Anchor Position="0.6153846153846154" Shape="None" GraphId="e_98_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_98_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1461.5" Y="773.5" GraphRef="n59_REACTOME_113594" RelX="-0.019417475728155338" RelY="1.2258064516129032" />
+      <Point X="1460.0" Y="790.0" GraphRef="e_98_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1314.5" Y="764.5" GraphRef="n22_REACTOME_113526" RelX="1.1372549019607843" RelY="0.25806451612903225" />
+      <Point X="1460.0" Y="790.0" GraphRef="e_98_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1317.5" Y="734.5" GraphRef="n180_REACTOME_29374" RelX="1.1111111111111112" RelY="0.7741935483870968" />
+      <Point X="1460.0" Y="790.0" GraphRef="e_98_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1460.0" Y="890.5" GraphRef="n99_REACTOME_70958" RelX="-0.020833333333333332" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="842.0" GraphRef="e_98_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1306.5" Y="865.5" GraphRef="n24_REACTOME_29376" RelX="1.1627906976744187" RelY="-0.25806451612903225" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="842.0" GraphRef="e_98_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1396.5" Y="891.5" GraphRef="n200_REACTOME_113529" RelX="1.2121212121212122" RelY="-0.8387096774193549" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="842.0" GraphRef="e_98_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1341.5" Y="895.5" GraphRef="n202_REACTOME_29362" RelX="1.1320754716981132" RelY="-0.7741935483870968" ArrowHead="Arrow" />
+      <Point X="1460.0" Y="842.0" GraphRef="e_98_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1428.5" Y="819.5" GraphRef="n100_REACTOME_69996" RelX="1.056910569105691" RelY="0.1509433962264151" />
+      <Point X="1460.0" Y="822.0" GraphRef="e_98_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_REACTOME_71775">
+    <Comment Source="WikiPathways-description">Mitochondrial succinate CoA ligase (ADP-forming) catalyzes the reversible conversion of succinyl CoA to succinate plus Coenzyme A, coupled to the conversion of ADP and orthophosphate to ATP. The enzyme is a heterodimer containing SUCLG1 and SUCLA2 monomers.&lt;p&gt;The enzyme catalyzing the reaction in vertebrates is a heterodimer that occurs in two isoforms. The enzymes have been purified from pigeon and rat tissue and characterized in detail. Both isoforms, an alpha:betaA heterodimer and an alpha:betaG heterodimer, catalyze the reversible conversion of succinyl CoA to succinate plus Coenzyme A. The alpha:betaA heterodimer couples this conversion to the synthesis of ATP from ADP and orthophosphate, while the alpha:betaG heterodimer couples it to the synthesis of GTP from GDP and orthophosphate (Johnson et al. 1998a,b; Lambeth et al. 2004). Consistent with these results in model systems, patients homozygous for a mutant allele of the gene encoding the ADP enzyme beta subunit, SUCLA2, are deficient in succinyl CoA ligase activity (Elpeleg et al. 2005).&lt;p&gt;Both isoforms are found in vivo, and appear to be expressed at different levels in various tissues. Their relative contributions to the flux of carbon atoms through the TCA cycle are unknown. Genetic and biochemical data suggest that the alpha:betaA isoform may be required to catalyze the reverse reaction, conversion of succinate, Coenzyme A, and ATP to succinyl CoA, ADP, and orthophosphate for heme biosynthesis (Furuyama and Sassa 2000).</Comment>
+    <BiopaxRef>lit_156639</BiopaxRef>
+    <BiopaxRef>lit_156645</BiopaxRef>
+    <BiopaxRef>lit_156641</BiopaxRef>
+    <BiopaxRef>lit_156646</BiopaxRef>
+    <BiopaxRef>lit_450989</BiopaxRef>
+    <BiopaxRef>lit_156637</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1437.0" Y="963.0" />
+      <Point X="1437.0" Y="1011.0" />
+      <Point X="1413.0" Y="1041.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_122_a_i" />
+      <Anchor Position="0.555435047849444" Shape="None" GraphId="e_122_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_122_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1425.5" Y="956.5" GraphRef="n123_REACTOME_113525" RelX="1.1627906976744187" RelY="0.5161290322580645" />
+      <Point X="1437.0" Y="963.0" GraphRef="e_122_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1479.0" Y="952.0" GraphRef="n124_REACTOME_113548" RelX="-1.0857142857142856" RelY="0.4117647058823529" />
+      <Point X="1437.0" Y="963.0" GraphRef="e_122_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1454.0" Y="927.5" GraphRef="n99_REACTOME_70958" RelX="-0.14583333333333334" RelY="1.2258064516129032" />
+      <Point X="1437.0" Y="963.0" GraphRef="e_122_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1348.5" Y="1032.5" GraphRef="n21_REACTOME_29374" RelX="1.1111111111111112" RelY="0.25806451612903225" ArrowHead="Arrow" />
+      <Point X="1413.0" Y="1041.0" GraphRef="e_122_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1377.5" Y="1117.5" GraphRef="n125_REACTOME_113573" RelX="0.34146341463414637" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1413.0" Y="1041.0" GraphRef="e_122_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1307.5" Y="1091.5" GraphRef="n126_REACTOME_113536" RelX="0.8493150684931506" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1413.0" Y="1041.0" GraphRef="e_122_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1503.0" Y="1030.5" GraphRef="n127_REACTOME_156627" RelX="-1.0666666666666667" RelY="-0.49056603773584906" />
+      <Point X="1437.0" Y="1011.0" GraphRef="e_122_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_REACTOME_70997">
+    <Comment Source="WikiPathways-description">Mitochondrial succinate CoA ligase (ADP-forming) catalyzes the reversible conversion of succinyl CoA to succinate plus Coenzyme A, coupled to the conversion of ADP and orthophosphate to ATP. The enzyme is a heterodimer containing SUCLG1 and SUCLA2 monomers.&lt;p&gt;The enzyme catalyzing the reaction in vertebrates is a heterodimer that occurs in two isoforms. The enzymes have been purified from pigeon and rat tissue and characterized in detail. Both isoforms, an alpha:betaA heterodimer and an alpha:betaG heterodimer, catalyze the reversible conversion of succinyl CoA to succinate plus Coenzyme A. The alpha:betaA heterodimer couples this conversion to the synthesis of ATP from ADP and orthophosphate, while the alpha:betaG heterodimer couples it to the synthesis of GTP from GDP and orthophosphate (Johnson et al. 1998a,b; Lambeth et al. 2004). Consistent with these results in model systems, patients homozygous for a mutant allele of the gene encoding the ADP enzyme beta subunit, SUCLA2, are deficient in succinyl CoA ligase activity (Elpeleg et al. 2005).&lt;p&gt;Both isoforms are found in vivo, and appear to be expressed at different levels in various tissues. Their relative contributions to the flux of carbon atoms through the TCA cycle are unknown. Genetic and biochemical data suggest that the alpha:betaA isoform may be required to catalyze the reverse reaction, conversion of succinate, Coenzyme A, and ATP to succinyl CoA, ADP, and orthophosphate for heme biosynthesis (Furuyama and Sassa 2000).</Comment>
+    <BiopaxRef>lit_451032</BiopaxRef>
+    <BiopaxRef>lit_156639</BiopaxRef>
+    <BiopaxRef>lit_156645</BiopaxRef>
+    <BiopaxRef>lit_156641</BiopaxRef>
+    <BiopaxRef>lit_156646</BiopaxRef>
+    <BiopaxRef>lit_156637</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1460.0" Y="995.0" />
+      <Point X="1462.0" Y="1045.0" />
+      <Point X="1445.0" Y="1073.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_134_a_i" />
+      <Anchor Position="0.6043719923995388" Shape="None" GraphId="e_134_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_134_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1503.5" Y="992.5" GraphRef="n135_REACTOME_113581" RelX="-1.1219512195121952" RelY="0.06451612903225806" />
+      <Point X="1460.0" Y="995.0" GraphRef="e_134_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1460.0" Y="927.5" GraphRef="n99_REACTOME_70958" RelX="-0.020833333333333332" RelY="1.2258064516129032" />
+      <Point X="1460.0" Y="995.0" GraphRef="e_134_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1497.0" Y="965.0" GraphRef="n124_REACTOME_113548" RelX="-0.5714285714285714" RelY="1.1764705882352942" />
+      <Point X="1460.0" Y="995.0" GraphRef="e_134_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1348.5" Y="1038.5" GraphRef="n21_REACTOME_29374" RelX="1.1111111111111112" RelY="0.6451612903225806" ArrowHead="Arrow" />
+      <Point X="1445.0" Y="1073.0" GraphRef="e_134_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1444.0" Y="1105.5" GraphRef="n137_REACTOME_113593" RelX="0.0" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="1445.0" Y="1073.0" GraphRef="e_134_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1316.5" Y="1101.5" GraphRef="n126_REACTOME_113536" RelX="1.095890410958904" RelY="-0.5161290322580645" ArrowHead="Arrow" />
+      <Point X="1445.0" Y="1073.0" GraphRef="e_134_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1517.0" Y="1092.5" GraphRef="n138_REACTOME_156625" RelX="-0.6666666666666666" RelY="-1.0943396226415094" />
+      <Point X="1462.0" Y="1045.0" GraphRef="e_134_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_REACTOME_70994">
+    <Comment Source="WikiPathways-description">The succinate dehydrogenase complex, associated with the inner mitochondrial membrane, catalyzes the dehydrogenation of succinate to fumarate, reducing the FAD cofactor bound to the enzyme. This redox potential is then used in the electron transfer chain to drive a proton motive force to generate ATP.</Comment>
+    <BiopaxRef>lit_198397</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1237.5" Y="1109.5" GraphRef="n126_REACTOME_113536" RelX="-1.0684931506849316" RelY="0.0" />
+      <Point X="1192.0" Y="1109.0" />
+      <Point X="1165.5" Y="1109.5" GraphRef="n143_REACTOME_113588" RelX="1.0985915492957747" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.625" Shape="None" GraphId="e_142_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1190.0" Y="1174.5" GraphRef="n144_REACTOME_70990" RelX="0.0" RelY="-1.0943396226415094" />
+      <Point X="1192.0" Y="1109.0" GraphRef="e_142_a_p" RelX="-0.4980522667267451" RelY="-0.005473101832194516" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_REACTOME_70982">
+    <Comment Source="WikiPathways-description">Mitochondrial fumarate hydratase catalyzes the reversible reaction of fumarate and water to form malate, the seventh step of the TCA cycle (Bourgeron et al. 1994). Unpublished crystallographic data indicate that the protein is a tetramer (PDB 3E04).</Comment>
+    <BiopaxRef>lit_198390</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1068.0" Y="1065.0" />
+      <Point X="1003.0" Y="1065.0" />
+      <Point X="921.0" Y="1065.5" GraphRef="n153_REACTOME_113544" RelX="1.0789473684210527" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_151_a_i" />
+      <Anchor Position="0.4421768707482993" Shape="None" GraphId="e_151_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1061.5" Y="1088.5" GraphRef="n152_REACTOME_113521" RelX="0.13953488372093023" RelY="-1.1612903225806452" />
+      <Point X="1068.0" Y="1065.0" GraphRef="e_151_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1105.5" Y="1091.5" GraphRef="n143_REACTOME_113588" RelX="-0.5915492957746479" RelY="-1.1612903225806452" />
+      <Point X="1068.0" Y="1065.0" GraphRef="e_151_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="978.5" Y="1090.0" GraphRef="n154_REACTOME_451041" RelX="0.2601626016260163" RelY="-1.1578947368421053" />
+      <Point X="1003.0" Y="1065.0" GraphRef="e_151_a_p" RelX="6.740313124282693E-4" RelY="-4.109946985408897E-6" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_158_REACTOME_451033">
+    <Comment Source="WikiPathways-description">Mitochondrial fumarate hydratase catalyzes the reversible reaction of malate to form fumarate and water (Bourgeron et al. 1994). Unpublished crystallographic data indicate that the protein is a tetramer (PDB 3E04).</Comment>
+    <BiopaxRef>lit_198390</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="880.0" Y="1084.5" GraphRef="n153_REACTOME_113544" RelX="0.0" RelY="1.2258064516129032" />
+      <Point X="881.0" Y="1156.0" />
+      <Point X="1036.0" Y="1156.0" />
+      <Anchor Position="0.3172015040862372" Shape="None" GraphId="e_158_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_158_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_158_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1096.5" Y="1128.5" GraphRef="n143_REACTOME_113588" RelX="-0.8450704225352113" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="1036.0" Y="1156.0" GraphRef="e_158_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_158_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1051.5" Y="1125.5" GraphRef="n152_REACTOME_113521" RelX="-0.32558139534883723" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="1036.0" Y="1156.0" GraphRef="e_158_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_158_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="927.5" Y="1134.0" GraphRef="n154_REACTOME_451041" RelX="-0.5691056910569106" RelY="1.1578947368421053" />
+      <Point X="881.0" Y="1156.0" GraphRef="e_158_a_p" RelX="-0.3413660943518835" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_REACTOME_70979">
+    <Comment Source="WikiPathways-description">Mitochondrial malate dehydrogenase catalyzes the reversible reaction of malate and NAD+ to form oxaloacetate and NADH + H+ (Luo et al. 2006). This reaction is highly endergonic but is pulled in the direction annotated here when the TCA cycle is operating. Unpublished crystallographic data indicate that the protein is a dimer (PDB 3E04).</Comment>
+    <BiopaxRef>lit_451039</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="965.0" Y="1003.0" />
+      <Point X="965.0" Y="916.0" />
+      <Point X="964.0" Y="834.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_163_a_i" />
+      <Anchor Position="0.5147743269162613" Shape="None" GraphId="e_163_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_163_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="901.0" Y="1047.5" GraphRef="n153_REACTOME_113544" RelX="0.5526315789473685" RelY="-1.1612903225806452" />
+      <Point X="965.0" Y="1003.0" GraphRef="e_163_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="909.5" Y="980.5" GraphRef="n179_REACTOME_113526" RelX="1.1372549019607843" RelY="0.5806451612903226" />
+      <Point X="965.0" Y="1003.0" GraphRef="e_163_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="893.5" Y="758.5" GraphRef="n38_REACTOME_113587" RelX="0.27956989247311825" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="964.0" Y="834.0" GraphRef="e_163_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="910.5" Y="853.5" GraphRef="n218_REACTOME_29362" RelX="1.1320754716981132" RelY="-0.6451612903225806" ArrowHead="Arrow" />
+      <Point X="964.0" Y="834.0" GraphRef="e_163_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="900.5" Y="817.5" GraphRef="n234_REACTOME_113529" RelX="1.2121212121212122" RelY="0.1935483870967742" ArrowHead="Arrow" />
+      <Point X="964.0" Y="834.0" GraphRef="e_163_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="941.5" Y="916.5" GraphRef="n164_REACTOME_198511" RelX="1.0608695652173914" RelY="-0.07547169811320754" />
+      <Point X="965.0" Y="916.0" GraphRef="e_163_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_REACTOME_71783">
+    <Comment Source="WikiPathways-description">Mitochondrial malate dehydrogenase catalyzes the reversible reaction of oxaloacetate and NADH + H+ to form malate and NAD+ (Luo et al. 2006). Unpublished crystallographic data indicate that the protein is a dimer (PDB 3E04).</Comment>
+    <BiopaxRef>lit_451039</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="797.0" Y="833.0" />
+      <Point X="796.0" Y="914.0" />
+      <Point X="796.0" Y="1016.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_171_a_i" />
+      <Anchor Position="0.44264175055702326" Shape="None" GraphId="e_171_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_171_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="866.5" Y="758.5" GraphRef="n38_REACTOME_113587" RelX="-0.3010752688172043" RelY="1.2258064516129032" />
+      <Point X="797.0" Y="833.0" GraphRef="e_171_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="861.5" Y="817.5" GraphRef="n234_REACTOME_113529" RelX="-1.1515151515151516" RelY="0.1935483870967742" />
+      <Point X="797.0" Y="833.0" GraphRef="e_171_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="851.5" Y="853.5" GraphRef="n218_REACTOME_29362" RelX="-1.0943396226415094" RelY="-0.6451612903225806" />
+      <Point X="797.0" Y="833.0" GraphRef="e_171_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="853.0" Y="1047.5" GraphRef="n153_REACTOME_113544" RelX="-0.7105263157894737" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="796.0" Y="1016.0" GraphRef="e_171_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="852.5" Y="984.5" GraphRef="n179_REACTOME_113526" RelX="-1.0980392156862746" RelY="0.8387096774193549" ArrowHead="Arrow" />
+      <Point X="796.0" Y="1016.0" GraphRef="e_171_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="820.5" Y="915.5" GraphRef="n164_REACTOME_198511" RelX="-1.0434782608695652" RelY="-0.11320754716981132" />
+      <Point X="796.0" Y="914.0" GraphRef="e_171_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_244_REACTOME_880050">
+    <Comment Source="WikiPathways-description">L2HDGH associated with the mitochondrial inner membrane catalyzes the FAD-dependent reaction of (S)-2-hydroxyglutarate to form 2-oxoglutarate (Rzem et al. 2006). L2HDGH mutations are associated with high levels of (S)-2-hydroxyglutarate in vivo and variable neurological symptoms (Rzem et al. 2004; Topcu et al. 2004).</Comment>
+    <BiopaxRef>lit_880025</BiopaxRef>
+    <BiopaxRef>lit_879998</BiopaxRef>
+    <BiopaxRef>lit_880030</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1665.0" Y="721.0" />
+      <Point X="1638.0" Y="720.0" />
+      <Point X="1610.0" Y="721.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_244_a_i" />
+      <Anchor Position="0.49092110003078826" Shape="None" GraphId="e_244_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_244_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_244_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1671.5" Y="739.5" GraphRef="n245_REACTOME_113596" RelX="-0.3076923076923077" RelY="-1.1612903225806452" />
+      <Point X="1665.0" Y="721.0" GraphRef="e_244_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_244_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1697.5" Y="721.5" GraphRef="n246_REACTOME_880013" RelX="-1.0458715596330275" RelY="-0.0975609756097561" />
+      <Point X="1665.0" Y="721.0" GraphRef="e_244_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_244_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1517.5" Y="742.5" GraphRef="n59_REACTOME_113594" RelX="1.0679611650485437" RelY="-0.7741935483870968" ArrowHead="Arrow" />
+      <Point X="1610.0" Y="721.0" GraphRef="e_244_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_244_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1597.5" Y="742.5" GraphRef="n247_REACTOME_31649" RelX="0.23529411764705882" RelY="-1.2" ArrowHead="Arrow" />
+      <Point X="1610.0" Y="721.0" GraphRef="e_244_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_244_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1637.0" Y="694.0" GraphRef="n248_REACTOME_879993" RelX="0.0" RelY="1.25" />
+      <Point X="1638.0" Y="720.0" GraphRef="e_244_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_REACTOME_880007">
+    <Comment Source="WikiPathways-description">D2HDGH associated with the mitochondrial inner membrane catalyzes the FAD-dependent reaction of (R)-2-hydroxyglutarate to form 2-oxoglutarate (Achouri et al. 2004). L2HDGH mutations are associated with high levels of (S)-2-hydroxyglutarate in vivo and variable neurological symptoms (Struys et al. 2005; Wanders and Mooyer 1995)).</Comment>
+    <BiopaxRef>lit_880023</BiopaxRef>
+    <BiopaxRef>lit_880012</BiopaxRef>
+    <BiopaxRef>lit_880024</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1665.0" Y="792.0" />
+      <Point X="1642.0" Y="792.0" />
+      <Point X="1611.0" Y="791.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_250_a_i" />
+      <Anchor Position="0.4257987789525585" Shape="None" GraphId="e_250_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_250_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1671.5" Y="776.5" GraphRef="n245_REACTOME_113596" RelX="-0.3076923076923077" RelY="1.2258064516129032" />
+      <Point X="1665.0" Y="792.0" GraphRef="e_250_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1696.0" Y="791.0" GraphRef="n251_REACTOME_879997" RelX="-1.05" RelY="0.0" />
+      <Point X="1665.0" Y="792.0" GraphRef="e_250_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1517.5" Y="766.5" GraphRef="n59_REACTOME_113594" RelX="1.0679611650485437" RelY="0.7741935483870968" ArrowHead="Arrow" />
+      <Point X="1611.0" Y="791.0" GraphRef="e_250_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1598.5" Y="773.5" GraphRef="n247_REACTOME_31649" RelX="0.27450980392156865" RelY="1.28" ArrowHead="Arrow" />
+      <Point X="1611.0" Y="791.0" GraphRef="e_250_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1642.5" Y="835.5" GraphRef="n252_REACTOME_880006" RelX="-0.029850746268656716" RelY="-1.2173913043478262" />
+      <Point X="1642.0" Y="792.0" GraphRef="e_250_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_a__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1588.0" Y="801.0" GraphRef="n253_REACTOME_880069" RelX="1.15" RelY="-0.3076923076923077" />
+      <Point X="1642.0" Y="792.0" GraphRef="e_250_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_a__1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1606.0" Y="819.0" GraphRef="n254_REACTOME_880067" RelX="0.9" RelY="-1.2" />
+      <Point X="1642.0" Y="792.0" GraphRef="e_250_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_250_a__2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1668.0" Y="806.5" GraphRef="n255_REACTOME_113527" RelX="-1.1428571428571428" RelY="-0.8148148148148148" />
+      <Point X="1642.0" Y="792.0" GraphRef="e_250_a_p" RelX="0.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_REACTOME_880002">
+    <Comment Source="WikiPathways-description">ADHFE1 catalyzes the reversible reaction of (R)-2-hydroxyglutarate and succinate semialdehyde to form 2-oxoglutarate and 4-hydroxybutyrate (Struys et al. 2005). The localization of human ADHFE1 to the mitochondrial matrix is inferred from the location determined experimentally for its rat homolog (Kaufman et al. 1988).</Comment>
+    <BiopaxRef>lit_880028</BiopaxRef>
+    <BiopaxRef>lit_880012</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1755.0" Y="841.0" />
+      <Point X="1751.0" Y="869.0" />
+      <Point X="1580.0" Y="870.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_257_a_i" />
+      <Anchor Position="0.14192718814276167" Shape="None" GraphId="e_257_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_257_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1775.5" Y="839.0" GraphRef="n258_REACTOME_880046" RelX="-1.0526315789473684" RelY="0.19047619047619047" />
+      <Point X="1755.0" Y="841.0" GraphRef="e_257_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1757.0" Y="811.0" GraphRef="n251_REACTOME_879997" RelX="-0.03333333333333333" RelY="1.1764705882352942" />
+      <Point X="1755.0" Y="841.0" GraphRef="e_257_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1477.5" Y="773.5" GraphRef="n59_REACTOME_113594" RelX="0.2912621359223301" RelY="1.2258064516129032" ArrowHead="Arrow" />
+      <Point X="1580.0" Y="870.0" GraphRef="e_257_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1536.5" Y="862.5" GraphRef="n259_REACTOME_880041" RelX="1.1320754716981132" RelY="0.09523809523809523" ArrowHead="Arrow" />
+      <Point X="1580.0" Y="870.0" GraphRef="e_257_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1775.5" Y="890.5" GraphRef="n260_REACTOME_880020" RelX="-0.3880597014925373" RelY="-1.2173913043478262" />
+      <Point X="1751.0" Y="869.0" GraphRef="e_257_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_262_REACTOME_880033">
+    <Comment Source="WikiPathways-description">ADHFE1 catalyzes the reversible reaction of 2-oxoglutarate and 4-hydroxybutyrate to form (R)-2-hydroxyglutarate and succinate semialdehyde (Struys et al. 2005). The localization of human ADHFE1 to the mitochondrial matrix is inferred from the location determined experimentally for its rat homolog (Kaufman et al. 1988).</Comment>
+    <BiopaxRef>lit_880028</BiopaxRef>
+    <BiopaxRef>lit_880012</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1579.0" Y="882.0" />
+      <Point X="1726.0" Y="882.0" />
+      <Point X="1744.0" Y="827.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_262_a_i" />
+      <Anchor Position="0.7175262791794409" Shape="None" GraphId="e_262_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_262_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_262_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1476.5" Y="773.5" GraphRef="n59_REACTOME_113594" RelX="0.27184466019417475" RelY="1.2258064516129032" />
+      <Point X="1579.0" Y="882.0" GraphRef="e_262_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_262_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1536.5" Y="867.5" GraphRef="n259_REACTOME_880041" RelX="1.1320754716981132" RelY="0.25396825396825395" />
+      <Point X="1579.0" Y="882.0" GraphRef="e_262_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_262_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1775.5" Y="830.0" GraphRef="n258_REACTOME_880046" RelX="-1.0526315789473684" RelY="-0.23809523809523808" ArrowHead="Arrow" />
+      <Point X="1744.0" Y="827.0" GraphRef="e_262_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_262_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1751.0" Y="811.0" GraphRef="n251_REACTOME_879997" RelX="-0.13333333333333333" RelY="1.1764705882352942" ArrowHead="Arrow" />
+      <Point X="1744.0" Y="827.0" GraphRef="e_262_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_262_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1755.5" Y="890.5" GraphRef="n260_REACTOME_880020" RelX="-0.9850746268656716" RelY="-1.2173913043478262" />
+      <Point X="1726.0" Y="882.0" GraphRef="e_262_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_REACTOME_880053">
+    <Comment Source="WikiPathways-description">Mutant forms of IDH1 in which the arginine residue at position 132 has been replaced by histidine, cystine, leucine, or serine catalyze the reaction of 2-oxoglutarate and NADPH + H+ to form (R)-2-hydroxyglutarate and NADP+. Like normal IDH1, the mutant enzyme forms a dimer located in the cytosol (Dang et al. 2009).&lt;p&gt;Such mutations occur frequently as a somatic event in human glioblastomas (Parsons et al. 2008). Cells expressing the mutant protein accumulate elevated levels of 2-hydroxyglutarate, probably in the cytosol as IDH1 is a cytosolic enzyme. The fate of the 2-hydroxyglutarate is unclear, but the high frequency with which the mutation is found in surveys of primary tumors is consistent with the possibility that it is advantageous to the tumor cells (Dang et al. 2009).</Comment>
+    <BiopaxRef>lit_879979</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="324.0" Y="256.0" />
+      <Point X="344.0" Y="255.0" />
+      <Point X="367.0" Y="254.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_266_a_i" />
+      <Anchor Position="0.4651919479452935" Shape="None" GraphId="e_266_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_266_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="310.0" Y="272.5" GraphRef="n267_REACTOME_29364" RelX="0.4074074074074074" RelY="-1.1612903225806452" />
+      <Point X="324.0" Y="256.0" GraphRef="e_266_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="303.5" Y="255.5" GraphRef="n268_REACTOME_29406" RelX="1.075268817204301" RelY="0.0" />
+      <Point X="324.0" Y="256.0" GraphRef="e_266_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="305.5" Y="238.5" GraphRef="n273_REACTOME_70106" RelX="0.7878787878787878" RelY="1.2258064516129032" />
+      <Point X="324.0" Y="256.0" GraphRef="e_266_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="390.0" Y="254.0" GraphRef="n269_REACTOME_880042" RelX="-1.0576923076923077" RelY="-0.043478260869565216" ArrowHead="Arrow" />
+      <Point X="367.0" Y="254.0" GraphRef="e_266_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="374.5" Y="272.5" GraphRef="n270_REACTOME_29366" RelX="-0.22641509433962265" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="367.0" Y="254.0" GraphRef="e_266_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_266_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="343.0" Y="203.5" GraphRef="n271_REACTOME_880004" RelX="0.0" RelY="1.1372549019607843" />
+      <Point X="344.0" Y="255.0" GraphRef="e_266_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="cytosol" GraphId="comp_text_1" GroupRef="group_comp_1">
+    <Graphics CenterX="202.5" CenterY="1275.5" Width="59.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="mitochondrial matrix" GraphId="comp_text_2" GroupRef="group_comp_2">
+    <Graphics CenterX="591.5" CenterY="1206.5" Width="139.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle" />
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics CenterX="1075.0" CenterY="665.0" Width="1810.0" Height="1270.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics CenterX="1208.0" CenterY="649.0" Width="1378.0" Height="1162.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_198413">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9809442</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and molecular analysis of the human citrate synthase gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldenthal, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marin-Garcia, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ananthakrishnan, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genome 41:733-738</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_179524">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11377399</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Selective active site inhibitors of human lactate dehydrogenases A4, B4, and C4</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deck, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hunsaker, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deck, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Royer, RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldberg, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vander Jagt, DL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Pharmacol 62:81-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450980">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10673423</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The high-resolution structure of the NADP(H)-binding component (dIII) of proton-translocating transhydrogenase from human heart mitochondria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">White, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peake, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McSweeney, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leonard, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cotton, NP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson, JB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure 8:1-12</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450877">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11485553</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of pyruvate dehydrogenase activity through phosphorylation at multiple sites</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kolobova, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tuganova, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boulatnikov, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Popov, KM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 358:69-77</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450837">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10679936</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutations in the X-linked pyruvate dehydrogenase (E1) alpha subunit gene (PDHA1) in patients with a pyruvate dehydrogenase complex deficiency</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lissens, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Meirleir, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seneca, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liebaers, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, GK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ito, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Naito, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kuroda, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kerr, DS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wexler, ID</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patel, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robinson, BH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seyda, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mutat 15:209-19</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450981">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005110</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial energy-linked nicotinamide nucleotide transhydrogenase. Membrane topography of the bovine enzyme</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaguchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hatefi, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 266:5728-35</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_204153">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9405293</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evidence for existence of tissue-specific regulation of the mammalian pyruvate dehydrogenase complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bowker-Kinley, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis, WI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Popov, KM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 329:191-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_880025">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15548604</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A gene encoding a putative FAD-dependent L-2-hydroxyglutarate dehydrogenase is mutated in L-2-hydroxyglutaric aciduria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rzem, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Veiga-da-Cunha, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noel, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goffette, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nassogne, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tabarki, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scholler, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marquardt, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vikkula, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Schaftingen, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 101:16849-54</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_69985">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9727038</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subunit interactions in the mammalian alpha-ketoglutarate dehydrogenase complex. Evidence for direct association of the alpha-ketoglutarate dehydrogenase and dihydrolipoamide dehydrogenase components.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCartney, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rice, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanderson, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bunik, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lindsay, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lindsay, JG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:24158-64</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_451003">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16737955</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of Mn2+-binding aspartates from alpha, beta, and gamma subunits of human NAD-dependent isocitrate dehydrogenase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soundar, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Hagan, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fomulu, KS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colman, RF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:21073-81</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_451000">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12207025</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of porcine mitochondrial NADP+-dependent isocitrate dehydrogenase complexed with Mn2+ and isocitrate. Insights into the enzyme mechanism</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ceccarelli, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grodsky, NB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ariyaratne, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colman, RF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bahnson, BJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:43454-62</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_70060">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9242632</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dihydrolipoamide dehydrogenase-binding protein of the human pyruvate dehydrogenase complex. DNA-derived amino acid sequence, expression, and reconstitution of the pyruvate dehydrogenase complex.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bowker-Kinley, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jeng, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Popov, KM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:19746-51</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_69972">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11752427</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The remarkable structural and functional organization of the eukaryotic pyruvate dehydrogenase complexes.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, ZH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCarthy, DB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Connor, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reed, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stoops, JK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 98:14802-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450998">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18806796</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insights from retinitis pigmentosa into the roles of isocitrate dehydrogenases in the Krebs cycle</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hartong, DT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dange, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McGee, TL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berson, EL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dryja, TP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colman, RF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet 40:1230-4</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_372336">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11945601</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1971</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The transport of pyruvate in rat liver mitochondria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Papa, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Francavilla, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paradies, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meduri, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 12:285-288</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_204164">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7499431</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diversity of the pyruvate dehydrogenase kinase gene family in humans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gudi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bowker-Kinley, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kedishvili, NY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Popov, KM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:28989-94</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450841">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16049940</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clinical and genetic spectrum of pyruvate dehydrogenase deficiency: dihydrolipoamide acetyltransferase (E2) deficiency</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Head, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zolkipli, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shahdadpuri, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">King, MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clayton, PT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, GK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ann Neurol 58:234-41</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_156646">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15234968</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expression of two succinyl-CoA synthetases with different nucleotide specificities in mammalian tissues</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lambeth, DO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tews, KN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adkins, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frohlich, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Milavetz, BI</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:36621-4</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_156645">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9765291</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetic evidence for the expression of ATP- and GTP-specific succinyl-CoA synthetases in multicellular eucaryotes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mehus, JG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tews, KN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Milavetz, BI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lambeth, DO</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:27580-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_451039">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16740313</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An NADH-tetrazolium-coupled sensitive assay for malate dehydrogenase in mitochondria and crude tissue homogenates</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luo, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Long, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem Biophys Methods 68:101-11</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_198407">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14555658</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evaluation by mutagenesis of the importance of 3 arginines in alpha, beta, and gamma subunits of human NAD-dependent isocitrate dehydrogenase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soundar, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colman, RF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:52146-52153</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_880012">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16435184</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinetic characterization of human hydroxyacid-oxoacid transhydrogenase: relevance to D-2-hydroxyglutaric and gamma-hydroxybutyric acidurias</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Struys, EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verhoeven, NM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ten Brink, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wickenhagen, WV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gibson, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jakobs, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Inherit Metab Dis 28:921-30</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_179533">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3435492</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1987</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The cDNA and protein sequences of human lactate dehydrogenase B</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakai, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharief, FS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pan, YC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, SS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 248:933-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450989">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17668387</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deficiency of the alpha subunit of succinate-coenzyme A ligase causes fatal infantile lactic acidosis with mitochondrial DNA depletion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ostergaard, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christensen, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kristensen, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mogensen, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Duno, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shoubridge, EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wibrand, F</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Hum Genet 81:383-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_204152">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11486000</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Site specificity of four pyruvate dehydrogenase kinase isoenzymes toward the three phosphorylation sites of human pyruvate dehydrogenase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korotchkina, LG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patel, MS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:37223-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_880024">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7564244</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D-2-hydroxyglutaric acidaemia: identification of a new enzyme, D-2-hydroxyglutarate dehydrogenase, localized in mitochondria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mooyer, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Inherit Metab Dis 18:194-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_210340">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9395502</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning, expression, and properties of the regulatory subunit of bovine pyruvate dehydrogenase phosphatase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lawson, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mattison, AR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yan, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reed, LJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:31625-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450996">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1052766</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1975</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aconitase polymorphism in man</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slaughter, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hopkinson, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ann Hum Genet 39:193-202</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_198390">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8200987</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutation of the fumarase gene in two siblings with progressive encephalopathy and fumarase deficiency</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bourgeron, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chretien, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poggi-Bach, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Doonan, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rabier, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LetouzÃ©, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Munnich, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¶tig, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Landrieu, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rustin, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 93:2514-2518</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_156639">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10727444</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction between succinyl CoA synthetase and the heme-biosynthetic enzyme ALAS-E is disrupted in sideroblastic anemia</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furuyama, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sassa, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 105:757-64</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_69983">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2188967</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure-function relationships in dihydrolipoamide acyltransferases.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reed, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hackert, ML</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 265:8971-4</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450990">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17432878</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of alpha-Asp181, beta-Asp192, and gamma-Asp190 in the distinctive subunits of human NAD-specific isocitrate dehydrogenase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bzymek, KP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colman, RF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 46:5391-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_156641">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9765290</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of the ATP- and GTP-specific succinyl-CoA synthetases in pigeon. The enzymes incorporate the same alpha-subunit.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muhonen, WW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lambeth, DO</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:27573-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_210337">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15491150</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pyruvate dehydrogenase kinase isoform 2 activity limited and further inhibited by slowing down the rate of dissociation of ADP</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bao, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kasten, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yan, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roche, TE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 43:13432-41</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450970">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18914071</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1948</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biosynthesis of tricarboxylic acids by carbon dioxide fixation; enzymatic mechanisms</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ochoa, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 174:133-57</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450968">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14832224</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1951</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Di- and triphosphopyridine nucleotide isocitric dehydrogenases in yeast</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kornberg, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pricer, WE Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 189:123-36</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_880028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3182820</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isolation and characterization of a hydroxyacid-oxoacid transhydrogenase from rat kidney mitochondria</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaufman, EE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nelson, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fales, HM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levin, DM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 263:16872-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450840">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15138885</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutations in the gene for the E1beta subunit: a novel cause of pyruvate dehydrogenase deficiency</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Head, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boubriak, II</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leonard, JV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas, NH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, GK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Genet 115:123-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_198411">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1946331</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and partial amino acid sequence of human aconitase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baldwin, GS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seet, KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Callaghan, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toncich, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toh, BH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moritz, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rubira, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Simpson, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protein Seq Data Anal 4:63-67</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_879979">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19935646</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer-associated IDH1 mutations produce 2-hydroxyglutarate</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dang, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">White, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gross, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bennett, BD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bittinger, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Driggers, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fantin, VR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jang, HG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jin, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keenan, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marks, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prins, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ward, PS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yen, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liau, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rabinowitz, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cantley, LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thompson, CB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vander Heiden, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Su, SM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 462:739-44</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_451032">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15877282</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deficiency of the ADP-forming succinyl-CoA synthase activity is associated with encephalomyopathy and mitochondrial DNA depletion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elpeleg, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miller, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hershkovitz, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bitner-Glindzicz, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bondi-Rubinstein, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rahman, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pagnamenta, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eshhar, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saada, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Hum Genet 76:1081-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_198397">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16143825</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Succinate dehydrogenase deficiency in human</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Briere, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Favier, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">El Ghouzzi, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Djouadi, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benit, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gimenez, AP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rustin, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Mol Life Sci 62:2317â2324</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_198427">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9792662</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction between citrate synthase and malate dehydrogenase. Substrate channeling of oxaloacetate</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morgunov, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Srere, PA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:29540-29544</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450848">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15946682</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of human dihydrolipoamide dehydrogenase: NAD+/NADH binding and the structural basis of disease-causing mutations</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brautigam, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chuang, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomchick, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Machius, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chuang, DT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 350:543-52</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_204177">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15855260</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pyruvate dehydrogenase phosphatase deficiency: identification of the first mutation in two brothers and restoration of activity by protein complementation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maj, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MacKay, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levandovskiy, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Addis, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumgartner, ER</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumgartner, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robinson, BH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cameron, JM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Endocrinol Metab 90:4101-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_156637">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">13181903</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1954</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guanosine triphosphate, the primary product of phosphorylation coupled to the breakdown of succinyl coenzyme A</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanadi, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gibson, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ayengar, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 14:434-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_210346">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9651365</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isoenzymes of pyruvate dehydrogenase phosphatase. DNA-derived amino acid sequences, expression, and regulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gudi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hamilton, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Popov, KM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:17680-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_179539">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11276087</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis for altered activity of M- and H-isozyme forms of human lactate dehydrogenase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Read, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Winter, VJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eszes, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sessions, RB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brady, RL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proteins 43:175-85</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_70066">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11935326</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pyruvate dehydrogenase E3 binding protein deficiency.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Head, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, GK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Genet 110:187-91</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_880023">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15070399</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a dehydrogenase acting on D-2-hydroxyglutarate</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Achouri, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noel, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vertommen, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rider, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Veiga-da-Cunha, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Schaftingen, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 381:35-42</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_880030">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15385440</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">L-2-Hydroxyglutaric aciduria: identification of a mutant gene C14orf160, localized on chromosome 14q22.1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TopÃ§u, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jobard, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Halliez, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coskun, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">YalÃ§inkayal, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerceker, FO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prud'homme, JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lathrop, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ozguc, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 13:2803-11</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_204179">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17532339</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of pyruvate dehydrogenase phosphatase 1 and its functional implications</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vassylyev, DG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symersky, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Biol 370:417-26</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_373868">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15917240</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Basigin (CD147) is the target for organomercurial inhibition of monocarboxylate transporter isoforms 1 and 4: the ancillary protein for the insensitive MCT2 is EMBIGIN (gp70)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilson, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meredith, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fox, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Manoharan, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davies, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Halestrap, AP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:27213-21</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_450881">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8798399</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and characterization of PDK4 on 7q21.3 encoding a fourth pyruvate dehydrogenase kinase isoenzyme in human</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rowles, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scherer, SW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Majer, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nickle, DC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rommens, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Popov, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Riebow, NL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xia, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsui, LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bogardus, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prochazka, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:22376-82</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_879998">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16005139</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The gene mutated in l-2-hydroxyglutaric aciduria encodes l-2-hydroxyglutarate dehydrogenase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rzem, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Schaftingen, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Veiga-da-Cunha, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochimie 88:113-6</bp:SOURCE>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

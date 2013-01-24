@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Monoamine GPCRs" Organism="Mus musculus" License="CC BY 2.0" Last-Modified="5/16/2012">
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP58&amp;amp;amp;amp;oldid=20799 WP58(r20799)] with a 86% conversion rate.</Comment>
+  <Graphics BoardWidth="13167.0" BoardHeight="8686.7" WindowWidth="15345.0" WindowHeight="10762.0"/>
+  <DataNode TextLabel="Drd1a" Type="GeneProduct" BackpageHead="Drd1a" GraphId="e6a" GroupRef="dc884">
+    <Graphics Color="000000" CenterX="1950.0" CenterY="1900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13488"/>
+  </DataNode>
+  <DataNode TextLabel="Drd2" Type="GeneProduct" BackpageHead="Drd2" GraphId="d94" GroupRef="dc884">
+    <Graphics Color="000000" CenterX="1950.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13489"/>
+  </DataNode>
+  <DataNode TextLabel="Drd3" Type="GeneProduct" BackpageHead="Drd3" GraphId="ac6" GroupRef="dc884">
+    <Graphics Color="000000" CenterX="1950.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13490"/>
+  </DataNode>
+  <DataNode TextLabel="Drd5" Type="GeneProduct" BackpageHead="Drd5" GraphId="b5b" GroupRef="dc884">
+    <Graphics Color="000000" CenterX="1950.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13492"/>
+  </DataNode>
+  <DataNode TextLabel="Htr1a" Type="GeneProduct" BackpageHead="Htr1a" GraphId="f24" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="1900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15550"/>
+  </DataNode>
+  <DataNode TextLabel="Htr1b" Type="GeneProduct" BackpageHead="Htr1b" GraphId="fc4" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15551"/>
+  </DataNode>
+  <DataNode TextLabel="Htr1d" Type="GeneProduct" BackpageHead="Htr1d" GraphId="c8e" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15552"/>
+  </DataNode>
+  <DataNode TextLabel="Htr1f" Type="GeneProduct" BackpageHead="Htr1f" GraphId="e0d" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15557"/>
+  </DataNode>
+  <DataNode TextLabel="Htr2a" Type="GeneProduct" BackpageHead="Htr2a" GraphId="e04" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15558"/>
+  </DataNode>
+  <DataNode TextLabel="Htr2b" Type="GeneProduct" BackpageHead="Htr2b" GraphId="f01" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="3400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15559"/>
+  </DataNode>
+  <DataNode TextLabel="Htr2c" Type="GeneProduct" BackpageHead="Htr2c" GraphId="ed9" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="3700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15560"/>
+  </DataNode>
+  <DataNode TextLabel="Htr4" Type="GeneProduct" BackpageHead="Htr4" GraphId="ac3" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="4000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15562"/>
+  </DataNode>
+  <DataNode TextLabel="Htr5a" Type="GeneProduct" BackpageHead="Htr5a" GraphId="e8b" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="4300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15563"/>
+  </DataNode>
+  <DataNode TextLabel="Htr6" Type="GeneProduct" BackpageHead="Htr6" GraphId="c78" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="4900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15565"/>
+  </DataNode>
+  <DataNode TextLabel="Htr7" Type="GeneProduct" BackpageHead="Htr7" GraphId="d3e" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="5200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15566"/>
+  </DataNode>
+  <DataNode TextLabel="Adra1a" Type="GeneProduct" BackpageHead="Adra1a" GraphId="b51" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="1900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11549"/>
+  </DataNode>
+  <DataNode TextLabel="Adra1b" Type="GeneProduct" BackpageHead="Adra1b" GraphId="c19" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11548"/>
+  </DataNode>
+  <DataNode TextLabel="Adra1d" Type="GeneProduct" BackpageHead="Adra1d" GraphId="f4b" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11550"/>
+  </DataNode>
+  <DataNode TextLabel="Adra2a" Type="GeneProduct" BackpageHead="Adra2a" GraphId="dbd" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11551"/>
+  </DataNode>
+  <DataNode TextLabel="Adrb1" Type="GeneProduct" BackpageHead="Adrb1" GraphId="ebd" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="3700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11554"/>
+  </DataNode>
+  <DataNode TextLabel="Adrb2" Type="GeneProduct" BackpageHead="Adrb2" GraphId="fd1" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="4000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11555"/>
+  </DataNode>
+  <DataNode TextLabel="Adrb3" Type="GeneProduct" BackpageHead="Adrb3" GraphId="c17" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="4300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11556"/>
+  </DataNode>
+  <DataNode TextLabel="Hrh1" Type="GeneProduct" BackpageHead="Hrh1" GraphId="a16" GroupRef="dab27">
+    <Graphics Color="000000" CenterX="9000.0" CenterY="1900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15465"/>
+  </DataNode>
+  <DataNode TextLabel="Hrh2" Type="GeneProduct" BackpageHead="Hrh2" GraphId="b21" GroupRef="dab27">
+    <Graphics Color="000000" CenterX="9000.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15466"/>
+  </DataNode>
+  <DataNode TextLabel="Chrm1" Type="GeneProduct" BackpageHead="Chrm1" GraphId="c94" GroupRef="dcb7a">
+    <Graphics Color="000000" CenterX="11300.0" CenterY="1900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12669"/>
+  </DataNode>
+  <DataNode TextLabel="Chrm2" Type="GeneProduct" BackpageHead="Chrm2" GraphId="c4d" GroupRef="dcb7a">
+    <Graphics Color="000000" CenterX="11300.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="243764"/>
+  </DataNode>
+  <DataNode TextLabel="Chrm3" Type="GeneProduct" BackpageHead="Chrm3" GraphId="b3c" GroupRef="dcb7a">
+    <Graphics Color="000000" CenterX="11300.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12671"/>
+  </DataNode>
+  <DataNode TextLabel="Chrm5" Type="GeneProduct" BackpageHead="Chrm5" GraphId="db2" GroupRef="dcb7a">
+    <Graphics Color="000000" CenterX="11300.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="213788"/>
+  </DataNode>
+  <DataNode TextLabel="Drd4" Type="GeneProduct" BackpageHead="Drd4" GraphId="bd8" GroupRef="dc884">
+    <Graphics Color="000000" CenterX="1950.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13491"/>
+  </DataNode>
+  <DataNode TextLabel="Htr5b" Type="GeneProduct" GraphId="bbd" GroupRef="aa5a9">
+    <Graphics Color="000000" CenterX="4350.0" CenterY="4600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15564"/>
+  </DataNode>
+  <DataNode TextLabel="Adra2c" Type="GeneProduct" BackpageHead="Adra2c" GraphId="a49" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="3400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11553"/>
+  </DataNode>
+  <DataNode TextLabel="Adra2b" Type="GeneProduct" BackpageHead="Adra2b" GraphId="ed0" GroupRef="e4f9b">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11552"/>
+  </DataNode>
+  <DataNode TextLabel="Chrm4" Type="GeneProduct" BackpageHead="Chrm4" GraphId="d90" GroupRef="dcb7a">
+    <Graphics Color="000000" CenterX="11300.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12672"/>
+  </DataNode>
+  <DataNode TextLabel="Dopamine" Type="Metabolite" GraphId="f08">
+    <Graphics Color="0000ff" CenterX="1955.0" CenterY="1125.0" Width="1250.0" Height="285.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00073"/>
+  </DataNode>
+  <DataNode TextLabel="Serotonin" Type="Metabolite" GraphId="a5f">
+    <Graphics Color="0000ff" CenterX="4355.0" CenterY="1155.0" Width="1205.0" Height="285.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00259"/>
+  </DataNode>
+  <DataNode TextLabel="Histamine" Type="Metabolite" GraphId="eaa">
+    <Graphics Color="0000ff" CenterX="9000.0" CenterY="1050.0" Width="1220.0" Height="285.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00870"/>
+  </DataNode>
+  <DataNode TextLabel="Epinephrine" Type="Metabolite" GraphId="bad38" GroupRef="c7882">
+    <Graphics Color="0000ff" CenterX="6795.0" CenterY="1080.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00068"/>
+  </DataNode>
+  <DataNode TextLabel="Norepinephrine" Type="Metabolite" GraphId="c4654" GroupRef="c7882">
+    <Graphics Color="0000ff" CenterX="6795.0" CenterY="780.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00216"/>
+  </DataNode>
+  <DataNode TextLabel="Acetylcholine " Type="Metabolite" GraphId="df6e2" GroupRef="e7053">
+    <Graphics Color="0000ff" CenterX="11250.0" CenterY="660.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00895"/>
+  </DataNode>
+  <DataNode TextLabel="Muscarine" Type="Metabolite" GraphId="e90b0" GroupRef="e7053">
+    <Graphics Color="0000ff" CenterX="11250.0" CenterY="960.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="PubChem-substance" ID="9676"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="dd3e6">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="0000ff">
+      <Point x="7250.0" y="4300.0" GraphRef="c17" relX="1.0" relY="0.0"/>
+      <Point x="8138.75" y="7207.5" GraphRef="aea" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f0704">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="0000ff">
+      <Point x="1500.0" y="1900.0" GraphRef="e6a" relX="-1.0" relY="0.0"/>
+      <Point x="1200.0" y="7157.5" GraphRef="a1c" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ad384">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="2400.0" y="3100.0" GraphRef="b5b" relX="1.0" relY="0.0"/>
+      <Point x="3160.0" y="7157.5" GraphRef="a4b" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="efdc2">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8000">
+      <Point x="11750.0" y="2800.0" GraphRef="d90" relX="1.0" relY="0.0"/>
+      <Point x="12050.0" y="4745.0"/>
+      <Point x="8045.0" y="6690.0"/>
+      <Point x="4040.0" y="7157.5" GraphRef="a4b" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7f4e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="0000ff">
+      <Point x="9450.0" y="2200.0" GraphRef="b21" relX="1.0" relY="0.0"/>
+      <Point x="8500.0" y="7207.5" GraphRef="aea" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e725e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="3900.0" y="2800.0" GraphRef="e0d" relX="-1.0" relY="0.0"/>
+      <Point x="3600.0" y="7157.5" GraphRef="a4b" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b9af7">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="4800.0" y="3700.0" GraphRef="ed9" relX="1.0" relY="0.0"/>
+      <Point x="5507.5" y="7157.5" GraphRef="e24" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e9bf0">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="9450.0" y="1900.0" GraphRef="a16" relX="1.0" relY="0.0"/>
+      <Point x="10005.0" y="3657.5"/>
+      <Point x="8248.75" y="5415.0"/>
+      <Point x="6492.5" y="7157.5" GraphRef="e24" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d21f3">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="11750.0" y="3100.0" GraphRef="db2" relX="1.0" relY="0.0"/>
+      <Point x="10530.0" y="4340.0"/>
+      <Point x="8511.25" y="5580.0"/>
+      <Point x="6492.5" y="7157.5" GraphRef="e24" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa868">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="0000ff">
+      <Point x="3900.0" y="5200.0" GraphRef="d3e" relX="-1.0" relY="0.0"/>
+      <Point x="1561.25" y="7157.5" GraphRef="a1c" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f9144">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="6350.0" y="2800.0" GraphRef="dbd" relX="-1.0" relY="0.0"/>
+      <Point x="6000.0" y="7157.5" GraphRef="e24" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b76e1">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8000">
+      <Point x="7250.0" y="3400.0" GraphRef="a49" relX="1.0" relY="0.0"/>
+      <Point x="7550.0" y="4962.5"/>
+      <Point x="5795.0" y="6525.0"/>
+      <Point x="4040.0" y="7157.5" GraphRef="a4b" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa9bd">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="0000ff">
+      <Point x="3900.0" y="4300.0" GraphRef="e8b" relX="-1.0" relY="0.0"/>
+      <Point x="1561.25" y="7157.5" GraphRef="a1c" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f4175">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="2400.0" y="2800.0" GraphRef="bd8" relX="1.0" relY="0.0"/>
+      <Point x="3160.0" y="7157.5" GraphRef="a4b" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a4b4a">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="2400.0" y="2500.0" GraphRef="ac6" relX="1.0" relY="0.0"/>
+      <Point x="3160.0" y="7157.5" GraphRef="a4b" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b1019">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="2400.0" y="2200.0" GraphRef="d94" relX="1.0" relY="0.0"/>
+      <Point x="3160.0" y="7157.5" GraphRef="a4b" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="adad9">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="3900.0" y="2800.0"/>
+      <Point x="3600.0" y="7157.5" GraphRef="a4b" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bee73">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="3900.0" y="2500.0" GraphRef="c8e" relX="-1.0" relY="0.0"/>
+      <Point x="3600.0" y="7157.5" GraphRef="a4b" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e0161">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="3900.0" y="2200.0" GraphRef="fc4" relX="-1.0" relY="0.0"/>
+      <Point x="3600.0" y="7157.5" GraphRef="a4b" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b7136">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8040">
+      <Point x="3900.0" y="1900.0" GraphRef="f24" relX="-1.0" relY="0.0"/>
+      <Point x="3600.0" y="7157.5" GraphRef="a4b" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c24ee">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8000">
+      <Point x="7250.0" y="3100.0" GraphRef="ed0" relX="1.0" relY="0.0"/>
+      <Point x="7550.0" y="4812.5"/>
+      <Point x="5795.0" y="6525.0"/>
+      <Point x="4040.0" y="7157.5" GraphRef="a4b" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dbd14">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8000">
+      <Point x="7250.0" y="2800.0" GraphRef="dbd" relX="1.0" relY="0.0"/>
+      <Point x="7550.0" y="4662.5"/>
+      <Point x="5795.0" y="6525.0"/>
+      <Point x="4040.0" y="7157.5" GraphRef="a4b" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a023b">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="ff8000">
+      <Point x="11750.0" y="2200.0" GraphRef="c4d" relX="1.0" relY="0.0"/>
+      <Point x="12050.0" y="4445.0"/>
+      <Point x="8045.0" y="6690.0"/>
+      <Point x="4040.0" y="7157.5" GraphRef="a4b" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cf708">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="4800.0" y="3400.0" GraphRef="f01" relX="1.0" relY="0.0"/>
+      <Point x="5507.5" y="7157.5" GraphRef="e24" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e093c">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="4800.0" y="3100.0" GraphRef="e04" relX="1.0" relY="0.0"/>
+      <Point x="5507.5" y="7157.5" GraphRef="e24" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e1d2a">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="6350.0" y="2500.0" GraphRef="f4b" relX="-1.0" relY="0.0"/>
+      <Point x="6000.0" y="7157.5" GraphRef="e24" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bb96d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="6350.0" y="2200.0" GraphRef="c19" relX="-1.0" relY="0.0"/>
+      <Point x="6000.0" y="7157.5" GraphRef="e24" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa36d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="6350.0" y="1900.0" GraphRef="b51" relX="-1.0" relY="0.0"/>
+      <Point x="6000.0" y="7157.5" GraphRef="e24" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f436c">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="11750.0" y="2500.0" GraphRef="b3c" relX="1.0" relY="0.0"/>
+      <Point x="10530.0" y="4040.0"/>
+      <Point x="8511.25" y="5580.0"/>
+      <Point x="6492.5" y="7157.5" GraphRef="e24" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cf5de">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00ff00">
+      <Point x="11750.0" y="1900.0" GraphRef="c94" relX="1.0" relY="0.0"/>
+      <Point x="10530.0" y="3740.0"/>
+      <Point x="8511.25" y="5580.0"/>
+      <Point x="6492.5" y="7157.5" GraphRef="e24" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="da5e4">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="0000ff">
+      <Point x="7250.0" y="4000.0" GraphRef="fd1" relX="1.0" relY="0.0"/>
+      <Point x="8138.75" y="7207.5" GraphRef="aea" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b497c">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="0000ff">
+      <Point x="7250.0" y="3700.0" GraphRef="ebd" relX="1.0" relY="0.0"/>
+      <Point x="8138.75" y="7207.5" GraphRef="aea" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c3949">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4355.0" y="1297.5" GraphRef="a5f" relX="0.0" relY="1.0"/>
+      <Point x="4350.0" y="1630.0" GraphRef="eb605" relX="0.0" relY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d54d8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1955.0" y="1267.5" GraphRef="f08" relX="0.0" relY="1.0"/>
+      <Point x="1950.0" y="1630.0" GraphRef="ba715" relX="0.0" relY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bb510">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6795.0" y="1350.0" GraphRef="e1f05" relX="0.0" relY="1.0"/>
+      <Point x="6800.0" y="1630.0" GraphRef="e76e9" relX="0.0" relY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8156">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9000.0" y="1192.5" GraphRef="eaa" relX="0.0" relY="1.0"/>
+      <Point x="9000.0" y="1630.0" GraphRef="e3822" relX="0.0" relY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2654">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="11250.0" y="1230.0" GraphRef="c59b6" relX="0.0" relY="1.0"/>
+      <Point x="11250.0" y="1625.625" GraphRef="da0" relX="1.0" relY="0.5" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Muscarinic&#10;Acetylcholine &#10;Receptors" GraphId="da0">
+    <Graphics FontWeight="Bold" FontSize="165" Color="000000" CenterX="10573.75" CenterY="1466.25" Width="1352.5" Height="637.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Histamine&#10;Receptors" GraphId="b11">
+    <Graphics FontWeight="Bold" FontSize="165" Color="000000" CenterX="8400.0" CenterY="1507.5" Width="1175.0" Height="405.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gi/Go Pathway" GraphId="a4b">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="3600.0" CenterY="7300.0" Width="1760.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gq/G11 Pathway" GraphId="e24">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="6000.0" CenterY="7300.0" Width="1970.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gs Pathway" GraphId="aea">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="8500.0" CenterY="7350.0" Width="1445.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gs Pathway" GraphId="a1c">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1200.0" CenterY="7300.0" Width="1445.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Adrenergic&#10;Receptors" GraphId="cf7">
+    <Graphics FontWeight="Bold" FontSize="165" Color="000000" CenterX="6220.0" CenterY="1530.0" Width="1175.0" Height="420.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Dopamine&#10;Receptors" GraphId="e99">
+    <Graphics FontWeight="Bold" FontSize="165" Color="000000" CenterX="1400.0" CenterY="1515.0" Width="1175.0" Height="390.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Serotonin&#10;Receptors" GraphId="fed">
+    <Graphics FontWeight="Bold" FontSize="165" Color="000000" CenterX="3755.0" CenterY="1515.0" Width="1175.0" Height="390.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="e7053" GraphId="c59b6"/>
+  <Group GroupId="c7882" GraphId="e1f05"/>
+  <Group GroupId="dc884" GraphId="ba715"/>
+  <Group GroupId="e4f9b" GraphId="e76e9"/>
+  <Group GroupId="dab27" GraphId="e3822"/>
+  <Group GroupId="dcb7a" GraphId="c679c"/>
+  <Group GroupId="aa5a9" GraphId="eb605"/>
+  <InfoBox CenterX="5244.5" CenterY="7897.0"/>
+  <Legend CenterX="71.5" CenterY="7869.0"/>
+</Pathway>

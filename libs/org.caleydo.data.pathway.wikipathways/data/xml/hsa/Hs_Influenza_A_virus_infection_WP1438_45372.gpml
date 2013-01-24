@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Influenza A virus infection" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description"/>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>a77</BiopaxRef>
+  <Graphics BoardWidth="12853.5" BoardHeight="11203.5" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="N-Acetylneuraminic acid" Type="Metabolite" GraphId="ebff7" GroupRef="dd976">
+    <Graphics Color="0000ff" CenterX="2924.875" CenterY="2831.125" Width="2190.25" Height="337.75" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00230"/>
+  </DataNode>
+  <DataNode TextLabel="PB2" Type="GeneProduct" GraphId="d374b" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="7935.0" CenterY="1140.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956536"/>
+  </DataNode>
+  <DataNode TextLabel="PA" Type="GeneProduct" GraphId="fa294" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="7950.0" CenterY="810.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956535"/>
+  </DataNode>
+  <DataNode TextLabel="NS2" Type="GeneProduct" GraphId="db55d" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="7920.0" CenterY="1500.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956532"/>
+  </DataNode>
+  <DataNode TextLabel="NS1" Type="GeneProduct" GraphId="c8013" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="7920.0" CenterY="1800.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956533"/>
+  </DataNode>
+  <DataNode TextLabel="neuraminidase" Type="GeneProduct" GraphId="a84e3" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="10860.0" CenterY="1350.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956530"/>
+  </DataNode>
+  <DataNode TextLabel="haemagglutinin " Type="GeneProduct" GraphId="f0c1f" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="9390.0" CenterY="1395.0" Width="1320.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956529"/>
+  </DataNode>
+  <DataNode TextLabel="matrix protein 2" Type="GeneProduct" GraphId="f83bc" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="9360.0" CenterY="990.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956528"/>
+  </DataNode>
+  <DataNode TextLabel="matrix protein 1" Type="GeneProduct" GraphId="a2656" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="9360.0" CenterY="690.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956527"/>
+  </DataNode>
+  <DataNode TextLabel="polymerase 1" Type="GeneProduct" GraphId="c95e3" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="10830.0" CenterY="645.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956534"/>
+  </DataNode>
+  <DataNode TextLabel="PB1-F2 protein" Type="GeneProduct" GraphId="a59c3" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="10845.0" CenterY="990.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="3802042"/>
+  </DataNode>
+  <DataNode TextLabel="nucleocapsid protein" Type="GeneProduct" GraphId="dc619" GroupRef="a0c46">
+    <Graphics Color="000000" CenterX="9532.5" CenterY="1755.0" Width="1605.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956531"/>
+  </DataNode>
+  <DataNode TextLabel="haemagglutinin " Type="GeneProduct" GraphId="b421e" GroupRef="dd976">
+    <Graphics Color="000000" CenterX="2865.0" CenterY="2490.0" Width="1320.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956529"/>
+  </DataNode>
+  <DataNode TextLabel="vRNPs" Type="GeneProduct" GraphId="f9487">
+    <BiopaxRef>d2d</BiopaxRef>
+    <BiopaxRef>a78</BiopaxRef>
+    <Graphics Color="000000" CenterX="6210.0" CenterY="4710.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="NP" Type="GeneProduct" GraphId="bff43" GroupRef="db9b4">
+    <Graphics Color="000000" CenterX="10935.0" CenterY="4515.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="PB1" Type="GeneProduct" GraphId="e15c6" GroupRef="db9b4">
+    <Graphics Color="000000" CenterX="10935.0" CenterY="4830.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="PB2" Type="GeneProduct" GraphId="ce79f" GroupRef="db9b4">
+    <Graphics Color="000000" CenterX="10935.0" CenterY="5130.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956536"/>
+  </DataNode>
+  <DataNode TextLabel="PA" Type="GeneProduct" GraphId="f6421" GroupRef="db9b4">
+    <Graphics Color="000000" CenterX="10935.0" CenterY="4215.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="956535"/>
+  </DataNode>
+  <DataNode TextLabel="BCL2" Type="GeneProduct" GraphId="b804b" GroupRef="eaf61">
+    <Graphics Color="000000" CenterX="4845.0" CenterY="9915.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="596"/>
+  </DataNode>
+  <DataNode TextLabel="Glutathione" Type="Metabolite" GraphId="b8f5b" GroupRef="eaf61">
+    <Graphics Color="0000ff" CenterX="7395.0" CenterY="9915.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00125"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="id2fdbb51a" GroupRef="dd976">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="525.0" y="2820.0"/>
+      <Point x="10575.0" y="2835.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idb57e1d38">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="570.0" y="5400.0"/>
+      <Point x="10650.0" y="5460.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id6043f424">
+    <BiopaxRef>c56</BiopaxRef>
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3000.0" y="1575.0"/>
+      <Point x="3292.25" y="3614.5" GraphRef="eab08" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id7569d541">
+    <BiopaxRef>aa0</BiopaxRef>
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5385.0" y="1125.0" GraphRef="e74e1" relX="0.0" relY="1.0"/>
+      <Point x="4020.0" y="3735.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ide31791da">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3390.0" y="1020.0"/>
+      <Point x="3615.0" y="1020.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id78d5c7f7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3360.0" y="885.0"/>
+      <Point x="3585.0" y="810.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id50a8f2e4">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3240.0" y="780.0"/>
+      <Point x="3480.0" y="645.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id57b30749">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3060.0" y="735.0"/>
+      <Point x="2985.0" y="555.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id4e0dfff0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3180.0" y="750.0"/>
+      <Point x="3255.0" y="540.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id53a424c8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2925.0" y="765.0"/>
+      <Point x="2790.0" y="600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cdd85">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2790.0" y="873.75" GraphRef="de214" relX="-1.0" relY="-0.5"/>
+      <Point x="2565.0" y="765.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dacd3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3630.0" y="1275.0"/>
+      <Point x="3390.0" y="1151.25" GraphRef="de214" relX="1.0" relY="0.5"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa24b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3045.0" y="1500.0"/>
+      <Point x="3090.0" y="1290.0" GraphRef="de214" relX="0.0" relY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa268">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3330.0" y="1470.0"/>
+      <Point x="3240.0" y="1290.0" GraphRef="de214" relX="0.5" relY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="af753">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2475.0" y="1005.0"/>
+      <Point x="2790.0" y="1012.5" GraphRef="de214" relX="-1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e10fb">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2610.0" y="1290.0"/>
+      <Point x="2790.0" y="1151.25" GraphRef="de214" relX="-1.0" relY="0.5"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cd14e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5655.0" y="720.0"/>
+      <Point x="5880.0" y="645.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="af370">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5925.0" y="1110.0"/>
+      <Point x="5685.0" y="986.25" GraphRef="e74e1" relX="1.0" relY="0.5"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ee8b5">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5085.0" y="708.75" GraphRef="e74e1" relX="-1.0" relY="-0.5"/>
+      <Point x="4860.0" y="600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="abda8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5340.0" y="1335.0"/>
+      <Point x="5385.0" y="1125.0" GraphRef="e74e1" relX="0.0" relY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dabe8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5355.0" y="570.0"/>
+      <Point x="5280.0" y="390.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f4c79">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4770.0" y="840.0"/>
+      <Point x="5085.0" y="847.5" GraphRef="e74e1" relX="-1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="be00c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5685.0" y="855.0"/>
+      <Point x="5910.0" y="855.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b9d4c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5220.0" y="600.0"/>
+      <Point x="5085.0" y="435.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cefaa">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5475.0" y="585.0"/>
+      <Point x="5550.0" y="375.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aba3e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4905.0" y="1125.0"/>
+      <Point x="5085.0" y="986.25" GraphRef="e74e1" relX="-1.0" relY="0.5"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d56f4">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5535.0" y="615.0"/>
+      <Point x="5775.0" y="480.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e6836">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5625.0" y="1305.0"/>
+      <Point x="5535.0" y="1125.0" GraphRef="e74e1" relX="0.5" relY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f5ec1">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3570.0" y="4155.0"/>
+      <Point x="3795.0" y="4080.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8fa3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3840.0" y="4545.0"/>
+      <Point x="3600.0" y="4421.25" GraphRef="e91e1" relX="1.0" relY="0.5"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e8f92">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3000.0" y="4143.75" GraphRef="e91e1" relX="-1.0" relY="-0.5"/>
+      <Point x="2775.0" y="4035.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a4762">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3255.0" y="4770.0"/>
+      <Point x="3300.0" y="4560.0" GraphRef="e91e1" relX="0.0" relY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ea67a">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3270.0" y="4005.0"/>
+      <Point x="3195.0" y="3825.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bfe78">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2685.0" y="4275.0"/>
+      <Point x="3000.0" y="4282.5" GraphRef="e91e1" relX="-1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e3a94">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3600.0" y="4290.0"/>
+      <Point x="3825.0" y="4290.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="faea1">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3135.0" y="4035.0"/>
+      <Point x="3000.0" y="3870.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="eaeff">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3390.0" y="4020.0"/>
+      <Point x="3465.0" y="3810.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dd5a3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2820.0" y="4560.0"/>
+      <Point x="3000.0" y="4421.25" GraphRef="e91e1" relX="-1.0" relY="0.5"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e9153">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3450.0" y="4050.0"/>
+      <Point x="3690.0" y="3915.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cd982">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3540.0" y="4740.0"/>
+      <Point x="3450.0" y="4560.0" GraphRef="e91e1" relX="0.5" relY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="idd9c032df">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2160.0" y="4200.0" GraphRef="a2d67" relX="0.5" relY="1.0"/>
+      <Point x="2504.5" y="4312.25" GraphRef="eab08" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e11ed">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6375.0" y="3870.0"/>
+      <Point x="6615.0" y="3735.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dee12">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6060.0" y="3855.0"/>
+      <Point x="5925.0" y="3690.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb03f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5940.0" y="3963.75"/>
+      <Point x="5715.0" y="3855.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="daaa0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6315.0" y="3840.0"/>
+      <Point x="6390.0" y="3630.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d56c1">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6495.0" y="3975.0"/>
+      <Point x="6720.0" y="3900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ae57d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6195.0" y="3825.0"/>
+      <Point x="6120.0" y="3645.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id1bdad990">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6510.0" y="4095.0"/>
+      <Point x="7005.0" y="3870.443146545149" GraphRef="e708e" relX="1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id465d7012">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5955.0" y="4095.0"/>
+      <Point x="5552.760583481995" y="3870.443146545149" GraphRef="e708e" relX="-1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ide7f80473">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6225.0" y="4080.0"/>
+      <Point x="6210.0" y="5850.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id10940e34">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4080.0" y="4312.25" GraphRef="eab08" relX="1.0" relY="0.0"/>
+      <Point x="5552.760583481995" y="3870.443146545149" GraphRef="e708e" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id942c98a8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7057.5" y="5955.0" GraphRef="bc404" relX="0.5" relY="-1.0"/>
+      <Point x="8655.0" y="4290.0" GraphRef="fa957" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id5513b39d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8310.0" y="3825.0"/>
+      <Point x="5820.0" y="1275.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="id976f8730" GroupRef="eaf61">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4845.0" y="9765.0" GraphRef="b804b" relX="0.0" relY="-1.0"/>
+      <Point x="6075.0" y="9075.0" GraphRef="c6318" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="idf919ddd" GroupRef="eaf61">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7395.0" y="9765.0" GraphRef="b8f5b" relX="0.0" relY="-1.0"/>
+      <Point x="6075.0" y="9075.0" GraphRef="c6318" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idec44d2dc" GroupRef="eaf61">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4815.0" y="9750.0"/>
+      <Point x="4920.0" y="8535.0" GraphRef="a999f" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id9c3ee376" GroupRef="eaf61">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7395.0" y="9765.0" GraphRef="b8f5b" relX="0.0" relY="-1.0"/>
+      <Point x="7410.0" y="8550.0" GraphRef="a2803" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="idd06b26af" GroupRef="eaf61">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6255.0" y="8400.0" GraphRef="a2803" relX="-1.0" relY="0.0"/>
+      <Point x="5610.0" y="8385.0" GraphRef="a999f" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idae1f2f94" GroupRef="eaf61">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4920.0" y="8235.0" GraphRef="a999f" relX="0.0" relY="-1.0"/>
+      <Point x="6195.0" y="6270.0" GraphRef="bc404" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id9c966022" GroupRef="eaf61">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7410.0" y="8250.0" GraphRef="a2803" relX="0.0" relY="-1.0"/>
+      <Point x="6195.0" y="6270.0" GraphRef="bc404" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Influenza A virus" GraphId="ba1f6" GroupRef="a0c46">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="8137.5" CenterY="330.0" Width="1665.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Membrane&#10;" GraphId="c5774">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="945.0" CenterY="2115.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Influenza A virus" GraphId="f1f87">
+    <Graphics FontSize="150" Color="000000" CenterX="3075.0" CenterY="900.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nucleus&#10;" GraphId="f1d29">
+    <Graphics FontSize="150" Color="000000" CenterX="885.0" CenterY="5640.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Influenza A virus" GraphId="dbbd2">
+    <Graphics FontSize="150" Color="000000" CenterX="5370.0" CenterY="735.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Endosome" GraphId="a2d67">
+    <Graphics FontSize="150" Color="000000" CenterX="1860.0" CenterY="4050.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="H+" GraphId="b1318">
+    <Graphics FontSize="150" Color="000000" CenterX="6150.0" CenterY="3435.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="vRNPs" GraphId="c507c" GroupRef="db9b4">
+    <BiopaxRef>ee3</BiopaxRef>
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="10965.0" CenterY="3810.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Pathway: Viral Transcription and Replication" GraphId="bc404">
+    <BiopaxRef>f01</BiopaxRef>
+    <BiopaxRef>ff5</BiopaxRef>
+    <BiopaxRef>dc0</BiopaxRef>
+    <BiopaxRef>e73</BiopaxRef>
+    <BiopaxRef>ec2</BiopaxRef>
+    <BiopaxRef>d0b</BiopaxRef>
+    <BiopaxRef>a2d</BiopaxRef>
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="6195.0" CenterY="6112.5" Width="3450.0" Height="315.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="e7b34">
+    <Graphics FontSize="150" Color="000000" CenterX="885.0" CenterY="3405.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Pathway: Virus Assembly and Release" GraphId="fa957">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="8655.0" CenterY="4140.0" Width="3300.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(-)" GraphId="b128e" GroupRef="eaf61">
+    <Graphics FontSize="150" Color="000000" CenterX="5145.0" CenterY="9390.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(-)" GraphId="f3aab" GroupRef="eaf61">
+    <Graphics FontSize="150" Color="000000" CenterX="7065.0" CenterY="9405.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mRNA export" GraphId="c6318" GroupRef="eaf61">
+    <Graphics FontSize="150" Color="000000" CenterX="6075.0" CenterY="8925.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="vRNP translocation" GraphId="a999f" GroupRef="eaf61">
+    <Graphics FontSize="150" Color="000000" CenterX="4920.0" CenterY="8385.0" Width="1380.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(-)" GraphId="c4184" GroupRef="eaf61">
+    <Graphics FontSize="150" Color="000000" CenterX="4035.0" CenterY="8355.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="expression of late viral protein&#10;" GraphId="a2803" GroupRef="eaf61">
+    <Graphics FontSize="150" Color="000000" CenterX="7410.0" CenterY="8400.0" Width="2310.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(-)" GraphId="bcf44" GroupRef="eaf61">
+    <Graphics FontSize="150" Color="000000" CenterX="8580.0" CenterY="8385.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Oval" Style="Solid" GraphId="de214">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3090.0" CenterY="1012.5" Width="600.0" Height="555.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e74e1">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="5385.0" CenterY="847.5" Width="600.0" Height="555.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="e91e1">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3300.0" CenterY="4282.5" Width="600.0" Height="555.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Oval" Style="Solid" GraphId="eab08">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3292.25" CenterY="4312.25" Width="1575.5" Height="1395.5" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Arc" Style="Solid" GraphId="e708e">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="6278.8802917409985" CenterY="3870.443146545149" Width="1448.9336157925986" Height="1322.743993247292" ZOrder="16384" Rotation="3.1390900214458974"/>
+  </Shape>
+  <Shape Type="Arc" Style="Solid" GraphId="a89f1">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="6223.783092148402" CenterY="4089.4188066805837" Width="565.2505309791718" Height="469.9394189028085" ZOrder="16384" Rotation="3.1261633156298956"/>
+  </Shape>
+  <Group GroupId="dd976" GraphId="b858f" Style="Complex"/>
+  <Group GroupId="a0c46" Style="Complex"/>
+  <Group GroupId="db9b4" Style="Complex">
+    <BiopaxRef>d16</BiopaxRef>
+    <BiopaxRef>c63</BiopaxRef>
+    <BiopaxRef>c80</BiopaxRef>
+    <BiopaxRef>ff5</BiopaxRef>
+  </Group>
+  <Group GroupId="eaf61" Style="Group" TextLabel="Group object">
+    <BiopaxRef>edf</BiopaxRef>
+  </Group>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="a78">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1985199</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transport of incoming influenza virus nucleocapsids into the nucleus.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Virol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1991</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Helenius A</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ee3">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2196448</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Function of two discrete regions is required for nuclear localization of polymerase basic protein 1 of A/WSN/33 influenza virus (H1 N1).</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1990</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nath ST</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nayak DP</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="a77">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15073366</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">How viruses enter animal cells.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith AE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Helenius A</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d16">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15702989</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d2d">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7688826</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ion channel activity of influenza A virus M2 protein: characterization of the amantadine block.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Virol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1993</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takeuchi K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pinto LH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lamb RA</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="c56">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17777315</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">THE AGGLUTINATION OF RED CELLS BY ALLANTOIC FLUID OF CHICK EMBRYOS INFECTED WITH INFLUENZA VIRUS.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1941</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirst GK</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="f01">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15956611</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">In vitro assembly of PB2 with a PB1-PA dimer supports a new model of assembly of influenza A virus polymerase subunits into a functional trimeric complex.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Virol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deng T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharps J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fodor E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brownlee GG</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="c80">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17005651</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="a2d">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17081640</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ec2">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16933365</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional association between viral and cellular transcription during influenza virus infection.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rev Med Virol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Engelhardt OG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fodor E</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="edf">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12594179</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Influenza A virus replication is dependent on an antioxidant pathway that involves GSH and Bcl-2.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FASEB J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nencioni L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iuvara A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aquilano K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ciriolo MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cozzolino F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rotilio G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garaci E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Palamara AT</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="aa0">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10910970</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Influenza virus infection of desialylated cells.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glycobiology</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stray SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cummings RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Air GM</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="e73">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15298169</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Orthomyxovirus replication, transcription, and polyadenylation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Top Microbiol Immunol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neumann G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brownlee GG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fodor E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawaoka Y</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="dc0">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12921991</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trafficking of viral genomic RNA into and out of the nucleus: influenza, Thogoto and Borna disease viruses.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Virus Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cros JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Palese P</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ff5">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15308710</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The PA subunit is required for efficient nuclear accumulation of the PB1 subunit of the influenza A virus RNA polymerase complex.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Virol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fodor E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith M</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="c63">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8113737</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Complex structure of the nuclear translocation signal of influenza virus polymerase PA subunit.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Gen Virol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nieto A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de la Luna S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BÃ¡rcena J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Portela A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">OrtÃ­n J</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d0b">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16806605</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Influenza A virus and the cell nucleus.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vaccine</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amorim MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Digard P</bp:AUTHORS>
+    </bp:PublicationXRef>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#"><bp:TERM>influenza</bp:TERM><bp:ID>DOID:8469</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

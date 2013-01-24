@@ -1,0 +1,1754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="TCR Signaling Pathway" Organism="Homo sapiens" License="Freely available under Creative Commons license">
+<Comment Source="WikiPathways-category">Cellular Process</Comment>
+<Comment Source="WikiPathways-description">The T-cell antigen receptor (TCR) complex is composed of a ligand-binding subunit, the α and β chains, and a signaling subunit, namely the CD3ε, γ and δ chains and the TCRζ chain. This complex participates in T-cell activation upon the presentation of the antigen peptide (derived from the foreign antigen) bound to the MHC (Class I and Class II) residing on antigen-presenting cells (APCs), including dendritic cells, macrophages and B cells. Co-stimulatory receptors, such as CD2, CD28, CD4, CD8, and integrin molecules, contribute to signal transduction by modulating the response threshold. All the above components along with accessory proteins essential for MHC are a part of the immunological synapse that initiates T-cell activation.
+
+Protein tyrosine phosphorylation mediated by the Src family kinases Lck and Fyn, in turn regulated by CD45, is the initial event in TCR signaling. Lck is activated by the interaction of MHC and CD4 or CD8. It then induces the phosphorylation and activation of TCR-CD3 complex and eventually mediates Fyn activation. The activated Src kinases phosphorylate ITAMs (Immune receptor tyrosine-based activation motifs) present on CD3γ, δ, ε and ζ chain. The 70-kd ζ chain–associated protein kinase (ZAP70) is then recruited to the ITAMs followed by its phosphorylation and subsequent activation which results in further amplification of the response. These activated PTKs induce tyrosine phosphorylation of several polypeptides, including the transmembrane adaptor LAT (Linker Activator for T-Cells). Protein tyrosine phosphorylation subsequently leads to the activation of multiple pathways, including ERK (Extracellular Signal Regulated Kinase), JNK (c-Jun N-terminal Kinase), NF-κB (Nuclear factor of kappa light polypeptide gene enhancer in B-cells 1) and NFAT(Nuclear Factor of Activated T-Cells) pathways, which ultimately induce effector functions.
+
+CD28 ligation by B7-1 or B7-2 helps in bringing the T-Cell and Antigen Presenting Cell membranes into close proximity. This event also provides a co-stimulatory signal leading to the production of IL-2 and T- cell activation. Besides CD28, many other transmembrane receptors also modulate specific elements of TCR signaling. CD28 and CD45 activate Lck which in turn induces the phosphorylation and activation of the TCR-CD3 complex and consequently, the tyrosine kinases Fyn and ZAP70. CD45 plays a role in antagonizing the effect of inhibitory proteins on T-cell activation. ZAP70 induces activation of LAT (Linker for Activation of T-Cells), an integral membrane adaptor protein which further binds to GADS (Growth Factor Receptor-Bound Protein-2-Related Adaptor Protein-2), SLP76 (SH2 Domain-Containing Leukocyte Protein-76), and ITK (IL-2 inducible T-cell kinase). This complex facilitates the activation of PLCG1 (Phospholipase-C-Gamma1) that is responsible for the production of the second messengers DAG (Diacylglycerol) and IP3 (Inositol Triphosphate). DAG activates proteins including PKCθ (Protein Kinase-C-Theta) and Ras, whereas IP3 leads to Ca2+ release from ER and also facilitates influx of extracellular calcium. Increased intracellular Ca2+ activates the phosphatase Calcineurin that dephosphorylates NFAT which then enters the nucleus and promotes transcription.
+
+Activated LAT also binds multiple adaptor proteins including GRB2, GRAP (GRB2- Related Adaptor Protein) and GADS to facilitate activation of serine/threonine kinases such as Raf1, MEK (MAPK/ERK Kinase) and dual-specificity kinases ERK1/2 that are involved in activation of MAPKs (Mitogen activated protein kinases) resulting in the induction of transcription factor Elk1.
+
+ZAP70 also activates IKKs via the CARD11 (Caspase recruitment domain family, member 11) -BCL10 (B-Cell CLL/lymphoma-10)-MALT1 (Mucosa Associated Lymphoid Tissue Lymphoma Translocation Gene-1) complex and MAP3K (activated by PKCθ) which in turn relieve NF-κB of IκB (NF-kappa-B inhibitor beta) and allow its nuclear translocation and transcriptional activation. ZAP70 also activates p38 via Vav, Rac and MKK3/6 (Mitogen-Activated Protein Kinase Kinase-3 / Mitogen-Activated Protein Kinase Kinase-6). p38 then activates the transcription factor ATF2 (Activating Transcription Factor-2).  Activated Rac also activates JNK via MEKK1 and MKK4/7 (MKK4 (Mitogen-Activated Protein Kinase Kinase-4/ Mitogen-Activated Protein Kinase Kinase-7) which eventually leads to activation of c-Jun mediated transcription.
+
+SIT (SHP2-Interacting Transmembrane Adaptor Protein) and CTLA4 (Cytotoxic T-Lymphocyte Antigen-4) are transmembrane adaptor proteins that interact with the SHP2 (SH2-containing Protein tyrosine Phosphatase-2) and negatively regulate T-cell activation by inhibiting the phosphorylation of Fyn and CD28 respectively. CTLA4 has a greater affinity for its B7-1/B7-2ligands in comparison toCD28 and thus competes for them. During T-cell activation CTLA4 is endocytosed to quicken the response. ZAP70 facilitates translocation of CTLA4 to the membrane when the response needs to be controlled. PAG (Phosphoprotein Associated with Glycosphingolipid Microdomains), a transmembrane adaptor molecule is associated with CSK (c-Src Tyrosine Kinase), an inhibitor of Src-related protein tyrosine kinases. Overexpression of PAG inhibits TCR-mediated responses.  Dual specificity phosphatase 3 (DUSP3) or VHR is also induced by ZAP70 which consequently down regulates ERK activation and thus controls T-cell response.
+
+Please access this pathway at [http://www.netpath.org/netslim/tcr_pathway.html NetSlim] database.</Comment>
+  <Graphics BoardWidth="1185.0" BoardHeight="1763.0"/>
+  <DataNode TextLabel="MAP4K1" GraphId="c1ff4" Type="Protein">
+    <Graphics CenterX="481.5" CenterY="861.0" Width="56.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11184"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK9" GraphId="dff90" Type="Protein">
+    <Graphics CenterX="351.0" CenterY="1229.0" Width="56.0" Height="20.0" ZOrder="33230" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5601"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK8" GraphId="e0365" Type="Protein">
+    <Graphics CenterX="351.0" CenterY="1209.0" Width="56.0" Height="20.0" ZOrder="33233" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5599"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K2" GraphId="f9ecf" Type="Protein">
+    <Graphics CenterX="161.5" CenterY="1152.0" Width="56.0" Height="20.0" ZOrder="33236" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5605"/>
+  </DataNode>
+  <DataNode TextLabel="LCP2" GraphId="f57b0" Type="Protein">
+    <Graphics CenterX="529.5" CenterY="635.0" Width="56.0" Height="20.0" ZOrder="33357" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="" ID="3937"/>
+  </DataNode>
+  <DataNode TextLabel="WAS" GraphId="cd062" Type="Protein">
+    <Graphics CenterX="293.0" CenterY="792.0" Width="40.0" Height="20.0" ZOrder="33360" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7454"/>
+  </DataNode>
+  <DataNode TextLabel="TRB@" GraphId="ef2e0" Type="Protein">
+    <Graphics CenterX="431.0" CenterY="305.5" Width="66.0" Height="20.0" ZOrder="33362" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6957"/>
+  </DataNode>
+  <DataNode TextLabel="CBLB" GraphId="da3dc" Type="Protein">
+    <Graphics CenterX="336.5" CenterY="539.0" Width="45.0" Height="20.0" ZOrder="33364" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="868"/>
+  </DataNode>
+  <DataNode TextLabel="CREB1" GraphId="bd0db" Type="Protein">
+    <Graphics CenterX="294.0" CenterY="1315.0" Width="56.0" Height="20.0" ZOrder="33366" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1385"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB1" GraphId="b619e" Type="Protein">
+    <Graphics CenterX="495.5" CenterY="1286.0" Width="56.0" Height="20.0" ZOrder="33369" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4790"/>
+  </DataNode>
+  <DataNode TextLabel="RELA" GraphId="fca8f" Type="Protein">
+    <Graphics CenterX="495.0" CenterY="1309.0" Width="56.0" Height="20.0" ZOrder="33371" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5970"/>
+  </DataNode>
+  <DataNode TextLabel="REL" GraphId="ee70d" Type="Protein">
+    <Graphics CenterX="495.0" CenterY="1332.0" Width="56.0" Height="20.0" ZOrder="33371" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5966"/>
+  </DataNode>
+  <DataNode TextLabel="CREB1" GraphId="da811" Type="Protein">
+    <Graphics CenterX="294.0" CenterY="1460.0" Width="56.0" Height="20.0" ZOrder="33377" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1385"/>
+  </DataNode>
+  <DataNode TextLabel="JUN" GraphId="f437b" Type="Protein">
+    <Graphics CenterX="351.5" CenterY="1554.0" Width="43.0" Height="20.0" ZOrder="33380" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3725"/>
+  </DataNode>
+  <DataNode TextLabel="CHUK" GraphId="e01ff" Type="Protein">
+    <Graphics CenterX="554.5" CenterY="1171.0" Width="56.0" Height="20.0" ZOrder="33382" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1147"/>
+  </DataNode>
+  <DataNode TextLabel="IKBKB" GraphId="b167d" Type="Protein">
+    <Graphics CenterX="495.5" CenterY="1171.0" Width="56.0" Height="20.0" ZOrder="33385" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3551"/>
+  </DataNode>
+  <DataNode TextLabel="NFKBIA" GraphId="af78f" Type="Protein">
+    <Graphics CenterX="495.0" CenterY="1226.0" Width="56.0" Height="20.0" ZOrder="33388" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4792"/>
+  </DataNode>
+  <DataNode TextLabel="FYB" GraphId="c76dd" Type="Protein">
+    <Graphics CenterX="316.0" CenterY="771.0" Width="46.0" Height="20.0" ZOrder="33391" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2533"/>
+  </DataNode>
+  <DataNode TextLabel="LCK" GraphId="e1246" Type="Protein">
+    <Graphics CenterX="588.0" CenterY="458.0" Width="56.0" Height="20.0" ZOrder="33393" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3972"/>
+  </DataNode>
+  <DataNode TextLabel="CD247" GraphId="ed5fe" Type="Protein">
+    <Graphics CenterX="431.0" CenterY="326.0" Width="66.0" Height="20.0" ZOrder="33396" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="919"/>
+  </DataNode>
+  <DataNode TextLabel="FOS" GraphId="dd44d" Type="Protein">
+    <Graphics CenterX="397.5" CenterY="1554.0" Width="47.0" Height="20.0" ZOrder="33398" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2353"/>
+  </DataNode>
+  <DataNode TextLabel="PTK2B" GraphId="bab40" Type="Protein">
+    <Graphics CenterX="499.0" CenterY="546.0" Width="56.0" Height="20.0" ZOrder="33400" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2185"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCD" GraphId="ab956" Type="Protein">
+    <Graphics CenterX="606.0" CenterY="884.0" Width="56.0" Height="20.0" ZOrder="33402" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5580"/>
+  </DataNode>
+  <DataNode TextLabel="CARD11" GraphId="cdbd4" Type="Protein">
+    <Graphics CenterX="546.5" CenterY="979.0" Width="56.0" Height="20.0" ZOrder="33405" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="84433"/>
+  </DataNode>
+  <DataNode TextLabel="ITK" GraphId="a5486" Type="Protein">
+    <Graphics CenterX="654.0" CenterY="635.0" Width="56.0" Height="20.0" ZOrder="33407" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3702"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCQ" GraphId="bbad2" Type="Protein">
+    <Graphics CenterX="546.0" CenterY="914.0" Width="56.0" Height="20.0" ZOrder="33410" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5588"/>
+  </DataNode>
+  <DataNode TextLabel="CD247" GraphId="b1121" Type="Protein">
+    <Graphics CenterX="365.75" CenterY="326.75" Width="66.0" Height="20.0" ZOrder="33413" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="919"/>
+  </DataNode>
+  <DataNode TextLabel="CDC42" GraphId="f0f4a" Type="Protein">
+    <Graphics CenterX="382.0" CenterY="904.0" Width="56.0" Height="20.0" ZOrder="33416" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="998"/>
+  </DataNode>
+  <DataNode TextLabel="FYN" GraphId="e6393" Type="Protein">
+    <Graphics CenterX="368.0" CenterY="430.0" Width="56.0" Height="20.0" ZOrder="33418" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2534"/>
+  </DataNode>
+  <DataNode TextLabel="SHC1" GraphId="c8185" Type="Protein">
+    <Graphics CenterX="156.5" CenterY="495.0" Width="45.0" Height="20.0" ZOrder="33421" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6464"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK14" GraphId="a2f78" Type="Protein">
+    <Graphics CenterX="247.5" CenterY="1207.0" Width="56.0" Height="20.0" ZOrder="33424" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="SH2B3" GraphId="ee38a" Type="Protein">
+    <Graphics CenterX="600.0" CenterY="591.0" Width="56.0" Height="20.0" ZOrder="33429" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10019"/>
+  </DataNode>
+  <DataNode TextLabel="GAB2" GraphId="cb7e0" Type="Protein">
+    <Graphics CenterX="233.5" CenterY="730.0" Width="45.0" Height="20.0" ZOrder="33431" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9846"/>
+  </DataNode>
+  <DataNode TextLabel="CD3E" GraphId="c2d4a" Type="Protein">
+    <Graphics CenterX="298.5" CenterY="326.5" Width="66.0" Height="20.0" ZOrder="33434" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="916"/>
+  </DataNode>
+  <DataNode TextLabel="PAK1" GraphId="ed14c" Type="Protein">
+    <Graphics CenterX="268.25" CenterY="916.0" Width="39.5" Height="20.0" ZOrder="33436" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5058"/>
+  </DataNode>
+  <DataNode TextLabel="GRAP2" GraphId="f1000" Type="Protein">
+    <Graphics CenterX="380.0" CenterY="771.5" Width="56.0" Height="20.0" ZOrder="33438" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9402"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK3" GraphId="e0b8f" Type="Protein">
+    <Graphics CenterX="161.0" CenterY="1315.0" Width="56.0" Height="20.0" ZOrder="33440" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5595"/>
+  </DataNode>
+  <DataNode TextLabel="PTPN11" GraphId="dea14" Type="Protein">
+    <Graphics CenterX="233.0" CenterY="818.0" Width="56.0" Height="20.0" ZOrder="33443" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5781"/>
+  </DataNode>
+  <DataNode TextLabel="GRB2" GraphId="e7a82" Type="Protein">
+    <Graphics CenterX="194.0" CenterY="635.0" Width="56.0" Height="20.0" ZOrder="33445" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2885"/>
+  </DataNode>
+  <DataNode TextLabel="CD3D" GraphId="fe0cd" Type="Protein">
+    <Graphics CenterX="298.5" CenterY="305.0" Width="66.0" Height="20.0" ZOrder="33448" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="915"/>
+  </DataNode>
+  <DataNode TextLabel="CD3E" GraphId="d5980" Type="Protein">
+    <Graphics CenterX="498.5" CenterY="326.0" Width="66.0" Height="20.0" ZOrder="33450" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="916"/>
+  </DataNode>
+  <DataNode TextLabel="PLCG1" GraphId="dbd9e" Type="Protein">
+    <Graphics CenterX="529.0" CenterY="769.0" Width="56.0" Height="20.0" ZOrder="33452" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5335"/>
+  </DataNode>
+  <DataNode TextLabel="CD3G" GraphId="de094" Type="Protein">
+    <Graphics CenterX="498.5" CenterY="305.0" Width="66.0" Height="20.0" ZOrder="33455" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="917"/>
+  </DataNode>
+  <DataNode TextLabel="NFATC2" GraphId="e3f23" Type="Protein">
+    <Graphics CenterX="671.5" CenterY="1003.0" Width="56.0" Height="20.0" ZOrder="33457" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4773"/>
+  </DataNode>
+  <DataNode TextLabel="PSTPIP1" GraphId="f8dd8" Type="Protein">
+    <Graphics CenterX="335.5" CenterY="956.0" Width="56.0" Height="20.0" ZOrder="33459" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9051"/>
+  </DataNode>
+  <DataNode TextLabel="NFATC2" GraphId="da771" Type="Protein">
+    <Graphics CenterX="671.5" CenterY="1504.0" Width="56.0" Height="20.0" ZOrder="33461" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4773"/>
+  </DataNode>
+  <DataNode TextLabel="NCK1" GraphId="f45a3" Type="Protein">
+    <Graphics CenterX="268.0" CenterY="771.0" Width="48.0" Height="20.0" ZOrder="33463" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4690"/>
+  </DataNode>
+  <DataNode TextLabel="RAF1" GraphId="c3a09" Type="Protein">
+    <Graphics CenterX="196.0" CenterY="963.0" Width="56.0" Height="20.0" ZOrder="33465" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5894"/>
+  </DataNode>
+  <DataNode TextLabel="SOS1" GraphId="dd83a" Type="Protein">
+    <Graphics CenterX="194.0" CenterY="770.0" Width="56.0" Height="20.0" ZOrder="33468" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6654"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K1" GraphId="eccc7" Type="Protein">
+    <Graphics CenterX="161.0" CenterY="1131.0" Width="56.0" Height="20.0" ZOrder="33470" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5604"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK1" GraphId="f305b" Type="Protein">
+    <Graphics CenterX="161.0" CenterY="1292.0" Width="56.0" Height="20.0" ZOrder="33473" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="MALT1" GraphId="e188a" Type="Protein">
+    <Graphics CenterX="548.0" CenterY="1018.75" Width="56.0" Height="20.0" ZOrder="33476" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10892"/>
+  </DataNode>
+  <DataNode TextLabel="BCL10" GraphId="d9182" Type="Protein">
+    <Graphics CenterX="546.5" CenterY="999.0" Width="56.0" Height="20.0" ZOrder="33478" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8915"/>
+  </DataNode>
+  <DataNode TextLabel="VAV3" GraphId="e09e8" Type="Protein">
+    <Graphics CenterX="417.5" CenterY="737.0" Width="47.0" Height="20.0" ZOrder="33481" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10451"/>
+  </DataNode>
+  <DataNode TextLabel="ITPR1" GraphId="be76a" Type="Protein">
+    <Graphics CenterX="224.0" CenterY="325.0" Width="56.0" Height="20.0" ZOrder="33484" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3708"/>
+  </DataNode>
+  <DataNode TextLabel="VAV1" GraphId="ac2e1" Type="Protein">
+    <Graphics CenterX="450.5" CenterY="770.0" Width="45.0" Height="20.0" ZOrder="33486" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7409"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R2" GraphId="dbdf8" Type="Protein">
+    <Graphics CenterX="734.25" CenterY="534.0" Width="50.5" Height="20.0" ZOrder="33489" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5296"/>
+  </DataNode>
+  <DataNode TextLabel="LAT" GraphId="f5c29" Type="Protein">
+    <Graphics CenterX="366.0" CenterY="635.0" Width="56.0" Height="20.0" ZOrder="33491" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="27040"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R1" GraphId="b5825" Type="Protein">
+    <Graphics CenterX="734.25" CenterY="514.0" Width="50.5" Height="20.0" ZOrder="33494" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5295"/>
+  </DataNode>
+  <DataNode TextLabel="TRA@" GraphId="cf657" Type="Protein">
+    <Graphics CenterX="365.5" CenterY="305.0" Width="66.0" Height="20.0" ZOrder="33496" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6955"/>
+  </DataNode>
+  <DataNode TextLabel="CD4" GraphId="f2960" Type="Protein">
+    <Graphics CenterX="588.0" CenterY="325.0" Width="56.0" Height="20.0" ZOrder="33498" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="920"/>
+  </DataNode>
+  <DataNode TextLabel="CD8A" GraphId="d3ec8" Type="Protein">
+    <Graphics CenterX="648.0" CenterY="325.0" Width="56.0" Height="20.0" ZOrder="33500" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="925"/>
+  </DataNode>
+  <DataNode TextLabel="ZAP70" GraphId="fefd0" Type="Protein">
+    <Graphics CenterX="447.0" CenterY="458.0" Width="62.0" Height="20.0" ZOrder="33502" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7535"/>
+  </DataNode>
+  <DataNode TextLabel="CD28" GraphId="c71ff" Type="Protein">
+    <Graphics CenterX="707.5" CenterY="325.25" Width="56.0" Height="20.0" ZOrder="33507" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="940"/>
+  </DataNode>
+  <DataNode TextLabel="AKT1" GraphId="f6e4b" Type="Protein">
+    <Graphics CenterX="734.5" CenterY="914.25" Width="56.0" Height="20.0" ZOrder="33509" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="207"/>
+  </DataNode>
+  <DataNode TextLabel="PDPK1" GraphId="fbd04" Type="Protein">
+    <Graphics CenterX="734.0" CenterY="729.25" Width="56.0" Height="20.0" ZOrder="33513" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5170"/>
+  </DataNode>
+  <DataNode TextLabel="CBL" GraphId="d2bdf" Type="Protein">
+    <Graphics CenterX="264.25" CenterY="539.25" Width="43.5" Height="20.0" ZOrder="33517" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="867"/>
+  </DataNode>
+  <DataNode TextLabel="SKAP1" GraphId="dc177" Type="Protein">
+    <Graphics CenterX="277.5" CenterY="430.0" Width="56.0" Height="20.0" ZOrder="33525" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8631"/>
+  </DataNode>
+  <DataNode TextLabel="ICOS" GraphId="fb8ce" Type="Protein">
+    <Graphics CenterX="760.0" CenterY="325.0" Width="56.0" Height="20.0" ZOrder="33535" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="29851"/>
+  </DataNode>
+  <DataNode TextLabel="ATF2" GraphId="b5e50" Type="Protein">
+    <Graphics CenterX="232.0" CenterY="1553.0" Width="56.0" Height="20.0" ZOrder="33546" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1386"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K14" GraphId="fc01f" Type="Protein">
+    <Graphics CenterX="734.75" CenterY="1171.0" Width="66.5" Height="20.0" ZOrder="33550" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9020"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K8" GraphId="eccbb" Type="Protein">
+    <Graphics CenterX="734.5" CenterY="1088.25" Width="56.0" Height="20.0" ZOrder="33554" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1326"/>
+  </DataNode>
+  <DataNode TextLabel="HRAS" GraphId="f6718" Type="Protein">
+    <Graphics CenterX="195.0" CenterY="871.0" Width="56.0" Height="20.0" ZOrder="33564" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3265"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K7" GraphId="f0a89" Type="Protein">
+    <Graphics CenterX="423.5" CenterY="1071.0" Width="56.0" Height="20.0" ZOrder="33568" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6885"/>
+  </DataNode>
+  <DataNode TextLabel="IKBKG" GraphId="b4427" Type="Protein">
+    <Graphics CenterX="541.0" CenterY="1150.0" Width="56.0" Height="20.0" ZOrder="33574" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8517"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB1" GraphId="ae2bd" Type="Protein">
+    <Graphics CenterX="495.75" CenterY="1502.0" Width="55.5" Height="20.0" ZOrder="33576" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4790"/>
+  </DataNode>
+  <DataNode TextLabel="REL" GraphId="e89d1" Type="Protein">
+    <Graphics CenterX="496.0" CenterY="1548.0" Width="56.0" Height="20.0" ZOrder="33578" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5966"/>
+  </DataNode>
+  <DataNode TextLabel="RELA" GraphId="be9cb" Type="Protein">
+    <Graphics CenterX="496.0" CenterY="1525.0" Width="56.0" Height="20.0" ZOrder="33580" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5970"/>
+  </DataNode>
+  <DataNode TextLabel="NFATC1" GraphId="eeb0f" Type="Protein">
+    <Graphics CenterX="671.5" CenterY="1025.0" Width="56.0" Height="20.0" ZOrder="33587" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4772"/>
+  </DataNode>
+  <DataNode TextLabel="NFATC1" GraphId="e781b" Type="Protein">
+    <Graphics CenterX="671.5" CenterY="1526.0" Width="56.0" Height="20.0" ZOrder="33589" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4772"/>
+  </DataNode>
+  <DataNode TextLabel="TRAF6" GraphId="c5e20" Type="Protein">
+    <Graphics CenterX="548.0" CenterY="1071.0" Width="56.0" Height="20.0" ZOrder="33599" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7189"/>
+  </DataNode>
+  <DataNode TextLabel="CRK" GraphId="dd21b" Type="Protein">
+    <Graphics CenterX="443.0" CenterY="635.0" Width="56.0" Height="20.0" ZOrder="33607" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1398"/>
+  </DataNode>
+  <DataNode TextLabel="CRKL" GraphId="facc6" Type="Protein">
+    <Graphics CenterX="336.0" CenterY="598.0" Width="44.0" Height="20.0" ZOrder="33609" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1399"/>
+  </DataNode>
+  <DataNode TextLabel="DBNL" GraphId="b6364" Type="Protein">
+    <Graphics CenterX="410.0" CenterY="956.25" Width="56.0" Height="20.0" ZOrder="33619" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="28988"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK9" GraphId="a7063" Type="Protein">
+    <Graphics CenterX="351.0" CenterY="1509.0" Width="56.0" Height="20.0" ZOrder="33627" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5601"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK8" GraphId="e01e4" Type="Protein">
+    <Graphics CenterX="351.0" CenterY="1487.0" Width="56.0" Height="20.0" ZOrder="33630" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5599"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK14" GraphId="a47d6" Type="Protein">
+    <Graphics CenterX="233.5" CenterY="1487.0" Width="56.0" Height="20.0" ZOrder="33633" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK3" GraphId="c9289" Type="Protein">
+    <Graphics CenterX="161.0" CenterY="1504.0" Width="56.0" Height="20.0" ZOrder="33636" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5595"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK1" GraphId="f8d2d" Type="Protein">
+    <Graphics CenterX="161.0" CenterY="1481.0" Width="56.0" Height="20.0" ZOrder="33639" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="VIM" GraphId="f8e34" Type="Rna">
+    <Graphics CenterX="436.0" CenterY="1634.0" Width="56.0" Height="20.0" ZOrder="33648" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7431"/>
+  </DataNode>
+  <DataNode TextLabel="IL17A" GraphId="dfe31" Type="Rna">
+    <Graphics CenterX="612.0" CenterY="1632.5" Width="56.0" Height="20.0" ZOrder="33650" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3605"/>
+  </DataNode>
+  <DataNode TextLabel="IL1B" GraphId="ef7e1" Type="Rna">
+    <Graphics CenterX="436.0" CenterY="1678.0" Width="56.0" Height="20.0" ZOrder="33652" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3553"/>
+  </DataNode>
+  <DataNode TextLabel="FAS" GraphId="d9efa" Type="Rna">
+    <Graphics CenterX="496.0" CenterY="1656.0" Width="56.0" Height="20.0" ZOrder="33654" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="355"/>
+  </DataNode>
+  <DataNode TextLabel="CD83" GraphId="d703c" Type="Rna">
+    <Graphics CenterX="496.0" CenterY="1634.0" Width="56.0" Height="20.0" ZOrder="33656" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9308"/>
+  </DataNode>
+  <DataNode TextLabel="OPRM1" GraphId="ca884" Type="Rna">
+    <Graphics CenterX="671.0" CenterY="1632.0" Width="56.0" Height="20.0" ZOrder="33658" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4988"/>
+  </DataNode>
+  <DataNode TextLabel="IL15RA" GraphId="b236f" Type="Rna">
+    <Graphics CenterX="436.0" CenterY="1656.0" Width="56.0" Height="20.0" ZOrder="33807" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3601"/>
+  </DataNode>
+  <DataNode TextLabel="TGFB1" GraphId="f9d5b" Type="Rna">
+    <Graphics CenterX="671.0" CenterY="1676.0" Width="56.0" Height="20.0" ZOrder="33808" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7040"/>
+  </DataNode>
+  <DataNode TextLabel="IL1A" GraphId="d53e1" Type="Rna">
+    <Graphics CenterX="496.0" CenterY="1678.0" Width="56.0" Height="20.0" ZOrder="33809" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3552"/>
+  </DataNode>
+  <DataNode TextLabel="TNFRSF9" GraphId="eed35" Type="Rna">
+    <Graphics CenterX="352.0" CenterY="1633.0" Width="56.0" Height="20.0" ZOrder="33810" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3604"/>
+  </DataNode>
+  <DataNode TextLabel="GATA3" GraphId="a9a30" Type="Rna">
+    <Graphics CenterX="612.0" CenterY="1676.0" Width="56.0" Height="20.0" ZOrder="33815" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2625"/>
+  </DataNode>
+  <DataNode TextLabel="IL6" GraphId="f1b23" Type="Rna">
+    <Graphics CenterX="671.5" CenterY="1654.0" Width="56.0" Height="20.0" ZOrder="33816" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3569"/>
+  </DataNode>
+  <DataNode TextLabel="CCR5" GraphId="b0ace" Type="Rna">
+    <Graphics CenterX="293.0" CenterY="1655.0" Width="56.0" Height="20.0" ZOrder="33817" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1234"/>
+  </DataNode>
+  <DataNode TextLabel="IRF4" GraphId="ab3eb" Type="Rna">
+    <Graphics CenterX="352.0" CenterY="1655.0" Width="56.0" Height="20.0" ZOrder="33818" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3662"/>
+  </DataNode>
+  <DataNode TextLabel="IL9" GraphId="f72c7" Type="Rna">
+    <Graphics CenterX="293.0" CenterY="1633.0" Width="56.0" Height="20.0" ZOrder="33820" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3578"/>
+  </DataNode>
+  <DataNode TextLabel="NFATC1" GraphId="b68a0" Type="Rna">
+    <Graphics CenterX="612.5" CenterY="1654.0" Width="56.0" Height="20.0" ZOrder="33823" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4772"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K8" GraphId="f7db1" Type="Rna">
+    <Graphics CenterX="466.5" CenterY="1700.25" Width="56.0" Height="20.0" ZOrder="33833" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1326"/>
+  </DataNode>
+  <DataNode TextLabel="RIPK2" GraphId="bfbbd" Type="Protein">
+    <Graphics CenterX="411.0" CenterY="999.125" Width="56.0" Height="20.0" ZOrder="33853" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8767"/>
+  </DataNode>
+  <State GraphRef="dff90" TextLabel="P" GraphId="a06bf">
+    <Comment>TCR stimulation induces the phosphorylation of JNK2 in Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e0365" TextLabel="P" GraphId="ba4f0">
+    <Comment>TCR stimulation induces the phosphorylation of JNK1 in Jurkat cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f9ecf" TextLabel="P" GraphId="d67ac">
+    <Comment>TCR stimulation induces the phosphorylation of MEK2 in DP thymocytes, the human Jurkat T leukemia cell line (clone E6-1)and jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f57b0" TextLabel="P" GraphId="e3685">
+    <Comment>TCR activation induces phosphorylation of SLP-76 at Tyr-113, Tyr-128 and Ser-376 in Jurkat  T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="bd0db" TextLabel="P" GraphId="a9330">
+    <Comment>TCR/CD3 stimulation induces the phosphorylation of CREB at Ser133 in EL4 T cells, VL3 cell lineS</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fca8f" TextLabel="P" GraphId="f1b80">
+    <Comment>TCR activation induces NF-kappa B p65 C-terminal phosphorylation selectively at serine 536 in Jurkat cells</Comment>
+    <Graphics RelX="1.0" RelY="-1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fca8f" TextLabel="P" GraphId="c07c1">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ee70d" TextLabel="P" GraphId="d2104">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="da811" TextLabel="P" GraphId="e019b">
+    <Graphics RelX="1.0" RelY="0.7" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e01ff" TextLabel="P" GraphId="d5721">
+    <Comment>TCR activation induces the phosphorylation of IKK in MSCV Jurkat cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b167d" TextLabel="P" GraphId="e62fb">
+    <Comment>Upon TCR activation HPK1 stimulates IKK activity by increasing phosphorylation of IKK beta in Jurkat T cells.</Comment>
+    <Graphics RelX="-0.9565217391304348" RelY="0.8888888888888888" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="af78f" TextLabel="P" GraphId="c208e">
+    <Comment>TCR activation induces the phosphorylation of IKB alpha in Jurkat cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e1246" TextLabel="P" GraphId="dc90d">
+    <Comment>TCR stimulation induces the phosphorylation of LCK at Tyrosine 192 and 505 in human Jurkat T cell lines and T lymphoblastoid cell line, H9 (TCR/CD3 cross linking).</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ab956" TextLabel="P" GraphId="bba31">
+    <Comment>TCR activation induces a transient phosphorylation of PKC delta at the threonine residue at 507 in splenic T cells and Tyrosine 313 of human Jurkat T cell.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a5486" TextLabel="P" GraphId="fe139">
+    <Comment>TCR stimulation induces the phosphorylation of ITK at Tyrosine 512 in human Jurkat T cell lines.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="bbad2" TextLabel="P" GraphId="b38ac">
+    <Comment>TCR activation induces the phosphorylation of PKC theta in human PBL T cells</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b1121" TextLabel="P" GraphId="b47f1">
+    <Comment>TCR stimulation induces the phosphorylation of CD247 at Tyrosine 72,83,111,123,142 and 153 in human Jurkat T cell lines and CD5 co-stimulation down-modulates TCR-CD3 induced tyrosine phosphorylation of CD247 in human jurkat T cell line</Comment>
+    <Graphics RelX="1.0" RelY="0.8367346938775511" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e6393" TextLabel="P" GraphId="f4bf5">
+    <Comment>TCR stimulation induces the phosphorylation of FYN at Tyrosine 420 and 440 in human Jurkat T cell lines and T lymphoblastoid cell line, H9(TCR/CD3 cross linking).</Comment>
+    <Graphics RelX="-1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c8185" TextLabel="P" GraphId="aad32">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a2f78" TextLabel="P" GraphId="dadc3">
+    <Comment>TCR stimulation induces the phosphorylation of MAPK14 at Threonine 180 and Tyrosine 182 in human Jurkat T cell lines.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="cb7e0" TextLabel="P" GraphId="b00b0">
+    <Comment>TCR stimulation induces the phosphorylation of GAB2 at Tyrosine 266 in human Jurkat T cell lines.</Comment>
+    <Graphics RelX="0.9565217391304348" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e0b8f" TextLabel="P" GraphId="f1619">
+    <Comment>TCR stimulation induces the phosphorylation of ERK1 in Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e7a82" TextLabel="P" GraphId="e5f4b">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="dbd9e" TextLabel="P" GraphId="b35cf">
+    <Comment>TCR activation induces the tyrosine phosphorylation of PLC gamma 1 at position 771,775 and 783 in Jurkat T cells and CD5 co-stimulation down-modulates TCR-CD3 induced tyrosine phosphorylation of PLCG1 in human jurkat T cell line.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c3a09" TextLabel="P" GraphId="c8484">
+    <Comment>TCR activation induces the phosphorylation of Raf1 tyrosine residues at 340 and 341 in Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="eccc7" TextLabel="P" GraphId="fc419">
+    <Comment>TCR stimulation induces the phosphorylation of MEK1 in DP thymocytes and Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f305b" TextLabel="P" GraphId="e51fe">
+    <Comment>TCR stimulation induces the phosphorylation of ERK2 in Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d9182" TextLabel="Ub" GraphId="e334b">
+    <Comment>TCR activation induces the ubiquitination of Bcl10 in T cells.</Comment>
+    <Graphics RelX="-1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="cc00cc" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d9182" TextLabel="P" GraphId="bfb5e">
+    <Comment>TCR stimulation induced a transient phosphorylation of BCL10 prior to its degradation in D5T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e09e8" TextLabel="P" GraphId="e009e">
+    <Comment>TCR stimulation leads to tyrosine phosphorylation of VAV3 in Jurkat T cells or a CD4+ T cell clone</Comment>
+    <Graphics RelX="0.8695652173913043" RelY="0.8888888888888888" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ac2e1" TextLabel="P" GraphId="f9ed0">
+    <Comment>TCR activation induced the phosphorylation of Vav1 in Human CD3+ T cells.</Comment>
+    <Graphics RelX="0.8222222222222222" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f5c29" TextLabel="P" GraphId="c3480">
+    <Comment>TCR stimulation induces the phosphorylation of LAT at Tyrosine 81 in human Jurkat T cell lines.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fefd0" TextLabel="P" GraphId="f4150">
+    <Comment>TCR stimulation induces the phosphorylation of ZAP70 at Tyrosine 248,292,492.493 and Serine 491 in human Jurkat T cell lines and and CD5 co-stimulation down-modulates TCR-CD3 induced tyrosine phosphorylation of ZAP70 in human jurkat T cell line.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f6718" TextLabel="GTP" GraphId="dbbec">
+    <Graphics RelX="1.0" RelY="1.0" Width="24.5" Height="16.5" FillColor="fcff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e89d1" TextLabel="P" GraphId="b9ef0">
+    <Graphics RelX="0.9615384615384616" RelY="0.9" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="be9cb" TextLabel="P" GraphId="d0617">
+    <Comment>TCR activation induces NF-kappa B p65 C-terminal phosphorylation selectively at serine 536 in Jurkat cells</Comment>
+    <Graphics RelX="1.0" RelY="-1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="be9cb" TextLabel="P" GraphId="b7994">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a7063" TextLabel="P" GraphId="e1262">
+    <Comment>TCR stimulation induces the phosphorylation of JNK2 in Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e01e4" TextLabel="P" GraphId="f2280">
+    <Comment>TCR stimulation induces the phosphorylation of JNK1 in Jurkat cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a47d6" TextLabel="P" GraphId="a5023">
+    <Comment>TCR stimulation induces the phosphorylation of MAPK14 at Threonine 180 and Tyrosine 182 in human Jurkat T cell lines.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c9289" TextLabel="P" GraphId="a1002">
+    <Comment>TCR stimulation induces the phosphorylation of ERK1 in Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f8d2d" TextLabel="P" GraphId="b41fc">
+    <Comment>TCR stimulation induces the phosphorylation of ERK2 in Jurkat T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <Line GraphId="id49c1ad0d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="416.0" Y="458.0" GraphRef="fefd0" RelX="-1.0" RelY="0.0"/>
+      <Point X="194.0" Y="625.0" GraphRef="e7a82" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.2042749300234668" Shape="None" GraphId="d70ac"/>
+      <Anchor Position="0.390242003503536" Shape="None" GraphId="a47a1"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7a11d4cd">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="382.0" Y="440.0" GraphRef="e6393" RelX="0.5" RelY="1.0"/>
+      <Point X="433.5" Y="501.0"/>
+      <Point X="485.0" Y="536.0" GraphRef="bab40" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd157dbe2">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="368.0" Y="420.0" GraphRef="e6393" RelX="0.0" RelY="-1.0"/>
+      <Point X="296.0" Y="392.0"/>
+      <Point X="224.0" Y="335.0" GraphRef="be76a" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4deb58cd">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="498.5" Y="336.0" GraphRef="d5980" RelX="0.0" RelY="1.0"/>
+      <Point X="480.5" Y="403.0"/>
+      <Point X="462.5" Y="448.0" GraphRef="fefd0" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb75ef76d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="648.0" Y="335.0" GraphRef="d3ec8" RelX="0.0" RelY="1.0"/>
+      <Point X="625.0" Y="391.0"/>
+      <Point X="602.0" Y="448.0" GraphRef="e1246" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id2e0129e2">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="156.5" Y="505.0" GraphRef="c8185" RelX="0.0" RelY="1.0"/>
+      <Point X="168.25" Y="540.0"/>
+      <Point X="180.0" Y="625.0" GraphRef="e7a82" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ided1e986d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="380.0" Y="625.0" GraphRef="f5c29" RelX="0.5" RelY="-1.0"/>
+      <Point X="709.0" Y="514.0" GraphRef="b5825" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="264.1958606371245" Y="458.0" GraphRef="a47a1" RelX="0.0" RelY="0.0"/>
+      <Point X="264.25" Y="529.25" GraphRef="d2bdf" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e9a53">
+    <Comment>Upon TCR activation, LAT associates with GRAP2 in Jurkat T cells.</Comment>
+    <Graphics ZOrder="33239" LineThickness="2.0" Color="00cc00">
+      <Point X="366.0" Y="645.0" GraphRef="f5c29" RelX="0.0" RelY="1.0"/>
+      <Point X="366.0" Y="761.5" GraphRef="f1000" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.33476394849785407" Shape="None" GraphId="f7139"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ade87">
+    <Graphics ZOrder="33241" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="294.0" Y="1325.0" GraphRef="bd0db" RelX="0.0" RelY="1.0"/>
+      <Point X="294.0" Y="1450.0" GraphRef="da811" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bdf9a">
+    <Comment>Upon TCR activation, LAT associates with GRB2 in human Jurkat T cells.</Comment>
+    <Graphics ZOrder="33243" LineThickness="2.0" Color="00cc00">
+      <Point X="338.0" Y="635.0" GraphRef="f5c29" RelX="-1.0" RelY="0.0"/>
+      <Point X="222.0" Y="635.0" GraphRef="e7a82" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.8103448275862069" Shape="None" GraphId="ba28c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d11d2">
+    <Comment>TCR stimulation leads to tyrosine phosphorylation of CD3E and its binding to the SH2 domains of ZAP-70 in Jurkat T cells.</Comment>
+    <Graphics ZOrder="33245" LineThickness="2.0" Color="00cc00">
+      <Point X="431.0" Y="336.0" GraphRef="ed5fe" RelX="0.0" RelY="1.0"/>
+      <Point X="431.5" Y="448.0" GraphRef="fefd0" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c008f">
+    <Graphics ZOrder="33247" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="671.5" Y="1035.0" GraphRef="eeb0f" RelX="0.0" RelY="1.0"/>
+      <Point X="671.5" Y="1494.0" GraphRef="da771" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cffbd">
+    <Graphics ZOrder="33253" LineStyle="Broken" LineThickness="2.0">
+      <Point X="247.9200748830224" Y="1068.0" GraphRef="f540c" RelX="0.0" RelY="0.0"/>
+      <Point X="247.5" Y="1197.0" GraphRef="a2f78" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a00e8">
+    <Graphics ZOrder="33255" LineStyle="Broken" LineThickness="2.0">
+      <Point X="546.0" Y="924.0" GraphRef="bbad2" RelX="0.0" RelY="1.0"/>
+      <Point X="546.5" Y="969.0" GraphRef="cdbd4" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2197">
+    <Graphics ZOrder="33261" LineStyle="Broken" LineThickness="2.0">
+      <Point X="672.0" Y="781.0" GraphRef="a07c1" RelX="0.0" RelY="1.0"/>
+      <Point X="672.3693300685773" Y="819.7926788700543" GraphRef="a03cf" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c8441">
+    <Comment>Stimulation  of TCR induces the phosphorylation of NFKBIA by IKBKB</Comment>
+    <Graphics ZOrder="33265" LineThickness="2.0" Color="0000ff">
+      <Point X="495.5" Y="1181.0" GraphRef="b167d" RelX="0.0" RelY="1.0"/>
+      <Point X="495.0" Y="1216.0" GraphRef="af78f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f0f8b">
+    <Graphics ZOrder="33267" LineStyle="Broken" LineThickness="2.0">
+      <Point X="557.0" Y="771.5" GraphRef="b35cf" RelX="0.0" RelY="-1.0"/>
+      <Point X="658.0" Y="771.0" GraphRef="a07c1" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f9c81">
+    <Graphics ZOrder="33269" LineStyle="Broken" LineThickness="2.0">
+      <Point X="671.3042140061731" Y="862.9519589513578" GraphRef="e8481" RelX="0.0" RelY="1.0"/>
+      <Point X="671.5" Y="993.0" GraphRef="e3f23" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d7343">
+    <Comment>TCR induces association of Pak1 with Nck leading to activation of Pak1 independent of Ras activation or calcium flux in Jurkat T cells.</Comment>
+    <Graphics ZOrder="33277" LineThickness="2.0" Color="00cc00">
+      <Point X="268.0" Y="781.0" GraphRef="f45a3" RelX="0.0" RelY="1.0"/>
+      <Point X="268.25" Y="906.0" GraphRef="ed14c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b6f1e">
+    <Comment>TCR stimulation leads to phosphorylation of Gab2 by ZAP-70 and its association with SHP2 in Jurkat T cells.</Comment>
+    <Graphics ZOrder="33281" LineThickness="2.0" Color="00cc00">
+      <Point X="233.5" Y="740.0" GraphRef="cb7e0" RelX="0.0" RelY="1.0"/>
+      <Point X="233.0" Y="808.0" GraphRef="dea14" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ee0b8">
+    <Graphics ZOrder="33285" LineStyle="Broken" LineThickness="2.0">
+      <Point X="196.0" Y="882.0"/>
+      <Point X="196.0" Y="953.0" GraphRef="c3a09" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ef339">
+    <Comment>TCR stimulation leads to the association of WAS with the adapter protein PSTPIP1 in Jurkat T cells.</Comment>
+    <Graphics ZOrder="33287" LineThickness="2.0" Color="00cc00">
+      <Point X="335.7373002380143" Y="839.0" GraphRef="ddb70" RelX="0.0" RelY="0.0"/>
+      <Point X="335.5" Y="946.0" GraphRef="f8dd8" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a16a0">
+    <Comment>TCR stimlation induces the association of LCK and CD4 in CemT4 cells.</Comment>
+    <Graphics ZOrder="33295" LineThickness="2.0" Color="00cc00">
+      <Point X="588.0" Y="335.0" GraphRef="f2960" RelX="0.0" RelY="1.0"/>
+      <Point X="588.0" Y="448.0" GraphRef="e1246" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fe7bb">
+    <Comment>TCR stimulation leads to phosphorylation of ZAP70 by LCK on Tyr474 which efficiently interacts with Shc in activated Jurkat cells.</Comment>
+    <Graphics ZOrder="33297" LineThickness="2.0" Color="0000ff">
+      <Point X="560.0" Y="458.0" GraphRef="e1246" RelX="-1.0" RelY="0.0"/>
+      <Point X="478.0" Y="458.0" GraphRef="fefd0" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b50c6">
+    <Comment>TCR stimulation leads to phosphorylation of TCR-zeta by FYN in Sf21 cells.</Comment>
+    <Graphics ZOrder="33311" LineThickness="2.0" Color="0000ff">
+      <Point X="382.0" Y="420.0" GraphRef="e6393" RelX="0.5" RelY="-1.0"/>
+      <Point X="382.25" Y="336.75" GraphRef="b1121" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f98f5">
+    <Comment>TCR stimulation leads to tyrosine phosphorylation of Lnk adaptor protein by Lck in Jurkat cells.</Comment>
+    <Graphics ZOrder="33313" LineThickness="2.0" Color="0000ff">
+      <Point X="600.0007702621745" Y="535.0" GraphRef="d1187" RelX="0.0" RelY="0.0"/>
+      <Point X="600.0" Y="581.0" GraphRef="ee38a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b4a93">
+    <Comment>Upon  TCR activation, LCP2 associates with FYB  in Jurkat T cells and COS cells.</Comment>
+    <Graphics ZOrder="33315" LineThickness="2.0" Color="00cc00">
+      <Point X="327.3095710135542" Y="698.0" GraphRef="b17dd" RelX="0.0" RelY="0.0"/>
+      <Point X="327.5" Y="761.0" GraphRef="c76dd" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cb3e3">
+    <Comment>Upon TCR activation  GRB2 associate with SOS1  in Jurkat T cells and thymocytes</Comment>
+    <Graphics ZOrder="33319" LineThickness="2.0" Color="00cc00">
+      <Point X="194.0" Y="645.0" GraphRef="e7a82" RelX="0.0" RelY="1.0"/>
+      <Point X="194.0" Y="760.0" GraphRef="dd83a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ba6ab">
+    <Comment>TCR stimulation leads to association of SH2 domain of GAB2 with LAT in a phosphorylation dependent manner followed by recruitment of GAB2 to the TCR complex, thus regulating GAB2-mediated T-cell suppression in Jurkat cells.</Comment>
+    <Graphics ZOrder="33323" LineThickness="2.0" Color="00cc00">
+      <Point X="244.0" Y="635.0" GraphRef="ba28c" RelX="0.0" RelY="0.0"/>
+      <Point X="244.75" Y="720.0" GraphRef="cb7e0" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c8b03">
+    <Graphics ZOrder="33331" LineStyle="Broken" LineThickness="2.0">
+      <Point X="161.5" Y="1162.0" GraphRef="f9ecf" RelX="0.0" RelY="1.0"/>
+      <Point X="161.0" Y="1282.0" GraphRef="f305b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a81ba">
+    <Graphics ZOrder="33335" LineStyle="Broken" LineThickness="2.0">
+      <Point X="546.0" Y="855.0" GraphRef="aa391" RelX="0.0" RelY="1.0"/>
+      <Point X="546.0" Y="904.0" GraphRef="bbad2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5b16">
+    <Comment>Upon TCR activation  LCP2 and VAV1 associate in Sf21 cells (transfected from murine T cell hybridoma) and Jurkat 449 cells.</Comment>
+    <Graphics ZOrder="33337" LineThickness="2.0" Color="00cc00">
+      <Point X="450.23555942817563" Y="698.0" GraphRef="c6aab" RelX="0.0" RelY="0.0"/>
+      <Point X="450.5" Y="760.0" GraphRef="ac2e1" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c199f">
+    <Comment>Upon TCR activation LCP2 associates with VAV3 in human Jurkat T cells</Comment>
+    <Graphics ZOrder="33339" LineThickness="2.0" Color="00cc00">
+      <Point X="417.2099740165304" Y="698.0" GraphRef="a5dff" RelX="0.0" RelY="0.0"/>
+      <Point X="417.5" Y="727.0" GraphRef="e09e8" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c8e0a">
+    <Comment>Upon TCR activation CBLB and ZAP70 associate in human Jurkat T cells.</Comment>
+    <Graphics ZOrder="33343" LineThickness="2.0" Color="00cc00">
+      <Point X="336.53705222087143" Y="458.0" GraphRef="d70ac" RelX="0.0" RelY="0.0"/>
+      <Point X="336.5" Y="529.0" GraphRef="da3dc" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fb3ab">
+    <Comment>Upon TCR activation LCP2 and PLCG1 associate in human Jurkat T cells.</Comment>
+    <Graphics ZOrder="33505" LineThickness="2.0" Color="00cc00">
+      <Point X="529.5" Y="697.0952816025125" GraphRef="e5308" RelX="0.0" RelY="0.0"/>
+      <Point X="529.0" Y="759.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed69d">
+    <Comment>Upon TCR activation CD28 associates with PIK3R1 and with  PIK3R2  in human Jurkat T cells.</Comment>
+    <Graphics ZOrder="33511" LineThickness="2.0" Color="00cc00">
+      <Point X="721.5" Y="335.25" GraphRef="c71ff" RelX="0.5" RelY="1.0"/>
+      <Point X="721.625" Y="504.0" GraphRef="b5825" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d164b">
+    <Comment>SKAP55 interacts with Fyn kinase in response to TCR activation in Jurkat cells and that Fyn kinase activity is required for this interaction.</Comment>
+    <Graphics ZOrder="33523" LineThickness="2.0" Color="00cc00">
+      <Point X="340.0" Y="430.0" GraphRef="e6393" RelX="-1.0" RelY="0.0"/>
+      <Point X="305.5" Y="430.0" GraphRef="dc177" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f31e4">
+    <Comment>TCR activation stimulates the association of GRAP2 with LCP2 in human Jurkat T cells.</Comment>
+    <Graphics ZOrder="33527" LineThickness="2.0" Color="00cc00">
+      <Point X="380.11180590982826" Y="698.0" GraphRef="b09c4" RelX="0.0" RelY="0.0"/>
+      <Point X="380.0" Y="761.5" GraphRef="f1000" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f113f">
+    <Comment>Upon TCR activation ICOS associates with PIK3R1 and PIK3R2  in human Jurkat T cells.</Comment>
+    <Graphics ZOrder="33529" LineThickness="2.0" Color="00cc00">
+      <Point X="746.0" Y="335.0" GraphRef="fb8ce" RelX="-0.5" RelY="1.0"/>
+      <Point X="746.875" Y="504.0" GraphRef="b5825" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d596e">
+    <Comment>Upon TCR activation LCP2 and ITK associate in human Jurkat T cells</Comment>
+    <Graphics ZOrder="33531" LineThickness="2.0" Color="00cc00">
+      <Point X="626.0" Y="635.0" GraphRef="a5486" RelX="-1.0" RelY="0.0"/>
+      <Point X="557.5" Y="635.0" GraphRef="f57b0" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6218">
+    <Graphics ZOrder="33533" LineStyle="Broken" LineThickness="2.0">
+      <Point X="548.0" Y="1081.0" GraphRef="c5e20" RelX="0.0" RelY="1.0"/>
+      <Point X="548.0" Y="1139.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ddd6d">
+    <Graphics ZOrder="33537" LineStyle="Broken" LineThickness="2.0">
+      <Point X="734.5" Y="924.25" GraphRef="f6e4b" RelX="0.0" RelY="1.0"/>
+      <Point X="734.5" Y="1078.25" GraphRef="eccbb" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dfe85">
+    <Graphics ZOrder="33539" LineStyle="Broken" LineThickness="2.0">
+      <Point X="734.0" Y="739.25" GraphRef="fbd04" RelX="0.0" RelY="1.0"/>
+      <Point X="734.5" Y="904.25" GraphRef="f6e4b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fb656">
+    <Graphics ZOrder="33541" LineStyle="Broken" LineThickness="2.0">
+      <Point X="734.25" Y="544.0" GraphRef="dbdf8" RelX="0.0" RelY="1.0"/>
+      <Point X="734.0" Y="719.25" GraphRef="fbd04" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b84f0">
+    <Graphics ZOrder="33543" LineThickness="2.0" Color="00cc00">
+      <Point X="706.5" Y="914.25" GraphRef="f6e4b" RelX="-1.0" RelY="0.0"/>
+      <Point X="574.0" Y="914.0" GraphRef="bbad2" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cbf93">
+    <Graphics ZOrder="33548" LineStyle="Broken" LineThickness="2.0">
+      <Point X="293.0" Y="802.0" GraphRef="cd062" RelX="0.0" RelY="1.0"/>
+      <Point X="293.0" Y="1005.0" GraphRef="d273f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b07c3">
+    <Graphics ZOrder="33552" LineStyle="Broken" LineThickness="2.0">
+      <Point X="701.5" Y="1171.0" GraphRef="fc01f" RelX="-1.0" RelY="0.0"/>
+      <Point X="582.5" Y="1171.0" GraphRef="e01ff" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c02ad">
+    <Comment>TCR activation induces the association of Cot/TPL2 with NIK in human Jurkat T cells.</Comment>
+    <Graphics ZOrder="33556" LineThickness="2.0" Color="00cc00">
+      <Point X="734.5" Y="1098.25" GraphRef="eccbb" RelX="0.0" RelY="1.0"/>
+      <Point X="734.75" Y="1161.0" GraphRef="fc01f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5842">
+    <Graphics ZOrder="33570" LineStyle="Broken" LineThickness="2.0">
+      <Point X="195.0" Y="780.0"/>
+      <Point X="195.0" Y="861.0" GraphRef="f6718" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e70f6">
+    <Graphics ZOrder="33583" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="495.0" Y="1342.0" GraphRef="ee70d" RelX="0.0" RelY="1.0"/>
+      <Point X="495.75" Y="1492.0" GraphRef="ae2bd" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c9002">
+    <Graphics ZOrder="33585" LineStyle="Broken" LineThickness="2.0">
+      <Point X="495.0" Y="1236.0" GraphRef="af78f" RelX="0.0" RelY="1.0"/>
+      <Point X="495.5" Y="1276.0" GraphRef="b619e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f0b0d">
+    <Graphics ZOrder="33591" LineThickness="2.0" Color="00cc00">
+      <Point X="495.5490548407963" Y="684.0" GraphRef="ea699" RelX="0.0" RelY="0.0"/>
+      <Point X="495.5" Y="851.0" GraphRef="c1ff4" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d837b">
+    <Comment>HPK1 interacts with IKKβ in T cells and mediates phosphorylation of IKKβ and activation of NF-κB upon TCR stimulation</Comment>
+    <Graphics ZOrder="33595" LineThickness="2.0" Color="00cc00">
+      <Point X="481.5" Y="871.0" GraphRef="c1ff4" RelX="0.0" RelY="1.0"/>
+      <Point X="481.5" Y="1161.0" GraphRef="b167d" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cc4f6">
+    <Comment>TCR stimulation induces the oligomerization of MALT1 Oligomerized MALT1 associates with TRAF6 in human Jurkat T cells.
+</Comment>
+    <Comment>The interaction enhances oligomerization and subsequent ubiquitination of TRAF6 and NEMO, thereby resulting in the activation of TAK1 and IKK.</Comment>
+    <Graphics ZOrder="33601" LineThickness="2.0" Color="00cc00">
+      <Point X="548.0" Y="1028.75" GraphRef="e188a" RelX="0.0" RelY="1.0"/>
+      <Point X="548.0" Y="1061.0" GraphRef="c5e20" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a26c0">
+    <Graphics ZOrder="33605" LineStyle="Broken" LineThickness="2.0">
+      <Point X="520.0" Y="1071.0" GraphRef="c5e20" RelX="-1.0" RelY="0.0"/>
+      <Point X="451.5" Y="1071.0" GraphRef="f0a89" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d4271">
+    <Graphics ZOrder="33611" LineThickness="2.0" Color="00cc00">
+      <Point X="336.5" Y="549.0" GraphRef="da3dc" RelX="0.0" RelY="1.0"/>
+      <Point X="336.0" Y="588.0" GraphRef="facc6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="be9d4">
+    <Comment>TCR stimulation induces Lck dependent phosphorylation of Tyr 315 residue on ZAP-70 leading to its association with CrkII in Jurkat T cells.</Comment>
+    <Graphics ZOrder="33617" LineThickness="2.0" Color="00cc00">
+      <Point X="447.0" Y="468.0" GraphRef="fefd0" RelX="0.0" RelY="1.0"/>
+      <Point X="443.0" Y="625.0" GraphRef="dd21b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2387">
+    <Graphics ZOrder="33642" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="161.0" Y="1325.0" GraphRef="e0b8f" RelX="0.0" RelY="1.0"/>
+      <Point X="161.0" Y="1471.0" GraphRef="f8d2d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d71a7">
+    <Graphics ZOrder="33644" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="233.5" Y="1217.0" GraphRef="a2f78" RelX="-0.5" RelY="1.0"/>
+      <Point X="233.5" Y="1477.0" GraphRef="a47d6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b8053">
+    <Graphics ZOrder="33646" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="351.0" Y="1239.0" GraphRef="dff90" RelX="0.0" RelY="1.0"/>
+      <Point X="351.0" Y="1477.0" GraphRef="e01e4" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aea1d">
+    <Comment>TCR activation induces the NFAT mediated upregulation of IL17A, OPRM1, NFATC1, IL6, GATA3 and TGFB1</Comment>
+    <Graphics ZOrder="33795" LineThickness="2.0">
+      <Point X="671.5" Y="1536.0" GraphRef="e781b" RelX="0.0" RelY="1.0"/>
+      <Point X="671.0" Y="1622.0" GraphRef="ca884" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cb4c2">
+    <Comment>TCR activation leads to the stimulation of NFKB mediated upregulation of VIM,CD83,IL15RA,FAS,IL1B,IL1A  and MAP3K8</Comment>
+    <Graphics ZOrder="33811" LineThickness="2.0">
+      <Point X="496.0" Y="1558.0" GraphRef="e89d1" RelX="0.0" RelY="1.0"/>
+      <Point X="496.0" Y="1624.0" GraphRef="d703c" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f50ac">
+    <Comment>TCR activation leads to the upregulation of IL9, TNFRF9, CCR5 and IRF4.</Comment>
+    <Graphics ZOrder="33812" LineThickness="2.0">
+      <Point X="351.5" Y="1564.0" GraphRef="f437b" RelX="0.0" RelY="1.0"/>
+      <Point X="352.0" Y="1623.0" GraphRef="eed35" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3c2e">
+    <Comment>Upon TCR activation p38 alpha monophosphorylated at threonine 180 phosphorylates ATF2 at thronine 71.</Comment>
+    <Graphics ZOrder="33834" LineThickness="2.0" Color="0000ff">
+      <Point X="232.0" Y="1498.0"/>
+      <Point X="232.0" Y="1543.0" GraphRef="b5e50" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f0ffb">
+    <Comment>Stimulation of TCR induces the phosphorylation of JUN by ERK</Comment>
+    <Graphics ZOrder="33835" LineThickness="2.0" Color="0000ff">
+      <Point X="351.0" Y="1519.0" GraphRef="a7063" RelX="0.0" RelY="1.0"/>
+      <Point X="351.5" Y="1544.0" GraphRef="f437b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e3da7">
+    <Graphics ZOrder="33836" LineThickness="3.0" Color="ff00ff">
+      <Point X="509.0" Y="1400.0"/>
+      <Point X="509.0" Y="1415.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4705">
+    <Graphics ZOrder="33837" LineThickness="3.0" Color="ff00ff">
+      <Point X="509.0" Y="1400.0"/>
+      <Point X="509.0" Y="1381.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fd8be">
+    <Graphics ZOrder="33840" LineThickness="3.0" Color="ff00ff">
+      <Point X="371.0" Y="1402.0"/>
+      <Point X="371.0" Y="1417.0" GraphRef="fb62d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b6213">
+    <Graphics ZOrder="33841" LineThickness="3.0" Color="ff00ff">
+      <Point X="371.0" Y="1400.0"/>
+      <Point X="371.0" Y="1382.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aa057">
+    <Graphics ZOrder="33844" LineThickness="3.0" Color="ff00ff">
+      <Point X="688.0" Y="1400.0"/>
+      <Point X="688.0" Y="1415.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c87c8">
+    <Graphics ZOrder="33848" LineThickness="3.0" Color="ff00ff">
+      <Point X="688.0" Y="1400.0"/>
+      <Point X="688.0" Y="1381.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a3a7f">
+    <Graphics ZOrder="33850" LineThickness="3.0" Color="ff00ff">
+      <Point X="308.0" Y="1400.0"/>
+      <Point X="308.0" Y="1418.0" GraphRef="f6d0f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aaddb">
+    <Graphics ZOrder="33851" LineThickness="3.0" Color="ff00ff">
+      <Point X="308.0" Y="1399.0"/>
+      <Point X="308.0" Y="1380.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f84c0">
+    <Comment>Upon TCR activation  RIPK2 associate with BCL10  in Jurkat T cells.</Comment>
+    <Graphics ZOrder="33854" LineThickness="2.0" Color="00cc00">
+      <Point X="439.0" Y="999.125" GraphRef="bfbbd" RelX="1.0" RelY="0.0"/>
+      <Point X="518.5" Y="999.0" GraphRef="d9182" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cb497">
+    <Graphics ZOrder="33855" LineThickness="3.0" Color="ff00ff">
+      <Point X="250.0" Y="1402.0"/>
+      <Point X="250.0" Y="1417.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f2ae8">
+    <Graphics ZOrder="33858" LineThickness="3.0" Color="ff00ff">
+      <Point X="250.0" Y="1402.0"/>
+      <Point X="250.5" Y="1380.0" GraphRef="a1f75" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f9a01">
+    <Graphics ZOrder="33859" LineThickness="3.0" Color="ff00ff">
+      <Point X="-30.0" Y="1314.0"/>
+      <Point X="-30.0" Y="1329.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ba737">
+    <Graphics ZOrder="33862" LineThickness="3.0" Color="ff00ff">
+      <Point X="-30.0" Y="1314.0"/>
+      <Point X="-30.0" Y="1293.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ad256">
+    <Graphics ZOrder="33865" LineThickness="2.0" Color="0000ff">
+      <Point X="450.3333333333335" Y="440.3333333333326"/>
+      <Point X="457.0" Y="446.9999999999991" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ca774">
+    <Graphics ConnectorType="Elbow" ZOrder="33868" LineThickness="2.0" Color="0000ff">
+      <Point X="368.0" Y="440.0" GraphRef="e6393" RelX="0.0" RelY="1.0"/>
+      <Point X="336.25" Y="501.0"/>
+      <Point X="304.5" Y="761.0" GraphRef="c76dd" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3961">
+    <Graphics ConnectorType="Elbow" ZOrder="33869" LineThickness="2.0" Color="0000ff">
+      <Point X="588.0" Y="468.0" GraphRef="e1246" RelX="0.0" RelY="1.0"/>
+      <Point X="621.0" Y="535.0"/>
+      <Point X="654.0" Y="625.0" GraphRef="a5486" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3542635437765668" Shape="None" GraphId="d1187"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ce261">
+    <Graphics ConnectorType="Elbow" ZOrder="33870" LineThickness="2.0" Color="00cc00">
+      <Point X="242.5" Y="539.25" GraphRef="d2bdf" RelX="-1.0" RelY="0.0"/>
+      <Point X="208.0" Y="625.0" GraphRef="e7a82" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d261d">
+    <Graphics ConnectorType="Elbow" ZOrder="33871" LineThickness="2.0" Color="0000ff">
+      <Point X="574.0" Y="448.0" GraphRef="e1246" RelX="-0.5" RelY="-1.0"/>
+      <Point X="510.75" Y="391.0"/>
+      <Point X="447.5" Y="336.0" GraphRef="ed5fe" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fb23c">
+    <Graphics ConnectorType="Elbow" ZOrder="33872" LineThickness="2.0" Color="00cc00">
+      <Point X="349.25" Y="336.75" GraphRef="b1121" RelX="-0.5" RelY="1.0"/>
+      <Point X="252.875" Y="403.0"/>
+      <Point X="156.5" Y="485.0" GraphRef="c8185" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed099">
+    <Graphics ConnectorType="Elbow" ZOrder="33873" LineThickness="2.0" Color="00cc00">
+      <Point X="529.5" Y="645.0" GraphRef="f57b0" RelX="0.0" RelY="1.0"/>
+      <Point X="398.75" Y="698.0"/>
+      <Point X="268.0" Y="761.0" GraphRef="f45a3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6760011363879359" Shape="None" GraphId="b17dd"/>
+      <Anchor Position="0.5361276664640311" Shape="None" GraphId="b09c4"/>
+      <Anchor Position="0.3503693789982102" Shape="None" GraphId="c6aab"/>
+      <Anchor Position="0.4378543734661447" Shape="None" GraphId="a5dff"/>
+      <Anchor Position="0.13800074596692052" Shape="None" GraphId="e5308"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b763f">
+    <Graphics ConnectorType="Elbow" ZOrder="33874" LineThickness="2.0" Color="0000ff">
+      <Point X="431.5" Y="468.0" GraphRef="fefd0" RelX="-0.5" RelY="1.0"/>
+      <Point X="398.75" Y="570.0"/>
+      <Point X="366.0" Y="625.0" GraphRef="f5c29" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7bef">
+    <Graphics ConnectorType="Elbow" ZOrder="33875" LineThickness="2.0" Color="00cc00">
+      <Point X="303.0" Y="802.0" GraphRef="cd062" RelX="0.5" RelY="1.0"/>
+      <Point X="342.5" Y="839.0"/>
+      <Point X="382.0" Y="894.0" GraphRef="f0f4a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4078204692281539" Shape="None" GraphId="ddb70"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3458">
+    <Graphics ConnectorType="Elbow" ZOrder="33876" LineThickness="2.0" Color="00cc00">
+      <Point X="574.0" Y="468.0" GraphRef="e1246" RelX="-0.5" RelY="1.0"/>
+      <Point X="543.5" Y="501.0"/>
+      <Point X="513.0" Y="536.0" GraphRef="bab40" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6218">
+    <Graphics ConnectorType="Elbow" ZOrder="33877" LineStyle="Broken" LineThickness="2.0">
+      <Point X="564.0" Y="844.0" GraphRef="aa391" RelX="1.0" RelY="0.0"/>
+      <Point X="606.0" Y="874.0" GraphRef="ab956" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c7ace">
+    <Graphics ConnectorType="Elbow" ZOrder="33878" LineThickness="2.0" Color="0000ff">
+      <Point X="600.0007702621745" Y="535.0" GraphRef="d1187" RelX="0.0" RelY="0.0"/>
+      <Point X="571.7503851310872" Y="535.0"/>
+      <Point X="543.5" Y="625.0" GraphRef="f57b0" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.06779210294137537" Shape="None" GraphId="f40a0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f00f2">
+    <Graphics ConnectorType="Elbow" ZOrder="33879" LineThickness="2.0" Color="0000ff">
+      <Point X="462.5" Y="468.0" GraphRef="fefd0" RelX="0.5" RelY="1.0"/>
+      <Point X="489.0" Y="570.0"/>
+      <Point X="515.5" Y="625.0" GraphRef="f57b0" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f8956">
+    <Graphics ConnectorType="Elbow" ZOrder="33880" LineStyle="Broken" LineThickness="2.0">
+      <Point X="196.0" Y="973.0" GraphRef="c3a09" RelX="0.0" RelY="1.0"/>
+      <Point X="178.5" Y="1068.0"/>
+      <Point X="161.0" Y="1121.0" GraphRef="eccc7" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5214665571360628" Shape="None" GraphId="bb061"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c95d8">
+    <Graphics ConnectorType="Elbow" ZOrder="33881" LineThickness="2.0" Color="00cc00">
+      <Point X="443.0" Y="645.0" GraphRef="dd21b" RelX="0.0" RelY="1.0"/>
+      <Point X="462.25" Y="670.0"/>
+      <Point X="481.5" Y="851.0" GraphRef="c1ff4" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f836f">
+    <Graphics ZOrder="33882" LineThickness="2.0">
+      <Point X="829.0" Y="1103.0"/>
+      <Point X="853.0" Y="1103.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d916a">
+    <Graphics ZOrder="33892" LineThickness="2.0" Color="ff0033">
+      <Point X="831.0" Y="1387.0"/>
+      <Point X="896.0" Y="1387.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ce9eb">
+    <Graphics ZOrder="33893" LineThickness="2.0" Color="9900cc">
+      <Point X="831.0" Y="1288.0"/>
+      <Point X="889.0" Y="1288.5024647292423" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d3d6b">
+    <Graphics ZOrder="33894" LineThickness="2.0" Color="cc00cc">
+      <Point X="831.0" Y="1268.658208482304"/>
+      <Point X="889.0" Y="1268.658208482304" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d53d6">
+    <Graphics ZOrder="33895" LineThickness="2.0" Color="999900">
+      <Point X="831.0" Y="1228.659397277912"/>
+      <Point X="889.0" Y="1228.659397277912" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d8ef0">
+    <Graphics ZOrder="33896" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="832.0" Y="1407.0"/>
+      <Point X="890.0" Y="1407.5012759336341" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af707">
+    <Graphics ZOrder="33897" LineThickness="2.0" Color="00ffff">
+      <Point X="831.0" Y="1208.659397277912"/>
+      <Point X="889.0" Y="1208.659397277912" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fe6e8">
+    <Graphics ZOrder="33898" LineThickness="2.0" Color="ffcc33">
+      <Point X="831.0" Y="1148.0"/>
+      <Point X="889.0000017000198" Y="1148.659397277912" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cbd1a">
+    <Graphics ZOrder="33899" LineThickness="3.0">
+      <Point X="931.0952380952383" Y="960.047619047619" GraphRef="a0ed0" RelX="0.0" RelY="1.0"/>
+      <Point X="931.5" Y="985.0" GraphRef="e03d9" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e5ccb">
+    <Graphics ZOrder="33918" LineThickness="2.0" Color="0000ff">
+      <Point X="831.0" Y="1188.659397277912"/>
+      <Point X="889.0" Y="1188.659397277912" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c0607">
+    <Graphics ZOrder="33919" LineThickness="2.0" Color="ff9933">
+      <Point X="831.0" Y="1168.659397277912"/>
+      <Point X="889.0" Y="1168.659397277912" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2d5d">
+    <Graphics ZOrder="33926" LineThickness="2.0" Color="cccc00">
+      <Point X="830.0" Y="1248.0"/>
+      <Point X="889.0" Y="1248.5036535248503" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d7c12">
+    <Graphics ZOrder="33928" LineThickness="2.0" Color="770000">
+      <Point X="831.0" Y="1308.6570196866958"/>
+      <Point X="889.0" Y="1308.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4c7d">
+    <Graphics ZOrder="33930" LineThickness="2.0" Color="775200">
+      <Point X="831.0" Y="1328.6570196866958"/>
+      <Point X="889.0" Y="1328.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e8189">
+    <Graphics ZOrder="33932" LineThickness="2.0" Color="ff6666">
+      <Point X="831.0" Y="1348.6570196866958"/>
+      <Point X="889.0" Y="1348.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cd71d">
+    <Graphics ZOrder="33946" LineThickness="2.0" Color="999999">
+      <Point X="831.0" Y="1368.6570196866958"/>
+      <Point X="889.0" Y="1368.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a8be0">
+    <Graphics ZOrder="33948" LineThickness="2.0">
+      <Point X="856.0" Y="1103.0"/>
+      <Point X="889.0" Y="1103.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6b27">
+    <Graphics ZOrder="33949" LineThickness="2.0">
+      <Point X="830.0" Y="1084.0"/>
+      <Point X="888.0" Y="1084.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b06e1">
+    <Graphics ZOrder="33950" LineThickness="2.0" Color="00cc00">
+      <Point X="830.0" Y="1044.0"/>
+      <Point X="888.0" Y="1044.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ae566">
+    <Graphics ZOrder="33951" LineStyle="Broken" LineThickness="2.0">
+      <Point X="830.0" Y="1066.0"/>
+      <Point X="888.0" Y="1066.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7698">
+    <Graphics ZOrder="33952" LineThickness="2.0">
+      <Point X="877.3333333333335" Y="1128.3333333333326"/>
+      <Point X="884.0" Y="1134.999999999999" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="db1dd">
+    <Graphics ZOrder="33955" LineThickness="2.0" Color="ff00ff">
+      <Point X="885.4837201898392" Y="1524.088726587399"/>
+      <Point X="885.4837201898392" Y="1549.088726587399" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b1c29">
+    <Graphics ZOrder="33956" LineThickness="2.0" Color="ff00ff">
+      <Point X="885.454625873524" Y="1535.8977880629905"/>
+      <Point X="885.454625873524" Y="1515.0266446873102" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c09f7">
+    <Graphics ZOrder="33957" LineThickness="3.0" Color="ff3399">
+      <Point X="854.5485028072367" Y="983.1294447910175" GraphRef="d6731" RelX="0.0" RelY="-1.0"/>
+      <Point X="854.5" Y="963.0" GraphRef="dcd7e" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fd196">
+    <Graphics ConnectorType="Elbow" ZOrder="33959" LineThickness="2.0" Color="0000ff">
+      <Point X="495.5" Y="871.0" GraphRef="c1ff4" RelX="0.5" RelY="1.0"/>
+      <Point X="518.5" Y="979.0" GraphRef="cdbd4" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f965f">
+    <Graphics ConnectorType="Elbow" ZOrder="33960" LineStyle="Broken" LineThickness="2.0">
+      <Point X="423.5" Y="1081.0" GraphRef="f0a89" RelX="0.0" RelY="1.0"/>
+      <Point X="475.25" Y="1111.0"/>
+      <Point X="527.0" Y="1140.0" GraphRef="b4427" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed331">
+    <Graphics ConnectorType="Elbow" ZOrder="33961" LineStyle="Broken" LineThickness="2.0">
+      <Point X="195.5716200441005" Y="1068.0" GraphRef="bb061" RelX="0.0" RelY="0.0"/>
+      <Point X="273.28581002205027" Y="1068.0"/>
+      <Point X="351.0" Y="1199.0" GraphRef="e0365" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.1827628073970248" Shape="None" GraphId="f540c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6d11">
+    <Graphics ConnectorType="Elbow" ZOrder="33962" LineThickness="2.0" Color="00cc00">
+      <Point X="366.0" Y="684.0" GraphRef="f7139" RelX="0.0" RelY="0.0"/>
+      <Point X="394.0" Y="684.0"/>
+      <Point X="454.5" Y="684.0"/>
+      <Point X="515.0" Y="759.0" GraphRef="dbd9e" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5783439948249837" Shape="None" GraphId="ea699"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="be13d">
+    <Graphics ConnectorType="Elbow" ZOrder="33963" LineThickness="2.0" Color="00cc00">
+      <Point X="467.5" Y="871.0" GraphRef="c1ff4" RelX="-0.5" RelY="1.0"/>
+      <Point X="438.0" Y="956.25" GraphRef="b6364" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b3f67">
+    <Graphics ConnectorType="Elbow" ZOrder="33964" LineThickness="2.0" Color="0000ff">
+      <Point X="554.5" Y="1181.0" GraphRef="e01ff" RelX="0.0" RelY="1.0"/>
+      <Point X="523.0" Y="1226.0" GraphRef="af78f" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="afbaa">
+    <Graphics ConnectorType="Elbow" ZOrder="33965" LineStyle="Broken" LineThickness="2.0">
+      <Point X="275.5" Y="1207.0" GraphRef="a2f78" RelX="1.0" RelY="0.0"/>
+      <Point X="294.0" Y="1305.0" GraphRef="bd0db" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b8f51">
+    <Graphics ConnectorType="Elbow" ZOrder="33966" LineThickness="2.0" Color="00cc00">
+      <Point X="380.0" Y="781.5" GraphRef="f1000" RelX="0.0" RelY="1.0"/>
+      <Point X="423.75" Y="809.0"/>
+      <Point X="467.5" Y="851.0" GraphRef="c1ff4" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bcb6e">
+    <Graphics ConnectorType="Elbow" ZOrder="33967" LineStyle="Broken" LineThickness="2.0">
+      <Point X="529.0" Y="779.0" GraphRef="dbd9e" RelX="0.0" RelY="1.0"/>
+      <Point X="537.5" Y="804.0"/>
+      <Point X="546.0" Y="833.0" GraphRef="aa391" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bc434">
+    <Graphics ConnectorType="Elbow" ZOrder="33970" LineThickness="2.0" Color="0000ff">
+      <Point X="654.0" Y="645.0" GraphRef="a5486" RelX="0.0" RelY="1.0"/>
+      <Point X="598.5" Y="697.0"/>
+      <Point X="543.0" Y="759.0" GraphRef="dbd9e" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df718">
+    <Graphics ZOrder="33978" LineThickness="3.0">
+      <Point X="398.0603695985049" Y="260.30276110142154" GraphRef="cccb8" RelX="0.0" RelY="1.0"/>
+      <Point X="398.0" Y="305.5" GraphRef="ef2e0" RelX="-1.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b4696">
+    <Graphics ZOrder="33980" LineThickness="3.0" Color="ff3399">
+      <Point X="398.43496568933256" Y="231.12944479101748" GraphRef="b314e" RelX="0.0" RelY="-1.0"/>
+      <Point X="398.5" Y="200.0" GraphRef="cbb6c" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Rearrangement" GraphId="c6e47" GroupRef="c89cb">
+    <Graphics CenterX="294.5" CenterY="1044.0" Width="101.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0033"/>
+  </Label>
+  <Label TextLabel="Cytoskeletal" GraphId="feeee" GroupRef="c89cb">
+    <Graphics CenterX="295.0" CenterY="1030.0" Width="80.0" Height="20.0" ZOrder="28674" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0033"/>
+  </Label>
+  <Label TextLabel="IP3" GraphId="a07c1">
+    <Graphics CenterX="672.0" CenterY="771.0" Width="28.0" Height="20.0" ZOrder="33351" FillColor="ffccff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+  </Label>
+  <Label TextLabel="Actin" GraphId="d273f" GroupRef="c89cb">
+    <Graphics CenterX="293.0" CenterY="1016.0" Width="42.0" Height="22.0" ZOrder="33353" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0033"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="fdd75">
+    <Graphics CenterX="371.5" CenterY="1368.0" Width="27.0" Height="20.0" ZOrder="33838" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="c263a">
+    <Graphics CenterX="510.0" CenterY="1427.0" Width="24.0" Height="20.0" ZOrder="33839" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="d19e4">
+    <Graphics CenterX="510.5" CenterY="1369.0" Width="27.0" Height="20.0" ZOrder="33842" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="fb62d">
+    <Graphics CenterX="371.0" CenterY="1427.0" Width="24.0" Height="20.0" ZOrder="33843" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="f26c7">
+    <Graphics CenterX="688.5" CenterY="1368.0" Width="27.0" Height="20.0" ZOrder="33846" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="bf057">
+    <Graphics CenterX="688.0" CenterY="1427.0" Width="24.0" Height="20.0" ZOrder="33847" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="abbc4">
+    <Graphics CenterX="309.5" CenterY="1369.0" Width="27.0" Height="20.0" ZOrder="33849" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="f6d0f">
+    <Graphics CenterX="308.0" CenterY="1428.0" Width="24.0" Height="20.0" ZOrder="33852" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="a1f75">
+    <Graphics CenterX="250.5" CenterY="1370.0" Width="27.0" Height="20.0" ZOrder="33856" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="e67a5">
+    <Graphics CenterX="250.0" CenterY="1429.0" Width="24.0" Height="20.0" ZOrder="33857" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="a5ae1">
+    <Graphics CenterX="-29.5" CenterY="1282.0" Width="27.0" Height="20.0" ZOrder="33860" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="e1a73">
+    <Graphics CenterX="-30.0" CenterY="1341.0" Width="24.0" Height="20.0" ZOrder="33861" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="TCR Signaling Pathway" GraphId="ca05b">
+    <Graphics CenterX="399.8826530612246" CenterY="94.37755102040813" Width="219.76530612244915" Height="31.24489795918373" ZOrder="33867" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="18" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="d9e62">
+    <Graphics CenterX="860.5" CenterY="1428.5" Width="59.0" Height="20.0" ZOrder="33883" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Receptor" GraphId="e03d9">
+    <Graphics CenterX="931.5" CenterY="995.0" Width="65.0" Height="20.0" ZOrder="33885" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="c5ef8">
+    <Graphics CenterX="1030.0" CenterY="954.5" Width="52.0" Height="20.0" ZOrder="33886" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="d7616">
+    <Graphics CenterX="862.0" CenterY="1462.5" Width="62.0" Height="20.0" ZOrder="33887" FillColor="99ffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="mRNA" GraphId="aef83">
+    <Graphics CenterX="1091.0" CenterY="954.0" Width="48.0" Height="20.0" ZOrder="33888" FillColor="ffffff" FontStyle="Italic" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Small molecule" GraphId="ee37e">
+    <Graphics CenterX="948.0" CenterY="1491.6402508551882" Width="104.0" Height="21.0" ZOrder="33889" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ligand" GraphId="dcd7e">
+    <Graphics CenterX="854.5" CenterY="953.0" Width="51.0" Height="20.0" ZOrder="33890" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Induced activation" GraphId="bf0ff">
+    <Graphics CenterX="955.0450127599499" CenterY="1462.3887712439591" Width="142.8571428571425" Height="29.52380952380917" ZOrder="33891" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Inhibition" GraphId="d68ae">
+    <Graphics CenterX="929.3437584840094" CenterY="1384.8597491448118" Width="66.0" Height="20.0" ZOrder="33902" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Auto catalysis" GraphId="fd792">
+    <Graphics CenterX="943.7194982896237" CenterY="1130.0" Width="94.0" Height="20.0" ZOrder="33903" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Transport" GraphId="bc3d7">
+    <Graphics CenterX="929.3437584840094" CenterY="1407.2805017103763" Width="66.0" Height="20.0" ZOrder="33904" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Positive regulation of gene expression" GraphId="dc6d9">
+    <Graphics CenterX="1020.3095238095236" CenterY="1089.0" Width="247.0" Height="20.0" ZOrder="33905" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Leads to through unknown mechanism" GraphId="bdc41">
+    <Graphics CenterX="1019.7485203887711" CenterY="1065.0" Width="243.0" Height="20.0" ZOrder="33906" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Negative regulation of gene expression" GraphId="d36a5">
+    <Graphics CenterX="1021.0290220991474" CenterY="1111.0" Width="247.0" Height="20.0" ZOrder="33907" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Translocation " GraphId="be7f0">
+    <Graphics CenterX="942.7194982896235" CenterY="1529.7168920019549" Width="92.0" Height="20.0" ZOrder="33908" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ubiquitination" GraphId="eaf72">
+    <Graphics CenterX="943.6480697181951" CenterY="1270.0" Width="93.66666666666663" Height="20.0" ZOrder="33909" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deubiquitination" GraphId="b7f37">
+    <Graphics CenterX="949.7961394363901" CenterY="1289.0" Width="111.0" Height="20.0" ZOrder="33910" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Sumoylation" GraphId="aa6c8">
+    <Graphics CenterX="940.3437584840094" CenterY="1229.0" Width="86.0" Height="20.0" ZOrder="33911" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Induced catalysis" GraphId="e262b">
+    <Graphics CenterX="953.0792474344353" CenterY="1430.0" Width="111.0" Height="20.0" ZOrder="33912" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein-protein interaction" GraphId="b9da8">
+    <Graphics CenterX="982.8727805831568" CenterY="1044.0" Width="172.66666666666663" Height="20.0" ZOrder="33913" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Acetylation" GraphId="f165b">
+    <Graphics CenterX="935.0" CenterY="1147.8597491448118" Width="74.0" Height="20.0" ZOrder="33914" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Dephosphorylation" GraphId="a303f">
+    <Graphics CenterX="957.8861649562903" CenterY="1209.0" Width="127.0" Height="20.0" ZOrder="33915" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="LEGEND" GraphId="b2575">
+    <Graphics CenterX="986.0" CenterY="917.0" Width="80.0" Height="20.0" ZOrder="33916" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="14" Valign="Middle" Color="3333ff"/>
+  </Label>
+  <Label TextLabel="Phosphorylation" GraphId="e5df3">
+    <Graphics CenterX="949.5104251506759" CenterY="1188.0" Width="111.0" Height="20.0" ZOrder="33917" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deacetylation" GraphId="c735b">
+    <Graphics CenterX="941.1242601943857" CenterY="1167.0" Width="89.0" Height="20.0" ZOrder="33920" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Golgi apparatus" GraphId="a60ad">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="949.3835586686215" CenterY="1655.3835586686216" Width="106.33333333333333" Height="16.0" ZOrder="33922" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Endosome" GraphId="bfede">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="933.3861649562901" CenterY="1621.0848129445624" Width="71.33333333333333" Height="16.0" ZOrder="33923" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="f183f">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="924.9125807677684" CenterY="1690.5238095238099" Width="55.333333333333336" Height="16.0" ZOrder="33924" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Mitochondrion" GraphId="b98dc">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="945.95498724005" CenterY="1673.3835586686216" Width="96.33333333333333" Height="16.0" ZOrder="33925" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Desumoylation" GraphId="a3942">
+    <Graphics CenterX="945.9389965792475" CenterY="1248.0" Width="99.0" Height="20.0" ZOrder="33927" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Methylation" GraphId="df60c">
+    <Graphics CenterX="936.9389965792475" CenterY="1308.7194982896237" Width="75.0" Height="20.0" ZOrder="33929" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Demethylation" GraphId="ec075">
+    <Graphics CenterX="944.9389965792475" CenterY="1327.7194982896237" Width="93.0" Height="20.0" ZOrder="33931" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Palmitoylation" GraphId="ad6bd">
+    <Graphics CenterX="945.4389965792475" CenterY="1348.0" Width="90.0" Height="20.0" ZOrder="33933" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="fdc38">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="932.3861649562901" CenterY="1581.2433078134336" Width="71.33333333333333" Height="16.0" ZOrder="33934" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="EC" GraphId="e4122">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="880.0000000000002" CenterY="1602.5238095238099" Width="22.333333333333332" Height="16.0" ZOrder="33935" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Plasma membrane" GraphId="c26c3">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="958.1930824781424" CenterY="1561.5238095238099" Width="120.66666666666674" Height="16.0" ZOrder="33936" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="MT" GraphId="eb6ad">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="881.0000000000002" CenterY="1672.5238095238099" Width="24.333333333333332" Height="16.0" ZOrder="33937" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Endoplasmic reticulum" GraphId="fc993">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="971.5316283868162" CenterY="1637.5238095238099" Width="150.33333333333334" Height="16.0" ZOrder="33938" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="b67c4">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="880.0000000000002" CenterY="1581.5238095238099" Width="22.333333333333332" Height="16.0" ZOrder="33939" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="PM" GraphId="f64c3">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="881.0000000000002" CenterY="1561.5238095238099" Width="25.333333333333332" Height="16.0" ZOrder="33940" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="GO" GraphId="ae1a8">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="880.0000000000002" CenterY="1655.5238095238099" Width="25.333333333333332" Height="16.0" ZOrder="33941" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="aacf6">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="882.0000000000002" CenterY="1690.5238095238099" Width="23.333333333333332" Height="16.0" ZOrder="33942" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Extracellular" GraphId="c02aa">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="938.1982950534831" CenterY="1601.896943041755" Width="86.33333333333333" Height="16.0" ZOrder="33943" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="ER" GraphId="fe02d">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="880.0000000000002" CenterY="1638.5238095238099" Width="22.333333333333332" Height="16.0" ZOrder="33944" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="EN" GraphId="a89dd">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="880.0000000000002" CenterY="1621.5238095238099" Width="22.333333333333332" Height="16.0" ZOrder="33945" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Proteolytic cleavage" GraphId="e8908">
+    <Graphics CenterX="962.3437584840094" CenterY="1368.2805017103763" Width="122.0" Height="20.0" ZOrder="33947" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ligand" GraphId="cbb6c">
+    <Graphics CenterX="398.5" CenterY="190.0" Width="51.0" Height="20.0" ZOrder="33977" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Shape TextLabel="DAG" GraphId="aa391">
+    <Graphics CenterX="546.0" CenterY="844.0" Width="36.0" Height="22.0" ZOrder="16384" FillColor="ffccff" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="Calmodulin" GraphId="a03cf">
+    <Graphics CenterX="672.3693300685773" CenterY="830.6569893764566" Width="66.99192875569923" Height="21.256641937254717" ZOrder="33345" FontWeight="Bold" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.007053263628015231"/>
+  </Shape>
+  <Shape TextLabel="Calcineurin" GraphId="e8481">
+    <Graphics CenterX="671.3042140061732" CenterY="851.9865899729031" Width="64.86665310752802" Height="21.91358022550645" ZOrder="33347" FontWeight="Bold" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="2.645195556451601E-4"/>
+  </Shape>
+  <Shape GraphId="a50ae">
+    <Comment>TCR activation leads to the autophosphorylation of ZAP70 in human Jurkat T cells.</Comment>
+    <Graphics CenterX="445.6666666666666" CenterY="443.66666666666583" Width="14.907119999999999" Height="20.0" ZOrder="33866" FillColor="0000ff" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="2.0" Color="0000ff" Rotation="2.554867"/>
+  </Shape>
+  <Shape GraphId="a273a">
+    <Graphics CenterX="892.0" CenterY="1438.5" Width="16.0" Height="15.0" ZOrder="33884" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="Enzyme complex" GraphId="ddcca">
+    <Graphics CenterX="1059.8809523809527" CenterY="995.1666666666663" Width="115.0" Height="22.333333333332575" ZOrder="33900" FillColor="ccff33" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="a0ed0">
+    <Graphics CenterX="931.0952380952383" CenterY="944.547619047619" Width="30.0" Height="31.0" ZOrder="33901" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="abbe7">
+    <Graphics CenterX="977.5" CenterY="1305.0" Width="355.0" Height="804.0" ZOrder="33921" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="d4335">
+    <Graphics CenterX="872.6666666666666" CenterY="1131.6666666666658" Width="14.907119999999999" Height="20.0" ZOrder="33953" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="2.0" Rotation="2.554867"/>
+  </Shape>
+  <Shape TextLabel="Molecule" GraphId="b20b7">
+    <Graphics CenterX="860.9999999999998" CenterY="1492.556792873051" Width="61.999999999999545" Height="19.113585746102444" ZOrder="33954" FillColor="ffccff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="d6731">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle"/>
+    <Graphics CenterX="854.5485028072367" CenterY="994.6651590767314" Width="23.357142857143003" Height="23.071428571427703" ZOrder="33958" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="ff00cc" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="cccb8">
+    <Graphics CenterX="398.0603695985049" CenterY="242.51615010749518" Width="30.0" Height="35.06353632529709" ZOrder="33979" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="6.266022813351355"/>
+  </Shape>
+  <Shape GraphId="b314e">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle"/>
+    <Graphics CenterX="398.43496568933256" CenterY="244.06472239550874" Width="25.130068621334857" Height="25.87055520898251" ZOrder="33981" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="ff00cc" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="c89cb" GraphId="ed9be" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>T cell receptor signaling pathway</bp:TERM><bp:ID>PW:0000821</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

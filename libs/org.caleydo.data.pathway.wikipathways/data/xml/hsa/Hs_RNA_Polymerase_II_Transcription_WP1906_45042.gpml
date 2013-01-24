@@ -1,0 +1,2161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="RNA Polymerase II Transcription" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n2_REACTOME_109627" TextLabel="DNA containing RNA &#10;Polymerase II &#10;promoter&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="183.5" CenterY="581.0" Width="129.0" Height="50.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2835"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_109626" TextLabel="TFIID&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="218.5" CenterY="437.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5886"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_109628" TextLabel="pol II promoter:TFIID &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="343.5" CenterY="522.0" Width="131.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5906"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_65888" TextLabel="TFIIB&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="554.5" CenterY="467.0" Width="35.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q00403"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_109629" TextLabel="TFIIA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="360.0" CenterY="465.0" Width="36.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5743"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_109630" TextLabel="pol II promoter:&#10;TFIID:TFIIA:TFIIB &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="586.0" CenterY="524.0" Width="104.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2339"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_71307" TextLabel="RNA Polymerase II &#10;(unphosphorylated):&#10;TFIIF complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="842.0" CenterY="621.0" Width="124.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2692"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_109632" TextLabel="pol II promoter:TFIID:&#10;TFIIA:TFIIB:Pol II:TFIIF &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="808.5" CenterY="524.0" Width="125.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2469"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_109633" TextLabel="TFIIE&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="888.5" CenterY="457.0" Width="35.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2368"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_75871" TextLabel="pol II promoter:TFIID:&#10;TFIIA:TFIIB:Pol II:TFIIF:&#10;TFIIE complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1044.0" CenterY="523.0" Width="128.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4404"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_109634" TextLabel="TFIIH&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1158.5" CenterY="449.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3832"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_109635" TextLabel="pol II closed pre-&#10;initiation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1253.5" CenterY="509.0" Width="109.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5734"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1309.5" CenterY="560.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_113550" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1440.5" CenterY="472.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1433.0" CenterY="570.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_109876" TextLabel="pol II open pre-&#10;initiation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1496.5" CenterY="524.0" Width="109.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4930"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1550.0" CenterY="469.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_83551" TextLabel="Pol II initiation &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1685.5" CenterY="526.0" Width="91.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5487"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_83601" TextLabel="Pol II Initiation &#10;complex with &#10;phosphodiester-PPi &#10;intermediate&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1863.0" CenterY="523.0" Width="126.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2410"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_113541" TextLabel="pyrophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1776.5" CenterY="640.0" Width="103.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_109878" TextLabel="pol II transcription &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1759.0" CenterY="762.0" Width="116.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2954"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_75878" TextLabel="pol II transcription &#10;complex containing 3 &#10;Nucleotide long &#10;transcript&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1308.5" CenterY="763.0" Width="123.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3251"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1724.0" CenterY="1062.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_113541" TextLabel="pyrophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1384.5" CenterY="851.0" Width="103.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_75881" TextLabel="pol II transcription &#10;complex containing 4 &#10;nucleotide long &#10;transcript&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="985.5" CenterY="769.0" Width="123.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4148"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_113541" TextLabel="pyrophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1040.5" CenterY="837.0" Width="103.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1253.0" CenterY="835.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n50_REACTOME_75882" TextLabel="pol II transcription &#10;complex containing 9 &#10;nucleotide long &#10;transcript&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="714.5" CenterY="773.0" Width="123.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5212"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_113541" TextLabel="pyrophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="782.5" CenterY="915.0" Width="103.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="967.0" CenterY="900.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n56_REACTOME_75902" TextLabel="pol II transcription &#10;complex containing &#10;11 nucleotide long &#10;transcript&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="436.5" CenterY="772.0" Width="123.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3183"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="660.0" CenterY="853.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_113541" TextLabel="pyrophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="534.5" CenterY="842.0" Width="103.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_111261" TextLabel="Pol II transcription &#10;complex containing &#10;transcript to +30&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="197.5" CenterY="838.0" Width="123.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4399"/>
+  </DataNode>
+  <DataNode GraphId="n64_REACTOME_113541" TextLabel="pyrophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="221.5" CenterY="724.0" Width="103.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="372.0" CenterY="837.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_65888" TextLabel="TFIIB&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1074.5" CenterY="725.0" Width="35.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q00403"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_109634" TextLabel="TFIIH&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1475.5" CenterY="817.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3832"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_109634" TextLabel="TFIIH&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1156.5" CenterY="853.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3832"/>
+  </DataNode>
+  <DataNode GraphId="n72_REACTOME_109626" TextLabel="TFIID&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="790.5" CenterY="713.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5886"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_109629" TextLabel="TFIIA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="719.0" CenterY="852.0" Width="36.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5743"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_109633" TextLabel="TFIIE&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="758.5" CenterY="875.0" Width="35.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2368"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_157171" TextLabel="Pol II transcription &#10;complex containing &#10;extruded transcript &#10;to +30&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="197.0" CenterY="1042.0" Width="124.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4335"/>
+  </DataNode>
+  <DataNode GraphId="n83_REACTOME_157174" TextLabel="Pol II transcription &#10;complex with (ser5) &#10;phosphorylated CTD &#10;containing extruded &#10;transcript to +30&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="427.5" CenterY="1042.0" Width="131.0" Height="78.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2595"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_109634" TextLabel="TFIIH&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="313.5" CenterY="1096.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3832"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_72081" TextLabel="mRNA capping &#10;enzyme&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="460.0" CenterY="1131.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60942"/>
+  </DataNode>
+  <DataNode GraphId="n88_REACTOME_77053" TextLabel="RNA Pol II with &#10;phosphorylated &#10;CTD: CE complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="673.5" CenterY="1043.0" Width="109.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2371"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_77056" TextLabel="RNA Pol II with &#10;phosphorylated &#10;CTD: CE complex &#10;with activated GT&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="853.5" CenterY="1045.0" Width="113.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3171"/>
+  </DataNode>
+  <DataNode GraphId="n92_REACTOME_350776" TextLabel="phospho-Spt5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="896.5" CenterY="1201.0" Width="91.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14075"/>
+  </DataNode>
+  <DataNode GraphId="n93_REACTOME_77060" TextLabel="RNA (guanine-7-) &#10;methyltransferase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="911.0" CenterY="980.0" Width="116.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43148"/>
+  </DataNode>
+  <DataNode GraphId="n94_REACTOME_77061" TextLabel="CE:Pol II CTD:Spt5 &#10;complex&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Spt5 reacts with Guanyl Transferase  (GT) of the capping enzyme (CE).</Comment>
+    <Graphics Color="000000" CenterX="1068.5" CenterY="1045.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2332"/>
+  </DataNode>
+  <DataNode GraphId="n96_REACTOME_113416" TextLabel="FCP1P protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1278.5" CenterY="981.0" Width="89.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y5B0"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_77089" TextLabel="capped pre-mRNA:&#10;CBC:RNA Pol II &#10;(phosphorylated) &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1152.5" CenterY="1120.0" Width="123.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3243"/>
+  </DataNode>
+  <DataNode GraphId="n98_REACTOME_113715" TextLabel="RNA Pol II &#10;(hypophosphorylated):&#10;capped pre-mRNA &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1402.5" CenterY="1116.0" Width="131.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5658"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_112420" TextLabel="DSIF complex&#10;" Type="Complex">
+    <BiopaxRef>lit_113798</BiopaxRef>
+    <Graphics Color="000000" CenterX="1478.5" CenterY="1200.0" Width="85.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2797"/>
+  </DataNode>
+  <DataNode GraphId="n101_REACTOME_113406" TextLabel="RNA Pol II &#10;(hypophosphorylated) &#10;complex bound to &#10;DSIF protein&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1622.0" CenterY="1117.0" Width="130.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4417"/>
+  </DataNode>
+  <DataNode GraphId="n104_REACTOME_112432" TextLabel="NELF complex&#10;" Type="Complex">
+    <BiopaxRef>lit_170758</BiopaxRef>
+    <Graphics Color="000000" CenterX="1696.5" CenterY="1179.0" Width="89.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2737"/>
+  </DataNode>
+  <DataNode GraphId="n105_REACTOME_113408" TextLabel="DSIF:NELF:early &#10;elongation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1939.0" CenterY="1135.0" Width="120.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4575"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1832.0" CenterY="1059.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n109_REACTOME_112431" TextLabel="P-TEFb complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1948.0" CenterY="1053.0" Width="104.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3433"/>
+  </DataNode>
+  <DataNode GraphId="n110_REACTOME_77088" TextLabel="Cap Binding &#10;Complex (CBC)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2167.0" CenterY="1209.0" Width="94.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3884"/>
+  </DataNode>
+  <DataNode GraphId="n111_REACTOME_113426" TextLabel="Early elongation &#10;complex with &#10;hyperphosphorylated &#10;Pol II CTD&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2232.5" CenterY="1146.0" Width="123.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2481"/>
+  </DataNode>
+  <DataNode GraphId="n114_REACTOME_112417" TextLabel="FACT complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2095.5" CenterY="994.0" Width="91.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4314"/>
+  </DataNode>
+  <DataNode GraphId="n115_REACTOME_65748" TextLabel="TFIIS protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2101.5" CenterY="946.0" Width="79.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P23193"/>
+  </DataNode>
+  <DataNode GraphId="n116_REACTOME_112425" TextLabel="Elongin Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2293.0" CenterY="1000.0" Width="104.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5616"/>
+  </DataNode>
+  <DataNode GraphId="n117_REACTOME_54257" TextLabel="RNA polymerase II &#10;elongation factor ELL&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2132.5" CenterY="875.0" Width="127.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55199"/>
+  </DataNode>
+  <DataNode GraphId="n118_REACTOME_112433" TextLabel="Elongation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2219.0" CenterY="777.0" Width="120.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3511"/>
+  </DataNode>
+  <DataNode GraphId="n120_REACTOME_109634" TextLabel="TFIIH&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2305.5" CenterY="911.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3832"/>
+  </DataNode>
+  <DataNode GraphId="n122_REACTOME_113719" TextLabel="Processive &#10;elongation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2216.0" CenterY="626.0" Width="120.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3018"/>
+  </DataNode>
+  <DataNode GraphId="n125_REACTOME_113724" TextLabel="Elongation complex &#10;prior to separation&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2212.0" CenterY="451.0" Width="124.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5853"/>
+  </DataNode>
+  <DataNode GraphId="n127_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1587.0" CenterY="821.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n129_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2118.0" CenterY="786.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n131_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2145.0" CenterY="585.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n133_REACTOME_30595" TextLabel="NTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2295.0" CenterY="499.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4491"/>
+  </DataNode>
+  <DataNode GraphId="n135_REACTOME_113726" TextLabel="Elongation complex &#10;with separated and &#10;uncleaved transcript&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2207.5" CenterY="309.0" Width="125.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5512"/>
+  </DataNode>
+  <DataNode GraphId="n138_REACTOME_72157" TextLabel="Ligated exon &#10;containing complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2472.5" CenterY="333.0" Width="119.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5472"/>
+  </DataNode>
+  <DataNode GraphId="n139_REACTOME_72006" TextLabel="CstF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2593.0" CenterY="384.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3503"/>
+  </DataNode>
+  <DataNode GraphId="n140_REACTOME_72020" TextLabel="CF II&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2638.0" CenterY="388.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3772"/>
+  </DataNode>
+  <DataNode GraphId="n141_REACTOME_72177" TextLabel="3' end cleaved, &#10;ligated exon &#10;containing complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2771.5" CenterY="324.0" Width="119.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3092"/>
+  </DataNode>
+  <DataNode GraphId="n142_REACTOME_72015" TextLabel="CF I&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2695.5" CenterY="386.0" Width="29.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4896"/>
+  </DataNode>
+  <DataNode GraphId="n143_REACTOME_72075" TextLabel="mRNA 3'-end &#10;cleavage factor&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2582.5" CenterY="253.0" Width="95.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2642"/>
+  </DataNode>
+  <DataNode GraphId="n145_REACTOME_112162" TextLabel="intronless pre-mRNA &#10;cleavage complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2481.0" CenterY="449.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3895"/>
+  </DataNode>
+  <DataNode GraphId="n146_REACTOME_112165" TextLabel="downstream &#10;intronless mRNA &#10;fragment&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2757.5" CenterY="449.0" Width="107.0" Height="50.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3064"/>
+  </DataNode>
+  <DataNode GraphId="n147_REACTOME_112164" TextLabel="upstream mRNA &#10;fragment:CPSF:PAP:&#10;PABPN1 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2721.5" CenterY="517.0" Width="121.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3436"/>
+  </DataNode>
+  <DataNode GraphId="n149_REACTOME_110766" TextLabel="Capped Intronless &#10;Histone pre-mRNA:&#10;CBP80:CBP20:SLBP:&#10;ZFP100 Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2507.0" CenterY="521.0" Width="122.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3667"/>
+  </DataNode>
+  <DataNode GraphId="n150_REACTOME_111682" TextLabel="Mature Intronless &#10;transcript derived &#10;Histone mRNA:SLBP:&#10;CBP80:CBP20&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2643.5" CenterY="605.0" Width="125.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3802"/>
+  </DataNode>
+  <DataNode GraphId="n151_REACTOME_110765" TextLabel="U7 snRNP:ZFP100 &#10;Complex&#10;" Type="Complex">
+    <BiopaxRef>lit_111680</BiopaxRef>
+    <Graphics Color="000000" CenterX="2515.5" CenterY="661.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5001"/>
+  </DataNode>
+  <DataNode GraphId="n153_REACTOME_112045" TextLabel="Capped Intronless &#10;Histone pre-mRNA:&#10;CBC:ZFP100 &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2732.0" CenterY="713.0" Width="122.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5338"/>
+  </DataNode>
+  <DataNode GraphId="n154_REACTOME_156959" TextLabel="Mature intronless &#10;transcript derived &#10;Histone pre-mRNA:&#10;CBC complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2476.0" CenterY="747.0" Width="122.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5592"/>
+  </DataNode>
+  <DataNode GraphId="n156_REACTOME_109877" TextLabel="template DNA with first &#10;transcript dinucleotide, &#10;opened to +8 position&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1149.0" CenterY="278.0" Width="134.0" Height="64.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3318"/>
+  </DataNode>
+  <DataNode GraphId="n162_REACTOME_75890" TextLabel="pol II transcription &#10;complex containing &#10;4-9 nucleotide long &#10;transcript&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="729.0" CenterY="313.0" Width="126.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3928"/>
+  </DataNode>
+  <DataNode GraphId="n163_REACTOME_75897" TextLabel="template DNA:4-9 &#10;nucleotide transcript &#10;hybrid&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="977.0" CenterY="231.0" Width="130.0" Height="50.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3607"/>
+  </DataNode>
+  <DataNode GraphId="n165_REACTOME_75859" TextLabel="Pol II Promoter &#10;Escape Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="446.0" CenterY="308.0" Width="104.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3851"/>
+  </DataNode>
+  <DataNode GraphId="n166_REACTOME_110068" TextLabel="DNA containing Pol II &#10;promoter with &#10;transcript with 2 or 3 &#10;nucleotides&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="726.0" CenterY="196.0" Width="134.0" Height="64.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3936"/>
+  </DataNode>
+  <DataNode GraphId="n168_REACTOME_64905" TextLabel="SPT4H1 protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1275.5" CenterY="1165.0" Width="99.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P63272"/>
+  </DataNode>
+  <DataNode GraphId="n170_REACTOME_112422" TextLabel="Elongin B protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2721.5" CenterY="1084.0" Width="105.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15369"/>
+  </DataNode>
+  <DataNode GraphId="n171_REACTOME_112423" TextLabel="Elongin C protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2729.0" CenterY="1008.0" Width="106.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15370"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_112424" TextLabel="Elongin B:C complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2511.5" CenterY="1036.0" Width="125.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2434"/>
+  </DataNode>
+  <DataNode GraphId="n174_REACTOME_65105" TextLabel="FACT 80 kDa &#10;subunit&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2162.5" CenterY="1032.0" Width="89.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q08945"/>
+  </DataNode>
+  <DataNode GraphId="n175_REACTOME_112415" TextLabel="FACT 140 kDa &#10;subunit&#10;" Type="Protein">
+    <Comment Source="WikiPathways-description">DSIF is a heterodimer consisting of hSPT4 (human homolog of yeast Spt4- p14) and hSPT5 (human homolog of yeast Spt5-p160).  DSIF association with Pol II may be enabled by Spt5 binding to Pol II  creating a scaffold for NELF binding (Wada et al.,1998). Spt5 subunit of DSIF can be phosphorylated by P-TEFb.</Comment>
+    <Graphics Color="000000" CenterX="2136.5" CenterY="1084.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y5B9"/>
+  </DataNode>
+  <DataNode GraphId="n177_REACTOME_112428" TextLabel="NELF-C/D protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1958.5" CenterY="1225.0" Width="111.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8IXH7"/>
+  </DataNode>
+  <DataNode GraphId="n178_REACTOME_62907" TextLabel="RD protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1934.0" CenterY="1173.0" Width="70.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18615"/>
+  </DataNode>
+  <DataNode GraphId="n179_REACTOME_112426" TextLabel="NELF-A protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1886.0" CenterY="1261.0" Width="96.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9H3P2"/>
+  </DataNode>
+  <DataNode GraphId="n180_REACTOME_112427" TextLabel="NELF-B protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1816.5" CenterY="1227.0" Width="95.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8WX92"/>
+  </DataNode>
+  <DataNode GraphId="n182_REACTOME_51613" TextLabel="Cyclin T2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1599.5" CenterY="947.0" Width="61.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60583"/>
+  </DataNode>
+  <DataNode GraphId="n183_REACTOME_51611" TextLabel="Cyclin T1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1577.5" CenterY="985.0" Width="61.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60563"/>
+  </DataNode>
+  <DataNode GraphId="n184_REACTOME_51801" TextLabel="Cdk 9 protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1599.0" CenterY="1019.0" Width="88.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P50750"/>
+  </DataNode>
+  <DataNode GraphId="n186_REACTOME_112421" TextLabel="Elongin A1 protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2506.0" CenterY="1116.0" Width="114.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14241"/>
+  </DataNode>
+  <DataNode GraphId="n188_REACTOME_113720" TextLabel="Paused processive &#10;elongation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2072.0" CenterY="247.0" Width="120.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3066"/>
+  </DataNode>
+  <DataNode GraphId="n191_REACTOME_113721" TextLabel="Arrested processive &#10;elongation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2393.5" CenterY="198.0" Width="127.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4675"/>
+  </DataNode>
+  <DataNode GraphId="n460_REACTOME_113410" TextLabel="Aborted early &#10;elongation complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2113.0" CenterY="1263.0" Width="120.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3362"/>
+  </DataNode>
+  <DataNode GraphId="n470_REACTOME_113722" TextLabel="Aborted elongation &#10;complex after arrest&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2612.0" CenterY="199.0" Width="126.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6654"/>
+  </DataNode>
+  <DataNode GraphId="n549_REACTOME_109909" TextLabel="RNA Polymerase II &#10;holoenzyme complex &#10;(hyperphosphorylated)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1844.0" CenterY="837.0" Width="134.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4889"/>
+  </DataNode>
+  <DataNode GraphId="n550_REACTOME_110291" TextLabel="damaged DNA &#10;substrate:nascent &#10;mRNA hybrid&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1870.0" CenterY="961.0" Width="114.0" Height="50.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3022"/>
+  </DataNode>
+  <DataNode GraphId="n551_REACTOME_109631" TextLabel="TFIIF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2096.0" CenterY="829.0" Width="34.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4708"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_109636">
+    <Comment Source="WikiPathways-description">Although TBP (TATA box binding factor) is necessary and sufficient for initiation of basal transcription, the other subunits of the general transcription factor TFIID, the TBP-associated factors, are required for response to transcriptional activators.  TBP binds to the TATA box (a core promoter element), and bends the DNA 80 degrees toward the major groove.  This conformation of TBP-TATA box provides the proper topology for the binding of the general transcription factor TFIIB.&lt;p&gt;Transcriptional activators function by affecting the kinetics of binding of TBP to the promoter DNA.</Comment>
+    <BiopaxRef>lit_110385</BiopaxRef>
+    <BiopaxRef>lit_110386</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="224.0" Y="520.0" GraphId="e_1_0"/>
+      <Point X="251.0" Y="520.0" GraphId="e_1_1"/>
+      <Point X="275.0" Y="520.0" GraphId="e_1_2" GraphRef="n4_REACTOME_109628" RelX="-1.0381679389312977" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.5294117647058824" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="218.0" Y="451.0" GraphId="e_1_i0_0" GraphRef="n3_REACTOME_109626" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="224.0" Y="520.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="199.0" Y="553.0" GraphId="e_1_i1_0" GraphRef="n2_REACTOME_109627" RelX="0.24806201550387597" RelY="-1.12"/>
+      <Point X="224.0" Y="520.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_REACTOME_109637">
+    <Comment Source="WikiPathways-description">The general transcription factor TFIIB is a single polypeptide of approximately 35 kDa.  There is a Zn-binding domain near the N terminus of TFIIB, and the C-terminal domain encompasses two imperfect repeats; between the N and C termini is a phylogenetically conserved region.  The C terminus interacts with TBP and RNA Polymerase II, whereas the N terminus interacts with factor TFIIF and RNA polymerase II.  TFIIB is a sequence-specific factor, and it interacts with the BRE element within the promoter.&lt;p&gt;TFIIB interacts with the Rpb1 subunit of RNA polymerase II to define transcription strat sites.  Several activators directly bind TFIIB, and stimulate transcription.  The N-terminus and the C-terminus can participate in intramolecular interactions, and this can be disrupted by specific activators  by causing a conformational change in TFIIB.&lt;p&gt; TFIIA also binds the preinitiation complex along with TFIIB.  However, TFIIA is not required for accurate initiation, but rather functions as a coactivator of transcription.</Comment>
+    <BiopaxRef>lit_110385</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="454.0" Y="521.0" GraphId="e_5_0"/>
+      <Point X="490.0" Y="520.0" GraphId="e_5_1"/>
+      <Point X="531.0" Y="521.0" GraphId="e_5_2" GraphRef="n8_REACTOME_109630" RelX="-1.0576923076923077" RelY="-0.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_5_a_i"/>
+      <Anchor Position="0.46755444954969827" GraphId="e_5_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="534.0" Y="476.0" GraphId="e_5_i0_0" GraphRef="n6_REACTOME_65888" RelX="-1.1428571428571428" RelY="0.8181818181818182"/>
+      <Point X="454.0" Y="521.0" GraphId="e_5_i0_1" GraphRef="e_5_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="381.0" Y="475.0" GraphId="e_5_i1_0" GraphRef="n7_REACTOME_109629" RelX="1.1666666666666667" RelY="0.9090909090909091"/>
+      <Point X="454.0" Y="521.0" GraphId="e_5_i1_1" GraphRef="e_5_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="412.0" Y="521.0" GraphId="e_5_i2_0" GraphRef="n4_REACTOME_109628" RelX="1.0534351145038168" RelY="-0.05555555555555555"/>
+      <Point X="454.0" Y="521.0" GraphId="e_5_i2_1" GraphRef="e_5_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_109638">
+    <Comment Source="WikiPathways-description">The general transcription factor TFIIF has a high affinity for the RNA Polymerase II holoenzyme.  TFIIF stabilizes the preinitiation complex, and suppresses non-specific binding of RNA Pol II to DNA, and is thus critical for start site recognition.</Comment>
+    <BiopaxRef>lit_110385</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="691.0" Y="524.0" GraphId="e_9_0"/>
+      <Point X="715.0" Y="525.0" GraphId="e_9_1"/>
+      <Point X="743.0" Y="524.0" GraphId="e_9_2" GraphRef="n11_REACTOME_109632" RelX="-1.04" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_9_a_i"/>
+      <Anchor Position="0.4615956104222625" GraphId="e_9_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="641.0" Y="524.0" GraphId="e_9_i0_0" GraphRef="n8_REACTOME_109630" RelX="1.0576923076923077" RelY="0.0"/>
+      <Point X="691.0" Y="524.0" GraphId="e_9_i0_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="803.0" Y="593.0" GraphId="e_9_i1_0" GraphRef="n10_REACTOME_71307" RelX="-0.6290322580645161" RelY="-1.12"/>
+      <Point X="691.0" Y="524.0" GraphId="e_9_i1_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_REACTOME_75095">
+    <Comment Source="WikiPathways-description">Factor TFIIE enters the preinitiation complex after TFIIF recruits RNA Polymerase II.  TFIIE is composed of two subunits of 56 kDA and 34 kDa.  TFIIE facilitates the recruitment of factor TFIIH to the preinitiation complex, and it also stimulates the phosphorylation of the RNA Polymerase II CTD by TFIIH.</Comment>
+    <BiopaxRef>lit_110385</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="904.0" Y="523.0" GraphId="e_12_0"/>
+      <Point X="935.0" Y="522.0" GraphId="e_12_1"/>
+      <Point X="977.0" Y="522.0" GraphId="e_12_2" GraphRef="n14_REACTOME_75871" RelX="-1.046875" RelY="-0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_12_a_i"/>
+      <Anchor Position="0.42478459254208123" GraphId="e_12_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="874.0" Y="523.0" GraphId="e_12_i0_0" GraphRef="n11_REACTOME_109632" RelX="1.056" RelY="-0.04"/>
+      <Point X="904.0" Y="523.0" GraphId="e_12_i0_1" GraphRef="e_12_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="890.0" Y="471.0" GraphId="e_12_i1_0" GraphRef="n13_REACTOME_109633" RelX="0.11428571428571428" RelY="1.2727272727272727"/>
+      <Point X="904.0" Y="523.0" GraphId="e_12_i1_1" GraphRef="e_12_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_REACTOME_109639">
+    <Comment Source="WikiPathways-description">The binding of TFIIH completes the assembly of the preinitiation complex (PIC) for RNA Polymerase II transcription.  Although RNA polymerase binds the TATA box on the promoter DNA, no initiation of transcription occurs until TFIIH is bound to the PIC.  TFIIH is the only factor with known enzymatic activities.</Comment>
+    <BiopaxRef>lit_110385</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1137.0" Y="519.0" GraphId="e_15_0"/>
+      <Point X="1166.0" Y="521.0" GraphId="e_15_1"/>
+      <Point X="1196.0" Y="516.0" GraphId="e_15_2" GraphRef="n17_REACTOME_109635" RelX="-1.0458715596330275" RelY="0.3888888888888889" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_15_a_i"/>
+      <Anchor Position="0.48869478834754776" GraphId="e_15_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1111.0" Y="520.0" GraphId="e_15_i0_0" GraphRef="n14_REACTOME_75871" RelX="1.046875" RelY="-0.12"/>
+      <Point X="1137.0" Y="519.0" GraphId="e_15_i0_1" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1154.0" Y="463.0" GraphId="e_15_i1_0" GraphRef="n16_REACTOME_109634" RelX="-0.21621621621621623" RelY="1.2727272727272727"/>
+      <Point X="1137.0" Y="519.0" GraphId="e_15_i1_1" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_REACTOME_75949">
+    <Comment Source="WikiPathways-description">After assembly of the complete RNA polymerase II-preinitiation complex, the next step is separation of the two DNA strands. This isomerization step is known as the closed-to-open complex transition and occurs prior to the initiation of mRNA synthesis. In the RNA polymerase II system this step requires the hydrolysis of ATP or dATP into Pi and ADP or dADP (in contrast to the other RNA polymerase systems) and is catalyzed by the XPB subunit of TFIIH. The region of the promoter, which becomes single-stranded , spans from Ã¢â¬â10 to +2 relative to the transcription start site.&lt;p&gt;Negative supercoiling in the promoter region probably induces transient opening events and can alleviate requirement of TFIIE, TFIIH and  ATP-hydrolysis for open complex formation.  ATP is also used in this step by the cdk7-subunit of TFIIH to phosphorylate the heptad repeats of the C-terminal domain of the largest subunit of RNA polymerase II (RPB1) on serine-2</Comment>
+    <BiopaxRef>lit_111269</BiopaxRef>
+    <BiopaxRef>lit_110387</BiopaxRef>
+    <BiopaxRef>lit_110388</BiopaxRef>
+    <BiopaxRef>lit_111270</BiopaxRef>
+    <BiopaxRef>lit_111271</BiopaxRef>
+    <BiopaxRef>lit_110385</BiopaxRef>
+    <BiopaxRef>lit_111272</BiopaxRef>
+    <BiopaxRef>lit_111273</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1334.0" Y="522.0" GraphId="e_20_0"/>
+      <Point X="1365.0" Y="522.0" GraphId="e_20_1"/>
+      <Point X="1389.0" Y="522.0" GraphId="e_20_2"/>
+      <Anchor Position="0.0" GraphId="e_20_a_i"/>
+      <Anchor Position="0.5636363636363636" GraphId="e_20_a_p"/>
+      <Anchor Position="1.0" GraphId="e_20_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1318.0" Y="542.0" GraphId="e_20_i0_0" GraphRef="n21_REACTOME_29358" RelX="0.46153846153846156" RelY="-1.2"/>
+      <Point X="1334.0" Y="522.0" GraphId="e_20_i0_1" GraphRef="e_20_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1311.0" Y="517.0" GraphId="e_20_i1_0" GraphRef="n17_REACTOME_109635" RelX="1.0642201834862386" RelY="0.4444444444444444"/>
+      <Point X="1334.0" Y="522.0" GraphId="e_20_i1_1" GraphRef="e_20_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1424.0" Y="490.0" GraphId="e_20_o0_0" ArrowHead="Arrow" GraphRef="n22_REACTOME_113550" RelX="-0.29357798165137616" RelY="1.2"/>
+      <Point X="1389.0" Y="522.0" GraphId="e_20_o0_1" GraphRef="e_20_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1419.0" Y="552.0" GraphId="e_20_o1_0" ArrowHead="Arrow" GraphRef="n23_REACTOME_113582" RelX="-0.7" RelY="-1.2"/>
+      <Point X="1389.0" Y="522.0" GraphId="e_20_o1_1" GraphRef="e_20_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1439.0" Y="522.0" GraphId="e_20_o2_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_109876" RelX="-1.0458715596330275" RelY="-0.1111111111111111"/>
+      <Point X="1389.0" Y="522.0" GraphId="e_20_o2_1" GraphRef="e_20_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1180.0" Y="449.0" GraphId="e_20_c__0_0" GraphRef="n16_REACTOME_109634" RelX="1.1891891891891893" RelY="0.0"/>
+      <Point X="1364.0" Y="449.0" GraphId="e_20_c__0_1"/>
+      <Point X="1365.0" Y="522.0" GraphId="e_20_c__0_2" GraphRef="e_20_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_REACTOME_75861">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pol II open pre-initiation complex', and 2 molecules of 'NTP' are present. At the end of this reaction, 1 molecule of 'Pol II initiation complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1583.0" Y="522.0" GraphId="e_26_0"/>
+      <Point X="1611.0" Y="524.0" GraphId="e_26_1"/>
+      <Point X="1637.0" Y="524.0" GraphId="e_26_2" GraphRef="n28_REACTOME_83551" RelX="-1.054945054945055" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_26_a_i"/>
+      <Anchor Position="0.5191537493201216" GraphId="e_26_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1559.0" Y="487.0" GraphId="e_26_i0_0" GraphRef="n27_REACTOME_30595" RelX="0.45" RelY="1.2"/>
+      <Point X="1583.0" Y="522.0" GraphId="e_26_i0_1" GraphRef="e_26_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1554.0" Y="522.0" GraphId="e_26_i1_0" GraphRef="n24_REACTOME_109876" RelX="1.0642201834862386" RelY="-0.1111111111111111"/>
+      <Point X="1583.0" Y="522.0" GraphId="e_26_i1_1" GraphRef="e_26_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_75866">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Pol II initiation complex' is present. At the end of this reaction, 1 molecule of 'Pol II Initiation complex with phosphodiester-PPi intermediate' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1734.0" Y="523.0" GraphId="e_30_0" GraphRef="n28_REACTOME_83551" RelX="1.0769230769230769" RelY="-0.16666666666666666"/>
+      <Point X="1770.0" Y="521.0" GraphId="e_30_1"/>
+      <Point X="1797.0" Y="521.0" GraphId="e_30_2" GraphRef="n31_REACTOME_83601" RelX="-1.0476190476190477" RelY="-0.0625" ArrowHead="Arrow"/>
+      <Anchor Position="0.5718058767508282" GraphId="e_30_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_75864">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Pol II Initiation complex with phosphodiester-PPi intermediate' is present. At the end of this reaction, 1 molecule of 'pyrophosphate', and 1 molecule of 'pol II transcription complex' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1862.0" Y="558.0" GraphId="e_32_0" GraphRef="n31_REACTOME_83601" RelX="-0.015873015873015872" RelY="1.09375"/>
+      <Point X="1862.0" Y="602.0" GraphId="e_32_1"/>
+      <Point X="1863.0" Y="669.0" GraphId="e_32_2"/>
+      <Anchor Position="0.3963697493829945" GraphId="e_32_a_p"/>
+      <Anchor Position="1.0" GraphId="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1821.0" Y="658.0" GraphId="e_32_o0_0" ArrowHead="Arrow" GraphRef="n33_REACTOME_113541" RelX="0.8737864077669902" RelY="1.2"/>
+      <Point X="1863.0" Y="669.0" GraphId="e_32_o0_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1779.0" Y="741.0" GraphId="e_32_o1_0" ArrowHead="Arrow" GraphRef="n34_REACTOME_109878" RelX="0.3448275862068966" RelY="-1.1666666666666667"/>
+      <Point X="1863.0" Y="669.0" GraphId="e_32_o1_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_REACTOME_75850">
+    <Comment Source="WikiPathways-description">Formation of the second phosphodiester bond creates a 3-nt product. This short transcript is still loosely associated with the RNA polymerase II initiation complex and can dissociate to yield abortive products, which are not further extended. The transcription complex still requires continued ATP-hydrolysis by TFIIH and remains sensitive to single-stranded oligo-nucleotide inhibition.&lt;p&gt;The open region (Ã¢â¬Åtranscription bubbleÃ¢â¬ï¿½) expands concomitant with the site of RNA-extension. In this case this region spans positions -9 to +3.</Comment>
+    <BiopaxRef>lit_110387</BiopaxRef>
+    <BiopaxRef>lit_111262</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1523.0" Y="761.0" GraphId="e_35_0"/>
+      <Point X="1474.0" Y="759.0" GraphId="e_35_1"/>
+      <Point X="1427.0" Y="759.0" GraphId="e_35_2"/>
+      <Anchor Position="0.0" GraphId="e_35_a_i"/>
+      <Anchor Position="0.5106246478317606" GraphId="e_35_a_p"/>
+      <Anchor Position="1.0" GraphId="e_35_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1698.0" Y="761.0" GraphId="e_35_i0_0" GraphRef="n34_REACTOME_109878" RelX="-1.0517241379310345" RelY="-0.05555555555555555"/>
+      <Point X="1523.0" Y="761.0" GraphId="e_35_i0_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1571.0" Y="803.0" GraphId="e_35_i1_0" GraphRef="n127_REACTOME_30595" RelX="-0.8" RelY="-1.2"/>
+      <Point X="1523.0" Y="761.0" GraphId="e_35_i1_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1373.0" Y="760.0" GraphId="e_35_o0_0" ArrowHead="Arrow" GraphRef="n36_REACTOME_75878" RelX="1.056910569105691" RelY="-0.09375"/>
+      <Point X="1427.0" Y="759.0" GraphId="e_35_o0_1" GraphRef="e_35_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1391.0" Y="833.0" GraphId="e_35_o1_0" ArrowHead="Arrow" GraphRef="n38_REACTOME_113541" RelX="0.13592233009708737" RelY="-1.2"/>
+      <Point X="1427.0" Y="759.0" GraphId="e_35_o1_1" GraphRef="e_35_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="907.0" Y="621.0" GraphId="e_35_c__0_0" GraphRef="n10_REACTOME_71307" RelX="1.0483870967741935" RelY="0.0"/>
+      <Point X="1369.0" Y="621.0" GraphId="e_35_c__0_1"/>
+      <Point X="1474.0" Y="759.0" GraphId="e_35_c__0_2" GraphRef="e_35_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_c__1">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1474.0" Y="803.0" GraphId="e_35_c__1_0" GraphRef="n68_REACTOME_109634" RelX="-0.05405405405405406" RelY="-1.2727272727272727"/>
+      <Point X="1474.0" Y="759.0" GraphId="e_35_c__1_1" GraphRef="e_35_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_REACTOME_75869">
+    <Comment Source="WikiPathways-description">Formation of the third  phosphodiester bond creates a 4-nt product. This commits the initiation complex to promoter escape. The short 4-nt transcript is still loosely associated with the RNA polymerase II initiation complex and can dissociate to yield abortive products, which are not further extended. Inhibition of ATP-hydrolysis by TFIIH  does not lead to collapse of the open region any longer. The transcription complex has lost the sensitivity to single-stranded oligo-nucleotide inhibition. However, ATP-hydrolysis and TFIIH are required for efficient promoter escape.  The open region (Ã¢â¬Åtranscription bubbleÃ¢â¬ï¿½) expands concomitant with the site of RNA-extension. In this case this region spans positions -9 to +4.</Comment>
+    <BiopaxRef>lit_110387</BiopaxRef>
+    <BiopaxRef>lit_111262</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1194.0" Y="763.0" GraphId="e_39_0"/>
+      <Point X="1160.0" Y="763.0" GraphId="e_39_1"/>
+      <Point X="1117.0" Y="763.0" GraphId="e_39_2"/>
+      <Anchor Position="0.0" GraphId="e_39_a_i"/>
+      <Anchor Position="0.44155844155844154" GraphId="e_39_a_p"/>
+      <Anchor Position="1.0" GraphId="e_39_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1244.0" Y="763.0" GraphId="e_39_i0_0" GraphRef="n36_REACTOME_75878" RelX="-1.0406504065040652" RelY="0.0"/>
+      <Point X="1194.0" Y="763.0" GraphId="e_39_i0_1" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1240.0" Y="817.0" GraphId="e_39_i1_0" GraphRef="n47_REACTOME_30595" RelX="-0.65" RelY="-1.2"/>
+      <Point X="1194.0" Y="763.0" GraphId="e_39_i1_1" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1050.0" Y="766.0" GraphId="e_39_o0_0" ArrowHead="Arrow" GraphRef="n40_REACTOME_75881" RelX="1.056910569105691" RelY="-0.09375"/>
+      <Point X="1117.0" Y="763.0" GraphId="e_39_o0_1" GraphRef="e_39_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1055.0" Y="819.0" GraphId="e_39_o1_0" ArrowHead="Arrow" GraphRef="n42_REACTOME_113541" RelX="0.2912621359223301" RelY="-1.2"/>
+      <Point X="1117.0" Y="763.0" GraphId="e_39_o1_1" GraphRef="e_39_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1086.0" Y="739.0" GraphId="e_39_o2_0" ArrowHead="Arrow" GraphRef="n67_REACTOME_65888" RelX="0.6857142857142857" RelY="1.2727272727272727"/>
+      <Point X="1117.0" Y="763.0" GraphId="e_39_o2_1" GraphRef="e_39_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="907.0" Y="625.0" GraphId="e_39_c__0_0" GraphRef="n10_REACTOME_71307" RelX="1.0483870967741935" RelY="0.16"/>
+      <Point X="1159.0" Y="642.0" GraphId="e_39_c__0_1"/>
+      <Point X="1160.0" Y="763.0" GraphId="e_39_c__0_2" GraphRef="e_39_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_c__1">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1156.0" Y="839.0" GraphId="e_39_c__1_0" GraphRef="n70_REACTOME_109634" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1160.0" Y="763.0" GraphId="e_39_c__1_1" GraphRef="e_39_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_REACTOME_75873">
+    <Comment Source="WikiPathways-description">Formation of the second phosphodiester bond creates a 3-nt product. This transcript is still loosely associated with the RNA polymerase II initiation complex and can dissociate to yield abortive products, which are not further extended.  At this stage pausing by RNA polymerase II may result in repeated slippage and reextension of the nascent RNA.  The transcription complex still requires continued ATP-hydrolysis by TFIIH for efficient promoter escape.  Basal transcription factor TFIIE dissociates from the initiation complex before position +10.  &lt;p&gt;Basal transcription factor TFIIF may reassociate and can stimulate transcription elongation at multiple stages.  The open region (Ã¢â¬Åtranscription bubbleÃ¢â¬ï¿½) expands concomitant with the site of RNA-extension, eventually reaching an open region from -9 to +9.</Comment>
+    <BiopaxRef>lit_110387</BiopaxRef>
+    <BiopaxRef>lit_111275</BiopaxRef>
+    <BiopaxRef>lit_110389</BiopaxRef>
+    <BiopaxRef>lit_111276</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="898.0" Y="770.0" GraphId="e_49_0"/>
+      <Point X="868.0" Y="770.0" GraphId="e_49_1"/>
+      <Point X="828.0" Y="771.0" GraphId="e_49_2"/>
+      <Anchor Position="0.0" GraphId="e_49_a_i"/>
+      <Anchor Position="0.4284949235728294" GraphId="e_49_a_p"/>
+      <Anchor Position="1.0" GraphId="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="959.0" Y="882.0" GraphId="e_49_i0_0" GraphRef="n54_REACTOME_30595" RelX="-0.4" RelY="-1.2"/>
+      <Point X="898.0" Y="770.0" GraphId="e_49_i0_1" GraphRef="e_49_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="921.0" Y="769.0" GraphId="e_49_i1_0" GraphRef="n40_REACTOME_75881" RelX="-1.0406504065040652" RelY="0.0"/>
+      <Point X="898.0" Y="770.0" GraphId="e_49_i1_1" GraphRef="e_49_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="779.0" Y="771.0" GraphId="e_49_o0_0" ArrowHead="Arrow" GraphRef="n50_REACTOME_75882" RelX="1.056910569105691" RelY="-0.0625"/>
+      <Point X="828.0" Y="771.0" GraphId="e_49_o0_1" GraphRef="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="786.0" Y="897.0" GraphId="e_49_o1_0" ArrowHead="Arrow" GraphRef="n52_REACTOME_113541" RelX="0.07766990291262135" RelY="-1.2"/>
+      <Point X="828.0" Y="771.0" GraphId="e_49_o1_1" GraphRef="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="765.0" Y="861.0" GraphId="e_49_o2_0" ArrowHead="Arrow" GraphRef="n74_REACTOME_109633" RelX="0.4" RelY="-1.2727272727272727"/>
+      <Point X="828.0" Y="771.0" GraphId="e_49_o2_1" GraphRef="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="733.0" Y="838.0" GraphId="e_49_o3_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_109629" RelX="0.7777777777777778" RelY="-1.2727272727272727"/>
+      <Point X="828.0" Y="771.0" GraphId="e_49_o3_1" GraphRef="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="797.0" Y="727.0" GraphId="e_49_o4_0" ArrowHead="Arrow" GraphRef="n72_REACTOME_109626" RelX="0.3783783783783784" RelY="1.2727272727272727"/>
+      <Point X="828.0" Y="771.0" GraphId="e_49_o4_1" GraphRef="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="846.0" Y="649.0" GraphId="e_49_c__0_0" GraphRef="n10_REACTOME_71307" RelX="0.06451612903225806" RelY="1.12"/>
+      <Point X="868.0" Y="770.0" GraphId="e_49_c__0_1" GraphRef="e_49_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_REACTOME_76576">
+    <Comment Source="WikiPathways-description">Formation of  phosphodiester bonds nine and ten creates RNA products, which do not dissociate from the RNA pol II initiation complex.  The transcription complex has enter the productive elongation phase. TFIIH and ATP-hydrolysis are required for efficient promoter escape.  The open region (Ã¢â¬Åtranscription bubbleÃ¢â¬ï¿½) expands concomitant with the site of RNA-extension. The region upstream from the transcription start site (-9 to -3) collapses to the double-stranded state. TFIIH remains associated to the RNA pol II initiation complex.</Comment>
+    <BiopaxRef>lit_110387</BiopaxRef>
+    <BiopaxRef>lit_110389</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="772.0" GraphId="e_55_0"/>
+      <Point X="602.0" Y="771.0" GraphId="e_55_1"/>
+      <Point X="566.0" Y="771.0" GraphId="e_55_2"/>
+      <Anchor Position="0.0" GraphId="e_55_a_i"/>
+      <Anchor Position="0.41953481720606384" GraphId="e_55_a_p"/>
+      <Anchor Position="1.0" GraphId="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="650.0" Y="772.0" GraphId="e_55_i0_0" GraphRef="n50_REACTOME_75882" RelX="-1.0406504065040652" RelY="-0.03125"/>
+      <Point X="628.0" Y="772.0" GraphId="e_55_i0_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="654.0" Y="835.0" GraphId="e_55_i1_0" GraphRef="n58_REACTOME_30595" RelX="-0.3" RelY="-1.2"/>
+      <Point X="628.0" Y="772.0" GraphId="e_55_i1_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="501.0" Y="771.0" GraphId="e_55_o0_0" ArrowHead="Arrow" GraphRef="n56_REACTOME_75902" RelX="1.056910569105691" RelY="-0.03125"/>
+      <Point X="566.0" Y="771.0" GraphId="e_55_o0_1" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="540.0" Y="824.0" GraphId="e_55_o1_0" ArrowHead="Arrow" GraphRef="n60_REACTOME_113541" RelX="0.11650485436893204" RelY="-1.2"/>
+      <Point X="566.0" Y="771.0" GraphId="e_55_o1_1" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="777.0" Y="636.0" GraphId="e_55_c__0_0" GraphRef="n10_REACTOME_71307" RelX="-1.0483870967741935" RelY="0.6"/>
+      <Point X="640.0" Y="670.0" GraphId="e_55_c__0_1"/>
+      <Point X="602.0" Y="771.0" GraphId="e_55_c__0_2" GraphRef="e_55_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_REACTOME_111264">
+    <Comment Source="WikiPathways-description">RNA polymerase II transcription complexes are susceptible to transcriptional stalling and arrest, when extending  nascent transcripts to 30-nt. This susceptibility depends on presence on down-stream DNA, the particular DNA-sequence of the template and presence of transcription factors. Transcription factor TFIIH remains associated to the RNA pol II elongation complex until position +30. At this stage transcription elongation factor TFIIS can rescue stalled transcription elongation complexes.  The transcription bubble varies between 13- and 22-nt in size.</Comment>
+    <BiopaxRef>lit_111265</BiopaxRef>
+    <BiopaxRef>lit_111266</BiopaxRef>
+    <BiopaxRef>lit_111267</BiopaxRef>
+    <BiopaxRef>lit_110389</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="337.0" Y="772.0" GraphId="e_61_0"/>
+      <Point X="301.0" Y="773.0" GraphId="e_61_1"/>
+      <Point X="248.0" Y="773.0" GraphId="e_61_2"/>
+      <Anchor Position="0.0" GraphId="e_61_a_i"/>
+      <Anchor Position="0.4045872811965115" GraphId="e_61_a_p"/>
+      <Anchor Position="1.0" GraphId="e_61_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="372.0" Y="772.0" GraphId="e_61_i0_0" GraphRef="n56_REACTOME_75902" RelX="-1.0406504065040652" RelY="0.0"/>
+      <Point X="337.0" Y="772.0" GraphId="e_61_i0_1" GraphRef="e_61_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="363.0" Y="819.0" GraphId="e_61_i1_0" GraphRef="n66_REACTOME_30595" RelX="-0.45" RelY="-1.2"/>
+      <Point X="337.0" Y="772.0" GraphId="e_61_i1_1" GraphRef="e_61_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="216.0" Y="810.0" GraphId="e_61_o0_0" ArrowHead="Arrow" GraphRef="n62_REACTOME_111261" RelX="0.3089430894308943" RelY="-1.12"/>
+      <Point X="248.0" Y="773.0" GraphId="e_61_o0_1" GraphRef="e_61_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="229.0" Y="742.0" GraphId="e_61_o1_0" ArrowHead="Arrow" GraphRef="n64_REACTOME_113541" RelX="0.1553398058252427" RelY="1.2"/>
+      <Point X="248.0" Y="773.0" GraphId="e_61_o1_1" GraphRef="e_61_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_61_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="777.0" Y="627.0" GraphId="e_61_c__0_0" GraphRef="n10_REACTOME_71307" RelX="-1.0483870967741935" RelY="0.24"/>
+      <Point X="400.0" Y="669.0" GraphId="e_61_c__0_1"/>
+      <Point X="301.0" Y="773.0" GraphId="e_61_c__0_2" GraphRef="e_61_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_REACTOME_113430">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Pol II transcription complex containing transcript to +30' is present. At the end of this reaction, 1 molecule of 'Pol II transcription complex containing extruded transcript to +30' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="196.0" Y="866.0" GraphId="e_79_0" GraphRef="n62_REACTOME_111261" RelX="-0.016260162601626018" RelY="1.12"/>
+      <Point X="196.0" Y="944.0" GraphId="e_79_1"/>
+      <Point X="196.0" Y="1007.0" GraphId="e_79_2" GraphRef="n80_REACTOME_157171" RelX="-0.016129032258064516" RelY="-1.09375" ArrowHead="Arrow"/>
+      <Anchor Position="0.5531914893617021" GraphId="e_79_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_REACTOME_77071">
+    <Comment Source="WikiPathways-description">Phosphorylation of serine  5 residue at the CTD of pol II largest subunit is an important step signaling the end of initiation and escape into processive elongation processes. Cdk7 protein subunit of TFIIH phosphorylates RNA Pol II CTD serine 5 residues on its heptad repeats.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="262.0" Y="1042.0" GraphId="e_82_0" GraphRef="n80_REACTOME_157171" RelX="1.0483870967741935" RelY="0.0"/>
+      <Point X="312.0" Y="1042.0" GraphId="e_82_1"/>
+      <Point X="359.0" Y="1042.0" GraphId="e_82_2" GraphRef="n83_REACTOME_157174" RelX="-1.0381679389312977" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5154639175257731" GraphId="e_82_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="312.0" Y="1082.0" GraphId="e_82_c__0_0" GraphRef="n85_REACTOME_109634" RelX="-0.05405405405405406" RelY="-1.2727272727272727"/>
+      <Point X="312.0" Y="1042.0" GraphId="e_82_c__0_1" GraphRef="e_82_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_REACTOME_77069">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'mRNA capping enzyme', and 1 molecule of 'Pol II transcription complex with (ser5) phosphorylated CTD containing extruded transcript to +30' are present. At the end of this reaction, 1 molecule of 'RNA Pol II with phosphorylated CTD: CE complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="535.0" Y="1043.0" GraphId="e_86_0"/>
+      <Point X="575.0" Y="1043.0" GraphId="e_86_1"/>
+      <Point X="616.0" Y="1043.0" GraphId="e_86_2" GraphRef="n88_REACTOME_77053" RelX="-1.0458715596330275" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_86_a_i"/>
+      <Anchor Position="0.49382716049382713" GraphId="e_86_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="475.0" Y="1110.0" GraphId="e_86_i0_0" GraphRef="n87_REACTOME_72081" RelX="0.30612244897959184" RelY="-1.1666666666666667"/>
+      <Point X="535.0" Y="1043.0" GraphId="e_86_i0_1" GraphRef="e_86_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="496.0" Y="1042.0" GraphId="e_86_i1_0" GraphRef="n83_REACTOME_157174" RelX="1.0534351145038168" RelY="0.0"/>
+      <Point X="535.0" Y="1043.0" GraphId="e_86_i1_1" GraphRef="e_86_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_89_REACTOME_77068">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'RNA Pol II with phosphorylated CTD: CE complex' is present. At the end of this reaction, 1 molecule of 'RNA Pol II with phosphorylated CTD: CE complex with activated GT' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="731.0" Y="1042.0" GraphId="e_89_0" GraphRef="n88_REACTOME_77053" RelX="1.0642201834862386" RelY="-0.04"/>
+      <Point X="760.0" Y="1042.0" GraphId="e_89_1"/>
+      <Point X="794.0" Y="1043.0" GraphId="e_89_2" GraphRef="n90_REACTOME_77056" RelX="-1.0442477876106195" RelY="-0.0625" ArrowHead="Arrow"/>
+      <Anchor Position="0.46021005822249056" GraphId="e_89_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_REACTOME_77073">
+    <Comment Source="WikiPathways-description">The capping enzyme interacts with the Spt5 subunit of  transcription elongation factor DSIF.  This interaction may couple the capping reaction with promoter escape or elongation, thereby acting as a Ã¢â¬ÅcheckpointÃ¢â¬ï¿½ to assure that capping has occurred before the polymerase proceeds to make the rest of the  transcript.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="952.0" Y="1044.0" GraphId="e_91_0"/>
+      <Point X="974.0" Y="1043.0" GraphId="e_91_1"/>
+      <Point X="1007.0" Y="1043.0" GraphId="e_91_2" GraphRef="n94_REACTOME_77061" RelX="-1.0427350427350428" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_91_a_i"/>
+      <Anchor Position="0.4002477036473393" GraphId="e_91_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="913.0" Y="1044.0" GraphId="e_91_i0_0" GraphRef="n90_REACTOME_77056" RelX="1.0619469026548674" RelY="-0.03125"/>
+      <Point X="952.0" Y="1044.0" GraphId="e_91_i0_1" GraphRef="e_91_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="899.0" Y="1187.0" GraphId="e_91_i1_0" GraphRef="n92_REACTOME_350776" RelX="0.06593406593406594" RelY="-1.2727272727272727"/>
+      <Point X="952.0" Y="1044.0" GraphId="e_91_i1_1" GraphRef="e_91_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="922.0" Y="1001.0" GraphId="e_91_i2_0" GraphRef="n93_REACTOME_77060" RelX="0.1896551724137931" RelY="1.1666666666666667"/>
+      <Point X="952.0" Y="1044.0" GraphId="e_91_i2_1" GraphRef="e_91_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_REACTOME_112383">
+    <Comment Source="WikiPathways-description">FCP1 dephosphorylates RNAP II in ternary elongation complexes as well as in solution and, therefore, is thought to function in the recycling of RNAP II during the transcription cycle. Biochemical experiments suggest that human FCP1 targets CTDs that are phosphorylated at serine 2 (CTD-serine 2) and/or CTD-serine 5. It is also observed to stimulate elongation independent of its catalytic activity. Dephosphorylation of Ser2 - phosphorylated Pol II results in hypophosphorylated form that disengages capping enzymes (CE).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1224.0" Y="1051.0" GraphId="e_95_0"/>
+      <Point X="1278.0" Y="1050.0" GraphId="e_95_1"/>
+      <Point X="1327.0" Y="1050.0" GraphId="e_95_2"/>
+      <Anchor Position="0.0" GraphId="e_95_a_i"/>
+      <Anchor Position="0.5243146030763718" GraphId="e_95_a_p"/>
+      <Anchor Position="1.0" GraphId="e_95_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1231.0" Y="981.0" GraphId="e_95_i0_0" GraphRef="n96_REACTOME_113416" RelX="-1.0561797752808988" RelY="0.0"/>
+      <Point X="1182.0" Y="981.0" GraphId="e_95_i0_1"/>
+      <Point X="1224.0" Y="1051.0" GraphId="e_95_i0_2" GraphRef="e_95_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1185.0" Y="1085.0" GraphId="e_95_i1_0" GraphRef="n97_REACTOME_77089" RelX="0.5365853658536586" RelY="-1.09375"/>
+      <Point X="1224.0" Y="1051.0" GraphId="e_95_i1_1" GraphRef="e_95_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1156.0" Y="867.0" GraphId="e_95_i2_0" GraphRef="n70_REACTOME_109634" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1167.0" Y="1050.0" GraphId="e_95_i2_1"/>
+      <Point X="1224.0" Y="1051.0" GraphId="e_95_i2_2" GraphRef="e_95_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1365.0" Y="1081.0" GraphId="e_95_o0_0" ArrowHead="Arrow" GraphRef="n98_REACTOME_113715" RelX="-0.5648854961832062" RelY="-1.09375"/>
+      <Point X="1327.0" Y="1050.0" GraphId="e_95_o0_1" GraphRef="e_95_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1468.0" Y="831.0" GraphId="e_95_o1_0" ArrowHead="Arrow" GraphRef="n68_REACTOME_109634" RelX="-0.3783783783783784" RelY="1.2727272727272727"/>
+      <Point X="1327.0" Y="1050.0" GraphId="e_95_o1_1" GraphRef="e_95_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_95_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1278.0" Y="995.0" GraphId="e_95_c__0_0" GraphRef="n96_REACTOME_113416" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1278.0" Y="1050.0" GraphId="e_95_c__0_1" GraphRef="e_95_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_99_REACTOME_113407">
+    <Comment Source="WikiPathways-description">DSIF is a heterodimer consisting of hSPT4 (human homolog of yeast Spt4- p14) and hSPT5 (human homolog of yeast Spt5-p160).  DSIF association with Pol II may be enabled by Spt5 binding to Pol II  creating a scaffold for NELF binding (Wada et al.,1998). Spt5 subunit of DSIF can be phosphorylated by P-TEFb.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1498.0" Y="1113.0" GraphId="e_99_0"/>
+      <Point X="1523.0" Y="1113.0" GraphId="e_99_1"/>
+      <Point X="1554.0" Y="1114.0" GraphId="e_99_2" GraphRef="n101_REACTOME_113406" RelX="-1.0461538461538462" RelY="-0.09375" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_99_a_i"/>
+      <Anchor Position="0.44630006220635354" GraphId="e_99_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_99_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1471.0" Y="1113.0" GraphId="e_99_i0_0" GraphRef="n98_REACTOME_113715" RelX="1.0534351145038168" RelY="-0.09375"/>
+      <Point X="1498.0" Y="1113.0" GraphId="e_99_i0_1" GraphRef="e_99_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_99_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1480.0" Y="1186.0" GraphId="e_99_i1_0" GraphRef="n100_REACTOME_112420" RelX="0.047058823529411764" RelY="-1.2727272727272727"/>
+      <Point X="1498.0" Y="1113.0" GraphId="e_99_i1_1" GraphRef="e_99_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_REACTOME_113402">
+    <Comment Source="WikiPathways-description">NELF complex is a ~ 300 kDa multiprotein complex composed of 5 peptides (A - E): ~66,61,59,58 and 46 kDa. All these peptides are required for NELF-mediated inhibition of  Pol II elongation.  NELF complex has been reported to bind to the pre-formed DSIF:RNA Pol II complex that may act as a scaffold for its binding.  NELF-A is suspected to be involved in Wolf-Hirschhorn syndrome. &lt;BR&gt;Binding of DSIF:NELF to RNA Pol II CTD results in abortive termination of early elongation steps by the growing transcripts.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1735.0" Y="1113.0" GraphId="e_103_0"/>
+      <Point X="1765.0" Y="1114.0" GraphId="e_103_1"/>
+      <Point X="1808.0" Y="1114.0" GraphId="e_103_2"/>
+      <Anchor Position="0.0" GraphId="e_103_a_i"/>
+      <Anchor Position="0.4110933203619331" GraphId="e_103_a_p"/>
+      <Anchor Position="1.0" GraphId="e_103_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1702.0" Y="1165.0" GraphId="e_103_i0_0" GraphRef="n104_REACTOME_112432" RelX="0.1348314606741573" RelY="-1.2727272727272727"/>
+      <Point X="1735.0" Y="1113.0" GraphId="e_103_i0_1" GraphRef="e_103_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1690.0" Y="1114.0" GraphId="e_103_i1_0" GraphRef="n101_REACTOME_113406" RelX="1.0461538461538462" RelY="-0.09375"/>
+      <Point X="1735.0" Y="1113.0" GraphId="e_103_i1_1" GraphRef="e_103_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1727.0" Y="1080.0" GraphId="e_103_i2_0" GraphRef="n37_REACTOME_30595" RelX="0.15" RelY="1.2"/>
+      <Point X="1735.0" Y="1113.0" GraphId="e_103_i2_1" GraphRef="e_103_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1876.0" Y="1125.0" GraphId="e_103_o0_0" ArrowHead="Arrow" GraphRef="n105_REACTOME_113408" RelX="-1.05" RelY="-0.5555555555555556"/>
+      <Point X="1808.0" Y="1114.0" GraphId="e_103_o0_1" GraphRef="e_103_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_103_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1825.0" Y="1077.0" GraphId="e_103_o1_0" ArrowHead="Arrow" GraphRef="n107_REACTOME_30595" RelX="-0.35" RelY="1.2"/>
+      <Point X="1808.0" Y="1114.0" GraphId="e_103_o1_1" GraphRef="e_103_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_REACTOME_112381">
+    <Comment Source="WikiPathways-description">Cdk-9 is the kinase subunit of P-TEFb that phosphorylates Serine 2 on the heptapeptide repeats of Pol II CTD alleviating the negative action of DSIF-NELF complex.  This reaction is considered to be a rate limiting step for processive elongation. P-TEFb complex, that has a DRB-sensitive cyclin-dependent kinase activity, is composed of ~43 kDa, Cdk9 kinase (PITALRE), and either Cyclin T1, Cyclin T2a, Cyclin T2b, or Cyclin K. The exact mechanism by which P-TEFb removes the inhibition of elongation by DSIF-NELF is not yet known. P-TEFb is also capable of phosphorylating Spt5 subunit of DSIF complex.  &lt;BR&gt; A P-TEFb complex (which contains only the Cyclin T1)  is implicated in the efficient synthesis of human immunodeficiency virus-1 (HIV-1) transcripts. Cyclin T1 subunit of the P-TEFb(Cyclin T1:Cdk9) complex interacts with HIV-1 encoded Tat protein that binds to the transactivation response (TAR) element in the nascent HIV-1 transcript (reviewed in Price,2000). &lt;BR&gt;The mechanism by which DSIF, NELF and P-TEFb or TAK/P-TEFb act together in Pol II-regulated elongation is yet to be fully understood. Various biochemical evidences point to a model in which DSIF and NELF negatively regulate elongation through interactions with polymerase containing a hypophosphorylated CTD. Subsequent phosphorylation of the Pol II CTD by P-TEFb might promote elongation by inhibiting interactions of DSIF and NELF with the elongation complex.&lt;BR&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2042.0" Y="1132.0" GraphId="e_108_0"/>
+      <Point X="2071.0" Y="1142.0" GraphId="e_108_1"/>
+      <Point X="2115.0" Y="1143.0" GraphId="e_108_2"/>
+      <Anchor Position="0.0" GraphId="e_108_a_i"/>
+      <Anchor Position="0.41072326102223267" GraphId="e_108_a_p"/>
+      <Anchor Position="1.0" GraphId="e_108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2002.0" Y="1133.0" GraphId="e_108_i0_0" GraphRef="n105_REACTOME_113408" RelX="1.05" RelY="-0.1111111111111111"/>
+      <Point X="2042.0" Y="1132.0" GraphId="e_108_i0_1" GraphRef="e_108_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1961.0" Y="1067.0" GraphId="e_108_i1_0" GraphRef="n109_REACTOME_112431" RelX="0.25" RelY="1.2727272727272727"/>
+      <Point X="2042.0" Y="1132.0" GraphId="e_108_i1_1" GraphRef="e_108_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2152.0" Y="1188.0" GraphId="e_108_o0_0" ArrowHead="Arrow" GraphRef="n110_REACTOME_77088" RelX="-0.3191489361702128" RelY="-1.1666666666666667"/>
+      <Point X="2115.0" Y="1143.0" GraphId="e_108_o0_1" GraphRef="e_108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2168.0" Y="1144.0" GraphId="e_108_o1_0" ArrowHead="Arrow" GraphRef="n111_REACTOME_113426" RelX="-1.0406504065040652" RelY="-0.0625"/>
+      <Point X="2115.0" Y="1143.0" GraphId="e_108_o1_1" GraphRef="e_108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1973.0" Y="1067.0" GraphId="e_108_c__0_0" GraphRef="n109_REACTOME_112431" RelX="0.4807692307692308" RelY="1.2727272727272727"/>
+      <Point X="2069.0" Y="1105.0" GraphId="e_108_c__0_1"/>
+      <Point X="2071.0" Y="1142.0" GraphId="e_108_c__0_2" GraphRef="e_108_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_REACTOME_112379">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'FACT complex', 1 molecule of 'Elongin Complex', 1 molecule of 'Early elongation complex with hyperphosphorylated Pol II CTD', 1 molecule of 'TFIIH', 1 molecule of 'RNA polymerase II elongation factor ELL', and 1 molecule of 'TFIIS protein' are present. At the end of this reaction, 1 molecule of 'Elongation complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2220.0" Y="919.0" GraphId="e_113_0"/>
+      <Point X="2220.0" Y="869.0" GraphId="e_113_1"/>
+      <Point X="2219.0" Y="791.0" GraphId="e_113_2" GraphRef="n118_REACTOME_112433" RelX="0.0" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_113_a_i"/>
+      <Anchor Position="0.3906054392332716" GraphId="e_113_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2230.0" Y="1111.0" GraphId="e_113_i0_0" GraphRef="n111_REACTOME_113426" RelX="-0.032520325203252036" RelY="-1.09375"/>
+      <Point X="2220.0" Y="919.0" GraphId="e_113_i0_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2113.0" Y="980.0" GraphId="e_113_i1_0" GraphRef="n114_REACTOME_112417" RelX="0.3956043956043956" RelY="-1.2727272727272727"/>
+      <Point X="2220.0" Y="919.0" GraphId="e_113_i1_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2144.0" Y="937.0" GraphId="e_113_i2_0" GraphRef="n115_REACTOME_65748" RelX="1.0886075949367089" RelY="-0.8181818181818182"/>
+      <Point X="2220.0" Y="919.0" GraphId="e_113_i2_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2283.0" Y="986.0" GraphId="e_113_i3_0" GraphRef="n116_REACTOME_112425" RelX="-0.19230769230769232" RelY="-1.2727272727272727"/>
+      <Point X="2220.0" Y="919.0" GraphId="e_113_i3_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2168.0" Y="896.0" GraphId="e_113_i4_0" GraphRef="n117_REACTOME_54257" RelX="0.5669291338582677" RelY="1.1666666666666667"/>
+      <Point X="2220.0" Y="919.0" GraphId="e_113_i4_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2284.0" Y="912.0" GraphId="e_113_i5_0" GraphRef="n120_REACTOME_109634" RelX="-1.135135135135135" RelY="0.09090909090909091"/>
+      <Point X="2220.0" Y="919.0" GraphId="e_113_i5_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_121_REACTOME_112385">
+    <Comment Source="WikiPathways-description">High-resolution structures of free, catalytically active yeast Pol II and of an elongating form reveal that Pol II elongation complex includes features like: &lt;BR&gt; - RNA-DNA hybrid, an unwound template ahead of 3'-OH terminus of growing transcript and an exit groove at the base of the CTD, possibly for dynamic interaction of processing and transcriptional factors.&lt;BR&gt;- a cleft or channel created by Rpb1 and Rpb2 subunits to accommodate DNA template, extending to Mg2+ ion located deep in the enzyme core &lt;BR&gt; -a 50 kDa "clamp" with open confirmation in free polymerase, allowing entry of DNA strands but closed in the processive elongation phase. &lt;BR&gt; The clamp is composed of portions of Rpb1,Rpb2 and Rpb3 , five loops or "switches" that change from unfolded to well-folded structures stabilizing the elongation complex,  and a long "bridging helix" that emanates from Rpb1 subunit, crossing near the Mg2+ ion. The bridging helix is thought  to "bend" to push on the base pair at the 3'-end of RNA-DNA hybrid like a ratchet,  translocating Pol II along the DNA (Cramer et al.,2001; Gnatt et al.,2001).In addition to its dynamic biochemical potential, Pol II possess a repertoire of functions to serve as a critical platform of recruiting and coordinating the actions of a host of additional enzyme and proteins involved in various pathways.&lt;BR&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2217.0" Y="729.0" GraphId="e_121_0"/>
+      <Point X="2216.0" Y="699.0" GraphId="e_121_1"/>
+      <Point X="2216.0" Y="669.0" GraphId="e_121_2"/>
+      <Anchor Position="0.0" GraphId="e_121_a_i"/>
+      <Anchor Position="0.5001388117819371" GraphId="e_121_a_p"/>
+      <Anchor Position="1.0" GraphId="e_121_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_121_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2218.0" Y="763.0" GraphId="e_121_i0_0" GraphRef="n118_REACTOME_112433" RelX="-0.016666666666666666" RelY="-1.2727272727272727"/>
+      <Point X="2217.0" Y="729.0" GraphId="e_121_i0_1" GraphRef="e_121_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_121_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2141.0" Y="774.0" GraphId="e_121_i1_0" GraphRef="n129_REACTOME_30595" RelX="1.15" RelY="-0.8"/>
+      <Point X="2217.0" Y="729.0" GraphId="e_121_i1_1" GraphRef="e_121_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_121_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2216.0" Y="647.0" GraphId="e_121_o0_0" ArrowHead="Arrow" GraphRef="n122_REACTOME_113719" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="2216.0" Y="669.0" GraphId="e_121_o0_1" GraphRef="e_121_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_121_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2304.0" Y="897.0" GraphId="e_121_o1_0" ArrowHead="Arrow" GraphRef="n120_REACTOME_109634" RelX="-0.05405405405405406" RelY="-1.2727272727272727"/>
+      <Point X="2304.0" Y="723.0" GraphId="e_121_o1_1"/>
+      <Point X="2216.0" Y="669.0" GraphId="e_121_o1_2" GraphRef="e_121_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_REACTOME_113412">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Processive elongation complex', and 1 molecule of 'NTP' are present. At the end of this reaction, 1 molecule of 'Elongation complex prior to separation', and 1 molecule of 'NTP' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2217.0" Y="580.0" GraphId="e_124_0"/>
+      <Point X="2217.0" Y="558.0" GraphId="e_124_1"/>
+      <Point X="2214.0" Y="528.0" GraphId="e_124_2"/>
+      <Anchor Position="0.0" GraphId="e_124_a_i"/>
+      <Anchor Position="0.4218630376328912" GraphId="e_124_a_p"/>
+      <Anchor Position="1.0" GraphId="e_124_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2216.0" Y="605.0" GraphId="e_124_i0_0" GraphRef="n122_REACTOME_113719" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="2217.0" Y="580.0" GraphId="e_124_i0_1" GraphRef="e_124_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2168.0" Y="583.0" GraphId="e_124_i1_0" GraphRef="n131_REACTOME_30595" RelX="1.15" RelY="-0.13333333333333333"/>
+      <Point X="2217.0" Y="580.0" GraphId="e_124_i1_1" GraphRef="e_124_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2212.0" Y="472.0" GraphId="e_124_o0_0" ArrowHead="Arrow" GraphRef="n125_REACTOME_113724" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="2214.0" Y="528.0" GraphId="e_124_o0_1" GraphRef="e_124_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2272.0" Y="506.0" GraphId="e_124_o1_0" ArrowHead="Arrow" GraphRef="n133_REACTOME_30595" RelX="-1.15" RelY="0.4666666666666667"/>
+      <Point X="2214.0" Y="528.0" GraphId="e_124_o1_1" GraphRef="e_124_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_REACTOME_112396">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Elongation complex prior to separation' is present. At the end of this reaction, 1 molecule of 'Elongation complex with separated and uncleaved transcript' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2211.0" Y="430.0" GraphId="e_134_0" GraphRef="n125_REACTOME_113724" RelX="-0.016129032258064516" RelY="-1.1666666666666667"/>
+      <Point X="2209.0" Y="395.0" GraphId="e_134_1"/>
+      <Point X="2207.0" Y="337.0" GraphId="e_134_2" GraphRef="n135_REACTOME_113726" RelX="0.0" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.37658723274064215" GraphId="e_134_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_REACTOME_72180">
+    <Comment Source="WikiPathways-description">Endonucleolytic cleavage separates the pre-mRNA into an upstream fragment destined to become the mature mRNA, and a downstream fragment that is rapidly degraded. Cleavage depends on two signals in the RNA, a highly conserved hexanucleotide, AAUAAA, 10 to 30 nucleotides upstream of the cleavage site, and a poorly conserved GU- or U-rich downstream element.  Additional sequences, often upstream of AAUAAA, can enhance the efficiency of the reaction.  Cleavage occurs most often after a CA dinucleotide. A single gene can have more than one 3' processing site.&lt;p&gt;Cleavage is preceded by the assembly of a large processing complex, the composition of which is poorly defined.  ATP, but not its hydrolysis, is required for assembly.  Cleavage at the 3'-end of mRNAs depends on a number of protein factors. CPSF, a heterotetramer, binds specifically to the AAUAAA sequence. The heterotrimer CstF binds the downstream element. CF I, which appears to be composed of two subunits, one of several related larger polypeptides and a common smaller one, also binds RNA, but with unknown specificity. RNA recognition by these proteins is cooperative. Cleavage also requires CF II, composed of at least two subunits, and poly(A) polymerase, the enzyme synthesizing the poly(A) tail in the second step of the reaction. The polypeptide catalyzing the hydrolysis of the phosphodiester bond remains to be identified.&lt;p&gt;Cleavage produces a 3'-OH on the upstream fragment and a 5'-phosphate on the downstream fragment. At some unknown point after cleavage, the downstream RNA fragment, CstF, CF I and CF II are thought to be released, whereas CPSF and poly(A) polymerase remain to carry out polyadenylation.</Comment>
+    <BiopaxRef>lit_72190</BiopaxRef>
+    <BiopaxRef>lit_72196</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2535.0" Y="332.0" GraphId="e_137_0" GraphRef="n138_REACTOME_72157" RelX="1.0588235294117647" RelY="-0.05555555555555555"/>
+      <Point X="2584.0" Y="332.0" GraphId="e_137_1"/>
+      <Point X="2609.0" Y="332.0" GraphId="e_137_2"/>
+      <Anchor Position="0.6621621621621622" GraphId="e_137_a_p"/>
+      <Anchor Position="1.0" GraphId="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2596.0" Y="370.0" GraphId="e_137_o0_0" ArrowHead="Arrow" GraphRef="n139_REACTOME_72006" RelX="0.1875" RelY="-1.2727272727272727"/>
+      <Point X="2609.0" Y="332.0" GraphId="e_137_o0_1" GraphRef="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2632.0" Y="374.0" GraphId="e_137_o1_0" ArrowHead="Arrow" GraphRef="n140_REACTOME_72020" RelX="-0.375" RelY="-1.2727272727272727"/>
+      <Point X="2609.0" Y="332.0" GraphId="e_137_o1_1" GraphRef="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2709.0" Y="326.0" GraphId="e_137_o2_0" ArrowHead="Arrow" GraphRef="n141_REACTOME_72177" RelX="-1.0420168067226891" RelY="0.08"/>
+      <Point X="2609.0" Y="332.0" GraphId="e_137_o2_1" GraphRef="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2678.0" Y="376.0" GraphId="e_137_o3_0" ArrowHead="Arrow" GraphRef="n142_REACTOME_72015" RelX="-1.1724137931034482" RelY="-0.9090909090909091"/>
+      <Point X="2609.0" Y="332.0" GraphId="e_137_o3_1" GraphRef="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2582.0" Y="274.0" GraphId="e_137_c__0_0" GraphRef="n143_REACTOME_72075" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="2584.0" Y="332.0" GraphId="e_137_c__0_1" GraphRef="e_137_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_144_REACTOME_77592">
+    <Comment Source="WikiPathways-description">The polypeptide catalyzing the hydrolysis of the phosphodiester bond remains to be identified. Cleavage produces a 3'-OH on the upstream fragment and a 5'-phosphate on the downstream fragment. At some unknown point after cleavage, the downstream fragment, CstF, CF I and CF II are thought to be released, whereas CPSF and poly(A) polymerase remain to carry out polyadenylation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2551.0" Y="450.0" GraphId="e_144_0" GraphRef="n145_REACTOME_112162" RelX="1.044776119402985" RelY="0.05555555555555555"/>
+      <Point X="2586.0" Y="451.0" GraphId="e_144_1"/>
+      <Point X="2618.0" Y="450.0" GraphId="e_144_2"/>
+      <Anchor Position="0.522368088229935" GraphId="e_144_a_p"/>
+      <Anchor Position="1.0" GraphId="e_144_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_144_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2597.0" Y="398.0" GraphId="e_144_o0_0" ArrowHead="Arrow" GraphRef="n139_REACTOME_72006" RelX="0.25" RelY="1.2727272727272727"/>
+      <Point X="2618.0" Y="450.0" GraphId="e_144_o0_1" GraphRef="e_144_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_144_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2634.0" Y="402.0" GraphId="e_144_o1_0" ArrowHead="Arrow" GraphRef="n140_REACTOME_72020" RelX="-0.25" RelY="1.2727272727272727"/>
+      <Point X="2618.0" Y="450.0" GraphId="e_144_o1_1" GraphRef="e_144_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_144_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2681.0" Y="400.0" GraphId="e_144_o2_0" ArrowHead="Arrow" GraphRef="n142_REACTOME_72015" RelX="-0.9655172413793104" RelY="1.2727272727272727"/>
+      <Point X="2618.0" Y="450.0" GraphId="e_144_o2_1" GraphRef="e_144_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_144_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2701.0" Y="449.0" GraphId="e_144_o3_0" ArrowHead="Arrow" GraphRef="n146_REACTOME_112165" RelX="-1.0467289719626167" RelY="0.0"/>
+      <Point X="2618.0" Y="450.0" GraphId="e_144_o3_1" GraphRef="e_144_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_144_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2682.0" Y="489.0" GraphId="e_144_o4_0" ArrowHead="Arrow" GraphRef="n147_REACTOME_112164" RelX="-0.6446280991735537" RelY="-1.12"/>
+      <Point X="2618.0" Y="450.0" GraphId="e_144_o4_1" GraphRef="e_144_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_148_REACTOME_77586">
+    <Comment Source="WikiPathways-description">Processing is initiated once the SLBP (bound to the stem loop) and the U7 snRNP (bound to the HDE) are both loaded onto the pre-mRNA. The pre-mRNA HDE makes base-pairing contacts with the 5Ã¢â¬Â² end of U7 snRNA. Binding of the U7 snRNP to the pre-mRNA is stabilized by interactions between a U7 snRNP protein, hZFP100 and SLBP. It should be noted that there must be other trans-acting factors, including the factor that catalyzes the cleavage reaction, which have yet to be defined. The cleavage occurs in the presence of EDTA as does the cleavage reaction in polyadenylation, it is likely that this reaction is catalyzed by a protein. There may well be additional proteins associated with the U7 snRNP, and since in some conditions in vitro processing occurs in the absence of SLBP, it is possible that all the other factors required for processing are associated with the active form of the U7 snRNP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2512.0" Y="556.0" GraphId="e_148_0" GraphRef="n149_REACTOME_110766" RelX="0.08196721311475409" RelY="1.09375"/>
+      <Point X="2517.0" Y="577.0" GraphId="e_148_1"/>
+      <Point X="2517.0" Y="606.0" GraphId="e_148_2"/>
+      <Anchor Position="0.4267305632073712" GraphId="e_148_a_p"/>
+      <Anchor Position="1.0" GraphId="e_148_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_148_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2578.0" Y="605.0" GraphId="e_148_o0_0" ArrowHead="Arrow" GraphRef="n150_REACTOME_111682" RelX="-1.04" RelY="0.0"/>
+      <Point X="2517.0" Y="606.0" GraphId="e_148_o0_1" GraphRef="e_148_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_148_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2515.0" Y="640.0" GraphId="e_148_o1_0" ArrowHead="Arrow" GraphRef="n151_REACTOME_110765" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="2517.0" Y="606.0" GraphId="e_148_o1_1" GraphRef="e_148_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_REACTOME_111437">
+    <Comment Source="WikiPathways-description">Processing is initiated once the U7 snRNP is loaded onto the pre-mRNA. The pre-mRNA HDE makes base-pairing contacts with the 5Ã¢â¬Â² end of U7 snRNA. Binding of the U7 snRNP to the pre-mRNA is stabilized by interactions between a U7 snRNP protein, hZFP100 and other trans-acting factors, including the factor that catalyzes the cleavage reaction, which have yet to be defined. The cleavage occurs in the presence of EDTA as does the cleavage reaction in polyadenylation, it is likely that this reaction is catalyzed by a protein. There may well be additional proteins associated with the U7 snRNP, since the in vitro processing occurs in the absence of SLBP, it is possible that all the other factors required for processing are associated with the active form of the U7 snRNP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2668.0" Y="713.0" GraphId="e_152_0" GraphRef="n153_REACTOME_112045" RelX="-1.0491803278688525" RelY="0.0"/>
+      <Point X="2614.0" Y="713.0" GraphId="e_152_1"/>
+      <Point X="2580.0" Y="710.0" GraphId="e_152_2"/>
+      <Anchor Position="0.6127166179813768" GraphId="e_152_a_p"/>
+      <Anchor Position="1.0" GraphId="e_152_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2540.0" Y="725.0" GraphId="e_152_o0_0" ArrowHead="Arrow" GraphRef="n154_REACTOME_156959" RelX="1.0491803278688525" RelY="-0.6875"/>
+      <Point X="2580.0" Y="710.0" GraphId="e_152_o0_1" GraphRef="e_152_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2538.0" Y="682.0" GraphId="e_152_o1_0" ArrowHead="Arrow" GraphRef="n151_REACTOME_110765" RelX="0.39316239316239315" RelY="1.1666666666666667"/>
+      <Point X="2580.0" Y="710.0" GraphId="e_152_o1_1" GraphRef="e_152_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_REACTOME_73946">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pol II transcription complex' is present. At the end of this reaction, 1 molecule of 'TFIIA', 1 molecule of 'TFIIH', 1 molecule of 'TFIIE', 1 molecule of 'TFIID', 1 molecule of 'TFIIB', 1 molecule of 'RNA Polymerase II (unphosphorylated):TFIIF complex', and 1 molecule of 'template DNA with first transcript dinucleotide, opened to +8 position' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_110396</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1820.0" Y="762.0" GraphId="e_155_0" GraphRef="n34_REACTOME_109878" RelX="1.0517241379310345" RelY="0.0"/>
+      <Point X="1954.0" Y="762.0" GraphId="e_155_1"/>
+      <Point X="1954.0" Y="374.0" GraphId="e_155_2"/>
+      <Point X="1840.0" Y="375.0" GraphId="e_155_3"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_4"/>
+      <Anchor Position="0.43620094770015083" GraphId="e_155_a_p"/>
+      <Anchor Position="1.0" GraphId="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1137.0" Y="438.0" GraphId="e_155_o0_0" ArrowHead="Arrow" GraphRef="n16_REACTOME_109634" RelX="-1.135135135135135" RelY="-1.0"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_o0_1" GraphRef="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="859.0" Y="593.0" GraphId="e_155_o1_0" ArrowHead="Arrow" GraphRef="n10_REACTOME_71307" RelX="0.27419354838709675" RelY="-1.12"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_o1_1" GraphRef="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1101.0" Y="313.0" GraphId="e_155_o2_0" ArrowHead="Arrow" GraphRef="n156_REACTOME_109877" RelX="-0.7164179104477612" RelY="1.09375"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_o2_1" GraphRef="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="903.0" Y="443.0" GraphId="e_155_o3_0" ArrowHead="Arrow" GraphRef="n13_REACTOME_109633" RelX="0.8571428571428571" RelY="-1.2727272727272727"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_o3_1" GraphRef="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="240.0" Y="435.0" GraphId="e_155_o4_0" ArrowHead="Arrow" GraphRef="n3_REACTOME_109626" RelX="1.1891891891891893" RelY="-0.18181818181818182"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_o4_1" GraphRef="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="381.0" Y="462.0" GraphId="e_155_o5_0" ArrowHead="Arrow" GraphRef="n7_REACTOME_109629" RelX="1.1666666666666667" RelY="-0.2727272727272727"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_o5_1" GraphRef="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_155_o6">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="575.0" Y="463.0" GraphId="e_155_o6_0" ArrowHead="Arrow" GraphRef="n6_REACTOME_65888" RelX="1.2" RelY="-0.36363636363636365"/>
+      <Point X="1018.0" Y="366.0" GraphId="e_155_o6_1" GraphRef="e_155_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_161_REACTOME_75891">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pol II transcription complex containing 4-9 nucleotide long transcript' is present. At the end of this reaction, 1 molecule of 'template DNA:4-9 nucleotide transcript hybrid', 1 molecule of 'TFIIH', 1 molecule of 'TFIIE', and 1 molecule of 'RNA Polymerase II (unphosphorylated):TFIIF complex' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_110396</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="795.0" Y="313.0" GraphId="e_161_0" GraphRef="n162_REACTOME_75890" RelX="1.0476190476190477" RelY="0.0"/>
+      <Point X="835.0" Y="313.0" GraphId="e_161_1"/>
+      <Point X="833.0" Y="358.0" GraphId="e_161_2"/>
+      <Anchor Position="0.4703424259413363" GraphId="e_161_a_p"/>
+      <Anchor Position="1.0" GraphId="e_161_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_161_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1137.0" Y="443.0" GraphId="e_161_o0_0" ArrowHead="Arrow" GraphRef="n16_REACTOME_109634" RelX="-1.135135135135135" RelY="-0.5454545454545454"/>
+      <Point X="833.0" Y="358.0" GraphId="e_161_o0_1" GraphRef="e_161_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_161_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="841.0" Y="593.0" GraphId="e_161_o1_0" ArrowHead="Arrow" GraphRef="n10_REACTOME_71307" RelX="-0.016129032258064516" RelY="-1.12"/>
+      <Point X="833.0" Y="358.0" GraphId="e_161_o1_1" GraphRef="e_161_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_161_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="881.0" Y="443.0" GraphId="e_161_o2_0" ArrowHead="Arrow" GraphRef="n13_REACTOME_109633" RelX="-0.4" RelY="-1.2727272727272727"/>
+      <Point X="833.0" Y="358.0" GraphId="e_161_o2_1" GraphRef="e_161_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_161_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="948.0" Y="259.0" GraphId="e_161_o3_0" ArrowHead="Arrow" GraphRef="n163_REACTOME_75897" RelX="-0.4461538461538462" RelY="1.12"/>
+      <Point X="833.0" Y="358.0" GraphId="e_161_o3_1" GraphRef="e_161_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_REACTOME_75856">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Pol II Promoter Escape Complex' is present. At the end of this reaction, 1 molecule of 'TFIIA', 1 molecule of 'TFIIH', 1 molecule of 'TFIIE', 1 molecule of 'TFIID', 1 molecule of 'TFIIB', 1 molecule of 'RNA Polymerase II (unphosphorylated):TFIIF complex', and 1 molecule of 'DNA containing Pol II promoter with transcript with 2 or 3 nucleotides' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_110396</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="501.0" Y="308.0" GraphId="e_164_0" GraphRef="n165_REACTOME_75859" RelX="1.0576923076923077" RelY="0.0"/>
+      <Point X="551.0" Y="308.0" GraphId="e_164_1"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_2"/>
+      <Anchor Position="0.5253346413609946" GraphId="e_164_a_p"/>
+      <Anchor Position="1.0" GraphId="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1137.0" Y="446.0" GraphId="e_164_o0_0" ArrowHead="Arrow" GraphRef="n16_REACTOME_109634" RelX="-1.135135135135135" RelY="-0.2727272727272727"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_o0_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="777.0" Y="605.0" GraphId="e_164_o1_0" ArrowHead="Arrow" GraphRef="n10_REACTOME_71307" RelX="-1.0483870967741935" RelY="-0.64"/>
+      <Point X="714.0" Y="590.0" GraphId="e_164_o1_1"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_o1_2" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="868.0" Y="451.0" GraphId="e_164_o2_0" ArrowHead="Arrow" GraphRef="n13_REACTOME_109633" RelX="-1.1428571428571428" RelY="-0.5454545454545454"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_o2_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="691.0" Y="231.0" GraphId="e_164_o3_0" ArrowHead="Arrow" GraphRef="n166_REACTOME_110068" RelX="-0.5223880597014925" RelY="1.09375"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_o3_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="240.0" Y="432.0" GraphId="e_164_o4_0" ArrowHead="Arrow" GraphRef="n3_REACTOME_109626" RelX="1.1891891891891893" RelY="-0.45454545454545453"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_o4_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="381.0" Y="454.0" GraphId="e_164_o5_0" ArrowHead="Arrow" GraphRef="n7_REACTOME_109629" RelX="1.1666666666666667" RelY="-1.0"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_o5_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o6">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="554.0" Y="453.0" GraphId="e_164_o6_0" ArrowHead="Arrow" GraphRef="n6_REACTOME_65888" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="555.0" Y="353.0" GraphId="e_164_o6_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_REACTOME_112434">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'SUPT5H protein', and 1 molecule of 'SPT4H1 protein' are present. At the end of this reaction, 1 molecule of 'DSIF complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1279.0" Y="1198.0" GraphId="e_167_0"/>
+      <Point X="1391.0" Y="1198.0" GraphId="e_167_1"/>
+      <Point X="1433.0" Y="1199.0" GraphId="e_167_2" GraphRef="n100_REACTOME_112420" RelX="-1.0588235294117647" RelY="-0.09090909090909091" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_167_a_i"/>
+      <Anchor Position="0.7272165187473421" GraphId="e_167_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1276.0" Y="1179.0" GraphId="e_167_i0_0" GraphRef="n168_REACTOME_64905" RelX="0.020202020202020204" RelY="1.2727272727272727"/>
+      <Point X="1279.0" Y="1198.0" GraphId="e_167_i0_1" GraphRef="e_167_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="945.0" Y="1200.0" GraphId="e_167_i1_0" GraphRef="n92_REACTOME_350776" RelX="1.0769230769230769" RelY="-0.09090909090909091"/>
+      <Point X="1279.0" Y="1198.0" GraphId="e_167_i1_1" GraphRef="e_167_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_169_REACTOME_112435">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Elongin B protein', and 1 molecule of 'Elongin C protein' are present. At the end of this reaction, 1 molecule of 'Elongin B:C complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2651.0" Y="1032.0" GraphId="e_169_0"/>
+      <Point X="2607.0" Y="1032.0" GraphId="e_169_1"/>
+      <Point X="2577.0" Y="1033.0" GraphId="e_169_2" GraphRef="n172_REACTOME_112424" RelX="1.056" RelY="-0.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_169_a_i"/>
+      <Anchor Position="0.5944607442099326" GraphId="e_169_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_169_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2706.0" Y="1070.0" GraphId="e_169_i0_0" GraphRef="n170_REACTOME_112422" RelX="-0.2857142857142857" RelY="-1.2727272727272727"/>
+      <Point X="2651.0" Y="1032.0" GraphId="e_169_i0_1" GraphRef="e_169_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_169_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2693.0" Y="1022.0" GraphId="e_169_i1_0" GraphRef="n171_REACTOME_112423" RelX="-0.6792452830188679" RelY="1.2727272727272727"/>
+      <Point X="2651.0" Y="1032.0" GraphId="e_169_i1_1" GraphRef="e_169_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_173_REACTOME_112429">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'FACT 140 kDa subunit', and 1 molecule of 'FACT 80 kDa subunit' are present. At the end of this reaction, 1 molecule of 'FACT complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2094.0" Y="1055.0" GraphId="e_173_0"/>
+      <Point X="2094.0" Y="1032.0" GraphId="e_173_1"/>
+      <Point X="2094.0" Y="1008.0" GraphId="e_173_2" GraphRef="n114_REACTOME_112417" RelX="-0.02197802197802198" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_173_a_i"/>
+      <Anchor Position="0.48936170212765956" GraphId="e_173_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_173_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2115.0" Y="1047.0" GraphId="e_173_i0_0" GraphRef="n174_REACTOME_65105" RelX="-1.0561797752808988" RelY="0.8333333333333334"/>
+      <Point X="2094.0" Y="1055.0" GraphId="e_173_i0_1" GraphRef="e_173_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_173_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2109.0" Y="1063.0" GraphId="e_173_i1_0" GraphRef="n175_REACTOME_112415" RelX="-0.5567010309278351" RelY="-1.1666666666666667"/>
+      <Point X="2094.0" Y="1055.0" GraphId="e_173_i1_1" GraphRef="e_173_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_REACTOME_112437">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'NELF-A protein', 1 molecule of 'RD protein', 1 molecule of 'NELF-B protein', and 1 molecule of 'NELF-C/D protein' are present. At the end of this reaction, 1 molecule of 'NELF complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1867.0" Y="1178.0" GraphId="e_176_0"/>
+      <Point X="1805.0" Y="1179.0" GraphId="e_176_1"/>
+      <Point X="1744.0" Y="1179.0" GraphId="e_176_2" GraphRef="n104_REACTOME_112432" RelX="1.0786516853932584" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_176_a_i"/>
+      <Anchor Position="0.5040975524652511" GraphId="e_176_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="1211.0" GraphId="e_176_i0_0" GraphRef="n177_REACTOME_112428" RelX="-0.3963963963963964" RelY="-1.2727272727272727"/>
+      <Point X="1867.0" Y="1178.0" GraphId="e_176_i0_1" GraphRef="e_176_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1896.0" Y="1175.0" GraphId="e_176_i1_0" GraphRef="n178_REACTOME_62907" RelX="-1.0857142857142856" RelY="0.18181818181818182"/>
+      <Point X="1867.0" Y="1178.0" GraphId="e_176_i1_1" GraphRef="e_176_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1883.0" Y="1247.0" GraphId="e_176_i2_0" GraphRef="n179_REACTOME_112426" RelX="-0.0625" RelY="-1.2727272727272727"/>
+      <Point X="1867.0" Y="1178.0" GraphId="e_176_i2_1" GraphRef="e_176_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1827.0" Y="1213.0" GraphId="e_176_i3_0" GraphRef="n180_REACTOME_112427" RelX="0.23157894736842105" RelY="-1.2727272727272727"/>
+      <Point X="1867.0" Y="1178.0" GraphId="e_176_i3_1" GraphRef="e_176_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_181_REACTOME_112430">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Cdk 9 protein', 1 molecule of 'Cyclin T1', and 1 molecule of 'Cyclin T2' are present. At the end of this reaction, 1 molecule of 'P-TEFb complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1780.0" Y="1028.0" GraphId="e_181_0"/>
+      <Point X="1850.0" Y="1029.0" GraphId="e_181_1"/>
+      <Point X="1903.0" Y="1039.0" GraphId="e_181_2" GraphRef="n109_REACTOME_112431" RelX="-0.8653846153846154" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_181_a_i"/>
+      <Anchor Position="0.5648366123312148" GraphId="e_181_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_181_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1623.0" Y="961.0" GraphId="e_181_i0_0" GraphRef="n182_REACTOME_51613" RelX="0.7868852459016393" RelY="1.2727272727272727"/>
+      <Point X="1780.0" Y="1028.0" GraphId="e_181_i0_1" GraphRef="e_181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_181_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1611.0" Y="991.0" GraphId="e_181_i1_0" GraphRef="n183_REACTOME_51611" RelX="1.1147540983606556" RelY="0.5454545454545454"/>
+      <Point X="1780.0" Y="1028.0" GraphId="e_181_i1_1" GraphRef="e_181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_181_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1646.0" Y="1021.0" GraphId="e_181_i2_0" GraphRef="n184_REACTOME_51801" RelX="1.0681818181818181" RelY="0.18181818181818182"/>
+      <Point X="1780.0" Y="1028.0" GraphId="e_181_i2_1" GraphRef="e_181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_REACTOME_112436">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Elongin A1 protein', and 1 molecule of 'Elongin B:C complex' are present. At the end of this reaction, 1 molecule of 'Elongin Complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2409.0" Y="1070.0" GraphId="e_185_0"/>
+      <Point X="2355.0" Y="1070.0" GraphId="e_185_1"/>
+      <Point X="2302.0" Y="1014.0" GraphId="e_185_2" GraphRef="n116_REACTOME_112425" RelX="0.17307692307692307" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_185_a_i"/>
+      <Anchor Position="0.41188729272349517" GraphId="e_185_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2482.0" Y="1102.0" GraphId="e_185_i0_0" GraphRef="n186_REACTOME_112421" RelX="-0.42105263157894735" RelY="-1.2727272727272727"/>
+      <Point X="2409.0" Y="1070.0" GraphId="e_185_i0_1" GraphRef="e_185_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2478.0" Y="1050.0" GraphId="e_185_i1_0" GraphRef="n172_REACTOME_112424" RelX="-0.528" RelY="1.2727272727272727"/>
+      <Point X="2409.0" Y="1070.0" GraphId="e_185_i1_1" GraphRef="e_185_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_187_REACTOME_112392">
+    <Comment Source="WikiPathways-description">Recovery from pausing occurs spontaneously after a variable length of time as the enzyme spontaneously slides forward again. This renders the transcript's 3'-OH terminus realigned with the catalytic Mg2+ site of the enzyme. TFIIS is capable of excising the nascent transcript at 2 or 3 nucleotides upstream of the transcript's 3'-end to reinitiate processive elongation (reviewed by Shilatifard et al., 2003).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2072.0" Y="268.0" GraphId="e_187_0" GraphRef="n188_REACTOME_113720" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="2076.0" Y="625.0" GraphId="e_187_1"/>
+      <Point X="2153.0" Y="625.0" GraphId="e_187_2" GraphRef="n122_REACTOME_113719" RelX="-1.05" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.8225898051931544" GraphId="e_187_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_189_REACTOME_113411">
+    <Comment Source="WikiPathways-description">Pol II pausing is believed to result from reversible backtracking of the Pol II enzyme complex by ~2 to 4 nucleotides. This leads to misaligned 3'-OH terminus that is unable to be an acceptor for the incoming NTPs in synthesis of next  phosphodiester bond (reviewed by Shilatifard et al., 2003).</Comment>
+    <BiopaxRef>lit_113793</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2279.0" Y="625.0" GraphId="e_189_0" GraphRef="n122_REACTOME_113719" RelX="1.05" RelY="-0.05555555555555555"/>
+      <Point X="2348.0" Y="624.0" GraphId="e_189_1"/>
+      <Point X="2348.0" Y="246.0" GraphId="e_189_2"/>
+      <Point X="2135.0" Y="246.0" GraphId="e_189_3" GraphRef="n188_REACTOME_113720" RelX="1.05" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.10455528543807333" GraphId="e_189_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_190_REACTOME_113414">
+    <Comment Source="WikiPathways-description">RNA Pol II arrest is believed to be a result of irreversible backsliding of the enzyme by ~7-14 nucleotides. It is suggested that, arrest leads to extrusion of displaced transcripts  3'-end through the small pore near the Mg2+ ion. Pol II arrest may lead to abortive termination of elongation due to irreversible trapping of the 3'-end of the displaced transcript in the pore (reviewed by Shilatifard et al., 2003).</Comment>
+    <BiopaxRef>lit_113793</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2279.0" Y="636.0" GraphId="e_190_0" GraphRef="n122_REACTOME_113719" RelX="1.05" RelY="0.5555555555555556"/>
+      <Point X="2392.0" Y="658.0" GraphId="e_190_1"/>
+      <Point X="2392.0" Y="219.0" GraphId="e_190_2" GraphRef="n191_REACTOME_113721" RelX="-0.015748031496062992" RelY="1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.2077552277871448" GraphId="e_190_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_196_REACTOME_113413">
+    <Comment Source="WikiPathways-description">TFIIS reactivates arrested RNA Pol II directly interacting with the enzyme resulting in endonucleolytic excision of nascent transcript ~7-14 nucleotides upstream of the 3' end. This reaction is catalyzed by the catalytic site and results in the generation of a new 3'-OH terminus that could be used for re-extension from the correctly base paired site (reviewed by Shilatifard et al., 2003).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2327.0" Y="197.0" GraphId="e_196_0" GraphRef="n191_REACTOME_113721" RelX="-1.0393700787401574" RelY="-0.05555555555555555"/>
+      <Point X="1998.0" Y="196.0" GraphId="e_196_1"/>
+      <Point X="1998.0" Y="650.0" GraphId="e_196_2"/>
+      <Point X="2153.0" Y="632.0" GraphId="e_196_3" GraphRef="n122_REACTOME_113719" RelX="-1.05" RelY="0.3333333333333333" ArrowHead="Arrow"/>
+      <Anchor Position="0.8338290887099765" GraphId="e_196_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_459_REACTOME_113409">
+    <Comment Source="WikiPathways-description">In the early elongation phase, shorter transcripts typically of ~30 nt in length are generated due to random termination of elongating nascent transcripts. This abortive cessation of elongation has been observed mainly in the presence of DSIF-NELF bound to Pol II complex.  (Reviewed in Conaway et al.,2000; Shilatifard et al., 2003 ).</Comment>
+    <BiopaxRef>lit_113793</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1982.0" Y="1156.0" GraphId="e_459_0" GraphRef="n105_REACTOME_113408" RelX="0.7166666666666667" RelY="1.1666666666666667"/>
+      <Point X="2030.0" Y="1173.0" GraphId="e_459_1"/>
+      <Point X="2096.0" Y="1242.0" GraphId="e_459_2" GraphRef="n460_REACTOME_113410" RelX="-0.2833333333333333" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.3478138401155727" GraphId="e_459_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_469_REACTOME_112395">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Arrested processive elongation complex' is present. At the end of this reaction, 1 molecule of 'Aborted elongation complex after arrest' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_113793</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2460.0" Y="197.0" GraphId="e_469_0" GraphRef="n191_REACTOME_113721" RelX="1.0551181102362204" RelY="-0.05555555555555555"/>
+      <Point X="2504.0" Y="197.0" GraphId="e_469_1"/>
+      <Point X="2546.0" Y="197.0" GraphId="e_469_2" GraphRef="n470_REACTOME_113722" RelX="-1.0476190476190477" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.5116279069767442" GraphId="e_469_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_REACTOME_113429">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Processive elongation complex' is present. At the end of this reaction, 1 molecule of 'DSIF complex', 1 molecule of 'FACT complex', 1 molecule of 'RNA Polymerase II holoenzyme complex (hyperphosphorylated)', 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid', 1 molecule of 'Elongin Complex', 1 molecule of 'FCP1P protein', 1 molecule of 'P-TEFb complex', 1 molecule of 'NELF complex', 1 molecule of 'RNA polymerase II elongation factor ELL', 1 molecule of 'NTP', 1 molecule of 'TFIIS protein', and 1 molecule of 'TFIIF' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2196.0" Y="647.0" GraphId="e_548_0" GraphRef="n122_REACTOME_113719" RelX="-0.3333333333333333" RelY="1.1666666666666667"/>
+      <Point X="2083.0" Y="749.0" GraphId="e_548_1"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_2"/>
+      <Anchor Position="0.4687350714090047" GraphId="e_548_a_p"/>
+      <Anchor Position="1.0" GraphId="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2083.0" Y="980.0" GraphId="e_548_o0_0" ArrowHead="Arrow" GraphRef="n114_REACTOME_112417" RelX="-0.26373626373626374" RelY="-1.2727272727272727"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o0_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1695.0" Y="1165.0" GraphId="e_548_o1_0" ArrowHead="Arrow" GraphRef="n104_REACTOME_112432" RelX="-0.02247191011235955" RelY="-1.2727272727272727"/>
+      <Point X="1694.0" Y="916.0" GraphId="e_548_o1_1"/>
+      <Point X="1834.0" Y="916.0" GraphId="e_548_o1_2"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o1_3" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2270.0" Y="986.0" GraphId="e_548_o2_0" ArrowHead="Arrow" GraphRef="n116_REACTOME_112425" RelX="-0.4423076923076923" RelY="-1.2727272727272727"/>
+      <Point X="2124.0" Y="918.0" GraphId="e_548_o2_1"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o2_2" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1914.0" Y="856.0" GraphId="e_548_o3_0" ArrowHead="Arrow" GraphRef="n549_REACTOME_109909" RelX="1.044776119402985" RelY="0.59375"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o3_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1895.0" Y="933.0" GraphId="e_548_o4_0" ArrowHead="Arrow" GraphRef="n550_REACTOME_110291" RelX="0.43859649122807015" RelY="-1.12"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o4_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1478.0" Y="1186.0" GraphId="e_548_o5_0" ArrowHead="Arrow" GraphRef="n100_REACTOME_112420" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1478.0" Y="906.0" GraphId="e_548_o5_1"/>
+      <Point X="1836.0" Y="906.0" GraphId="e_548_o5_2"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o5_3" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o6">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2066.0" Y="873.0" GraphId="e_548_o6_0" ArrowHead="Arrow" GraphRef="n117_REACTOME_54257" RelX="-1.0393700787401574" RelY="-0.1111111111111111"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o6_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o7">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2076.0" Y="834.0" GraphId="e_548_o7_0" ArrowHead="Arrow" GraphRef="n551_REACTOME_109631" RelX="-1.1764705882352942" RelY="0.45454545454545453"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o7_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o8">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1948.0" Y="1039.0" GraphId="e_548_o8_0" ArrowHead="Arrow" GraphRef="n109_REACTOME_112431" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o8_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o9">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1278.0" Y="967.0" GraphId="e_548_o9_0" ArrowHead="Arrow" GraphRef="n96_REACTOME_113416" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1278.0" Y="896.0" GraphId="e_548_o9_1"/>
+      <Point X="1836.0" Y="896.0" GraphId="e_548_o9_2"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o9_3" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o10">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2080.0" Y="932.0" GraphId="e_548_o10_0" ArrowHead="Arrow" GraphRef="n115_REACTOME_65748" RelX="-0.5316455696202531" RelY="-1.2727272727272727"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o10_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_548_o11">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2095.0" Y="796.0" GraphId="e_548_o11_0" ArrowHead="Arrow" GraphRef="n129_REACTOME_30595" RelX="-1.15" RelY="0.6666666666666666"/>
+      <Point X="1961.0" Y="871.0" GraphId="e_548_o11_1" GraphRef="e_548_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_591_REACTOME_75862">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pol II open pre-initiation complex' is present. At the end of this reaction, 1 molecule of 'pol II closed pre-initiation complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_110395</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1495.0" Y="545.0" GraphId="e_591_0" GraphRef="n24_REACTOME_109876" RelX="-0.01834862385321101" RelY="1.1666666666666667"/>
+      <Point X="1494.0" Y="602.0" GraphId="e_591_1"/>
+      <Point X="1372.0" Y="602.0" GraphId="e_591_2"/>
+      <Point X="1252.0" Y="602.0" GraphId="e_591_3"/>
+      <Point X="1252.0" Y="530.0" GraphId="e_591_4" GraphRef="n17_REACTOME_109635" RelX="-0.01834862385321101" RelY="1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.48249201939202196" GraphId="e_591_a_p"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_19" GroupRef="group_comp_19" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="155.0" CenterY="1254.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_19" GroupRef="group_comp_19">
+    <Graphics Color="000000" CenterX="1463.0" CenterY="710.0" Width="2858.0" Height="1180.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_113798" rdf:id="lit_113798">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9450929</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DSIF, a novel transcription elongation factor that regulates RNA polymerase II processivity, is composed of human Spt4 and Spt5 homologs.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wada, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takagi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaguchi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdous, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Imai, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirose, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sugimoto, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yano, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hartzog, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Winston, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Buratowski, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handa, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 12:343-56</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_170758" rdf:id="lit_170758">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10199401</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NELF, a multisubunit complex containing RD, cooperates with DSIF to repress RNA polymerase II elongation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaguchi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takagi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wada, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yano, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furuya, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sugimoto, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hasegawa, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handa, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 97:41-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111680" rdf:id="lit_111680">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11782445</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A novel zinc finger protein is associated with U7 snRNP and interacts with the stem-loop binding protein in the histone pre-mRNP to stimulate 3'-end processing</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dominski, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Erkmann, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanchez, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marzluff, WF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 16:58-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110385" rdf:id="lit_110385">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8946909</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The general transcription factors of RNA polymerase II.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Orphanides, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lagrange, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reinberg, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 10:2657-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110386" rdf:id="lit_110386">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8330735</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBP, a universal eukaryotic transcription factor?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hernandez, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 7:1291-308</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111269" rdf:id="lit_111269">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1310361</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Polymerase II promoter activation: closed complex formation and ATP-driven start site opening.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carey, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gralla, JD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 255:450-3</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110387" rdf:id="lit_110387">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9405375</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Three transitions in the RNA polymerase II transcription complex during initiation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holstege, FC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fiedler, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Timmers, HT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 16:7468-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110388" rdf:id="lit_110388">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8156590</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcription factors IIE and IIH and ATP hydrolysis direct promoter clearance by RNA polymerase II.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodrich, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tjian, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 77:145-56</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111270" rdf:id="lit_111270">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8490964</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DNA topology and a minimal set of basal factors for transcription by RNA polymerase II.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parvin, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharp, PA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 73:533-40</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111271" rdf:id="lit_111271">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10723029</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peeling by binding or twisting by cranking: models for promoter opening and transcription initiation by RNA polymerase II.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fiedler, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marc Timmers, HT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bioessays 22:316-26</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111272" rdf:id="lit_111272">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10024882</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reconstitution of the transcription factor TFIIH: assignment of functions for the three enzymatic subunits, XPB, XPD, and cdk7</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tirode, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Busso, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coin, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Egly, JM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 3:87-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111273" rdf:id="lit_111273">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7151173</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1983</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanism of RNA polymerase II--specific initiation of transcription in vitro: ATP requirement and uncapped runoff transcripts.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bunick, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zandomeni, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ackerman, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinmann, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 29:877-86</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111262" rdf:id="lit_111262">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11784853</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Translocation after synthesis of a four-nucleotide RNA commits RNA polymerase II to promoter escape.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kugel, JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodrich, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 22:762-73</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111275" rdf:id="lit_111275">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11739720</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strong natural pausing by RNA polymerase II within 10 bases of transcription start may result in repeated slippage and reextension of the nascent RNA.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pal, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luse, DS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 22:30-40</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110389" rdf:id="lit_110389">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7601352</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Recycling of the general transcription factors during RNA polymerase II transcription.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zawel, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumar, KP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reinberg, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 9:1479-90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111276" rdf:id="lit_111276">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9256425</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A role for TFIIH in controlling the activity of early RNA polymerase II elongation complexes.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dvir, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 94:9006-10</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111265" rdf:id="lit_111265">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11433015</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Analysis of the open region of RNA polymerase II transcription complexes in the early phase of elongation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fiedler, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Timmers, HT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 29:2706-14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111266" rdf:id="lit_111266">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11486021</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Promoter clearance by RNA polymerase II is an extended, multistep process strongly affected by sequence.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pal, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McKean, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luse, DS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 21:5815-25</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111267" rdf:id="lit_111267">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9353262</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Promoter escape by RNA polymerase II. Formation of an escape-competent transcriptional intermediate is a prerequisite for exit of polymerase from the promoter.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dvir, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tan, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, RC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:28175-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72190" rdf:id="lit_72190">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10371034</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3'-End processing of pre-mRNA in eukaryotes.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wahle, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¼egsegger, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEMS Microbiol Rev 23:277-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72196" rdf:id="lit_72196">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10357856</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Formation of mRNA 3' ends in eukaryotes: mechanism, regulation, and interrelationships with other steps in mRNA synthesis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hyman, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moore, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Microbiol Mol Biol Rev 63:405-45</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110396" rdf:id="lit_110396">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1939271</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abortive initiation is increased only for the weakest members of a set of down mutants of the adenovirus 2 major late promoter.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jacob, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luse, SW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luse, DS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 266:22537-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_113793" rdf:id="lit_113793">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12676794</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The RNA polymerase II elongation complex.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shilatifard, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 72:693-715</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110395" rdf:id="lit_110395">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2449431</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATP activates transcription initiation from promoters by RNA polymerase II in a reversible step prior to RNA synthesis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conaway, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 263:2962-8</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>RNA Polymerase II transcription pathway</bp:TERM><bp:ID>PW:0000127</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

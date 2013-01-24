@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Electron Transport Chain" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="WikiPathways-description">An electron transport chain(ETC) couples a chemical reaction between an electron donor (such as NADH) and an electron acceptor (such as O2) to the transfer of H+ ions across a membrane, through a set of mediating biochemical reactions. These H+ ions are used to produce adenosine triphosphate (ATP), the main energy intermediate in living organisms, as they move back across the membrane. 
+In mitochondria, it is the conversion of oxygen to water, NADH to NAD+ and succinate to fumarate that drives the transfer of H+ ions.
+Source: Wikipedia ([[wikipedia:Electron_transport_chain]])</Comment>
+  <Graphics BoardWidth="1551.7333333333333" BoardHeight="775.8666666666667"/>
+  <DataNode TextLabel="ND2" GraphId="cf6" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ND2 | NADH dehydrogenase subunit 2"/>
+    <Graphics CenterX="163.33333333333334" CenterY="253.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4536"/>
+  </DataNode>
+  <DataNode TextLabel="ND3" GraphId="fca" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ND3 | NADH dehydrogenase subunit 3"/>
+    <Graphics CenterX="163.33333333333334" CenterY="273.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4537"/>
+  </DataNode>
+  <DataNode TextLabel="ND4" GraphId="ec9" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ND4 | NADH dehydrogenase subunit 4"/>
+    <Graphics CenterX="163.33333333333334" CenterY="293.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4538"/>
+  </DataNode>
+  <DataNode TextLabel="ND5" GraphId="d89" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ND5 | NADH dehydrogenase subunit 5"/>
+    <Graphics CenterX="163.33333333333334" CenterY="313.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4540"/>
+  </DataNode>
+  <DataNode TextLabel="ND6" GraphId="cac" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ND6 | NADH dehydrogenase subunit 6"/>
+    <Graphics CenterX="163.33333333333334" CenterY="333.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4541"/>
+  </DataNode>
+  <DataNode TextLabel="ND4L" GraphId="b21" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ND4L | NADH dehydrogenase subunit 4L"/>
+    <Graphics CenterX="163.33333333333334" CenterY="353.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4539"/>
+  </DataNode>
+  <DataNode TextLabel="COX2" GraphId="af3" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX2 | cytochrome c oxidase subunit II"/>
+    <Graphics CenterX="822.0" CenterY="253.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4513"/>
+  </DataNode>
+  <DataNode TextLabel="COX3" GraphId="e25" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX3 | cytochrome c oxidase subunit III"/>
+    <Graphics CenterX="822.0" CenterY="273.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4514"/>
+  </DataNode>
+  <DataNode TextLabel="COX4I1" GraphId="bc3" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX4I1 | cytochrome c oxidase subunit IV isofor..."/>
+    <Graphics CenterX="822.0" CenterY="293.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1327"/>
+  </DataNode>
+  <DataNode TextLabel="COX5A" GraphId="b40" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX5A | cytochrome c oxidase subunit Va"/>
+    <Graphics CenterX="822.0" CenterY="313.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9377"/>
+  </DataNode>
+  <DataNode TextLabel="COX5B" GraphId="e04" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX5B | cytochrome c oxidase subunit Vb"/>
+    <Graphics CenterX="822.0" CenterY="333.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1329"/>
+  </DataNode>
+  <DataNode TextLabel="COX6A2" GraphId="e7f" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX6A2 | cytochrome c oxidase subunit VIa polyp..."/>
+    <Graphics CenterX="822.0" CenterY="353.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1339"/>
+  </DataNode>
+  <DataNode TextLabel="COX6B1" GraphId="a35" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX6B1 | cytochrome c oxidase subunit Vib polyp..."/>
+    <Graphics CenterX="822.0" CenterY="393.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1340"/>
+  </DataNode>
+  <DataNode TextLabel="COX7B" GraphId="d07" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX7B | cytochrome c oxidase subunit VIIb"/>
+    <Graphics CenterX="822.0" CenterY="513.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1349"/>
+  </DataNode>
+  <DataNode TextLabel="COX7C" GraphId="f02" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX7C | cytochrome c oxidase subunit VIIc"/>
+    <Graphics CenterX="822.0" CenterY="533.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1350"/>
+  </DataNode>
+  <DataNode TextLabel="COX8A" GraphId="e3d" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX8A | cytochrome c oxidase subunit 8A (ubiqui..."/>
+    <Graphics CenterX="822.0" CenterY="553.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1351"/>
+  </DataNode>
+  <DataNode TextLabel="UCP2" GraphId="fc5" Type="GeneProduct" GroupRef="a6e66">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UCP2 | uncoupling protein 2 (mitochondrial pro..."/>
+    <Graphics CenterX="1191.3333333333333" CenterY="253.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7351"/>
+  </DataNode>
+  <DataNode TextLabel="UCP3" GraphId="c2d" Type="GeneProduct" GroupRef="a6e66">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UCP3 | uncoupling protein 3 (mitochondrial pro..."/>
+    <Graphics CenterX="1191.3333333333333" CenterY="273.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7352"/>
+  </DataNode>
+  <DataNode TextLabel="SLC25A5" GraphId="a1d" Type="GeneProduct" GroupRef="e54f3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLC25A5 | solute carrier family 25 (mitochondri..."/>
+    <Graphics CenterX="1322.0" CenterY="253.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="292"/>
+  </DataNode>
+  <DataNode TextLabel="SLC25A6" GraphId="bea" Type="GeneProduct" GroupRef="e54f3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLC25A6 | solute carrier family 25 (mitochondri..."/>
+    <Graphics CenterX="1322.0" CenterY="273.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="293"/>
+  </DataNode>
+  <DataNode TextLabel="SDHB" GraphId="b62" Type="GeneProduct" GroupRef="d7381">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHB | succinate dehydrogenase complex subunit..."/>
+    <Graphics CenterX="365.3333333333333" CenterY="254.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6390"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFAB1" GraphId="d03" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFAB1 | NADH dehydrogenase (ubiquinone) 1 al..."/>
+    <Graphics CenterX="230.0" CenterY="353.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4706"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB3" GraphId="c88" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB3 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="413.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4709"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA6" GraphId="af0" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA6 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="433.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4700"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB4" GraphId="c9a" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB4 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="493.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4710"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB6" GraphId="a11" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB6 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="513.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4712"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB7" GraphId="df0" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB7 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="553.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4713"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB9" GraphId="af8" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB9 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="573.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4715"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA2" GraphId="b0c" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA2 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="373.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4695"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA3" GraphId="ae1" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA3 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="393.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4696"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB8" GraphId="fcd" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB8 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="613.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4714"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB10" GraphId="f15" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB10 | NADH dehydrogenase (ubiquinone) 1 bet..."/>
+    <Graphics CenterX="230.0" CenterY="293.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4716"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFC1" GraphId="a80" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFC1 | NADH dehydrogenase (ubiquinone) 1 sub..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="633.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4717"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB1" GraphId="c12" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB1 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="230.0" CenterY="253.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4707"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS5" GraphId="b39" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS5 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="413.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4725"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB5" GraphId="e03" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB5 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="230.0" CenterY="313.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4711"/>
+  </DataNode>
+  <DataNode TextLabel="ND1" GraphId="e4e" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ND1 | NADH dehydrogenase subunit 1"/>
+    <Graphics CenterX="163.33333333333334" CenterY="233.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4535"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA5" GraphId="f50" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA5 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="230.0" CenterY="393.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4698"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS7" GraphId="b8b" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS7 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="473.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="374291"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS6" GraphId="aff" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS6 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="373.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4726"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA8" GraphId="a9b" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA8 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="230.0" CenterY="453.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4702"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS4" GraphId="bbb" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS4 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="433.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4724"/>
+  </DataNode>
+  <DataNode TextLabel="SDHC" GraphId="e70" Type="GeneProduct" GroupRef="d7381">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHC | succinate dehydrogenase complex subunit..."/>
+    <Graphics CenterX="365.3333333333333" CenterY="274.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6391"/>
+  </DataNode>
+  <DataNode TextLabel="SDHD" GraphId="dbb" Type="GeneProduct" GroupRef="d7381">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHD | succinate dehydrogenase complex subunit..."/>
+    <Graphics CenterX="365.3333333333333" CenterY="294.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6392"/>
+  </DataNode>
+  <DataNode TextLabel="CYTB" GraphId="fd2" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYTB | cytochrome b"/>
+    <Graphics CenterX="658.6666666666666" CenterY="373.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4519"/>
+  </DataNode>
+  <DataNode TextLabel="UQCRC1" GraphId="e02" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UQCRC1 | ubiquinol-cytochrome c reductase core ..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="233.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7384"/>
+  </DataNode>
+  <DataNode TextLabel="UQCRC2" GraphId="b41" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UQCRC2 | ubiquinol-cytochrome c reductase core ..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="253.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7385"/>
+  </DataNode>
+  <DataNode TextLabel="UQCRB" GraphId="d72" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UQCRB | ubiquinol-cytochrome c reductase bindin..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="273.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7381"/>
+  </DataNode>
+  <DataNode TextLabel="UQCRH" GraphId="c54" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UQCRH | ubiquinol-cytochrome c reductase hinge ..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="313.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7388"/>
+  </DataNode>
+  <DataNode TextLabel="UQCRFS1" GraphId="b00" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UQCRFS1 | ubiquinol-cytochrome c reductase Rie..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="393.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7386"/>
+  </DataNode>
+  <DataNode TextLabel="QP-C" GraphId="d5d" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="QP-C | low molecular mass ubiquinone-binding pr..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="293.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="27089"/>
+  </DataNode>
+  <DataNode TextLabel="UCRC" GraphId="a39" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UCRC | ubiquinol-cytochrome c reductase complex..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="333.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="29796"/>
+  </DataNode>
+  <DataNode TextLabel="UQCR" GraphId="ad3" Type="GeneProduct" GroupRef="de99a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UQCR | ubiquinol-cytochrome c reductase 6.4kDa..."/>
+    <Graphics CenterX="658.6666666666666" CenterY="353.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10975"/>
+  </DataNode>
+  <DataNode TextLabel="COX1" GraphId="b76" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX1 | cytochrome c oxidase subunit I"/>
+    <Graphics CenterX="822.0" CenterY="233.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4512"/>
+  </DataNode>
+  <DataNode TextLabel="COX7A1" GraphId="bbf" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX7A1 | cytochrome c oxidase subunit VIIa poly..."/>
+    <Graphics CenterX="822.0" CenterY="473.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1346"/>
+  </DataNode>
+  <DataNode TextLabel="COX7A2L" GraphId="b87" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX7A2L | cytochrome c oxidase subunit VIIa pol..."/>
+    <Graphics CenterX="822.0" CenterY="493.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9167"/>
+  </DataNode>
+  <DataNode TextLabel="COX7A3" GraphId="bd7" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cox7a-L-related"/>
+    <Graphics CenterX="822.0" CenterY="453.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="SwissProt" ID="O60397"/>
+  </DataNode>
+  <DataNode TextLabel="COX7A2" GraphId="c9f" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX7A2 | cytochrome c oxidase subunit VIIa poly..."/>
+    <Graphics CenterX="822.0" CenterY="433.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1347"/>
+  </DataNode>
+  <DataNode TextLabel="COX6C" GraphId="a4c" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX6C | cytochrome c oxidase subunit VIc"/>
+    <Graphics CenterX="822.0" CenterY="413.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1345"/>
+  </DataNode>
+  <DataNode TextLabel="COX17" GraphId="f19" Type="GeneProduct" GroupRef="fdd6a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX17 | COX17 homolog cytochrome c oxidase ass..."/>
+    <Graphics CenterX="820.6666666666666" CenterY="604.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10063"/>
+  </DataNode>
+  <DataNode TextLabel="COX11" GraphId="b59" Type="GeneProduct" GroupRef="fdd6a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX11 | COX11 homolog cytochrome c oxidase ass..."/>
+    <Graphics CenterX="820.6666666666666" CenterY="664.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1353"/>
+  </DataNode>
+  <DataNode TextLabel="SCO1" GraphId="db2" Type="GeneProduct" GroupRef="fdd6a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SCO1 | SCO cytochrome oxidase deficient homolog..."/>
+    <Graphics CenterX="820.6666666666666" CenterY="644.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6341"/>
+  </DataNode>
+  <DataNode TextLabel="SURF1" GraphId="ea9" Type="GeneProduct" GroupRef="fdd6a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SURF1 | surfeit 1"/>
+    <Graphics CenterX="820.6666666666666" CenterY="624.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6834"/>
+  </DataNode>
+  <DataNode TextLabel="COX15" GraphId="a31" Type="GeneProduct" GroupRef="fdd6a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX15 | COX15 homolog cytochrome c oxidase ass..."/>
+    <Graphics CenterX="820.6666666666666" CenterY="684.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1355"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5G1" GraphId="c96" Type="GeneProduct" GroupRef="a591c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5G1 | ATP synthase H+ transporting mitocho..."/>
+    <Graphics CenterX="1030.0" CenterY="480.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="516"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5G2" GraphId="a6e" Type="GeneProduct" GroupRef="a591c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5G2 | ATP synthase H+ transporting mitocho..."/>
+    <Graphics CenterX="1030.0" CenterY="500.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="517"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5G3" GraphId="e79" Type="GeneProduct" GroupRef="a591c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5G3 | ATP synthase H+ transporting mitocho..."/>
+    <Graphics CenterX="1030.0" CenterY="520.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="518"/>
+  </DataNode>
+  <DataNode TextLabel="ATP6" GraphId="e17" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP6 | ATP synthase F0 subunit 6"/>
+    <Graphics CenterX="1030.0" CenterY="433.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4508"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5A1" GraphId="a0b" Type="GeneProduct" GroupRef="d47fd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5A1 | ATP synthase H+ transporting mitocho..."/>
+    <Graphics CenterX="1030.0" CenterY="233.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="498"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5B" GraphId="a92" Type="GeneProduct" GroupRef="d47fd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5B | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="253.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="506"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5D" GraphId="f0d" Type="GeneProduct" GroupRef="d47fd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5D | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="293.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="513"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5E" GraphId="f6d" Type="GeneProduct" GroupRef="d47fd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5E | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="313.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="514"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5F1" GraphId="f59" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5F1 | ATP synthase H+ transporting mitocho..."/>
+    <Graphics CenterX="1030.0" CenterY="453.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="515"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5C1" GraphId="f76" Type="GeneProduct" GroupRef="d47fd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5C1 | ATP synthase H+ transporting mitocho..."/>
+    <Graphics CenterX="1030.0" CenterY="273.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="509"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5I" GraphId="a12" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5I | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="566.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="521"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5J2" GraphId="a4e" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5J2 | ATP synthase H+ transporting mitocho..."/>
+    <Graphics CenterX="1030.0" CenterY="586.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9551"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5L" GraphId="c04" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5L | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="606.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10632"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5O" GraphId="a5c" Type="GeneProduct" GroupRef="f2db4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5O | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="380.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="539"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5H" GraphId="ecb" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5H | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="546.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10476"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5S" GraphId="cb0" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5S | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="653.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="27109"/>
+  </DataNode>
+  <DataNode TextLabel="ATP5J" GraphId="b61" Type="GeneProduct" GroupRef="f2db4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP5J | ATP synthase H+ transporting mitochon..."/>
+    <Graphics CenterX="1030.0" CenterY="360.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="522"/>
+  </DataNode>
+  <DataNode TextLabel="ATP8" GraphId="b2b" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATP8 | ATP synthase F0 subunit 8"/>
+    <Graphics CenterX="1030.0" CenterY="634.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4509"/>
+  </DataNode>
+  <DataNode TextLabel="UCP1" GraphId="fe1" Type="GeneProduct" GroupRef="a6e66">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UCP1 | uncoupling protein 1 (mitochondrial pro..."/>
+    <Graphics CenterX="1191.3333333333333" CenterY="233.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7350"/>
+  </DataNode>
+  <DataNode TextLabel="SLC25A27" GraphId="bab" Type="GeneProduct" GroupRef="a6e66">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLC25A27 | solute carrier family 25 member 27"/>
+    <Graphics CenterX="1191.3333333333333" CenterY="293.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9481"/>
+  </DataNode>
+  <DataNode TextLabel="SLC25A14" GraphId="ae2" Type="GeneProduct" GroupRef="a6e66">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLC25A14 | solute carrier family 25 (mitochondr..."/>
+    <Graphics CenterX="1191.3333333333333" CenterY="313.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9016"/>
+  </DataNode>
+  <DataNode TextLabel="ATPIF1" GraphId="ded" Type="GeneProduct" GroupRef="f5033">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATPIF1 | ATPase inhibitory factor 1"/>
+    <Graphics CenterX="1030.0" CenterY="679.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="93974"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS8" GraphId="fcb" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS8 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="493.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4728"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFV2" GraphId="ae6" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFV2 | NADH dehydrogenase (ubiquinone) flavop..."/>
+    <Graphics CenterX="230.0" CenterY="513.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4729"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA9" GraphId="c5a" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA9 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="230.0" CenterY="553.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4704"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA10" GraphId="fa1" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA10 | NADH dehydrogenase (ubiquinone) 1 alp..."/>
+    <Graphics CenterX="230.0" CenterY="573.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4705"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS2" GraphId="ee7" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS2 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="593.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4720"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFV1" GraphId="e6c" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFV1 | NADH dehydrogenase (ubiquinone) flavop..."/>
+    <Graphics CenterX="230.0" CenterY="613.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4723"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS1" GraphId="eb4" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS1 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="633.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4719"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFB2" GraphId="ed3" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFB2 | NADH dehydrogenase (ubiquinone) 1 beta..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="593.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4708"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA4" GraphId="f27" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA4 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="230.0" CenterY="233.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4697"/>
+  </DataNode>
+  <DataNode TextLabel="DAP13" GraphId="d9a" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DAP13 | 13kDa differentiation-associated protei..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="533.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="55967"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA7" GraphId="ec6" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA7 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="453.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4701"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFC2" GraphId="ecf" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFC2 | NADH dehydrogenase (ubiquinone) 1 sub..."/>
+    <Graphics CenterX="163.33333333333334" CenterY="473.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4718"/>
+  </DataNode>
+  <DataNode TextLabel="COX6A1" GraphId="b9c" Type="GeneProduct" GroupRef="da9e9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="COX6A1 | cytochrome c oxidase subunit VIa polyp..."/>
+    <Graphics CenterX="822.0" CenterY="373.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1337"/>
+  </DataNode>
+  <DataNode TextLabel="SDHA" GraphId="cc7" Type="GeneProduct" GroupRef="d7381">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SDHA | succinate dehydrogenase complex subunit..."/>
+    <Graphics CenterX="365.3333333333333" CenterY="234.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6389"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFA1" GraphId="df1" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFA1 | NADH dehydrogenase (ubiquinone) 1 alph..."/>
+    <Graphics CenterX="230.0" CenterY="273.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4694"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFV3" GraphId="f95" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFV3 | NADH dehydrogenase (ubiquinone) flavop..."/>
+    <Graphics CenterX="230.0" CenterY="333.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4731"/>
+  </DataNode>
+  <DataNode TextLabel="SLC25A4" GraphId="d6c" Type="GeneProduct" GroupRef="e54f3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLC25A4 | solute carrier family 25 (mitochondri..."/>
+    <Graphics CenterX="1322.0" CenterY="233.33333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="291"/>
+  </DataNode>
+  <DataNode TextLabel="NDUFS3" GraphId="e2a" Type="GeneProduct" GroupRef="fd62f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NDUFS3 | NADH dehydrogenase (ubiquinone) Fe-S p..."/>
+    <Graphics CenterX="230.0" CenterY="533.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4722"/>
+  </DataNode>
+  <DataNode TextLabel="Ubiquinone" GraphId="ff5" Type="Metabolite">
+    <Graphics CenterX="494.0833333333333" CenterY="233.33333333333334" Width="65.16666666666667" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB02012"/>
+  </DataNode>
+  <DataNode TextLabel="O2" GraphId="a5e7d" Type="Metabolite">
+    <Graphics CenterX="884.3333333333334" CenterY="369.6666666666667" Width="30.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01377"/>
+  </DataNode>
+  <DataNode TextLabel="H2O" GraphId="ccb20" Type="Metabolite">
+    <Graphics CenterX="936.6666748046875" CenterY="370.6666625976562" Width="32.016666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB02111"/>
+  </DataNode>
+  <DataNode TextLabel="Cytochrome C" GraphId="fc1c2" Type="Metabolite">
+    <Graphics CenterX="822.6666666666666" CenterY="134.66666666666666" Width="72.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C00524"/>
+  </DataNode>
+  <DataNode TextLabel="NADH" GraphId="fe495" Type="Metabolite">
+    <Graphics CenterX="38.666666666666664" CenterY="352.0" Width="37.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C00004"/>
+  </DataNode>
+  <DataNode TextLabel="Succinate" GraphId="ac151" Type="Metabolite">
+    <Graphics CenterX="467.3333333333333" CenterY="486.6666666666667" Width="54.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C00042"/>
+  </DataNode>
+  <DataNode TextLabel="e-" GraphId="b29c4" Type="Metabolite">
+    <Graphics CenterX="194.66666666666666" CenterY="134.66666666666666" Width="21.333333333333332" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C05359"/>
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="a9cb9" Type="Metabolite">
+    <Graphics CenterX="1179.0" CenterY="397.6666666666667" Width="34.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C00002"/>
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="e0eb0" Type="Metabolite">
+    <Graphics CenterX="300.6666666666667" CenterY="66.66666666666667" Width="22.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="NAD+" GraphId="cb8fe" Type="Metabolite">
+    <Graphics CenterX="38.666666666666664" CenterY="293.3333333333333" Width="37.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C00003"/>
+  </DataNode>
+  <DataNode TextLabel="FAD" GraphId="c57d6" Type="Metabolite">
+    <Graphics CenterX="460.6666666666667" CenterY="376.0" Width="33.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C00016"/>
+  </DataNode>
+  <DataNode TextLabel="FADH2" GraphId="b7f21" Type="Metabolite">
+    <Graphics CenterX="364.6666666666667" CenterY="378.6666666666667" Width="44.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C01352"/>
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="e8583" Type="Metabolite">
+    <Graphics CenterX="300.0" CenterY="363.3333333333333" Width="22.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="a7810" Type="Metabolite">
+    <Graphics CenterX="584.0" CenterY="80.66666666666667" Width="22.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="c5b31" Type="Metabolite">
+    <Graphics CenterX="584.0" CenterY="348.0" Width="22.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="bde98" Type="Metabolite">
+    <Graphics CenterX="755.6666666666666" CenterY="338.0" Width="22.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="bc4f2" Type="Metabolite">
+    <Graphics CenterX="755.3333333333334" CenterY="96.0" Width="22.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="H+" GraphId="cabec" Type="Metabolite">
+    <Graphics CenterX="1110.6666666666667" CenterY="460.6666666666667" Width="22.666666666666668" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="e-" GraphId="f43a7" Type="Metabolite">
+    <Graphics CenterX="460.6666666666667" CenterY="304.6666666666667" Width="21.333333333333332" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C05359"/>
+  </DataNode>
+  <DataNode TextLabel="e-" GraphId="fa065" Type="Metabolite">
+    <Graphics CenterX="421.3333333333333" CenterY="448.0" Width="21.333333333333332" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Kegg Compound" ID="C05359"/>
+  </DataNode>
+  <DataNode TextLabel="TCA Cycle" GraphId="bb20c" Type="Pathway">
+    <Graphics CenterX="65.0" CenterY="426.0" Width="80.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="WikiPathways" ID="WP78"/>
+  </DataNode>
+  <Line GraphId="ea2fb">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="6.666666666666667" Y="226.6666666666671"/>
+      <Point X="1406.6666666666667" Y="226.6666666666671"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f202e">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="8.0" Y="240.0000000000003"/>
+      <Point X="1410.6666666666667" Y="240.0000000000003"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f0372">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="0000ff">
+      <Point X="59.333333333333336" Y="418.0"/>
+      <Point X="38.66666666666666" Y="362.0" GraphRef="fe495" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cfb2a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="122.0" Y="324.33333333333337" GraphRef="a582a" RelX="-1.0" RelY="-0.5"/>
+      <Point X="75.93938339277047" Y="320.7927774121402" GraphRef="de1e1" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dbdc8">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="75.93938339277047" Y="320.7927774121402" GraphRef="de1e1" RelX="0.0" RelY="0.0"/>
+      <Point X="184.0" Y="134.66666666666666" GraphRef="b29c4" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fee15">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="300.0" Y="353.3333333333333" GraphRef="e8583" RelX="0.0" RelY="-1.0"/>
+      <Point X="300.66666666666674" Y="76.66666666666667" GraphRef="e0eb0" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.09688154413077718" Shape="None" GraphId="d3678"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c4d38">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="884.3333333333333" Y="359.6666666666667" GraphRef="a5e7d" RelX="0.0" RelY="-1.0"/>
+      <Point X="910.0" Y="334.6666666666667"/>
+      <Point X="936.6666748046875" Y="360.6666625976562" GraphRef="ccb20" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5625" Shape="None" GraphId="bcb8f"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b0e4a">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="205.33333333333337" Y="134.66666666666666" GraphRef="b29c4" RelX="1.0" RelY="0.0"/>
+      <Point X="494.0833333333333" Y="223.83333333333334" GraphRef="ff5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2b00">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="312.0000000000001" Y="66.66666666666667" GraphRef="e0eb0" RelX="1.0" RelY="0.0"/>
+      <Point X="1110.666666666667" Y="450.6666666666667" GraphRef="cabec" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f713d">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="510.375" Y="223.83333333333334" GraphRef="ff5" RelX="0.5" RelY="-1.0"/>
+      <Point X="786.6666666666666" Y="134.66666666666666" GraphRef="fc1c2" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c57d3">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="858.6666666666666" Y="134.66666666666666" GraphRef="fc1c2" RelX="1.0" RelY="0.0"/>
+      <Point X="915.990477795514" Y="335.13758507740295" GraphRef="bcb8f" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.8856536425805347" Shape="None" GraphId="feb6c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ad726">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="271.3333333333333" Y="324.33333333333337" GraphRef="a582a" RelX="1.0" RelY="-0.5"/>
+      <Point X="300.0645876960872" Y="326.5294394571516" GraphRef="d3678" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d057a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="584.0" Y="338.0" GraphRef="c5b31" RelX="0.0" RelY="-1.0"/>
+      <Point X="584.0" Y="90.66666666666667" GraphRef="a7810" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.09688154413077718" Shape="None" GraphId="f26fc"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b4178">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="620.6666666666666" Y="313.3333333333333" GraphRef="c3e7a" RelX="-1.0" RelY="0.0"/>
+      <Point X="584.0" Y="314.03796475165444" GraphRef="f26fc" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b3d7d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="595.3333333333333" Y="80.66666666666667" GraphRef="a7810" RelX="1.0" RelY="0.0"/>
+      <Point X="1110.666666666667" Y="450.6666666666667" GraphRef="cabec" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="feb3f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="863.3333333333333" Y="304.33333333333337" GraphRef="bb64a" RelX="1.0" RelY="-0.5"/>
+      <Point X="898.2033031508229" Y="355.089932012818" GraphRef="feb6c" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c243a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="755.6666666666665" Y="328.0" GraphRef="bde98" RelX="0.0" RelY="-1.0"/>
+      <Point X="755.3333333333333" Y="106.0" GraphRef="bc4f2" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.09688154413077718" Shape="None" GraphId="fbb66"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4aef">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="780.6666666666667" Y="304.33333333333337" GraphRef="bb64a" RelX="-1.0" RelY="-0.5"/>
+      <Point X="755.634372818623" Y="306.49229720296745" GraphRef="fbb66" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f52f4">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="766.6666666666665" Y="96.0" GraphRef="bc4f2" RelX="1.0" RelY="0.0"/>
+      <Point X="1110.666666666667" Y="450.6666666666667" GraphRef="cabec" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.8333527526944362" Shape="None" GraphId="d7312"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eb56f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1084.0" Y="331.83333333333337" GraphRef="ee9f8" RelX="1.0" RelY="-0.5"/>
+      <Point X="1110.666666666667" Y="334.2357898825127" GraphRef="d7312" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="da1d5">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="1110.666666666667" Y="334.2357898825127" GraphRef="d7312" RelX="0.0" RelY="0.0"/>
+      <Point X="1161.6666666666665" Y="397.6666666666667" GraphRef="a9cb9" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b92fd">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="471.33333333333326" Y="304.6666666666667" GraphRef="f43a7" RelX="1.0" RelY="0.0"/>
+      <Point X="494.0833333333333" Y="242.83333333333334" GraphRef="ff5" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cdee2">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="460.66666666666663" Y="386.0" GraphRef="c57d6" RelX="0.0" RelY="1.0"/>
+      <Point X="412.6666666666667" Y="418.6666666666667"/>
+      <Point X="364.6666666666667" Y="388.6666666666667" GraphRef="b7f21" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6135312259059371" Shape="None" GraphId="ecac3"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b17ae">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="364.6666666666667" Y="368.6666666666667" GraphRef="b7f21" RelX="0.0" RelY="-1.0"/>
+      <Point X="412.6666666666667" Y="336.0"/>
+      <Point X="460.66666666666663" Y="366.0" GraphRef="c57d6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5587895142636853" Shape="None" GraphId="acde6"/>
+      <Anchor Position="0.4" Shape="None" GraphId="f1537"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0b32">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="419.17241742802577" Y="336.20669015346124" GraphRef="acde6" RelX="0.0" RelY="0.0"/>
+      <Point X="450.0" Y="304.6666666666667" GraphRef="f43a7" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="da292">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="365.3333333333333" Y="312.6666666666667" GraphRef="c4d30" RelX="0.0" RelY="1.0"/>
+      <Point X="399.07915745353773" Y="337.02710378548767" GraphRef="f1537" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e0a8b">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="421.33333333333326" Y="438.0" GraphRef="fa065" RelX="0.0" RelY="-1.0"/>
+      <Point X="399.2527334484819" Y="417.7543363462339" GraphRef="ecac3" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fa8bc">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="467.33333333333337" Y="476.6666666666667" GraphRef="ac151" RelX="0.0" RelY="-1.0"/>
+      <Point X="431.9999999999999" Y="448.0" GraphRef="fa065" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id86f308da">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="57.33333333333332" Y="352.0" GraphRef="fe495" RelX="1.0" RelY="0.0"/>
+      <Point X="76.0" Y="322.66666666666663"/>
+      <Point X="57.33333333333332" Y="293.3333333333333" GraphRef="cb8fe" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5243960017227046" Shape="None" GraphId="de1e1"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="C subunit" GraphId="a33">
+    <Graphics CenterX="950.0" CenterY="500.0" Width="64.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="F1 Complex" GraphId="cd4">
+    <Graphics CenterX="1030.0" CenterY="203.33333333333334" Width="96.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Stalk" GraphId="b97">
+    <Graphics CenterX="1030.0" CenterY="337.3333333333333" Width="43.333333333333336" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="F0 Complex" GraphId="daf">
+    <Graphics CenterX="1030.0" CenterY="410.0" Width="96.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="binds ATP Synthase beta" GraphId="f1c">
+    <Graphics CenterX="940.6666666666666" CenterY="677.3333333333334" Width="163.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Uncoupling Protein" GraphId="ff0">
+    <Graphics CenterX="1191.3333333333333" CenterY="203.33333333333334" Width="153.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Complex I" GraphId="fc3">
+    <Graphics CenterX="196.66666666666666" CenterY="168.66666666666666" Width="105.33333333333333" Height="24.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Complex IV" GraphId="cb2">
+    <Graphics CenterX="823.3333333333334" CenterY="170.0" Width="118.33333333333333" Height="24.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Complex III" GraphId="cf7">
+    <Graphics CenterX="661.3333333333334" CenterY="170.0" Width="115.33333333333333" Height="24.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Complex II" GraphId="a28">
+    <Graphics CenterX="368.0" CenterY="171.33333333333334" Width="110.33333333333333" Height="24.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="NADH-Ubiquinone&#10;Oxidoreductase" GraphId="a07">
+    <Graphics CenterX="196.66666666666666" CenterY="199.33333333333334" Width="118.33333333333333" Height="30.666666666666668" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Succinate-Ubiquinone&#10;Oxidoreductase" GraphId="fc2">
+    <Graphics CenterX="369.3333333333333" CenterY="201.33333333333334" Width="145.33333333333334" Height="29.333333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ubiquinol-Cytochrome C&#10;Reductase" GraphId="a3f">
+    <Graphics CenterX="661.3333333333334" CenterY="200.66666666666666" Width="159.33333333333334" Height="30.666666666666668" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytochrome C&#10;Oxidase" GraphId="b29">
+    <Graphics CenterX="822.6666666666666" CenterY="202.33333333333334" Width="98.66666666666667" Height="27.333333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Complex V&#10;ATP Synthase " GraphId="ff7">
+    <Graphics CenterX="1030.8333333333333" CenterY="175.66666666666666" Width="149.0" Height="35.333333333333336" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Adenine Nucleotide&#10;Translocator" GraphId="f36">
+    <Graphics CenterX="1322.0" CenterY="202.25" Width="154.33333333333334" Height="32.833333333333336" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Assembly" GraphId="d65">
+    <Graphics CenterX="823.3333333333334" CenterY="580.0" Width="71.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Intermembrane&#10;Space" GraphId="b48e2">
+    <Graphics CenterX="41.333333333333336" CenterY="209.83333333333334" Width="80.0" Height="26.333333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" Color="009900"/>
+  </Label>
+  <Label TextLabel="Matrix" GraphId="a43ad">
+    <Graphics CenterX="40.666666666666664" CenterY="251.33333333333334" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" Color="009900"/>
+  </Label>
+  <Shape GraphId="ed9">
+    <Graphics CenterX="983.3333333333334" CenterY="500.0" Width="66.66666666666667" Height="8.666666666666666" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="4.71238898038469"/>
+  </Shape>
+  <Group GroupId="d7381" GraphId="c4d30"/>
+  <Group GroupId="de99a" GraphId="c3e7a"/>
+  <Group GroupId="fdd6a" GraphId="d7f68"/>
+  <Group GroupId="da9e9" GraphId="bb64a"/>
+  <Group GroupId="d47fd" GraphId="ca709" GroupRef="dab97"/>
+  <Group GroupId="f2db4" GraphId="f435e" GroupRef="dab97"/>
+  <Group GroupId="a591c" GraphId="daee2" GroupRef="f5033"/>
+  <Group GroupId="a6e66" GraphId="cc4c1"/>
+  <Group GroupId="e54f3" GraphId="d719e"/>
+  <Group GroupId="f5033" GraphId="bc13a" GroupRef="dab97"/>
+  <Group GroupId="fd62f" GraphId="a582a"/>
+  <Group GroupId="dab97" GraphId="ee9f8"/>
+  <InfoBox CenterX="260.9" CenterY="612.3333333333334"/>
+  <Legend CenterX="264.03333333333336" CenterY="446.8"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>oxidative phosphorylation pathway</bp:TERM><bp:ID>PW:0000034</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

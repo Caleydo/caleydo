@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Parkinsons Disease Pathway" Version="20121118" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">Most people with Parkinson's disease have idiopathic Parkinson's disease (having no specific known cause). A small proportion of cases, however, can be attributed to known genetic factors. Mutations in specific genes have been conclusively shown to cause PD. These genes code for alpha-synuclein (SNCA), parkin (PRKN), leucine-rich repeat kinase 2 (LRRK2 or dardarin), PTEN-induced putative kinase 1 (PINK1), DJ-1 and ATP13A2.[4][22] In most cases, people with these mutations will develop PD. With the exception of LRRK2, however, they account for only a small minority of cases of PD.[4] The most extensively studied PD-related genes are SNCA and LRRK2. Mutations in genes including SNCA, LRRK2 and glucocerebrosidase (GBA) have been found to be risk factors for sporadic PD. The role of the SNCA gene is important in PD because the alpha-synuclein protein is the main component of Lewy bodies.[22] Missense mutations of the gene (in which a single nucleotide is changed), and duplications and triplications of the locus containing it have been found in different groups with familial PD. Mutations in LRRK2 are the most common known cause of familial and sporadic PD, accounting for approximately 5% of individuals with a family history of the disease and 3% of sporadic cases.
+
+
+Sources: [http://en.wikipedia.org/wiki/Parkinson's_disease wikipedia], [https://www.qiagen.com/geneglobe/pathwayview.aspx?pathwayID=345 Quigen], and [http://www.genome.jp/kegg/pathway/hsa/hsa05012.html KEGG].</Comment>
+  <BiopaxRef>cff</BiopaxRef>
+  <BiopaxRef>bc1</BiopaxRef>
+  <BiopaxRef>a5c</BiopaxRef>
+  <BiopaxRef>c3c</BiopaxRef>
+  <BiopaxRef>fe0</BiopaxRef>
+  <Graphics BoardWidth="1406.2214983713354" BoardHeight="738.2917082917083" />
+  <DataNode TextLabel="DDC" GraphId="f797c" Type="GeneProduct">
+    <Graphics CenterX="189.95203741501783" CenterY="287.25218660877727" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="1644" />
+  </DataNode>
+  <DataNode TextLabel="ROS" GraphId="b14ce" Type="Metabolite">
+    <Graphics CenterX="133.41400172860824" CenterY="448.5738980121002" Width="58.1503889369058" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff" />
+    <Xref Database="ChEBI" ID=" 29191" />
+  </DataNode>
+  <DataNode TextLabel="Apoptosis Pathway" GraphId="ec4e1" Type="Pathway">
+    <Graphics CenterX="133.41400172860858" CenterY="558.3405358686255" Width="144.58081244598094" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP254" />
+  </DataNode>
+  <DataNode TextLabel="EPRS" GraphId="c2d7f" Type="GeneProduct">
+    <Graphics CenterX="669.2510843585048" CenterY="553.9387635792666" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="2058" />
+  </DataNode>
+  <DataNode TextLabel="Protein" GraphId="b5e42" Type="GeneProduct">
+    <Graphics CenterX="1261.853091866473" CenterY="519.5656531119946" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="DAT" GraphId="a832c" Type="GeneProduct">
+    <Graphics CenterX="134.0" CenterY="149.0" Width="80.0" Height="20.00000000000001" ZOrder="32769" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="6531" />
+  </DataNode>
+  <DataNode TextLabel="UCHL1" GraphId="af93c" Type="GeneProduct">
+    <Graphics CenterX="930.7981108658227" CenterY="442.9765836104435" Width="80.0" Height="20.0" ZOrder="32770" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="7345" />
+  </DataNode>
+  <DataNode TextLabel="Parkin" GraphId="c961e" Type="GeneProduct">
+    <Graphics CenterX="506.1289803795469" CenterY="440.3941257484336" Width="80.0" Height="20.0" ZOrder="32771" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="5071" />
+  </DataNode>
+  <DataNode TextLabel="SNCA" GraphId="b1e03" Type="GeneProduct">
+    <BiopaxRef>dd8</BiopaxRef>
+    <Graphics CenterX="385.1633267438916" CenterY="205.64960607734156" Width="80.00000000000004" Height="20.00000000000001" ZOrder="32772" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="6622" />
+  </DataNode>
+  <DataNode TextLabel="TH" GraphId="e32fe" Type="GeneProduct">
+    <Graphics CenterX="297.5030180474318" CenterY="287.25218660877727" Width="80.0" Height="20.0" ZOrder="32773" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="7054" />
+  </DataNode>
+  <DataNode TextLabel="L-Tyrosine" GraphId="e1fb1" Type="Metabolite">
+    <Graphics CenterX="348.0715086568121" CenterY="341.90960617971416" Width="65.9561962374951" Height="20.0" ZOrder="32774" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff" />
+    <Xref Database="Kegg Compound" ID="C00082" />
+  </DataNode>
+  <DataNode TextLabel="L-DOPA" GraphId="e40bf" Type="Metabolite">
+    <Graphics CenterX="238.80315902046937" CenterY="341.9096061797142" Width="65.9561962374951" Height="20.000000000000018" ZOrder="32775" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff" />
+    <Xref Database="Kegg Compound" ID="C00355" />
+  </DataNode>
+  <DataNode TextLabel="Dopamine" GraphId="b52af" Type="Metabolite">
+    <Graphics CenterX="133.65699129777067" CenterY="341.9096061797143" Width="65.9561962374951" Height="20.000000000000018" ZOrder="32776" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff" />
+    <Xref Database="Kegg Compound" ID="C03758" />
+  </DataNode>
+  <DataNode TextLabel="Dopamine" GraphId="c0d27" Type="Metabolite">
+    <Graphics CenterX="133.2403246311044" CenterY="91.80851076956817" Width="65.9561962374951" Height="20.000000000000018" ZOrder="32777" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff" />
+    <Xref Database="Kegg Compound" ID="C03758" />
+  </DataNode>
+  <DataNode TextLabel="LRRK2" GraphId="cd757" Type="GeneProduct">
+    <Graphics CenterX="1171.2848813715436" CenterY="277.3027686726074" Width="80.0" Height="20.0" ZOrder="32780" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="120892" />
+  </DataNode>
+  <DataNode TextLabel="PINK1" GraphId="a1ead" Type="GeneProduct">
+    <BiopaxRef>dd9</BiopaxRef>
+    <Graphics CenterX="1049.0037417561173" CenterY="355.26963182911965" Width="80.0" Height="20.0" ZOrder="32781" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="65018" />
+  </DataNode>
+  <DataNode TextLabel="DJ1" GraphId="b6299" Type="GeneProduct">
+    <BiopaxRef>a6a</BiopaxRef>
+    <Graphics CenterX="1154.251524380771" CenterY="343.60028999828506" Width="80.0" Height="20.0" ZOrder="32782" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="11315" />
+  </DataNode>
+  <DataNode TextLabel="HTRA2" GraphId="f1547" Type="GeneProduct">
+    <Graphics CenterX="1163.4779260841062" CenterY="310.9920283585362" Width="80.0" Height="20.0" ZOrder="32783" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="27429" />
+  </DataNode>
+  <DataNode TextLabel="CYCS" GraphId="e7148" Type="GeneProduct">
+    <Graphics CenterX="1083.3341064981528" CenterY="396.00496489033014" Width="60.00000000000003" Height="20.00000000000001" ZOrder="32791" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="54205" />
+  </DataNode>
+  <DataNode TextLabel="GPR37" GraphId="f6d76" Type="GeneProduct">
+    <Graphics CenterX="669.2510843585048" CenterY="513.9387635792668" Width="80.0" Height="20.0" ZOrder="32792" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="2861" />
+  </DataNode>
+  <DataNode TextLabel="SEPT5" GraphId="c9a31" Type="GeneProduct">
+    <Graphics CenterX="669.2510843585048" CenterY="533.9387635792667" Width="80.0" Height="20.0" ZOrder="32793" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="5413" />
+  </DataNode>
+  <DataNode TextLabel="SNCAIP" GraphId="be8ff" Type="GeneProduct" GroupRef="de30b">
+    <Graphics CenterX="755.1257436728973" CenterY="668.6773169375335" Width="80.0" Height="20.0" ZOrder="32794" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="9627" />
+  </DataNode>
+  <DataNode TextLabel="UBB" GraphId="a0bcd" Type="GeneProduct">
+    <Graphics CenterX="773.3342796309444" CenterY="379.1998296421861" Width="80.0" Height="20.0" ZOrder="32795" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="7314" />
+  </DataNode>
+  <DataNode TextLabel="UBA1" GraphId="d0eef" Type="GeneProduct" GroupRef="f38ed">
+    <Graphics CenterX="673.298793470546" CenterY="309.48851666519926" Width="80.0" Height="20.0" ZOrder="32797" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="7317" />
+  </DataNode>
+  <DataNode TextLabel="UBA7" GraphId="c864a" Type="GeneProduct" GroupRef="f38ed">
+    <Graphics CenterX="673.298793470546" CenterY="289.48851666519926" Width="80.0" Height="20.0" ZOrder="32798" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="7318" />
+  </DataNode>
+  <DataNode TextLabel="UBE2L3" GraphId="f242c" Type="GeneProduct" GroupRef="bb48a">
+    <Graphics CenterX="671.6735273243431" CenterY="369.07420308098915" Width="80.0" Height="20.0" ZOrder="32800" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="7332" />
+  </DataNode>
+  <DataNode TextLabel="UBE2L6" GraphId="a33ad" Type="GeneProduct" GroupRef="bb48a">
+    <Graphics CenterX="671.6735273243431" CenterY="349.07420308098915" Width="80.0" Height="20.0" ZOrder="32801" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="9246" />
+  </DataNode>
+  <DataNode TextLabel="UBE2J2" GraphId="f47b7" Type="GeneProduct" GroupRef="b25f6">
+    <Graphics CenterX="776.7125621007805" CenterY="328.9619020449011" Width="80.0" Height="20.0" ZOrder="32803" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="118424" />
+  </DataNode>
+  <DataNode TextLabel="UBE2G1" GraphId="c2304" Type="GeneProduct" GroupRef="b25f6">
+    <Graphics CenterX="776.7125621007805" CenterY="348.96190204490085" Width="80.0" Height="20.0" ZOrder="32804" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="7326" />
+  </DataNode>
+  <DataNode TextLabel="UBE2G2" GraphId="b7954" Type="GeneProduct" GroupRef="b25f6">
+    <Graphics CenterX="776.7125621007805" CenterY="288.9619020449008" Width="80.0" Height="20.0" ZOrder="32805" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="7327" />
+  </DataNode>
+  <DataNode TextLabel="UBE2J1" GraphId="d03fb" Type="GeneProduct" GroupRef="b25f6">
+    <Graphics CenterX="776.7125621007805" CenterY="308.9619020449008" Width="80.0" Height="20.0" ZOrder="32806" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="51465" />
+  </DataNode>
+  <DataNode TextLabel="ATXN2" GraphId="bbe13" Type="GeneProduct">
+    <Graphics CenterX="669.2510843585048" CenterY="573.9387635792666" Width="80.0" Height="20.0" ZOrder="32808" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="6311" />
+  </DataNode>
+  <DataNode TextLabel="SYT11" GraphId="af368" Type="GeneProduct">
+    <Graphics CenterX="760.3905556466849" CenterY="513.9955414359022" Width="80.0" Height="20.0" ZOrder="32809" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="23208" />
+  </DataNode>
+  <DataNode TextLabel="CCNE1" GraphId="f5805" Type="GeneProduct">
+    <Graphics CenterX="669.2510843585048" CenterY="593.9387635792666" Width="80.0" Height="20.0" ZOrder="32810" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="898" />
+  </DataNode>
+  <DataNode TextLabel="CCNE2" GraphId="ebbb3" Type="GeneProduct">
+    <Graphics CenterX="669.2510843585048" CenterY="613.9387635792666" Width="80.0" Height="20.0" ZOrder="32811" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="9134" />
+  </DataNode>
+  <DataNode TextLabel="SNCA" GraphId="c1ec7" Type="GeneProduct" GroupRef="de30b">
+    <Graphics CenterX="675.1257436728973" CenterY="668.6773169375335" Width="80.00000000000001" Height="19.999999999999964" ZOrder="32812" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="cc0000" />
+    <Xref Database="Entrez Gene" ID="6622" />
+  </DataNode>
+  <DataNode TextLabel="SNCAIP" GraphId="e717e" Type="GeneProduct">
+    <Graphics CenterX="760.3905556466848" CenterY="533.9955414359022" Width="80.0" Height="20.0" ZOrder="32813" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="9627" />
+  </DataNode>
+  <DataNode TextLabel="MAPK12" GraphId="ec63d" Type="GeneProduct" GroupRef="fcf13">
+    <Graphics CenterX="760.3905556466849" CenterY="565.7845592132809" Width="80.0" Height="20.0" ZOrder="32815" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="6300" />
+  </DataNode>
+  <DataNode TextLabel="MAPK11" GraphId="e871b" Type="GeneProduct" GroupRef="fcf13">
+    <Graphics CenterX="760.3905556466849" CenterY="585.7845592132818" Width="80.0" Height="20.0" ZOrder="32816" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="5600" />
+  </DataNode>
+  <DataNode TextLabel="MAPK14" GraphId="bfe30" Type="GeneProduct" GroupRef="fcf13">
+    <Graphics CenterX="760.3905556466849" CenterY="605.7845592132821" Width="80.0" Height="20.0" ZOrder="32817" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="1432" />
+  </DataNode>
+  <DataNode TextLabel="MAPK13" GraphId="c2550" Type="GeneProduct" GroupRef="fcf13">
+    <Graphics CenterX="760.3905556466849" CenterY="625.7845592132821" Width="80.0" Height="20.0" ZOrder="32818" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="5603" />
+  </DataNode>
+  <DataNode TextLabel="Oxidative&#xA;Phosphorylation" GraphId="f042b" Type="Pathway">
+    <Graphics CenterX="1163.1062182266414" CenterY="227.4130913350208" Width="144.58081244598094" Height="20.0" ZOrder="32831" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP111" />
+  </DataNode>
+  <DataNode TextLabel="Apoptosis Pathway" GraphId="eea66" Type="Pathway">
+    <Graphics CenterX="952.0137587702602" CenterY="617.0513722523941" Width="126.8806048364749" Height="20.0" ZOrder="32832" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP254" />
+  </DataNode>
+  <DataNode TextLabel="CASP6" GraphId="df424" Type="GeneProduct" GroupRef="e317d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CASP6 | caspase 6 apoptosis-related cysteine p..." />
+    <Graphics CenterX="1083.2163352061539" CenterY="587.2108676274663" Width="60.0" Height="20.0" ZOrder="32837" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="839" />
+  </DataNode>
+  <DataNode TextLabel="CASP9" GraphId="a756c" Type="GeneProduct" GroupRef="ff39a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CASP9 | caspase 9 apoptosis-related cysteine p..." />
+    <Graphics CenterX="1083.6184384478095" CenterY="525.1100276052306" Width="60.0" Height="20.0" ZOrder="32838" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="842" />
+  </DataNode>
+  <DataNode TextLabel="CASP2" GraphId="a765d" Type="GeneProduct" GroupRef="e317d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CASP2 | caspase 2 apoptosis-related cysteine p..." />
+    <Graphics CenterX="1083.2163352061539" CenterY="647.2108676274662" Width="60.0" Height="20.0" ZOrder="32839" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="835" />
+  </DataNode>
+  <DataNode TextLabel="CYCS" GraphId="f443b" Type="GeneProduct" GroupRef="ff39a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYCS | cytochrome c somatic" />
+    <Graphics CenterX="1083.6184384478095" CenterY="485.11002760523075" Width="60.0" Height="20.0" ZOrder="32840" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="54205" />
+  </DataNode>
+  <DataNode TextLabel="CASP7" GraphId="d6a3a" Type="GeneProduct" GroupRef="e317d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CASP7 | caspase 7 apoptosis-related cysteine p..." />
+    <Graphics CenterX="1083.2163352061539" CenterY="607.2108676274662" Width="60.0" Height="20.0" ZOrder="32841" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="840" />
+  </DataNode>
+  <DataNode TextLabel="CASP3" GraphId="bb333" Type="GeneProduct" GroupRef="e317d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CASP3 | caspase 3 apoptosis-related cysteine p..." />
+    <Graphics CenterX="1083.2163352061539" CenterY="627.2108676274662" Width="60.0" Height="20.0" ZOrder="32842" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="836" />
+  </DataNode>
+  <DataNode TextLabel="APAF1" GraphId="b9ecb" Type="GeneProduct" GroupRef="ff39a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="APAF1 | apoptotic protease activating factor" />
+    <Graphics CenterX="1083.6184384478095" CenterY="505.11002760523104" Width="60.0" Height="20.0" ZOrder="32843" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Entrez Gene" ID="317" />
+  </DataNode>
+  <DataNode TextLabel="MAPK Signaling" GraphId="a2c94" Type="Pathway">
+    <Graphics CenterX="1312.939947556633" CenterY="265.8022594064039" Width="110.6208461423636" Height="20.0" ZOrder="32845" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP382" />
+  </DataNode>
+  <DataNode TextLabel="WNT Signaling" GraphId="ef324" Type="Pathway">
+    <Graphics CenterX="1313.003822645349" CenterY="289.9967235653821" Width="110.6208461423636" Height="20.0" ZOrder="32846" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP399" />
+  </DataNode>
+  <Line GraphId="id6655e7d4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="133.2403246311044" Y="101.80851076956816" GraphRef="c0d27" RelX="0.0" RelY="1.0" />
+      <Point X="133.65699129777067" Y="331.9096061797143" GraphRef="b52af" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb05a8a6d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="315.09341053806463" Y="341.90960617971416" GraphRef="e1fb1" RelX="-1.0" RelY="0.0" />
+      <Point X="271.7812571392169" Y="341.9096061797142" GraphRef="e40bf" RelX="1.0" RelY="0.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.4" Shape="None" GraphId="e78ee" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id982bbd29">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="205.82506090172183" Y="341.9096061797142" GraphRef="e40bf" RelX="-1.0" RelY="0.0" />
+      <Point X="166.6350894165182" Y="341.9096061797143" GraphRef="b52af" RelX="1.0" RelY="0.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.4" Shape="None" GraphId="efd77" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idcd20a6ff">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="297.5030180474318" Y="297.25218660877727" GraphRef="e32fe" RelX="0.0" RelY="1.0" />
+      <Point X="297.7685491785255" Y="341.90960617971416" GraphRef="e78ee" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation" />
+      <Anchor Position="0.4" Shape="None" GraphId="a718e" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8cfc2698">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="365.1633267438916" Y="215.64960607734156" GraphRef="b1e03" RelX="-0.5" RelY="1.0" />
+      <Point X="297.6092304998693" Y="315.115154437152" GraphRef="a718e" RelX="0.0" RelY="0.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf9a647c5">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="133.65699129777067" Y="351.9096061797143" GraphRef="b52af" RelX="0.0" RelY="1.0" />
+      <Point X="133.41400172860824" Y="438.5738980121002" GraphRef="b14ce" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd801024">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="133.41400172860824" Y="458.5738980121002" GraphRef="b14ce" RelX="0.0" RelY="1.0" />
+      <Point X="133.41400172860858" Y="548.3405358686255" GraphRef="ec4e1" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide92793e0">
+    <Comment>aggretion of misfolded mutatant</Comment>
+    <BiopaxRef>fa2</BiopaxRef>
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="405.1633267438916" Y="215.64960607734156" GraphRef="b1e03" RelX="0.5" RelY="1.0" />
+      <Point X="456.3727627829837" Y="257.84551717760206" />
+      <Point X="507.5821988220758" Y="227.12977394051066" GraphRef="a9baa" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id1687f4a7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1083.3341064981528" Y="406.00496489033014" GraphRef="e7148" RelX="0.0" RelY="1.0" />
+      <Point X="1083.6184384478095" Y="475.11002760523075" GraphRef="f443b" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+      <Anchor Position="0.2971868441720312" Shape="None" GraphId="c67b7" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id774eb550">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="615.3300212916952" Y="397.42302359664876" GraphRef="b1cdf" RelX="-1.0" RelY="0.0" />
+      <Point X="631.7235832396368" Y="495.3614366645136" GraphRef="ef928" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4121654730308088" Shape="None" GraphId="d0de3" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id732ca8c2">
+    <BiopaxRef>ba3</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="546.1289803795469" Y="440.3941257484336" GraphRef="c961e" RelX="1.0" RelY="0.0" />
+      <Point X="595.4416370833503" Y="441.0160183751305" GraphRef="d0de3" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id81be5e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="890.7981108658227" Y="442.9765836104435" GraphRef="af93c" RelX="-1.0" RelY="0.0" />
+      <Point X="847.3173755743501" Y="443.0122566606236" GraphRef="c77b4" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idebf7a170">
+    <Comment>O-glycosylation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="385.1633267438916" Y="215.64960607734156" GraphRef="b1e03" RelX="0.0" RelY="1.0" />
+      <Point X="635.1257436728973" Y="668.6773169375335" GraphRef="c1ec7" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idaf215340">
+    <Comment>Aggregation of misfolded mutant</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="506.1289803795469" Y="430.3941257484336" GraphRef="c961e" RelX="0.0" RelY="-1.0" />
+      <Point X="507.5821988220758" Y="227.12977394051066" GraphRef="a9baa" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb1cc7404">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="1049.0037417561173" Y="365.26963182911965" GraphRef="a1ead" RelX="0.0" RelY="1.0" />
+      <Point X="1048.9873215522957" Y="385.26963182911965" />
+      <Point X="1048.9709013484742" Y="406.6194180709094" />
+      <Point X="1083.4186062129686" Y="426.54208039488174" GraphRef="c67b7" RelX="0.0" RelY="0.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide4b5a766">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1045.2163352061539" Y="617.2108676274663" GraphRef="aba68" RelX="-1.0" RelY="0.0" />
+      <Point X="1015.4540611884977" Y="617.0513722523941" GraphRef="eea66" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id15c6ffdf">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1211.2848813715436" Y="277.3027686726074" GraphRef="cd757" RelX="1.0" RelY="0.0" />
+      <Point X="1257.629524485451" Y="265.8022594064039" GraphRef="a2c94" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id78636171">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1211.2848813715436" Y="277.3027686726074" GraphRef="cd757" RelX="1.0" RelY="0.0" />
+      <Point X="1257.693399574167" Y="289.9967235653821" GraphRef="ef324" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida0c2714">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1236.2866625601703" Y="625.3934942287515" />
+      <Point X="1286.6539238403382" Y="625.3934942287515" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f3d22">
+    <Graphics ZOrder="32778" LineThickness="1.0">
+      <Point X="189.95203741501783" Y="297.25218660877727" GraphRef="f797c" RelX="0.0" RelY="1.0" />
+      <Point X="190.14907230764038" Y="341.9096061797142" GraphRef="efd77" RelX="0.0" RelY="0.0" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a017f">
+    <Graphics ConnectorType="Curved" ZOrder="32821" LineStyle="Broken" LineThickness="1.0">
+      <Point X="799.5735607675906" Y="495.3614366645136" GraphRef="ef928" RelX="1.0" RelY="0.0" />
+      <Point X="847.4095102909865" Y="446.3922301305812" />
+      <Point X="821.1497515968767" Y="397.42302359664876" GraphRef="b1cdf" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.47375057537630083" Shape="None" GraphId="ae6b3" />
+      <Anchor Position="0.5826772885726271" Shape="None" GraphId="c77b4" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c8a8d">
+    <Comment>Aggregation of misfolded mutant</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="32824" LineThickness="1.0">
+      <Point X="930.7981108658227" Y="432.9765836104435" GraphRef="af93c" RelX="0.0" RelY="-1.0" />
+      <Point X="719.1901548439492" Y="257.84966698382493" />
+      <Point X="507.5821988220758" Y="227.12977394051066" GraphRef="a9baa" RelX="0.0" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c50ca">
+    <Graphics ZOrder="32836" LineThickness="1.0">
+      <Point X="1083.6184384478095" Y="543.1100276052306" GraphRef="a7dc8" RelX="0.0" RelY="1.0" />
+      <Point X="1083.2163352061539" Y="569.2108676274663" GraphRef="aba68" RelX="0.0" RelY="-1.0" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="X" GraphId="b1c13">
+    <Graphics CenterX="330.063626723224" CenterY="316.27783669141036" Width="36.585365853658594" Height="25.98091198303291" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="20" Valign="Middle" Color="cc0000" />
+  </Label>
+  <Label TextLabel="Lewy Body" GraphId="ce2bd" GroupRef="c560c">
+    <Graphics CenterX="505.5748522360639" CenterY="199.90419053515498" Width="90.751944684529" Height="40.62229904926517" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="666666" />
+  </Label>
+  <Label TextLabel="Ubiquitin pathway components" GraphId="b1cdf">
+    <Graphics CenterX="718.239886444286" CenterY="397.42302359664876" Width="205.81973030518145" Height="19.872249822569177" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="666666" />
+  </Label>
+  <Label TextLabel="O-glycosylation" GraphId="cb1a5">
+    <Graphics CenterX="509.05804261564197" CenterY="662.1714701870759" Width="106.98878343399439" Height="23.295944779982843" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Oxidative Stress" GraphId="ce27d">
+    <Graphics CenterX="195.37572254335254" CenterY="502.31213872832376" Width="141.04046242774558" Height="35.8381502890173" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="660099" />
+  </Label>
+  <Label TextLabel="Targets for Ub degradation" GraphId="ef928">
+    <BiopaxRef>ba3</BiopaxRef>
+    <BiopaxRef>b83</BiopaxRef>
+    <BiopaxRef>b48</BiopaxRef>
+    <BiopaxRef>b8f</BiopaxRef>
+    <Graphics CenterX="715.6485720036138" CenterY="495.3614366645136" Width="167.84997752795374" Height="28.39167219185572" ZOrder="32807" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="666666" />
+  </Label>
+  <Label TextLabel="X" GraphId="b4a4b">
+    <Graphics CenterX="566.465330058923" CenterY="441.5709897030198" Width="36.585365853658594" Height="25.98091198303291" ZOrder="32820" FillColor="ffffff" FontWeight="Bold" FontSize="20" Valign="Middle" Color="cc0000" />
+  </Label>
+  <Label TextLabel="X" GraphId="a22f6">
+    <Graphics CenterX="869.9209811204405" CenterY="444.10400059420397" Width="36.585365853658594" Height="25.98091198303291" ZOrder="32822" FillColor="ffffff" FontWeight="Bold" FontSize="20" Valign="Middle" Color="cc0000" />
+  </Label>
+  <Label TextLabel="Aggregation" GraphId="d567a">
+    <Graphics CenterX="539.2178286179692" CenterY="250.45851107790062" Width="89.73252804141501" Height="21.570319240724757" ZOrder="32823" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Cell Death" GraphId="f5e35">
+    <Graphics CenterX="133.90173410404617" CenterY="593.236994219653" Width="92.89017341040466" Height="35.8381502890173" ZOrder="32825" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="660099" />
+  </Label>
+  <Label TextLabel="Dopamine oxidation" GraphId="f7617">
+    <Graphics CenterX="201.90751445086704" CenterY="394.3930635838148" Width="141.04046242774558" Height="35.8381502890173" ZOrder="32826" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="660099" />
+  </Label>
+  <Label TextLabel="Ub Proteosome System&#xA;Dysfunction" GraphId="c7ac1">
+    <Graphics CenterX="717.1098265895951" CenterY="443.6994219653177" Width="141.04046242774558" Height="35.8381502890173" ZOrder="32827" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="660099" />
+  </Label>
+  <Label TextLabel="Toxicity" GraphId="d1d40">
+    <Graphics CenterX="588.9884393063588" CenterY="199.36416184971102" Width="82.13872832369857" Height="35.8381502890173" ZOrder="32828" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="660099" />
+  </Label>
+  <Label TextLabel="Dopaminergic Neuron" GraphId="ac5ef">
+    <Graphics CenterX="1269.4927533296243" CenterY="679.268352384865" Width="194.47683613902018" Height="40.62229904926517" ZOrder="32829" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" Color="666666" />
+  </Label>
+  <Label TextLabel="Mitochondrial&#xA;Dysfunction" GraphId="c55d3">
+    <BiopaxRef>db9</BiopaxRef>
+    <BiopaxRef>ade</BiopaxRef>
+    <Graphics CenterX="1019.9242889997795" CenterY="200.46975721372428" Width="109.42196531791731" Height="53.64161849710979" ZOrder="32830" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="660099" />
+  </Label>
+  <Label TextLabel="Cell Death" GraphId="e4f8c">
+    <BiopaxRef>ef1</BiopaxRef>
+    <Graphics CenterX="950.7406976136712" CenterY="641.8933497762565" Width="92.89017341040466" Height="35.8381502890173" ZOrder="32833" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="660099" />
+  </Label>
+  <Label TextLabel="X" GraphId="a9e64">
+    <Graphics CenterX="1047.7145486758814" CenterY="413.6795685918209" Width="36.585365853658594" Height="25.98091198303291" ZOrder="32844" FillColor="ffffff" FontWeight="Bold" FontSize="20" Valign="Middle" Color="cc0000" />
+  </Label>
+  <Label TextLabel="X" GraphId="c6d61">
+    <Graphics CenterX="1261.8530918664728" CenterY="582.1265780356835" Width="36.585365853658594" Height="25.98091198303291" ZOrder="32847" FillColor="ffffff" FontWeight="Bold" FontSize="20" Valign="Middle" Color="cc0000" />
+  </Label>
+  <Label TextLabel="Parkinson's disease genes:&#xA;pathogenic mutations" GraphId="e3b44">
+    <Graphics CenterX="1261.8530918664726" CenterY="495.8372276895316" Width="155.78819711966986" Height="38.7557649777051" ZOrder="32848" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Block of normal function&#xA;for mutated genes" GraphId="bd449">
+    <Graphics CenterX="1261.8530918664724" CenterY="561.1730094313997" Width="106.98878343399439" Height="36.10099058106182" ZOrder="32849" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Indirect action" GraphId="e5a15">
+    <Graphics CenterX="1261.8530918664728" CenterY="611.9897939810184" Width="106.98878343399439" Height="23.295944779982843" ZOrder="32850" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Shape GraphId="b432d">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="706.1107491856677" CenterY="428.8958541458542" Width="1340.2214983713354" Height="558.7917082917083" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="af2a6">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Mitochondria" />
+    <Graphics CenterX="1116.8629854878857" CenterY="319.1529060118084" Width="292.2632990115724" Height="200.23052256543377" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Mitochondria" LineThickness="3.0" Color="c0c0c0" Rotation="2.2181884665348255" />
+  </Shape>
+  <Shape GraphId="a9baa" GroupRef="c560c">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle" />
+    <Graphics CenterX="507.5821988220757" CenterY="199.47203841760634" Width="81.55142610198783" Height="55.315471045808636" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="ce05c">
+    <Graphics CenterX="1261.8530918664726" CenterY="555.2142642394821" Width="138.07963026280092" Height="178.13390593866433" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="c560c" GraphId="fa911" Style="Group" />
+  <Group GroupId="de30b" GraphId="b48c0" Style="Complex" />
+  <Group GroupId="f38ed" GraphId="acbb2" TextLabel="hsa:7317 hsa:7318" />
+  <Group GroupId="bb48a" GraphId="fabc5" TextLabel="hsa:7332 hsa:9246" />
+  <Group GroupId="b25f6" GraphId="b2014" TextLabel="hsa:118424 hsa:51465 hsa:7326 hsa:7327" />
+  <Group GroupId="fcf13" GraphId="f0cfe" TextLabel="hsa:1432 hsa:5600 hsa:5603 hsa:6300" />
+  <Group GroupId="ff39a" GraphId="a7dc8" />
+  <Group GroupId="e317d" GraphId="aba68" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>Parkinson disease pathway</bp:TERM>
+      
+      
+      <bp:ID>PW:0000018</bp:ID>
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>Parkinson's disease</bp:TERM>
+      
+      
+      <bp:ID>DOID:14330</bp:ID>
+      
+      
+      <bp:Ontology>Disease</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>Lewy body dementia</bp:TERM>
+      
+      
+      <bp:ID>DOID:12217</bp:ID>
+      
+      
+      <bp:Ontology>Disease</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>neurodegenerative disease</bp:TERM>
+      
+      
+      <bp:ID>DOID:1289</bp:ID>
+      
+      
+      <bp:Ontology>Disease</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>neurodegenerative disease pathway</bp:TERM>
+      
+      
+      <bp:ID>PW:0000014</bp:ID>
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="bc1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15952880</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The biochemistry of Parkinson's disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cookson MR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="cff">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15651302</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">[The gene products for familial Parkinson's disease provide us hints to elucidate the mechanisms of nigral degeneration].</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rinsho Shinkeigaku</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hattori N</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ba3">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15229644</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">How does parkin ligate ubiquitin to Parkinson's disease?</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO Rep</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kahle PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haass C</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="fa2">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15896322</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Common anti-apoptotic roles of parkin and alpha-synuclein in human dopaminergic cells.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Machida Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chiba T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takayanagi A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Asanuma M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ogawa N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koyama A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iwatsubo T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ito S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jansen PH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimizu N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizuno Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hattori N</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b83">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12716939</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkin binds to alpha/beta tubulin and increases their ubiquitination and degradation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neurosci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ren Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feng J</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b48">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12783850</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The p38 subunit of the aminoacyl-tRNA synthetase complex is a Parkin substrate: linking protein biosynthesis and neurodegeneration.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Corti O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hampe C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koutnikova H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darios F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jacquier S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prigent A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robinson JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pradier L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruberg M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mirande M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirsch E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rooney T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fournier A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brice A</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b8f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12628165</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkin is a component of an SCF-like ubiquitin ligase complex and protects postmitotic neurons from kainate excitotoxicity.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neuron</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Staropoli JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McDermott C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martinat C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schulman B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Demireva E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abeliovich A</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a6a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15503154</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Causes of Parkinson's disease: genetics of DJ-1.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Tissue Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abou-Sleiman PM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Healy DG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wood NW</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="dd9">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15505146</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">What does PINK1 mean for Parkinson diseases?</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neurology</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Singleton A</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="db9">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16495942</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expanding insights of mitochondrial dysfunction in Parkinson's disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Neurosci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abou-Sleiman PM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muqit MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wood NW</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a5c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17911161</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkinson's disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beal MF</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="dd8">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15054086</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Does alpha-synuclein modulate dopaminergic synaptic content and tone at the synapse?</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FASEB J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sidhu A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wersinger C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vernier P</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ef1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12728264</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Targeting programmed cell death in neurodegenerative diseases.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Neurosci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vila M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Przedborski S</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c3c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16022590</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular pathophysiology of Parkinson's disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Neurosci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moore DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">West AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dawson VL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dawson TM</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="fe0">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18426756</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Progress in the pathogenesis and genetics of Parkinson's disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Philos Trans R Soc Lond B Biol Sci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizuno Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hattori N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kubo S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sato S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishioka K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hatano T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomiyama H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Funayama M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Machida Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mochizuki H</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ade">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18680555</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial alterations in Parkinson's disease: new clues.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neurochem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vila M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ramonet D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perier C</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

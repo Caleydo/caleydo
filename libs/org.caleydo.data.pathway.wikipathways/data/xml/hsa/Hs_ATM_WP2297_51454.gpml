@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="ATM" Author="Arturo Manzo-Fontes" Organism="Homo sapiens">
+  <Graphics BoardWidth="1591.0" BoardHeight="622.548401037165" />
+  <Line GraphId="ideeadcee5" GroupRef="c5383">
+    <Comment>UV irradiation</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="334.9999999999998" Y="19.666666666666664" />
+      <Point X="305.9999999999998" Y="69.66666666666667" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="336.6051210025929" Y="169.5" GraphRef="be2d3" RelX="0.5" RelY="-1.0" />
+      <Point X="368.80256050129645" Y="156.0" />
+      <Point X="401.0" Y="170.375" />
+      <Point X="421.0" Y="184.75" GraphRef="e6434" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="3.0">
+      <Point X="462.0" Y="184.0" />
+      <Point X="498.0" Y="183.75" GraphRef="aa4c4" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="609.8068280034572" Y="170.2286084701816" GraphRef="aff14" RelX="0.0" RelY="1.0" />
+      <Point X="686.8333333333339" Y="239.33333333333394" GraphRef="cdc7b" RelX="-0.5" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3fc4e233">
+    <Graphics ConnectorType="Curved" ZOrder="12290" LineThickness="1.0">
+      <Point X="557.5568280034571" Y="103.47860847018146" GraphRef="d5848" RelX="-1.0" RelY="0.0" />
+      <Point X="213.5" Y="142.98930423509074" />
+      <Point X="213.5" Y="182.5" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb7c8d7ce">
+    <Graphics ZOrder="12292" LineThickness="1.0">
+      <Point X="162.30682800345724" Y="184.72860847018165" />
+      <Point X="273.3068280034572" Y="185.72860847018165" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id839fb413">
+    <Graphics ConnectorType="Curved" ZOrder="12294" LineThickness="1.0">
+      <Point X="207.97349467012464" Y="84.39527513684811" GraphRef="ca91d" RelX="-1.0" RelY="0.0" />
+      <Point X="110.53616282986206" Y="97.05483626036035" GraphRef="f0348" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id6f5039d">
+    <Graphics ConnectorType="Curved" ZOrder="12296" LineThickness="1.0">
+      <Point X="135.3068280034572" Y="111.22860847018146" GraphRef="fc767" RelX="1.0" RelY="0.0" />
+      <Point X="185.30682800345724" Y="146.47860847018154" />
+      <Point X="185.30682800345724" Y="181.72860847018165" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="P" GraphId="bfdec" GroupRef="cef6d">
+    <Graphics CenterX="717.2465559236575" CenterY="235.7440807804619" Width="15.0" Height="12.5" ZOrder="-7" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="P" GraphId="df623" GroupRef="a8b10">
+    <Graphics CenterX="571.0" CenterY="244.75" Width="16.0" Height="12.5" ZOrder="-2" FillColor="ffff00" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="DNA Damage" GraphId="c726b">
+    <Graphics CenterX="595.3068280034571" CenterY="102.72860847018146" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="  Cell Cycle&#xA;Checkpoint&#xA;  Control" GraphId="aa4c4">
+    <Graphics CenterX="528.0" CenterY="183.75" Width="60.0" Height="31.5" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="P" GraphId="a92a9" GroupRef="b5227">
+    <Graphics CenterX="425.0" CenterY="169.75" Width="16.0" Height="12.5" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ATM" GraphId="e338a">
+    <Graphics CenterX="320.3068280034572" CenterY="185.7286084701816" Width="80.0" Height="20.0" ZOrder="28674" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="53BP1" GraphId="fc767">
+    <Graphics CenterX="110.3068280034572" CenterY="111.22860847018146" Width="50.0" Height="25.0" ZOrder="28676" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Structural change of Chromatin" GraphId="ca91d">
+    <Graphics CenterX="292.47349467012464" CenterY="84.39527513684811" Width="169.0" Height="20.0" ZOrder="28678" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="P" GraphId="c91cd" GroupRef="f5920">
+    <Graphics CenterX="283.5" CenterY="168.25" Width="15.0" Height="12.5" ZOrder="28684" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="NBS1" GraphId="f6853" GroupRef="d93de">
+    <Graphics CenterX="609.8068280034572" CenterY="155.9786084701816" Width="35.975443941465755" Height="20.0" ZOrder="28686" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="UV Irradiation" GraphId="c9a51" GroupRef="c5383">
+    <Graphics CenterX="343.99999999999966" CenterY="13.00000000000001" Width="80.0" Height="20.0" ZOrder="28688" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Inactive Dimer" GraphId="a846b">
+    <Graphics CenterX="136.56006914433885" CenterY="214.34745030250684" Width="80.0" Height="20.0" ZOrder="28690" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ATM" GraphId="e5b7a">
+    <Graphics CenterX="139.5568280034572" CenterY="175.2286084701816" Width="80.0" Height="20.0" ZOrder="28694" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ATM" GraphId="d8ff9">
+    <Graphics CenterX="139.5568280034572" CenterY="195.22860847018165" Width="80.0" Height="20.0" ZOrder="28698" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="BID" GraphId="cf7e6">
+    <Graphics CenterX="444.5" CenterY="185.0" Width="23.0" Height="15.0" ZOrder="28703" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="P" GraphId="e194a">
+    <Graphics CenterX="472.8333333333334" CenterY="328.75" Width="15.0" Height="12.5" ZOrder="28709" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ATM" GraphId="f6ea6" GroupRef="a8b10">
+    <Graphics CenterX="546.6666666666677" CenterY="265.7809709017562" Width="33.666666666664696" Height="20.0" ZOrder="28717" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="MRE11" GraphId="e6984" GroupRef="e13f2">
+    <Graphics CenterX="1488.0" CenterY="373.5000000000001" Width="80.0" Height="20.0" ZOrder="28722" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="NBS1" GraphId="ef0f8" GroupRef="e13f2">
+    <Graphics CenterX="1503.0" CenterY="400.5000000000001" Width="80.0" Height="20.0" ZOrder="28723" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Rad50" GraphId="d2542" GroupRef="e13f2">
+    <Graphics CenterX="1521.0" CenterY="373.5000000000001" Width="80.0" Height="20.0" ZOrder="28725" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="NBS1" GraphId="c6603">
+    <Graphics CenterX="698.5833333333339" CenterY="253.58333333333394" Width="27.83333333333212" Height="24.66666666666606" ZOrder="28732" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="MRE11" GraphId="adcf8" GroupRef="f0e38">
+    <Graphics CenterX="668.9166666666677" CenterY="269.08333333333314" Width="35.83333333333235" Height="20.0" ZOrder="28735" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Rad50" GraphId="f6aff" GroupRef="c8cf2">
+    <Graphics CenterX="716.9166666666678" CenterY="275.08333333333314" Width="32.83333333333212" Height="20.0" ZOrder="28738" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="MRE11" GraphId="fe106" GroupRef="dd6d4">
+    <Graphics CenterX="594.5793172690771" CenterY="134.93531267928813" Width="35.83333333333235" Height="20.0" ZOrder="28744" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Rad50" GraphId="b9228" GroupRef="b9fdb">
+    <Graphics CenterX="624.0767355134834" CenterY="138.35355708548434" Width="32.83333333333212" Height="20.0" ZOrder="28747" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SMC" GraphId="f4644" GroupRef="c3d6a">
+    <Graphics CenterX="763.6146012621929" CenterY="261.0110441767066" Width="35.83333333333235" Height="20.0" ZOrder="28750" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="H2AX" GraphId="ffd7f" GroupRef="e7ff5">
+    <Graphics CenterX="714.2342226047057" CenterY="300.2709409064829" Width="35.83333333333235" Height="20.0" ZOrder="28753" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ATF2" GraphId="fdf1d" GroupRef="a84da">
+    <Graphics CenterX="688.0896442914525" CenterY="330.49469305794594" Width="35.83333333333235" Height="20.0" ZOrder="28756" FillColor="ffffff" FontSize="8" Valign="Middle" />
+  </Label>
+  <Shape GraphId="b4dc4" GroupRef="cef6d">
+    <Graphics CenterX="716.2465559236575" CenterY="234.7440807804619" Width="12.600259291270522" Height="12.348746758859193" ZOrder="-8" FillColor="ffff00" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="cdc7b">
+    <Graphics CenterX="698.5833333333339" CenterY="253.58333333333394" Width="47.0" Height="28.5" ZOrder="-5" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="b188f" GroupRef="a8b10">
+    <Graphics CenterX="570.0" CenterY="243.75" Width="13.0" Height="12.5" ZOrder="-3" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="aff14" GroupRef="d93de">
+    <Graphics CenterX="609.8068280034572" CenterY="155.9786084701816" Width="47.0" Height="28.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="e6295" GroupRef="b5227">
+    <Graphics CenterX="424.5" CenterY="169.25" Width="13.0" Height="12.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a5418">
+    <Graphics CenterX="451.25" CenterY="184.5" Width="20.5" Height="30.0" ZOrder="16386" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="e6434">
+    <Graphics CenterX="433.75" CenterY="184.75" Width="25.5" Height="28.5" ZOrder="16388" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="b719f">
+    <Graphics CenterX="292.47349467012464" CenterY="83.89527513684811" Width="159.0" Height="19.0" ZOrder="16390" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="bffa2" GroupRef="f5920">
+    <Graphics CenterX="283.48292999135697" CenterY="167.6743733794296" Width="12.600259291270522" Height="12.348746758859193" ZOrder="16392" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="be2d3">
+    <Graphics CenterX="318.9034140017286" CenterY="186.1143042350908" Width="70.80682800345721" Height="33.2286084701816" ZOrder="16394" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="d5848">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Extracellular region" />
+    <Graphics CenterX="595.3068280034571" CenterY="103.47860847018146" Width="75.5" Height="33.5" ZOrder="16398" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineStyle="Broken" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="e9ac1">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="534.7579948141746" CenterY="313.52420051858246" Width="1055.3154710458082" Height="558.0484010371651" ZOrder="16400" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="f0348">
+    <Graphics CenterX="110.53616282986205" CenterY="111.51945281235942" Width="41.5" Height="28.581515030500558" ZOrder="16402" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="6.274782143631939" />
+  </Shape>
+  <Shape GraphId="f2e5c">
+    <Graphics CenterX="139.5568280034572" CenterY="174.7286084701816" Width="55.5" Height="20.0" ZOrder="28692" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="feaab">
+    <Graphics CenterX="139.5568280034572" CenterY="194.72860847018165" Width="55.5" Height="20.0" ZOrder="28696" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="c2eff">
+    <Graphics CenterX="472.8162633246904" CenterY="328.17437337942926" Width="12.600259291270522" Height="12.348746758859193" ZOrder="28708" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="f853a" GroupRef="a8b10">
+    <Graphics CenterX="546.6666666666677" CenterY="265.7809709017562" Width="70.80682800345721" Height="33.2286084701816" ZOrder="28716" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a7a65" GroupRef="e13f2">
+    <Graphics CenterX="1502.5" CenterY="400.2500000000001" Width="47.0" Height="28.5" ZOrder="28719" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="d523e" GroupRef="e13f2">
+    <Graphics CenterX="1487.25" CenterY="372.7500000000001" Width="33.5" Height="25.5" ZOrder="28720" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="d3286" GroupRef="e13f2">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Extracellular region" />
+    <Graphics CenterX="1488.0" CenterY="347.75" Width="75.5" Height="33.5" ZOrder="28721" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineStyle="Broken" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="e4e34" GroupRef="e13f2">
+    <Graphics CenterX="1520.25" CenterY="372.7500000000001" Width="33.5" Height="25.5" ZOrder="28724" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="f60fc" GroupRef="f0e38">
+    <Graphics CenterX="668.4166666666677" CenterY="269.58333333333314" Width="33.5" Height="25.5" ZOrder="28728" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="aa572" GroupRef="c8cf2">
+    <Graphics CenterX="716.9166666666678" CenterY="275.08333333333314" Width="33.5" Height="25.5" ZOrder="28737" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="ee628" GroupRef="dd6d4">
+    <Graphics CenterX="594.0793172690771" CenterY="135.43531267928813" Width="33.5" Height="25.5" ZOrder="28743" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="ba059" GroupRef="b9fdb">
+    <Graphics CenterX="624.0767355134834" CenterY="138.35355708548434" Width="33.5" Height="25.5" ZOrder="28746" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a6e57" GroupRef="c3d6a">
+    <Graphics CenterX="763.6146012621928" CenterY="261.0110441767066" Width="33.5" Height="25.5" ZOrder="28749" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="b1fd6" GroupRef="e7ff5">
+    <Graphics CenterX="711.6524670109018" CenterY="301.24756167527244" Width="33.5" Height="18.84738955823309" ZOrder="28752" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="e59a8" GroupRef="a84da">
+    <Graphics CenterX="688.0896442914525" CenterY="330.49469305794594" Width="33.5" Height="18.84738955823309" ZOrder="28755" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="cef6d" GraphId="eb487" Style="Group" />
+  <Group GroupId="f5920" GraphId="a8bc8" Style="Group" />
+  <Group GroupId="b5227" Style="Group" />
+  <Group GroupId="a8b10" Style="Group" />
+  <Group GroupId="f0e38" GraphId="e3199" Style="Group" />
+  <Group GroupId="c8cf2" Style="Group" />
+  <Group GroupId="d93de" Style="Group" />
+  <Group GroupId="c3d6a" Style="Group" />
+  <Group GroupId="e7ff5" Style="Group" />
+  <Group GroupId="a84da" Style="Group" />
+  <Group GroupId="c5383" GraphId="a27ed" Style="Group" />
+  <Group GroupId="e13f2" Style="Group" />
+  <Group GroupId="dd6d4" GraphId="a8ac9" Style="Group" />
+  <Group GroupId="b9fdb" Style="Group" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="G1 to S cell cycle control" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes">Adapted from http://www.genomeknowledge.org/, and Maeda et al. Journal of Invest Dermatol. 2002. 119:22-26.</Comment>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">In the G1 phase there are two types of DNA damage responses, the p53-dependent and the p53-independent pathways. The p53-dependent responses inhibit CDKs through the up-regulation of genes encoding CKIs mediated by the p53 protein, whereas the p53-independent mechanisms inhibit CDKs through the inhibitory T14Y15 phosphorylation of Cdk2. Failure of DNA damage checkpoints in G1 leads to mutagenic replication of damaged templates and other replication defects.
+
+Source: Reactome http://www.reactome.org/cgi-bin/eventbrowser?DB=gk_current&amp;FOCUS_SPECIES=Homo%20sapiens&amp;ID=69615&amp;</Comment>
+  <BiopaxRef>a31</BiopaxRef>
+  <Graphics BoardWidth="1593.1666666666665" BoardHeight="890.5673700000001"/>
+  <DataNode TextLabel="CDK4" GraphId="c4a" Type="GeneProduct" GroupRef="ae286">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDK4 | cyclin-dependent kinase 4"/>
+    <Graphics CenterX="87.33333333333333" CenterY="133.5" Width="60.0" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1019"/>
+  </DataNode>
+  <DataNode TextLabel="CDK6" GraphId="e87" Type="GeneProduct" GroupRef="ae286">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDK6 | cyclin-dependent kinase 6"/>
+    <Graphics CenterX="87.33333333333333" CenterY="152.9999974568685" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1021"/>
+  </DataNode>
+  <DataNode TextLabel="CCND1" GraphId="d1f" Type="GeneProduct" GroupRef="cee0f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCND1 | cyclin D1 (PRAD1: parathyroid adenomato..."/>
+    <Graphics CenterX="208.33333333333334" CenterY="121.33333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="595"/>
+  </DataNode>
+  <DataNode TextLabel="CCND2" GraphId="ba0" Type="GeneProduct" GroupRef="cee0f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCND2 | cyclin D2"/>
+    <Graphics CenterX="208.33333333333334" CenterY="141.3333307902018" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="894"/>
+  </DataNode>
+  <DataNode TextLabel="CCND3" GraphId="d19" Type="GeneProduct" GroupRef="cee0f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCND3 | cyclin D3"/>
+    <Graphics CenterX="208.33333333333334" CenterY="161.3333282470703" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="896"/>
+  </DataNode>
+  <DataNode TextLabel="CyclinD" GraphId="cb0" Type="GeneProduct" GroupRef="cac42">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CyclinD"/>
+    <Graphics CenterX="149.33333333333334" CenterY="225.0" Width="56.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Cdk" GraphId="d98" Type="GeneProduct" GroupRef="cac42">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cdk"/>
+    <Graphics CenterX="149.3333257039388" CenterY="245.0" Width="56.46666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CDKN1A" GraphId="acc" Type="GeneProduct" GroupRef="e0a93">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN1A | cyclin-dependent kinase inhibitor 1A (..."/>
+    <Graphics CenterX="620.0" CenterY="122.00000127156575" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1026"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN1B" GraphId="a51" Type="GeneProduct" GroupRef="e0a93">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN1B | cyclin-dependent kinase inhibitor 1B (..."/>
+    <Graphics CenterX="620.0" CenterY="102.00000063578288" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1027"/>
+  </DataNode>
+  <DataNode TextLabel="CDK7" GraphId="c16" Type="GeneProduct" GroupRef="bddc6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDK7 | cyclin-dependent kinase 7 (MO15 homolog..."/>
+    <Graphics CenterX="241.0" CenterY="218.49999491373697" Width="60.0" Height="18.333333333333332" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1022"/>
+  </DataNode>
+  <DataNode TextLabel="CCNH" GraphId="d2c" Type="GeneProduct" GroupRef="bddc6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNH | cyclin H"/>
+    <Graphics CenterX="241.0" CenterY="236.8333282470703" Width="60.0" Height="18.333343505859375" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="902"/>
+  </DataNode>
+  <DataNode TextLabel="CyclinD" GraphId="c28" Type="GeneProduct" GroupRef="b704d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CyclinD"/>
+    <Graphics CenterX="342.6666666666667" CenterY="225.0" Width="56.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Cdk" GraphId="c51" Type="GeneProduct" GroupRef="b704d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cdk"/>
+    <Graphics CenterX="342.6666666666667" CenterY="245.0" Width="56.46666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="RB1" GraphId="a1f" Type="GeneProduct" GroupRef="e51cb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RB1 | retinoblastoma 1 (including osteosarcoma)..."/>
+    <Graphics CenterX="300.0" CenterY="432.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5925"/>
+  </DataNode>
+  <DataNode TextLabel="E2f" GraphId="fd1" Type="GeneProduct" GroupRef="e51cb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2f"/>
+    <Graphics CenterX="300.0" CenterY="452.6666666666667" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="E2F1" GraphId="a3b" Type="GeneProduct" GroupRef="f1537">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F1 | E2F transcription factor 1"/>
+    <Graphics CenterX="376.0" CenterY="449.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1869"/>
+  </DataNode>
+  <DataNode TextLabel="E2F2" GraphId="a3a" Type="GeneProduct" GroupRef="f1537">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F2 | E2F transcription factor 2"/>
+    <Graphics CenterX="376.0" CenterY="489.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1870"/>
+  </DataNode>
+  <DataNode TextLabel="E2F3" GraphId="e61" Type="GeneProduct" GroupRef="f1537">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F3 | E2F transcription factor 3"/>
+    <Graphics CenterX="376.0" CenterY="529.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1871"/>
+  </DataNode>
+  <DataNode TextLabel="RBL1" GraphId="ea2" Type="GeneProduct" GroupRef="aa81b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RBL1 | retinoblastoma-like 1 (p107)"/>
+    <Graphics CenterX="456.6666666666667" CenterY="449.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5933"/>
+  </DataNode>
+  <DataNode TextLabel="RB1" GraphId="d0d" Type="GeneProduct" GroupRef="aa81b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RB1 | retinoblastoma 1 (including osteosarcoma)..."/>
+    <Graphics CenterX="456.6666666666667" CenterY="429.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5925"/>
+  </DataNode>
+  <DataNode TextLabel="E2F4" GraphId="c70" Type="GeneProduct" GroupRef="f1537">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F4 | E2F transcription factor 4 p107/p130-bi..."/>
+    <Graphics CenterX="376.0" CenterY="429.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1874"/>
+  </DataNode>
+  <DataNode TextLabel="E2F5" GraphId="bb0" Type="GeneProduct" GroupRef="f1537">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F5 | E2F transcription factor 5 p130-binding..."/>
+    <Graphics CenterX="376.0" CenterY="469.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1875"/>
+  </DataNode>
+  <DataNode TextLabel="E2F6" GraphId="e0f" Type="GeneProduct" GroupRef="f1537">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2F6 | E2F transcription factor 6"/>
+    <Graphics CenterX="376.0" CenterY="509.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1876"/>
+  </DataNode>
+  <DataNode TextLabel="RB1" GraphId="d75" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RB1 | retinoblastoma 1 (including osteosarcoma)..."/>
+    <Graphics CenterX="123.33333333333333" CenterY="484.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5925"/>
+  </DataNode>
+  <DataNode TextLabel="E2f" GraphId="b4c" Type="GeneProduct" GroupRef="c6782">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="E2f"/>
+    <Graphics CenterX="160.0" CenterY="584.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="TFDP1" GraphId="e73" Type="GeneProduct" GroupRef="c6782">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TFDP1 | transcription factor Dp-1"/>
+    <Graphics CenterX="160.0" CenterY="604.0" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7027"/>
+  </DataNode>
+  <DataNode TextLabel="TFDP1" GraphId="eaf" Type="GeneProduct" GroupRef="e3954">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TFDP1 | transcription factor Dp-1"/>
+    <Graphics CenterX="203.33333333333334" CenterY="456.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7027"/>
+  </DataNode>
+  <DataNode TextLabel="TFDP2" GraphId="cc9" Type="GeneProduct" GroupRef="e3954">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TFDP2 | transcription factor Dp-2 (E2F dimeriza..."/>
+    <Graphics CenterX="203.33333333333334" CenterY="476.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7029"/>
+  </DataNode>
+  <DataNode TextLabel="CDK2" GraphId="c54" Type="GeneProduct" GroupRef="fa0a2">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDK2 | cyclin-dependent kinase 2"/>
+    <Graphics CenterX="1143.3333333333333" CenterY="142.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1017"/>
+  </DataNode>
+  <DataNode TextLabel="CCNE1" GraphId="f83" Type="GeneProduct" GroupRef="b129b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNE1 | cyclin E1"/>
+    <Graphics CenterX="1265.0" CenterY="130.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="898"/>
+  </DataNode>
+  <DataNode TextLabel="CCNE2" GraphId="ff4" Type="GeneProduct" GroupRef="b129b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNE2 | cyclin E2"/>
+    <Graphics CenterX="1265.0" CenterY="150.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9134"/>
+  </DataNode>
+  <DataNode TextLabel="POLE2" GraphId="dd7" Type="GeneProduct" GroupRef="b3014">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="POLE2 | polymerase (DNA directed) epsilon 2 (p..."/>
+    <Graphics CenterX="1006.6666666666666" CenterY="566.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5427"/>
+  </DataNode>
+  <DataNode TextLabel="POLE" GraphId="a3c" Type="GeneProduct" GroupRef="b3014">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="POLE | polymerase (DNA directed) epsilon"/>
+    <Graphics CenterX="1006.6666666666666" CenterY="586.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5426"/>
+  </DataNode>
+  <DataNode TextLabel="CDC25A" GraphId="fbc" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDC25A | cell division cycle 25A"/>
+    <Graphics CenterX="1078.0" CenterY="311.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="993"/>
+  </DataNode>
+  <DataNode TextLabel="WEE1" GraphId="eb5" Type="GeneProduct" GroupRef="cb29c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="WEE1 | WEE1 homolog (S. pombe)"/>
+    <Graphics CenterX="1087.3333333333333" CenterY="236.16666666666666" Width="60.0" Height="19.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7465"/>
+  </DataNode>
+  <DataNode TextLabel="MYT1" GraphId="cc8" Type="GeneProduct" GroupRef="cb29c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MYT1 | myelin transcription factor 1"/>
+    <Graphics CenterX="1087.3333333333333" CenterY="256.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4661"/>
+  </DataNode>
+  <DataNode TextLabel="CCNE1" GraphId="bd6" Type="GeneProduct" GroupRef="e1db1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNE1 | cyclin E1"/>
+    <Graphics CenterX="1175.3333333333333" CenterY="237.33333333333334" Width="56.46666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="898"/>
+  </DataNode>
+  <DataNode TextLabel="CCNE1" GraphId="fc1" Type="GeneProduct" GroupRef="e82a0">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNE1 | cyclin E1"/>
+    <Graphics CenterX="983.6666666666666" CenterY="237.0" Width="56.46666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="898"/>
+  </DataNode>
+  <DataNode TextLabel="CDK4" GraphId="abd" Type="GeneProduct" GroupRef="e1a85">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDK4 | cyclin-dependent kinase 4"/>
+    <Graphics CenterX="1106.6666666666667" CenterY="679.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1019"/>
+  </DataNode>
+  <DataNode TextLabel="CDK6" GraphId="a5f" Type="GeneProduct" GroupRef="e1a85">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDK6 | cyclin-dependent kinase 6"/>
+    <Graphics CenterX="1106.6666666666667" CenterY="699.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1021"/>
+  </DataNode>
+  <DataNode TextLabel="CDK7" GraphId="ca6" Type="GeneProduct" GroupRef="e1a85">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDK7 | cyclin-dependent kinase 7 (MO15 homolog..."/>
+    <Graphics CenterX="1106.6666666666667" CenterY="719.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1022"/>
+  </DataNode>
+  <DataNode TextLabel="CDC45L" GraphId="add" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDC45L | CDC45 cell division cycle 45-like (S. ..."/>
+    <Graphics CenterX="1006.6666666666666" CenterY="484.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8318"/>
+  </DataNode>
+  <DataNode TextLabel="RPA2" GraphId="c1b" Type="GeneProduct" GroupRef="aeb5d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RPA2 | replication protein A2 32kDa"/>
+    <Graphics CenterX="1006.6666666666666" CenterY="659.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6118"/>
+  </DataNode>
+  <DataNode TextLabel="RPA3" GraphId="d37" Type="GeneProduct" GroupRef="aeb5d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RPA3 | replication protein A3 14kDa"/>
+    <Graphics CenterX="1006.6666666666666" CenterY="679.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6119"/>
+  </DataNode>
+  <DataNode TextLabel="RPA1" GraphId="e96" Type="GeneProduct" GroupRef="aeb5d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RPA1 | replication protein A1 70kDa"/>
+    <Graphics CenterX="1006.6666666666666" CenterY="639.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6117"/>
+  </DataNode>
+  <DataNode TextLabel="MCM2" GraphId="d88" Type="GeneProduct" GroupRef="a109f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MCM2 | MCM2 minichromosome maintenance deficien..."/>
+    <Graphics CenterX="1106.6666666666667" CenterY="512.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4171"/>
+  </DataNode>
+  <DataNode TextLabel="MCM3" GraphId="d5b" Type="GeneProduct" GroupRef="a109f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MCM3 | MCM3 minichromosome maintenance deficien..."/>
+    <Graphics CenterX="1106.6666666666667" CenterY="532.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4172"/>
+  </DataNode>
+  <DataNode TextLabel="MCM4" GraphId="d3e" Type="GeneProduct" GroupRef="a109f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MCM4 | MCM4 minichromosome maintenance deficien..."/>
+    <Graphics CenterX="1106.6666666666667" CenterY="552.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4173"/>
+  </DataNode>
+  <DataNode TextLabel="MCM5" GraphId="dfb" Type="GeneProduct" GroupRef="a109f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MCM5 | MCM5 minichromosome maintenance deficien..."/>
+    <Graphics CenterX="1106.6666666666667" CenterY="572.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4174"/>
+  </DataNode>
+  <DataNode TextLabel="MCM6" GraphId="d80" Type="GeneProduct" GroupRef="a109f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MCM6 | MCM6 minichromosome maintenance deficien..."/>
+    <Graphics CenterX="1106.6666666666667" CenterY="592.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4175"/>
+  </DataNode>
+  <DataNode TextLabel="MCM7" GraphId="d87" Type="GeneProduct" GroupRef="a109f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MCM7 | MCM7 minichromosome maintenance deficien..."/>
+    <Graphics CenterX="1106.6666666666667" CenterY="612.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4176"/>
+  </DataNode>
+  <DataNode TextLabel="ORC1L" GraphId="d6c" Type="GeneProduct" GroupRef="c1849">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ORC1L | origin recognition complex subunit 1-l..."/>
+    <Graphics CenterX="833.6666666666666" CenterY="611.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4998"/>
+  </DataNode>
+  <DataNode TextLabel="ORC2L" GraphId="e4c" Type="GeneProduct" GroupRef="c1849">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ORC2L | origin recognition complex subunit 2-l..."/>
+    <Graphics CenterX="833.6666666666666" CenterY="631.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4999"/>
+  </DataNode>
+  <DataNode TextLabel="ORC3L" GraphId="db2" Type="GeneProduct" GroupRef="c1849">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ORC3L | origin recognition complex subunit 3-l..."/>
+    <Graphics CenterX="833.6666666666666" CenterY="651.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23595"/>
+  </DataNode>
+  <DataNode TextLabel="ORC4L" GraphId="f68" Type="GeneProduct" GroupRef="c1849">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ORC4L | origin recognition complex subunit 4-l..."/>
+    <Graphics CenterX="833.6666666666666" CenterY="551.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5000"/>
+  </DataNode>
+  <DataNode TextLabel="ORC5L" GraphId="fdb" Type="GeneProduct" GroupRef="c1849">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ORC5L | origin recognition complex subunit 5-l..."/>
+    <Graphics CenterX="833.6666666666666" CenterY="571.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5001"/>
+  </DataNode>
+  <DataNode TextLabel="ORC6L" GraphId="de7" Type="GeneProduct" GroupRef="c1849">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ORC6L | origin recognition complex subunit 6 h..."/>
+    <Graphics CenterX="833.6666666666666" CenterY="591.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23594"/>
+  </DataNode>
+  <DataNode TextLabel="PRIM1" GraphId="f96" Type="GeneProduct" GroupRef="f8b94">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRIM1 | primase polypeptide 1 49kDa"/>
+    <Graphics CenterX="1107.6666666666667" CenterY="758.5" Width="60.0" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5557"/>
+  </DataNode>
+  <DataNode TextLabel="PRIM2A" GraphId="b87" Type="GeneProduct" GroupRef="f8b94">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PRIM2A | primase polypeptide 2A 58kDa"/>
+    <Graphics CenterX="1107.6666666666667" CenterY="778.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5558"/>
+  </DataNode>
+  <DataNode TextLabel="POLA2" GraphId="f38" Type="GeneProduct" GroupRef="b3014">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="POLA2 | polymerase (DNA directed) alpha 2 (70k..."/>
+    <Graphics CenterX="1006.6666666666666" CenterY="606.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23649"/>
+  </DataNode>
+  <DataNode TextLabel="PCNA" GraphId="a7d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PCNA | proliferating cell nuclear antigen"/>
+    <Graphics CenterX="680.0" CenterY="418.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5111"/>
+  </DataNode>
+  <DataNode TextLabel="TP53" GraphId="b74" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TP53 | tumor protein p53 (Li-Fraumeni syndrome)..."/>
+    <Graphics CenterX="657.0" CenterY="207.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7157"/>
+  </DataNode>
+  <DataNode TextLabel="GADD45A" GraphId="ef6" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GADD45A | growth arrest and DNA-damage-inducibl..."/>
+    <Graphics CenterX="526.6666666666666" CenterY="264.6666666666667" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1647"/>
+  </DataNode>
+  <DataNode TextLabel="MDM2" GraphId="c06" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MDM2 | Mdm2 transformed 3T3 cell double minute..."/>
+    <Graphics CenterX="756.6666666666666" CenterY="205.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4193"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN2C" GraphId="db7" Type="GeneProduct" GroupRef="c7189">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN2C | cyclin-dependent kinase inhibitor 2C (..."/>
+    <Graphics CenterX="488.6666666666667" CenterY="96.3333371480306" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1031"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN2B" GraphId="c04" Type="GeneProduct" GroupRef="c7189">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN2B | cyclin-dependent kinase inhibitor 2B (..."/>
+    <Graphics CenterX="488.6666666666667" CenterY="56.333333333333336" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1030"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN2D" GraphId="c80" Type="GeneProduct" GroupRef="c7189">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN2D | cyclin-dependent kinase inhibitor 2D (..."/>
+    <Graphics CenterX="488.6666666666667" CenterY="116.33333841959636" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1032"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN2A" GraphId="afb" Type="GeneProduct" GroupRef="c7189">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN2A | cyclin-dependent kinase inhibitor 2A (..."/>
+    <Graphics CenterX="488.6666666666667" CenterY="76.33333325386047" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1029"/>
+  </DataNode>
+  <DataNode TextLabel="CCNA1" GraphId="fd6" Type="GeneProduct" GroupRef="ae99b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNA1 | cyclin A1"/>
+    <Graphics CenterX="162.33333333333334" CenterY="737.0000203450521" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8900"/>
+  </DataNode>
+  <DataNode TextLabel="CCNB1" GraphId="cf1" Type="GeneProduct" GroupRef="ae99b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNB1 | cyclin B1"/>
+    <Graphics CenterX="162.33333333333334" CenterY="757.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="891"/>
+  </DataNode>
+  <DataNode TextLabel="ATM" GraphId="ec1" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATM | ataxia telangiectasia mutated (includes c..."/>
+    <Graphics CenterX="757.3333333333334" CenterY="141.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="472"/>
+  </DataNode>
+  <DataNode TextLabel="TP53" GraphId="c7d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TP53 | tumor protein p53 (Li-Fraumeni syndrome)..."/>
+    <Graphics CenterX="854.6666666666666" CenterY="208.33333333333334" Width="41.06666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7157"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN1C" GraphId="b8e" Type="GeneProduct" GroupRef="e0a93">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDKN1C | cyclin-dependent kinase inhibitor 1C (..."/>
+    <Graphics CenterX="620.0" CenterY="82.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1028"/>
+  </DataNode>
+  <DataNode TextLabel="CCNG2" GraphId="c19" Type="GeneProduct" GroupRef="ae99b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CCNG2 | cyclin G2"/>
+    <Graphics CenterX="282.3333333333333" CenterY="718.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="901"/>
+  </DataNode>
+  <DataNode TextLabel="MYC" GraphId="d30" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MYC | v-myc myelocytomatosis viral oncogene hom..."/>
+    <Graphics CenterX="463.3333333333333" CenterY="191.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4609"/>
+  </DataNode>
+  <DataNode TextLabel="CREB1" GraphId="e9d" Type="GeneProduct" GroupRef="cf085">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREB1 | cAMP responsive element binding protein..."/>
+    <Graphics CenterX="1294.3333333333333" CenterY="542.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1385"/>
+  </DataNode>
+  <DataNode TextLabel="CREBL1" GraphId="d66" Type="GeneProduct" GroupRef="cf085">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREBL1 | cAMP responsive element binding protei..."/>
+    <Graphics CenterX="1294.3333333333333" CenterY="562.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1388"/>
+  </DataNode>
+  <DataNode TextLabel="CREB3L1" GraphId="ee5" Type="GeneProduct" GroupRef="cf085">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREB3L1 | cAMP responsive element binding prote..."/>
+    <Graphics CenterX="1294.3333333333333" CenterY="582.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="90993"/>
+  </DataNode>
+  <DataNode TextLabel="CREB3" GraphId="cb1" Type="GeneProduct" GroupRef="cf085">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREB3 | cAMP responsive element binding protein..."/>
+    <Graphics CenterX="1294.3333333333333" CenterY="602.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10488"/>
+  </DataNode>
+  <DataNode TextLabel="CREB3L4" GraphId="bf4" Type="GeneProduct" GroupRef="cf085">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREB3L4 | cAMP responsive element binding prote..."/>
+    <Graphics CenterX="1294.3333333333333" CenterY="622.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="148327"/>
+  </DataNode>
+  <DataNode TextLabel="CREB3L3" GraphId="cb9" Type="GeneProduct" GroupRef="cf085">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREB3L3 | cAMP responsive element binding prote..."/>
+    <Graphics CenterX="1294.3333333333333" CenterY="642.3333333333334" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="84699"/>
+  </DataNode>
+  <DataNode TextLabel="MNAT1" GraphId="de1" Type="GeneProduct" GroupRef="bddc6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MNAT1 | menage a trois 1 (CAK assembly factor)"/>
+    <Graphics CenterX="241.0" CenterY="254.66666666666666" Width="60.0" Height="18.666666666666668" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4331"/>
+  </DataNode>
+  <DataNode TextLabel="CDK1" GraphId="b0b" Type="GeneProduct" GroupRef="ae99b">
+    <Graphics CenterX="162.33333333333334" CenterY="717.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="983"/>
+  </DataNode>
+  <DataNode TextLabel="CDK" GraphId="bec" Type="GeneProduct" GroupRef="e82a0">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cdk"/>
+    <Graphics CenterX="983.6666666666666" CenterY="257.0" Width="56.46666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CDC2A" GraphId="df5" Type="GeneProduct">
+    <Graphics CenterX="1106.6666666666667" CenterY="624.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CDK" GraphId="b2e" Type="GeneProduct" GroupRef="e1db1">
+    <Graphics CenterX="1175.3333333333333" CenterY="257.3333333333333" Width="56.46666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Line GraphId="c68ce">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="240.4" Y="620.4" GraphRef="c0ee1" RelX="0.0" RelY="0.0"/>
+      <Point X="270.0" Y="574.3333333333334" GraphRef="ec3" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d75b8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1139.1" Y="247.33333333333331" GraphRef="a28c4" RelX="-1.0" RelY="0.0"/>
+      <Point X="1019.9" Y="247.0" GraphRef="dbc65" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="c2f11"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a2a5d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="953.3333333333334" Y="231.33333333333334"/>
+      <Point X="933.3333333333334" Y="231.33333333333334"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bcbb6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="687.0" Y="207.0" GraphRef="b74" RelX="1.0" RelY="0.0"/>
+      <Point X="834.1333333333334" Y="208.33333333333334" GraphRef="c7d" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="bac31"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f034c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="850.0" Y="201.33333333333334"/>
+      <Point X="870.0" Y="144.66666666666666"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a11d4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="757.3333333333334" Y="151.33333333333334" GraphRef="ec1" RelX="0.0" RelY="1.0"/>
+      <Point X="756.6666666666666" Y="195.33333333333334" GraphRef="c06" RelX="0.0" RelY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fae2c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1184.6666666666667" Y="359.0000000000001" GraphRef="e4d" RelX="-0.5" RelY="1.0"/>
+      <Point X="1063.3333333333333" Y="441.5" GraphRef="df3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a183d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="300.0" Y="470.6666666666667" GraphRef="dbce3" RelX="0.0" RelY="1.0"/>
+      <Point X="183.33333333333334" Y="557.3333333333334" GraphRef="b4c" RelX="1.1666666666666667" RelY="-2.6666666666666665" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e9fd8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="151.83333333333331" Y="187.3333282470703" GraphRef="c5ddf" RelX="0.0" RelY="1.0"/>
+      <Point X="149.33333333333334" Y="215.0" GraphRef="cb0" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fc77f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="710.0" Y="418.0" GraphRef="a7d" RelX="1.0" RelY="0.0"/>
+      <Point X="1001.1666666666665" Y="451.0" GraphRef="df3" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e702e">
+    <Comment Source="GenMAPP remarks">Maeda Gadd45 regulates G2/m arrest</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="563.3333333333333" Y="278.0" GraphRef="ef6" RelX="1.1" RelY="1.3333333333333333"/>
+      <Point X="1136.0" Y="342.91666666666674" GraphRef="e4d" RelX="-1.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d378f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="160.0" Y="622.0" GraphRef="bd846" RelX="0.0" RelY="1.0"/>
+      <Point X="361.0" Y="618.0"/>
+      <Anchor Position="0.4" Shape="None" GraphId="c0ee1"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5378">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="630.3333333333334" Y="220.33333333333334" GraphRef="b74" RelX="-0.8888888888888888" RelY="1.3333333333333333"/>
+      <Point X="563.3333333333333" Y="251.33333333333334" GraphRef="ef6" RelX="1.1" RelY="-1.3333333333333333" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a5674">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="370.9" Y="245.0" GraphRef="c51" RelX="1.0" RelY="0.0"/>
+      <Point X="387.66666666666663" Y="234.41666666666663" GraphRef="ac1" RelX="-1.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ea16a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="658.0" Y="102.00000063578287" GraphRef="c9c53" RelX="1.0" RelY="0.0"/>
+      <Point X="1080.0" Y="140.16666666666666" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c94d5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1208.1666666666665" Y="176.0" GraphRef="b9599" RelX="0.0" RelY="1.0"/>
+      <Point X="1183.6666666666667" Y="220.33333333333334" GraphRef="fc1" RelX="7.083825265643448" RelY="-1.6666666666666667" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f32f6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="526.6666666666666" Y="254.66666666666669" GraphRef="ef6" RelX="0.0" RelY="-1.0"/>
+      <Point X="601.0" Y="140.00000127156574" GraphRef="c9c53" RelX="-0.5" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e25b0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="342.66666666666674" Y="263.0" GraphRef="ee892" RelX="0.0" RelY="1.0"/>
+      <Point X="300.0" Y="414.6666666666667" GraphRef="dbce3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aa2be">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1175.3333333333333" Y="275.3333333333333" GraphRef="a28c4" RelX="0.0" RelY="1.0"/>
+      <Point X="1233.3333333333335" Y="326.83333333333337" GraphRef="e4d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="adb05">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="185.66666666666669" Y="235.0" GraphRef="a5ffb" RelX="1.0" RelY="0.0"/>
+      <Point X="306.33333333333337" Y="235.0" GraphRef="ee892" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="d3414"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ae7b4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="526.6666666666666" Y="274.6666666666667" GraphRef="ef6" RelX="0.0" RelY="1.0"/>
+      <Point X="680.0" Y="408.0" GraphRef="a7d" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d139f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="450.66666666666674" Y="86.33333587646484" GraphRef="e78c7" RelX="-1.0" RelY="0.0"/>
+      <Point X="246.33333333333334" Y="141.3333307902018" GraphRef="acd80" RelX="1.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="afc7f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="463.3333333333333" Y="201.33333333333334" GraphRef="d30" RelX="0.0" RelY="1.0"/>
+      <Point X="509.99999999999994" Y="254.66666666666669" GraphRef="ef6" RelX="-0.5" RelY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ec9ea">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="657.0" Y="197.0" GraphRef="b74" RelX="0.0" RelY="-1.0"/>
+      <Point X="639.0" Y="140.00000127156574" GraphRef="c9c53" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5185">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="756.6666666666666" Y="195.33333333333334" GraphRef="c06" RelX="0.0" RelY="-1.0"/>
+      <Point X="745.8533333333334" Y="207.53333333333333" GraphRef="bac31" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fb81b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1049.3333333333333" Y="246.33333333333331" GraphRef="c83ee" RelX="-1.0" RelY="0.0"/>
+      <Point X="1091.4199999999998" Y="247.2" GraphRef="c2f11" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d20ab">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="983.6666666666666" Y="275.0" GraphRef="dbc65" RelX="0.0" RelY="1.0"/>
+      <Point X="1079.5" Y="313.0"/>
+      <Point X="1175.3333333333333" Y="275.3333333333333" GraphRef="a28c4" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5048552166491381" Shape="None" GraphId="c4542"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d95a4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1078.0" Y="321.6666666666667" GraphRef="fbc" RelX="0.0" RelY="1.0"/>
+      <Point X="1080.4723435884753" Y="312.9805731360626" GraphRef="c4542" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a744f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="241.0" Y="264.0" GraphRef="de1" RelX="0.0" RelY="1.0"/>
+      <Point X="233.93333333333337" Y="235.0" GraphRef="d3414" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="G1 Cyclin&#10;Dependant Cyclases" GraphId="d8b">
+    <Graphics CenterX="88.33333333333333" CenterY="109.5" Width="107.33333333333333" Height="29.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cyclin Ds" GraphId="f4c">
+    <Graphics CenterX="214.33333333333334" CenterY="98.0" Width="63.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="p" GraphId="b6f">
+    <Graphics CenterX="290.3333333333333" CenterY="222.25" Width="15.333333333333334" Height="21.5" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="p" GraphId="ac1">
+    <Graphics CenterX="395.3333333333333" CenterY="234.41666666666666" Width="15.333333333333334" Height="19.166666666666668" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="p" GraphId="cb8">
+    <Graphics CenterX="323.3333333333333" CenterY="302.3333333333333" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="E2f" GraphId="b14" GroupRef="f1537">
+    <Graphics CenterX="376.0" CenterY="402.6666666666667" Width="30.333333333333332" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Rb" GraphId="dd3" GroupRef="aa81b">
+    <Graphics CenterX="456.6666666666667" CenterY="406.0" Width="27.333333333333332" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="dp1" GraphId="d74" GroupRef="e3954">
+    <Graphics CenterX="203.33333333333334" CenterY="432.6666666666667" Width="34.333333333333336" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="TTTCC/GCGC" GraphId="e4a">
+    <Graphics CenterX="180.0" CenterY="611.3333333333334" Width="89.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cell cycle DNA replication genes" GraphId="ec3">
+    <Graphics CenterX="371.75" CenterY="574.3333333333334" Width="203.5" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="G1 Phase" GraphId="aa4">
+    <Graphics CenterX="240.0" CenterY="38.0" Width="78.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="G1/S transition Phase" GraphId="bb8">
+    <Graphics CenterX="1170.0" CenterY="41.333333333333336" Width="169.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cyclin Es" GraphId="a4a">
+    <Graphics CenterX="1265.0" CenterY="110.0" Width="62.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="G1/S transition Cyclin&#10;Dependent Kinases" GraphId="c64">
+    <Graphics CenterX="1152.6666666666667" CenterY="115.0" Width="135.33333333333334" Height="30.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="p" GraphId="be9">
+    <Graphics CenterX="930.0" CenterY="231.33333333333334" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="inactive" GraphId="d60">
+    <Graphics CenterX="973.3333333333334" CenterY="181.33333333333334" Width="64.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="phosphorylation of proteins&#10;involved in G1/S transition" GraphId="e4d">
+    <Graphics CenterX="1233.3333333333333" CenterY="342.9166666666667" Width="194.66666666666666" Height="32.166666666666664" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="DNA polymerases" GraphId="dea">
+    <Graphics CenterX="1006.6666666666666" CenterY="508.0" Width="142.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="DNA replication" GraphId="df3">
+    <Graphics CenterX="1063.3333333333333" CenterY="451.0" Width="124.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="origin recognition complex" GraphId="a77" GroupRef="c1849">
+    <Graphics CenterX="844.0" CenterY="523.3333333333334" Width="162.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="p" GraphId="ac6">
+    <Graphics CenterX="1037.3333333333333" CenterY="223.33333333333334" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="G1/S Cell Cycle" GraphId="ca4">
+    <Graphics CenterX="713.3333333333334" CenterY="241.33333333333334" Width="121.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Checkpoint" GraphId="b5f">
+    <Graphics CenterX="713.3333333333334" CenterY="261.3333333333333" Width="93.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="G2 Phase-M phase" GraphId="eb8" GroupRef="ae99b">
+    <Graphics CenterX="212.33333333333334" CenterY="673.6666666666666" Width="147.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="u" GraphId="bda">
+    <Graphics CenterX="866.3333333333334" CenterY="163.0" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="u" GraphId="eb0">
+    <Graphics CenterX="860.1666666666666" CenterY="174.66666666666666" Width="15.666666666666666" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="u" GraphId="ed0">
+    <Graphics CenterX="866.6666666666666" CenterY="154.66666666666666" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Degradation" GraphId="b89">
+    <Graphics CenterX="866.6666666666666" CenterY="238.0" Width="99.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="p" GraphId="def">
+    <Graphics CenterX="782.6666666666666" CenterY="164.0" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="e" GraphId="cf7">
+    <Graphics CenterX="641.6666666666666" CenterY="158.08333333333334" Width="14.333333333333334" Height="17.833333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="cak" GraphId="b55">
+    <Graphics CenterX="239.0" CenterY="255.0" Width="32.333333333333336" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="b" GraphId="fa6">
+    <Graphics CenterX="575.0" CenterY="164.66666666666666" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="b" GraphId="c79">
+    <Graphics CenterX="574.6666666666666" CenterY="324.5833333333333" Width="15.333333333333334" Height="20.833333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="e" GraphId="af2">
+    <Graphics CenterX="491.9166666666667" CenterY="222.66666666666666" Width="14.166666666666666" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="b1c">
+    <Graphics CenterX="148.0" CenterY="177.66666666666666" Width="213.33333333333334" Height="10.666666666666666" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="3.141592653589793"/>
+  </Shape>
+  <Shape GraphId="f07">
+    <Graphics CenterX="1216.6666666666667" CenterY="176.0" Width="200.0" Height="8.666666666666666" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="3.141592653589793"/>
+  </Shape>
+  <Shape GraphId="bb7" GroupRef="ae99b">
+    <Graphics CenterX="234.66666666666666" CenterY="730.3333333333334" Width="271.0256" Height="142.54673333333332" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="dcc">
+    <Graphics CenterX="446.6666666666667" CenterY="88.0" Width="100.02046666666666" Height="8.666666666666666" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="4.700693607219001"/>
+  </Shape>
+  <Shape GraphId="b547b">
+    <Graphics CenterX="670.533671545804" CenterY="440.4059893076672" Width="1143.16111743975" Height="184.8231751150703" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Arc" Rotation="3.135499812001188"/>
+  </Shape>
+  <Group GroupId="cac42" GraphId="a5ffb"/>
+  <Group GroupId="b704d" GraphId="ee892"/>
+  <Group GroupId="c7189" GraphId="e78c7"/>
+  <Group GroupId="e0a93" GraphId="c9c53"/>
+  <Group GroupId="e82a0" GraphId="dbc65"/>
+  <Group GroupId="e1db1" GraphId="a28c4"/>
+  <Group GroupId="cb29c" GraphId="c83ee"/>
+  <Group GroupId="cf085" GraphId="ba55a"/>
+  <Group GroupId="c1849" GraphId="e45df"/>
+  <Group GroupId="a109f" GraphId="d2c49"/>
+  <Group GroupId="f8b94" GraphId="e4a93"/>
+  <Group GroupId="e1a85" GraphId="e8b7c"/>
+  <Group GroupId="aeb5d" GraphId="e54c7"/>
+  <Group GroupId="b3014" GraphId="e41e5"/>
+  <Group GroupId="aa81b" GraphId="ce043"/>
+  <Group GroupId="f1537" GraphId="a83dc"/>
+  <Group GroupId="e51cb" GraphId="dbce3"/>
+  <Group GroupId="c6782" GraphId="bd846"/>
+  <Group GroupId="e3954" GraphId="e0d6e"/>
+  <Group GroupId="ae99b" GraphId="ab390"/>
+  <Group GroupId="bddc6" GraphId="f8a32"/>
+  <Group GroupId="b129b" GraphId="e7636" GroupRef="fa0a2"/>
+  <Group GroupId="fa0a2" GraphId="b9599"/>
+  <Group GroupId="cee0f" GraphId="acd80" GroupRef="ae286"/>
+  <Group GroupId="ae286" GraphId="c5ddf"/>
+  <InfoBox CenterX="5.0" CenterY="285.0"/>
+  <Legend CenterX="1448.3333333333333" CenterY="8.333333333333334"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a31">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12164919</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GADD45 regulates G2/M arrest, DNA repair, and cell death in keratinocytes following ultraviolet exposure.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Invest Dermatol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maeda T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanna AN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sim AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chua PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chong MT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tron VA</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>cell cycle checkpoint pathway</bp:TERM><bp:ID>PW:0000094</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

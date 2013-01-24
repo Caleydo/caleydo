@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Post-translational protein modification" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="D'Eustachio, P" Maintainer="D'Eustachio, P" Email="deustp01@nyumc.org">
+  <Comment Source="WikiPathways-description">After translation, many newly formed proteins undergo further covalent modifications that alter their functional properties and that are essentially irreversible under physiological conditions in the body. These modifications include the internal peptide bond cleavages that activate proenzymes, the attachment of oligosaccharide moieties to membrane-bound and secreted proteins, the attachment of lipid or glycolipid moieties that serve to anchor proteins to cellular membranes, and the vitamin K-dependent attachment of carboxyl groups to glutamate residues.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n1_REACTOME_163841" TextLabel="Post-translational &#10;modification: gamma &#10;carboxylation and hypusine &#10;formation&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">After translation, many newly formed proteins undergo further covalent modifications that alter their functional properties and that are essentially irreversible under physiological conditions in the body. These modifications include the vitamin K-dependent attachment of carboxyl groups to glutamate residues and the conversion of lysine residues to hypusine.</Comment>
+    <Graphics Color="000000" CenterX="345.0" CenterY="448.5" Width="162.0" Height="89.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_1069"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_163125" TextLabel="Post-translational &#10;modification: synthesis of &#10;GPI-anchored proteins&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Glycosylphosphatidyl inositol (GPI) acts as a membrane anchor for many cell surface proteins. GPI is synthesized in the endoplasmic reticulum. In humans, a single pathway consisting of eleven reactions appears to be responsible for the synthesis of the major GPI species involved in membrane protein anchoring.&lt;p&gt;As a nascent protein fated to become GPI-anchored moves into the lumen of the endoplasmic reticulum, it is attacked by a transamidase complex that cleaves it near its carboxy terminus and attaches an acylated GPI moiety. The GPI moiety is deacylated, yielding a protein-GPI conjugate that can be efficiently transported to the Golgi apparatus.</Comment>
+    <Graphics Color="000000" CenterX="548.5" CenterY="446.5" Width="171.0" Height="89.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_1853"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_446203" TextLabel="Asparagine N-linked &#10;glycosylation&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">N-linked glycosylation is the most important form of post-translational modification for proteins synthesized and folded in the Endoplasmic Reticulum (Stanley P et al, 2009). An early study in 1999 revealed that about 50% of the proteins in the Swiss-Prot database at the time were N-glycosylated (Apweiler R et al, 1999). It is now established that the majority of the proteins in the secretory pathway require glycosylation in order to achieve proper folding.&lt;br&gt;The addition of an N-glycan to a protein can have several roles (Shental-Bechor D and Levy Y, 2009). First, glycans enhance the solubility and stability of the proteins in the ER, the golgi and on the outside of the cell membrane, where the composition of the medium is strongly hydrophilic and where proteins, that are mostly hydrophobic, have difficulty folding properly. Second, N-glycans are used as signal molecules during the folding and transport process of the protein: they have the role of labels to determine when a protein must interact with a chaperon, be transported to the golgi, or targeted for degradation in case of major folding defects. Third, and most importantly, N-glycans on completely folded proteins are involved in a wide range of processes: they help determine the specificity of membrane receptors in innate immunity or in cell-to-cell interactions, they can change the properties of hormones and secreted proteins, or of the proteins in the vesicular system inside the cell.&lt;br&gt;All N-linked glycans are derived from a common 14-sugar oligosaccharide synthesized in the ER, which is attached co-translationally to a protein while this is being translated inside the reticulum. The process of the synthesis of this glycan, known as Synthesis of the N-glycan precursor or LLO, constitutes one of the most conserved pathways in eukaryotes, and has been also observed in some eubacteria. The attachment usually happens on an asparagine residue within the consensus sequence asparagine-X-threonine by an complex called oligosaccharyl transferase (OST).&lt;br&gt;After being attached to an unfolded protein, the glycan is used as a label molecule in the folding process (also known as Calnexin/Calreticulin cycle) (Lederkremer GZ, 2009). The majority of the glycoproteins in the ER require at least one glycosylated residue in order to achieve proper folding, even if it has been shown that a smaller portion of the proteins in the ER can be folded without this modification.&lt;br&gt;Once the glycoprotein has achieved proper folding, it is transported via the Cis-golgi through all the Golgi compartments, where the glycan is further modified according to the properties of the glycoprotein. This process involves relatively few enzymes but due to its combinatorial nature, can lead to several millions of different possible modifications. The exact topography of this network of reactions has not been established yet, representing one of the major challenges after the sequencing of the human genome (Hossler P et al, 2006).&lt;br&gt;Since N-glycosylation is involved in an great number of different processes, from cell-cell interaction to folding control, mutations in one of the genes involved in glycan assembly and/or modification can lead to severe development problems (often affecting the central nervous system). All the diseases in genes involved in glycosylation are collectively known as Congenital Disorders of Glycosylation (CDG) (Sparks SE et al, 2003), and classified as CDG type I for the genes in the LLO synthesis pathway, and CDG type II for the others.</Comment>
+    <BiopaxRef>lit_570869</BiopaxRef>
+    <BiopaxRef>lit_771699</BiopaxRef>
+    <BiopaxRef>lit_914250</BiopaxRef>
+    <BiopaxRef>lit_914255</BiopaxRef>
+    <BiopaxRef>lit_901058</BiopaxRef>
+    <BiopaxRef>lit_914244</BiopaxRef>
+    <Graphics Color="000000" CenterX="744.5" CenterY="447.5" Width="155.0" Height="91.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_22426"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_570869" rdf:id="lit_570869">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20301244</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N-Glycans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stanley, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schachter, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taniguchi, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Varki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cummings, RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Esko, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Freeze, HH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stanley, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bertozzi, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, GW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Etzler, ME</bp:AUTHORS>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_771699" rdf:id="lit_771699">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20301507</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Congenital Disorders of Glycosylation Overview</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sparks, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krasnewich, DM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pagon, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bird, TC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dolan, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stephens, K</bp:AUTHORS>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_914250" rdf:id="lit_914250">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10580125</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">On the frequency of protein glycosylation, as deduced from analysis of the SWISS-PROT database</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Apweiler, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hermjakob, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharon, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1473:4-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_914255" rdf:id="lit_914255">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19647993</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Folding of glycoproteins: toward understanding the biophysics of the glycosylation code</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shental-Bechor, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levy, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Struct Biol 19:524-33</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_901058" rdf:id="lit_901058">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19616933</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glycoprotein folding, quality control and ER-associated degradation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lederkremer, GZ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Struct Biol 19:515-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_914244" rdf:id="lit_914244">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16807922</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GlycoVis: visualizing glycan distribution in the protein N-glycosylation pathway in mammalian cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hossler, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goh, LT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hu, WS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biotechnol Bioeng 95:946-60</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

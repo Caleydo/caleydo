@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Complement Activation, Classical Pathway" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Comment Source="WikiPathways-description">The complement system is a biochemical cascade that helps, or âcomplementsâ, the ability of antibodies to clear pathogens from an organism. It is part of the immune system called the innate immune system that is not adaptable and does not change over the course of an individual's lifetime. However, it can be recruited and brought into action by the adaptive immune system. The Classical pathway of activation of the complement system is a group of blood proteins that mediate the specific antibody response. [source: Wikipedia)</Comment>
+  <BiopaxRef>a6c</BiopaxRef>
+  <Graphics BoardWidth="969.1" BoardHeight="631.4"/>
+  <DataNode TextLabel="C1QA" GraphId="a79" Type="GeneProduct" GroupRef="c4295">
+    <Comment Source="GenMAPP remarks">update: C1QA HUMAN</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C1QA | complement component 1 q subcomponent ..."/>
+    <Graphics CenterX="165.0" CenterY="105.66666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="712"/>
+  </DataNode>
+  <DataNode TextLabel="C1QB" GraphId="a29" Type="GeneProduct" GroupRef="c4295">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C1QB | complement component 1 q subcomponent ..."/>
+    <Graphics CenterX="165.0" CenterY="125.66666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="713"/>
+  </DataNode>
+  <DataNode TextLabel="C1QG" GraphId="b02" Type="GeneProduct" GroupRef="c4295">
+    <Comment Source="GenMAPP remarks">update C1QC HUMAN</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C1QG | complement component 1 q subcomponent ..."/>
+    <Graphics CenterX="165.0" CenterY="145.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="714"/>
+  </DataNode>
+  <DataNode TextLabel="C1R" GraphId="a35" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C1R | complement component 1 r subcomponent"/>
+    <Graphics CenterX="48.333333333333336" CenterY="163.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="715"/>
+  </DataNode>
+  <DataNode TextLabel="C1S" GraphId="a0b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C1S | complement component 1 s subcomponent"/>
+    <Graphics CenterX="98.0" CenterY="224.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="716"/>
+  </DataNode>
+  <DataNode TextLabel="DAF" GraphId="eed" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DAF | decay accelerating factor for complement ..."/>
+    <Graphics CenterX="394.0" CenterY="131.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1604"/>
+  </DataNode>
+  <DataNode TextLabel="MASP1" GraphId="b73" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MASP1 | mannan-binding lectin serine protease 1..."/>
+    <Graphics CenterX="427.6666666666667" CenterY="210.33333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5648"/>
+  </DataNode>
+  <DataNode TextLabel="C2" GraphId="c86" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C2 | complement component 2"/>
+    <Graphics CenterX="426.3333333333333" CenterY="280.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="717"/>
+  </DataNode>
+  <DataNode TextLabel="C3" GraphId="c99" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C3 | complement component 3"/>
+    <Graphics CenterX="510.0" CenterY="280.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="718"/>
+  </DataNode>
+  <DataNode TextLabel="C5" GraphId="fcc" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C5 | complement component 5"/>
+    <Graphics CenterX="596.6666666666666" CenterY="280.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="727"/>
+  </DataNode>
+  <DataNode TextLabel="C6" GraphId="e77" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C6 | complement component 6"/>
+    <Graphics CenterX="630.0" CenterY="320.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="729"/>
+  </DataNode>
+  <DataNode TextLabel="C7" GraphId="fb7" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C7 | complement component 7"/>
+    <Graphics CenterX="663.3333333333334" CenterY="356.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="730"/>
+  </DataNode>
+  <DataNode TextLabel="C8A" GraphId="b55" Type="GeneProduct" GroupRef="b81cb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C8A | complement component 8 alpha polypeptide..."/>
+    <Graphics CenterX="704.6666666666666" CenterY="396.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="731"/>
+  </DataNode>
+  <DataNode TextLabel="C8B" GraphId="e26" Type="GeneProduct" GroupRef="b81cb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C8B | complement component 8 beta polypeptide"/>
+    <Graphics CenterX="704.6666666666666" CenterY="416.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="732"/>
+  </DataNode>
+  <DataNode TextLabel="C9" GraphId="d72" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C9 | complement component 9"/>
+    <Graphics CenterX="741.3333333333334" CenterY="443.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="735"/>
+  </DataNode>
+  <DataNode TextLabel="C4A" GraphId="f70" Type="GeneProduct" GroupRef="b9210">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C4A | complement component 4A"/>
+    <Graphics CenterX="337.6666666666667" CenterY="268.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="720"/>
+  </DataNode>
+  <DataNode TextLabel="C4B" GraphId="ee8" Type="GeneProduct" GroupRef="b9210">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="C4B | complement component 4B"/>
+    <Graphics CenterX="337.6666666666667" CenterY="288.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="721"/>
+  </DataNode>
+  <DataNode TextLabel="H2O" GraphId="d956b" Type="Metabolite">
+    <Graphics CenterX="858.0" CenterY="488.0" Width="46.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB02111"/>
+  </DataNode>
+  <Line GraphId="f1659">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="98.0" Y="214.66666666666666" GraphRef="a0b" RelX="0.0" RelY="-1.0"/>
+      <Point X="132.2" Y="194.36666666666667" GraphRef="d08cc" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dc808">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="48.33333333333334" Y="173.0" GraphRef="a35" RelX="0.0" RelY="1.0"/>
+      <Point X="67.17072553634108" Y="194.02209922008657" GraphRef="d9c1f" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ccc0f">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="187.81537096087578" Y="194.66135312166168" GraphRef="fcff5" RelX="0.0" RelY="0.0"/>
+      <Point X="177.48989967952065" Y="193.0"/>
+      <Point X="165.0" Y="163.66666666666666" GraphRef="b02b0" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5da7">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="283.6666666666667" Y="204.83333333333337" GraphRef="d80" RelX="0.0" RelY="1.0"/>
+      <Point X="318.6666666666667" Y="250.0" GraphRef="e8e4e" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="cc716"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d8b4d">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="6.666666666666667" Y="440.0"/>
+      <Point X="43.333333333333336" Y="440.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d9661">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="590.0" Y="283.3333333333333"/>
+      <Point X="670.0" Y="363.3333333333333"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c71c9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="670.0" Y="366.6666666666667"/>
+      <Point X="750.0" Y="446.6666666666667"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a15d2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="673.3333333333334" Y="356.6666666666667"/>
+      <Point X="752.3333333333334" Y="438.6666666666667"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de581">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="740.0" Y="446.6666666666667"/>
+      <Point X="740.0" Y="574.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e9f54">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="750.0" Y="446.6666666666667"/>
+      <Point X="750.0" Y="572.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5569">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="626.6666666666666" Y="280.0" GraphRef="fcc" RelX="1.0" RelY="0.0"/>
+      <Point X="645.0" Y="310.0" GraphRef="e77" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ec72a">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="660.0" Y="320.0" GraphRef="e77" RelX="1.0" RelY="0.0"/>
+      <Point X="678.3333333333334" Y="346.6666666666667" GraphRef="fb7" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d357a">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="693.3333333333334" Y="356.6666666666667" GraphRef="fb7" RelX="1.0" RelY="0.0"/>
+      <Point X="723.6666666666666" Y="378.6666666666667" GraphRef="c88a3" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e9e31">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="742.6666666666666" Y="406.6666666666667" GraphRef="c88a3" RelX="1.0" RelY="0.0"/>
+      <Point X="756.3333333333334" Y="433.6666666666667" GraphRef="d72" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d25cc">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="756.6666666666666" Y="476.6666666666667"/>
+      <Point X="773.3333333333334" Y="460.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cf168">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="773.3333333333334" Y="460.0"/>
+      <Point X="793.3333333333334" Y="460.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c8b07">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="793.3333333333334" Y="460.0"/>
+      <Point X="793.3333333333334" Y="473.3333333333333"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fda65">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="793.3333333333334" Y="473.3333333333333"/>
+      <Point X="783.3333333333334" Y="483.3333333333333"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f2d85">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="783.3333333333334" Y="483.3333333333333"/>
+      <Point X="783.3333333333334" Y="496.6666666666667"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e4011">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="756.6666666666666" Y="503.3333333333333"/>
+      <Point X="773.3333333333334" Y="520.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d9de5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="773.3333333333334" Y="520.0"/>
+      <Point X="793.3333333333334" Y="520.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af7d7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="793.3333333333334" Y="520.0"/>
+      <Point X="793.3333333333334" Y="503.3333333333333"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fe950">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="793.3333333333334" Y="503.3333333333333"/>
+      <Point X="783.3333333333334" Y="493.3333333333333"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6c9e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="756.6666666666666" Y="490.0"/>
+      <Point X="783.3333333333334" Y="490.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5918">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0000ff">
+      <Point X="6.666666666666667" Y="460.0"/>
+      <Point X="43.333333333333336" Y="460.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cb06a">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0000ff">
+      <Point X="43.333333333333336" Y="453.3333333333333"/>
+      <Point X="43.333333333333336" Y="466.6666666666667"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c47ac">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="427.6666666666667" Y="220.33333333333334" GraphRef="b73" RelX="0.0" RelY="1.0"/>
+      <Point X="426.3333333333333" Y="270.0" GraphRef="c86" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ce6c8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="771.3333333333334" Y="443.6666666666667" GraphRef="d72" RelX="1.0" RelY="0.0"/>
+      <Point X="805.0" Y="473.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d67e0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="63.0" Y="194.0"/>
+      <Point X="236.0" Y="194.91666666666669" GraphRef="d80" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.7214761327218254" Shape="None" GraphId="fcff5"/>
+      <Anchor Position="0.024108240094457088" Shape="None" GraphId="d9c1f"/>
+      <Anchor Position="0.4" Shape="None" GraphId="d08cc"/>
+      <Anchor Position="0.8522820207469474" Shape="None" GraphId="ee16b"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e7668">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="593.3333333333333" Y="273.3333333333333" GraphRef="fcc" RelX="-0.1111111111111111" RelY="-0.6666666666666666"/>
+      <Point X="673.3333333333334" Y="353.3333333333333"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b456a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1.0" Y="273.0"/>
+      <Point X="590.0" Y="273.3333333333333"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="afbce">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="618.1666666666665" Y="490.5" GraphRef="faf" RelX="1.0" RelY="0.0"/>
+      <Point X="835.0" Y="488.0" GraphRef="d956b" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f9a28">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="0000ff">
+      <Point X="297.6666666666667" Y="222.90000000000003" GraphRef="cc716" RelX="0.0" RelY="0.0" ArrowHead="TBar"/>
+      <Point X="394.0" Y="141.66666666666666" GraphRef="eed" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d58f1">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="160.66666666666666" Y="251.99999999999997" GraphRef="a2ca4" RelX="0.5" RelY="-1.0"/>
+      <Point X="210.4447895892219" Y="194.78125851901805" GraphRef="ee16b" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d2b4b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="41.0" Y="283.0"/>
+      <Point X="590.0" Y="286.6666666666667" GraphRef="fcc" RelX="-0.2222222222222222" RelY="0.6666666666666666"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ec986">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="846.5" Y="498.0" GraphRef="d956b" RelX="-0.5" RelY="1.0"/>
+      <Point X="618.1666666666665" Y="499.25" GraphRef="faf" RelX="1.0" RelY="0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aac39">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="397.6666666666667" Y="210.33333333333334" GraphRef="b73" RelX="-1.0" RelY="0.0"/>
+      <Point X="352.6666666666667" Y="258.0" GraphRef="f70" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cd3df">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="337.6666666666667" Y="298.0" GraphRef="ee8" RelX="0.0" RelY="1.0"/>
+      <Point X="426.3333333333333" Y="290.0" GraphRef="c86" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7195">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="441.3333333333333" Y="290.0" GraphRef="c86" RelX="0.5" RelY="1.0"/>
+      <Point X="510.0" Y="290.0" GraphRef="c99" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f797f">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="525.0" Y="290.0" GraphRef="c99" RelX="0.5" RelY="1.0"/>
+      <Point X="596.6666666666666" Y="290.0" GraphRef="fcc" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="antigen/antibody&#10;complex" GraphId="b8d">
+    <Graphics CenterX="153.33333333333334" CenterY="320.6666666666667" Width="112.33333333333333" Height="30.666666666666668" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="C1 complex" GraphId="d80">
+    <Graphics CenterX="283.6666666666667" CenterY="194.91666666666669" Width="95.33333333333333" Height="19.83333333333337" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="aggregated IgG,&#10;IgM-antigen complex,&#10;polyanions, RNA, DNA&#10;lipopolysaccharides" GraphId="aa8">
+    <Graphics CenterX="150.0" CenterY="367.0" Width="83.33333333333333" Height="46.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="8" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Membrane&#10;attack complex" GraphId="e3c">
+    <Graphics CenterX="715.5" CenterY="521.6666666666666" Width="89.0" Height="32.666666666666664" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ions" GraphId="faf">
+    <Graphics CenterX="595.0833333333334" CenterY="490.5" Width="46.166666666666664" Height="35.000000000000014" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="bb4">
+    <Graphics CenterX="463.3333333333333" CenterY="363.3333333333333" Width="87.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Plasma&#10;Membrane" GraphId="dfa">
+    <Graphics CenterX="19.0" CenterY="280.8333333333333" Width="52.333333333333336" Height="28.333333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Prevents Complement Attack" GraphId="f25">
+    <Graphics CenterX="150.0" CenterY="463.3333333333333" Width="188.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Proteolytic Cleavage" GraphId="d6b">
+    <Graphics CenterX="123.33333333333333" CenterY="440.0" Width="137.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Complex&#10;Formation" GraphId="d13">
+    <Graphics CenterX="846.6666666666666" CenterY="422.8333333333333" Width="62.333333333333336" Height="28.333333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="d62" GroupRef="dc284">
+    <Graphics CenterX="150.0" CenterY="273.3333333333333" Width="13.333333333333334" Height="26.666666666666668" ZOrder="16384" FillColor="808080" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ae2" GroupRef="dc284">
+    <Graphics CenterX="143.33333333333334" CenterY="280.0" Width="13.333333333333334" Height="26.666666666666668" ZOrder="16384" FillColor="c0c0c0" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b00" GroupRef="dc284">
+    <Graphics CenterX="156.66666666666666" CenterY="280.0" Width="13.333333333333334" Height="26.666666666666668" ZOrder="16384" FillColor="c0c0c0" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f6b" GroupRef="dc284">
+    <Graphics CenterX="150.0" CenterY="286.6666666666667" Width="13.333333333333334" Height="26.666666666666668" ZOrder="16384" FillColor="dfdfdf" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b49">
+    <Graphics CenterX="716.6666666666666" CenterY="483.3333333333333" Width="80.0" Height="13.333333333333334" ZOrder="16384" FillColor="dfdfdf" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b30">
+    <Graphics CenterX="716.6666666666666" CenterY="496.6666666666667" Width="80.0" Height="13.333333333333334" ZOrder="16384" FillColor="dfdfdf" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="c4295" GraphId="b02b0"/>
+  <Group GroupId="b9210" GraphId="e8e4e"/>
+  <Group GroupId="b81cb" GraphId="c88a3"/>
+  <Group GroupId="dc284" GraphId="a2ca4" Style="Group"/>
+  <InfoBox CenterX="5.0" CenterY="496.0"/>
+  <Legend CenterX="564.6" CenterY="88.33333333333333"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a6c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16387686 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Opportunities for new therapies based on the natural regulators of complement activation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ann N Y Acad Sci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brook E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Herbert AP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jenkins HT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soares DC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barlow PN</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

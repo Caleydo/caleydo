@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Diabetes pathways" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Maintainer="May, B, Gopinathrao, G" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0"/>
+  <DataNode TextLabel="Regulation of Insulin-like Growth &#10;Factor (IGF) Activity by Insulin-like &#10;Growth Factor Binding Proteins &#10;(IGFBPs)&#10;" GraphId="n295_REACTOME_381426" Type="Pathway">
+    <Comment Source="WikiPathways-description">The family of Insulin like Growth Factor Binding Proteins (IGFBPs) share 50% amino acid identity with conserved N terminal and C terminal regions responsible for binding Insulin like Growth Factors I and II (IGF I and IGF II). Most circulating IGFs are in complexes with IGFBPs, which are believed to increase the residence of IGFs in the body, modulate availability of IGFs to target receptors for IGFs, reduce insulin like effects of IGFs, and act as signaling molecules independently of IGFs.
+About 75% of circulating IGFs are in 1500 220 KDa complexes with IGFBP 3 and ALS. Such complexes are too large to pass the endothelial barrier. The remaining 20 25% of IGFs are bound to other IGFBPs in 40 50 KDa complexes. IGFs are released from IGF:IGFBP complexes by proteolysis of the IGFBP. IGFs become active after release, however IGFs may also have activity when still bound to some IGFBPs.
+IGFBP 1 is enriched in amniotic fluid and is produced in the liver under control of insulin (insulin suppresses production). IGFBP 1 binding stimulates IGF function. It is unknown which if any protease degrades IGFBP 1.
+IGFBP 2 is enriched in cerebrospinal fluid; its binding inhibits IGF function. IGFBP 2 is not significantly degraded in circulation.
+IGFBP 3, which binds most IGF in the body is enriched in follicular fluid and found in many other tissues. IGFBP 3 may be cleaved by plasmin, thrombin, Prostate specific Antigen (PSA), Matrix Metalloprotease 1, and Matrix Metalloprotease 2. IGFBP 3 also binds extracellular matrix and binding lowers its affinity for IGFs. IGFBP 3 binding stimulates the effects of IGFs.
+IGFBP 4 acts to inhibit IGF function and is cleaved by Pregnancy associated Plasma Protein A (PAPP A) to release IGF.
+IGFBP 5 is enriched in bone matrix; its binding stimulates IGF function. IGFBP 5 is cleaved by Pregnancy Associated Plasma Protein A2 (PAPP A2), ADAM 9, complement C1s from smooth muscle, and thrombin. Only the cleavage site for PAPP A2 is known.
+IGFBP 6 is enriched in cerebrospinal fluid. It is unknown which if any protease degrades IGFBP 6.</Comment>
+    <BiopaxRef>lit_381400</BiopaxRef>
+    <BiopaxRef>lit_381419</BiopaxRef>
+    <BiopaxRef>lit_381407</BiopaxRef>
+    <BiopaxRef>lit_381401</BiopaxRef>
+    <BiopaxRef>lit_381493</BiopaxRef>
+    <BiopaxRef>lit_381476</BiopaxRef>
+    <Graphics CenterX="527.0" CenterY="103.5" Width="202.0" Height="99.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_15428"/>
+  </DataNode>
+  <DataNode TextLabel="Unfolded Protein &#10;Response&#10;" GraphId="n296_REACTOME_381119" Type="Pathway">
+    <Comment Source="WikiPathways-description">The Unfolded Protein Response (UPR) is a regulatory system that protects the Endoplasmic Reticulum (ER) from overload. The UPR is provoked by the accumulation of improperly folded protein in the ER during times of unusually high secretion activity. Analysis of mutants with altered UPR, however, shows that the UPR is also required for normal development and function of secretory cells.&lt;br&gt;One level at which the URP operates is transcriptional and translational regulation: mobilization of ATF6 and IRE1 leads to increased transcription of genes encoding chaperones, and mobilization of PERK (pancreatic eIF2alpha kinase) leads to phosphorylation of the translation initiation factor eIF2alpha and global down-regulation of protein synthesis. These three regulatory pathways are annotated here.</Comment>
+    <BiopaxRef>lit_381027</BiopaxRef>
+    <BiopaxRef>lit_381191</BiopaxRef>
+    <BiopaxRef>lit_381139</BiopaxRef>
+    <BiopaxRef>lit_381103</BiopaxRef>
+    <BiopaxRef>lit_380997</BiopaxRef>
+    <Graphics CenterX="315.0" CenterY="105.0" Width="136.0" Height="52.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_18356"/>
+  </DataNode>
+  <DataNode TextLabel="Binding of RNA by Insulin-like &#10;Growth Factor-2 mRNA Binding &#10;Proteins (IGF2BPs/IMPs/VICKZs)&#10;" GraphId="n297_REACTOME_428359" Type="Pathway">
+    <Comment Source="WikiPathways-description">Insulin-like Growth Factor-2 mRNA Binding Proteins (IGF2BPs) bind specific sets of RNA and regulate their translation, stability, and subcellular localization. IGF2BP1, IGF2BP2, and IGF2BP3 bind about 8400 protein-coding transcripts. The target RNAs contain the sequence motif CAUH (where H is A, U, or, C) and binding of IGFBPs increases the stability of the target RNAs.</Comment>
+    <BiopaxRef>lit_428364</BiopaxRef>
+    <BiopaxRef>lit_428344</BiopaxRef>
+    <BiopaxRef>lit_428295</BiopaxRef>
+    <BiopaxRef>lit_428325</BiopaxRef>
+    <BiopaxRef>lit_428351</BiopaxRef>
+    <BiopaxRef>lit_847676</BiopaxRef>
+    <Graphics CenterX="529.5" CenterY="219.0" Width="199.0" Height="84.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_22166"/>
+  </DataNode>
+  <DataNode TextLabel="Regulation of Insulin &#10;Secretion&#10;" GraphId="n299_REACTOME_422356" Type="Pathway">
+    <Comment Source="WikiPathways-description">Pancreatic beta cells integrate signals from several metabolites and hormones to control the secretion of insulin. In general, glucose triggers insulin secretion while other factors can amplify or inhibit the amount of insulin secreted in response to glucose. Factors which increase insulin secretion include the incretin hormones Glucose-dependent insulinotropic polypeptide (GIP and glucagon-like peptide-1 (GLP-1), acetylcholine, and fatty acids. Factors which inhibit insulin secretion include adrenaline and noradrenaline.&lt;p&gt;Increased blood glucose levels from dietary carbohydrate play a dominant role in  insulin release from the beta cells of the pancreas. Glucose catabolism in the beta cell is the transducer that links increased glucose levels to insulin release. Glucose uptake and glycolysis generate cytosolic pyruvate; pyruvate is transported to mitochondria and converted both to oxaloacetate which increases levels of TCA cycle intermediates, and to acetyl-CoA which is oxidized to CO2 via the TCA cycle. The rates of ATP synthesis and transport to the cytosol increase, plasma membrane ATP-sensitive inward rectifying potassium channels (KATP channels) close, the membrane depolarizes, and voltage-gated calcium channels in the membrane open (Muoio and Newgard 2008; Wiederkehr and Wollheim 2006).&lt;p&gt;Elevated calcium concentrations near the plasma membrane cause insulin secretion in two phases: an initial high rate within minutes of glucose stimulation and a slow, sustained release lasting longer than 30 minutes. In the initial phase, 50-100 insulin granules already docked at the membrane are exocytosed. Exocytosis is rendered calcium-dependent by Synaptotagmin V/IX, a calcium-binding membrane protein located in the membrane of the docked granule, although the exact action of Synapototagmin in response to calcium is unknown. Calcium also causes a translocation of reserve granules within the cell towards the plasma membrane for release in the second, sustained phase of secretion. Human cells contain L-type (continually reopening), P/Q-type (long burst), R-type (long burst), and T-type (short burst) calcium channels and these partly account for differences between the two phases of secretion. Other factors that distinguish the two phases are not yet fully known (Bratanova-Tochkova et al. 2002; Henquin 2000; MacDonald et al. 2005).</Comment>
+    <BiopaxRef>lit_264735</BiopaxRef>
+    <BiopaxRef>lit_264726</BiopaxRef>
+    <BiopaxRef>lit_264728</BiopaxRef>
+    <BiopaxRef>lit_264262</BiopaxRef>
+    <BiopaxRef>lit_391480</BiopaxRef>
+    <Graphics CenterX="319.5" CenterY="217.0" Width="141.0" Height="52.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_18325"/>
+  </DataNode>
+  <DataNode TextLabel="Synthesis, Secretion, &#10;and Deacylation of &#10;Ghrelin&#10;" GraphId="n300_REACTOME_422085" Type="Pathway">
+    <Comment Source="WikiPathways-description">Ghrelin is a peptide hormone of 28 amino acid residues which is acylated at the serine-3 of the mature peptide. Ghrelin is synthesized in several tissues: X/A-like cells of the gastric mucosa (the major source of ghrelin), hypothalamus, pituitary, adrenal gland, thyroid, breast, ovary, placenta, fallopian tube, testis, prostate, liver, gall bladder, pancreas, fat tissue, human lymphocytes, spleen, kidney, lung, skeletal muscle, myocardium, vein and skin. Ghrelin binds the GHS-R1a receptor present in hypothalamus pituitary, and other tissues. Binding causes appetite stimulation and release of growth hormone. Levels of circulating ghrelin rise during fasting, peak before a meal, and fall according to the calories ingested.&lt;br&gt;Preproghrelin is cleaved to yield proghrelin which is then acylated by ghrelin O-acyltransferase to yield octanoyl ghrelin and decanoyl ghrelin. Only octanoyl ghrelin is able to bind and activate the GHS-R1a receptor. Unacylated ghrelin (des-acyl ghrelin) is also present in plasma but its function is controversial.&lt;br&gt;Acyl proghrelin is cleaved by prohormone convertase 1/3 to yield the mature acyl ghrelin and C-ghrelin. Secretion of ghrelin is inhibited by insulin, growth hormone (somatotropin), leptin, glucose, glucagon, and fatty acids. Secretion is stimulated by insulin-like growth factor-1 and muscarinic agonists.&lt;br&gt;In the bloodstream acyl ghrelin is deacylated by butyrylcholinesterase and platelet-activating factor acetylhydrolase. Other enzymes may also deacylate acyl ghrelin.</Comment>
+    <BiopaxRef>lit_422105</BiopaxRef>
+    <BiopaxRef>lit_422095</BiopaxRef>
+    <Graphics CenterX="142.0" CenterY="216.5" Width="140.0" Height="67.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_19189"/>
+  </DataNode>
+  <DataNode TextLabel="Insulin Synthesis and &#10;Processing&#10;" GraphId="n301_REACTOME_264876" Type="Pathway">
+    <Comment Source="WikiPathways-description">Synthesis of insulin-containing secretory granules can be described in 6 steps: transcription of preproinsulin genes, translation of preproinsulin mRNA with concomitant removal of the signal peptide, formation of intramolecular disulfide bonds, formation of proinsulin-zinc-calcium complexes, proteolytic cleavage of proinsulin to yield insulin, translocation of the granules across the cytosol to the plasma membrane.
+Transcription of the human insulin gene INS is activated by 4 important transcription factors: Pdx-1, MafA, Beta2/NeuroD1, and E47. The transcription factors interact with each other at the promoters of the insulin gene and act synergistically to promote transcription. Expression of the transcription factors is upregulated in response to glucose.
+The preproinsulin mRNA is translated by ribosomes at the rough endoplasmic reticulum (ER) and the preproinsulin enters the secretion pathway by virtue of its signal peptide, which is cleaved during translation to yield proinsulin. Evidence indicates that the preproinsulin mRNA is stabilized by glucose.
+Within the ER, three intramolecular disulfide bonds form between cysteine residues in the proinsulin. Formation of the bonds is the spontaneous result of the conformation of proinsulin and the oxidizing environment of the ER, which is maintained by Ero1-like alpha
+The cystine bonded proinsulin then moves via vesicles from the ER to the Golgi Complex. High concentrations of zinc are maintained in the Golgi by zinc transporters ZnT5, ZnT6, and ZnT7 and the proinsulin forms complexes with zinc and calcium.
+Proinsulin-zinc-calcium complexes bud in vesicles from the trans-Golgi to form immature secretory vesicles (secretory granules) in the cytosol. Within the immature granules the endoproteases Prohormone Convertase 1/3 and Prohormone Convertase 2 cleave at two sites of the proinsulin and Carboxypeptidase E removes a further 4 amino acid residues to yield the cystine-bonded A and B chains of mature insulin and the C peptide, which will also be secreted with the insulin. The insulin-zinc-calcium complexes form insoluble crystals within the granule
+The insulin-containing secretory granules are then translocated across the cytosol to the inner surface of the plasma membrane. Translocation occurs initially by attachment of the granules to Kinesin-1, which motors along microtubules, and then by attachment to Myosin Va, which motors along the microfilaments of the cortical actin network.
+A pancreatic beta cell contains about 10000 insulin granules of which about 1000 are docked at the plasma membrane and 50 are readily releasable in immediate response to stimulation by glucose or other secretogogues. Docking is due to interaction between the Exocyst proteins EXOC3 on the granule membrane and EXOC4 on the plasma membrane. Exocytosis is accomplished by interaction between SNARE-type proteins Syntaxin 1A and Syntaxin 4 on the plasma membrane and Synaptobrevin-2/VAMP2 on the granule membrane. Exocytosis is a calcium-dependent process due to interaction of the calcium-binding membrane protein Synaptotagmin V/IX with the SNARE-type proteins.</Comment>
+    <BiopaxRef>lit_264260</BiopaxRef>
+    <BiopaxRef>lit_264297</BiopaxRef>
+    <BiopaxRef>lit_264233</BiopaxRef>
+    <BiopaxRef>lit_264281</BiopaxRef>
+    <BiopaxRef>lit_264262</BiopaxRef>
+    <Graphics CenterX="138.5" CenterY="110.0" Width="141.0" Height="58.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_15550"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264735">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16321791</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glucose-sensing mechanisms in pancreatic beta-cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MacDonald, PE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Joseph, JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rorsman, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Philos Trans R Soc Lond B Biol Sci 360:2211-25</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_391480">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18200017</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms of disease: molecular and metabolic mechanisms of insulin resistance and beta-cell failure in type 2 diabetes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muoio, DM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newgard, CB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 9:193-205</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428364">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11713986</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A family of IGF-II mRNA binding proteins (IMP) involved in RNA trafficking</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, FC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christiansen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scand J Clin Lab Invest Suppl 234:93-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428325">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17652133</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">VICKZ proteins mediate cell migration via their RNA binding activity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oberman, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rand, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maizels, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rubinstein, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yisraeli, JK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA 13:1558-69</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264281">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9631292</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of assembly in insulin's biosynthesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dodson, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Steiner, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Struct Biol 8:189-94</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428351">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15601260</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">VICKZ proteins: a multi-talented family of regulatory RNA-binding proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yisraeli, JK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biol Cell 97:87-96</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381027">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18038217</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endoplasmic reticulum stress responses</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SchrÃ¶der, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Mol Life Sci 65:862-94</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_847676">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20371350</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcriptome-wide identification of RNA-binding protein and microRNA target sites by PAR-CLIP</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hafner, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Landthaler, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burger, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khorshid, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hausser, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berninger, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rothballer, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ascano M, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jungkamp, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Munschauer, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ulrich, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wardle, GS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dewell, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zavolan, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tuschl, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 141:129-41</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381476">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11606061</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insulin-like growth factor-binding protein-5 inhibits growth and induces differentiation of mouse osteosarcoma cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schneider, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoeflich, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krebs, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmidt, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohan, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolf, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lahm, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 288:435-42</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_422105">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19280057</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ghrelin fluctuation, what determines its production?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yin, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Acta Biochim Biophys Sin (Shanghai) 41:188-97</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428344">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9891060</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A family of insulin-like growth factor II mRNA-binding proteins represses translation in late development</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christiansen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lykke-Andersen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnsen, AH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wewer, UM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, FC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 19:1262-70</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_422095">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18396350</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ghrelin, des-acyl ghrelin and obestatin: three pieces of the same puzzle</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soares, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leite-Moreira, AF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peptides 29:1255-70</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264233">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16549443</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of the insulin gene by glucose and fatty acids</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poitout, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hagman, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stein, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Artner, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robertson, RP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harmon, JS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Nutr 136:873-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264297">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11815450</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular determinants of regulated exocytosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerber, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SÃ¼dhof, TC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diabetes 51:S3-11</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381419">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11751371</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insulin-like growth factor-binding protein 2 in tumorigenesis: protector or promoter?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoeflich, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reisinger, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lahm, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiess, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blum, WF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kolb, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weber, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolf, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res 61:8601-10</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381407">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12379487</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IGF-binding proteins are multifunctional and act via IGF-dependent and -independent mechanisms</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohan, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baylink, DJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Endocrinol 175:19-31</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381493">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12904166</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IGF-binding protein-4: biochemical characteristics and functional consequences</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diehl, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoeflich, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lahm, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolf, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Endocrinol 178:177-93</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264726">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11078440</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Triggering and amplifying pathways of regulation of insulin secretion by glucose</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henquin, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diabetes 49:1751-60</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381139">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15952902</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The mammalian unfolded protein response</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SchrÃ¶der, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaufman, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 74:739-89</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264262">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11815463</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Triggering and augmentation mechanisms, granule pools, and biphasic insulin secretion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bratanova-Tochkova, TK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cheng, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Daniel, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gunawardana, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, YJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mulvaney-Musa, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schermerhorn, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Straub, SG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yajima, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharp, GW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diabetes 51:S83-90</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381191">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16365312</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">On the mechanism of sensing unfolded protein in the endoplasmic reticulum</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Credle, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Finer-Moore, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Papa, FR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stroud, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walter, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 102:18773-84</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381400">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12466191</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cellular actions of the insulin-like growth factor binding proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Firth, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baxter, RC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endocr Rev 23:824-54</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381401">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17047378</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of insulin-like growth factor binding proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holly, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perks, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neuroendocrinology 83:154-60</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_380997">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18436705</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The unfolded protein response: a pathway that links insulin demand with beta-cell failure and diabetes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scheuner, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaufman, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endocr Rev 29:317-33</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264728">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16556766</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Minireview: implication of mitochondria in insulin secretion and action</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wiederkehr, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wollheim, CB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endocrinology 147:2643-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428295">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16541107</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA-binding IMPs promote cell adhesion and invadopodia formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vikesaa, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hansen, TV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JÃ¸nson, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borup, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wewer, UM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christiansen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, FC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 25:1456-68</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_264260">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16714477</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insulin vesicle release: walk, kiss, pause ... then run</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rutter, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hill, EV</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiology (Bethesda) 21:189-96</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_381103">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18048764</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role for endoplasmic reticulum stress in diabetes mellitus</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eizirik, DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cardozo, AK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cnop, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endocr Rev 29:42-61</bp:SOURCE>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>Diabetes</bp:TERM><bp:ID>DOID:9351</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

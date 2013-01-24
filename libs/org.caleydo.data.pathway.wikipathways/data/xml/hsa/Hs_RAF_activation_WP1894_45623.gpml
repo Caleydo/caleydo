@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="RAF activation" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Charalambous, M" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">Phosphorylated RAF is activated by Ras binding and stabilised in its active form by transient disassociation and reassociation of 14-3-3, as well as further phosphorylation.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_110028</BiopaxRef>
+  <Graphics BoardWidth="3902.5" BoardHeight="6380.0" />
+  <DataNode TextLabel="ADP&#xA;" GraphId="n10_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="853.3602673147024" CenterY="226.69441069258812" Width="87.0" Height="31.0" ZOrder="32768" FontSize="12" Valign="Middle" ShapeType="Oval" Color="0000ff" />
+    <Xref Database="ChEBI" ID="16761" />
+  </DataNode>
+  <DataNode TextLabel="p21 RAS:GTP&#xA;" GraphId="n11_REACTOME_109783" Type="Complex">
+    <Graphics CenterX="111.3602673147023" CenterY="144.6944106925881" Width="119.0" Height="27.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_4782" />
+  </DataNode>
+  <DataNode TextLabel="ATP&#xA;" GraphId="n13_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="560.3602673147024" CenterY="223.69441069258812" Width="85.0" Height="31.0" ZOrder="32768" FontSize="12" Valign="Middle" ShapeType="Oval" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15422" />
+  </DataNode>
+  <DataNode TextLabel="Activated RAF1 &#xA;complex&#xA;" GraphId="n14_REACTOME_109793" Type="Complex">
+    <Graphics CenterX="864.3602673147024" CenterY="139.69441069258812" Width="107.0" Height="43.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_4906" />
+  </DataNode>
+  <DataNode TextLabel="14-3-3 protein &#xA;beta/alpha&#xA;" GraphId="n15_REACTOME_48888" Type="Protein">
+    <Graphics CenterX="297.36026731470236" CenterY="224.1944106925881" Width="113.0" Height="38.0" ZOrder="32768" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P31946" />
+  </DataNode>
+  <DataNode TextLabel="unidentified protein &#xA;tyrosine kinase&#xA;" GraphId="n17_REACTOME_163338">
+    <Graphics CenterX="713.8602673147024" CenterY="129.69441069258812" Width="120.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_4938" />
+  </DataNode>
+  <DataNode TextLabel="RAS:RAF&#xA;" GraphId="n18_REACTOME_109788" Type="Complex">
+    <Graphics CenterX="294.36026731470236" CenterY="143.1944106925881" Width="107.0" Height="26.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3036" />
+  </DataNode>
+  <DataNode TextLabel="RAS:RAF:14-3-3&#xA;" GraphId="n20_REACTOME_109789" Type="Complex">
+    <Graphics CenterX="532.8602673147025" CenterY="145.6944106925881" Width="116.0" Height="27.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3642" />
+  </DataNode>
+  <DataNode TextLabel="p-Raf1(S259,&#xA;S621)&#xA;" GraphId="n77_REACTOME_109786" Type="Protein">
+    <Graphics CenterX="286.36026731470236" CenterY="284.6944106925881" Width="107.0" Height="31.0" ZOrder="32768" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P04049" />
+  </DataNode>
+  <DataNode TextLabel="14-3-3 protein &#xA;beta/alpha&#xA;" GraphId="b398c" Type="Protein" GroupRef="cd4da">
+    <Graphics CenterX="107.36026731470236" CenterY="249.19441069258812" Width="113.0" Height="38.0" ZOrder="32769" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P31946" />
+  </DataNode>
+  <DataNode TextLabel="p-Raf1(S259,&#xA;S621)&#xA;" GraphId="e3834" Type="Protein" GroupRef="cd4da">
+    <Graphics CenterX="107.36026731470236" CenterY="283.6944106925881" Width="107.0" Height="31.0" ZOrder="32770" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P04049" />
+  </DataNode>
+  <Line GraphId="e_9_REACTOME_109829">
+    <Comment Source="WikiPathways-description">An unidentified protein tyrosine kinase located in the plasma membrane phosphorylates tyrosine residues at 340 and 341 (Y1, Y2 in diagram) of Raf-1. This serves to further stabilise the active 'open' Raf-1 conformation. While the kinase has not been definitively identified, Src is a plausible candidate: coexpression of Raf-1 and Src in Sf9 cells resulted in phosphorylation of Y340/Y341 and enzymatic activationof Raf-1; Raf-1 interacts with Src and co-immunoprecipitates with Src/Fyn in NIH-3T3 cells.</Comment>
+    <BiopaxRef>lit_110028</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="651.8602673147024" Y="177.1944106925881" />
+      <Point X="710.8602673147024" Y="177.1944106925881" />
+      <Point X="782.8602673147024" Y="178.1944106925881" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_9_a_i" />
+      <Anchor Position="0.45035780661100183" Shape="None" GraphId="e_9_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_9_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="591.3602673147024" Y="205.69441069258812" GraphRef="n13_REACTOME_113592" RelX="0.7294117647058823" RelY="-1.1612903225806452" />
+      <Point X="651.8602673147024" Y="177.1944106925881" GraphRef="e_9_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="582.8602673147025" Y="162.6944106925881" GraphRef="n20_REACTOME_109789" RelX="0.8620689655172413" RelY="1.2592592592592593" />
+      <Point X="651.8602673147024" Y="177.1944106925881" GraphRef="e_9_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="830.3602673147024" Y="208.69441069258812" GraphRef="n10_REACTOME_29370" RelX="-0.5287356321839081" RelY="-1.1612903225806452" ArrowHead="Arrow" />
+      <Point X="782.8602673147024" Y="178.1944106925881" GraphRef="e_9_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="819.3602673147024" Y="164.69441069258812" GraphRef="n14_REACTOME_109793" RelX="-0.8411214953271028" RelY="1.1627906976744187" ArrowHead="Arrow" />
+      <Point X="782.8602673147024" Y="178.1944106925881" GraphRef="e_9_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="711.8602673147024" Y="159.69441069258812" GraphRef="n17_REACTOME_163338" RelX="-0.03333333333333333" RelY="1.1320754716981132" />
+      <Point X="710.8602673147024" Y="177.1944106925881" GraphRef="e_9_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_REACTOME_109802">
+    <Comment Source="WikiPathways-description">14-3-3 has been displaced from Ser259. 14-3-3 may now bind its higher affinity Ser621 (S2) site. This stabilises an 'open' Raf-1 conformation that is catalytically active, and bound to p21ras via both p21ras-binding domains, CRD and RBD.</Comment>
+    <BiopaxRef>lit_110028</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="407.8602673147023" Y="180.1944106925881" />
+      <Point X="471.8602673147023" Y="180.1944106925881" />
+      <Point X="508.86026731470247" Y="162.6944106925881" GraphRef="n20_REACTOME_109789" RelX="-0.41379310344827586" RelY="1.2592592592592593" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_12_a_i" />
+      <Anchor Position="0.6086769878217037" Shape="None" GraphId="e_12_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="344.36026731470236" Y="202.1944106925881" GraphRef="n15_REACTOME_48888" RelX="0.831858407079646" RelY="-1.1578947368421053" />
+      <Point X="407.8602673147023" Y="180.1944106925881" GraphRef="e_12_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="334.36026731470236" Y="159.1944106925881" GraphRef="n18_REACTOME_109788" RelX="0.7476635514018691" RelY="1.2307692307692308" />
+      <Point X="407.8602673147023" Y="180.1944106925881" GraphRef="e_12_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_109803">
+    <Comment Source="WikiPathways-description">Activated p21ras (the GTP-bound form) is associated with the plasma membrane. Inactive Raf-1 is associated in the cytoplasm with 14-3-3. 14-3-3 binds to Raf-1 via the Ser259 phosphorylation site (S1). This interaction stabilises the inactive conformation of Raf-1 in which the Ras-binding Cysteine-rich domain (CRD) is obscured. The Raf-1 molecule contains an additional p21ras-binding domain (RBD), a second serine phosphorylation site at S621 (S2) and two tyrosine phosphorylation sites (at 340, Y1 and 341, Y2).&lt;br&gt;Raf-1 binds activated p21ras via the RBD. This displaces 14-3-3 from Ser259 and unmasks the CRD.</Comment>
+    <BiopaxRef>lit_110028</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="155.86026731470233" Y="179.1944106925881" />
+      <Point X="186.86026731470233" Y="179.1944106925881" />
+      <Point X="217.86026731470233" Y="179.1944106925881" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_19_a_i" />
+      <Anchor Position="0.5" Shape="None" GraphId="e_19_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_19_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="128.3602673147023" Y="161.6944106925881" GraphRef="n11_REACTOME_109783" RelX="0.2857142857142857" RelY="1.2592592592592593" />
+      <Point X="155.86026731470233" Y="179.1944106925881" GraphRef="e_19_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="107.36026731470236" Y="218.19441069258812" GraphRef="ddcfa" RelX="0.0" RelY="-1.0" />
+      <Point X="155.86026731470233" Y="179.1944106925881" GraphRef="e_19_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="263.36026731470236" Y="202.1944106925881" GraphRef="n15_REACTOME_48888" RelX="-0.6017699115044248" RelY="-1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="217.86026731470233" Y="179.1944106925881" GraphRef="e_19_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="266.36026731470236" Y="159.1944106925881" GraphRef="n18_REACTOME_109788" RelX="-0.5233644859813084" RelY="1.2307692307692308" ArrowHead="Arrow" />
+      <Point X="217.86026731470233" Y="179.1944106925881" GraphRef="e_19_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_76_REACTOME_109804">
+    <Comment Source="WikiPathways-description">Inactive Raf-1 is associated in the cytoplasm with 14-3-3. 14-3-3 binds to Raf-1 via the Ser259 phosphorylation site (S1). This interaction stabilises the inactive conformation of Raf-1 in which the Ras-binding Cysteine-rich domain (CRD) is obscured. The Raf-1 molecule contains an additional p21ras-binding domain (RBD), a second serine phosphorylation site at S621 (S2) and two tyrosine phosphorylation sites (at 340, Y1 and 341, Y2).</Comment>
+    <BiopaxRef>lit_110028</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="222.86026731470233" Y="240.19441069258812" />
+      <Point X="204.86026731470233" Y="241.19441069258812" />
+      <Point X="175.86026731470236" Y="241.44441069258812" GraphRef="ddcfa" RelX="1.0" RelY="-0.5" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_76_a_i" />
+      <Anchor Position="0.3915195656456328" Shape="None" GraphId="e_76_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_76_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="238.36026731470236" Y="236.1944106925881" GraphRef="n15_REACTOME_48888" RelX="-1.0442477876106195" RelY="0.631578947368421" />
+      <Point X="222.86026731470233" Y="240.19441069258812" GraphRef="e_76_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_76_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="263.36026731470236" Y="266.6944106925881" GraphRef="n77_REACTOME_109786" RelX="-0.42990654205607476" RelY="-1.1612903225806452" />
+      <Point X="222.86026731470233" Y="240.19441069258812" GraphRef="e_76_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="cytosol" GraphId="comp_text_21" GroupRef="group_comp_21">
+    <Graphics CenterX="777.6239368165246" CenterY="307.41190765492104" Width="75.29647630619685" Height="31.591737545565007" ZOrder="28672" FontWeight="Bold" FontSize="14" Valign="Middle" Color="999999" />
+  </Label>
+  <Shape GraphId="afad2">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="484.8116646415553" CenterY="250.9113001215067" Width="921.0206561360875" Height="212.636695018226" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="cd4da" GraphId="ddcfa" Style="Complex" />
+  <InfoBox CenterX="3872.5" CenterY="6350.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_110028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9069260</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The complexity of Raf-1 regulation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morrison, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cutler, RE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 9:174-9</bp:SOURCE>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

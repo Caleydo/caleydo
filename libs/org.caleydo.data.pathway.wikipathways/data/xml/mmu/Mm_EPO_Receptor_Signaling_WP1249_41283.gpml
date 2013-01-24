@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="EPO Receptor Signaling" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">The erythropoietin receptor is a 66 kDa peptide and is a member of the cytokine receptor family. The receptor is tyrosine phosphorylated upon binding by erythropoietin and associates with and activates the tyrosine kinase, JAK2, which activates different intracellular pathways including: Ras/MAP kinase, phosphatidylinositol 3-kinase and STAT transcription factors. The stimulated erythropoietin receptor appears to have a role in erythroid cell survival. Defects in the erythropoietin receptor may produce erythroleukemia and familial erythrocytosis. ''Source: [[wikipedia:Erythropoietin_receptor|Wikipedia]]''
+
+This pathway is based on ScienceSlides.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP581&amp;amp;oldid=22574 WP581(r22574)] with a 100% conversion rate.</Comment>
+  <BiopaxRef>e8b</BiopaxRef>
+  <BiopaxRef>bb4</BiopaxRef>
+  <Graphics BoardWidth="17820.0" BoardHeight="13200.0"/>
+  <DataNode BackpageHead="Epor" TextLabel="Epor" Type="GeneProduct" GraphId="eda83" GroupRef="df8a7">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Epor"/>
+    <Graphics Color="000000" CenterX="6795.0" CenterY="2895.0" Width="1200.0" Height="870.0" ZOrder="-26"/>
+    <Xref Database="Entrez Gene" ID="13857"/>
+  </DataNode>
+  <DataNode BackpageHead="Jak2" TextLabel="Jak2" Type="GeneProduct" GraphId="cff3e" GroupRef="df8a7">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Jak2"/>
+    <Graphics Color="000000" CenterX="5640.0" CenterY="3645.0" Width="1200.0" Height="300.0" ZOrder="-22"/>
+    <Xref Database="Entrez Gene" ID="16452"/>
+  </DataNode>
+  <DataNode BackpageHead="Src" TextLabel="Src" Type="GeneProduct" GraphId="c4243" GroupRef="df8a7">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Src"/>
+    <Graphics Color="000000" CenterX="7965.0" CenterY="3825.0" Width="1200.0" Height="300.0" ZOrder="-19"/>
+    <Xref Database="Entrez Gene" ID="20779"/>
+  </DataNode>
+  <DataNode BackpageHead="Epor" TextLabel="Epor" Type="GeneProduct" GraphId="ae673" GroupRef="d829a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Epor"/>
+    <Graphics Color="000000" CenterX="10200.0" CenterY="2925.0" Width="1200.0" Height="870.0" ZOrder="-12"/>
+    <Xref Database="Entrez Gene" ID="13857"/>
+  </DataNode>
+  <DataNode BackpageHead="Stat1" TextLabel="Stat1" Type="GeneProduct" GraphId="d3f46" GroupRef="ce0f4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Stat1"/>
+    <Graphics Color="000000" CenterX="2115.0" CenterY="6270.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20846"/>
+  </DataNode>
+  <DataNode BackpageHead="Shc1" TextLabel="Shc1" Type="GeneProduct" GraphId="b79de" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Shc1"/>
+    <Graphics Color="000000" CenterX="11700.0" CenterY="5100.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20416"/>
+  </DataNode>
+  <DataNode BackpageHead="Grb2" TextLabel="Grb2" Type="GeneProduct" GraphId="b0bea" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Grb2"/>
+    <Graphics Color="000000" CenterX="11700.0" CenterY="5400.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14784"/>
+  </DataNode>
+  <DataNode BackpageHead="Map2k1" TextLabel="Map2k1" Type="GeneProduct" GraphId="e9a48" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Map2k1"/>
+    <Graphics Color="000000" CenterX="12195.0" CenterY="6600.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26395"/>
+  </DataNode>
+  <DataNode BackpageHead="Mapk3" TextLabel="Mapk3" Type="GeneProduct" GraphId="e49ea" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Mapk3"/>
+    <Graphics Color="000000" CenterX="12195.0" CenterY="7200.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26417"/>
+  </DataNode>
+  <DataNode BackpageHead="Mapk1" TextLabel="Mapk1" Type="GeneProduct" GraphId="fe42f" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Mapk1"/>
+    <Graphics Color="000000" CenterX="12195.0" CenterY="7500.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26413"/>
+  </DataNode>
+  <DataNode BackpageHead="Map2k2" TextLabel="Map2k2" Type="GeneProduct" GraphId="ec2ce" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Map2k2"/>
+    <Graphics Color="000000" CenterX="12195.0" CenterY="6900.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26396"/>
+  </DataNode>
+  <DataNode BackpageHead="Pdk1" TextLabel="Pdk1" Type="GeneProduct" GraphId="d1fdf" GroupRef="a6e19">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Pdk1"/>
+    <Graphics Color="000000" CenterX="8970.0" CenterY="6300.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="228026"/>
+  </DataNode>
+  <DataNode BackpageHead="Akt1" TextLabel="Akt1" Type="GeneProduct" GraphId="fc2b9" GroupRef="a6e19">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Akt1"/>
+    <Graphics Color="000000" CenterX="8970.0" CenterY="6000.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11651"/>
+  </DataNode>
+  <DataNode BackpageHead="Pik3cg" TextLabel="Pik3cg" Type="GeneProduct" GraphId="ab227" GroupRef="a6e19">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Pik3cg"/>
+    <Graphics Color="000000" CenterX="8970.0" CenterY="5700.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="30955"/>
+  </DataNode>
+  <DataNode BackpageHead="Epo" TextLabel="Epo" Type="GeneProduct" GraphId="b3cbc">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Epo"/>
+    <Graphics Color="000000" CenterX="6795.0" CenterY="1740.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13856"/>
+  </DataNode>
+  <DataNode BackpageHead="Epo" TextLabel="Epo" Type="GeneProduct" GraphId="f5813">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Epo"/>
+    <Graphics Color="000000" CenterX="10200.0" CenterY="1725.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13856"/>
+  </DataNode>
+  <DataNode BackpageHead="Socs1" TextLabel="Socs1" Type="GeneProduct" GraphId="aa3f5" GroupRef="e49e1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Socs1"/>
+    <Graphics Color="000000" CenterX="2880.0" CenterY="4140.0" Width="1200.0" Height="300.0" ZOrder="32772"/>
+    <Xref Database="Entrez Gene" ID="12703"/>
+  </DataNode>
+  <DataNode BackpageHead="Stat5b" TextLabel="Stat5b" Type="GeneProduct" GraphId="dcf6d" GroupRef="d0755">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Stat5b"/>
+    <Graphics Color="000000" CenterX="3810.0" CenterY="7365.0" Width="1200.0" Height="300.0" ZOrder="32774"/>
+    <Xref Database="Entrez Gene" ID="20851"/>
+  </DataNode>
+  <DataNode BackpageHead="Cish" TextLabel="Cish" Type="GeneProduct" GraphId="f14c4" GroupRef="e49e1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cish"/>
+    <Graphics Color="000000" CenterX="2880.0" CenterY="4440.0" Width="1200.0" Height="300.0" ZOrder="32776"/>
+    <Xref Database="Entrez Gene" ID="12700"/>
+  </DataNode>
+  <DataNode BackpageHead="Stat5a" TextLabel="Stat5a" Type="GeneProduct" GraphId="ccc1a" GroupRef="d0755">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Stat5a"/>
+    <Graphics Color="000000" CenterX="3810.0" CenterY="7065.0" Width="1200.0" Height="300.0" ZOrder="32778"/>
+    <Xref Database="Entrez Gene" ID="20850"/>
+  </DataNode>
+  <DataNode BackpageHead="Stat3" TextLabel="Stat3" Type="GeneProduct" GraphId="f64b4" GroupRef="b128c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Stat3"/>
+    <Graphics Color="000000" CenterX="5625.0" CenterY="8595.0" Width="1200.0" Height="300.0" ZOrder="32780"/>
+    <Xref Database="Entrez Gene" ID="20848"/>
+  </DataNode>
+  <DataNode BackpageHead="Stat3" TextLabel="Stat3" Type="GeneProduct" GraphId="e22d7" GroupRef="b128c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Stat3"/>
+    <Graphics Color="000000" CenterX="5625.0" CenterY="8295.0" Width="1200.0" Height="300.0" ZOrder="32782"/>
+    <Xref Database="Entrez Gene" ID="20848"/>
+  </DataNode>
+  <DataNode BackpageHead="Stat1" TextLabel="Stat1" Type="GeneProduct" GraphId="a6b33" GroupRef="ce0f4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Stat1"/>
+    <Graphics Color="000000" CenterX="2115.0" CenterY="5970.0" Width="1200.0" Height="300.0" ZOrder="32784"/>
+    <Xref Database="Entrez Gene" ID="20846"/>
+  </DataNode>
+  <DataNode BackpageHead="Ptprc" TextLabel="Ptprc" Type="GeneProduct" GraphId="d4530" GroupRef="e2ef6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ptprc"/>
+    <Graphics Color="000000" CenterX="2130.0" CenterY="2760.0" Width="660.0" Height="1110.0" ZOrder="32786"/>
+    <Xref Database="Entrez Gene" ID="19264"/>
+  </DataNode>
+  <DataNode BackpageHead="Ptpru" TextLabel="Ptpru" Type="GeneProduct" GraphId="aacad" GroupRef="e2ef6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ptpru"/>
+    <Graphics Color="000000" CenterX="2130.0" CenterY="3465.0" Width="1200.0" Height="300.0" ZOrder="32790"/>
+    <Xref Database="Entrez Gene" ID="19273"/>
+  </DataNode>
+  <DataNode BackpageHead="Grb2" TextLabel="Grb2" Type="GeneProduct" GraphId="c9c65" GroupRef="c9c1c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Grb2"/>
+    <Graphics Color="000000" CenterX="13335.0" CenterY="3585.0" Width="1200.0" Height="300.0" ZOrder="32802"/>
+    <Xref Database="Entrez Gene" ID="14784"/>
+  </DataNode>
+  <DataNode BackpageHead="Raf1" TextLabel="Raf1" Type="GeneProduct" GraphId="b1bb8" GroupRef="c9c1c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Raf1"/>
+    <Graphics Color="000000" CenterX="13335.0" CenterY="4485.0" Width="1200.0" Height="300.0" ZOrder="32803"/>
+    <Xref Database="Entrez Gene" ID="110157"/>
+  </DataNode>
+  <DataNode BackpageHead="Sos1" TextLabel="Sos1" Type="GeneProduct" GraphId="b4884" GroupRef="c9c1c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sos1"/>
+    <Graphics Color="000000" CenterX="13335.0" CenterY="3885.0" Width="1200.0" Height="300.0" ZOrder="32804"/>
+    <Xref Database="Entrez Gene" ID="20662"/>
+  </DataNode>
+  <DataNode BackpageHead="Irs2" TextLabel="Irs2" Type="GeneProduct" GraphId="c5f46" GroupRef="c9c1c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Irs2"/>
+    <Graphics Color="000000" CenterX="11820.0" CenterY="4260.0" Width="1200.0" Height="300.0" ZOrder="32805"/>
+    <Xref Database="Entrez Gene" ID="384783"/>
+  </DataNode>
+  <DataNode BackpageHead="Jak2" TextLabel="Jak2" Type="GeneProduct" GraphId="ce795" GroupRef="c9c1c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Jak2"/>
+    <Graphics Color="000000" CenterX="11325.0" CenterY="3645.0" Width="1200.0" Height="300.0" ZOrder="32806"/>
+    <Xref Database="Entrez Gene" ID="16452"/>
+  </DataNode>
+  <DataNode BackpageHead="Irs1" TextLabel="Irs1" Type="GeneProduct" GraphId="f4068" GroupRef="c9c1c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Irs1"/>
+    <Graphics Color="000000" CenterX="11820.0" CenterY="3960.0" Width="1200.0" Height="300.0" ZOrder="32807"/>
+    <Xref Database="Entrez Gene" ID="16367"/>
+  </DataNode>
+  <DataNode BackpageHead="Rasa1" TextLabel="Rasa1" Type="GeneProduct" GraphId="b7cdf" GroupRef="c9c1c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Rasa1"/>
+    <Graphics Color="000000" CenterX="13335.0" CenterY="4185.0" Width="1200.0" Height="300.0" ZOrder="32808"/>
+    <Xref Database="Entrez Gene" ID="218397"/>
+  </DataNode>
+  <DataNode BackpageHead="Raf1" TextLabel="Raf1" Type="GeneProduct" GraphId="e7de4" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Raf1"/>
+    <Graphics Color="000000" CenterX="11700.0" CenterY="6300.0" Width="1200.0" Height="300.0" ZOrder="32809"/>
+    <Xref Database="Entrez Gene" ID="110157"/>
+  </DataNode>
+  <DataNode BackpageHead="Sos1" TextLabel="Sos1" Type="GeneProduct" GraphId="d2bbc" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sos1"/>
+    <Graphics Color="000000" CenterX="11700.0" CenterY="5700.0" Width="1200.0" Height="300.0" ZOrder="32810"/>
+    <Xref Database="Entrez Gene" ID="20662"/>
+  </DataNode>
+  <DataNode BackpageHead="Rasa1" TextLabel="Rasa1" Type="GeneProduct" GraphId="c5a9b" GroupRef="b4157">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Rasa1"/>
+    <Graphics Color="000000" CenterX="11700.0" CenterY="6000.0" Width="1200.0" Height="300.0" ZOrder="32811"/>
+    <Xref Database="Entrez Gene" ID="218397"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="ef176">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="5880.0" y="4117.5" GraphRef="be2db" relX="-1.0" relY="0.0"/>
+      <Point x="4845.0" y="7230.0" GraphRef="cbd49" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f640d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="14385.0" y="4042.5" GraphRef="bb6fc" relX="1.0" relY="0.0"/>
+      <Point x="12495.0" y="6450.0" GraphRef="e9a48" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b3117">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="11955.0" y="7770.0" GraphRef="da768" relX="0.0" relY="1.0"/>
+      <Point x="11955.0" y="11625.0" GraphRef="efe03" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b0a7d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8970.0" y="6570.0" GraphRef="a7cb0" relX="0.0" relY="1.0"/>
+      <Point x="8984.75" y="11639.5" GraphRef="ffc01" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa364">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6795.0" y="1890.0" GraphRef="b3cbc" relX="0.0" relY="1.0"/>
+      <Point x="6795.0" y="2460.0" GraphRef="eda83" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b0776">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10200.0" y="1875.0" GraphRef="f5813" relX="0.0" relY="1.0"/>
+      <Point x="10200.0" y="2490.0" GraphRef="ae673" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d094d">
+    <Graphics ZOrder="12290" Color="000000">
+      <Point x="5782.5" y="8940.0" GraphRef="f97e7" relX="0.0" relY="1.0"/>
+      <Point x="5782.25" y="11640.0" GraphRef="d7f65" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c2d0b">
+    <Graphics ZOrder="12292" Color="000000">
+      <Point x="3967.5" y="7710.0" GraphRef="cbd49" relX="0.0" relY="1.0"/>
+      <Point x="3974.75" y="11640.0" GraphRef="faaf2" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e086f">
+    <Graphics ConnectorType="Elbow" ZOrder="12294" Color="000000">
+      <Point x="3600.0" y="4290.0" GraphRef="e3bcf" relX="1.0" relY="0.0"/>
+      <Point x="5340.0" y="3795.0" GraphRef="cff3e" relX="-0.5" relY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c7f13">
+    <Graphics ZOrder="12296" Color="000000">
+      <Point x="2272.5" y="6615.0" GraphRef="ee500" relX="0.0" relY="1.0"/>
+      <Point x="2272.25" y="11640.0" GraphRef="fb4d7" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e6ecb">
+    <Graphics ConnectorType="Curved" ZOrder="12298" Color="000000">
+      <Point x="5640.0" y="3795.0" GraphRef="cff3e" relX="0.0" relY="1.0"/>
+      <Point x="3150.0" y="6135.0" GraphRef="ee500" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bbfb3">
+    <Graphics ConnectorType="Curved" ZOrder="12300" Color="000000">
+      <Point x="5880.0" y="4447.5" GraphRef="b7191" relX="-1.0" relY="0.0"/>
+      <Point x="5782.5" y="7980.0" GraphRef="f97e7" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d67bf">
+    <Graphics ConnectorType="Elbow" ZOrder="12302" Color="000000">
+      <Point x="2730.0" y="3465.0" GraphRef="aacad" relX="1.0" relY="0.0"/>
+      <Point x="3570.0" y="3255.0"/>
+      <Point x="5040.0" y="3645.0" GraphRef="cff3e" relX="-1.0" relY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="d9320" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10950.0" CenterY="4147.5" Width="330.0" Height="315.0" ZOrder="4"/>
+  </Label>
+  <Label TextLabel="Box-1" Outline="RoundedRectangle" GraphId="ed410" GroupRef="df8a7">
+    <Graphics FontSize="150" Color="000000" CenterX="6795.0" CenterY="3487.5" Width="1200.0" Height="315.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="ed225" GroupRef="b128c">
+    <Graphics FontSize="150" Color="000000" CenterX="6375.0" CenterY="8257.5" Width="330.0" Height="315.0" ZOrder="28674"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="a5151" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="9450.0" CenterY="5407.5" Width="330.0" Height="315.0" ZOrder="28676"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="d236a" GroupRef="b4157">
+    <Graphics FontSize="150" Color="000000" CenterX="12960.0" CenterY="6757.5" Width="330.0" Height="315.0" ZOrder="28676"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="ffb01" GroupRef="b4157">
+    <Graphics FontSize="150" Color="000000" CenterX="12960.0" CenterY="7357.5" Width="330.0" Height="315.0" ZOrder="28676"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="e07c7" GroupRef="b4157">
+    <Graphics FontSize="150" Color="000000" CenterX="10950.0" CenterY="6322.5" Width="330.0" Height="315.0" ZOrder="28676"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="b4af2" GroupRef="d0755">
+    <Graphics FontSize="150" Color="000000" CenterX="4560.0" CenterY="7027.5" Width="330.0" Height="315.0" ZOrder="28678"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="cf2f6" GroupRef="ce0f4">
+    <Graphics FontSize="150" Color="000000" CenterX="2865.0" CenterY="5932.5" Width="330.0" Height="315.0" ZOrder="28680"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="b7249" GroupRef="b128c">
+    <Graphics FontSize="150" Color="000000" CenterX="6375.0" CenterY="8662.5" Width="330.0" Height="315.0" ZOrder="28682"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="a969a" GroupRef="ce0f4">
+    <Graphics FontSize="150" Color="000000" CenterX="2865.0" CenterY="6337.5" Width="330.0" Height="315.0" ZOrder="28684"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="eda09" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10950.0" CenterY="5107.5" Width="330.0" Height="315.0" ZOrder="28686"/>
+  </Label>
+  <Label TextLabel="Y343" Outline="RoundedRectangle" GraphId="bfe09" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10200.0" CenterY="4147.5" Width="1200.0" Height="315.0" ZOrder="28688"/>
+  </Label>
+  <Label TextLabel="Y479" Outline="RoundedRectangle" GraphId="c2764" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10200.0" CenterY="5407.5" Width="1200.0" Height="315.0" ZOrder="28690"/>
+  </Label>
+  <Label TextLabel="Box-2" Outline="RoundedRectangle" GraphId="c6a73" GroupRef="df8a7">
+    <Graphics FontSize="150" Color="000000" CenterX="6795.0" CenterY="3802.5" Width="1200.0" Height="315.0" ZOrder="28692"/>
+  </Label>
+  <Label TextLabel="" Outline="RoundedRectangle" GraphId="b53a4" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10200.0" CenterY="4777.5" Width="1200.0" Height="315.0" ZOrder="28694"/>
+  </Label>
+  <Label TextLabel="DNA" GraphId="eaea2" GroupRef="d6c58">
+    <Graphics FontWeight="Bold" FontSize="150" Color="0000ff" CenterX="15240.0" CenterY="11730.0" Width="1200.0" Height="300.0" ZOrder="28696"/>
+  </Label>
+  <Label TextLabel="Cell membrane" GraphId="fb6e0" GroupRef="b7148">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff6600" CenterX="14760.0" CenterY="2850.0" Width="1350.0" Height="300.0" ZOrder="28696"/>
+  </Label>
+  <Label TextLabel="" Outline="RoundedRectangle" GraphId="dd0fb" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10200.0" CenterY="4462.5" Width="1200.0" Height="315.0" ZOrder="28698"/>
+  </Label>
+  <Label TextLabel="Y343" Outline="RoundedRectangle" GraphId="cddc3" GroupRef="df8a7">
+    <Graphics FontSize="150" Color="000000" CenterX="6795.0" CenterY="4117.5" Width="1200.0" Height="315.0" ZOrder="28700"/>
+  </Label>
+  <Label TextLabel="Y460" Outline="RoundedRectangle" GraphId="a7db2" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10200.0" CenterY="5092.5" Width="1200.0" Height="315.0" ZOrder="28702"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="be2db" GroupRef="df8a7">
+    <Graphics FontSize="150" Color="000000" CenterX="6045.0" CenterY="4117.5" Width="330.0" Height="315.0" ZOrder="28704"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="b7191" GroupRef="df8a7">
+    <Graphics FontSize="150" Color="000000" CenterX="6045.0" CenterY="4447.5" Width="330.0" Height="315.0" ZOrder="28706"/>
+  </Label>
+  <Label TextLabel="Box-2" Outline="RoundedRectangle" GraphId="fc140" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10200.0" CenterY="3832.5" Width="1200.0" Height="315.0" ZOrder="28708"/>
+  </Label>
+  <Label TextLabel="Box-1" Outline="RoundedRectangle" GraphId="b93b3" GroupRef="d829a">
+    <Graphics FontSize="150" Color="000000" CenterX="10200.0" CenterY="3517.5" Width="1200.0" Height="315.0" ZOrder="28710"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="eaeb3" GroupRef="d0755">
+    <Graphics FontSize="150" Color="000000" CenterX="4560.0" CenterY="7432.5" Width="330.0" Height="315.0" ZOrder="28712"/>
+  </Label>
+  <Label TextLabel="Y431" Outline="RoundedRectangle" GraphId="a74c3" GroupRef="df8a7">
+    <Graphics FontSize="150" Color="000000" CenterX="6795.0" CenterY="4432.5" Width="1200.0" Height="315.0" ZOrder="28714"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="bdc08" GroupRef="df8a7">
+    <Graphics FontSize="150" Color="000000" CenterX="7545.0" CenterY="4117.5" Width="330.0" Height="315.0" ZOrder="32792"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="b1bdf" GroupRef="c9c1c">
+    <Graphics FontSize="150" Color="000000" CenterX="14100.0" CenterY="4492.5" Width="330.0" Height="315.0" ZOrder="32800"/>
+  </Label>
+  <Label TextLabel="P" Outline="RoundedRectangle" GraphId="ea249">
+    <Graphics FontSize="150" Color="000000" CenterX="12600.0" CenterY="4057.5" Width="330.0" Height="315.0" ZOrder="32800"/>
+  </Label>
+  <Shape Type="Rectangle" Style="Solid" GraphId="ffc01" GroupRef="d6c58">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="8984.75" CenterY="11692.25" Width="390.5" Height="105.5" ZOrder="-35" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="d7f65" GroupRef="d6c58">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="5782.25" CenterY="11715.0" Width="225.5" Height="150.0" ZOrder="-33" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="faaf2" GroupRef="d6c58">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3974.75" CenterY="11715.0" Width="450.5" Height="150.0" ZOrder="-32" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="fb4d7" GroupRef="d6c58">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="2272.25" CenterY="11715.0" Width="225.5" Height="150.0" ZOrder="-31" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="efe03" GroupRef="d6c58">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="11955.0" CenterY="11715.0" Width="390.0" Height="180.0" ZOrder="-30" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="feef5" GroupRef="d6c58">
+    <Graphics FillColor="ccccff" Color="0000cc" CenterX="8879.75" CenterY="11759.75" Width="14400.5" Height="240.5" ZOrder="-28" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="cead5" GroupRef="b7148">
+    <Graphics FillColor="ffff99" Color="ff6600" CenterX="8474.75" CenterY="2879.75" Width="14400.5" Height="240.5" ZOrder="-28" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="d0755" GraphId="cbd49" Style="Complex">
+    <Comment>Not sure if complex consists of both A and B isoforms [thomas-081110]</Comment>
+  </Group>
+  <Group GroupId="b4157" GraphId="da768" Style="Complex"/>
+  <Group GroupId="a6e19" GraphId="a7cb0" Style="Complex"/>
+  <Group GroupId="d6c58" GraphId="f473a" Style="Group"/>
+  <Group GroupId="d829a" GraphId="bc2b8" Style="Group"/>
+  <Group GroupId="ce0f4" GraphId="ee500" Style="Complex"/>
+  <Group GroupId="e49e1" GraphId="e3bcf" Style="Complex"/>
+  <Group GroupId="b128c" GraphId="f97e7" Style="Complex"/>
+  <Group GroupId="e2ef6" GraphId="cfbf2" Style="Complex"/>
+  <Group GroupId="df8a7" GraphId="e7fae" Style="Group"/>
+  <Group GroupId="c9c1c" GraphId="bb6fc" Style="Complex"/>
+  <Group GroupId="b7148" GraphId="c92c3" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="e8b">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10334664</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The molecular biology of erythropoietin.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nephrol Dial Transplant</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lacombe C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mayeux P</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="bb4">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9371269</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The molecular physiology of erythropoietin and the erythropoietin receptor.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Hematol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea AD</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

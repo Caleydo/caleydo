@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Transcription" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Comai, L, Conaway, J, Conaway, R, Gustafsson, C, Hernandez, N, Hu, P, Larsson, N-G, Proudfoot, NJ, Reinberg, D, Timmers, H. T. M." Maintainer="Gillespie, ME, Gopinathrao, G, Joshi-Tope, G" Email="gillespm@cshl.org">
+  <Comment Source="WikiPathways-description">Transcription by RNA Polymerase I, RNA Polymerase III  and transcription from mitochondrial promoters.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n356_REACTOME_73857" TextLabel="RNA Polymerase II &#10;Transcription&#10;" Type="Pathway">
+    <Graphics Color="000000" CenterX="91.5" CenterY="71.5" Width="133.0" Height="59.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_1366"/>
+  </DataNode>
+  <DataNode GraphId="n357_REACTOME_504046" TextLabel="RNA Polymerase I, RNA &#10;Polymerase III, and &#10;Mitochondrial &#10;Transcription&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Transcription by RNA Polymerase I, RNA Polymerase III  and transcription from mitochondrial promoters.</Comment>
+    <Graphics Color="000000" CenterX="261.5" CenterY="85.0" Width="143.0" Height="98.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_21352"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>transcription pathway</bp:TERM><bp:ID>PW:0000100</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

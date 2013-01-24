@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Muscle contraction" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Gillespie, ME" Maintainer="Gillespie, ME" Email="gillespm@cshl.org" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0"/>
+  <DataNode TextLabel="Inactive Sarcomere &#10;Protein Complex&#10;" GraphId="n3_REACTOME_390590" Type="Complex">
+    <Graphics CenterX="958.0" CenterY="336.0" Width="120.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_17721"/>
+  </DataNode>
+  <DataNode TextLabel="Calcium&#10;" GraphId="n4_REACTOME_74016" Type="Metabolite">
+    <Graphics CenterX="986.5" CenterY="230.0" Width="61.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode TextLabel="Calcium Bound &#10;Sarcomere Protein &#10;Complex&#10;" GraphId="n5_REACTOME_390592" Type="Complex">
+    <Graphics CenterX="1214.5" CenterY="286.0" Width="117.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_17110"/>
+  </DataNode>
+  <DataNode TextLabel="ATP&#10;" GraphId="n7_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="1294.5" CenterY="223.0" Width="39.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode TextLabel="ATP:Calcium Bound &#10;Sarcomere Protein &#10;Complex&#10;" GraphId="n8_REACTOME_390596" Type="Complex">
+    <Graphics CenterX="1487.0" CenterY="294.0" Width="124.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_18068"/>
+  </DataNode>
+  <DataNode TextLabel="Orthophosphate&#10;" GraphId="n10_REACTOME_29372" Type="Metabolite">
+    <Graphics CenterX="1772.5" CenterY="256.0" Width="109.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode TextLabel="ADP:Calcium Bound &#10;Sarcomere Protein &#10;Complex&#10;" GraphId="n11_REACTOME_390591" Type="Complex">
+    <Graphics CenterX="1763.5" CenterY="379.0" Width="125.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_17580"/>
+  </DataNode>
+  <DataNode TextLabel="Myosin Complex&#10;" GraphId="n12_REACTOME_390575" Type="Complex">
+    <Graphics CenterX="1631.0" CenterY="223.0" Width="102.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_18044"/>
+  </DataNode>
+  <DataNode TextLabel="ADP&#10;" GraphId="n14_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="1343.0" CenterY="429.0" Width="40.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode TextLabel="Calmodulin&#10;" GraphId="n16_REACTOME_71519" Type="Protein">
+    <Graphics CenterX="281.0" CenterY="273.0" Width="72.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62158"/>
+  </DataNode>
+  <DataNode TextLabel="Active Calmodulin&#10;" GraphId="n17_REACTOME_74294" Type="Complex">
+    <BiopaxRef>lit_74025</BiopaxRef>
+    <Graphics CenterX="475.0" CenterY="323.0" Width="110.0" Height="22.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_3178"/>
+  </DataNode>
+  <DataNode TextLabel="Calcium&#10;" GraphId="n18_REACTOME_74016" Type="Metabolite">
+    <Graphics CenterX="267.5" CenterY="365.0" Width="61.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode TextLabel="Myosin light chain &#10;kinase, smooth &#10;muscle&#10;" GraphId="n21_REACTOME_445807" Type="Protein">
+    <Graphics CenterX="507.5" CenterY="425.0" Width="113.0" Height="50.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15746"/>
+  </DataNode>
+  <DataNode TextLabel="MLCK:Calcium:&#10;Calmodulin&#10;" GraphId="n22_REACTOME_445764" Type="Complex">
+    <Graphics CenterX="697.5" CenterY="321.0" Width="93.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20833"/>
+  </DataNode>
+  <DataNode TextLabel="ATP&#10;" GraphId="n24_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="557.5" CenterY="280.0" Width="39.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode TextLabel="Smooth Muscle &#10;Myosin Light Chain&#10;" GraphId="n25_REACTOME_445793" Type="Protein">
+    <Graphics CenterX="576.0" CenterY="202.0" Width="114.0" Height="36.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21113"/>
+  </DataNode>
+  <DataNode TextLabel="Phosphorylated &#10;Smooth Muscle &#10;Myosin Light Chain&#10;" GraphId="n26_REACTOME_445770" Type="Protein">
+    <Graphics CenterX="834.0" CenterY="212.0" Width="114.0" Height="50.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21117"/>
+  </DataNode>
+  <DataNode TextLabel="ADP&#10;" GraphId="n27_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="816.0" CenterY="300.0" Width="40.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode TextLabel="Inactive Myosin Actin &#10;Contractile Complex&#10;" GraphId="n29_REACTOME_445703" Type="Complex">
+    <BiopaxRef>lit_445768</BiopaxRef>
+    <Graphics CenterX="244.0" CenterY="562.0" Width="130.0" Height="36.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20794"/>
+  </DataNode>
+  <DataNode TextLabel="Calcium Bound &#10;Myosin Actin &#10;Complex&#10;" GraphId="n30_REACTOME_445702" Type="Complex">
+    <Graphics CenterX="650.5" CenterY="480.0" Width="97.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_21082"/>
+  </DataNode>
+  <DataNode TextLabel="ADP:Calcium Bound &#10;Myosin Actin &#10;Complex&#10;" GraphId="n32_REACTOME_445697" Type="Complex">
+    <Graphics CenterX="715.5" CenterY="678.0" Width="125.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20931"/>
+  </DataNode>
+  <DataNode TextLabel="ADP&#10;" GraphId="n33_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="786.0" CenterY="516.0" Width="40.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode TextLabel="ATP&#10;" GraphId="n35_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="765.5" CenterY="415.0" Width="39.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode TextLabel="ATP:Calcium Bound &#10;Myosin Actin &#10;Complex&#10;" GraphId="n36_REACTOME_445701" Type="Complex">
+    <Graphics CenterX="975.0" CenterY="474.0" Width="124.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20759"/>
+  </DataNode>
+  <DataNode TextLabel="Orthophosphate&#10;" GraphId="n38_REACTOME_29372" Type="Metabolite">
+    <Graphics CenterX="1051.5" CenterY="725.0" Width="109.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode TextLabel="ATP Bound Smooth &#10;Muscle Myosin &#10;Complex&#10;" GraphId="n39_REACTOME_445789" Type="Complex">
+    <Graphics CenterX="1093.5" CenterY="570.0" Width="121.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20923"/>
+  </DataNode>
+  <Line GraphId="e_2_REACTOME_390595">
+    <Comment Source="WikiPathways-description">At the start of the cycle a myosin head lacking a bound nucleotide is locked tightly onto an actin filament in a rigor conformation. Troponin-C has bound four calcium ions. In an actively contracting muscle this state is very short-lived, being rapidly terminated by the binding of a molecule of ATP.</Comment>
+    <BiopaxRef>lit_390603</BiopaxRef>
+    <BiopaxRef>lit_391488</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1058.0" Y="287.0"/>
+      <Point X="1102.0" Y="287.0"/>
+      <Point X="1153.5" Y="286.0" GraphRef="n5_REACTOME_390592" RelX="-1.0427350427350428" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_2_a_i"/>
+      <Anchor Position="0.46311010674895703" Shape="None" GraphId="e_2_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="994.0" Y="315.0" GraphRef="n3_REACTOME_390590" RelX="0.6" RelY="-1.1666666666666667"/>
+      <Point X="1058.0" Y="287.0" GraphRef="e_2_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1004.5" Y="248.0" GraphRef="n4_REACTOME_74016" RelX="0.5901639344262295" RelY="1.2"/>
+      <Point X="1058.0" Y="287.0" GraphRef="e_2_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_REACTOME_390598">
+    <Comment Source="WikiPathways-description">A molecule of ATP binds to the large cleft on the side of the myosin head farthest from the actin filament and immediately causes a slight change in the conformation of the domains that make up the actin-binding site. This reduces the affinity of the myosin head for actin and allows it to move along the filament.</Comment>
+    <BiopaxRef>lit_390603</BiopaxRef>
+    <BiopaxRef>lit_391488</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1323.0" Y="287.0"/>
+      <Point X="1371.0" Y="289.0"/>
+      <Point X="1422.0" Y="291.0" GraphRef="n8_REACTOME_390596" RelX="-1.0483870967741935" RelY="-0.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_6_a_i"/>
+      <Anchor Position="0.48487320180194454" Shape="None" GraphId="e_6_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1300.5" Y="241.0" GraphRef="n7_REACTOME_113592" RelX="0.3076923076923077" RelY="1.2"/>
+      <Point X="1323.0" Y="287.0" GraphRef="e_6_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1276.5" Y="286.0" GraphRef="n5_REACTOME_390592" RelX="1.0598290598290598" RelY="0.0"/>
+      <Point X="1323.0" Y="287.0" GraphRef="e_6_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_390593">
+    <Comment Source="WikiPathways-description">The cleft closes like a clam shell around the ATP molecule, triggering a large shape change that causes the myosin head to release actin and be displaced along the actin filament by a distance of about 5 nm. Hydrolysis of ATP occurs, but the ADP remains tightly bound to the protein.</Comment>
+    <BiopaxRef>lit_390603</BiopaxRef>
+    <BiopaxRef>lit_391488</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1552.0" Y="294.0" GraphRef="n8_REACTOME_390596" RelX="1.0483870967741935" RelY="0.0"/>
+      <Point X="1635.0" Y="296.0"/>
+      <Point X="1681.0" Y="299.0"/>
+      <Anchor Position="0.6429904410504859" Shape="None" GraphId="e_9_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_9_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1740.5" Y="274.0" GraphRef="n10_REACTOME_29372" RelX="-0.5871559633027523" RelY="1.2" ArrowHead="Arrow"/>
+      <Point X="1681.0" Y="299.0" GraphRef="e_9_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1737.5" Y="351.0" GraphRef="n11_REACTOME_390591" RelX="-0.416" RelY="-1.12" ArrowHead="Arrow"/>
+      <Point X="1681.0" Y="299.0" GraphRef="e_9_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1631.0" Y="237.0" GraphRef="n12_REACTOME_390575" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1635.0" Y="296.0" GraphRef="e_9_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_390597">
+    <Comment Source="WikiPathways-description">The weak binding of the myosin head to the new site on the actin filament causes release of the inorganic phosphate produced by ATP hydrolysis, concomitantly with the tight binding of the head to actin. This release triggers the power stroke, a force-generating change in the shape during which the head regains its original conformation. In the course of the power stroke, the head loses its bound ADP, thereby returning to the start of a new cycle.</Comment>
+    <BiopaxRef>lit_390603</BiopaxRef>
+    <BiopaxRef>lit_391488</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1698.5" Y="378.0" GraphRef="n11_REACTOME_390591" RelX="-1.04" RelY="-0.04"/>
+      <Point X="1644.0" Y="378.0"/>
+      <Point X="1400.0" Y="378.0"/>
+      <Anchor Position="0.18120805369127516" Shape="None" GraphId="e_13_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1264.5" Y="314.0" GraphRef="n5_REACTOME_390592" RelX="0.8547008547008547" RelY="1.12" ArrowHead="Arrow"/>
+      <Point X="1400.0" Y="378.0" GraphRef="e_13_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1359.0" Y="411.0" GraphRef="n14_REACTOME_29370" RelX="0.8" RelY="-1.2" ArrowHead="Arrow"/>
+      <Point X="1400.0" Y="378.0" GraphRef="e_13_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_REACTOME_74448">
+    <Comment Source="WikiPathways-description">Calmodulin is activated upon binding at least two, and up to four, calcium ions. For our purposes, we assume 4 calcium ions bound produces full activation of calmodulin.</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="341.0" Y="319.0"/>
+      <Point X="389.0" Y="319.0"/>
+      <Point X="417.0" Y="320.0" GraphRef="n17_REACTOME_74294" RelX="-1.0545454545454545" RelY="-0.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_15_a_i"/>
+      <Anchor Position="0.631430632187161" Shape="None" GraphId="e_15_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="295.0" Y="287.0" GraphRef="n16_REACTOME_71519" RelX="0.3888888888888889" RelY="1.2727272727272727"/>
+      <Point X="341.0" Y="319.0" GraphRef="e_15_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="291.5" Y="347.0" GraphRef="n18_REACTOME_74016" RelX="0.7868852459016393" RelY="-1.2"/>
+      <Point X="341.0" Y="319.0" GraphRef="e_15_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_REACTOME_445797">
+    <Comment Source="WikiPathways-description">Once calcium influx occurs, calmodulin is activated by the binding of calcium. The active calmodulin complex binds and activated the smooth muscle myosin light chain kinase.</Comment>
+    <BiopaxRef>lit_445772</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="577.0" Y="319.0"/>
+      <Point X="591.0" Y="319.0"/>
+      <Point X="648.5" Y="320.0" GraphRef="n22_REACTOME_445764" RelX="-1.053763440860215" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_20_a_i"/>
+      <Anchor Position="0.1971587418367376" Shape="None" GraphId="e_20_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="523.5" Y="397.0" GraphRef="n21_REACTOME_445807" RelX="0.2831858407079646" RelY="-1.12"/>
+      <Point X="577.0" Y="319.0" GraphRef="e_20_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="533.0" Y="320.0" GraphRef="n17_REACTOME_74294" RelX="1.0545454545454545" RelY="-0.2727272727272727"/>
+      <Point X="577.0" Y="319.0" GraphRef="e_20_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_445813">
+    <Comment Source="WikiPathways-description">The smooth muscle light chain kinase phosphorylates the smooth muscle light chains. This phosphorylation activates the myosin lights chains, effectively allowing contraction to begin.</Comment>
+    <BiopaxRef>lit_445784</BiopaxRef>
+    <BiopaxRef>lit_445761</BiopaxRef>
+    <BiopaxRef>lit_445796</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="649.0" Y="260.0"/>
+      <Point X="696.0" Y="260.0"/>
+      <Point X="737.0" Y="260.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_23_a_i"/>
+      <Anchor Position="0.5340909090909091" Shape="None" GraphId="e_23_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="580.5" Y="275.0" GraphRef="n24_REACTOME_113592" RelX="1.1794871794871795" RelY="-0.3333333333333333"/>
+      <Point X="649.0" Y="260.0" GraphRef="e_23_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="598.0" Y="223.0" GraphRef="n25_REACTOME_445793" RelX="0.38596491228070173" RelY="1.1666666666666667"/>
+      <Point X="649.0" Y="260.0" GraphRef="e_23_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="783.0" Y="240.0" GraphRef="n26_REACTOME_445770" RelX="-0.8947368421052632" RelY="1.12" ArrowHead="Arrow"/>
+      <Point X="737.0" Y="260.0" GraphRef="e_23_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="793.0" Y="289.0" GraphRef="n27_REACTOME_29370" RelX="-1.15" RelY="-0.7333333333333333" ArrowHead="Arrow"/>
+      <Point X="737.0" Y="260.0" GraphRef="e_23_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="696.5" Y="300.0" GraphRef="n22_REACTOME_445764" RelX="-0.021505376344086023" RelY="-1.1666666666666667"/>
+      <Point X="696.0" Y="260.0" GraphRef="e_23_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_REACTOME_445704">
+    <Comment Source="WikiPathways-description">Caldesmon functions in an analogous fashion to troponin in striated muscle. Once calcium has entered the smooth muscle cell, calcium levels slowly rise. Caldesmon binds calcium, freeing tropomyosin, allowing the tropomyosin to move exposing the active sites on actin for myosin binding.</Comment>
+    <BiopaxRef>lit_445769</BiopaxRef>
+    <BiopaxRef>lit_445804</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="319.0" Y="478.0"/>
+      <Point X="381.0" Y="478.0"/>
+      <Point X="599.5" Y="479.0" GraphRef="n30_REACTOME_445702" RelX="-1.0515463917525774" RelY="-0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_28_a_i"/>
+      <Anchor Position="0.22142675765405598" Shape="None" GraphId="e_28_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="260.0" Y="541.0" GraphRef="n29_REACTOME_445703" RelX="0.24615384615384617" RelY="-1.1666666666666667"/>
+      <Point X="319.0" Y="478.0" GraphRef="e_28_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="273.5" Y="383.0" GraphRef="n18_REACTOME_74016" RelX="0.19672131147540983" RelY="1.2"/>
+      <Point X="319.0" Y="478.0" GraphRef="e_28_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_REACTOME_445705">
+    <Comment Source="WikiPathways-description">As soon as the actin and myosin filaments become competent for contraction, the swiveling head of myosin pulls itself along the actin filament. This movement changes the shape of the pocket to which ADP is bound, freeing the ADP molecule.</Comment>
+    <BiopaxRef>lit_445784</BiopaxRef>
+    <BiopaxRef>lit_445761</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="714.5" Y="650.0" GraphRef="n32_REACTOME_445697" RelX="-0.016" RelY="-1.12"/>
+      <Point X="712.0" Y="603.0"/>
+      <Point X="712.0" Y="559.0"/>
+      <Anchor Position="0.516709409401887" Shape="None" GraphId="e_31_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_31_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="669.5" Y="508.0" GraphRef="n30_REACTOME_445702" RelX="0.3917525773195876" RelY="1.12" ArrowHead="Arrow"/>
+      <Point X="712.0" Y="559.0" GraphRef="e_31_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="763.0" Y="527.0" GraphRef="n33_REACTOME_29370" RelX="-1.15" RelY="0.7333333333333333" ArrowHead="Arrow"/>
+      <Point X="712.0" Y="559.0" GraphRef="e_31_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_445700">
+    <Comment Source="WikiPathways-description">With the expulsion of ADP from the nucleotide binding pocket, ATP, if available will immediately bind.</Comment>
+    <BiopaxRef>lit_445784</BiopaxRef>
+    <BiopaxRef>lit_445761</BiopaxRef>
+    <BiopaxRef>lit_445796</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="807.0" Y="473.0"/>
+      <Point X="859.0" Y="473.0"/>
+      <Point X="910.0" Y="473.0" GraphRef="n36_REACTOME_445701" RelX="-1.0483870967741935" RelY="-0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_34_a_i"/>
+      <Anchor Position="0.5048543689320388" Shape="None" GraphId="e_34_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="775.5" Y="433.0" GraphRef="n35_REACTOME_113592" RelX="0.5128205128205128" RelY="1.2"/>
+      <Point X="807.0" Y="473.0" GraphRef="e_34_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="702.5" Y="477.0" GraphRef="n30_REACTOME_445702" RelX="1.0721649484536082" RelY="-0.12"/>
+      <Point X="807.0" Y="473.0" GraphRef="e_34_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_445699">
+    <Comment Source="WikiPathways-description">Once ATP is bound, myosin, which is an ATPase, uses the energy from the cleavage of the terminal phosphate to pivot the myosin head back, away from the actin filamentous chain. This change in conformation "resets" the myosin molecule, leaving it ready to bind the actin filament once more and slide the myosin filament along the actin filament, continuing the contractile cycle.</Comment>
+    <BiopaxRef>lit_445784</BiopaxRef>
+    <BiopaxRef>lit_445761</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="975.0" Y="502.0" GraphRef="n36_REACTOME_445701" RelX="0.0" RelY="1.12"/>
+      <Point X="975.0" Y="575.0"/>
+      <Point X="974.0" Y="663.0"/>
+      <Anchor Position="0.4534001487326181" Shape="None" GraphId="e_37_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="781.5" Y="674.0" GraphRef="n32_REACTOME_445697" RelX="1.056" RelY="-0.16" ArrowHead="Arrow"/>
+      <Point X="974.0" Y="663.0" GraphRef="e_37_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1032.5" Y="707.0" GraphRef="n38_REACTOME_29372" RelX="-0.3486238532110092" RelY="-1.2" ArrowHead="Arrow"/>
+      <Point X="974.0" Y="663.0" GraphRef="e_37_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1030.5" Y="572.0" GraphRef="n39_REACTOME_445789" RelX="-1.0413223140495869" RelY="0.08"/>
+      <Point X="975.0" Y="575.0" GraphRef="e_37_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="cytosol" GraphId="comp_text_1" GroupRef="group_comp_1">
+    <Graphics CenterX="110.5" CenterY="867.5" Width="59.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics CenterX="995.0" CenterY="495.0" Width="1902.0" Height="830.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_445796">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2764880</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The distribution of heavy-chain isoforms of myosin in airways smooth muscle from adult and neonate humans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohammad, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sparrow, MP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 260:421-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_445772">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14627618</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smooth muscle contraction and relaxation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Webb, RC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adv Physiol Educ 27:201-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_391488">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulatory Mechanisms of Striated Muscle Contraction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ebashi, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohtsuki, I</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Advances in Experimental Medicine and Biology 592:</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_74025">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7526403</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subunit 2 (or beta) of retinal rod cGMP-gated cation channel is a component of the 240-kDa channel-associated protein and mediates Ca(2+)-calmodulin modulation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, TY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Illing, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molday, LL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hsu, YT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yau, KW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molday, RS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 91:11757-61</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_445769">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11457814</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Invited review: cross-bridge regulation by thin filament-associated proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morgan, KG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gangopadhyay, SS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Appl Physiol 91:953-62</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_445784">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2526655</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization and differential expression of human vascular smooth muscle myosin light chain 2 isoform in nonmuscle cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumar, CC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohan, SR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zavodny, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Narula, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leibowitz, PJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 28:4027-35</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_390603">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10747208</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of contraction in striated muscle</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gordon, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Homsher, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regnier, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiol Rev 80:853-924</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_445768">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19406642</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New players in actin polymerization--WH2-domain-containing actin nucleators</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qualmann, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kessels, MM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cell Biol 19:276-85</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_445804">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1930128</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The molecular anatomy of caldesmon</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marston, SB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Redwood, CS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 279:1-16</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_445761">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3780718</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1986</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isoforms of myosin and actin in human, monkey and rat myometrium. Comparison of pregnant and non-pregnant uterus proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CavaillÃ©, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Janmot, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ropert, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">d'Albis, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 160:507-13</bp:SOURCE>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>muscle cell</bp:TERM><bp:ID>CL:0000187</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

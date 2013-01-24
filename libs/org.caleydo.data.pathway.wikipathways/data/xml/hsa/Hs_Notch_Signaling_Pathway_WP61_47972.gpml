@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Notch Signaling Pathway" Organism="Homo sapiens" License="Freely available under Creative Commons license">
+<Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">The Notch pathway is an evolutionally conserved signaling pathway which plays an important role in diverse developmental and physiological processes. These include cell-fate determination, tissue patterning and morphogenesis, cell differentiation, proliferation and cell death. The Notch pathway is named after the Drosophila mutants that showed irregular notches of missing tissue at the insect wing blade tips. The Notch gene was cloned in 1985. Proteins of the Notch families are single-pass transmembrane proteins that function both as cell surface receptors and nuclear transcriptional regulators. Four Notch receptors (Notch 1-4) have been identified in mammals. Mature Notch receptors are non-covalent heterodimers consisting of an extracellular subunit (NEC) and a transmembrane subunit (NTM). NEC possess multiple EGF-like repeats and three specialized Lin-Notch repeats (LNR) that forms a tight hydrophobic interaction with extracellular stump of NTM. This region masks an A disintegrin and metalloprotease (ADAM) cleavage site. The region where these two subunits interact is called the heterodimerization domain (HD). Notch ligands are also transmembrane proteins with multiple EGF-like repeats, a short cytoplasmic tail and a specialized delta-serrate-lag2 (DSL) domain at the N-terminus. There are five canonical Notch ligands i.e. Jagged (JAG1 and JAG2), Delta-like (DLL1, DLL3, DLL4) in mammals. Notch signaling activation occurs upon ligand-receptor binding, which are expressed on two adjacent cells. Ligand binding causes dissociation of NEC from NTM, unmasking the ADAM cleavage site. The NEC fragment is trans- endocytosed into the ligand expressing cells. The full-length receptor minus the NEC fragment is cleaved at the membrane by ADAM17 generating an intermediate, Notch extracellular truncation (NEXT). This is further cleaved by γ-secretase that generates an active Notch intracellular fragment (NIC) or Notch intracellular domain (NICD). The γ-secretase complex is composed of PSEN1, PSEN2, PSENEN, NCSTN and APH1 (A or B). Following these two cleavage steps, the NICD is released into the cytoplasm and translocates into the nucleus to regulate transcription of Notch target genes. Upon translocation into the nucleus, NICD binds to RBPJ which is a constitutive repressor of Notch signaling. RBPJ represses Notch target gene expression by recruiting a co-repressor complex, which includes NCOR1, NCOR2, SNW1, CIR, HDAC1, HDAC2, SPEN and FHL1 and SAP30. NICD binding to RBPJ replaces the co-repressor complex with a co-activator complex which includes MAML1-3, EP300 and SNW1. Primary Notch target genes include two families of transcriptional factors Hes, including HES1 and HES5 as well as Hey including HEY1 and HEY2. Other Notch target genes include CCND1, CDKN1A, GATA3 and PTCRA. CNTN1 acts as a functional ligand of Notch. This trans-extracellular interaction causes γ-secretase-dependent nuclear translocation of the NICD. This signaling is involved in oligodendrocyte precursor cell differentiation and upregulation of myelin-related protein MAG. In addition to the canonical Notch pathway, there is increasing evidence showing RBPJ independent non-canonical pathways. been fully characterized. Physical interaction of NOTCH-1IC with LCK- PI3K may mediate non-nuclear cross-talk with AKT, leading to survival signaling. Notch stimulation through AKT pathway leads to down regulation of MYC expression. Activation of SRC/STAT3 pathway by Notch signaling is dependent on the expression of Notch effector HES1 transcription factor. The induction of HES1 enhanced SRC phosphorylation. This activated SRC kinase was found to be responsible for the enhanced phosphorylation of STAT3. The HES1 and HES5 proteins associate with and facilitate the complex formation between JAK2 and STAT3, thus promoting STAT3 phosphorylation and activation. The activated STAT3 translocates from the cytoplasm to the nucleus and induces transcriptional activation of target gene expression (including HIF1A).
+
+Please access this pathway at [http://www.netpath.org/netslim/notch_pathway.html NetSlim] database.
+
+If you use this pathway, you must cite following paper:
+Kandasamy, K., Mohan, S. S., Raju, R., Keerthikumar, S., Kumar, G. S. S., Venugopal, A. K., Telikicherla, D., Navarro, J. D., Mathivanan, S., Pecquet, C., Gollapudi, S. K., Tattikota, S. G., Mohan, S., Padhukasahasram, H., Subbannayya, Y., Goel, R., Jacob, H. K. C., Zhong, J., Sekhar, R., Nanjappa, V., Balakrishnan, L., Subbaiah, R., Ramachandra, Y. L., Rahiman, B. A., Prasad, T. S. K., Lin, J., Houtman, J. C. D., Desiderio, S., Renauld, J., Constantinescu, S. N., Ohara, O., Hirano, T., Kubo, M., Singh, S., Khatri, P., Draghici, S., Bader, G. D., Sander, C., Leonard, W. J. and Pandey, A. (2010). NetPath: A public resource of curated signal transduction pathways. &lt;i&gt;Genome Biology&lt;/i&gt;. 11:R3.
+</Comment>
+  <Attribute Key="org.pathvisio.model.WindowHeight" Value="11190.0"/>
+  <Attribute Key="org.pathvisio.model.WindowWidth" Value="15480.0"/>
+  <Graphics BoardWidth="1226.0" BoardHeight="1404.0"/>
+  <DataNode TextLabel="MAML1" GraphId="e354b" Type="Protein" GroupRef="d4473">
+    <Graphics CenterX="333.4166666666665" CenterY="1156.7500000000002" Width="52.5" Height="20.0" ZOrder="32768" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9794"/>
+  </DataNode>
+  <DataNode TextLabel="CDKN1A" GraphId="ca2b1" Type="Rna">
+    <Graphics CenterX="384.4166666666665" CenterY="1307.7499999999998" Width="52.5" Height="20.0" ZOrder="32768" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1026"/>
+  </DataNode>
+  <DataNode TextLabel="PTCRA" GraphId="bf9b3" Type="Rna">
+    <Graphics CenterX="502.4166666666665" CenterY="1316.7499999999998" Width="52.5" Height="20.0" ZOrder="32768" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="171558"/>
+  </DataNode>
+  <DataNode TextLabel="GATA3" GraphId="fb5c6" Type="Rna">
+    <Graphics CenterX="423.9166666666665" CenterY="1350.2499999999998" Width="52.5" Height="20.0" ZOrder="32768" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2625"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH1" GraphId="adb30" Type="Protein" GroupRef="dc374">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.0" CenterY="459.66666666666674" Width="62.0" Height="20.0" ZOrder="32938" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4851"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH2" GraphId="ea69e" Type="Protein" GroupRef="dc374">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.0" CenterY="481.66666666666674" Width="62.0" Height="20.0" ZOrder="32941" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4853"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH4" GraphId="b795e" Type="Protein" GroupRef="dc374">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.0" CenterY="525.6666666666667" Width="62.0" Height="20.0" ZOrder="32944" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4855"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH3" GraphId="dd792" Type="Protein" GroupRef="dc374">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.0" CenterY="503.66666666666674" Width="62.0" Height="20.0" ZOrder="32947" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4854"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH1" GraphId="b887c" Type="Protein" GroupRef="cc481">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.6666666666665" CenterY="967.666666666667" Width="62.0" Height="20.0" ZOrder="32948" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4851"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH2" GraphId="b2885" Type="Protein" GroupRef="cc481">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.6666666666665" CenterY="990.6669999999999" Width="62.0" Height="20.0" ZOrder="32949" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4853"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH4" GraphId="aac26" Type="Protein" GroupRef="cc481">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.6666666666665" CenterY="1036.666666666667" Width="62.0" Height="20.0" ZOrder="32950" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4855"/>
+  </DataNode>
+  <DataNode TextLabel="NOTCH3" GraphId="d25ab" Type="Protein" GroupRef="cc481">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value=""/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="338.6666666666665" CenterY="1013.6669999999999" Width="62.0" Height="20.0" ZOrder="32951" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4854"/>
+  </DataNode>
+  <DataNode TextLabel="MAML2" GraphId="f1f3c" Type="Protein" GroupRef="d4473">
+    <Graphics CenterX="389.4166666666665" CenterY="1156.7500000000002" Width="52.5" Height="20.0" ZOrder="32979" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="84441"/>
+  </DataNode>
+  <DataNode TextLabel="CCND1" GraphId="e5d43" Type="Rna">
+    <Graphics CenterX="347.4166666666665" CenterY="1351.7499999999998" Width="52.5" Height="20.0" ZOrder="32980" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="595"/>
+  </DataNode>
+  <DataNode TextLabel="APH1B" GraphId="f041f" Type="Protein" GroupRef="fdaf6">
+    <Graphics CenterX="183.83333333333326" CenterY="547.0833333333334" Width="53.666666666666515" Height="20.0" ZOrder="32981" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="83464"/>
+  </DataNode>
+  <DataNode TextLabel="APH1A" GraphId="ab0aa" Type="Protein" GroupRef="fdaf6">
+    <Graphics CenterX="126.41666666666663" CenterY="547.0833333333334" Width="52.5" Height="20.0" ZOrder="32982" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="51107"/>
+  </DataNode>
+  <DataNode TextLabel="NCSTN" GraphId="abacd" Type="Protein" GroupRef="fdaf6">
+    <Graphics CenterX="184.33333333333326" CenterY="524.0833333333334" Width="54.666666666666515" Height="20.0" ZOrder="32983" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23385"/>
+  </DataNode>
+  <DataNode TextLabel="PSENEN" GraphId="ed9ff" Type="Protein" GroupRef="fdaf6">
+    <Graphics CenterX="184.33333333333326" CenterY="501.08333333333337" Width="54.666666666666515" Height="20.0" ZOrder="32984" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="55851"/>
+  </DataNode>
+  <DataNode TextLabel="PSEN2" GraphId="f0084" Type="Protein" GroupRef="fdaf6">
+    <Graphics CenterX="126.41666666666663" CenterY="524.0833333333334" Width="52.5" Height="20.0" ZOrder="32985" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5663"/>
+  </DataNode>
+  <DataNode TextLabel="PSEN1" GraphId="a1fd0" Type="Protein" GroupRef="fdaf6">
+    <Graphics CenterX="128.58333333333331" CenterY="501.08333333333337" Width="54.83333333333337" Height="20.0" ZOrder="32986" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5664"/>
+  </DataNode>
+  <DataNode TextLabel="MAML3" GraphId="b52cb" Type="Protein" GroupRef="d4473">
+    <Graphics CenterX="445.4166666666665" CenterY="1156.7500000000002" Width="52.5" Height="20.0" ZOrder="32988" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="55534"/>
+  </DataNode>
+  <DataNode TextLabel="GSK3B" GraphId="e7972" Type="Protein">
+    <Graphics CenterX="262.75" CenterY="788.75" Width="52.5" Height="20.0" ZOrder="32989" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2932"/>
+  </DataNode>
+  <DataNode TextLabel="RING1" GraphId="aa7fa" Type="Protein">
+    <Graphics CenterX="583.4166666666667" CenterY="1076.75" Width="52.5" Height="20.0" ZOrder="32990" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6015"/>
+  </DataNode>
+  <DataNode TextLabel="FHL1" GraphId="df1db" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="583.4166666666667" CenterY="1027.75" Width="52.5" Height="20.0" ZOrder="32991" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2273"/>
+  </DataNode>
+  <DataNode TextLabel="HDAC2" GraphId="a4860" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="696.4166666666667" CenterY="1002.75" Width="52.5" Height="20.0" ZOrder="32992" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3066"/>
+  </DataNode>
+  <DataNode TextLabel="HDAC1" GraphId="d6d1f" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="696.4166666666667" CenterY="979.75" Width="52.5" Height="20.0" ZOrder="32993" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3065"/>
+  </DataNode>
+  <DataNode TextLabel="HEY1" GraphId="a3b2b" Type="Rna">
+    <Graphics CenterX="460.4166666666665" CenterY="1286.7500000000002" Width="52.5" Height="20.0" ZOrder="32994" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23462"/>
+  </DataNode>
+  <DataNode TextLabel="HES5" GraphId="adc2d" Type="Rna">
+    <Graphics CenterX="305.4166666666665" CenterY="1308.7500000000002" Width="52.5" Height="20.0" ZOrder="32995" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="388585"/>
+  </DataNode>
+  <DataNode TextLabel="EP300" GraphId="f69d9" Type="Protein" GroupRef="d4473">
+    <Graphics CenterX="389.4166666666665" CenterY="1129.7500000000002" Width="52.5" Height="20.0" ZOrder="32996" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2033"/>
+  </DataNode>
+  <DataNode TextLabel="NCOR2" GraphId="f897b" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="613.4166666666667" CenterY="979.75" Width="52.5" Height="20.0" ZOrder="32997" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9612"/>
+  </DataNode>
+  <DataNode TextLabel="NCOR1" GraphId="f408e" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="557.4166666666667" CenterY="979.75" Width="52.5" Height="20.0" ZOrder="32998" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9611"/>
+  </DataNode>
+  <DataNode TextLabel="SPEN" GraphId="f6495" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="557.4166666666667" CenterY="1002.75" Width="52.5" Height="20.0" ZOrder="32999" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23013"/>
+  </DataNode>
+  <DataNode TextLabel="SNW1" GraphId="aab34" Type="Protein">
+    <Graphics CenterX="539.4166666666665" CenterY="894.7500000000001" Width="52.5" Height="20.0" ZOrder="33000" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="22938"/>
+  </DataNode>
+  <DataNode TextLabel="DLL4" GraphId="ced61" Type="Protein" GroupRef="c3041">
+    <Graphics CenterX="283.75" CenterY="313.75" Width="52.5" Height="20.0" ZOrder="33002" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="54567"/>
+  </DataNode>
+  <DataNode TextLabel="DLL3" GraphId="becf0" Type="Protein" GroupRef="c3041">
+    <Graphics CenterX="392.75" CenterY="313.75" Width="52.5" Height="20.0" ZOrder="33003" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10683"/>
+  </DataNode>
+  <DataNode TextLabel="DLL1" GraphId="fe22a" Type="Protein" GroupRef="c3041">
+    <Graphics CenterX="338.0" CenterY="313.75" Width="52.0" Height="20.0" ZOrder="33004" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="28514"/>
+  </DataNode>
+  <DataNode TextLabel="JAG2" GraphId="d302b" Type="Protein" GroupRef="c3041">
+    <Graphics CenterX="312.75" CenterY="291.75" Width="52.5" Height="20.0" ZOrder="33005" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3714"/>
+  </DataNode>
+  <DataNode TextLabel="JAG1" GraphId="c9bc0" Type="Protein" GroupRef="c3041">
+    <Graphics CenterX="367.75" CenterY="291.75" Width="52.5" Height="20.0" ZOrder="33006" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="182"/>
+  </DataNode>
+  <DataNode TextLabel="ADAM17" GraphId="a98cf" Type="Protein">
+    <Graphics CenterX="184.5" CenterY="465.75" Width="63.0" Height="20.0" ZOrder="33007" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6868"/>
+  </DataNode>
+  <DataNode TextLabel="RBPJ" GraphId="b3463" Type="Protein" GroupRef="cc481">
+    <Graphics CenterX="456.08333333333303" CenterY="1002.75" Width="52.5" Height="20.0" ZOrder="33012" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3516"/>
+  </DataNode>
+  <DataNode TextLabel="SAP30" GraphId="fe31e" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="697.4166666666667" CenterY="1028.75" Width="52.5" Height="20.0" ZOrder="33015" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8819"/>
+  </DataNode>
+  <DataNode TextLabel="CIR" GraphId="cfc7e" Type="Protein" GroupRef="b9a71">
+    <Graphics CenterX="613.4166666666667" CenterY="1002.75" Width="52.5" Height="20.0" ZOrder="33016" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9541"/>
+  </DataNode>
+  <DataNode TextLabel="FBXW7" GraphId="b339f" Type="Protein" GroupRef="f66ac">
+    <Graphics CenterX="717.75" CenterY="490.75" Width="52.5" Height="20.0" ZOrder="33020" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="55294"/>
+  </DataNode>
+  <DataNode TextLabel="CUL1" GraphId="f3bb9" Type="Protein" GroupRef="f66ac">
+    <Graphics CenterX="663.75" CenterY="490.75" Width="52.5" Height="20.0" ZOrder="33021" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8454"/>
+  </DataNode>
+  <DataNode TextLabel="SKP1" GraphId="c1c9b" Type="Protein" GroupRef="f66ac">
+    <Graphics CenterX="609.75" CenterY="490.75" Width="52.5" Height="20.0" ZOrder="33022" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6500"/>
+  </DataNode>
+  <DataNode TextLabel="ITCH" GraphId="c9652" Type="Protein" GroupRef="cc611">
+    <Graphics CenterX="526.75" CenterY="465.75" Width="52.5" Height="20.0" ZOrder="33023" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="83737"/>
+  </DataNode>
+  <DataNode TextLabel="NUMB" GraphId="c5c4d" Type="Protein" GroupRef="cc611">
+    <Graphics CenterX="474.75" CenterY="465.75" Width="52.5" Height="20.0" ZOrder="33024" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8650"/>
+  </DataNode>
+  <DataNode TextLabel="TLE1" GraphId="ecb27" Type="Protein" GroupRef="ff2e6">
+    <Graphics CenterX="624.75" CenterY="619.75" Width="52.5" Height="20.0" ZOrder="33025" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7088"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB1" GraphId="b9c51" Type="Protein">
+    <Graphics CenterX="518.75" CenterY="1157.75" Width="52.5" Height="20.0" ZOrder="33026" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4790"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R2" GraphId="aef70" Type="Protein" GroupRef="b54ce">
+    <Graphics CenterX="194.75" CenterY="662.75" Width="52.5" Height="20.0" ZOrder="33031" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5296"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R1" GraphId="d85a7" Type="Protein" GroupRef="b54ce">
+    <Graphics CenterX="194.75" CenterY="640.75" Width="52.5" Height="20.0" ZOrder="33032" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5295"/>
+  </DataNode>
+  <DataNode TextLabel="LCK" GraphId="c59af" Type="Protein">
+    <Graphics CenterX="265.75" CenterY="576.75" Width="52.5" Height="20.0" ZOrder="33033" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3932"/>
+  </DataNode>
+  <DataNode TextLabel="MAGEA1" GraphId="f6904" Type="Protein">
+    <Graphics CenterX="404.83333333333326" CenterY="894.7500000000001" Width="61.666666666666515" Height="20.0" ZOrder="33034" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4100"/>
+  </DataNode>
+  <DataNode TextLabel="AKT1" GraphId="a95ef" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="AKT1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="193.99999999999983" CenterY="742.9999999999973" Width="41.666666666666664" Height="20.0" ZOrder="33035" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="207"/>
+  </DataNode>
+  <DataNode TextLabel="MYC" GraphId="d03c4" Type="Rna">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="181.0000000000001" CenterY="1294.3333333333383" Width="50.0" Height="20.0" ZOrder="33044" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4609"/>
+  </DataNode>
+  <DataNode TextLabel="MTOR" GraphId="d7647" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPT"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="193.99999999999983" CenterY="836.3333333333308" Width="46.666666666666664" Height="20.0" ZOrder="33047" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4137"/>
+  </DataNode>
+  <DataNode TextLabel="JAK2" GraphId="d3b5e" Type="Protein" GroupRef="c256d">
+    <Graphics CenterX="683.4166666666674" CenterY="793.416666666667" Width="52.5" Height="20.0" ZOrder="33050" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3717"/>
+  </DataNode>
+  <DataNode TextLabel="STAT3" GraphId="fc7a6" Type="Protein" GroupRef="c256d">
+    <Graphics CenterX="735.4166666666674" CenterY="814.4166666666667" Width="52.5" Height="20.0" ZOrder="33051" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <DataNode TextLabel="HES6" GraphId="f85b5" Type="Protein" GroupRef="ff2e6">
+    <Graphics CenterX="653.75" CenterY="640.75" Width="52.5" Height="20.0" ZOrder="33052" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="55502"/>
+  </DataNode>
+  <DataNode TextLabel="HES5" GraphId="f80e2" Type="Protein" GroupRef="c256d">
+    <Graphics CenterX="683.4166666666674" CenterY="814.4166666666667" Width="52.5" Height="20.0" ZOrder="33053" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="388585"/>
+  </DataNode>
+  <DataNode TextLabel="HES1" GraphId="cec0f" Type="Protein" GroupRef="ff2e6">
+    <Graphics CenterX="601.75" CenterY="640.75" Width="52.5" Height="20.0" ZOrder="33054" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3280"/>
+  </DataNode>
+  <DataNode TextLabel="NUMBL" GraphId="d180c" Type="Protein">
+    <Graphics CenterX="338.75" CenterY="1086.75" Width="52.5" Height="20.0" ZOrder="33055" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9253"/>
+  </DataNode>
+  <DataNode TextLabel="DTX1" GraphId="a216b" Type="Protein">
+    <Graphics CenterX="587.75" CenterY="1157.75" Width="52.5" Height="20.0" ZOrder="33056" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1840"/>
+  </DataNode>
+  <DataNode TextLabel="HIF1A" GraphId="c0a62" Type="Rna">
+    <Graphics CenterX="735.4166666666665" CenterY="1275.7499999999989" Width="52.5" Height="20.0" ZOrder="33057" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3091"/>
+  </DataNode>
+  <DataNode TextLabel="SRC" GraphId="dfd8e" Type="Protein">
+    <Graphics CenterX="748.7500000000002" CenterY="617.0833333333334" Width="52.5" Height="20.0" ZOrder="33058" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6714"/>
+  </DataNode>
+  <DataNode TextLabel="HEY2" GraphId="b1b6c" Type="Rna">
+    <Graphics CenterX="535.4166666666665" CenterY="1261.7500000000002" Width="52.5" Height="20.0" ZOrder="33059" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23493"/>
+  </DataNode>
+  <DataNode TextLabel="HES1" GraphId="eca18" Type="Rna">
+    <Graphics CenterX="259.4166666666665" CenterY="1272.7500000000002" Width="52.5" Height="20.0" ZOrder="33060" FontName="SansSerif" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3280"/>
+  </DataNode>
+  <DataNode TextLabel="HEY2" GraphId="c80a1" Type="Protein" GroupRef="a5a5c">
+    <Graphics CenterX="627.75" CenterY="814.75" Width="52.5" Height="20.0" ZOrder="33061" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23493"/>
+  </DataNode>
+  <DataNode TextLabel="HEY1" GraphId="a3bbc" Type="Protein" GroupRef="a5a5c">
+    <Graphics CenterX="627.75" CenterY="793.75" Width="52.5" Height="20.0" ZOrder="33062" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3280"/>
+  </DataNode>
+  <DataNode TextLabel="STAT3" GraphId="d4e80" Type="Protein">
+    <Graphics CenterX="735.4166666666665" CenterY="1156.7499999999993" Width="52.5" Height="20.0" ZOrder="33063" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <State GraphRef="dfd8e" TextLabel="P" GraphId="a23fb">
+    <Comment>Stimulation of notch by ligand induces phosphorylation of endogenous SRC at Tyr 416 </Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <Line GraphId="id9c83648c">
+    <Comment>Translocation of NOTCH1 from Plasma membrane to Nucleus.The intracellular domain of NOTCH1 (NICD) translocates to nucleus.</Comment>
+    <Comment>Translocation of NOTCH2 from Plasma membrane to Nucleus.The intracellular domain of NOTCH2 (NICD) translocates to nucleus.</Comment>
+    <Comment>Translocation of NOTCH3 from Plasma membrane to Nucleus.The intracellular domain of NOTCH2 (NICD) translocates to nucleus.</Comment>
+    <Comment>Translocation of NOTCH4 from Plasma membrane to Nucleus.The intracellular domain of NOTCH2 (NICD) translocates to nucleus.</Comment>
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="338.75" Y="541.0" GraphRef="aa0aa" RelX="0.0" RelY="1.0"/>
+      <Point X="338.1666666666665" Y="954.0" GraphRef="c9084" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8b49a067">
+    <Comment>Stimulation of Notch1 receptor with ligand JAG1 induces proteolytic cleavage at the A1710, V17111 site at the extracellular domain in bone marrow derived monocytic precursor cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="999999">
+      <Point X="216.0" Y="465.75" GraphRef="a98cf" RelX="1.0" RelY="0.0"/>
+      <Point X="302.5" Y="465.625" GraphRef="aa0aa" RelX="-1.0" RelY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id14ab20d6" GroupRef="cc481">
+    <Comment>NOTCH1 intracellular domain interacts with RBPJ.</Comment>
+    <Comment>NOTCH2 intracellular domain interacts with RBPJ in HEK-293 cells, NIH 3T3 cells and CHO cells.</Comment>
+    <Comment>NOTCH3 intracellular domain interacts with RBPJ in HEK-293 cells, NIH 3T3 cells and CHO cells.</Comment>
+    <Comment>NOTCH4 intracellular domain interacts with RBPJ in HEK-293 cells, NIH 3T3 cells and CHO cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="376.6666666666665" Y="1002.0" GraphRef="c9084" RelX="1.0" RelY="0.0"/>
+      <Point X="429.83333333333303" Y="1002.75" GraphRef="b3463" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id49583a2a">
+    <Comment>NOTCH1 intracellular domain-RBPJ interacts with MAML1 in a ternary complex in vitro.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH1 leads to NOTCH1 intracellular domain-RBPJ interaction with MAML2 to form a ternary complex  in COS-7 cells, U20S cells.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH1 leads to NOTCH1 intracellular domain-RBPJ interaction with MAML3 to form a ternary complex in COS-7 cells, U20S cells.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH2 leads to NOTCH2 intracellular domain-RBPJ interacts with MAML2 to form a ternary complex in COS-7 cells, U20S cells.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH2 leads to NOTCH2 intracellular domain-RBPJ interaction with MAML3 to form a ternary complex in COS-7 cells, U20S cells.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH3 leads to NOTCH3 intracellular domain-RBPJ interaction with MAML2 to form a ternary complex in COS-7 cells, U20S cells.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH3 leads to NOTCH3 intracellular domain-RBPJ interaction with MAML3 to form a ternary complex in COS-7 cells, U20S cells.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH4 leads to NOTCH4 intracellular domain-RBPJ interaction with MAML2 to form a ternary complex in COS-7 cells, U20S cells.</Comment>
+    <Comment>Stimulation with Delta1 and Jagged2 on binding with NOTCH4 leads to NOTCH4 intracellular domain-RBPJ interaction with MAML3 to form a ternary complex in COS-7 cells, U20S cells.</Comment>
+    <Comment>EP300 interacts with NOTCH1 in HEK-293 cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="390.4166666666665" Y="1054.0" GraphRef="f4cc3" RelX="0.0" RelY="1.0"/>
+      <Point X="390.4166666666665" Y="1113.0" GraphRef="ccd56" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id730e0bb4" GroupRef="b9a71">
+    <Comment>RBPJ interacts with FHL1 in 293T cells.</Comment>
+    <Comment>RBPJ interacts with CIR in the Vero cells.</Comment>
+    <Comment>RBPJ interacts with SPEN in the NIH3T3 and HEK-293 cells.</Comment>
+    <Comment>RBPJ interacts with NCOR1 in the NIH3T3 cells.</Comment>
+    <Comment>RBPJ interacts with NCOR2 in the NIH3T3 cells.</Comment>
+    <Comment>RBPJ interacts with HDAC1 in the NIH3T3 cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="526.666666666667" Y="1002.0" GraphRef="a8bfb" RelX="-1.0" RelY="0.0"/>
+      <Point X="482.33333333333303" Y="1002.75" GraphRef="b3463" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ida3d454b5">
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="504.6666666666665" Y="998.0"/>
+      <Point X="504.6666666666665" Y="1008.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idff952094">
+    <Comment>Ubiquitination of NOTCH1 by SKP1A_CUL1_FBXW7.</Comment>
+    <Comment>Intracellular domain of NOTCH1 interacts with FBXW7</Comment>
+    <Comment>Ubiquitination of NOTCH4 by SKP1A_CUL1_FBXW7.</Comment>
+    <Comment>FBXW7 interacts with NOTCH4 through the WD40 repeats in Bosc23 cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="cc00cc">
+      <Point X="580.0" Y="490.5" GraphRef="b43c6" RelX="-1.0" RelY="0.0"/>
+      <Point X="375.0" Y="490.75" GraphRef="aa0aa" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb99051f4">
+    <Comment>NUMB interacts with ITCH and cooperatively induce and enhance the ubiquitination of Notch 1 in HEK 293T cells and jurkat cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="cc00cc">
+      <Point X="446.0" Y="465.5" GraphRef="bdab2" RelX="-1.0" RelY="0.0"/>
+      <Point X="375.0" Y="465.625" GraphRef="aa0aa" RelX="1.0" RelY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idc0a55e04" GroupRef="b9a71">
+    <Comment>CIR interacts with HDAC2 in the Vero cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="670.1666666666667" Y="1002.75" GraphRef="a4860" RelX="-1.0" RelY="0.0"/>
+      <Point X="639.6666666666667" Y="1002.75" GraphRef="cfc7e" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb82b5340" GroupRef="b9a71">
+    <Comment>CIR interacts with SAP30 in the Vero cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="626.0" Y="1028.0"/>
+      <Point X="671.1666666666667" Y="1028.75" GraphRef="fe31e" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ida736b519" GroupRef="b9a71">
+    <Comment>HDAC1 interacts with NCOR2 in NIH–3T3 and 293T cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="670.1666666666667" Y="979.75" GraphRef="d6d1f" RelX="-1.0" RelY="0.0"/>
+      <Point X="639.6666666666667" Y="979.75" GraphRef="f897b" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="iddf54d7b4">
+    <Comment>RING1 interacts with FHL1 in 293T cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="583.4166666666667" Y="1086.75" GraphRef="aa7fa" RelX="0.0" RelY="1.0"/>
+      <Point X="583.4166666666667" Y="1037.75" GraphRef="df1db" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd2382fdc">
+    <Comment>SNW1 interactes with NCOR2 in HeLa cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="539.4166666666665" Y="904.7500000000001" GraphRef="aab34" RelX="0.0" RelY="1.0"/>
+      <Point X="539.0" Y="959.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id54ed83a">
+    <Comment>MAGEA1 interacts with SNW1 in COS-7 cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="435.6666666666665" Y="894.7500000000001" GraphRef="f6904" RelX="1.0" RelY="0.0"/>
+      <Point X="513.1666666666665" Y="894.7500000000001" GraphRef="aab34" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfb589537">
+    <Comment>NFKB1 interacts with NOTCH2 in Ntera-2 cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="518.0416307844416" Y="1099.0" GraphRef="fd5c7" RelX="0.0" RelY="0.0"/>
+      <Point X="518.75" Y="1147.75" GraphRef="b9c51" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id23e1100">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="193.99999999999983" Y="846.3333333333308" GraphRef="d7647" RelX="0.0" RelY="1.0"/>
+      <Point X="194.66666666666663" Y="1105.3333333333385" GraphRef="dafea" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id690f7343">
+    <Comment>HES1 interacts with STAT3 in COS-1 cells.
+</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="735.0" Y="643.0"/>
+      <Point X="735.4166666666674" Y="804.4166666666667" GraphRef="fc7a6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id49b25a85">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="735.4166666666674" Y="824.4166666666667" GraphRef="fc7a6" RelX="0.0" RelY="1.0"/>
+      <Point X="735.4166666666665" Y="1146.7499999999993" GraphRef="d4e80" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id27ede953">
+    <Comment>On stimulation with notch ligands, HEY2 interacts with NCOR1 in 293T cells. </Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="627.75" Y="824.75" GraphRef="c80a1" RelX="0.0" RelY="1.0"/>
+      <Point X="627.666666666667" Y="960.0" GraphRef="a8bfb" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id94d7444d">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="627.0" Y="515.0"/>
+      <Point X="627.5" Y="604.5" GraphRef="c45da" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9aafbe26">
+    <Comment>On stimulation with notch ligands, HEY2 interacts with HES1 in 293T cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="627.5" Y="657.0" GraphRef="c45da" RelX="0.0" RelY="1.0"/>
+      <Point X="627.75" Y="783.75" GraphRef="a3bbc" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idcb67675b">
+    <Comment>Notch Signaling Stimulates HIF1-α Gene Expression in HeLa cells.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="735.4166666666665" Y="1166.7499999999993" GraphRef="d4e80" RelX="0.0" RelY="1.0"/>
+      <Point X="735.4166666666665" Y="1265.7499999999989" GraphRef="c0a62" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8ad67049">
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="194.16666666666663" Y="1141.3333333333385" GraphRef="bf5e0" RelX="0.0" RelY="1.0"/>
+      <Point X="194.0" Y="1226.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idabfdf66a">
+    <Comment>Notch stimulation leads to downregulation of myc</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="193.0" Y="1226.0"/>
+      <Point X="193.5000000000001" Y="1284.3333333333383" GraphRef="d03c4" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfd200894">
+    <Comment>Notch induces Hes5 expression</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="305.0708098465711" Y="1209.0" GraphRef="a149b" RelX="0.0" RelY="0.0"/>
+      <Point X="305.4166666666665" Y="1298.7500000000002" GraphRef="adc2d" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ida74470e9">
+    <Comment>NICD/CSL/MAML/p300 complex upregulates HEY1</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="460.2325839603598" Y="1209.0" GraphRef="da025" RelX="0.0" RelY="0.0"/>
+      <Point X="460.4166666666665" Y="1276.7500000000002" GraphRef="a3b2b" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd3b88c87">
+    <Comment>NUMBL interacts with NOTCH1.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="338.1666666666665" Y="1050.0" GraphRef="c9084" RelX="0.0" RelY="1.0"/>
+      <Point X="338.75" Y="1076.75" GraphRef="d180c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3937c70f">
+    <Comment>Notch upregulates CCND1 expression.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="347.8159219911123" Y="1209.0" GraphRef="fe501" RelX="0.0" RelY="0.0"/>
+      <Point X="347.4166666666665" Y="1341.7499999999998" GraphRef="e5d43" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id1ae0dab5">
+    <Comment>Notch stimulation downregulates CDKN1A expression.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="384.0" Y="1248.0"/>
+      <Point X="384.4166666666665" Y="1297.7499999999998" GraphRef="ca2b1" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idcc6be199">
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="383.38750421311903" Y="1209.0" GraphRef="f0798" RelX="0.0" RelY="0.0"/>
+      <Point X="384.0" Y="1247.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6b84d2f9">
+    <Comment>Notch stimulation induces upregulation of PTCRA expression.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="502.12335290879065" Y="1209.0" GraphRef="f2fb3" RelX="0.0" RelY="0.0"/>
+      <Point X="502.4166666666665" Y="1306.7499999999998" GraphRef="bf9b3" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7b10323">
+    <Comment>Notch upregulates Gata3expression in an RBP-J-dependent manner.</Comment>
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="423.31828775922196" Y="1209.0" GraphRef="cdf01" RelX="0.0" RelY="0.0"/>
+      <Point X="423.9166666666665" Y="1340.2499999999998" GraphRef="fb5c6" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id1a79caf" GroupRef="b9a71">
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="626.5416666666667" Y="1012.75" GraphRef="cfc7e" RelX="0.5" RelY="1.0"/>
+      <Point X="626.0" Y="1027.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ide264f5a6">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="375.0" Y="515.875" GraphRef="aa0aa" RelX="1.0" RelY="0.5"/>
+      <Point X="627.0" Y="515.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4f06e241">
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="683.0" Y="643.875" GraphRef="c45da" RelX="1.0" RelY="0.5"/>
+      <Point X="734.0" Y="643.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd5a7734d">
+    <Graphics ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="855.0" Y="765.0"/>
+      <Point X="912.0" Y="765.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7cae2da2">
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="882.0" Y="759.0"/>
+      <Point X="882.0" Y="771.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6519f7d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="262.75" Y="778.75" GraphRef="e7972" RelX="0.0" RelY="-1.0"/>
+      <Point X="291.6875" Y="630.0"/>
+      <Point X="320.625" Y="541.0" GraphRef="aa0aa" RelX="-0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id737053b0">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="302.5" Y="515.875" GraphRef="aa0aa" RelX="-1.0" RelY="0.5"/>
+      <Point X="265.75" Y="566.75" GraphRef="c59af" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd4f4074a">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="999999">
+      <Point X="216.0" Y="524.0" GraphRef="fac5b" RelX="1.0" RelY="0.0"/>
+      <Point X="252.0" Y="507.375"/>
+      <Point X="302.5" Y="490.75" GraphRef="aa0aa" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4291f8d7">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="239.5" Y="576.75" GraphRef="c59af" RelX="-1.0" RelY="0.0"/>
+      <Point X="194.75" Y="630.75" GraphRef="d85a7" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af1f7">
+    <Graphics ZOrder="32936" LineThickness="3.0">
+      <Point X="338.0" Y="397.0" GraphRef="be086" RelX="0.0" RelY="1.0"/>
+      <Point X="338.0" Y="449.66666666666674" GraphRef="adb30" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f5a5a">
+    <Graphics ZOrder="32954" LineThickness="3.0" Color="ff00ff">
+      <Point X="353.6666666666665" Y="871.0000000000001"/>
+      <Point X="354.6666666666665" Y="847.0000000000001" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e62ab">
+    <Graphics ZOrder="32955" LineThickness="3.0" Color="ff00ff">
+      <Point X="354.6666666666665" Y="864.0000000000001"/>
+      <Point X="354.6666666666665" Y="879.0000000000001" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e3e6d">
+    <Comment>JAG1 interacts with NOTCH1  in CHO cell line.</Comment>
+    <Comment>JAG2 interacts with NOTCH1  in CHO cell line.</Comment>
+    <Comment>DLL1 interacts with NOTCH1 in CHO cell line.</Comment>
+    <Comment>JAG1 interacts with  NOTCH2 in CHO cell lines.</Comment>
+    <Comment>JAG2 interacts with  NOTCH2 in CHO cell lines.</Comment>
+    <Comment>DLL1 interacts with NOTCH2 in CHO cell line.</Comment>
+    <Comment>JAG1 interacts with NOTCH3 in CHO cell line.</Comment>
+    <Comment>JAG2 interacts with NOTCH3 in CHO cell line.</Comment>
+    <Comment>DLL1 interacts with NOTCH3 in CHO cell line.</Comment>
+    <Comment>Extracellular domain of Notch1 interacts with Dll3 tagged with an extracellular VSV tag upon stimulation of NECDFc receptor in HeLa cells. Dll3 does not bind Notch1 in a trans conformation but is involved in cis inhibition of Notch signalling.</Comment>
+    <Comment>DLL4 interacts with NOTCH1  in co-culture of human primary macrophages and a mouse stromal cell.</Comment>
+    <Comment>DLL4 interacts with NOTCH4</Comment>
+    <Graphics ZOrder="33013" LineThickness="3.0" Color="ff3399">
+      <Point X="338.0" Y="323.75" GraphRef="fe22a" RelX="0.0" RelY="1.0"/>
+      <Point X="338.0" Y="365.0" GraphRef="a5989" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="edbee">
+    <Graphics ZOrder="33037" LineStyle="Broken" LineThickness="2.0">
+      <Point X="193.99999999999983" Y="752.9999999999973" GraphRef="a95ef" RelX="0.0" RelY="1.0"/>
+      <Point X="193.99999999999983" Y="826.3333333333308" GraphRef="d7647" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fce7c">
+    <Graphics ZOrder="33039" LineStyle="Broken" LineThickness="2.0">
+      <Point X="194.75" Y="672.75" GraphRef="aef70" RelX="0.0" RelY="1.0"/>
+      <Point X="193.99999999999983" Y="732.9999999999973" GraphRef="a95ef" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e77a0">
+    <Graphics ZOrder="33064" LineThickness="3.0" Color="ff00ff">
+      <Point X="748.0000000000005" Y="875.6666666666669"/>
+      <Point X="749.0000000000005" Y="851.6666666666669" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bde86">
+    <Graphics ZOrder="33065" LineThickness="3.0" Color="ff00ff">
+      <Point X="749.0000000000005" Y="868.6666666666669"/>
+      <Point X="749.0000000000005" Y="883.6666666666669" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d574e">
+    <Comment>NOTCH stimulation leads to SRC mediated phosphorylation of STAT3 on Tyr 705 and its subsequent translocation in HeLa cells.</Comment>
+    <Graphics ZOrder="33068" LineStyle="Broken" LineThickness="2.0">
+      <Point X="748.7500000000002" Y="627.0833333333334" GraphRef="dfd8e" RelX="0.0" RelY="1.0"/>
+      <Point X="748.5416666666674" Y="804.4166666666667" GraphRef="fc7a6" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a1ae1">
+    <Graphics ZOrder="33429" LineThickness="2.0" Color="ff0033">
+      <Point X="856.0" Y="1111.0"/>
+      <Point X="921.0" Y="1111.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7b53">
+    <Graphics ZOrder="33430" LineThickness="2.0" Color="9900cc">
+      <Point X="856.0" Y="1012.0"/>
+      <Point X="914.0" Y="1012.5024647292423" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eaaff">
+    <Graphics ZOrder="33431" LineThickness="3.0" Color="ff00ff">
+      <Point X="909.0" Y="1203.0"/>
+      <Point X="910.0" Y="1179.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f7a11">
+    <Graphics ZOrder="33432" LineThickness="2.0" Color="cc00cc">
+      <Point X="856.0" Y="992.658208482304"/>
+      <Point X="914.0" Y="992.658208482304" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dc241">
+    <Graphics ZOrder="33433" LineThickness="2.0" Color="999900">
+      <Point X="856.0" Y="952.6593972779119"/>
+      <Point X="914.0" Y="952.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dcaeb">
+    <Graphics ZOrder="33434" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="857.0" Y="1131.0"/>
+      <Point X="915.0" Y="1131.5012759336341" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f257e">
+    <Graphics ZOrder="33435" LineThickness="2.0" Color="00ffff">
+      <Point X="856.0" Y="932.6593972779119"/>
+      <Point X="914.0" Y="932.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e5b02">
+    <Graphics ZOrder="33437" LineThickness="2.0" Color="ffcc33">
+      <Point X="856.0" Y="872.0"/>
+      <Point X="914.0000017000198" Y="872.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ef944">
+    <Graphics ZOrder="33439" LineThickness="3.0" Color="ff00ff">
+      <Point X="910.0" Y="1196.0"/>
+      <Point X="910.0" Y="1211.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f73db">
+    <Graphics ZOrder="33465" LineThickness="2.0" Color="0000ff">
+      <Point X="856.0" Y="912.6593972779119"/>
+      <Point X="914.0" Y="912.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ee6e5">
+    <Graphics ZOrder="33466" LineThickness="2.0" Color="ff9933">
+      <Point X="856.0" Y="892.6593972779119"/>
+      <Point X="914.0" Y="892.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d1127">
+    <Graphics ZOrder="33473" LineThickness="2.0" Color="cccc00">
+      <Point X="855.0" Y="972.0"/>
+      <Point X="914.0" Y="972.5036535248503" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dc120">
+    <Graphics ZOrder="33475" LineThickness="2.0" Color="770000">
+      <Point X="856.0" Y="1032.6570196866958"/>
+      <Point X="914.0" Y="1032.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed263">
+    <Graphics ZOrder="33477" LineThickness="2.0" Color="775200">
+      <Point X="856.0" Y="1052.6570196866958"/>
+      <Point X="914.0" Y="1052.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ee46b">
+    <Graphics ZOrder="33479" LineThickness="2.0" Color="ff6666">
+      <Point X="856.0" Y="1072.6570196866958"/>
+      <Point X="914.0" Y="1072.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e155d">
+    <Graphics ZOrder="33493" LineThickness="2.0" Color="999999">
+      <Point X="856.0" Y="1092.6570196866958"/>
+      <Point X="914.0" Y="1092.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aa29f">
+    <Graphics ZOrder="33495" LineThickness="2.0">
+      <Point X="881.0" Y="827.0"/>
+      <Point X="914.0" Y="827.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed8a0">
+    <Graphics ZOrder="33496" LineThickness="2.0">
+      <Point X="857.0" Y="827.0"/>
+      <Point X="882.0" Y="827.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fb456">
+    <Graphics ZOrder="33497" LineThickness="2.0">
+      <Point X="855.0" Y="804.0"/>
+      <Point X="913.0" Y="804.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eb467">
+    <Graphics ZOrder="33498" LineThickness="2.0" Color="00cc00">
+      <Point X="855.0" Y="746.0"/>
+      <Point X="913.0" Y="746.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ee806">
+    <Graphics ZOrder="33499" LineStyle="Broken" LineThickness="2.0">
+      <Point X="855.0" Y="786.0"/>
+      <Point X="913.0" Y="786.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e1a87">
+    <Graphics ZOrder="33500" LineThickness="2.0">
+      <Point X="902.3333333333335" Y="852.3333333333326"/>
+      <Point X="909.0" Y="858.9999999999991" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5b88">
+    <Graphics ZOrder="33578" LineThickness="3.0">
+      <Point X="958.0952380952383" Y="662.0" GraphRef="cbb31" RelX="0.0" RelY="1.0"/>
+      <Point X="958.5" Y="687.952380952381" GraphRef="cc453" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4a6f">
+    <Graphics ZOrder="33581" LineThickness="3.0" Color="ff3399">
+      <Point X="881.5485028072367" Y="685.0818257433984" GraphRef="e3991" RelX="0.0" RelY="-1.0"/>
+      <Point X="881.5" Y="664.952380952381" GraphRef="ee5ae" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bc92c">
+    <Graphics ConnectorType="Elbow" ZOrder="33583" LineThickness="2.0">
+      <Point X="390.0544962378419" Y="1209.0" GraphRef="dbc90" RelX="0.0" RelY="0.0"/>
+      <Point X="324.7355814522542" Y="1209.0"/>
+      <Point X="259.4166666666665" Y="1262.7500000000002" GraphRef="eca18" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+      <Anchor Position="0.03615744076074896" Shape="None" GraphId="f0798"/>
+      <Anchor Position="0.22907463223013333" Shape="None" GraphId="fe501"/>
+      <Anchor Position="0.460896397494967" Shape="None" GraphId="a149b"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bc38b">
+    <Graphics ConnectorType="Elbow" ZOrder="33584" LineThickness="2.0" Color="00cc00">
+      <Point X="657.875" Y="658.75" GraphRef="e9bae" RelX="0.5" RelY="1.0"/>
+      <Point X="670.6458333333337" Y="717.0"/>
+      <Point X="683.4166666666674" Y="783.416666666667" GraphRef="d3b5e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="efea9">
+    <Graphics ConnectorType="Elbow" ZOrder="33586" LineThickness="2.0">
+      <Point X="389.4166666666665" Y="1174.7500000000002" GraphRef="c9868" RelX="0.0" RelY="1.0"/>
+      <Point X="462.4166666666665" Y="1209.0"/>
+      <Point X="535.4166666666665" Y="1251.7500000000002" GraphRef="b1b6c" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+      <Anchor Position="0.15644766623845338" Shape="None" GraphId="dbc90"/>
+      <Anchor Position="0.30561265063926113" Shape="None" GraphId="cdf01"/>
+      <Anchor Position="0.4711476111824801" Shape="None" GraphId="da025"/>
+      <Anchor Position="0.6589985930140084" Shape="None" GraphId="f2fb3"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ec9d0">
+    <Graphics ConnectorType="Elbow" ZOrder="33587" LineThickness="2.0" Color="00cc00">
+      <Point X="438.5416666666665" Y="1054.0" GraphRef="f4cc3" RelX="0.5" RelY="1.0"/>
+      <Point X="513.1458333333333" Y="1099.0"/>
+      <Point X="587.75" Y="1147.75" GraphRef="a216b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5124333971577089" Shape="None" GraphId="fd5c7"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bc46d">
+    <Graphics ConnectorType="Elbow" ZOrder="33588" LineThickness="2.0" Color="00cc00">
+      <Point X="363.1666666666665" Y="1129.7500000000002" GraphRef="f69d9" RelX="-1.0" RelY="0.0"/>
+      <Point X="333.4166666666665" Y="1146.7500000000002" GraphRef="e354b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e1b6e">
+    <Graphics ConnectorType="Elbow" ZOrder="33589" LineThickness="2.0" Color="00cc00">
+      <Point X="526.2916666666665" Y="904.7500000000001" GraphRef="aab34" RelX="-0.5" RelY="1.0"/>
+      <Point X="438.5416666666665" Y="950.0" GraphRef="f4cc3" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Protein" GraphId="aaca8">
+    <Graphics CenterX="885.5" CenterY="1152.0" Width="60.0" Height="20.0" ZOrder="-2" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Notch Signaling Pathway" GraphId="b3c09">
+    <Graphics CenterX="339.5" CenterY="168.5" Width="269.0" Height="33.0" ZOrder="28672" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="20" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein - protein dissociation" GraphId="a2de7">
+    <Graphics CenterX="1036.0" CenterY="765.0" Width="186.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="PM" GraphId="f5326">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="354.66666666666623" CenterY="836.6666666666671" Width="25.333333333333332" Height="16.0" ZOrder="32969" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="c9915">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="353.66666666666623" CenterY="888.6666666666671" Width="23.333333333333332" Height="16.0" ZOrder="32970" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="AKT dependent" GraphId="dafea" GroupRef="e0278">
+    <Graphics CenterX="194.66666666666663" CenterY="1115.3333333333385" Width="120.0" Height="20.0" ZOrder="33042" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="gene expression" GraphId="bf5e0" GroupRef="e0278">
+    <Graphics CenterX="194.16666666666663" CenterY="1131.3333333333385" Width="107.0" Height="20.0" ZOrder="33043" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="e68fb">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="749.0000000000001" CenterY="841.3333333333338" Width="25.333333333333332" Height="16.0" ZOrder="33066" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="bc3d5">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="748.0000000000001" CenterY="893.3333333333338" Width="23.333333333333332" Height="16.0" ZOrder="33067" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Inhibition" GraphId="db5cd">
+    <Graphics CenterX="970.0" CenterY="1111.0" Width="66.0" Height="20.0" ZOrder="33443" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Auto catalysis" GraphId="ab0e4">
+    <Graphics CenterX="987.0" CenterY="852.0" Width="94.0" Height="20.0" ZOrder="33444" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Transport" GraphId="dd76c">
+    <Graphics CenterX="970.0" CenterY="1132.0" Width="66.0" Height="20.0" ZOrder="33445" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Positive regulation of gene expression" GraphId="bb4ee">
+    <Graphics CenterX="1062.8333333333333" CenterY="807.0" Width="247.0" Height="20.0" ZOrder="33446" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Leads to through unknown mechanism" GraphId="aafa8">
+    <Graphics CenterX="1064.8333333333333" CenterY="786.0" Width="243.0" Height="20.0" ZOrder="33447" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Negative regulation of gene expression" GraphId="e1410">
+    <Graphics CenterX="1064.8333333333333" CenterY="828.0" Width="247.0" Height="20.0" ZOrder="33448" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Translocation " GraphId="a73d8">
+    <Graphics CenterX="986.0" CenterY="1194.0" Width="92.0" Height="20.0" ZOrder="33449" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ubiquitination" GraphId="ce2bc">
+    <Graphics CenterX="986.8333333333333" CenterY="991.0" Width="93.66666666666663" Height="20.0" ZOrder="33450" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deubiquitination" GraphId="eb8ae">
+    <Graphics CenterX="994.1666666666665" CenterY="1012.0" Width="111.0" Height="20.0" ZOrder="33451" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Sumoylation" GraphId="b7554">
+    <Graphics CenterX="981.0" CenterY="951.0" Width="86.0" Height="20.0" ZOrder="33452" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Induced catalysis" GraphId="a2616">
+    <Graphics CenterX="993.5" CenterY="1152.0" Width="111.0" Height="20.0" ZOrder="33453" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein-protein interaction" GraphId="cae99">
+    <Graphics CenterX="1028.3333333333333" CenterY="746.0" Width="172.66666666666663" Height="20.0" ZOrder="33454" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Acetylation" GraphId="cc916">
+    <Graphics CenterX="979.0" CenterY="872.0" Width="74.0" Height="20.0" ZOrder="33455" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Dephosphorylation" GraphId="ba1ca">
+    <Graphics CenterX="1001.1666666666665" CenterY="931.0" Width="127.0" Height="20.0" ZOrder="33456" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="LEGEND" GraphId="e94fa">
+    <Graphics CenterX="1011.0" CenterY="605.0" Width="80.0" Height="20.0" ZOrder="33457" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="14" Valign="Middle" Color="3333ff"/>
+  </Label>
+  <Label TextLabel="Phosphorylation" GraphId="f6f0a">
+    <Graphics CenterX="993.1666666666665" CenterY="912.0" Width="111.0" Height="20.0" ZOrder="33458" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deacetylation" GraphId="c2f28">
+    <Graphics CenterX="984.5" CenterY="893.0" Width="89.0" Height="20.0" ZOrder="33467" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Golgi apparatus" GraphId="def8c">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="991.3333333333337" CenterY="1322.6666666666667" Width="106.33333333333333" Height="16.0" ZOrder="33469" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Endosome" GraphId="e284d">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="974.6666666666667" CenterY="1287.6666666666667" Width="71.33333333333333" Height="16.0" ZOrder="33470" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="ce428">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="967.3333333333333" CenterY="1359.6666666666667" Width="55.333333333333336" Height="16.0" ZOrder="33471" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Mitochondrion" GraphId="f806e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="987.0000000000002" CenterY="1340.6666666666667" Width="96.33333333333333" Height="16.0" ZOrder="33472" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Desumoylation" GraphId="ebaac">
+    <Graphics CenterX="989.5" CenterY="971.0" Width="99.0" Height="20.0" ZOrder="33474" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Methylation" GraphId="def9f">
+    <Graphics CenterX="978.5" CenterY="1033.0" Width="75.0" Height="20.0" ZOrder="33476" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Demethylation" GraphId="f2cea">
+    <Graphics CenterX="987.5" CenterY="1053.0" Width="93.0" Height="20.0" ZOrder="33478" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Palmitoylation" GraphId="d9180">
+    <Graphics CenterX="986.0" CenterY="1072.0" Width="90.0" Height="20.0" ZOrder="33480" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="d137e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="973.6666666666667" CenterY="1248.6666666666667" Width="71.33333333333333" Height="16.0" ZOrder="33481" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="EC" GraphId="e87ec">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="905.0" CenterY="1269.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33482" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Plasma membrane" GraphId="d9e07">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="999.3333333333335" CenterY="1228.6666666666667" Width="120.66666666666674" Height="16.0" ZOrder="33483" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="MT" GraphId="fdc83">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="906.0" CenterY="1339.6666666666667" Width="24.333333333333332" Height="16.0" ZOrder="33484" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Endoplasmic reticulum" GraphId="a7290">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="1014.6666666666667" CenterY="1305.6666666666667" Width="150.33333333333334" Height="16.0" ZOrder="33485" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="afd86">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="905.0" CenterY="1248.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33486" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="PM" GraphId="beb5d">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="906.0" CenterY="1229.6666666666667" Width="25.333333333333332" Height="16.0" ZOrder="33487" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="GO" GraphId="d898e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="905.0" CenterY="1322.6666666666667" Width="25.333333333333332" Height="16.0" ZOrder="33488" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="b69d8">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="905.0" CenterY="1359.6666666666667" Width="23.333333333333332" Height="16.0" ZOrder="33489" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Extracellular" GraphId="c4e49">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="980.6666666666667" CenterY="1267.6666666666667" Width="86.33333333333333" Height="16.0" ZOrder="33490" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="ER" GraphId="e7c6e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="905.0" CenterY="1305.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33491" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="EN" GraphId="e16d6">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="905.0" CenterY="1288.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33492" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Proteolytic cleavage" GraphId="fe9d7">
+    <Graphics CenterX="1001.0" CenterY="1092.0" Width="122.0" Height="20.0" ZOrder="33494" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Receptor" GraphId="cc453">
+    <Graphics CenterX="958.5" CenterY="697.952380952381" Width="65.0" Height="20.0" ZOrder="33574" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="c868c">
+    <Graphics CenterX="1055.0" CenterY="656.452380952381" Width="52.0" Height="20.0" ZOrder="33575" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="mRNA" GraphId="f0729">
+    <Graphics CenterX="1118.0" CenterY="655.952380952381" Width="48.0" Height="20.0" ZOrder="33576" FillColor="ffffff" FontStyle="Italic" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Ligand" GraphId="ee5ae">
+    <Graphics CenterX="881.5" CenterY="654.952380952381" Width="51.0" Height="20.0" ZOrder="33577" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Shape GraphId="c9084" GroupRef="cc481">
+    <Graphics CenterX="338.1666666666665" CenterY="1002.0" Width="77.0" Height="96.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f4cc3" GroupRef="cc481">
+    <Graphics CenterX="390.4166666666665" CenterY="1002.0" Width="192.5" Height="104.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ccd56">
+    <Graphics CenterX="390.4166666666665" CenterY="1142.5" Width="172.5" Height="59.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="a8bfb" GroupRef="b9a71">
+    <Graphics CenterX="627.666666666667" CenterY="1002.0" Width="202.0" Height="84.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="aa0aa" GroupRef="dc374">
+    <Graphics CenterX="338.75" CenterY="490.75" Width="72.5" Height="100.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="bdab2" GroupRef="cc611">
+    <Comment>NUMB interacts with ITCH and cooperatively promote the ubiquitination of Notch 1 in HEK 293T cells.</Comment>
+    <Graphics CenterX="500.5" CenterY="465.5" Width="109.0" Height="29.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b43c6" GroupRef="f66ac">
+    <Comment>FBXW7 interacts with SKP1A through the FBox domain in the Bosc23 cells.</Comment>
+    <Comment>FBXW7 interacts with CUL1</Comment>
+    <Graphics CenterX="664.0" CenterY="490.5" Width="168.0" Height="29.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="fac5b" GroupRef="fdaf6">
+    <Graphics CenterX="156.0" CenterY="524.0" Width="120.0" Height="74.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="c45da">
+    <Comment>On stimulation with notch ligands, HES1 interacts with TLE1 in 293T cells.</Comment>
+    <Comment>HES6 interacts with TLE1 in the C2C12 cells.</Comment>
+    <Comment>HES6 interacts with HES1 in the COS-7 cells.</Comment>
+    <Graphics CenterX="627.5" CenterY="630.75" Width="111.0" Height="52.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="be086">
+    <Graphics CenterX="338.0" CenterY="381.5" Width="30.0" Height="31.0" ZOrder="32937" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="a5989">
+    <Graphics CenterX="338.0" CenterY="379.0" Width="28.0" Height="28.0" ZOrder="33014" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" Color="ff0066" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b7b38">
+    <Graphics CenterX="1018.5" CenterY="982.5" Width="355.0" Height="783.0" ZOrder="33468" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ced96">
+    <Graphics CenterX="897.6666666666666" CenterY="855.6666666666658" Width="14.907119999999999" Height="20.0" ZOrder="33501" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="2.0" Rotation="2.554867"/>
+  </Shape>
+  <Shape GraphId="b4e00">
+    <Graphics CenterX="916.0" CenterY="1162.5" Width="14.0" Height="13.0" ZOrder="33502" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="Enzyme complex" GraphId="d7ee8">
+    <Graphics CenterX="1086.8809523809527" CenterY="697.1190476190473" Width="115.0" Height="22.333333333332575" ZOrder="33579" FillColor="ccff33" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="cbb31">
+    <Graphics CenterX="958.0952380952383" CenterY="646.5" Width="30.0" Height="31.0" ZOrder="33580" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e3991">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle"/>
+    <Graphics CenterX="881.5485028072367" CenterY="696.6175400291123" Width="23.357142857143003" Height="23.071428571427703" ZOrder="33582" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="ff00cc" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="c256d" GraphId="fd6e3" Style="Group">
+    <Comment>JAK2 interacts with STAT3 in COS-1 cells.</Comment>
+    <Comment>HES5 interacts with JAK2 in COS-1 cells.</Comment>
+    <Comment>HES5 interacts with STAT3 in COS-1 cells.</Comment>
+  </Group>
+  <Group GroupId="a5a5c" Style="Group"/>
+  <Group GroupId="b9a71" GraphId="eca63" Style="Group"/>
+  <Group GroupId="cc481" GraphId="beabe" Style="Group"/>
+  <Group GroupId="ff2e6" GraphId="e9bae" Style="Group"/>
+  <Group GroupId="fdaf6" GraphId="ee9d1" Style="Group"/>
+  <Group GroupId="dc374" GraphId="e863a" Style="Group"/>
+  <Group GroupId="cc611" Style="Group"/>
+  <Group GroupId="f66ac" Style="Group"/>
+  <Group GroupId="e0278" GraphId="b2b81" Style="Group"/>
+  <Group GroupId="c3041" Style="Group"/>
+  <Group GroupId="d4473" GraphId="c9868" Style="Group"/>
+  <Group GroupId="b54ce" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>Notch signaling pathway</bp:TERM><bp:ID>PW:0000204</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

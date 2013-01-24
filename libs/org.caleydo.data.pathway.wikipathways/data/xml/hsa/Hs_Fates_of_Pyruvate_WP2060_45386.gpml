@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Fates of Pyruvate" Author="Jeremy Slivnick" Organism="Homo sapiens">
+  <Graphics BoardWidth="1095.6136087484813" BoardHeight="775.3703703703703" />
+  <DataNode TextLabel="Pyruvate" GraphId="b6314" Type="Metabolite">
+    <Graphics CenterX="372.0" CenterY="198.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl CoA" GraphId="bb193" Type="Metabolite">
+    <Graphics CenterX="372.3148148148148" CenterY="326.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Lactic Acid" GraphId="a6606" Type="Metabolite">
+    <Graphics CenterX="579.0" CenterY="195.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Oxaloacetic Acid" GraphId="d880a" Type="Metabolite">
+    <Graphics CenterX="374.0" CenterY="82.5" Width="102.0" Height="21.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Alanine" GraphId="f4ecf" Type="Metabolite">
+    <Graphics CenterX="168.0" CenterY="197.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="LDH" GraphId="dc310" Type="Protein">
+    <Graphics CenterX="468.0" CenterY="181.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Pyruvate Carboxylase" GraphId="eba0e" Type="Protein">
+    <Graphics CenterX="315.7773109243697" CenterY="139.18067226890756" Width="108.44537815126046" Height="28.361344537815093" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Glucose&#x9;&#x9;" GraphId="fc583" Type="Metabolite">
+    <Graphics CenterX="374.1008403361344" CenterY="24.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Transaminase" GraphId="d4341" Type="Protein">
+    <Graphics CenterX="273.109243697479" CenterY="215.33613445378148" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Pyruvate Dehydrogenase" GraphId="bd5bf" Type="Protein">
+    <Graphics CenterX="442.7100840336135" CenterY="259.7058823529412" Width="122.98319327731082" Height="22.60504201680658" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Pyruvate Dehydrogenase-P&#xA;(Inactive)" GraphId="ebbed" Type="Protein">
+    <Graphics CenterX="638.655462184874" CenterY="257.8781512605042" Width="117.64705882352945" Height="26.260504201680625" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="TCA Cycle" GraphId="eb340" Type="Pathway">
+    <Graphics CenterX="370.79831932773106" CenterY="450.63025210084015" Width="80.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Fatty Acid Synthesis" GraphId="b70cf" Type="Pathway">
+    <Graphics CenterX="632.2685185185182" CenterY="365.94907407407425" Width="130.27777777777737" Height="25.04629629629585" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl CoA (+)&#xA;ADP (-)" GraphId="a9cc8" Type="Protein">
+    <Graphics CenterX="587.5334143377884" CenterY="84.44714459295257" Width="129.91494532199363" Height="27.94653705953838" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="NADH/FADH2/ATP" GraphId="da89b" Type="Protein">
+    <Graphics CenterX="567.1862089914946" CenterY="447.5021263669502" Width="114.7162818955041" Height="26.01640340218705" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="CoA, Pyruvate, NAD+ (-)&#xA;ATP, Acetyl CoA, NADH (+)" GraphId="b432e" Type="Protein">
+    <Graphics CenterX="801.0865735115432" CenterY="179.57989064398544" Width="128.08201701093572" Height="49.1026731470231" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Calcium (+)" GraphId="c74fb" Type="Metabolite">
+    <Graphics CenterX="773.3414337788581" CenterY="339.00364520048583" Width="103.18347509113009" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="NADH (+)" GraphId="aaa46" Type="Protein">
+    <Graphics CenterX="594.1676792223574" CenterY="132.44228432563796" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="372.0" Y="208.0" GraphRef="b6314" RelX="0.0" RelY="1.0" />
+      <Point X="372.3148148148148" Y="316.0" GraphRef="bb193" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="414.0" Y="197.0" />
+      <Point X="532.0" Y="196.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="374.0" Y="186.0" />
+      <Point X="375.0" Y="97.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="333.0" Y="198.0" />
+      <Point X="219.0" Y="198.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="373.0" Y="68.0" />
+      <Point X="373.0" Y="41.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="569.3277310924369" Y="262.60504201680664" />
+      <Point X="511.5546218487395" Y="262.6050420168066" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="513.6554621848735" Y="252.1008403361344" />
+      <Point X="574.5798319327731" Y="252.10084033613444" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="371.5277777777777" Y="339.1203703703703" />
+      <Point X="371.919701213819" Y="398.8736383442266" GraphRef="ab986" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="412.037037037037" Y="325.23148148148147" />
+      <Point X="567.1296296296296" Y="365.94907407407425" GraphRef="b70cf" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="522.5759416767916" Y="84.44714459295257" GraphRef="a9cc8" RelX="-1.0" RelY="0.0" />
+      <Point X="381.53098420413124" Y="127.58201701093562" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="438.6391251518834" Y="449.5747266099636" />
+      <Point X="505.4678007290401" Y="448.359659781288" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="737.0455650060753" Y="179.57989064398544" GraphRef="b432e" RelX="-1.0" RelY="0.0" />
+      <Point X="544.1176470588234" Y="230.54621848739487" GraphRef="d337e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="721.7496962332931" Y="339.00364520048583" GraphRef="c74fb" RelX="-1.0" RelY="0.0" />
+      <Point X="580.5109407067802" Y="300.12150668286756" GraphRef="f447e" RelX="0.5" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="554.1676792223574" Y="132.44228432563796" GraphRef="aaa46" RelX="-1.0" RelY="0.0" />
+      <Point X="488.0" Y="171.0" GraphRef="dc310" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="PDH Kinase" GraphId="d337e">
+    <Graphics CenterX="544.1176470588234" CenterY="240.54621848739487" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Phosphoprotein Phosphatase" GraphId="f447e">
+    <Graphics CenterX="547.4131329323948" CenterY="283.2733287725783" Width="132.39123109754172" Height="33.69635582057856" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Shape GraphId="ab986">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle" />
+    <Graphics CenterX="371.919701213819" CenterY="454.27069716775594" Width="132.8529411764706" Height="110.79411764705883" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

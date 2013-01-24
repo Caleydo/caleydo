@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Apoptosis Meta Pathway" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Alnemri, E, Hengartner, M, Tschopp, J, Tsujimoto, Y, Hardwick, JM" Maintainer="Gopinathrao, G, Matthews, L, Gillespie, ME, Joshi-Tope, G" Email="gillespm@cshl.org">
+  <Comment Source="WikiPathways-description">Apoptosis is a distinct form of cell death that is functionally and morphologically different from necrosis. Nuclear chromatin condensation, cytoplasmic shrinking, dilated endoplasmic reticulum, and membrane blebbing characterize apoptosis in general. Mitochondria remain morphologically unchanged. In 1972 Kerr et al introduced the concept of apoptosis as a distinct form of "cell-death", and the mechanisms of various apoptotic pathways are still being revealed today. &lt;BR&gt;The two principal  pathways of apoptosis are (1) the Bcl-2 inhibitable or intrinsic pathway induced by various forms of stress like intracellular damage, developmental cues, and external stimuli and (2) the caspase 8/10 dependent or extrinsic pathway initiated by the engagement of death receptors&lt;BR&gt; The caspase 8/10 dependent or extrinsic pathway is a death receptor mediated mechanism that results in the activation of caspase-8 and caspase-10. Activation of death receptors like Fas/CD95, TNFR1, and the TRAIL receptor is promoted by the TNF family of ligands including FASL (APO1L OR CD95L), TNF, LT-alpha, LT-beta, CD40L, LIGHT, RANKL, BLYS/BAFF, and APO2L/TRAIL. These ligands are released  in response to microbial infection, or as part of the cellular, humoral immunity responses during the formation of lymphoid organs, activation of dendritic cells, stimulation or survival of T, B, and natural killer (NK) cells, cytotoxic response to viral infection or oncogenic transformation. &lt;BR&gt; The Bcl-2 inhibitable or intrinsic pathway of apoptosis is a stress-inducible process, and acts through the activation of caspase-9 via Apaf-1 and cytochrome c. The rupture of the mitochondrial membrane, a rapid process involving some of the Bcl-2 family proteins, releases these molecules into the cytoplasm. Examples of cellular processes that may induce the intrinsic pathway in response to various damage signals include: auto reactivity in lymphocytes, cytokine deprivation, calcium flux or cellular damage by cytotoxic drugs like taxol, deprivation of nutrients like glucose and growth factors like EGF, anoikis, transactivation of target genes by tumor suppressors including p53.&lt;BR&gt; In many non-immune cells, death signals initiated by the extrinsic pathway are amplified by connections to the intrinsic pathway. The connecting link appears to be the truncated BID (tBID) protein a proteolytic cleavage product mediated by caspase-8 or other enzymes.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n158_REACTOME_109607" TextLabel="Extrinsic Pathway for &#10;Apoptosis&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Known as the "death receptor pathway" the extrinsic or caspase 8/10 dependent pathway is activated by ligand binding. The "death receptors" are specialized cell-surface receptors including Fas/CD95, tumor necrosis factor-alpha (TNF-alpha) receptor 1, and two receptors, DR4 and DR5, that bind to the TNF-alpha related apoptosis-inducing ligand (TRAIL). The extrinsic and intrinsic pathways unite in the activation of Caspase-3, though the two pathways communicate through the pro-apoptotic Bcl-2 family member Bid before uniting at the shared activation of Caspase-3.</Comment>
+    <Graphics Color="000000" CenterX="360.0" CenterY="435.5" Width="172.0" Height="107.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_1059"/>
+  </DataNode>
+  <DataNode GraphId="n160_REACTOME_75153" TextLabel="Apoptotic execution  phase&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">In the execution phase of apoptosis, effector caspases cleave vital cellular  proteins leading to the morphological changes that characterize apoptosis. These changes include destruction of the nucleus and other organelles, DNA fragmentation, chromatin condensation, cell shrinkage and cell detachment and  membrane blebbing (reviewed in Fischer et al., 2003).</Comment>
+    <Graphics Color="000000" CenterX="487.0" CenterY="654.0" Width="178.0" Height="92.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_995"/>
+  </DataNode>
+  <DataNode GraphId="n171_REACTOME_169911" TextLabel="Regulation of Apoptosis&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">A regulated balance between cell survival and apoptosis is essential for normal&#13;
+development and homeostasis of multicellular organisms  (see Matsuzawa, 2001).  Defects in control of this balance may contribute  to autoimmune disease, neurodegeneration and cancer.  Protein ubiquitination and degradation is one of the major mechanisms that regulate apoptotic cell death (reviewed in Yang and Yu 2003).</Comment>
+    <Graphics Color="000000" CenterX="781.0" CenterY="552.5" Width="178.0" Height="103.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_13648"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_109606" TextLabel="Intrinsic Pathway for &#10;Apoptosis&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The intrinsic (Bcl-2 inhibitable or mitochondrial) pathway of apoptosis functions in response to various types of intracellular stress including growth factor withdrawal, DNA damage, unfolding stresses in the endoplasmic reticulum and death receptor stimulation. Following the reception of stress signals, proapoptotic BCL-2 family proteins are activated and subsequently interact with and inactivate antiapoptotic BCL-2 proteins. This interaction leads to the destabilization of the mitochondrial membrane and release of apoptotic factors.  These factors induce the caspase proteolytic cascade, chromatin condensation, and DNA fragmentation, ultimately leading to cell death. The key players in the Intrinsic pathway are the Bcl-2 family of proteins that are critical death regulators residing immediately upstream of mitochondria. The Bcl-2 family consists of both anti- and proapoptotic members that possess conserved alpha-helices with sequence conservation clustered in BCL-2 Homology (BH) domains. Proapoptotic members are organized as follows: &lt;p&gt; 1. "Multidomain" BAX family proteins such as BAX, BAK etc. that display sequence conservation in their BH1-3 regions. These proteins act downstream in mitochondrial disruption. &lt;p&gt; 2. "BH3-only" proteins such as BID,BAD, NOXA, PUMA,BIM, and BMF have only the short BH3 motif. These act upstream in the pathway, detecting developmental death cues or intracellular damage. Anti-apoptotic members like Bcl-2, Bcl-XL and their relatives exhibit homology in all segments BH1-4. One of the critical functions of BCL-2/BCL-XL proteins is to maintain the integrity of the mitochondrial outer membrane.</Comment>
+    <BiopaxRef>lit_140365</BiopaxRef>
+    <BiopaxRef>lit_140363</BiopaxRef>
+    <BiopaxRef>lit_140369</BiopaxRef>
+    <Graphics Color="000000" CenterX="562.0" CenterY="436.5" Width="174.0" Height="103.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_964"/>
+  </DataNode>
+  <Line GraphId="e_161">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="391.0" Y="492.0" GraphId="e_161_0" GraphRef="n158_REACTOME_109607" RelX="0.36046511627906974" RelY="1.0654205607476634"/>
+      <Point X="459.0" Y="605.0" GraphId="e_161_1" GraphRef="n160_REACTOME_75153" RelX="-0.3146067415730337" RelY="-1.065217391304348" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_192">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="544.0" Y="491.0" GraphId="e_192_0" GraphRef="n172_REACTOME_109606" RelX="-0.20689655172413793" RelY="1.0679611650485437"/>
+      <Point X="503.0" Y="605.0" GraphId="e_192_1" GraphRef="n160_REACTOME_75153" RelX="0.1797752808988764" RelY="-1.065217391304348" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140365" rdf:id="lit_140365">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15077149</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toxic proteins released from mitochondria in cell death</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saelens, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Festjens, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vande Walle, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Gurp, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Loo, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vandenabeele, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 23:2861-74</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140363" rdf:id="lit_140363">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11711427</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The expanding role of mitochondria in apoptosis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 15:2922-33</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140369" rdf:id="lit_140369">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12042762</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IAP proteins: blocking the road to death's door</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salvesen, GS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Duckett, CS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 3:401-10</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>apoptotic cell death pathway</bp:TERM><bp:ID>PW:0000009</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

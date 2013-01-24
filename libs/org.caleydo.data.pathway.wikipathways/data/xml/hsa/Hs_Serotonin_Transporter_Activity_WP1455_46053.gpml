@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Serotonin Transporter Activity" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="605.0" BoardHeight="353.0" />
+  <DataNode TextLabel="SLC6A4" GraphId="b9e35" Type="GeneProduct">
+    <Graphics CenterX="161.0" CenterY="179.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6532" />
+  </DataNode>
+  <DataNode TextLabel="TPH2" GraphId="e8cb4" Type="GeneProduct">
+    <Graphics CenterX="395.0" CenterY="95.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="121278" />
+  </DataNode>
+  <DataNode TextLabel="MAOA" GraphId="db27f" Type="GeneProduct">
+    <Graphics CenterX="455.0" CenterY="155.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="4128" />
+  </DataNode>
+  <DataNode TextLabel="L-Tryptophan" GraphId="d321e" Type="Metabolite">
+    <Graphics CenterX="535.0" CenterY="35.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00929" />
+  </DataNode>
+  <DataNode TextLabel="Serotonin" GraphId="bcccd" Type="Metabolite">
+    <Graphics CenterX="205.0" CenterY="35.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00259" />
+  </DataNode>
+  <DataNode TextLabel="Citalopram" GraphId="f09f6" Type="Metabolite">
+    <Graphics CenterX="105.0" CenterY="45.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB05038" />
+  </DataNode>
+  <DataNode TextLabel="ITGB3" GraphId="bc3ee" Type="GeneProduct">
+    <Graphics CenterX="56.0" CenterY="226.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3690" />
+  </DataNode>
+  <DataNode TextLabel="PP2A" GraphId="d5012" Type="GeneProduct">
+    <Graphics CenterX="240.0" CenterY="313.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5516" />
+  </DataNode>
+  <DataNode TextLabel="Hic-5" GraphId="b6412" Type="GeneProduct">
+    <Graphics CenterX="108.48333333333333" CenterY="285.98333333333335" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="7041" />
+  </DataNode>
+  <DataNode TextLabel="IL1R1" GraphId="fcac9" Type="GeneProduct">
+    <Graphics CenterX="456.0504201680672" CenterY="277.0" Width="84.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3554" />
+  </DataNode>
+  <DataNode TextLabel="Syntaxin 1A" GraphId="d5f26" Type="GeneProduct">
+    <Graphics CenterX="269.0" CenterY="216.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6804" />
+  </DataNode>
+  <DataNode TextLabel="nNOS" GraphId="e3155" Type="GeneProduct">
+    <Graphics CenterX="61.483333333333334" CenterY="86.98333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="4842" />
+  </DataNode>
+  <DataNode TextLabel="SCAMP2" GraphId="aad29" Type="GeneProduct">
+    <Graphics CenterX="270.0" CenterY="95.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="10066" />
+  </DataNode>
+  <DataNode TextLabel="IL1B" GraphId="cd997" Type="GeneProduct">
+    <Graphics CenterX="455.0" CenterY="188.48333333333332" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3553" />
+  </DataNode>
+  <Line GraphId="id1daa7d07">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="161.0" Y="189.0" GraphRef="b9e35" RelX="0.0" RelY="1.0" />
+      <Point X="240.0" Y="303.0" GraphRef="d5012" RelX="0.0" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id82813149">
+    <BiopaxRef>e06</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="121.0" Y="179.0" GraphRef="b9e35" RelX="-1.0" RelY="0.0" />
+      <Point X="96.0" Y="226.0" GraphRef="bc3ee" RelX="1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida5487402">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="141.0" Y="169.0" GraphRef="b9e35" RelX="-0.5" RelY="-1.0" />
+      <Point X="229.0" Y="216.0" GraphRef="d5f26" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id324bc54e">
+    <BiopaxRef>c39</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="108.48333333333335" Y="275.98333333333335" />
+      <Point X="141.0" Y="189.0" GraphRef="b9e35" RelX="-0.5" RelY="1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id12e26589">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="181.0" Y="169.0" GraphRef="b9e35" RelX="0.5" RelY="-1.0" />
+      <Point X="270.0" Y="105.0" GraphRef="aad29" RelX="0.0" RelY="1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id71bf00f3">
+    <BiopaxRef>d49</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="61.483333333333334" Y="96.98333333333333" GraphRef="e3155" RelX="0.0" RelY="1.0" />
+      <Point X="141.0" Y="169.0" GraphRef="b9e35" RelX="-0.5" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id5ba1af8d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="495.0" Y="35.0" GraphRef="d321e" RelX="-1.0" RelY="0.0" />
+      <Point X="245.0" Y="35.0" GraphRef="bcccd" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="ad4bc" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id82495ffb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="395.0" Y="35.0" GraphRef="ad4bc" RelX="0.0" RelY="0.0" />
+      <Point X="395.0" Y="85.0" GraphRef="e8cb4" RelX="0.0" RelY="-1.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id6328f1c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="125.0" Y="55.0" GraphRef="f09f6" RelX="0.5" RelY="1.0" />
+      <Point X="151.0" Y="170.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id6c15f063">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="205.0" Y="45.0" GraphRef="bcccd" RelX="0.0" RelY="1.0" />
+      <Point X="161.0" Y="169.0" GraphRef="b9e35" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfdcadf51">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="455.0" Y="198.48333333333332" GraphRef="cd997" RelX="0.0" RelY="1.0" />
+      <Point X="456.0504201680672" Y="267.0" GraphRef="fcac9" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      
+      
+      <bp:TERM>neuron</bp:TERM>
+      
+      
+      
+      
+      
+      
+      <bp:ID>CL:0000540</bp:ID>
+      
+      
+      
+      
+      
+      
+      <bp:Ontology>Cell Type</bp:Ontology>
+      
+      
+      
+    
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e06">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18317590 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interactions between integrin alphaIIbbeta3 and the serotonin transporter regulate serotonin transport and platelet aggregation in mice and humans.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carneiro AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cook EH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murphy DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blakely RD</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c39">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16803896</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Serotonin-, protein kinase C-, and Hic-5-associated redistribution of the platelet serotonin transporter.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carneiro AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blakely RD</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d49">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17452640</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physical interaction between the serotonin transporter and neuronal nitric oxide synthase underlies reciprocal modulation of their activity.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chanrion B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannoury la Cour C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bertaso F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lerner-Natoli M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Freissmuth M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Millan MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bockaert J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marin P</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

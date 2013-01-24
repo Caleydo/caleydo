@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="tPa pathway" Organism="Mus musculus">
+  <Graphics BoardWidth="574.0" BoardHeight="432.0" />
+  <DataNode TextLabel="Serpine1 (PAI-1)" GraphId="e05f5" Type="GeneProduct">
+    <Graphics CenterX="126.5" CenterY="149.0" Width="99.0" Height="28.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000037411" />
+  </DataNode>
+  <DataNode TextLabel="Plat (tPa)" GraphId="d1ea4" Type="GeneProduct">
+    <Graphics CenterX="309.0" CenterY="148.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031538" />
+  </DataNode>
+  <DataNode TextLabel="Plg (Plasminogen)" GraphId="e84a5" Type="GeneProduct">
+    <Graphics CenterX="453.0" CenterY="99.0" Width="120.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000059481" />
+  </DataNode>
+  <DataNode TextLabel="mBdnf" GraphId="b8508" Type="GeneProduct">
+    <Graphics CenterX="449.0" CenterY="251.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000048482" />
+  </DataNode>
+  <DataNode TextLabel="Plg (Plasmin)" GraphId="ff047" Type="GeneProduct">
+    <Graphics CenterX="455.0" CenterY="186.0" Width="120.0" Height="20.0" ZOrder="32769" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000059481" />
+  </DataNode>
+  <DataNode TextLabel="proBdnf" GraphId="a90a4" Type="GeneProduct">
+    <Graphics CenterX="251.0" CenterY="226.0" Width="80.0" Height="20.0" ZOrder="32770" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000048482" />
+  </DataNode>
+  <DataNode TextLabel="mBdnf" GraphId="c5566" Type="GeneProduct">
+    <Graphics CenterX="101.5" CenterY="354.5" Width="33.0" Height="21.0" ZOrder="32771" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000048482" />
+  </DataNode>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="176.0" Y="149.0" GraphRef="e05f5" RelX="1.0" RelY="0.0" />
+      <Point X="252.0" Y="153.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="59.0" Y="292.0" />
+      <Point X="102.0" Y="352.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Shape GraphId="f831f">
+    <Graphics CenterX="118.75" CenterY="365.75" Width="42.5" Height="12.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

@@ -1,0 +1,1448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Platelet homeostasis" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Akkerman, JW" Maintainer="Jupe, S" Email="sjupe@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Cyclooxygenase-2 (COX-2) and endothelial nitric oxide synthase (eNOS) are primarily expressed in endothelial cells and are considered as important regulators of vascular function. Under normal conditions, laminar flow induces vascular endothelial COX-2 expression and synthesis of Prostacyclin (PGI2) which in turn stimulates endothelial Nitric Oxide Synthase (eNOS) activity. PGI2 and NO both oppose platelet activation and aggregation, as does the CD39 ecto-ADPase (not annotated here) which decreases platelet activation and recruitment by metabolizing platelet-released ADP.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_427251</BiopaxRef>
+  <DataNode GraphId="n3_REACTOME_61129" TextLabel="P2X purinoceptor &#10;1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="218.0" CenterY="726.5" Width="102.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P51575"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_114570" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="114.0" CenterY="681.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_139848" TextLabel="P2X1 &#10;purinoreceptor &#10;bound to ATP&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">P2X1 protein readily forms stable trimers and hexamers, suggesting that the intact receptor is a multimer of three or six subunits in heterologous expression systems. However,assembly in native cells may be influenced significantly by associated proteins that are not present in heterologous expression systems.</Comment>
+    <Graphics Color="000000" CenterX="217.5" CenterY="600.0" Width="99.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3044"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_139827" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="669.5" CenterY="421.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_74016" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="318.5" CenterY="547.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_139839" TextLabel="IP3 receptor bound &#10;to IP3 and Ca++&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="670.5" CenterY="664.0" Width="125.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4346"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_74112" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="132.5" CenterY="451.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_426219" TextLabel="Cations&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="115.0" CenterY="204.5" Width="56.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_24030"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_426221" TextLabel="Cations&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="306.0" CenterY="254.5" Width="56.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_24868"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_426179" TextLabel="DAG-activated &#10;TRPC3/6/7&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="258.0" CenterY="170.5" Width="90.0" Height="47.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24061"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_434696" TextLabel="Orai1 &#10;dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="534.5" CenterY="171.5" Width="69.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24301"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_434675" TextLabel="Stromal interaction &#10;molecule 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="453.0" CenterY="256.0" Width="108.0" Height="48.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13586"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_434679" TextLabel="CRAC channel&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="382.5" CenterY="165.0" Width="85.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24443"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_427899" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="616.0" CenterY="582.5" Width="30.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_70106" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="521.0" CenterY="392.5" Width="30.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_427905" TextLabel="Sarco/endoplasmic &#10;reticulum Ca2+ &#10;ATPases (SERCAs)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="606.5" CenterY="499.5" Width="111.0" Height="65.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24286"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_418306" TextLabel="Plasma membrane &#10;Ca2+ ATPases&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="226.5" CenterY="809.5" Width="111.0" Height="45.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24662"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_74113" TextLabel="sodium ion&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="143.0" CenterY="289.5" Width="72.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29101"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_83910" TextLabel="sodium ion&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="273.5" CenterY="430.0" Width="63.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29101"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_391834" TextLabel="IP receptor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="630.5" CenterY="172.0" Width="63.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P43119"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_391926" TextLabel="Prostacyclin&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="695.5" CenterY="102.5" Width="81.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15552"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_391929" TextLabel="IP receptor:&#10;Prostacyclin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="799.5" CenterY="170.5" Width="77.0" Height="37.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17421"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_392865" TextLabel="Prostacyclin:&#10;prostacyclin &#10;receptor:G-protein &#10;Gs (active)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1277.0" CenterY="253.5" Width="124.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24753"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_113572" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1030.0" CenterY="278.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_392864" TextLabel="Prostacyclin:&#10;prostacyclin &#10;receptor:Gs (inactive)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1062.0" CenterY="171.5" Width="124.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24060"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_114549" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1154.5" CenterY="293.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n146_REACTOME_164358" TextLabel="G-protein alpha &#10;(s):GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1279.0" CenterY="170.0" Width="112.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5470"/>
+  </DataNode>
+  <DataNode GraphId="n147_REACTOME_167434" TextLabel="G-protein beta-&#10;gamma complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1248.0" CenterY="375.0" Width="130.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15674"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_29364" TextLabel="NADPH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="669.0" CenterY="860.5" Width="54.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16474"/>
+  </DataNode>
+  <DataNode GraphId="n173_REACTOME_29368" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="696.0" CenterY="810.5" Width="58.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n174_REACTOME_29468" TextLabel="L-Arginine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="711.5" CenterY="907.5" Width="71.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16467"/>
+  </DataNode>
+  <DataNode GraphId="n175_REACTOME_29968" TextLabel="L-Citrulline&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="868.5" CenterY="905.5" Width="71.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16349"/>
+  </DataNode>
+  <DataNode GraphId="n176_REACTOME_29366" TextLabel="NADP+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="873.5" CenterY="801.5" Width="53.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18009"/>
+  </DataNode>
+  <DataNode GraphId="n177_REACTOME_202124" TextLabel="Nitric oxide&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="913.0" CenterY="858.5" Width="74.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16480"/>
+  </DataNode>
+  <DataNode GraphId="n178_REACTOME_419294" TextLabel="Nitric oxide synthase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="781.0" CenterY="743.0" Width="122.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24417"/>
+  </DataNode>
+  <DataNode GraphId="n203_REACTOME_392012" TextLabel="Guanylate cyclase, &#10;soluble&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="978.0" CenterY="919.0" Width="114.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24123"/>
+  </DataNode>
+  <DataNode GraphId="n204_REACTOME_392141" TextLabel="Guanylate cyclase:NO&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1116.0" CenterY="856.0" Width="128.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24768"/>
+  </DataNode>
+  <DataNode GraphId="n229_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1220.0" CenterY="909.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n230_REACTOME_111294" TextLabel="pyrophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1219.5" CenterY="726.5" Width="97.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n231_REACTOME_30991" TextLabel="3',5'-Cyclic GMP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="952.5" CenterY="638.5" Width="101.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16356"/>
+  </DataNode>
+  <DataNode GraphId="n365_REACTOME_418379" TextLabel="Cyclic GMP-dependent &#10;protein kinases (PKGs)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="884.0" CenterY="496.5" Width="132.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24186"/>
+  </DataNode>
+  <DataNode GraphId="n366_REACTOME_418378" TextLabel="Activated cGMP-&#10;dependent protein &#10;kinase (PKGs)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1067.0" CenterY="537.0" Width="108.0" Height="62.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24034"/>
+  </DataNode>
+  <DataNode GraphId="n368_REACTOME_113578" TextLabel="GMP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1184.0" CenterY="638.5" Width="40.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17345"/>
+  </DataNode>
+  <DataNode GraphId="n369_REACTOME_418560" TextLabel="cGMP &#10;phosphodiesterases&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1195.5" CenterY="568.5" Width="125.0" Height="45.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_24101"/>
+  </DataNode>
+  <DataNode GraphId="n371_REACTOME_418425" TextLabel="IRAG:IP3 receptor &#10;type 1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="747.0" CenterY="461.0" Width="106.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24389"/>
+  </DataNode>
+  <DataNode GraphId="n372_REACTOME_418432" TextLabel="Phosphorylated &#10;IRAG:IP3 receptor &#10;type 1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="749.0" CenterY="550.5" Width="124.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24181"/>
+  </DataNode>
+  <DataNode GraphId="n374_REACTOME_418473" TextLabel="BK channel&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">BK channels (also called Maxi-K or slo1) are potassium ion channels. They are activated by changes in membrane electrical potential and increases in intracellular [Ca2+]. Opening of BK channels results in cell membrane hyperpolarization. BK channels are tetramers of dimer subunits formed by the association of a pore-forming alpha subunit, always derived from the same gene KCNMA1, and a modulatory beta subunit, dervied from one of 4 human genes KCNMB11-4. Intracellular calcium regulates the physical association between the alpha and beta subunits.</Comment>
+    <Graphics Color="000000" CenterX="1318.0" CenterY="433.5" Width="70.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24118"/>
+  </DataNode>
+  <DataNode GraphId="n375_REACTOME_418495" TextLabel="BK channel, &#10;phophorylated&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">BK channels (also called Maxi-K or slo1) are potassium ion channels. They are activated by changes in membrane electrical potential and increases in intracellular [Ca2+]. Opening of BK channels results in cell membrane hyperpolarization. BK channels are tetramers of dimer subunits formed by the association of a pore-forming alpha subunit, always derived from the same gene KCNMA1, and a modulatory beta subunit, dervied from one of 4 human genes KCNMB11-4. Intracellular calcium regulates the physical association between the alpha and beta subunits.</Comment>
+    <Graphics Color="000000" CenterX="1317.0" CenterY="555.5" Width="94.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24816"/>
+  </DataNode>
+  <DataNode GraphId="n469_REACTOME_432113" TextLabel="ApoER2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="214.0" CenterY="902.5" Width="58.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14114"/>
+  </DataNode>
+  <DataNode GraphId="n470_REACTOME_171131" TextLabel="LDL&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">LDL (low density lipoproteins) are complexes of a single molecule of apoprotein B-100 (apoB-100) non-covalently associated with triacylglycerol, free cholesterol, cholesterol esters, and phospholipids. LDL complexes contain single molecules of apoB-100, but their content of lipids is variable (Chapman et al. 1988; Mateu et al. 1972; Tardieu et al. 1976). High levels of LDL in the blood are strongly correlated with increased risk of atherosclerosis, and recent studies have raised the possibility that this risk is further increased in individuals whose blood LDL population is enriched in high-density (low lipid content) LDL complexes (Rizzo and Berneis 2006). The LDL complex annotated here contains an average lipid composition.</Comment>
+    <Graphics Color="000000" CenterX="224.5" CenterY="1136.0" Width="35.0" Height="26.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_7774"/>
+  </DataNode>
+  <DataNode GraphId="n471_REACTOME_432119" TextLabel="LDL:ApoER2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="344.5" CenterY="1091.0" Width="75.0" Height="34.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24595"/>
+  </DataNode>
+  <DataNode GraphId="n496_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="524.0" CenterY="926.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n497_REACTOME_432116" TextLabel="FGR&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="385.0" CenterY="980.5" Width="36.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P09769"/>
+  </DataNode>
+  <DataNode GraphId="n498_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="547.5" CenterY="1003.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n499_REACTOME_432132" TextLabel="LDL:p-ApoER2:FGR&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="578.5" CenterY="1090.0" Width="115.0" Height="34.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24077"/>
+  </DataNode>
+  <DataNode GraphId="n527_REACTOME_428935" TextLabel="Phospho-MAP kinase &#10;p38 alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="454.0" CenterY="789.0" Width="124.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q16539"/>
+  </DataNode>
+  <DataNode GraphId="n530_REACTOME_378502" TextLabel="cPLA2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="474.5" CenterY="870.5" Width="43.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P47712"/>
+  </DataNode>
+  <DataNode GraphId="n532_REACTOME_111859" TextLabel="phospho-cPLA2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="442.5" CenterY="330.0" Width="93.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P47712"/>
+  </DataNode>
+  <DataNode GraphId="n557_REACTOME_210007" TextLabel="phosphorylated &#10;PECAM-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="851.0" CenterY="1096.0" Width="94.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16284"/>
+  </DataNode>
+  <DataNode GraphId="n559_REACTOME_196206" TextLabel="PP2A&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="818.5" CenterY="997.0" Width="45.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_10628"/>
+  </DataNode>
+  <DataNode GraphId="n560_REACTOME_432144" TextLabel="p-PECAM:PP2A&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="712.0" CenterY="1097.5" Width="94.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24470"/>
+  </DataNode>
+  <DataNode GraphId="n602_REACTOME_197938" TextLabel="SHP1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="904.5" CenterY="1023.0" Width="51.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29350"/>
+  </DataNode>
+  <DataNode GraphId="n603_REACTOME_210221" TextLabel="PECAM-1:SHP-1 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1067.0" CenterY="1103.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_13228"/>
+  </DataNode>
+  <DataNode GraphId="n605_REACTOME_162563" TextLabel="SHP2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="925.0" CenterY="991.5" Width="76.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q06124"/>
+  </DataNode>
+  <DataNode GraphId="n606_REACTOME_210219" TextLabel="PECAM-1:SHP-2 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1195.0" CenterY="1102.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_13041"/>
+  </DataNode>
+  <DataNode GraphId="n607_REACTOME_425675" TextLabel="Na+/Ca2+ &#10;exchanger proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="156.0" CenterY="365.0" Width="124.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20277"/>
+  </DataNode>
+  <DataNode GraphId="n608_REACTOME_391179" TextLabel="Heterotrimeric G-&#10;protein Gs &#10;(inactive)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="923.0" CenterY="160.0" Width="108.0" Height="46.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18222"/>
+  </DataNode>
+  <DataNode GraphId="n609_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="303.0" CenterY="954.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n610_REACTOME_428933" TextLabel="MAP kinase p38 alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="307.5" CenterY="862.0" Width="145.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q16539"/>
+  </DataNode>
+  <DataNode GraphId="n612_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="348.0" CenterY="1034.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <Line GraphId="e_2_REACTOME_419490">
+    <Comment Source="WikiPathways-description">P2X receptors are a family of cation-permeable ligand gated ion channels that open in response to the binding of extracellular adenosine triphosphate (ATP). All members of the family are thought to be functionally trimeric. The ionotropic P2X1 receptor has relatively high calcium permeability. It is predominantly expressed in smooth muscle and platelets, but also has a role in synaptic transmission between neurons and from neurons to smooth muscle. Mouse studies suggest that this receptor is essential for normal male reproductive function. ADP has been suggested as a ligand for this receptor but this is no longer widely accepted.</Comment>
+    <BiopaxRef>lit_427235</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="218.0" Y="680.0" GraphId="e_2_0"/>
+      <Point X="218.0" Y="657.0" GraphId="e_2_1"/>
+      <Point X="217.0" Y="628.0" GraphId="e_2_2" GraphRef="n5_REACTOME_139848" RelX="0.0" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2_a_i"/>
+      <Anchor Position="0.44216113071296426" GraphId="e_2_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="218.0" Y="706.0" GraphId="e_2_i0_0" GraphRef="n3_REACTOME_61129" RelX="0.0" RelY="-1.1428571428571428"/>
+      <Point X="218.0" Y="680.0" GraphId="e_2_i0_1" GraphRef="e_2_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="136.0" Y="680.0" GraphId="e_2_i1_0" GraphRef="n4_REACTOME_114570" RelX="1.1578947368421053" RelY="-0.06451612903225806"/>
+      <Point X="218.0" Y="680.0" GraphId="e_2_i1_1" GraphRef="e_2_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_REACTOME_139854">
+    <Comment Source="WikiPathways-description">The IP3 receptor (IP3R) is an intracellular calcium release channel that mobilizes Ca2+ from internal stores in the ER to the cytoplasm. Though its activity is stimulated by IP3, the principal activator of the IP3R is Ca2+. This process of calcium-induced calcium release is central to the mechanism of Ca2+ signalling. The effect of cytosolic Ca2+ on IP3R is complex: it can be both stimulatory and inhibitory and can the effect varies between IP3R isoforms. In general, the IP3Rs have a bell-shaped Ca2+ dependence when treated with low concentrations of IP3; low concentrations of Ca2+ (100â300 nM) are stimulatory but above 300 nM, Ca2+ becomes inhibitory and switches the channel off. The stimulatory effect of IP3 is to relieve Ca2+ inhibition of the channel, enabling Ca2+ activation sites to gate it. &lt;br&gt;Functionally the IP3 receptor is believed to be tetrameric, with results indicating that the tetramer is composed of 2 pairs of protein isoforms.</Comment>
+    <BiopaxRef>lit_140089</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="669.0" Y="440.0" GraphId="e_26_0" GraphRef="n9_REACTOME_139827" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="669.0" Y="616.0" GraphId="e_26_1"/>
+      <Point X="350.0" Y="552.0" GraphId="e_26_2" GraphRef="n10_REACTOME_74016" RelX="1.1228070175438596" RelY="0.3225806451612903" ArrowHead="Arrow"/>
+      <Anchor Position="0.35104744868486437" GraphId="e_26_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="669.0" Y="642.0" GraphId="e_26_c__0_0" GraphRef="n11_REACTOME_139839" RelX="-0.016" RelY="-1.1578947368421053"/>
+      <Point X="669.0" Y="616.0" GraphId="e_26_c__0_1" GraphRef="e_26_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_REACTOME_139855">
+    <Comment Source="WikiPathways-description">The P2X1 receptor is a rapidly-desensitized ATP-gated cation channel with relatively high calcium permeability. It has highest expression in smooth muscle and platelets.  P2X1 receptor activation cannot induce platelet aggregation but does contribute to aggregation seen in response to collagen (Oury et al. 2001; Hechler et al. 2003). The role of P2X1 is more significant under flow conditions characterized by high shear stress (Hechler et al. 2003; Oury et al. 2004). P2X1 knockout mice havereduced incidence of thrombosis of mesenteric arterioles triggered by laser-induced vessel wall injury and are resistant to the acute systemic thromboembolism induced by infusion of a mixture of collagen and adrenaline (Hechler et al. 2003). Conversely, increased systemic thrombosis has been reported in mice overexpressing the human P2X1 receptor (Oury et al. 2003).  P2X1 binding to ATP mediates synaptic transmission between neurons and from neurons to smooth muscle, controlling sympathetic vasoconstriction in small arteries, arterioles and vas deferens.</Comment>
+    <BiopaxRef>lit_140059</BiopaxRef>
+    <BiopaxRef>lit_427210</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="164.0" Y="463.0" GraphId="e_27_0" GraphRef="n12_REACTOME_74112" RelX="1.1228070175438596" RelY="0.7741935483870968"/>
+      <Point X="255.0" Y="504.0" GraphId="e_27_1"/>
+      <Point X="295.0" Y="529.0" GraphId="e_27_2" GraphRef="n10_REACTOME_74016" RelX="-0.8070175438596491" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Anchor Position="0.6790720235789796" GraphId="e_27_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="226.0" Y="572.0" GraphId="e_27_c__0_0" GraphRef="n5_REACTOME_139848" RelX="0.18181818181818182" RelY="-1.12"/>
+      <Point X="255.0" Y="504.0" GraphId="e_27_c__0_1" GraphRef="e_27_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_REACTOME_426223">
+    <Comment Source="WikiPathways-description">TRP channels are non-selectively permeable to cations, allowing enty into the cell via concentration gradients. All mammalian TRPCs require PLC for activation.</Comment>
+    <BiopaxRef>lit_426225</BiopaxRef>
+    <BiopaxRef>lit_426211</BiopaxRef>
+    <BiopaxRef>lit_426195</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="146.0" Y="211.0" GraphId="e_28_0" GraphRef="n13_REACTOME_426219" RelX="1.1071428571428572" RelY="0.45161290322580644"/>
+      <Point X="224.0" Y="233.0" GraphId="e_28_1"/>
+      <Point X="275.0" Y="246.0" GraphId="e_28_2" GraphRef="n14_REACTOME_426221" RelX="-1.1071428571428572" RelY="-0.5161290322580645" ArrowHead="Arrow"/>
+      <Anchor Position="0.606275010388759" GraphId="e_28_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="245.0" Y="197.0" GraphId="e_28_c__0_0" GraphRef="n15_REACTOME_426179" RelX="-0.28888888888888886" RelY="1.148936170212766"/>
+      <Point X="224.0" Y="233.0" GraphId="e_28_c__0_1" GraphRef="e_28_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_REACTOME_434700">
+    <Comment Source="WikiPathways-description">Sustained calcium signalling in lymphocytes and platelets requires the uptake of extracellular calcium when intracellular stores are depleted. The process whereby intracellular calcium depletion stimulates calcium uptake is often referred to as Store-operated calcium entry (SOCE). Store depletion is sensed by stromal interaction molecule 1 (STIM1), which then translocates to the plasma membrane and associates with 2 dimers of Orai1 to form a calcium-release activated calcium (CRAC) channel.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="472.0" Y="199.0" GraphId="e_29_0"/>
+      <Point X="451.0" Y="193.0" GraphId="e_29_1"/>
+      <Point X="428.0" Y="182.0" GraphId="e_29_2" GraphRef="n18_REACTOME_434679" RelX="1.0823529411764705" RelY="0.9444444444444444" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_29_a_i"/>
+      <Anchor Position="0.4613950046133963" GraphId="e_29_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="497.0" Y="186.0" GraphId="e_29_i0_0" GraphRef="n16_REACTOME_434696" RelX="-1.0724637681159421" RelY="0.7692307692307693"/>
+      <Point X="472.0" Y="199.0" GraphId="e_29_i0_1" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="461.0" Y="229.0" GraphId="e_29_i1_0" GraphRef="n17_REACTOME_434675" RelX="0.14814814814814814" RelY="-1.125"/>
+      <Point X="472.0" Y="199.0" GraphId="e_29_i1_1" GraphRef="e_29_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_434798">
+    <Comment Source="WikiPathways-description">Activation of Calcium-release-activated (CRAC) channels allows influx of calcium. The Orai component of CRAC is responsible for the selectivity of the channel, while the Stim component is responsible for activation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="164.0" Y="451.0" GraphId="e_30_0" GraphRef="n12_REACTOME_74112" RelX="1.1228070175438596" RelY="0.0"/>
+      <Point X="383.0" Y="451.0" GraphId="e_30_1"/>
+      <Point X="328.0" Y="529.0" GraphId="e_30_2" GraphRef="n10_REACTOME_74016" RelX="0.3508771929824561" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Anchor Position="0.6964738802370782" GraphId="e_30_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="382.0" Y="186.0" GraphId="e_30_c__0_0" GraphRef="n18_REACTOME_434679" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="383.0" Y="451.0" GraphId="e_30_c__0_1" GraphRef="e_30_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_REACTOME_418365">
+    <Comment Source="WikiPathways-description">Intracellular pools of calcium serve as the source for inositol 1,4,5-trisphosphate (IP3) -induced alterations in cytoplasmic free calcium. In most human cells calcium is stored in the lumen of the sarco/endoplastic reticulum by ATPases known as SERCAs. In platelets, SERCAs transport calcium into the platelet dense tubular network. SERCAs are P-type ATPases, similar to the plasma membrane Na and Ca-ATPases.  Humans have three genes for SERCA pumps; SERCA1, SERCA2 and SERCA3. Studies on SERCA1 suggest that it binds two Ca ions from the cytoplasm and is subsequently phosphorylated at Asp351 before translocating the Ca into the SR lumen. There is a counter transport of two or possibly three protons ensuring partial charge balancing.</Comment>
+    <BiopaxRef>lit_427922</BiopaxRef>
+    <BiopaxRef>lit_427914</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="520.0" Y="513.0" GraphId="e_31_0"/>
+      <Point X="520.0" Y="492.0" GraphId="e_31_1"/>
+      <Point X="521.0" Y="453.0" GraphId="e_31_2"/>
+      <Anchor Position="0.0" GraphId="e_31_a_i"/>
+      <Anchor Position="0.34992524193479063" GraphId="e_31_a_p"/>
+      <Anchor Position="1.0" GraphId="e_31_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="350.0" Y="542.0" GraphId="e_31_i0_0" GraphRef="n10_REACTOME_74016" RelX="1.1228070175438596" RelY="-0.3225806451612903"/>
+      <Point X="520.0" Y="513.0" GraphId="e_31_i0_1" GraphRef="e_31_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="598.0" Y="571.0" GraphId="e_31_i1_0" GraphRef="n20_REACTOME_427899" RelX="-1.2" RelY="-0.7096774193548387"/>
+      <Point X="520.0" Y="513.0" GraphId="e_31_i1_1" GraphRef="e_31_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="521.0" Y="411.0" GraphId="e_31_o0_0" ArrowHead="Arrow" GraphRef="n21_REACTOME_70106" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="521.0" Y="453.0" GraphId="e_31_o0_1" GraphRef="e_31_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="638.0" Y="427.0" GraphId="e_31_o1_0" ArrowHead="Arrow" GraphRef="n9_REACTOME_139827" RelX="-1.087719298245614" RelY="0.3870967741935484"/>
+      <Point X="521.0" Y="453.0" GraphId="e_31_o1_1" GraphRef="e_31_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_31_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="548.0" Y="494.0" GraphId="e_31_c__0_0" GraphRef="n22_REACTOME_427905" RelX="-1.045045045045045" RelY="-0.15384615384615385"/>
+      <Point X="520.0" Y="492.0" GraphId="e_31_c__0_1" GraphRef="e_31_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_418309">
+    <Comment Source="WikiPathways-description">The plasma membrane Ca-ATPase (PMCA) is a P-type Ca-ATPase regulated by calmodulin. The PMCA also counter-transports a proton. PMCA is important for Ca homeostasis and function.</Comment>
+    <BiopaxRef>lit_427930</BiopaxRef>
+    <BiopaxRef>lit_427934</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="316.0" Y="566.0" GraphId="e_32_0" GraphRef="n10_REACTOME_74016" RelX="-0.07017543859649122" RelY="1.2258064516129032"/>
+      <Point X="314.0" Y="602.0" GraphId="e_32_1"/>
+      <Point X="150.0" Y="470.0" GraphId="e_32_2" GraphRef="n12_REACTOME_74112" RelX="0.631578947368421" RelY="1.2258064516129032" ArrowHead="Arrow"/>
+      <Anchor Position="0.14622316140787525" GraphId="e_32_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="784.0" GraphId="e_32_c__0_0" GraphRef="n23_REACTOME_418306" RelX="0.4864864864864865" RelY="-1.1111111111111112"/>
+      <Point X="311.0" Y="740.0" GraphId="e_32_c__0_1"/>
+      <Point X="314.0" Y="602.0" GraphId="e_32_c__0_2" GraphRef="e_32_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_425661">
+    <Comment Source="WikiPathways-description">The NCX (SCL8, Na+/Ca2+ exchanger) family is one of three families that control Ca2+ flux across the plasma membrane or intracellular compartments. They extrude Ca2+ from the cell, using the electrochemical gradient of Na+ as it flows into the cell. One Ca2+ is exchanged for three Na+. During this electrogenic exchange, the membrane potential is altered. NCX1 (SLC8A1) has a ubiquitous expression profile (highest expression in heart, brain and kidney) and was originally cloned and characterized from human cardiac muscle (Komuro I et al, 1992). Both NCX2 (SLC8A2) (Li Z et al, 1994) and NCX3 (SLC8A3) (Gabellini N et al, 2002) are expressed in the brain.</Comment>
+    <BiopaxRef>lit_425677</BiopaxRef>
+    <BiopaxRef>lit_425662</BiopaxRef>
+    <BiopaxRef>lit_425669</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="319.0" Y="391.0" GraphId="e_33_0"/>
+      <Point X="299.0" Y="391.0" GraphId="e_33_1"/>
+      <Point X="274.0" Y="391.0" GraphId="e_33_2"/>
+      <Anchor Position="0.0" GraphId="e_33_a_i"/>
+      <Anchor Position="0.4444444444444444" GraphId="e_33_a_p"/>
+      <Anchor Position="1.0" GraphId="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="318.0" Y="529.0" GraphId="e_33_i0_0" GraphRef="n10_REACTOME_74016" RelX="0.0" RelY="-1.1612903225806452"/>
+      <Point X="319.0" Y="391.0" GraphId="e_33_i0_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="182.0" Y="291.0" GraphId="e_33_i1_0" GraphRef="n24_REACTOME_74113" RelX="1.0833333333333333" RelY="0.12903225806451613"/>
+      <Point X="319.0" Y="301.0" GraphId="e_33_i1_1"/>
+      <Point X="319.0" Y="391.0" GraphId="e_33_i1_2" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="164.0" Y="438.0" GraphId="e_33_o0_0" ArrowHead="Arrow" GraphRef="n12_REACTOME_74112" RelX="1.1228070175438596" RelY="-0.8387096774193549"/>
+      <Point X="274.0" Y="391.0" GraphId="e_33_o0_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="273.0" Y="413.0" GraphId="e_33_o1_0" ArrowHead="Arrow" GraphRef="n25_REACTOME_83910" RelX="0.0" RelY="-1.2142857142857142"/>
+      <Point X="274.0" Y="391.0" GraphId="e_33_o1_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="221.0" Y="363.0" GraphId="e_33_c__0_0" GraphRef="n607_REACTOME_425675" RelX="1.0483870967741935" RelY="-0.10526315789473684"/>
+      <Point X="298.0" Y="361.0" GraphId="e_33_c__0_1"/>
+      <Point X="299.0" Y="391.0" GraphId="e_33_c__0_2" GraphRef="e_33_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_392849">
+    <Comment Source="WikiPathways-description">Prostacyclin binds the G-protein coupled prostacyclin receptor, often referred to as the IP receptor.</Comment>
+    <BiopaxRef>lit_421921</BiopaxRef>
+    <BiopaxRef>lit_421915</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="696.0" Y="171.0" GraphId="e_34_0"/>
+      <Point X="724.0" Y="171.0" GraphId="e_34_1"/>
+      <Point X="758.0" Y="170.0" GraphId="e_34_2" GraphRef="n37_REACTOME_391929" RelX="-1.0649350649350648" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_34_a_i"/>
+      <Anchor Position="0.4515058329622443" GraphId="e_34_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="665.0" Y="171.0" GraphId="e_34_i0_0" GraphRef="n35_REACTOME_391834" RelX="1.1111111111111112" RelY="-0.0625"/>
+      <Point X="696.0" Y="171.0" GraphId="e_34_i0_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="695.0" Y="121.0" GraphId="e_34_i1_0" GraphRef="n36_REACTOME_391926" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="696.0" Y="171.0" GraphId="e_34_i1_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_REACTOME_392852">
+    <Comment Source="WikiPathways-description">The human prostacyclin receptor (IP) and G-protein alpha (s) physically interact through contacts between the IP iLP1 domain and the C-terminal residues of the G alpha (s) protein.</Comment>
+    <BiopaxRef>lit_400652</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="894.0" Y="208.0" GraphId="e_38_0"/>
+      <Point X="931.0" Y="208.0" GraphId="e_38_1"/>
+      <Point X="997.0" Y="188.0" GraphId="e_38_2" GraphRef="n66_REACTOME_392864" RelX="-1.0483870967741935" RelY="0.5396825396825397" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_38_a_i"/>
+      <Anchor Position="0.34917598704926683" GraphId="e_38_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="909.0" Y="186.0" GraphId="e_38_i0_0" GraphRef="n608_REACTOME_391179" RelX="-0.25925925925925924" RelY="1.1304347826086956"/>
+      <Point X="894.0" Y="208.0" GraphId="e_38_i0_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="841.0" Y="185.0" GraphId="e_38_i1_0" GraphRef="n37_REACTOME_391929" RelX="1.0909090909090908" RelY="0.8108108108108109"/>
+      <Point X="894.0" Y="208.0" GraphId="e_38_i1_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_REACTOME_392870">
+    <Comment Source="WikiPathways-description">The G-protein alpha subunit exchanges GDP for GTP</Comment>
+    <BiopaxRef>lit_421925</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1059.0" Y="245.0" GraphId="e_64_0"/>
+      <Point X="1113.0" Y="245.0" GraphId="e_64_1"/>
+      <Point X="1138.0" Y="245.0" GraphId="e_64_2"/>
+      <Anchor Position="0.0" GraphId="e_64_a_i"/>
+      <Anchor Position="0.6835443037974683" GraphId="e_64_a_p"/>
+      <Anchor Position="1.0" GraphId="e_64_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1043.0" Y="260.0" GraphId="e_64_i0_0" GraphRef="n65_REACTOME_113572" RelX="0.6842105263157895" RelY="-1.1612903225806452"/>
+      <Point X="1059.0" Y="245.0" GraphId="e_64_i0_1" GraphRef="e_64_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1060.0" Y="206.0" GraphId="e_64_i1_0" GraphRef="n66_REACTOME_392864" RelX="-0.03225806451612903" RelY="1.1111111111111112"/>
+      <Point X="1059.0" Y="245.0" GraphId="e_64_i1_1" GraphRef="e_64_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1212.0" Y="249.0" GraphId="e_64_o0_0" ArrowHead="Arrow" GraphRef="n40_REACTOME_392865" RelX="-1.0483870967741935" RelY="-0.12698412698412698"/>
+      <Point X="1138.0" Y="245.0" GraphId="e_64_o0_1" GraphRef="e_64_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1148.0" Y="275.0" GraphId="e_64_o1_0" ArrowHead="Arrow" GraphRef="n67_REACTOME_114549" RelX="-0.3076923076923077" RelY="-1.1612903225806452"/>
+      <Point X="1138.0" Y="245.0" GraphId="e_64_o1_1" GraphRef="e_64_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_64_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1083.0" Y="206.0" GraphId="e_64_c__0_0" GraphRef="n66_REACTOME_392864" RelX="0.3387096774193548" RelY="1.1111111111111112"/>
+      <Point X="1113.0" Y="245.0" GraphId="e_64_c__0_1" GraphRef="e_64_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_REACTOME_392874">
+    <Comment Source="WikiPathways-description">The classical view of G-protein signalling is that the G-protein alpha subunit dissociates from the beta:gamma dimer. Activated G alpha (s) and the beta:gamma dimer then participate in separate signaling cascades. Although G protein dissociation has been contested (e.g. Bassi et al. 1996), recent in vivo experiments have demonstrated that dissociation does occur, though possibly not to completion (Lambert 2008).</Comment>
+    <BiopaxRef>lit_421962</BiopaxRef>
+    <BiopaxRef>lit_427945</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1229.0" Y="219.0" GraphId="e_145_0" GraphRef="n40_REACTOME_392865" RelX="-0.7741935483870968" RelY="-1.0793650793650793"/>
+      <Point X="1188.0" Y="194.0" GraphId="e_145_1"/>
+      <Point X="1155.0" Y="169.0" GraphId="e_145_2"/>
+      <Anchor Position="0.5370177175010248" GraphId="e_145_a_p"/>
+      <Anchor Position="1.0" GraphId="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="153.0" GraphId="e_145_o0_0" ArrowHead="Arrow" GraphRef="n35_REACTOME_391834" RelX="-0.06349206349206349" RelY="-1.1875"/>
+      <Point X="627.0" Y="129.0" GraphId="e_145_o0_1"/>
+      <Point X="1122.0" Y="126.0" GraphId="e_145_o0_2"/>
+      <Point X="1155.0" Y="169.0" GraphId="e_145_o0_3" GraphRef="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1220.0" Y="169.0" GraphId="e_145_o1_0" ArrowHead="Arrow" GraphRef="n146_REACTOME_164358" RelX="-1.0535714285714286" RelY="-0.05263157894736842"/>
+      <Point X="1155.0" Y="169.0" GraphId="e_145_o1_1" GraphRef="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="739.0" Y="102.0" GraphId="e_145_o2_0" ArrowHead="Arrow" GraphRef="n36_REACTOME_391926" RelX="1.0864197530864197" RelY="0.0"/>
+      <Point X="1152.0" Y="102.0" GraphId="e_145_o2_1"/>
+      <Point X="1155.0" Y="169.0" GraphId="e_145_o2_2" GraphRef="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1235.0" Y="353.0" GraphId="e_145_o3_0" ArrowHead="Arrow" GraphRef="n147_REACTOME_167434" RelX="-0.2" RelY="-1.1578947368421053"/>
+      <Point X="1190.0" Y="288.0" GraphId="e_145_o3_1"/>
+      <Point X="1155.0" Y="169.0" GraphId="e_145_o3_2" GraphRef="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_REACTOME_418436">
+    <Comment Source="WikiPathways-description">Nitric oxide synthase (NOS) produces NO from L-arginine. There are three isoforms of NOS, endothelial, neuronal and inducible (eNOS, nNOS, and iNOS). eNOS and nNOS are constitutively expressed while iNOS is induced by immunostimulatory signals. The constitutive isoforms are regulated in vivo by the binding of calcium and calmodulin. NO produced by NOS acts as a signalling molecule by diffusing across cell membranes to activate soluble guanylate cyclase (sGC).</Comment>
+    <BiopaxRef>lit_418416</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="741.0" Y="860.0" GraphId="e_171_0"/>
+      <Point X="783.0" Y="859.0" GraphId="e_171_1"/>
+      <Point X="814.0" Y="860.0" GraphId="e_171_2"/>
+      <Anchor Position="0.0" GraphId="e_171_a_i"/>
+      <Anchor Position="0.575284644476818" GraphId="e_171_a_p"/>
+      <Anchor Position="1.0" GraphId="e_171_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="699.0" Y="860.0" GraphId="e_171_i0_0" GraphRef="n172_REACTOME_29364" RelX="1.1111111111111112" RelY="0.0"/>
+      <Point X="741.0" Y="860.0" GraphId="e_171_i0_1" GraphRef="e_171_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="709.0" Y="829.0" GraphId="e_171_i1_0" GraphRef="n173_REACTOME_29368" RelX="0.4482758620689655" RelY="1.2258064516129032"/>
+      <Point X="741.0" Y="860.0" GraphId="e_171_i1_1" GraphRef="e_171_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="720.0" Y="889.0" GraphId="e_171_i2_0" GraphRef="n174_REACTOME_29468" RelX="0.2535211267605634" RelY="-1.1612903225806452"/>
+      <Point X="741.0" Y="860.0" GraphId="e_171_i2_1" GraphRef="e_171_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="849.0" Y="887.0" GraphId="e_171_o0_0" ArrowHead="Arrow" GraphRef="n175_REACTOME_29968" RelX="-0.5352112676056338" RelY="-1.1612903225806452"/>
+      <Point X="814.0" Y="860.0" GraphId="e_171_o0_1" GraphRef="e_171_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="857.0" Y="820.0" GraphId="e_171_o1_0" ArrowHead="Arrow" GraphRef="n176_REACTOME_29366" RelX="-0.6037735849056604" RelY="1.2258064516129032"/>
+      <Point X="814.0" Y="860.0" GraphId="e_171_o1_1" GraphRef="e_171_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="873.0" Y="858.0" GraphId="e_171_o2_0" ArrowHead="Arrow" GraphRef="n177_REACTOME_202124" RelX="-1.0810810810810811" RelY="0.0"/>
+      <Point X="814.0" Y="860.0" GraphId="e_171_o2_1" GraphRef="e_171_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="781.0" Y="762.0" GraphId="e_171_c__0_0" GraphRef="n178_REACTOME_419294" RelX="0.0" RelY="1.1875"/>
+      <Point X="783.0" Y="859.0" GraphId="e_171_c__0_1" GraphRef="e_171_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_202_REACTOME_392143">
+    <Comment Source="WikiPathways-description">Soluble guanylate cyclase (sGC) is a heterodimeric hemoprotein that selectively binds Nitric Oxide (NO). NO binding stimulates the synthesis of cGMP, which then binds to phosphodiesterases (PDE), ion-gated channels, and cGMP-dependent protein kinases (cGK) to regulate several physiological functions including vasodilation, platelet aggregation and neurotransmission.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="977.0" Y="856.0" GraphId="e_202_0"/>
+      <Point X="1007.0" Y="856.0" GraphId="e_202_1"/>
+      <Point X="1049.0" Y="856.0" GraphId="e_202_2" GraphRef="n204_REACTOME_392141" RelX="-1.046875" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_202_a_i"/>
+      <Anchor Position="0.4166666666666667" GraphId="e_202_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_202_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="977.0" Y="897.0" GraphId="e_202_i0_0" GraphRef="n203_REACTOME_392012" RelX="-0.017543859649122806" RelY="-1.1578947368421053"/>
+      <Point X="977.0" Y="856.0" GraphId="e_202_i0_1" GraphRef="e_202_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_202_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="953.0" Y="856.0" GraphId="e_202_i1_0" GraphRef="n177_REACTOME_202124" RelX="1.0810810810810811" RelY="-0.12903225806451613"/>
+      <Point X="977.0" Y="856.0" GraphId="e_202_i1_1" GraphRef="e_202_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_REACTOME_392152">
+    <Comment Source="WikiPathways-description">Soluble guanylate cyclase (sGC) is a heterodimeric hemoprotein that selectively binds Nitric Oxide (NO). NO binding stimulates the synthesis of cGMP, which then binds to phosphodiesterases (PDE), ion-gated channels, and cGMP-dependent protein kinases (cGK) to regulate several physiological functions including vasodilation, platelet aggregation and neurotransmission.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1219.0" Y="891.0" GraphId="e_228_0" GraphRef="n229_REACTOME_29438" RelX="-0.05263157894736842" RelY="-1.1612903225806452"/>
+      <Point X="1218.0" Y="856.0" GraphId="e_228_1"/>
+      <Point X="1217.0" Y="800.0" GraphId="e_228_2"/>
+      <Anchor Position="0.3846742226100455" GraphId="e_228_a_p"/>
+      <Anchor Position="1.0" GraphId="e_228_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1218.0" Y="745.0" GraphId="e_228_o0_0" ArrowHead="Arrow" GraphRef="n230_REACTOME_111294" RelX="-0.020618556701030927" RelY="1.2258064516129032"/>
+      <Point X="1217.0" Y="800.0" GraphId="e_228_o0_1" GraphRef="e_228_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="977.0" Y="657.0" GraphId="e_228_o1_0" ArrowHead="Arrow" GraphRef="n231_REACTOME_30991" RelX="0.49504950495049505" RelY="1.2258064516129032"/>
+      <Point X="1217.0" Y="800.0" GraphId="e_228_o1_1" GraphRef="e_228_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1183.0" Y="856.0" GraphId="e_228_c__0_0" GraphRef="n204_REACTOME_392141" RelX="1.046875" RelY="0.0"/>
+      <Point X="1218.0" Y="856.0" GraphId="e_228_c__0_1" GraphRef="e_228_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="913.0" Y="840.0" GraphId="e_228_a__0_0" GraphRef="n177_REACTOME_202124" RelX="0.0" RelY="-1.1612903225806452"/>
+      <Point X="913.0" Y="809.0" GraphId="e_228_a__0_1"/>
+      <Point X="1175.0" Y="809.0" GraphId="e_228_a__0_2"/>
+      <Point X="1218.0" Y="856.0" GraphId="e_228_a__0_3" GraphRef="e_228_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_364_REACTOME_418451">
+    <Comment Source="WikiPathways-description">Protein Kinase G (PKG) is a homodimer held together by a leucine zipper present in the N terminus. Each member of the dimer has two cyclic GMP (cGMP) binding sites, one low affinity and one high affinity. PKG was first described in various arthropods. Mammals have two PKG genes, prkg1 and prkg2, that encode PKG1 (cGKI) and PKG2 (cGKII). The N terminus (the first 90-100 residues) of PKG1 is encoded by two alternatively spliced exons that produce the isoforms PKG1alpha and PKG1beta. Both are cytosolic. PKG1 is present in high concentrations (&gt;0.1 ÂµM) in all smooth muscles, platelets, cerebellum, hippocampus, dorsal root ganglia, neuromuscular endplate, and kidney. PKG1beta is the predominant PKG isoform in platelets. PKG1 is required for the inhibition of platelet activation by NO/cGMP. PKG2 is anchored at the plasma membrane by myristoylation of the N-terminal Gly-2 residue. PKG2 phosphorylates cystic fibrosis transmembrane conductance regulator.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="951.0" Y="542.0" GraphId="e_364_0"/>
+      <Point X="982.0" Y="542.0" GraphId="e_364_1"/>
+      <Point X="1010.0" Y="540.0" GraphId="e_364_2" GraphRef="n366_REACTOME_418378" RelX="-1.0555555555555556" RelY="0.0967741935483871" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_364_a_i"/>
+      <Anchor Position="0.5247891991194892" GraphId="e_364_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_364_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="922.0" Y="526.0" GraphId="e_364_i0_0" GraphRef="n365_REACTOME_418379" RelX="0.5757575757575758" RelY="1.1320754716981132"/>
+      <Point X="951.0" Y="542.0" GraphId="e_364_i0_1" GraphRef="e_364_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_364_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="951.0" Y="620.0" GraphId="e_364_i1_0" GraphRef="n231_REACTOME_30991" RelX="-0.019801980198019802" RelY="-1.1612903225806452"/>
+      <Point X="951.0" Y="542.0" GraphId="e_364_i1_1" GraphRef="e_364_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_367_REACTOME_418456">
+    <Comment Source="WikiPathways-description">Cyclic GMP phosphodiesterase are hydrolases selective for cAMP (PDE4, 7 and 8), cGMP (PDE5, 6 and 9) or able to hydrolyse both cAMP and cGMP (PDE1, 2, 3, 10 and 11). Â The dual-specificity PDEs allow for cross-regulation of the cAMP and cGMP pathways, e.g. PDE2 can hydrolyse both, but binding of cGMP to the regulatory GAF-B domain increases cAMP affinity and hydrolysis.&lt;br&gt;PDE2, 3 and 5 are expressed in platelets.</Comment>
+    <BiopaxRef>lit_427866</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1006.0" Y="638.0" GraphId="e_367_0" GraphRef="n231_REACTOME_30991" RelX="1.0693069306930694" RelY="0.0"/>
+      <Point X="1092.0" Y="638.0" GraphId="e_367_1"/>
+      <Point X="1161.0" Y="638.0" GraphId="e_367_2" GraphRef="n368_REACTOME_113578" RelX="-1.15" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5548387096774193" GraphId="e_367_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_367_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1144.0" Y="594.0" GraphId="e_367_c__0_0" GraphRef="n369_REACTOME_418560" RelX="-0.816" RelY="1.1555555555555554"/>
+      <Point X="1091.0" Y="614.0" GraphId="e_367_c__0_1"/>
+      <Point X="1092.0" Y="638.0" GraphId="e_367_c__0_2" GraphRef="e_367_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_370_REACTOME_418442">
+    <Comment Source="WikiPathways-description">IRAG, PKG1(cGKI), and IP3 receptor type 1 can be isolated as a complex in human platelets. Phosphorylation of IRAG by PKG1 inhibits IP3 receptor-mediated Ca2+ release, representing the primary mechanism by which NO suppresses platelet activation.</Comment>
+    <BiopaxRef>lit_418447</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="747.0" Y="483.0" GraphId="e_370_0" GraphRef="n371_REACTOME_418425" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="748.0" Y="499.0" GraphId="e_370_1"/>
+      <Point X="748.0" Y="523.0" GraphId="e_370_2" GraphRef="n372_REACTOME_418432" RelX="-0.016129032258064516" RelY="-1.1020408163265305" ArrowHead="Arrow"/>
+      <Anchor Position="0.40046792791584185" GraphId="e_370_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_370_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="815.0" Y="497.0" GraphId="e_370_c__0_0" GraphRef="n365_REACTOME_418379" RelX="-1.0454545454545454" RelY="0.03773584905660377"/>
+      <Point X="748.0" Y="499.0" GraphId="e_370_c__0_1" GraphRef="e_370_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_373_REACTOME_418549">
+    <Comment Source="WikiPathways-description">NO-induced activation of cGMP-dependent protein kinase (PKG) increases the open probability of large conductance Ca2+-activated K+ channels (BK channels) by direct phosphorylation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1317.0" Y="454.0" GraphId="e_373_0" GraphRef="n374_REACTOME_418473" RelX="-0.02857142857142857" RelY="1.2"/>
+      <Point X="1317.0" Y="497.0" GraphId="e_373_1"/>
+      <Point X="1317.0" Y="533.0" GraphId="e_373_2" GraphRef="n375_REACTOME_418495" RelX="0.0" RelY="-1.1282051282051282" ArrowHead="Arrow"/>
+      <Anchor Position="0.5443037974683544" GraphId="e_373_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_373_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="953.0" Y="496.0" GraphId="e_373_c__0_0" GraphRef="n365_REACTOME_418379" RelX="1.0454545454545454" RelY="0.0"/>
+      <Point X="1317.0" Y="497.0" GraphId="e_373_c__0_1" GraphRef="e_373_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_468_REACTOME_432121">
+    <Comment Source="WikiPathways-description">LPR8 (apoER2) is the platelet low density lipoprotein (LDL) receptor. Mice lacking ApoE develop hypercholesterolemia and later atherosclerosis (Zhang et al. 1992). Similiar results are seen in familial hypercholesterolemia, where defective apoB/E receptors fail to remove LDL from the circulation.</Comment>
+    <BiopaxRef>lit_432126</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="238.0" Y="1090.0" GraphId="e_468_0"/>
+      <Point X="273.0" Y="1089.0" GraphId="e_468_1"/>
+      <Point X="304.0" Y="1089.0" GraphId="e_468_2" GraphRef="n471_REACTOME_432119" RelX="-1.0666666666666667" RelY="-0.11764705882352941" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_468_a_i"/>
+      <Anchor Position="0.5304046535821926" GraphId="e_468_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_468_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="215.0" Y="917.0" GraphId="e_468_i0_0" GraphRef="n469_REACTOME_432113" RelX="0.034482758620689655" RelY="1.3043478260869565"/>
+      <Point X="238.0" Y="1090.0" GraphId="e_468_i0_1" GraphRef="e_468_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_468_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="227.0" Y="1120.0" GraphId="e_468_i1_0" GraphRef="n470_REACTOME_171131" RelX="0.17142857142857143" RelY="-1.2307692307692308"/>
+      <Point X="238.0" Y="1090.0" GraphId="e_468_i1_1" GraphRef="e_468_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_495_REACTOME_432129">
+    <Comment Source="WikiPathways-description">Tyrosine phosphorylation of LDL:ApoER2 is mediated by the Src-family kinase Fgr, based on a correlation of increased apoER2 phosphorylation on LDL stimulation of platelets, and a transient increased co-precipitation of Fgr with apoER2 upon LDL stimulation.</Comment>
+    <BiopaxRef>lit_432126</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="430.0" Y="1090.0" GraphId="e_495_0"/>
+      <Point X="458.0" Y="1090.0" GraphId="e_495_1"/>
+      <Point X="486.0" Y="1090.0" GraphId="e_495_2"/>
+      <Anchor Position="0.0" GraphId="e_495_a_i"/>
+      <Anchor Position="0.5" GraphId="e_495_a_p"/>
+      <Anchor Position="1.0" GraphId="e_495_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_495_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="385.0" Y="1090.0" GraphId="e_495_i0_0" GraphRef="n471_REACTOME_432119" RelX="1.0933333333333333" RelY="-0.058823529411764705"/>
+      <Point X="430.0" Y="1090.0" GraphId="e_495_i0_1" GraphRef="e_495_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_495_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="389.0" Y="995.0" GraphId="e_495_i1_0" GraphRef="n497_REACTOME_432116" RelX="0.2222222222222222" RelY="1.3043478260869565"/>
+      <Point X="430.0" Y="1090.0" GraphId="e_495_i1_1" GraphRef="e_495_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_495_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="370.0" Y="1046.0" GraphId="e_495_i2_0" GraphRef="n612_REACTOME_113592" RelX="1.1578947368421053" RelY="0.7741935483870968"/>
+      <Point X="430.0" Y="1090.0" GraphId="e_495_i2_1" GraphRef="e_495_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_495_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="536.0" Y="1022.0" GraphId="e_495_o0_0" ArrowHead="Arrow" GraphRef="n498_REACTOME_29370" RelX="-0.5641025641025641" RelY="1.2258064516129032"/>
+      <Point X="486.0" Y="1090.0" GraphId="e_495_o0_1" GraphRef="e_495_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_495_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="518.0" Y="1090.0" GraphId="e_495_o1_0" ArrowHead="Arrow" GraphRef="n499_REACTOME_432132" RelX="-1.0434782608695652" RelY="0.0"/>
+      <Point X="486.0" Y="1090.0" GraphId="e_495_o1_1" GraphRef="e_495_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_495_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="396.0" Y="995.0" GraphId="e_495_c__0_0" GraphRef="n497_REACTOME_432116" RelX="0.6111111111111112" RelY="1.3043478260869565"/>
+      <Point X="458.0" Y="1053.0" GraphId="e_495_c__0_1"/>
+      <Point X="458.0" Y="1090.0" GraphId="e_495_c__0_2" GraphRef="e_495_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_524_REACTOME_432148">
+    <Comment Source="WikiPathways-description">LDL stimulation of platelets leads to increased p38 MAPK activation by phosphorylation. An Src family kinase is responsible for this; Fgr is a strong candidate as it is known to bind the LDL receptor in platelets responding to LDL and in chemoattractant-induced degranulation of neutrophils activation of p38 MAPK is blocked by a triple Hck/Fgr/Lyn knockout. However fMLP-stimulated phosphorylation of MAPKs in a double hck/fgr PMNs was observed to be normal, suggesting that Lyn, rather than Fyn, is involved.</Comment>
+    <BiopaxRef>lit_435237</BiopaxRef>
+    <BiopaxRef>lit_435229</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="328.0" Y="910.0" GraphId="e_524_0"/>
+      <Point X="360.0" Y="900.0" GraphId="e_524_1"/>
+      <Point X="396.0" Y="888.0" GraphId="e_524_2"/>
+      <Anchor Position="0.0" GraphId="e_524_a_i"/>
+      <Anchor Position="0.469070870085642" GraphId="e_524_a_p"/>
+      <Anchor Position="1.0" GraphId="e_524_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_524_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="311.0" Y="936.0" GraphId="e_524_i0_0" GraphRef="n609_REACTOME_113592" RelX="0.42105263157894735" RelY="-1.1612903225806452"/>
+      <Point X="328.0" Y="910.0" GraphId="e_524_i0_1" GraphRef="e_524_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_524_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="313.0" Y="880.0" GraphId="e_524_i1_0" GraphRef="n610_REACTOME_428933" RelX="0.08275862068965517" RelY="1.2"/>
+      <Point X="328.0" Y="910.0" GraphId="e_524_i1_1" GraphRef="e_524_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_524_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="442.0" Y="811.0" GraphId="e_524_o0_0" ArrowHead="Arrow" GraphRef="n527_REACTOME_428935" RelX="-0.1935483870967742" RelY="1.1578947368421053"/>
+      <Point X="396.0" Y="888.0" GraphId="e_524_o0_1" GraphRef="e_524_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_524_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="525.0" Y="988.0" GraphId="e_524_o1_0" ArrowHead="Arrow" GraphRef="n498_REACTOME_29370" RelX="-1.1282051282051282" RelY="-0.967741935483871"/>
+      <Point X="396.0" Y="888.0" GraphId="e_524_o1_1" GraphRef="e_524_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_524_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="381.0" Y="966.0" GraphId="e_524_c__0_0" GraphRef="n497_REACTOME_432116" RelX="-0.2222222222222222" RelY="-1.2173913043478262"/>
+      <Point X="360.0" Y="900.0" GraphId="e_524_c__0_1" GraphRef="e_524_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_528_REACTOME_428961">
+    <Comment Source="WikiPathways-description">MAPK p38 alpha activates cPLA2 by phosphorylation of two serine residues.&lt;br&gt;cPLA2 can be phosphorylated and activated by ERK2 (Lin et al. 1993), and were believed to be responsible for the phosphorylation of cPLA2. However, phosphorylation of cPLA2 occurred in the absence of ERK activation in human platelets stimulated with the thrombin receptor agonist peptide SFLLRN (Kramer et al. 1995), and cPLA2 phosphorylation induced by thrombin or collagen was unaffected by PKC inhibitors that prevent ERK activation (BÃ¶rsch-Haubold et al. 1995). In addition, a specific inhibitor of ERKs did not block thrombin-induced cPLA2 phosphorylation (BÃ¶rsch-Haubold et al. 1996).</Comment>
+    <BiopaxRef>lit_428959</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="528.0" Y="884.0" GraphId="e_528_0"/>
+      <Point X="556.0" Y="867.0" GraphId="e_528_1"/>
+      <Point X="578.0" Y="855.0" GraphId="e_528_2"/>
+      <Anchor Position="0.0" GraphId="e_528_a_i"/>
+      <Anchor Position="0.5665617627123102" GraphId="e_528_a_p"/>
+      <Anchor Position="1.0" GraphId="e_528_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_528_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="499.0" Y="875.0" GraphId="e_528_i0_0" GraphRef="n530_REACTOME_378502" RelX="1.1627906976744187" RelY="0.43478260869565216"/>
+      <Point X="528.0" Y="884.0" GraphId="e_528_i0_1" GraphRef="e_528_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_528_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="525.0" Y="908.0" GraphId="e_528_i1_0" GraphRef="n496_REACTOME_113592" RelX="0.05263157894736842" RelY="-1.1612903225806452"/>
+      <Point X="528.0" Y="884.0" GraphId="e_528_i1_1" GraphRef="e_528_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_528_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="446.0" Y="349.0" GraphId="e_528_o0_0" ArrowHead="Arrow" GraphRef="n532_REACTOME_111859" RelX="0.08602150537634409" RelY="1.1875"/>
+      <Point X="578.0" Y="855.0" GraphId="e_528_o0_1" GraphRef="e_528_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_528_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="550.0" Y="985.0" GraphId="e_528_o1_0" ArrowHead="Arrow" GraphRef="n498_REACTOME_29370" RelX="0.15384615384615385" RelY="-1.1612903225806452"/>
+      <Point X="578.0" Y="855.0" GraphId="e_528_o1_1" GraphRef="e_528_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_528_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="478.0" Y="811.0" GraphId="e_528_c__0_0" GraphRef="n527_REACTOME_428935" RelX="0.3870967741935484" RelY="1.1578947368421053"/>
+      <Point X="556.0" Y="867.0" GraphId="e_528_c__0_1" GraphRef="e_528_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_556_REACTOME_435244">
+    <Comment Source="WikiPathways-description">LDL causes a transient increase in p38 MAPK activity in platelets. After an initial phase in which LDL leads to the activation of p38MAPK, LDL leads to activation of  PECAM-1, stimulating the Ser/Thr phosphatases PP1/PP2Aand reducing the activity of p38MAPK by dephosphorylation.</Comment>
+    <BiopaxRef>lit_432091</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="245.0" Y="1136.0" GraphId="e_556_0" GraphRef="n470_REACTOME_171131" RelX="1.2" RelY="0.0"/>
+      <Point X="851.0" Y="1136.0" GraphId="e_556_1"/>
+      <Point X="851.0" Y="1118.0" GraphId="e_556_2" GraphRef="n557_REACTOME_210007" RelX="0.0" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.9711538461538461" GraphId="e_556_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_558_REACTOME_432143">
+    <Comment Source="WikiPathways-description">PECAM-1 co-immunoprecipitates with PP2A</Comment>
+    <BiopaxRef>lit_432091</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="813.0" Y="1036.0" GraphId="e_558_0"/>
+      <Point X="787.0" Y="1052.0" GraphId="e_558_1"/>
+      <Point X="741.0" Y="1077.0" GraphId="e_558_2" GraphRef="n560_REACTOME_432144" RelX="0.6170212765957447" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_558_a_i"/>
+      <Anchor Position="0.36833353406554" GraphId="e_558_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_558_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="816.0" Y="1011.0" GraphId="e_558_i0_0" GraphRef="n559_REACTOME_196206" RelX="-0.08888888888888889" RelY="1.2727272727272727"/>
+      <Point X="813.0" Y="1036.0" GraphId="e_558_i0_1" GraphRef="e_558_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_558_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="838.0" Y="1074.0" GraphId="e_558_i1_0" GraphRef="n557_REACTOME_210007" RelX="-0.2765957446808511" RelY="-1.1578947368421053"/>
+      <Point X="813.0" Y="1036.0" GraphId="e_558_i1_1" GraphRef="e_558_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_601_REACTOME_210277">
+    <Comment Source="WikiPathways-description">The phosphorylation of two tandem tyrosine residues (Y663 and Y686) within the cytoplasmic domain of PECAM-1 is required for the downstream signalling events observed following PECAM-1 ligation. Both SH2 domains of SHP-1 are required in tandem to bind PECAM-1.</Comment>
+    <BiopaxRef>lit_210035</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="966.0" Y="1059.0" GraphId="e_601_0"/>
+      <Point X="996.0" Y="1069.0" GraphId="e_601_1"/>
+      <Point X="1027.0" Y="1081.0" GraphId="e_601_2" GraphRef="n603_REACTOME_210221" RelX="-0.8163265306122449" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_601_a_i"/>
+      <Anchor Position="0.4875219245850659" GraphId="e_601_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_601_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="922.0" Y="1037.0" GraphId="e_601_i0_0" GraphRef="n602_REACTOME_197938" RelX="0.7058823529411765" RelY="1.2727272727272727"/>
+      <Point X="966.0" Y="1059.0" GraphId="e_601_i0_1" GraphRef="e_601_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_601_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="901.0" Y="1080.0" GraphId="e_601_i1_0" GraphRef="n557_REACTOME_210007" RelX="1.0638297872340425" RelY="-0.8421052631578947"/>
+      <Point X="966.0" Y="1059.0" GraphId="e_601_i1_1" GraphRef="e_601_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_604_REACTOME_210294">
+    <Comment Source="WikiPathways-description">PECAM-1 becomes tyrosine-phosphorylated during the platelet aggregation process; the phosphorylation of two tandem tyrosine residues (Y663 and Y686) within the cytoplasmic domain is required for downstream signalling events. Phosphorylation creates docking sites for the protein-tyrosine phosphatase SHP-2. The interaction between SHP-2 and PECAM-1 is dependent upon integrin-mediated platelet/platelet interactions and occurs via the Src homology 2 (SH2) domains of the phosphatase and highly conserved phosphatase-binding motifs encompassing phosphotyrosines 663 and 686 within the cytoplasmic domain of PECAM-1.</Comment>
+    <BiopaxRef>lit_210191</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="957.0" Y="1046.0" GraphId="e_604_0"/>
+      <Point X="1001.0" Y="1053.0" GraphId="e_604_1"/>
+      <Point X="1143.0" Y="1089.0" GraphId="e_604_2" GraphRef="n606_REACTOME_210219" RelX="-1.0612244897959184" RelY="-0.6842105263157895" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_604_a_i"/>
+      <Anchor Position="0.23320780462124335" GraphId="e_604_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_604_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="891.0" Y="1074.0" GraphId="e_604_i0_0" GraphRef="n557_REACTOME_210007" RelX="0.851063829787234" RelY="-1.1578947368421053"/>
+      <Point X="957.0" Y="1046.0" GraphId="e_604_i0_1" GraphRef="e_604_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_604_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="931.0" Y="1006.0" GraphId="e_604_i1_0" GraphRef="n605_REACTOME_162563" RelX="0.15789473684210525" RelY="1.3043478260869565"/>
+      <Point X="957.0" Y="1046.0" GraphId="e_604_i1_1" GraphRef="e_604_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_7" GroupRef="group_comp_7" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="1220.5" CenterY="1020.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_8" GroupRef="group_comp_8" TextLabel="platelet dense tubular network lumen">
+    <Graphics Color="000000" CenterX="667.5" CenterY="383.5" Width="151.0" Height="47.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_19" GroupRef="group_comp_19" TextLabel="endoplasmic reticulum lumen">
+    <Graphics Color="000000" CenterX="489.0" CenterY="294.5" Width="154.0" Height="47.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_7" GroupRef="group_comp_7">
+    <Graphics Color="000000" CenterX="754.5" CenterY="635.5" Width="1115.0" Height="939.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_8" GroupRef="group_comp_8">
+    <Graphics Color="000000" CenterX="661.0" CenterY="508.0" Width="164.0" Height="302.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_19" GroupRef="group_comp_19">
+    <Graphics Color="000000" CenterX="485.0" CenterY="287.0" Width="158.0" Height="92.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427251" rdf:id="lit_427251">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelets in thrombotic and non-thrombotic disorders.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gresele, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Page, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fuster, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vermylen, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">435-437</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427235" rdf:id="lit_427235">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12907444</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lack of evidence for functional ADP-activated human P2X1 receptors supports a role for ATP during hemostasis and thrombosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vial, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pitt, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberts, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rolf, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mahaut-Smith, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evans, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 102:3646-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140089" rdf:id="lit_140089">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1693919</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receptor-activated single channels in intact human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mahaut-Smith, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sage, SO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rink, TJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 265:10479-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140059" rdf:id="lit_140059">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2457808</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calcium channels in thrombin-activated human platelet membrane</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zschauer, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van, Breemen C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Buhler, FR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nelson, MT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 334:703-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427210" rdf:id="lit_427210">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9565569</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P2X1 purinoceptor in human platelets. Molecular cloning and functional characterization after heterologous expression</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okahara, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kambayashi, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:11544-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426225" rdf:id="lit_426225">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8646775</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">trp, a novel mammalian gene family essential for agonist-activated capacitative Ca2+ entry</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiang, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peyton, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boulay, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hurst, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stefani, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Birnbaumer, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 85:661-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426211" rdf:id="lit_426211">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9930701</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Direct activation of human TRPC6 and TRPC3 channels by diacylglycerol</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hofmann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obukhov, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schaefer, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harteneck, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gudermann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schultz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 397:259-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426195" rdf:id="lit_426195">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11805119</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and functional expression of human short TRP7, a candidate protein for store-operated Ca2+ influx</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Riccio, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mattei, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kelsell, RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Medhurst, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calver, AR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Randall, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benham, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pangalos, MN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:12302-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427922" rdf:id="lit_427922">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2953725</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1987</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ca2+-activated ATPase in microsomes from human liver</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spamer, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heilmann, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerok, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 262:7782-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427914" rdf:id="lit_427914">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7702581</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Localization and identification of Ca2+ATPases in highly purified human platelet plasma and intracellular membranes. Evidence that the monoclonal antibody PL/IM 430 recognizes the SERCA 3 Ca2+ATPase in human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bokkala, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">el-Daher, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kakkar, VV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wuytack, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Authi, KS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 306:837-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427930" rdf:id="lit_427930">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">5961668</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1966</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATP-dependent Ca++-extrusion from human red cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schatzmann, HJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Experientia 22:364-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427934" rdf:id="lit_427934">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2844759</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Complete primary structure of a human plasma membrane Ca2+ pump</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verma, AK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Filoteo, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stanford, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wieben, ED</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Penniston, JT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strehler, EE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heim, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vogel, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mathews, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 263:14152-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_425677" rdf:id="lit_425677">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1374913</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular cloning and characterization of the human cardiac Na+/Ca2+ exchanger cDNA</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Komuro, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wenninger, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Philipson, KD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Izumo, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 89:4769-73</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_425662" rdf:id="lit_425662">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8021246</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning of the NCX2 isoform of the plasma membrane Na(+)-Ca2+ exchanger</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuoka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hryshko, LV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nicoll, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bersohn, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burke, EP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lifton, RP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Philipson, KD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:17434-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_425669" rdf:id="lit_425669">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12406570</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human SLC8A3 gene and the tissue-specific Na+/Ca2+ exchanger 3 isoforms</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gabellini, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bortoluzzi, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Danieli, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carafoli, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gene 298:1-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421921" rdf:id="lit_421921">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2474350</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional and ligand binding studies suggest heterogeneity of platelet prostacyclin receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Armstrong, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lawrence, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilson, NH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Collier, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Br J Pharmacol 97:657-68</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421915" rdf:id="lit_421915">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12446735</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The unique ligand-binding pocket for the human prostacyclin receptor. Site-directed mutagenesis and molecular modeling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stitham, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stojanovic, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merenick, BL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Hara, KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hwa, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:4250-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400652" rdf:id="lit_400652">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16460020</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Solution structure of the first intracellular loop of prostacyclin receptor and implication of its interaction with the C-terminal segment of G alpha s protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruan, KH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 45:1734-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421925" rdf:id="lit_421925">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15980156</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Can a GDP-liganded G-protein be active?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wieland, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michel, MC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Pharmacol 68:559-62</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421962" rdf:id="lit_421962">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3141418</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subunit dissociation is the mechanism for hormonal activation of the Gs protein in native membranes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RansnÃ¤s, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insel, PA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 263:17239-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427945" rdf:id="lit_427945">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18577758</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dissociation of heterotrimeric g proteins in cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lambert, NA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sci Signal 1:re5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418416" rdf:id="lit_418416">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19089323</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry of soluble guanylate cyclase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Derbyshire, ER</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marletta, MA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handb Exp Pharmacol17-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427866" rdf:id="lit_427866">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8557689</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isolation and characterization of cDNAs corresponding to two human calcium, calmodulin-regulated, 3',5'-cyclic nucleotide phosphodiesterases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loughney, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martins, TJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sadhu, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hicks, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonnenburg, WK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beavo, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferguson, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:796-806</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418447" rdf:id="lit_418447">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16990611</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IRAG mediates NO/cGMP-dependent inhibition of platelet aggregation and thrombus formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antl, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">von BrÃ¼hl, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eiglsperger, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Werner, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Konrad, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kocher, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilm, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hofmann, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Massberg, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlossmann, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 109:552-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_432126" rdf:id="lit_432126">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15459198</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Binding of low density lipoprotein to platelet apolipoprotein E receptor 2' results in phosphorylation of p38MAPK</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korporaal, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Relou, IA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Eck, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strasser, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bezemer, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gorter, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Berkel, TJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nimpf, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akkerman, JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lenting, PJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:52526-34</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_435237" rdf:id="lit_435237">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10754332</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinase pathways in chemoattractant-induced degranulation of neutrophils: the role of p38 mitogen-activated protein kinase activated by Src family kinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mocsai, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jakus, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">VÃ¡ntus, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berton, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lowell, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ligeti, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Immunol 164:4321-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_435229" rdf:id="lit_435229">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17339487</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Src family kinases Hck and Fgr regulate neutrophil responses to N-formyl-methionyl-leucyl-phenylalanine</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fumagalli, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baruzzi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lowell, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berton, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Immunol 178:3874-85</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428959" rdf:id="lit_428959">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8910365</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">p38 mitogen-activated protein kinase phosphorylates cytosolic phospholipase A2 (cPLA2) in thrombin-stimulated platelets. Evidence that proline-directed phosphorylation is not required for mobilization of arachidonic acid by cPLA2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kramer, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberts, EF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Um, SL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BÃ¶rsch-Haubold, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fisher, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jakubowski, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:27723-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_432091" rdf:id="lit_432091">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12775720</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet endothelial cell adhesion molecule-1 (PECAM-1) inhibits low density lipoprotein-induced signaling in platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Relou, IA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gorter, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferreira, IA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Rijn, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akkerman, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:32638-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210035" rdf:id="lit_210035">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9774457</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Recruitment and activation of SHP-1 protein-tyrosine phosphatase by human platelet endothelial cell adhesion molecule-1 (PECAM-1). Identification of immunoreceptor tyrosine-based inhibitory motif-like binding motifs and substrates.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hua, CT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gamble, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vadas, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson, DE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:28332-40</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210191" rdf:id="lit_210191">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9054388</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The protein-tyrosine phosphatase SHP-2 binds platelet/endothelial cell adhesion molecule-1 (PECAM-1) and forms a distinct signaling complex during platelet aggregation. Evidence for a mechanistic link between PECAM-1- and integrin-mediated cellular signaling.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson, DE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ward, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newman, PJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:6986-93</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="TarBasePathway" Version="20110524" Organism="Homo sapiens">
+  <Graphics BoardWidth="626.0" BoardHeight="545.510382009987" />
+  <DataNode TextLabel="GJA1" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="485.510382009987" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000152661" />
+  </DataNode>
+  <DataNode TextLabel="HCN2" Type="GeneProduct">
+    <Graphics CenterX="483.3885209713022" CenterY="293.67549668874165" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000099822" />
+  </DataNode>
+  <DataNode TextLabel="HCN4" Type="GeneProduct">
+    <Graphics CenterX="483.3885209713022" CenterY="313.67549668874165" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000138622" />
+  </DataNode>
+  <DataNode TextLabel="HDAC4" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="172.21854304635755" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000068024" />
+  </DataNode>
+  <DataNode TextLabel="KCNJ2" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="505.510382009987" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000123700" />
+  </DataNode>
+  <DataNode TextLabel="KCNQ1" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="132.21854304635752" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000053918" />
+  </DataNode>
+  <DataNode TextLabel="TMSB4X" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="152.21854304635758" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000205542" />
+  </DataNode>
+  <DataNode TextLabel="TMSB4X" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="418.4287043057934" Width="80.0" Height="20.0" ZOrder="32788" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000205542" />
+  </DataNode>
+  <DataNode TextLabel="GJA1" Type="GeneProduct">
+    <Graphics CenterX="483.3885209713022" CenterY="232.836644591612" Width="80.0" Height="20.0" ZOrder="32789" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000152661" />
+  </DataNode>
+  <DataNode TextLabel="Hand2" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="378.4287043057935" Width="80.0" Height="20.0" ZOrder="32790" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000164107" />
+  </DataNode>
+  <DataNode TextLabel="IGF1" Type="GeneProduct">
+    <Graphics CenterX="483.38852097130234" CenterY="398.4287043057934" Width="80.0" Height="20.0" ZOrder="32791" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000017427 " />
+  </DataNode>
+  <DataNode TextLabel="HCN2" Type="GeneProduct">
+    <Graphics CenterX="277.03674847422405" CenterY="293.6754966887417" Width="80.0" Height="20.0" ZOrder="32795" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000099822" />
+  </DataNode>
+  <DataNode TextLabel="KCNE1" Type="GeneProduct">
+    <Graphics CenterX="277.03674847422405" CenterY="134.44710334464918" Width="80.0" Height="20.0" ZOrder="32796" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000180509" />
+  </DataNode>
+  <DataNode TextLabel="SRF" Type="GeneProduct">
+    <Graphics CenterX="277.03674847422405" CenterY="154.44710334464915" Width="80.0" Height="20.0" ZOrder="32797" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000112658" />
+  </DataNode>
+  <DataNode TextLabel="PTBP2" Type="GeneProduct">
+    <Graphics CenterX="277.03674847422405" CenterY="227.96028345112893" Width="80.0" Height="20.0" ZOrder="32798" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000117569" />
+  </DataNode>
+  <DataNode TextLabel="HCN4" Type="GeneProduct">
+    <Graphics CenterX="277.03674847422405" CenterY="313.67549668874165" Width="80.0" Height="20.0" ZOrder="32799" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000138622" />
+  </DataNode>
+  <DataNode TextLabel="ERG" Type="GeneProduct">
+    <Graphics CenterX="277.03674847422405" CenterY="174.44710334464912" Width="80.0" Height="20.0" ZOrder="32800" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000157554" />
+  </DataNode>
+  <Label TextLabel="miRNA overexpression" GraphId="d3594">
+    <Graphics CenterX="485.7649006622514" CenterY="450.82605529917066" Width="150.47019867549716" Height="23.178807947020005" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="13" Valign="Middle" />
+  </Label>
+  <Label TextLabel="in vivo overexpression of miRNA&#xA;" GraphId="b7051">
+    <Graphics CenterX="493.0" CenterY="345.2388588311796" Width="206.0" Height="17.660044150110366" ZOrder="32786" FillColor="ffffff" FontWeight="Bold" FontSize="13" Valign="Middle" />
+  </Label>
+  <Label TextLabel="In vivo expression pattern&#xA;" GraphId="a57f7">
+    <Graphics CenterX="491.4536423841058" CenterY="200.3973509933769" Width="175.09271523178836" Height="12.141280353200926" ZOrder="32787" FillColor="ffffff" FontWeight="Bold" FontSize="13" Valign="Middle" />
+  </Label>
+  <Label TextLabel="miR133&#xA;" GraphId="a60a1">
+    <Graphics CenterX="281.29048883166547" CenterY="93.45970838666594" Width="106.41627543035992" Height="17.857142857142904" ZOrder="32792" FillColor="ffffff" FontWeight="Bold" FontSize="20" Valign="Middle" Color="cc0000" />
+  </Label>
+  <Label TextLabel="miRNA Antagonists&#xA;" GraphId="ea8d0">
+    <Graphics CenterX="275.094282746211" CenterY="262.30444098169244" Width="158.61344537815125" Height="17.857142857142946" ZOrder="32793" FillColor="ffffff" FontWeight="Bold" FontSize="13" Valign="Middle" />
+  </Label>
+  <Label TextLabel="in vitro antisense&#xA;" GraphId="b3220">
+    <Graphics CenterX="273.990529986829" CenterY="201.70340586565746" Width="101.890756302521" Height="22.058823529411722" ZOrder="32794" FillColor="ffffff" FontWeight="Bold" FontSize="13" Valign="Middle" />
+  </Label>
+  <Label TextLabel="miR1 " GraphId="b94f1">
+    <Graphics CenterX="487.7327260701247" CenterY="93.45970838666594" Width="106.41627543035992" Height="17.857142857142904" ZOrder="32801" FillColor="ffffff" FontWeight="Bold" FontSize="20" Valign="Middle" Color="cc0000" />
+  </Label>
+  <Label TextLabel="miRNA Antagonists&#xA;" GraphId="a4e44">
+    <Graphics CenterX="485.9772849537161" CenterY="263.30444098169244" Width="158.61344537815125" Height="17.857142857142946" ZOrder="32802" FillColor="ffffff" FontWeight="Bold" FontSize="13" Valign="Middle" />
+  </Label>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Biological oxidations" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Jassal, B" Maintainer="Jassal, B">
+  <Comment Source="WikiPathways-description">All organisms are constantly exposed to foreign chemicals every day. These can be man-made (drugs, industrial chemicals) or natural (alkaloids, toxins from plants and animals). Uptake is usually via ingestion but inhalation and transdermal routes are also common.&lt;/p&gt;&lt;p&gt;The very nature of many chemicals that make them suitable for uptake by these routes, in other words their lipophilicty (favours fat solubility) is also the main reason organisms have developed mechanisms that convert them to hydrophilic (favours water solubility) compounds which are readily excreted via bile and urine. Otherwise, lipophilic chemicals would accumulate in the body and overwhelm defense mechanisms. This process is called &lt;b&gt;&lt;i&gt;biotransformation&lt;/i&gt;&lt;/b&gt; and is catalyzed by enzymes mainly in the liver of higher organisms but a number of other organs have considerable ability to process xenobiotica such as kidneys, gut and lungs. As well as xenobiotics, many endogenous compounds are commonly eliminated by this process.&lt;/br&gt;&lt;/br&gt;This mechanism is of ancient origin and a major factor for its development in animals is plants. Most animals are plant eaters and thus are subject to a huge variety of chemical compounds which plants produce to stop themselves being eaten. This complex set of enzymes have several features which make them ideal for biotransformation;&lt;/p&gt;&lt;p&gt;&lt;i&gt;(&lt;b&gt;1&lt;/b&gt;) metabolites of the parent chemical are usually made more water soluble so it favours rapid excretion via bile and urine&lt;/p&gt;&lt;p&gt;(&lt;b&gt;2&lt;/b&gt;) the enzymes possess broad and overlapping specificity to be able to deal with newly exposed chemicals&lt;/p&gt;&lt;p&gt;(&lt;b&gt;3&lt;/b&gt;) metabolites of the parent generally don't have adverse biological effects.&lt;/i&gt;&lt;/p&gt;&lt;p&gt;In the real world however, all these criteria have exceptions. Many chemicals are transformed into reactive metabolites. In pharmacology, the metabolites of some parent drugs exert the desired pharmacological effect but in the case of polycyclic aromatic hydrocarbons (PAHs), which can undergo epoxidation, it results in the formation of an electrophile which can attack proteins and DNA.&lt;/p&gt;&lt;p&gt;Metabolism of xenobiotica occurs in several steps called &lt;i&gt;&lt;b&gt;Phase 1 (functionalization)&lt;/b&gt;&lt;/i&gt; and &lt;i&gt;&lt;b&gt;Phase 2 (conjugation)&lt;/b&gt;&lt;/i&gt;. To improve water solubility, a functional group is added to or exposed on the chemical in one or more steps (Phase 1) to which hydrophilic conjugating species can be added (Phase 2). Functional groups can either be electrophilic (epoxides, carbonyl groups) or nucleophilic (hydroxyls, amino and sulfhydryl groups, carboxylic  groups) &lt;i&gt;(see picture)&lt;/i&gt;.&lt;/p&gt;&lt;p&gt;Once chemicals undergo functionalization, the electrophilic or nucleophilic species can be detrimental to biological systems. Electrophiles can react with electron-rich macromolecules such as proteins, DNA and RNA by covalent interaction whilst nucleophiles have the potential to interact with biological receptors. That's why conjugation is so important as it mops up these potentially reactive species.&lt;/p&gt;&lt;p&gt;Many chemicals, when exposed to certain metabolizing enzymes can induce those  enzymes, a process called &lt;i&gt;&lt;b&gt;enzyme induction&lt;/b&gt;&lt;/i&gt;. The effect of this is that these chemicals accelerate their own biotransformation and excretion. The reverse is also true where some chemicals cause enzyme inhibition. Some other factors that alter enzyme levels are sex, age and genetic predisposition. Between species, there can be considerable differences in biotransformation ability which is a problem faced by drug researchers interpreting toxicological results to humans.&lt;/p&gt;</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_141063</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_211945" TextLabel="Phase 1 - &#10;Functionalization of &#10;compounds&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Phase 1 of metabolism is concerned with &lt;i&gt;&lt;b&gt;functionalization&lt;/b&gt;&lt;/i&gt;, that is the introduction or exposure of functional groups on the chemical structure of a compound. This provides a 'handle' for phase 2 conjugating species with which to react with. Many xenobiotics are lipophilic and almost chemically inert (e.g. PAHs) so would not necessarily undergo a phase 2 reaction. Making them more chemically reactive would facilitate their excretion but also increases their chance of reacting with cellular macromolecules (e.g. proteins, DNA). There is a fine balance between producing a more reactive metabolite and conjugation reactions.&lt;br&gt;There are two groups of enzymes in phase 1 - oxidoreductases and hydrolases. Oxidoreductases introduce an oxygen atom into or remove electrons from their substrates. The major oxidoreductase enzyme system is called the P450 monooxygenases. Other systems include flavin-containing monooxygenases (FMO), cyclooxygenases (COX) and monoamine oxidases (MAO). Hydrolases hydrolyse esters, amides, epoxides and glucuronides.</Comment>
+    <BiopaxRef>lit_266270</BiopaxRef>
+    <BiopaxRef>lit_266174</BiopaxRef>
+    <BiopaxRef>lit_266241</BiopaxRef>
+    <Graphics Color="000000" CenterX="260.0" CenterY="158.0" Width="134.0" Height="70.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_13705"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_156580" TextLabel="Phase II &#10;conjugation&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Phase II of biotransformation is concerned with &lt;b&gt;&lt;i&gt;conjugation&lt;/i&gt;&lt;/b&gt;, that is using groups from cofactors to react with functional groups present or introduced from phase I on the compound. The enzymes involved are a set of transferases which perform the transfer of the cofactor group to the substrate. The resultant conjugation results in greatly increasing the excretory potential of compounds. Although most conjugations result in pharmacological inactivation or detoxification, some can result in bioactivation. Most of the phase II enzymes are located in the cytosol except  UDP-glucuronosyltransferases (UGT), which are microsomal. Phase II reactions are typically much faster than phase I reactions therefore the rate-limiting step for biotransformation of a compound is usually the phase I reaction.&lt;br&gt;Phase II metabolism can deal with all the products of phase I metabolism, be they reactive (Type I substrate) or unreactive/poorly active (Type II substrate) compounds. With the exception of glutathione, the conjugating species needs to be made chemically reactive after synthesis. The availability of the cofactor in the synthesis may be a rate-limiting factor in some phase II pathways as it may prevent the formation of enough conjugating species to deal with the substrate or it's metabolite. As many substrates and/or their metabolites are chemically reactive, their continued presence may lead to toxicity.</Comment>
+    <BiopaxRef>lit_76380</BiopaxRef>
+    <BiopaxRef>lit_266229</BiopaxRef>
+    <Graphics Color="000000" CenterX="425.5" CenterY="157.5" Width="89.0" Height="55.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_6959"/>
+  </DataNode>
+  <Line GraphId="e_4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="330.0" Y="156.0" GraphId="e_4_0" GraphRef="n2_REACTOME_211945" RelX="1.044776119402985" RelY="-0.05714285714285714"/>
+      <Point X="378.0" Y="156.0" GraphId="e_4_1" GraphRef="n3_REACTOME_156580" RelX="-1.0561797752808988" RelY="-0.03636363636363636" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="193.5" CenterY="239.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="329.0" CenterY="174.0" Width="378.0" Height="192.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141063" rdf:id="lit_141063">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toxicology</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oesch, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arand, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">83-107</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_266270" rdf:id="lit_266270">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17125408</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Involvement of enzymes other than CYPs in the oxidative metabolism of xenobiotics</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strolin Benedetti, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Whomsley, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baltes, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expert Opin Drug Metab Toxicol 2:895-921</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_266174" rdf:id="lit_266174">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16584116</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytochrome P450s and other enzymes in drug metabolism and toxicity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guengerich, FP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AAPS J 8:E101-11</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_266241" rdf:id="lit_266241">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12369887</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The cytochrome P450 superfamily: biochemistry, evolution and drug metabolism in humans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Danielson, PB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Drug Metab 3:561-97</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_76380" rdf:id="lit_76380">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Casarett and Doull's Toxicology 5th Edn</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkinson, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">113-186</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_266229" rdf:id="lit_266229">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11805192</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The ontogeny of human drug-metabolizing enzymes: phase II conjugation enzymes and regulatory mechanisms</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCarver, DG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hines, RN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Pharmacol Exp Ther 300:361-6</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>cellular detoxification pathway</bp:TERM><bp:ID>PW:0000124</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

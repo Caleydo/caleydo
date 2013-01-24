@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Nicotine Activity on Chromaffin Cells" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">Nicotine is an alkaloid found in tobacco plants. It is a substance that acts as a stimulant in humans and is one of the main factors responsible for tobacco dependence. When nicotine enters the body, it is distributed quickly through the bloodstream, and it can cross the blood-brain barrier to enter the central nervous system (CNS). It binds to two main types of nicotinic acetylcholine receptors: the ganglion type and the CNS type.
+
+In chromaffin cells in the adrenal medulla, nicotine binds to the ganglion-type nicotinic acetylcholine receptor, which is composed of alpha 3 (CHRNA3) and beta 4 (CHRNB4) subunits. By binding to the receptors, nicotine causes cell depolarization and an influx of calcium through voltage dependent calcium channels. Calcium triggers the release of epinephrine from the chromaffin vesicles into the bloodstream, which leads to increased heart rate and blood pressure and elevation of blood glucose level.
+
+Sources: [http://www.pharmgkb.org/do/serve?objId=PA162355620&amp;objCls=Pathway PharmGKB:Nicotine in Chromaffin Cells], [http://en.wikipedia.org/wiki/Nicotine Wikipedia:Nicotine]</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="825.55" BoardHeight="518.1"/>
+  <DataNode TextLabel="Ca++" GraphId="f7b46" Type="Metabolite">
+    <Graphics CenterX="415.0" CenterY="226.0" Width="38.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00464"/>
+  </DataNode>
+  <DataNode TextLabel="CACNA1G" GraphId="f41e1" Type="GeneProduct" GroupRef="c5e43">
+    <Graphics CenterX="338.5" CenterY="129.0" Width="63.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Entrez Gene" ID="8913"/>
+  </DataNode>
+  <DataNode TextLabel="K+" GraphId="b40f9" Type="Metabolite">
+    <Graphics CenterX="83.5" CenterY="300.0" Width="32.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00586"/>
+  </DataNode>
+  <DataNode TextLabel="Na+" GraphId="a155b" Type="Metabolite">
+    <Graphics CenterX="184.0" CenterY="264.0" Width="32.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00588"/>
+  </DataNode>
+  <DataNode TextLabel="Ca++" GraphId="b74f6" Type="Metabolite">
+    <Graphics CenterX="415.0" CenterY="67.0" Width="38.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00464"/>
+  </DataNode>
+  <DataNode TextLabel="Epinephrine" GraphId="e2572" Type="Metabolite">
+    <Graphics CenterX="415.0" CenterY="361.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00068"/>
+  </DataNode>
+  <DataNode TextLabel="CHRNB4" GraphId="d193d" Type="GeneProduct" GroupRef="e3b78">
+    <Graphics CenterX="137.5" CenterY="233.0" Width="61.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Entrez Gene" ID="1143"/>
+  </DataNode>
+  <DataNode TextLabel="CHRNA3" GraphId="f7a09" Type="GeneProduct" GroupRef="e3b78">
+    <Graphics CenterX="137.5" CenterY="213.0" Width="61.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Entrez Gene" ID="1136"/>
+  </DataNode>
+  <DataNode TextLabel="Na+" GraphId="ace5a" Type="Metabolite">
+    <Graphics CenterX="83.5" CenterY="264.0" Width="33.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00588"/>
+  </DataNode>
+  <DataNode TextLabel="Nicotine" GraphId="b33f3" Type="Metabolite">
+    <Graphics CenterX="53.5" CenterY="182.0" Width="57.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01934"/>
+  </DataNode>
+  <DataNode TextLabel="CACNA1C" GraphId="f79c3" Type="GeneProduct" GroupRef="c5e43">
+    <Graphics CenterX="338.5" CenterY="149.0" Width="63.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Entrez Gene" ID="775"/>
+  </DataNode>
+  <DataNode TextLabel="K+" GraphId="a2bc2" Type="Metabolite">
+    <Graphics CenterX="184.0" CenterY="300.0" Width="32.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00586"/>
+  </DataNode>
+  <DataNode TextLabel="Epinephrine" GraphId="d2028" Type="Metabolite">
+    <Graphics CenterX="631.0" CenterY="361.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB00068"/>
+  </DataNode>
+  <Line GraphId="a9a04" GroupRef="ffeec">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="215.0" Y="278.0"/>
+      <Point X="223.0" Y="267.5"/>
+      <Point X="265.875" Y="267.0"/>
+      <Point X="318.75" Y="167.0" GraphRef="e4b6d" RelX="-0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b81fe">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="631.0" Y="371.0" GraphRef="d2028" RelX="0.0" RelY="1.0"/>
+      <Point X="631.0" Y="410.0" GraphRef="a970d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c0ef4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="168.0" Y="300.0" GraphRef="a2bc2" RelX="-1.0" RelY="0.0"/>
+      <Point X="99.5" Y="300.0" GraphRef="b40f9" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5985401459854015" Shape="None" GraphId="f0a0b"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aedf2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="455.0" Y="361.0" GraphRef="e2572" RelX="1.0" RelY="0.0"/>
+      <Point X="591.0" Y="361.0" GraphRef="d2028" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5bc7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="378.0" Y="139.0" GraphRef="e4b6d" RelX="1.0" RelY="0.0"/>
+      <Point X="415.0" Y="132.6" GraphRef="fff4e" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e426a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="415.0" Y="77.0" GraphRef="b74f6" RelX="0.0" RelY="1.0"/>
+      <Point X="415.0" Y="216.0" GraphRef="f7b46" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="fff4e"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d4e65">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="100.0" Y="264.0" GraphRef="ace5a" RelX="1.0" RelY="0.0"/>
+      <Point X="168.0" Y="264.0" GraphRef="a155b" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="fe6e4"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cda15">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="53.5" Y="192.0" GraphRef="b33f3" RelX="0.0" RelY="1.0"/>
+      <Point X="99.0" Y="223.0" GraphRef="a42c5" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f655f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="137.5" Y="251.0" GraphRef="a42c5" RelX="0.0" RelY="1.0"/>
+      <Point X="127.0" Y="300.0" GraphRef="f0a0b" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c0eae">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="415.0" Y="236.0" GraphRef="f7b46" RelX="0.0" RelY="1.0"/>
+      <Point X="415.0" Y="351.0" GraphRef="e2572" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af4c9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="137.5" Y="251.0" GraphRef="a42c5" RelX="0.0" RelY="1.0"/>
+      <Point X="127.2" Y="264.0" GraphRef="fe6e4" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Bloodstream" GraphId="c9032">
+    <Graphics CenterX="688.0" CenterY="298.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Vesicle" GraphId="e6434">
+    <Graphics CenterX="418.0" CenterY="401.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Increased heart rate&#10;Increased blood pressure&#10;Raise glucose level" GraphId="a970d">
+    <Graphics CenterX="631.0" CenterY="437.5" Width="170.0" Height="55.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Membrane&#10;depolarization" GraphId="da6d5" GroupRef="ffeec">
+    <Graphics CenterX="247.5" CenterY="170.0" Width="97.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Chromaffin cell" GraphId="fa6de">
+    <Graphics CenterX="201.0" CenterY="449.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="b960b">
+    <Graphics CenterX="320.25" CenterY="301.5" Width="382.5" Height="339.0" ZOrder="-2" FontSize="10" Valign="Middle" ShapeType="Cell" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f0ebd">
+    <Graphics CenterX="407.0" CenterY="357.0" Width="188.0" Height="112.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Vesicle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="c863a">
+    <Graphics CenterX="648.25" CenterY="374.0" Width="204.5" Height="192.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Cell" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="ffeec" Style="Group"/>
+  <Group GroupId="c5e43" GraphId="e4b6d" Style="Group"/>
+  <Group GroupId="e3b78" GraphId="a42c5" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>chromaffin cell</bp:TERM><bp:ID>CL:0000166</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>nicotine pathway</bp:TERM><bp:ID>PW:0000721</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

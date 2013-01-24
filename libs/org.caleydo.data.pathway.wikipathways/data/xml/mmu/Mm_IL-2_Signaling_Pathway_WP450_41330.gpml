@@ -1,0 +1,2668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="IL-2 Signaling Pathway" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes">NetPath 14 - IL-2 Signaling Pathway&amp;amp;#xD;
+NetPath (http://www.netpath.org) is a collaborative project between PandeyLab at Johns Hopkins University (http://pandeylab.igm.jhmi.edu) and the Institute of Bioinformatics (http://www.ibioinformatics.org).  If you use this pathway, you must cite the NetPath website until the pathway is published.</Comment>
+  <Comment Source="GenMAPP remarks">http://www.netpath.org</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP49&amp;amp;oldid=20779 WP49(r20779)] with a 97% conversion rate.</Comment>
+  <Comment Source="WikiPathways-description">Interleukin-2 belongs to a family of cytokines, which includes IL-4, IL-7, IL-9, IL-15 and IL-21. IL-2 signals through a receptor complex consisting of IL-2 specific IL-2 receptor alpha (CD25), IL-2 receptor beta (CD122) and a common gamma chain (Î³c), which is shared by all members of this family of cytokines. Binding of IL-2 activates the Ras/MAPK, JAK/Stat and PI 3-kinase/Akt signaling modules.
+
+Source: NetPath http://www.netpath.org/pathways?path_id=NetPath_14</Comment>
+  <Graphics BoardWidth="27402.539064999997" BoardHeight="19471.567499999997" WindowWidth="19320.0" WindowHeight="11325.0"/>
+  <DataNode TextLabel="Il2rg" Type="GeneProduct" BackpageHead="Il2rg" GraphId="dd1">
+    <Graphics Color="000000" CenterX="14850.0" CenterY="3450.0" Width="1400.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16186"/>
+  </DataNode>
+  <DataNode TextLabel="Il2rb" Type="GeneProduct" BackpageHead="Il2rb" GraphId="b37">
+    <Graphics Color="000000" CenterX="13450.0" CenterY="3450.0" Width="1309.553" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16185"/>
+  </DataNode>
+  <DataNode TextLabel="Il2ra" Type="GeneProduct" BackpageHead="Il2ra" GraphId="b6f">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="3450.0" Width="1300.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16184"/>
+  </DataNode>
+  <DataNode TextLabel="Il2" Type="GeneProduct" BackpageHead="Il2" GraphId="dc0">
+    <Graphics Color="000000" CenterX="12050.0" CenterY="1400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16183"/>
+  </DataNode>
+  <DataNode TextLabel="Il2" Type="GeneProduct" BackpageHead="Il2" GraphId="e65">
+    <Graphics Color="000000" CenterX="14950.0" CenterY="1400.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16183"/>
+  </DataNode>
+  <DataNode TextLabel="Il2" Type="GeneProduct" BackpageHead="Il2" GraphId="a05">
+    <Graphics Color="000000" CenterX="13650.0" CenterY="1400.0" Width="1009.553" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16183"/>
+  </DataNode>
+  <DataNode TextLabel="Jak1" Type="GeneProduct" BackpageHead="Jak1" GraphId="be8">
+    <Graphics Color="000000" CenterX="12500.0" CenterY="6350.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16451"/>
+  </DataNode>
+  <DataNode TextLabel="Jak3" Type="GeneProduct" BackpageHead="Jak3" GraphId="a1f">
+    <Graphics Color="000000" CenterX="13850.0" CenterY="6350.0" Width="899.9844" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16453"/>
+  </DataNode>
+  <DataNode TextLabel="Jak2" Type="GeneProduct" BackpageHead="Jak2" GraphId="d84">
+    <Graphics Color="000000" CenterX="14750.0" CenterY="6400.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16452"/>
+  </DataNode>
+  <DataNode TextLabel="Lck" Type="GeneProduct" BackpageHead="Lck" GraphId="b21">
+    <Graphics Color="000000" CenterX="11700.0" CenterY="6900.0" Width="600.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16818"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3r1" Type="GeneProduct" BackpageHead="Pik3r1" GraphId="c9d">
+    <Graphics Color="000000" CenterX="17550.0" CenterY="10050.0" Width="1500.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18708"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3r2" Type="GeneProduct" BackpageHead="Pik3r2" GraphId="d9e">
+    <Graphics Color="000000" CenterX="19000.0" CenterY="10050.0" Width="1300.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18709"/>
+  </DataNode>
+  <DataNode TextLabel="Ptpn6" Type="GeneProduct" BackpageHead="Ptpn6" GraphId="fd9">
+    <Graphics Color="000000" CenterX="12950.0" CenterY="8800.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15170"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk1" Type="GeneProduct" BackpageHead="Mapk1" GraphId="efd">
+    <Graphics Color="000000" CenterX="9500.0" CenterY="13700.0" Width="813.4511" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26413"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk3" Type="GeneProduct" BackpageHead="Mapk3" GraphId="fc8">
+    <Graphics Color="000000" CenterX="10600.0" CenterY="13650.0" Width="999.5137" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26417"/>
+  </DataNode>
+  <DataNode TextLabel="Gab2" Type="GeneProduct" BackpageHead="Gab2" GraphId="d50">
+    <Graphics Color="000000" CenterX="17250.0" CenterY="9100.0" Width="688.3359" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14389"/>
+  </DataNode>
+  <DataNode TextLabel="Syk" Type="GeneProduct" BackpageHead="Syk" GraphId="c53">
+    <Graphics Color="000000" CenterX="11600.0" CenterY="7400.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20963"/>
+  </DataNode>
+  <DataNode TextLabel="Irs1" Type="GeneProduct" BackpageHead="Irs1" GraphId="faf">
+    <Graphics Color="000000" CenterX="20150.0" CenterY="8450.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16367"/>
+  </DataNode>
+  <DataNode TextLabel="Irs2" Type="GeneProduct" BackpageHead="Irs2" GraphId="fea">
+    <Graphics Color="000000" CenterX="20700.0" CenterY="8800.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="384783"/>
+  </DataNode>
+  <DataNode TextLabel="Stam2" Type="GeneProduct" BackpageHead="Stam2" GraphId="dd2">
+    <Graphics Color="000000" CenterX="15100.0" CenterY="10400.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56324"/>
+  </DataNode>
+  <DataNode TextLabel="Stam" Type="GeneProduct" BackpageHead="Stam" GraphId="b0b">
+    <Graphics Color="000000" CenterX="13800.0" CenterY="10400.0" Width="700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20844"/>
+  </DataNode>
+  <DataNode TextLabel="Socs3" Type="GeneProduct" BackpageHead="Socs3" GraphId="cce">
+    <Graphics Color="000000" CenterX="10300.0" CenterY="8400.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12702"/>
+  </DataNode>
+  <DataNode TextLabel="Plcb1" Type="GeneProduct" BackpageHead="Plcb1" GraphId="dbb">
+    <Graphics Color="000000" CenterX="9950.0" CenterY="14450.0" Width="1039.416" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18795"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6kb1" Type="GeneProduct" GraphId="f05">
+    <Graphics Color="000000" CenterX="20200.0" CenterY="12550.0" Width="1017.208" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="72508"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3ca" Type="GeneProduct" BackpageHead="Pik3ca" GraphId="dc5">
+    <Graphics Color="000000" CenterX="20100.0" CenterY="10050.0" Width="857.5329" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18706"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3cb" Type="GeneProduct" BackpageHead="Pik3cb" GraphId="ce9">
+    <Graphics Color="000000" CenterX="21000.0" CenterY="10050.0" Width="857.5329" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="74769"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3cd" Type="GeneProduct" BackpageHead="Pik3cd" GraphId="af2">
+    <Graphics Color="000000" CenterX="21900.0" CenterY="10050.0" Width="857.5329" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18707"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3cg" Type="GeneProduct" BackpageHead="Pik3cg" GraphId="f15">
+    <Graphics Color="000000" CenterX="22750.0" CenterY="10050.0" Width="855.1286" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="30955"/>
+  </DataNode>
+  <DataNode TextLabel="Fyn" Type="GeneProduct" BackpageHead="Fyn" GraphId="eab">
+    <Graphics Color="000000" CenterX="18750.0" CenterY="6300.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14360"/>
+  </DataNode>
+  <DataNode TextLabel="Akt1" Type="GeneProduct" BackpageHead="Akt1" GraphId="d47">
+    <Graphics Color="000000" CenterX="18250.0" CenterY="11500.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11651"/>
+  </DataNode>
+  <DataNode TextLabel="Foxo3" Type="GeneProduct" BackpageHead="Foxo3" GraphId="fb5">
+    <Graphics Color="000000" CenterX="17750.0" CenterY="12800.0" Width="927.9969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56484"/>
+  </DataNode>
+  <DataNode TextLabel="Tert" Type="GeneProduct" BackpageHead="Tert" GraphId="a5d">
+    <Graphics Color="000000" CenterX="19500.0" CenterY="11450.0" Width="1099.574" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21752"/>
+  </DataNode>
+  <DataNode TextLabel="Lyn" Type="GeneProduct" BackpageHead="Lyn" GraphId="a51">
+    <Graphics Color="000000" CenterX="10900.0" CenterY="7750.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17096"/>
+  </DataNode>
+  <DataNode TextLabel="Ptpn11" Type="GeneProduct" BackpageHead="Ptpn11" GraphId="aa0">
+    <Graphics Color="000000" CenterX="11600.0" CenterY="8700.0" Width="890.625" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19247"/>
+  </DataNode>
+  <DataNode TextLabel="Shc1" Type="GeneProduct" BackpageHead="Shc1" GraphId="fe9">
+    <Graphics Color="000000" CenterX="14300.0" CenterY="7200.0" Width="667.9688" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20416"/>
+  </DataNode>
+  <DataNode TextLabel="Raf1" Type="GeneProduct" BackpageHead="Raf1" GraphId="f37">
+    <Graphics Color="000000" CenterX="11600.0" CenterY="9850.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="110157"/>
+  </DataNode>
+  <DataNode TextLabel="Grb2" Type="GeneProduct" BackpageHead="Grb2" GraphId="c03">
+    <Graphics Color="000000" CenterX="15300.0" CenterY="7150.0" Width="667.9688" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14784"/>
+  </DataNode>
+  <DataNode TextLabel="Ptk2b" Type="GeneProduct" BackpageHead="Ptk2b" GraphId="d6f">
+    <Graphics Color="000000" CenterX="15700.0" CenterY="6300.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19229"/>
+  </DataNode>
+  <DataNode TextLabel="Cd53" Type="GeneProduct" BackpageHead="Cd53" GraphId="b9b">
+    <Graphics Color="000000" CenterX="16850.0" CenterY="3450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12508"/>
+  </DataNode>
+  <DataNode TextLabel="Icam1" Type="GeneProduct" BackpageHead="Icam1" GraphId="ba1">
+    <Graphics Color="000000" CenterX="10650.0" CenterY="3450.0" Width="750.3413" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15894"/>
+  </DataNode>
+  <DataNode TextLabel="Sos1" Type="GeneProduct" BackpageHead="Sos1" GraphId="f6c">
+    <Graphics Color="000000" CenterX="15500.0" CenterY="7750.0" Width="667.9688" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20662"/>
+  </DataNode>
+  <DataNode TextLabel="Socs1" Type="GeneProduct" BackpageHead="Socs1" GraphId="ad9">
+    <Graphics Color="000000" CenterX="9850.0" CenterY="7800.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12703"/>
+  </DataNode>
+  <DataNode TextLabel="Cish" Type="GeneProduct" BackpageHead="Cish" GraphId="a97">
+    <Graphics Color="000000" CenterX="8950.0" CenterY="8450.0" Width="600.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12700"/>
+  </DataNode>
+  <DataNode TextLabel="Gnb2l1" Type="GeneProduct" BackpageHead="Gnb2l1" GraphId="aa3">
+    <Graphics Color="000000" CenterX="20100.0" CenterY="6250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14694"/>
+  </DataNode>
+  <DataNode TextLabel="Crkl" Type="GeneProduct" BackpageHead="Crkl" GraphId="f3d">
+    <Graphics Color="000000" CenterX="16700.0" CenterY="7900.0" Width="667.9688" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12929"/>
+  </DataNode>
+  <DataNode TextLabel="Cbl" Type="GeneProduct" BackpageHead="Cbl" GraphId="b03">
+    <Graphics Color="000000" CenterX="16350.0" CenterY="7150.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12402"/>
+  </DataNode>
+  <DataNode TextLabel="Shb" Type="GeneProduct" BackpageHead="Shb" GraphId="aef">
+    <Graphics Color="000000" CenterX="18000.0" CenterY="7550.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="230126"/>
+  </DataNode>
+  <DataNode TextLabel="Crk" Type="GeneProduct" BackpageHead="Crk" GraphId="a2b">
+    <Graphics Color="000000" CenterX="17550.0" CenterY="7200.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12928"/>
+  </DataNode>
+  <DataNode TextLabel="Nmi" Type="GeneProduct" BackpageHead="Nmi" GraphId="e97">
+    <Graphics Color="000000" CenterX="13950.0" CenterY="13250.0" Width="806.8389" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="64685"/>
+  </DataNode>
+  <DataNode TextLabel="Ets1" Type="GeneProduct" BackpageHead="Ets1" GraphId="a9b">
+    <Graphics Color="000000" CenterX="11850.0" CenterY="13300.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23871"/>
+  </DataNode>
+  <DataNode TextLabel="Ets2" Type="GeneProduct" BackpageHead="Ets2" GraphId="a50">
+    <Graphics Color="000000" CenterX="12000.0" CenterY="13650.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23872"/>
+  </DataNode>
+  <DataNode TextLabel="Nr3c1" Type="GeneProduct" BackpageHead="Nr3c1" GraphId="da7">
+    <Graphics Color="000000" CenterX="11550.0" CenterY="12950.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14815"/>
+  </DataNode>
+  <DataNode TextLabel="Prkcz" Type="GeneProduct" BackpageHead="Prkcz" GraphId="e09">
+    <Graphics Color="000000" CenterX="21500.0" CenterY="9050.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18762"/>
+  </DataNode>
+  <DataNode TextLabel="Itm2b" Type="GeneProduct" BackpageHead="Itm2b" GraphId="d00">
+    <Graphics Color="000000" CenterX="24300.0" CenterY="4900.0" Width="750.3413" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16432"/>
+  </DataNode>
+  <DataNode TextLabel="Bcl2" Type="GeneProduct" BackpageHead="Bcl2" GraphId="c68">
+    <Graphics Color="000000" CenterX="24500.0" CenterY="8700.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12043"/>
+  </DataNode>
+  <DataNode TextLabel="Ifna1" Type="GeneProduct" GraphId="ce4">
+    <Graphics Color="000000" CenterX="18300.0" CenterY="3450.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15962"/>
+  </DataNode>
+  <DataNode TextLabel="Mtor" Type="GeneProduct" BackpageHead="Mtor" GraphId="bb5">
+    <Graphics Color="000000" CenterX="19550.0" CenterY="12050.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56717"/>
+  </DataNode>
+  <DataNode TextLabel="Hsp90aa1" Type="GeneProduct" BackpageHead="Hsp90aa1" GraphId="f9f">
+    <Graphics Color="000000" CenterX="17200.0" CenterY="11250.0" Width="813.4511" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15519"/>
+  </DataNode>
+  <DataNode TextLabel="Mknk1" Type="GeneProduct" BackpageHead="Mknk1" GraphId="c80">
+    <Graphics Color="000000" CenterX="22100.0" CenterY="14450.0" Width="813.4511" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17346"/>
+  </DataNode>
+  <DataNode TextLabel="Eif4e" Type="GeneProduct" BackpageHead="Eif4e" GraphId="af7">
+    <Graphics Color="000000" CenterX="24550.0" CenterY="14450.0" Width="722.7983" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13684"/>
+  </DataNode>
+  <DataNode TextLabel="Creb1" Type="GeneProduct" BackpageHead="Creb1" GraphId="a4f">
+    <Graphics Color="000000" CenterX="23350.0" CenterY="14450.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12912"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k1" Type="GeneProduct" BackpageHead="Map2k1" GraphId="c31">
+    <Graphics Color="000000" CenterX="7650.0" CenterY="12950.0" Width="916.0484" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26395"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k2" Type="GeneProduct" BackpageHead="Map2k2" GraphId="e90">
+    <Graphics Color="000000" CenterX="8750.0" CenterY="12950.0" Width="916.0484" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26396"/>
+  </DataNode>
+  <DataNode TextLabel="Vav1" Type="GeneProduct" BackpageHead="Vav1" GraphId="a44">
+    <Graphics Color="000000" CenterX="17500.0" CenterY="6350.0" Width="667.9688" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22324"/>
+  </DataNode>
+  <DataNode TextLabel="Stat5a" Type="GeneProduct" BackpageHead="Stat5a" GraphId="ade">
+    <Graphics Color="000000" CenterX="13400.0" CenterY="16100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20850"/>
+  </DataNode>
+  <DataNode TextLabel="Stat5b" Type="GeneProduct" BackpageHead="Stat5b" GraphId="a0e">
+    <Graphics Color="000000" CenterX="12350.0" CenterY="16100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20851"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk1" Type="GeneProduct" BackpageHead="Mapk1" GraphId="f63">
+    <Graphics Color="000000" CenterX="9100.0" CenterY="16100.0" Width="813.4511" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26413"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk3" Type="GeneProduct" BackpageHead="Mapk3" GraphId="fac">
+    <Graphics Color="000000" CenterX="10750.0" CenterY="16100.0" Width="999.5137" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26417"/>
+  </DataNode>
+  <DataNode TextLabel="Nfkb1" Type="GeneProduct" BackpageHead="Nfkb1" GraphId="f7f">
+    <Graphics Color="000000" CenterX="20650.0" CenterY="13250.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18033"/>
+  </DataNode>
+  <DataNode TextLabel="Rela" Type="GeneProduct" BackpageHead="Rela" GraphId="dbf">
+    <Graphics Color="000000" CenterX="19800.0" CenterY="13250.0" Width="667.9688" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19697"/>
+  </DataNode>
+  <DataNode TextLabel="Ybx1" Type="GeneProduct" BackpageHead="Ybx1" GraphId="f02">
+    <Graphics Color="000000" CenterX="21500.0" CenterY="13250.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22608"/>
+  </DataNode>
+  <DataNode TextLabel="Nfkb1" Type="GeneProduct" BackpageHead="Nfkb1" GraphId="dfb">
+    <Graphics Color="000000" CenterX="20750.0" CenterY="16100.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18033"/>
+  </DataNode>
+  <DataNode TextLabel="Rela" Type="GeneProduct" BackpageHead="Rela" GraphId="fc4">
+    <Graphics Color="000000" CenterX="19900.0" CenterY="16100.0" Width="667.9688" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19697"/>
+  </DataNode>
+  <DataNode TextLabel="Ybx1" Type="GeneProduct" BackpageHead="Ybx1" GraphId="d99">
+    <Graphics Color="000000" CenterX="21600.0" CenterY="16100.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22608"/>
+  </DataNode>
+  <DataNode TextLabel="Tert" Type="GeneProduct" BackpageHead="Tert" GraphId="c0f">
+    <Graphics Color="000000" CenterX="19000.0" CenterY="16150.0" Width="899.3906" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21752"/>
+  </DataNode>
+  <DataNode TextLabel="Akt1" Type="GeneProduct" BackpageHead="Akt1" GraphId="bdb">
+    <Graphics Color="000000" CenterX="21400.0" CenterY="8000.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11651"/>
+  </DataNode>
+  <DataNode TextLabel="Raf1" Type="GeneProduct" BackpageHead="Raf1" GraphId="b78">
+    <Graphics Color="000000" CenterX="7400.0" CenterY="4000.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="110157"/>
+  </DataNode>
+  <DataNode TextLabel="Kras" Type="GeneProduct" BackpageHead="Kras" GraphId="ebf">
+    <Graphics Color="000000" CenterX="15550.0" CenterY="8600.0" Width="700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16653"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk8" Type="GeneProduct" BackpageHead="Mapk8" GraphId="d39">
+    <Graphics Color="000000" CenterX="8600.0" CenterY="13650.0" Width="813.4511" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26419"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk14" Type="GeneProduct" BackpageHead="Mapk14" GraphId="f90">
+    <Graphics Color="000000" CenterX="8450.0" CenterY="14050.0" Width="916.0484" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26416"/>
+  </DataNode>
+  <DataNode TextLabel="Mapkapk2" Type="GeneProduct" BackpageHead="Mapkapk2" GraphId="ee7">
+    <Graphics Color="000000" CenterX="7150.0" CenterY="13600.0" Width="1214.748" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17164"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk9" Type="GeneProduct" BackpageHead="Mapk9" GraphId="edb">
+    <Graphics Color="000000" CenterX="7500.0" CenterY="14050.0" Width="813.4511" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26420"/>
+  </DataNode>
+  <DataNode TextLabel="Chuk" Type="GeneProduct" BackpageHead="Chuk" GraphId="d66">
+    <Graphics Color="000000" CenterX="23700.0" CenterY="10650.0" Width="700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12675"/>
+  </DataNode>
+  <DataNode TextLabel="Eif3b" Type="GeneProduct" BackpageHead="Eif3b" GraphId="be4">
+    <Graphics Color="000000" CenterX="24000.0" CenterY="13400.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="27979"/>
+  </DataNode>
+  <DataNode TextLabel="Akt1" Type="GeneProduct" BackpageHead="Akt1" GraphId="a57">
+    <Graphics Color="000000" CenterX="21450.0" CenterY="4000.0" Width="643.1497" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11651"/>
+  </DataNode>
+  <DataNode TextLabel="Stat3" Type="GeneProduct" BackpageHead="Stat3" GraphId="d56">
+    <Graphics Color="000000" CenterX="14950.0" CenterY="11450.0" Width="1299.93" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20848"/>
+  </DataNode>
+  <DataNode TextLabel="Stat5a" Type="GeneProduct" BackpageHead="Stat5a" GraphId="c83">
+    <Graphics Color="000000" CenterX="13700.0" CenterY="12300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20850"/>
+  </DataNode>
+  <DataNode TextLabel="Stat5b" Type="GeneProduct" BackpageHead="Stat5b" GraphId="e6f">
+    <Graphics Color="000000" CenterX="12300.0" CenterY="12400.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20851"/>
+  </DataNode>
+  <DataNode TextLabel="Stat1" Type="GeneProduct" BackpageHead="Stat1" GraphId="a4c">
+    <Graphics Color="000000" CenterX="16050.0" CenterY="11450.0" Width="779.2969" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20846"/>
+  </DataNode>
+  <DataNode TextLabel="Crk" Type="GeneProduct" BackpageHead="Crk" GraphId="c97">
+    <Graphics Color="000000" CenterX="16250.0" CenterY="9800.0" Width="599.6289" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12928"/>
+  </DataNode>
+  <DataNode TextLabel="Il2" Type="GeneProduct" BackpageHead="Il2" GraphId="ba8">
+    <Graphics Color="000000" CenterX="16900.0" CenterY="1400.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16183"/>
+  </DataNode>
+  <DataNode TextLabel="Il2" Type="GeneProduct" BackpageHead="Il2" GraphId="f1f">
+    <Graphics Color="000000" CenterX="18300.0" CenterY="1400.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16183"/>
+  </DataNode>
+  <Line Style="Broken" GraphId="e6ede">
+    <Graphics ZOrder="12288" Color="00ffff">
+      <Point x="400.0" y="13800.0"/>
+      <Point x="1050.0" y="13800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ae0dd">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="400.0" y="6800.0"/>
+      <Point x="1050.0" y="6800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e9ae7">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="400.0" y="7500.0"/>
+      <Point x="1050.0" y="7500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d00a6">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="400.0" y="13350.0"/>
+      <Point x="1050.0" y="13350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d19a9">
+    <Graphics ZOrder="12288" Color="ff8040">
+      <Point x="12100.0" y="1550.0"/>
+      <Point x="12100.0" y="2600.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fbaf2">
+    <Graphics ZOrder="12288" Color="800000">
+      <Point x="12100.0" y="3300.0"/>
+      <Point x="12100.0" y="2600.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="df20b">
+    <Graphics ZOrder="12288" Color="ff8000">
+      <Point x="13600.0" y="1550.0"/>
+      <Point x="13600.0" y="2600.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa885">
+    <Graphics ZOrder="12288" Color="9f0000">
+      <Point x="13600.0" y="3300.0"/>
+      <Point x="13600.0" y="2600.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d7f5c">
+    <Graphics ZOrder="12288" Color="ff8040">
+      <Point x="14900.0" y="1550.0"/>
+      <Point x="14900.0" y="2600.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b286f">
+    <Graphics ZOrder="12288" Color="ce0000">
+      <Point x="14900.0" y="3300.0"/>
+      <Point x="14900.0" y="2600.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bacb6">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12950.0" y="3900.0"/>
+      <Point x="12950.0" y="3600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ac158">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="19050.0" y="6900.0"/>
+      <Point x="19050.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fafaf">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12000.0" y="6900.0"/>
+      <Point x="19050.0" y="6900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b6c3f">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="17200.0" y="9550.0"/>
+      <Point x="17200.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6492">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13050.0" y="4150.0"/>
+      <Point x="13050.0" y="3600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fb400">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="13300.0" y="8650.0"/>
+      <Point x="13300.0" y="3600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c445d">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="12500.0" y="8650.0"/>
+      <Point x="12500.0" y="6500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aedd3">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="13400.0" y="8650.0"/>
+      <Point x="13400.0" y="6500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa93e">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11400.0" y="7050.0"/>
+      <Point x="9400.0" y="7050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b1c39">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="9400.0" y="7050.0"/>
+      <Point x="9400.0" y="13550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d5264">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14600.0" y="10900.0"/>
+      <Point x="14600.0" y="11300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d50e0">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12200.0" y="7400.0"/>
+      <Point x="12200.0" y="11000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e1c6d">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13450.0" y="11000.0"/>
+      <Point x="13450.0" y="12150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e8282">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12250.0" y="6500.0"/>
+      <Point x="12250.0" y="7800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fc21e">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11600.0" y="7800.0"/>
+      <Point x="11600.0" y="7550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e4706">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13400.0" y="6350.0"/>
+      <Point x="12800.0" y="6350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="adceb">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13400.0" y="6200.0"/>
+      <Point x="13400.0" y="5800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c0417">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13400.0" y="5800.0"/>
+      <Point x="7900.0" y="5800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bac4e">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14900.0" y="10750.0"/>
+      <Point x="14900.0" y="11300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a740b">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12650.0" y="6500.0"/>
+      <Point x="12650.0" y="8450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b8579">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13500.0" y="8350.0"/>
+      <Point x="13500.0" y="9550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bbf93">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13500.0" y="8800.0"/>
+      <Point x="20400.0" y="8800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e5473">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13500.0" y="8350.0"/>
+      <Point x="19850.0" y="8350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f67b3">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13700.0" y="8100.0"/>
+      <Point x="20700.0" y="8100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ce127">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="20700.0" y="8100.0"/>
+      <Point x="20700.0" y="8650.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ff149">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="20000.0" y="8100.0"/>
+      <Point x="20000.0" y="8300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d3c79">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14700.0" y="6550.0"/>
+      <Point x="14700.0" y="9850.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cc5c6">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12200.0" y="6400.0"/>
+      <Point x="10550.0" y="6400.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cd9f5">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10550.0" y="6400.0"/>
+      <Point x="10550.0" y="8250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c6314">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10400.0" y="5800.0"/>
+      <Point x="10400.0" y="8250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dfd55">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10250.0" y="13800.0"/>
+      <Point x="10250.0" y="14300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b7f85">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="9550.0" y="13850.0"/>
+      <Point x="9550.0" y="14300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4525">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13800.0" y="9550.0"/>
+      <Point x="17200.0" y="9550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb1d6">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="20250.0" y="10350.0"/>
+      <Point x="20250.0" y="12400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4d60">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="20050.0" y="10650.0"/>
+      <Point x="15250.0" y="10650.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f27cb">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="15250.0" y="10650.0"/>
+      <Point x="15250.0" y="11300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e76fb">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10350.0" y="11800.0"/>
+      <Point x="14800.0" y="11800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d0cc0">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="9550.0" y="11900.0"/>
+      <Point x="15050.0" y="11900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="db8d0">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14800.0" y="11800.0"/>
+      <Point x="14800.0" y="11600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ed9da">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="15050.0" y="11900.0"/>
+      <Point x="15050.0" y="11600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dda4b">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="18650.0" y="6450.0"/>
+      <Point x="18650.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d9aeb">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14050.0" y="10750.0"/>
+      <Point x="14050.0" y="12150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f5dba">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="18050.0" y="11650.0"/>
+      <Point x="18050.0" y="12650.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c9bca">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10900.0" y="7900.0"/>
+      <Point x="10900.0" y="13500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fd96d">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="11950.0" y="8850.0"/>
+      <Point x="11950.0" y="11350.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ae380">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="11900.0" y="11350.0"/>
+      <Point x="11900.0" y="12250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="db1b3">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14300.0" y="3600.0"/>
+      <Point x="14300.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d5f5b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13600.0" y="5300.0"/>
+      <Point x="13600.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bd49d">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18350.0" y="5150.0"/>
+      <Point x="18350.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa43b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12950.0" y="6450.0"/>
+      <Point x="12950.0" y="8300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c5b44">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12950.0" y="8250.0"/>
+      <Point x="18200.0" y="8250.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="eba66">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18000.0" y="8250.0"/>
+      <Point x="18000.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aea34">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13200.0" y="5300.0"/>
+      <Point x="13200.0" y="7100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f3809">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13200.0" y="7100.0"/>
+      <Point x="14000.0" y="7100.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa355">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15400.0" y="12700.0"/>
+      <Point x="15400.0" y="11600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e493f">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="10950.0" y="5300.0"/>
+      <Point x="10950.0" y="7600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e1871">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14750.0" y="9850.0"/>
+      <Point x="14000.0" y="9850.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8c02">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14000.0" y="9850.0"/>
+      <Point x="14000.0" y="10250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bd754">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14750.0" y="9850.0"/>
+      <Point x="15400.0" y="9850.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="eac37">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="15400.0" y="9850.0"/>
+      <Point x="15400.0" y="10250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e1693">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12000.0" y="6800.0"/>
+      <Point x="18500.0" y="6800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d1a1e">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18500.0" y="6800.0"/>
+      <Point x="18500.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a3d5a">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11350.0" y="5300.0"/>
+      <Point x="11350.0" y="7250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f69ec">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12950.0" y="6450.0"/>
+      <Point x="12700.0" y="6450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e820e">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17450.0" y="9250.0"/>
+      <Point x="17450.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e759c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14600.0" y="7150.0"/>
+      <Point x="15000.0" y="7150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6985">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14150.0" y="12200.0"/>
+      <Point x="15250.0" y="12200.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ac05c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15250.0" y="12200.0"/>
+      <Point x="15250.0" y="11600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c652c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13150.0" y="3600.0"/>
+      <Point x="13150.0" y="5300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b1f8d">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="7550.0" y="5300.0"/>
+      <Point x="24100.0" y="5300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2bf0">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13050.0" y="5300.0"/>
+      <Point x="13050.0" y="8650.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e59c0">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11700.0" y="5300.0"/>
+      <Point x="11700.0" y="6750.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ad221">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13700.0" y="6500.0"/>
+      <Point x="13700.0" y="8100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb40f">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="15050.0" y="9550.0"/>
+      <Point x="15050.0" y="10250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fe8a3">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="15050.0" y="9550.0"/>
+      <Point x="13500.0" y="9550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ddb55">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13700.0" y="8100.0"/>
+      <Point x="13700.0" y="10250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d1d02">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11550.0" y="11050.0"/>
+      <Point x="11550.0" y="10000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dd21c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14300.0" y="6200.0"/>
+      <Point x="15350.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bd899">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11400.0" y="7000.0"/>
+      <Point x="9300.0" y="7000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="eb28b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="9300.0" y="7000.0"/>
+      <Point x="9300.0" y="13550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d22f2">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10350.0" y="9250.0"/>
+      <Point x="16900.0" y="9250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e39b5">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="9550.0" y="9150.0"/>
+      <Point x="16900.0" y="9150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a5169">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="9550.0" y="13550.0"/>
+      <Point x="9550.0" y="9150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa9f4">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10350.0" y="13500.0"/>
+      <Point x="10350.0" y="9250.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e057c">
+    <Graphics ZOrder="12288" Color="ff8040">
+      <Point x="10650.0" y="3300.0"/>
+      <Point x="10650.0" y="2550.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b49be">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="9850.0" y="5300.0"/>
+      <Point x="9850.0" y="7650.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fb69b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="9200.0" y="5300.0"/>
+      <Point x="9200.0" y="8300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ea4e5">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="20100.0" y="5300.0"/>
+      <Point x="20100.0" y="6100.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c3f12">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17300.0" y="9500.0"/>
+      <Point x="17300.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f6685">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11600.0" y="9500.0"/>
+      <Point x="17300.0" y="9500.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ece32">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11600.0" y="8850.0"/>
+      <Point x="11600.0" y="9500.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e1e2c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15000.0" y="9500.0"/>
+      <Point x="15000.0" y="7300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d54f9">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="20050.0" y="10650.0"/>
+      <Point x="20050.0" y="10300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cd1d6">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16050.0" y="8050.0"/>
+      <Point x="16050.0" y="7400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f113b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14150.0" y="7350.0"/>
+      <Point x="14150.0" y="7950.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7b2b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14150.0" y="7950.0"/>
+      <Point x="16300.0" y="7950.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="afb0f">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16300.0" y="7950.0"/>
+      <Point x="16300.0" y="7300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c64be">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16350.0" y="8050.0"/>
+      <Point x="11700.0" y="8050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b80c2">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11700.0" y="8050.0"/>
+      <Point x="11700.0" y="8550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2487">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14050.0" y="8050.0"/>
+      <Point x="14050.0" y="7350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="de052">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15900.0" y="8100.0"/>
+      <Point x="15900.0" y="7450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f3eec">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16550.0" y="7750.0"/>
+      <Point x="16550.0" y="7300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d3c9d">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17050.0" y="7900.0"/>
+      <Point x="17800.0" y="7900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b033d">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17400.0" y="7900.0"/>
+      <Point x="17400.0" y="8950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cee3c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15350.0" y="3600.0"/>
+      <Point x="15350.0" y="4250.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f1f56">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15350.0" y="4250.0"/>
+      <Point x="18050.0" y="4250.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ce727">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18050.0" y="4250.0"/>
+      <Point x="18050.0" y="7400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d76d8">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18200.0" y="5300.0"/>
+      <Point x="18200.0" y="7400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bfce7">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18100.0" y="8250.0"/>
+      <Point x="18100.0" y="7700.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f8ad0">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13900.0" y="6200.0"/>
+      <Point x="13900.0" y="5800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c5a39">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13900.0" y="5800.0"/>
+      <Point x="17900.0" y="5800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d0e85">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17900.0" y="5800.0"/>
+      <Point x="17900.0" y="7400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bbd82">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16650.0" y="7250.0"/>
+      <Point x="16650.0" y="7550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f5e60">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16650.0" y="7550.0"/>
+      <Point x="17650.0" y="7550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c052f">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17650.0" y="7550.0"/>
+      <Point x="17650.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2ec9">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17400.0" y="7550.0"/>
+      <Point x="17400.0" y="7350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f911f">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17800.0" y="7900.0"/>
+      <Point x="17800.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f79e6">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17550.0" y="7050.0"/>
+      <Point x="17550.0" y="6650.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bf0ae">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17550.0" y="6650.0"/>
+      <Point x="14200.0" y="6650.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7460">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14200.0" y="6650.0"/>
+      <Point x="14200.0" y="7050.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e0d59">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18800.0" y="6450.0"/>
+      <Point x="18800.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b9f4b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18200.0" y="8500.0"/>
+      <Point x="19850.0" y="8500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c1eaf">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18200.0" y="8700.0"/>
+      <Point x="20400.0" y="8700.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b99c4">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13850.0" y="6200.0"/>
+      <Point x="13850.0" y="5150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a1359">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13850.0" y="5150.0"/>
+      <Point x="20900.0" y="5150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bf4f8">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="20800.0" y="5150.0"/>
+      <Point x="20800.0" y="8350.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dd419">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="20900.0" y="5150.0"/>
+      <Point x="20900.0" y="8650.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa7d3">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="20800.0" y="8350.0"/>
+      <Point x="20450.0" y="8350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a9c63">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13400.0" y="6250.0"/>
+      <Point x="12800.0" y="6250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ce9fe">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12950.0" y="8300.0"/>
+      <Point x="10700.0" y="8300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e4d89">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="10300.0" y="5300.0"/>
+      <Point x="10300.0" y="8250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b250e">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13600.0" y="6500.0"/>
+      <Point x="13600.0" y="10250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cbd7c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14450.0" y="6550.0"/>
+      <Point x="13800.0" y="6550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb51a">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13800.0" y="6550.0"/>
+      <Point x="13800.0" y="10250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa9e7">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11850.0" y="12800.0"/>
+      <Point x="11850.0" y="12550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c0451">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13600.0" y="13100.0"/>
+      <Point x="13600.0" y="12500.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f8c71">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14100.0" y="13100.0"/>
+      <Point x="14100.0" y="12450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f5cc7">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12050.0" y="13150.0"/>
+      <Point x="12050.0" y="12550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d1928">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18750.0" y="5300.0"/>
+      <Point x="18750.0" y="6150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f78f2">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12250.0" y="13500.0"/>
+      <Point x="12250.0" y="12550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a7349">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="21500.0" y="9200.0"/>
+      <Point x="21500.0" y="9750.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2bbc">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="24400.0" y="5050.0"/>
+      <Point x="24400.0" y="8550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8161">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16050.0" y="7250.0"/>
+      <Point x="15600.0" y="7250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e3422">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14350.0" y="7500.0"/>
+      <Point x="14800.0" y="7500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ed1a7">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15300.0" y="7300.0"/>
+      <Point x="15300.0" y="7600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bbcd2">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11050.0" y="7900.0"/>
+      <Point x="11050.0" y="13500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8dff">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18550.0" y="11550.0"/>
+      <Point x="18950.0" y="11550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e37f5">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="18550.0" y="11400.0"/>
+      <Point x="18950.0" y="11400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cae53">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="20000.0" y="11600.0"/>
+      <Point x="20000.0" y="12400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a3e1e">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="19350.0" y="11600.0"/>
+      <Point x="19350.0" y="11900.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d63b4">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17600.0" y="11400.0"/>
+      <Point x="17950.0" y="11400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a3898">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17600.0" y="11100.0"/>
+      <Point x="19300.0" y="11100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2986">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="19300.0" y="11100.0"/>
+      <Point x="19300.0" y="11300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a3f0e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13700.0" y="3600.0"/>
+      <Point x="13700.0" y="4650.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6a2b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8550.0" y="4650.0"/>
+      <Point x="23300.0" y="4650.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ba5c6">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14400.0" y="5050.0"/>
+      <Point x="14400.0" y="7050.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d340a">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12400.0" y="5300.0"/>
+      <Point x="12400.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bac45">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12950.0" y="5300.0"/>
+      <Point x="12950.0" y="6100.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d96a3">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12500.0" y="5050.0"/>
+      <Point x="12500.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="acdd2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13500.0" y="4650.0"/>
+      <Point x="13500.0" y="4950.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bad04">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13750.0" y="5050.0"/>
+      <Point x="13750.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c3a6d">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12250.0" y="7800.0"/>
+      <Point x="11600.0" y="7800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cdfc7">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11250.0" y="4900.0"/>
+      <Point x="11250.0" y="8550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dfab1">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="17100.0" y="5000.0"/>
+      <Point x="17100.0" y="8950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aebe9">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="16850.0" y="5000.0"/>
+      <Point x="16850.0" y="7750.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ca098">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="16350.0" y="5050.0"/>
+      <Point x="16350.0" y="7000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="becd2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="16350.0" y="4650.0"/>
+      <Point x="16350.0" y="5000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d0048">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="8650.0" y="11550.0"/>
+      <Point x="14300.0" y="11550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="facc4">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="8950.0" y="9800.0"/>
+      <Point x="11300.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e4e4e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="23300.0" y="4650.0"/>
+      <Point x="23300.0" y="13200.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b2058">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="23300.0" y="12050.0"/>
+      <Point x="23300.0" y="12350.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2802">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="22050.0" y="13900.0"/>
+      <Point x="22050.0" y="14300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6455">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="23300.0" y="13900.0"/>
+      <Point x="23300.0" y="14300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ccc6b">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="24450.0" y="13900.0"/>
+      <Point x="24450.0" y="14300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c29be">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="23300.0" y="10450.0"/>
+      <Point x="22900.0" y="10450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b87f6">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="22800.0" y="10450.0"/>
+      <Point x="15500.0" y="10450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fc5bd">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="8650.0" y="12400.0"/>
+      <Point x="8650.0" y="12800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bc844">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="17450.0" y="5000.0"/>
+      <Point x="17450.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d085c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="16000.0" y="4150.0"/>
+      <Point x="19200.0" y="4150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fde70">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="16000.0" y="3450.0"/>
+      <Point x="16000.0" y="4150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b58e0">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="19300.0" y="4150.0"/>
+      <Point x="19300.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c5280">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14000.0" y="6050.0"/>
+      <Point x="14000.0" y="6200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="f3668">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="12350.0" y="12550.0"/>
+      <Point x="12350.0" y="15950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="b9466">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="13400.0" y="12450.0"/>
+      <Point x="13400.0" y="15950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="c3896">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="9150.0" y="13850.0"/>
+      <Point x="9150.0" y="15950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="fd193">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="10700.0" y="13800.0"/>
+      <Point x="10700.0" y="15950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e9eb4">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="8550.0" y="11650.0"/>
+      <Point x="8550.0" y="12400.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c616d">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10200.0" y="12400.0"/>
+      <Point x="7800.0" y="12400.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a0b4f">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="7800.0" y="12400.0"/>
+      <Point x="7800.0" y="12800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="dda62">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="19850.0" y="13400.0"/>
+      <Point x="19850.0" y="15950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="f340d">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="20700.0" y="13400.0"/>
+      <Point x="20700.0" y="15950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="bb443">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="21550.0" y="13350.0"/>
+      <Point x="21550.0" y="15950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cdeae">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="22050.0" y="13900.0"/>
+      <Point x="24450.0" y="13900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b9190">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="23300.0" y="13350.0"/>
+      <Point x="23300.0" y="13900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="d3e5e">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="19000.0" y="11600.0"/>
+      <Point x="19000.0" y="16000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="a083c">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="21400.0" y="7850.0"/>
+      <Point x="21400.0" y="4150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="eaee6">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="7350.0" y="9950.0"/>
+      <Point x="11300.0" y="9950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aff7e">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="16400.0" y="5000.0"/>
+      <Point x="17450.0" y="5000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f6d11">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12500.0" y="5050.0"/>
+      <Point x="14400.0" y="5050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="db22d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="11300.0" y="4650.0"/>
+      <Point x="11300.0" y="4900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e47d1">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="10200.0" y="12400.0"/>
+      <Point x="10200.0" y="13500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c91f9">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8550.0" y="4650.0"/>
+      <Point x="8550.0" y="11500.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fb2c8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="650.0" y="3800.0"/>
+      <Point x="650.0" y="4650.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fb0bd">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="650.0" y="3050.0"/>
+      <Point x="650.0" y="2700.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fb50e">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="10650.0" y="8250.0"/>
+      <Point x="10650.0" y="7950.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b61dc">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="10650.0" y="7950.0"/>
+      <Point x="12400.0" y="7950.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a9cc0">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="12400.0" y="7950.0"/>
+      <Point x="12400.0" y="6500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a9f1f">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="10500.0" y="8250.0"/>
+      <Point x="10500.0" y="4000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bdf37">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="10500.0" y="4000.0"/>
+      <Point x="13550.0" y="4000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e34ce">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="13550.0" y="4000.0"/>
+      <Point x="13550.0" y="3600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d9777">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="10600.0" y="12400.0"/>
+      <Point x="11800.0" y="12400.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b6962">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="10600.0" y="12400.0"/>
+      <Point x="10600.0" y="8550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e24ce">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="17200.0" y="6500.0"/>
+      <Point x="17200.0" y="8600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="adfee">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="17200.0" y="8600.0"/>
+      <Point x="15900.0" y="8600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c1051">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8200.0" y="4350.0"/>
+      <Point x="8200.0" y="11750.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b6b52">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8550.0" y="9800.0"/>
+      <Point x="8800.0" y="9800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e01bc">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="13850.0" y="3600.0"/>
+      <Point x="13850.0" y="4350.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c369b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="18850.0" y="4350.0"/>
+      <Point x="8200.0" y="4350.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d3bfb">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="8200.0" y="12100.0"/>
+      <Point x="8200.0" y="13200.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="be181">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="8800.0" y="13200.0"/>
+      <Point x="7200.0" y="13200.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2720">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="7200.0" y="13200.0"/>
+      <Point x="7200.0" y="13450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c0bb3">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="8100.0" y="13200.0"/>
+      <Point x="8100.0" y="13900.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ce297">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="8800.0" y="13200.0"/>
+      <Point x="8800.0" y="13500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6354">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="7850.0" y="13200.0"/>
+      <Point x="7850.0" y="13900.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6dfb">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="19400.0" y="9800.0"/>
+      <Point x="19400.0" y="9100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b42e1">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="19400.0" y="9100.0"/>
+      <Point x="21100.0" y="9100.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b08f7">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="8300.0" y="11950.0"/>
+      <Point x="16150.0" y="11950.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f4ffc">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="21200.0" y="4400.0"/>
+      <Point x="21200.0" y="7850.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c5b30">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="18850.0" y="4450.0"/>
+      <Point x="18850.0" y="6150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="af7a4">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="10750.0" y="5050.0"/>
+      <Point x="10750.0" y="7600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fe66b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10750.0" y="4350.0"/>
+      <Point x="10750.0" y="5000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2a50">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="18950.0" y="4400.0"/>
+      <Point x="24900.0" y="4400.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="eeabd">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="23600.0" y="4400.0"/>
+      <Point x="23600.0" y="10500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="da2c4">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="400.0" y="12950.0"/>
+      <Point x="1050.0" y="12950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fc4ea">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14200.0" y="3850.0"/>
+      <Point x="14200.0" y="3600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a588c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14000.0" y="3850.0"/>
+      <Point x="14200.0" y="3850.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c1e8c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14000.0" y="3600.0"/>
+      <Point x="14000.0" y="3850.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ff942">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12850.0" y="3850.0"/>
+      <Point x="12850.0" y="3600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c835e">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12650.0" y="3850.0"/>
+      <Point x="12850.0" y="3850.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f13bc">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12650.0" y="3600.0"/>
+      <Point x="12650.0" y="3850.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b2a26">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14050.0" y="3600.0"/>
+      <Point x="14300.0" y="3600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c7316">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="15550.0" y="3450.0"/>
+      <Point x="16000.0" y="3450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c37a6">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14050.0" y="3550.0"/>
+      <Point x="14350.0" y="3550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c8ed9">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="19950.0" y="8600.0"/>
+      <Point x="19950.0" y="9300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b1e22">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="19950.0" y="9300.0"/>
+      <Point x="19500.0" y="9300.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dfb74">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="19500.0" y="9300.0"/>
+      <Point x="19500.0" y="9800.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f33ac">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15100.0" y="7300.0"/>
+      <Point x="15100.0" y="9050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bc608">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15100.0" y="9000.0"/>
+      <Point x="16900.0" y="9000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a337b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15100.0" y="9050.0"/>
+      <Point x="11750.0" y="9050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="be82a">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11750.0" y="9050.0"/>
+      <Point x="11750.0" y="8850.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bc387">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="17100.0" y="9500.0"/>
+      <Point x="17100.0" y="9250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ee018">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="24100.0" y="5300.0"/>
+      <Point x="24100.0" y="13250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f786a">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11200.0" y="5000.0"/>
+      <Point x="11050.0" y="5000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="be0c6">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11050.0" y="5000.0"/>
+      <Point x="11050.0" y="7600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fe25a">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12650.0" y="7250.0"/>
+      <Point x="13950.0" y="7250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8554">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="16850.0" y="3300.0"/>
+      <Point x="16850.0" y="2600.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cefaf">
+    <Graphics ZOrder="12288" Color="fc3c03">
+      <Point x="18250.0" y="3300.0"/>
+      <Point x="18250.0" y="2600.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cafcb">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="24900.0" y="6450.0"/>
+      <Point x="24400.0" y="6450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ce979">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12300.0" y="6200.0"/>
+      <Point x="12300.0" y="4150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="df34e">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12300.0" y="4150.0"/>
+      <Point x="13050.0" y="4150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c1d8c">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11550.0" y="6750.0"/>
+      <Point x="11550.0" y="3900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c9035">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11550.0" y="3900.0"/>
+      <Point x="12950.0" y="3900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c2bbf">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="11900.0" y="7400.0"/>
+      <Point x="12200.0" y="7400.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ad145">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12350.0" y="7000.0"/>
+      <Point x="12350.0" y="10900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d55d2">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12000.0" y="7000.0"/>
+      <Point x="12350.0" y="7000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f8ecd">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="7900.0" y="10750.0"/>
+      <Point x="7900.0" y="5800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cdae9">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14900.0" y="10750.0"/>
+      <Point x="7900.0" y="10750.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aa9ce">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12800.0" y="12350.0"/>
+      <Point x="13250.0" y="12350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c7a09">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="7550.0" y="5300.0"/>
+      <Point x="7550.0" y="11050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b5d17">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="7550.0" y="11050.0"/>
+      <Point x="16000.0" y="11050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ce672">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14750.0" y="11050.0"/>
+      <Point x="14750.0" y="11300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a09ae">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13600.0" y="11050.0"/>
+      <Point x="13600.0" y="12150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c3eb9">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12150.0" y="11050.0"/>
+      <Point x="12150.0" y="12250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f2264">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16000.0" y="11050.0"/>
+      <Point x="16000.0" y="11300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d435b">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16650.0" y="8050.0"/>
+      <Point x="16650.0" y="12900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6834">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="16150.0" y="11950.0"/>
+      <Point x="16150.0" y="11600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f585f">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="12350.0" y="11950.0"/>
+      <Point x="12350.0" y="12250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d4fea">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12350.0" y="10900.0"/>
+      <Point x="14600.0" y="10900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d4868">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="13800.0" y="10900.0"/>
+      <Point x="13800.0" y="12150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ef478">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="14450.0" y="11000.0"/>
+      <Point x="14450.0" y="11300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d65f2">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12200.0" y="11000.0"/>
+      <Point x="14450.0" y="11000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="df098">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16450.0" y="9950.0"/>
+      <Point x="16450.0" y="12800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c236d">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16650.0" y="12900.0"/>
+      <Point x="12450.0" y="12900.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a62f9">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12650.0" y="12800.0"/>
+      <Point x="12650.0" y="12550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b244c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="16450.0" y="12300.0"/>
+      <Point x="14150.0" y="12300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4c72">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12450.0" y="12900.0"/>
+      <Point x="12450.0" y="12550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8c8a">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12650.0" y="12800.0"/>
+      <Point x="16450.0" y="12800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ecdd8">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13750.0" y="12900.0"/>
+      <Point x="13750.0" y="12450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bb928">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="13300.0" y="11350.0"/>
+      <Point x="13300.0" y="12150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d74e9">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="11900.0" y="11350.0"/>
+      <Point x="13300.0" y="11350.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ed4ea">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12750.0" y="12700.0"/>
+      <Point x="15400.0" y="12700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ccc00">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="12750.0" y="12700.0"/>
+      <Point x="12750.0" y="12550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d64c1">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="13600.0" y="12500.0"/>
+      <Point x="12800.0" y="12500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a8cc0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="400.0" y="7150.0"/>
+      <Point x="900.0" y="7150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d5f3a">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="18200.0" y="8250.0"/>
+      <Point x="18200.0" y="8700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7333">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="12650.0" y="8450.0"/>
+      <Point x="13500.0" y="8450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d1796">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="24900.0" y="4400.0"/>
+      <Point x="24900.0" y="12800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cff93">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="24900.0" y="12800.0"/>
+      <Point x="19850.0" y="12800.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e8431">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="19850.0" y="12800.0"/>
+      <Point x="19850.0" y="13100.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a8b2c">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="20600.0" y="12800.0"/>
+      <Point x="20600.0" y="13100.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cd311">
+    <Graphics ZOrder="12288" Color="8000ff">
+      <Point x="21400.0" y="12800.0"/>
+      <Point x="21400.0" y="13100.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="b1690">
+    <Graphics ZOrder="12288" Color="800000">
+      <Point x="7350.0" y="4150.0"/>
+      <Point x="7350.0" y="9950.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b763a">
+    <Graphics ZOrder="12288" Color="bfbf00">
+      <Point x="400.0" y="8250.0"/>
+      <Point x="1050.0" y="8250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fcc38">
+    <Graphics ZOrder="12288" Color="00eaea">
+      <Point x="400.0" y="8600.0"/>
+      <Point x="1050.0" y="8600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dbc89">
+    <Graphics ZOrder="12288" Color="8080ff">
+      <Point x="400.0" y="8950.0"/>
+      <Point x="1050.0" y="8950.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f8559">
+    <Graphics ZOrder="12288" Color="00ff00">
+      <Point x="400.0" y="9300.0"/>
+      <Point x="1050.0" y="9300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f623a">
+    <Graphics ZOrder="12288" Color="a400a4">
+      <Point x="400.0" y="9650.0"/>
+      <Point x="1050.0" y="9650.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e726d">
+    <Graphics ZOrder="12288" Color="ff80c0">
+      <Point x="400.0" y="10000.0"/>
+      <Point x="1050.0" y="10000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a83be">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="400.0" y="10350.0"/>
+      <Point x="1050.0" y="10350.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dfd33">
+    <Graphics ZOrder="12288" Color="ff00ff">
+      <Point x="400.0" y="10750.0"/>
+      <Point x="1050.0" y="10750.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fd2f5">
+    <Graphics ZOrder="12288" Color="0080c0">
+      <Point x="400.0" y="11150.0"/>
+      <Point x="1050.0" y="11150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d73a6">
+    <Graphics ZOrder="12288" Color="808000">
+      <Point x="400.0" y="11500.0"/>
+      <Point x="1050.0" y="11500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f1caa">
+    <Graphics ZOrder="12288" Color="afafaf">
+      <Point x="400.0" y="11850.0"/>
+      <Point x="1050.0" y="11850.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ebf2e">
+    <Graphics ZOrder="12288" Color="ff8000">
+      <Point x="400.0" y="12200.0"/>
+      <Point x="1050.0" y="12200.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c3b6e">
+    <Graphics ZOrder="12288" Color="eaea00">
+      <Point x="400.0" y="12550.0"/>
+      <Point x="1050.0" y="12550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="f668b">
+    <Graphics ZOrder="12288" Color="0080ff">
+      <Point x="400.0" y="14150.0"/>
+      <Point x="1050.0" y="14150.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="fab2b">
+    <Graphics ZOrder="12288" Color="800040">
+      <Point x="400.0" y="14550.0"/>
+      <Point x="1050.0" y="14550.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d1547">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="15150.0" y="7750.0"/>
+      <Point x="14800.0" y="7750.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dfa0c">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14950.0" y="7250.0"/>
+      <Point x="14800.0" y="7250.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7eaa">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14800.0" y="7750.0"/>
+      <Point x="14800.0" y="7250.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2039">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="14350.0" y="7500.0"/>
+      <Point x="14350.0" y="7350.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ed934">
+    <Graphics ZOrder="12288" Color="ff8040">
+      <Point x="16850.0" y="1550.0"/>
+      <Point x="16850.0" y="2600.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="da0fc">
+    <Graphics ZOrder="12288" Color="ff8040">
+      <Point x="18250.0" y="1550.0"/>
+      <Point x="18250.0" y="2600.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb0d8">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="11450.0" y="3500.0"/>
+      <Point x="11050.0" y="3500.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aed92">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="800.0" y="7900.0"/>
+      <Point x="900.0" y="8000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Molecular association" GraphId="f5b">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2350.0" CenterY="6800.0" Width="2150.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Translocation" GraphId="fe5">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2000.0" CenterY="14550.0" Width="1370.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Autophosphorylation" GraphId="a9c">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2350.0" CenterY="7900.0" Width="2045.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Phosphorylation" GraphId="cb5">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2150.0" CenterY="7500.0" Width="1625.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Inhibition" GraphId="d71">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1800.0" CenterY="13350.0" Width="980.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Activation" GraphId="eb8">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1850.0" CenterY="12950.0" Width="1025.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="dbe">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="13500.0" CenterY="5050.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="cea">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="16350.0" CenterY="4950.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="ea2">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="8550.0" CenterY="11550.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="ab4">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="8950.0" CenterY="9800.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="fce">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="23300.0" CenterY="13200.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="fdb">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="22900.0" CenterY="10450.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="b36">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="19300.0" CenterY="4150.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="d92">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="12800.0" CenterY="14450.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="d28">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="13850.0" CenterY="14450.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="d0e">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="8700.0" CenterY="15150.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="f73">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="11100.0" CenterY="14550.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="b9d">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="19450.0" CenterY="14800.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="c28">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="20250.0" CenterY="14500.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="dfd">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="21100.0" CenterY="14000.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; PM" GraphId="ae4">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="21850.0" CenterY="5950.0" Width="755.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY -&gt; NU" GraphId="ac4">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="18600.0" CenterY="14350.0" Width="725.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="PM -&gt; CY" GraphId="f45">
+    <Graphics FontWeight="Bold" FontSize="120" Color="ff00ff" CenterX="6900.0" CenterY="7250.0" Width="755.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="ff6">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="11300.0" CenterY="4950.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="b67">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="1000.0" CenterY="7150.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Ligand" GraphId="e2e">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1750.0" CenterY="3650.0" Width="740.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Receptor" GraphId="c2a">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1850.0" CenterY="3200.0" Width="935.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Molecule in the pathway" GraphId="d30">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="3200.0" CenterY="4900.0" Width="2420.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="ac7">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="8200.0" CenterY="11900.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="b59">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="18900.0" CenterY="4400.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="D" GraphId="f66">
+    <Graphics FontName="Symbol" FontWeight="Bold" FontSize="150" Color="000000" CenterX="10750.0" CenterY="5050.0" Width="215.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gene Symbol" GraphId="ab5">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1000.0" CenterY="4900.0" Width="1370.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Accession Number: NetPath 14" GraphId="d41">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1900.0" CenterY="2050.0" Width="3725.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Proteins in a complex interaction" GraphId="c74">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="3600.0" CenterY="5500.0" Width="3245.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Enzyme complex" GraphId="c2c">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2850.0" CenterY="6200.0" Width="1715.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Reactions through unknown mechanisms/molecules" GraphId="dba">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="3800.0" CenterY="7150.0" Width="5015.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Plasma membrane" GraphId="c3c">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2750.0" CenterY="17450.0" Width="1880.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="dc7">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2250.0" CenterY="16800.0" Width="830.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="(Protein-protein interaction)" GraphId="c3d">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="4800.0" CenterY="6800.0" Width="2705.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Acetylation" GraphId="e81">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1900.0" CenterY="8250.0" Width="1145.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Deacetylation" GraphId="ea4">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2000.0" CenterY="8600.0" Width="1385.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Glycosylation" GraphId="c0d">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1950.0" CenterY="8950.0" Width="1355.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Methylation" GraphId="bcf">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1900.0" CenterY="9300.0" Width="1190.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Demethylation" GraphId="ac0">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2050.0" CenterY="9650.0" Width="1460.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Palmitolyation" GraphId="a4e">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2050.0" CenterY="10000.0" Width="1460.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Phosphorylation" GraphId="e12">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2150.0" CenterY="10400.0" Width="1625.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Dephosphorylation" GraphId="edd">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2250.0" CenterY="10750.0" Width="1865.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Proteolytic cleavage" GraphId="fdc">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2350.0" CenterY="11150.0" Width="2030.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Desumoylation" GraphId="e91">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2050.0" CenterY="11850.0" Width="1490.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Ubiquitination" GraphId="a24">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2000.0" CenterY="12200.0" Width="1415.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Deubiquitination" GraphId="f8d">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2150.0" CenterY="12550.0" Width="1655.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Sumoylation" GraphId="e69">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1950.0" CenterY="11500.0" Width="1280.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Recruitment" GraphId="cf5">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1900.0" CenterY="13800.0" Width="1235.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Control" GraphId="b97">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="1700.0" CenterY="14150.0" Width="770.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="caa">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="15000.0" Width="335.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="EC" GraphId="a66">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="15350.0" Width="335.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="EN" GraphId="f0e">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="15700.0" Width="335.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="ER" GraphId="a82">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="16050.0" Width="335.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="GO" GraphId="b6e">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="16400.0" Width="380.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="MT" GraphId="ef9">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.5" CenterY="16700.0" Width="365.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="PM" GraphId="c5a">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="17450.0" Width="380.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="fff">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2350.0" CenterY="15000.0" Width="1070.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Extracellular" GraphId="c34">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2450.0" CenterY="15350.0" Width="1295.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Endoplasmic reticulum" GraphId="c41">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2950.0" CenterY="16050.0" Width="2255.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Endosome" GraphId="bdc">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2350.0" CenterY="15700.0" Width="1070.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Golgi apparatus" GraphId="cf9">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2600.0" CenterY="16400.0" Width="1595.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Mitochondrion" GraphId="afd">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2550.0" CenterY="16750.0" Width="1445.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="b19">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="17150.0" Width="350.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="a1d">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.0" CenterY="17100.0" Width="350.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="aad">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2250.0" CenterY="17100.0" Width="830.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="MT" GraphId="ea7">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff00ff" CenterX="1500.5" CenterY="16750.0" Width="365.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Brace" Style="Solid" GraphId="b54">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="12800.0" CenterY="3150.0" Width="700.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="cba">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="14100.0" CenterY="3150.0" Width="900.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="a48">
+    <Graphics FillColor="000000" Color="ff00ff" CenterX="18300.0" CenterY="9750.0" Width="2500.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="bd0">
+    <Graphics FillColor="000000" Color="ff00ff" CenterX="20250.0" CenterY="10350.0" Width="4470.895" Height="130.0" ZOrder="16384" Rotation="3.141592653589793"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="b7c">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="15900.0" CenterY="7450.0" Width="600.0" Height="130.0" ZOrder="16384" Rotation="3.141592653589793"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="afc">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="13050.0" CenterY="6050.0" Width="998.6172" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="a1b">
+    <Graphics FillColor="000000" Color="ff00ff" CenterX="21500.0" CenterY="9750.0" Width="2531.672" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Arc" Style="Solid" GraphId="a03">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="14100.0" CenterY="6200.0" Width="200.125" Height="604.8736" ZOrder="16384" Rotation="3.145155"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="a8f">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3200.0" CenterY="9950.0" Width="6303.174" Height="15502.85" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="ea6">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="1000.0" CenterY="4900.0" Width="1400.0" Height="316.2278" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="bb9">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="650.0" CenterY="3650.0" Width="700.0" Height="316.2278" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="c21">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="650.0" CenterY="3200.0" Width="700.0" Height="316.2278" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="a20">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="650.0" CenterY="5500.0" Width="700.0" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="cd0">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="1450.0" CenterY="5500.0" Width="700.0" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="c7e">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="1050.0" CenterY="5200.0" Width="1000.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="d7b">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="1050.0" CenterY="5800.0" Width="1000.0" Height="130.0" ZOrder="16384" Rotation="3.141592653589793"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="b61">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="650.0" CenterY="6200.0" Width="700.0" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="a81">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="1450.0" CenterY="6200.0" Width="700.0" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="cd7">
+    <Graphics FillColor="000000" Color="ff00ff" CenterX="1050.0" CenterY="6500.0" Width="1000.0" Height="130.0" ZOrder="16384" Rotation="3.141592653589793"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="fab">
+    <Graphics FillColor="000000" Color="ff00ff" CenterX="1050.0" CenterY="5900.0" Width="1000.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Arc" Style="Solid" GraphId="e44">
+    <Graphics FillColor="000000" Color="0000ff" CenterX="700.3018" CenterY="7999.958" Width="316.2278" Height="583.0952" ZOrder="16384" Rotation="2.761086"/>
+  </Shape>
+  <InfoBox CenterX="125.0" CenterY="125.0"/>
+  <Legend CenterX="15925.0" CenterY="15675.0"/>
+</Pathway>

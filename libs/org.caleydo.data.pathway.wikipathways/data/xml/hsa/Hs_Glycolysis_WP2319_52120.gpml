@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Glycolysis" Version="20120605" Organism="Homo sapiens">
+  <Graphics BoardWidth="902.0129747966798" BoardHeight="1291.6102484886906" />
+  <DataNode TextLabel="Phosphoenolpyruvic acid" GraphId="b7b57" Type="Metabolite">
+    <Graphics CenterX="670.3701781728489" CenterY="1109.079539763469" Width="258.073689679031" Height="35.63517366367523" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00263" />
+  </DataNode>
+  <DataNode TextLabel="Pyruvic acid" GraphId="efdce" Type="Metabolite">
+    <Graphics CenterX="670.3701781728489" CenterY="1243.792661656853" Width="258.073689679031" Height="35.63517366367523" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00243" />
+  </DataNode>
+  <DataNode TextLabel="Dihydroxyacetone phosphate" GraphId="dc9af" Type="Metabolite">
+    <Graphics CenterX="260.8134951696582" CenterY="573.166651443257" Width="258.073689679031" Height="35.63517366367523" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01473" />
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="d6f25" Type="Metabolite" GroupRef="d5442">
+    <Graphics CenterX="531.1634234125272" CenterY="108.49281025683968" Width="40.0" Height="18.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01532" />
+  </DataNode>
+  <DataNode TextLabel="ADP" GraphId="ec9c0" Type="Metabolite" GroupRef="d5442">
+    <Graphics CenterX="531.1634234125272" CenterY="151.2428102568397" Width="40.0" Height="18.0" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01341" />
+  </DataNode>
+  <DataNode TextLabel="Pi" GraphId="b3929" Type="Metabolite">
+    <Graphics CenterX="752.5477696221316" CenterY="656.4892328225344" Width="32.38775510204078" Height="13.255102040816382" ZOrder="32768" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01429" />
+  </DataNode>
+  <DataNode TextLabel="Glyceric acid 1,3-biphosphate" GraphId="d1270" Type="Metabolite">
+    <Graphics CenterX="670.3701781728489" CenterY="751.6882833645335" Width="258.073689679031" Height="35.63517366367523" ZOrder="32769" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01270" />
+  </DataNode>
+  <DataNode TextLabel="2-Phosphoglyceric acid" GraphId="df445" Type="Metabolite">
+    <Graphics CenterX="670.3701781728489" CenterY="988.523520949318" Width="258.073689679031" Height="35.63517366367523" ZOrder="32770" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00362" />
+  </DataNode>
+  <DataNode TextLabel="3-Phosphoglyceric acid" GraphId="e3072" Type="Metabolite">
+    <Graphics CenterX="670.3701781728488" CenterY="847.0392177111439" Width="258.073689679031" Height="35.63517366367523" ZOrder="32771" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00807" />
+  </DataNode>
+  <DataNode TextLabel="D-Glyceraldehyde 3-phosphate" GraphId="dd964" Type="Metabolite">
+    <Graphics CenterX="670.3701781728489" CenterY="574.6666514432569" Width="258.0736896790311" Height="35.63517366367523" ZOrder="32772" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01112" />
+  </DataNode>
+  <DataNode TextLabel="Fructose 1,6-bisphosphate" GraphId="e74d1" Type="Metabolite">
+    <Graphics CenterX="460.69060293128143" CenterY="452.7293624718365" Width="258.073689679031" Height="35.63517366367523" ZOrder="32773" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01058" />
+  </DataNode>
+  <DataNode TextLabel="Fructose 6-phosphate" GraphId="b6797" Type="Metabolite">
+    <Graphics CenterX="460.69060293128143" CenterY="315.9733400041011" Width="258.073689679031" Height="35.63517366367523" ZOrder="32774" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00124" />
+  </DataNode>
+  <DataNode TextLabel="Glucose 6-phosphate" GraphId="f9618" Type="Metabolite">
+    <Graphics CenterX="460.69060293128155" CenterY="202.18241316816238" Width="258.073689679031" Height="35.63517366367523" ZOrder="32775" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01401" />
+  </DataNode>
+  <DataNode TextLabel="D-Glucose" GraphId="b233d" Type="Metabolite">
+    <Graphics CenterX="460.69060293128143" CenterY="60.301749165457096" Width="258.073689679031" Height="35.63517366367523" ZOrder="32776" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00122" />
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="d4d1e" Type="Metabolite" GroupRef="d9be1">
+    <Graphics CenterX="531.2936651453826" CenterY="361.1197395877387" Width="40.0" Height="18.0" ZOrder="32781" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01532" />
+  </DataNode>
+  <DataNode TextLabel="ADP" GraphId="d4ba0" Type="Metabolite" GroupRef="d9be1">
+    <Graphics CenterX="531.2936651453826" CenterY="403.8697395877387" Width="40.0" Height="18.0" ZOrder="32782" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01341" />
+  </DataNode>
+  <DataNode TextLabel="NAD" GraphId="f38bb" Type="Metabolite">
+    <Graphics CenterX="752.8640961527431" CenterY="623.6371920062082" Width="40.0" Height="18.0" ZOrder="32785" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00902" />
+  </DataNode>
+  <DataNode TextLabel="NADH" GraphId="f3e35" Type="Metabolite">
+    <Graphics CenterX="750.3130757445799" CenterY="698.2749471082498" Width="40.0" Height="18.0" ZOrder="32786" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01487" />
+  </DataNode>
+  <DataNode TextLabel="ADP" GraphId="db8de" Type="Metabolite">
+    <Graphics CenterX="749.689486751672" CenterY="1155.9030402533444" Width="40.0" Height="18.0" ZOrder="32789" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01341" />
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="d7c5a" Type="Metabolite">
+    <Graphics CenterX="749.689486751672" CenterY="1198.6530402533444" Width="40.0" Height="18.0" ZOrder="32790" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01532" />
+  </DataNode>
+  <DataNode TextLabel="ADP" GraphId="d7bd1" Type="Metabolite">
+    <Graphics CenterX="748.2518483854915" CenterY="891.0173067465414" Width="40.0" Height="18.0" ZOrder="32793" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01341" />
+  </DataNode>
+  <DataNode TextLabel="ATP" GraphId="fedf7" Type="Metabolite">
+    <Graphics CenterX="750.9185150521581" CenterY="933.7673067465414" Width="40.0" Height="18.0" ZOrder="32794" FontName="Bitstream Charter" FontWeight="Bold" FontSize="16" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01532" />
+  </DataNode>
+  <Line GraphId="id39032dd">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1827.5" />
+    <Attribute Key="org.pathvisio.core.label" Value="alpha-D-Glucose + ATP =&gt; alpha-D-glucose 6-phosphate + ADP" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="460.69060293128143" Y="78.11933599729471" GraphRef="b233d" RelX="0.0" RelY="1.0" />
+      <Point X="460.6906029312815" Y="184.36482633632477" GraphRef="f9618" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8b913feb">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1602.4" />
+    <Attribute Key="org.pathvisio.core.label" Value="D-fructose 1,6-bisphosphate &lt;=&gt; dihydroxyacetone phosphate + D-glyceraldehyde 3-phosphate" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="460.69060293128143" Y="470.5469493036741" GraphRef="e74d1" RelX="0.0" RelY="1.0" />
+      <Point X="670.3701781728489" Y="556.8490646114193" GraphRef="dd964" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id96090fd9">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1847.4" />
+    <Attribute Key="org.pathvisio.core.label" Value="D-glyceraldehyde 3-phosphate + orthophosphate + NAD+ &lt;=&gt; 1,3-bisphospho-D-glycerate + NADH + H+" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="670.3701781728489" Y="592.4842382750945" GraphRef="dd964" RelX="0.0" RelY="1.0" />
+      <Point X="670.3701781728489" Y="733.8706965326959" GraphRef="d1270" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9a1b32bc">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1186.2" />
+    <Attribute Key="org.pathvisio.core.label" Value="1,3-bisphospho-D-glycerate + ADP &lt;=&gt; 3-phospho-D-glycerate + ADP" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="670.3701781728489" Y="769.5058701963711" GraphRef="d1270" RelX="0.0" RelY="1.0" />
+      <Point X="670.3701781728488" Y="829.2216308793063" GraphRef="e3072" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id2ea9d9de">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_576.5" />
+    <Attribute Key="org.pathvisio.core.label" Value="3-Phospho-D-glycerate &lt;=&gt; 2-Phospho-D-glycerate" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="670.3701781728488" Y="864.8568045429815" GraphRef="e3072" RelX="0.0" RelY="1.0" />
+      <Point X="670.3701781728489" Y="970.7059341174804" GraphRef="df445" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id67d119bc">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1400.4" />
+    <Attribute Key="org.pathvisio.core.label" Value="2-Phospho-D-glycerate &lt;=&gt; Phosphoenolpyruvate + H2O" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="670.3701781728489" Y="1006.3411077811556" GraphRef="df445" RelX="0.0" RelY="1.0" />
+      <Point X="670.3701781728489" Y="1091.2619529316314" GraphRef="b7b57" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id311be277">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1524.3" />
+    <Attribute Key="org.pathvisio.core.label" Value="phosphoenolpyruvate + ADP =&gt; pyruvate + ATP" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="670.3701781728489" Y="1126.8971265953066" GraphRef="b7b57" RelX="0.0" RelY="1.0" />
+      <Point X="670.3701781728489" Y="1225.9750748250153" GraphRef="efdce" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb0858340">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1602.4" />
+    <Attribute Key="org.pathvisio.core.label" Value="D-fructose 1,6-bisphosphate &lt;=&gt; dihydroxyacetone phosphate + D-glyceraldehyde 3-phosphate" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="460.69060293128143" Y="470.5469493036741" GraphRef="e74d1" RelX="0.0" RelY="1.0" />
+      <Point X="260.81349516965815" Y="555.3490646114194" GraphRef="dc9af" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4167501" GroupRef="d5442">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Attribute Key="org.pathvisio.core.label" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="511.1634234125272" Y="108.49281025683968" GraphRef="d6f25" RelX="-1.0" RelY="0.0" />
+      <Point X="456.83009007919355" Y="129.86781025683968" />
+      <Point X="511.1634234125272" Y="151.2428102568397" GraphRef="ec9c0" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide1491e94">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Attribute Key="org.pathvisio.core.label" Value="" />
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="736.853892071111" Y="654.1882124143712" />
+      <Point X="670.6666666666666" Y="665.3333333333334" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f9b0c">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_1255.4" />
+    <Attribute Key="org.pathvisio.core.label" Value="alpha-D-glucose 6-phosphate &lt;=&gt; D-fructose 6-phosphate" />
+    <Graphics ZOrder="32777" LineThickness="1.0">
+      <Point X="460.6906029312815" Y="220.0" GraphRef="f9618" RelX="0.0" RelY="1.0" />
+      <Point X="460.69060293128143" Y="298.1557531722635" GraphRef="b6797" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="adba8">
+    <Attribute Key="org.pathvisio.core.ds" Value="Reactome" />
+    <Attribute Key="org.pathvisio.core.id" Value="REACT_736.5" />
+    <Attribute Key="org.pathvisio.core.label" Value="D-fructose 6-phosphate + ATP =&gt; D-fructose 1,6-bisphosphate + ADP" />
+    <Graphics ZOrder="32778" LineThickness="1.0">
+      <Point X="460.69060293128143" Y="333.7909268359387" GraphRef="b6797" RelX="0.0" RelY="1.0" />
+      <Point X="460.69060293128143" Y="434.9117756399989" GraphRef="e74d1" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b3a4b" GroupRef="d9be1">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Attribute Key="org.pathvisio.core.label" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="32780" LineThickness="1.0">
+      <Point X="511.29366514538265" Y="361.1197395877387" GraphRef="d4d1e" RelX="-1.0" RelY="0.0" />
+      <Point X="454.6666666666667" Y="382.4947395877387" />
+      <Point X="511.29366514538265" Y="403.8697395877387" GraphRef="d4ba0" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e9234">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Attribute Key="org.pathvisio.core.label" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="32784" LineThickness="1.0">
+      <Point X="732.8640961527431" Y="623.6371920062082" GraphRef="f38bb" RelX="-1.0" RelY="0.0" />
+      <Point X="668.0" Y="660.9560695572291" />
+      <Point X="730.3130757445799" Y="698.2749471082498" GraphRef="f3e35" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bcc18">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Attribute Key="org.pathvisio.core.label" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="32788" LineThickness="1.0">
+      <Point X="729.689486751672" Y="1155.9030402533444" GraphRef="db8de" RelX="-1.0" RelY="0.0" />
+      <Point X="666.6666666666666" Y="1177.2780402533444" />
+      <Point X="729.689486751672" Y="1198.6530402533444" GraphRef="d7c5a" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a0c19">
+    <Attribute Key="org.pathvisio.core.ds" Value="" />
+    <Attribute Key="org.pathvisio.core.id" Value="" />
+    <Attribute Key="org.pathvisio.core.label" Value="" />
+    <Graphics ConnectorType="Curved" ZOrder="32792" LineThickness="1.0">
+      <Point X="728.2518483854915" Y="891.0173067465414" GraphRef="d7bd1" RelX="-1.0" RelY="0.0" />
+      <Point X="669.3333333333333" Y="912.3923067465414" />
+      <Point X="730.9185150521581" Y="933.7673067465414" GraphRef="fedf7" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Group GroupId="d5442" Style="Group" />
+  <Group GroupId="d9be1" Style="Group" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

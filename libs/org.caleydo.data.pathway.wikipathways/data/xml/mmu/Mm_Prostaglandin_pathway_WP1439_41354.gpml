@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Prostaglandin pathway" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="14140.5" BoardHeight="8134.5"/>
+  <DataNode TextLabel="Ptgs1" Type="GeneProduct" GraphId="f52fd">
+    <Graphics Color="000000" CenterX="6607.25" CenterY="1087.25" Width="1455.5" Height="585.5" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19224&#10;"/>
+  </DataNode>
+  <DataNode TextLabel="Ptgs2" Type="GeneProduct" GraphId="a2ed9">
+    <Graphics Color="000000" CenterX="6622.25" CenterY="1717.25" Width="1455.5" Height="645.5" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19225"/>
+  </DataNode>
+  <DataNode TextLabel="Prostoglandin H2" Type="Metabolite" GraphId="f60ee">
+    <Graphics Color="0000ff" CenterX="6607.25" CenterY="2842.5" Width="1335.5" Height="435.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="PGE2" Type="Metabolite" GraphId="b3ace">
+    <Graphics Color="0000ff" CenterX="6629.75" CenterY="3794.75" Width="1410.5" Height="540.5" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Pde4b" Type="GeneProduct" GraphId="c70a1">
+    <Graphics Color="000000" CenterX="6644.75" CenterY="5032.25" Width="1410.5" Height="495.5" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18578"/>
+  </DataNode>
+  <DataNode TextLabel="GeneProduct" Type="GeneProduct" GraphId="d3cdf">
+    <Graphics Color="000000" CenterX="6555.0" CenterY="5055.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Pde4d" Type="GeneProduct" GraphId="fb713">
+    <Graphics Color="000000" CenterX="6644.75" CenterY="5527.25" Width="1410.5" Height="495.5" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="238871&#10;"/>
+  </DataNode>
+  <DataNode TextLabel="Ptges" Type="GeneProduct" GraphId="ac5ea">
+    <Graphics Color="000000" CenterX="3907.25" CenterY="3839.75" Width="1215.5" Height="660.5" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="64292"/>
+  </DataNode>
+  <DataNode TextLabel="Ptger" Type="GeneProduct" GraphId="f1280">
+    <Graphics Color="000000" CenterX="1972.25" CenterY="3776.0" Width="1125.5" Height="638.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="cAMP" Type="Metabolite" GraphId="f2beb">
+    <Graphics Color="0000ff" CenterX="6697.25" CenterY="6824.75" Width="1365.5" Height="420.5" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="AKAPs" Type="GeneProduct" GraphId="fb099">
+    <Graphics Color="000000" CenterX="9644.75" CenterY="7125.0" Width="1470.5" Height="540.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="PKA" Type="GeneProduct" GraphId="c0f52">
+    <Graphics Color="000000" CenterX="9644.75" CenterY="6622.5" Width="1470.5" Height="465.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18747"/>
+  </DataNode>
+  <DataNode TextLabel="BetaCatenin (Ctnnb1)" Type="GeneProduct" GraphId="a1c6e">
+    <Graphics Color="000000" CenterX="11902.25" CenterY="6877.25" Width="1905.5" Height="525.5" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Line Style="Solid" GraphId="id610630f7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6615.0" y="2085.0"/>
+      <Point x="6607.25" y="2625.0" GraphRef="f60ee" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id4f258f9a">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6615.0" y="3075.0"/>
+      <Point x="6629.75" y="3524.5" GraphRef="b3ace" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id610ad111">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6630.0" y="4065.0"/>
+      <Point x="6644.75" y="4784.5" GraphRef="c70a1" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idbe7c3c7b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4545.0" y="3765.0"/>
+      <Point x="5910.0" y="3780.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id6b6000f3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2565.0" y="3840.0"/>
+      <Point x="3299.5" y="3839.75" GraphRef="ac5ea" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id96f418e7">
+    <Graphics ZOrder="12288" Color="ff0033">
+      <Point x="6675.0" y="5790.0"/>
+      <Point x="6697.25" y="6614.5" GraphRef="f2beb" relX="0.0" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idde213e4e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7395.0" y="6855.0"/>
+      <Point x="8895.0" y="6870.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idc19655cf">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10395.0" y="6870.0"/>
+      <Point x="10949.5" y="6877.25" GraphRef="a1c6e" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+</Pathway>

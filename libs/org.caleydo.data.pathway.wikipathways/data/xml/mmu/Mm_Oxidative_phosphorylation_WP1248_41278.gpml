@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Oxidative phosphorylation" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP623&amp;amp;oldid=29958 WP623(r29958)] with a 60% conversion rate.</Comment>
+  <BiopaxRef>f1c</BiopaxRef>
+  <BiopaxRef>f85</BiopaxRef>
+  <BiopaxRef>fa1</BiopaxRef>
+  <BiopaxRef>a9c</BiopaxRef>
+  <BiopaxRef>f60</BiopaxRef>
+  <BiopaxRef>c4d</BiopaxRef>
+  <BiopaxRef>fe3</BiopaxRef>
+  <BiopaxRef>ca6</BiopaxRef>
+  <BiopaxRef>dc8</BiopaxRef>
+  <Graphics BoardWidth="13167.0" BoardHeight="19585.5" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="NADH" Type="Metabolite" GraphId="bb285">
+    <Graphics Color="0000ff" CenterX="6810.0" CenterY="7530.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01487"/>
+  </DataNode>
+  <DataNode TextLabel="NAD" Type="Metabolite" GraphId="a85cb">
+    <Graphics Color="0000ff" CenterX="8865.0" CenterY="3150.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00902"/>
+  </DataNode>
+  <DataNode TextLabel="Hydrogen" Type="Metabolite" GraphId="e8c16">
+    <Graphics Color="0000ff" CenterX="5250.0" CenterY="2175.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="ADP" Type="Metabolite" GraphId="c6275">
+    <BiopaxRef>aac</BiopaxRef>
+    <Graphics Color="0000ff" CenterX="768.625" CenterY="3899.75" Width="1252.75" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01341"/>
+  </DataNode>
+  <DataNode TextLabel="ATP" Type="Metabolite" GraphId="c7d5a">
+    <BiopaxRef>b84</BiopaxRef>
+    <Graphics Color="0000ff" CenterX="6945.0" CenterY="3900.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00538"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5a1" Type="GeneProduct" BackpageHead="Atp5a1" GraphId="ff050" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="2850.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11946"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5b" Type="GeneProduct" BackpageHead="Atp5b" GraphId="f210d" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="2550.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11947"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5d" Type="GeneProduct" BackpageHead="Atp5d" GraphId="a186a" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="4950.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66043"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5e" Type="GeneProduct" GraphId="eb406" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="4650.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67126"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5g2" Type="GeneProduct" GraphId="cd7d2" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="3750.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67942"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5g1" Type="GeneProduct" GraphId="ddb0b" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="5550.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11951"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5f1" Type="GeneProduct" BackpageHead="Atp5f1" GraphId="c5268" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="1650.000057220459" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11950"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5g1" Type="GeneProduct" GraphId="a5a12" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="5250.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11951"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5g3" Type="GeneProduct" BackpageHead="Atp5g3" GraphId="a2387" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="2250.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="228033"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5h" Type="GeneProduct" GraphId="d3704" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="3150.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="71679"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5k" Type="GeneProduct" BackpageHead="Atp5k" GraphId="f0a77" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="4049.999771118164" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11958"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5j" Type="GeneProduct" BackpageHead="Atp5j" GraphId="f8add" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="3450.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11957"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5j2" Type="GeneProduct" BackpageHead="Atp5j2" GraphId="fa813" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="6750.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="57423"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5l" Type="GeneProduct" GraphId="c73fe" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="5850.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="27425"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5o" Type="GeneProduct" GraphId="c13ca" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="1350.000057220459" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="28080"/>
+  </DataNode>
+  <DataNode TextLabel="Atp5s" Type="GeneProduct" BackpageHead="Atp5s" GraphId="f8659" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="1050.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68055"/>
+  </DataNode>
+  <DataNode TextLabel="ATP6" Type="GeneProduct" GraphId="b4c86" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="6150.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17705"/>
+  </DataNode>
+  <DataNode TextLabel="Atp6ap1" Type="GeneProduct" BackpageHead="Atp6ap1" GraphId="e94a0" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="1950.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="54411"/>
+  </DataNode>
+  <DataNode TextLabel="Atp6ap2" Type="GeneProduct" BackpageHead="Atp6ap2" GraphId="f9138" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="7050.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="70495"/>
+  </DataNode>
+  <DataNode TextLabel="mt-Atp6" Type="GeneProduct" GraphId="c8395" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="4349.999771118164" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="MGI" ID="MGI:99927"/>
+  </DataNode>
+  <DataNode TextLabel="mt-Atp8" Type="GeneProduct" GraphId="c9856" GroupRef="a4096">
+    <Graphics Color="000000" CenterX="3435.0" CenterY="6450.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="MGI" ID="MGI:99926"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa11" Type="GeneProduct" GraphId="fedac" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="4935.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="69875"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs7" Type="GeneProduct" BackpageHead="Ndufs7" GraphId="a1435" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="6435.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="75406"/>
+  </DataNode>
+  <DataNode TextLabel="ND1" Type="GeneProduct" GraphId="f74d4" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="7935.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17716"/>
+  </DataNode>
+  <DataNode TextLabel="ND2" Type="GeneProduct" GraphId="ffd67" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="9435.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17717"/>
+  </DataNode>
+  <DataNode TextLabel="ND3" Type="GeneProduct" GraphId="dc432" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="10635.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17718"/>
+  </DataNode>
+  <DataNode TextLabel="ND5" Type="GeneProduct" GraphId="da536" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="14235.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17721"/>
+  </DataNode>
+  <DataNode TextLabel="ND4L" Type="GeneProduct" GraphId="cbb28" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="13035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17720"/>
+  </DataNode>
+  <DataNode TextLabel="ND4" Type="GeneProduct" GraphId="ffb0c" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="11835.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17719"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa2" Type="GeneProduct" BackpageHead="Ndufa2" GraphId="dea38" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="16635.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17991"/>
+  </DataNode>
+  <DataNode TextLabel="ND6" Type="GeneProduct" GraphId="fcc96" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="15435.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17722"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa10" Type="GeneProduct" BackpageHead="Ndufa10" GraphId="bf64a" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="14535.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67273"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa8" Type="GeneProduct" BackpageHead="Ndufa8" GraphId="b9c08" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="12135.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68375"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa5" Type="GeneProduct" BackpageHead="Ndufa5" GraphId="ba4b2" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="8235.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68202"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa4" Type="GeneProduct" BackpageHead="Ndufa4" GraphId="a3948" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="6735.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17992"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa9" Type="GeneProduct" BackpageHead="Ndufa9" GraphId="c10ef" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="13335.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66108"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa3" Type="GeneProduct" BackpageHead="Ndufa3" GraphId="a591e" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="5235.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66091"/>
+  </DataNode>
+  <DataNode TextLabel="FASN2A" Type="GeneProduct" GraphId="b9d35" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="15735.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa7" Type="GeneProduct" BackpageHead="Ndufa7" GraphId="c423b" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="10935.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66416"/>
+  </DataNode>
+  <DataNode TextLabel="CI-SGDH" Type="GeneProduct" GraphId="b30f8" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="16935.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa6" Type="GeneProduct" BackpageHead="Ndufa6" GraphId="fb62d" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="9735.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67130"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs1" Type="GeneProduct" BackpageHead="Ndufs1" GraphId="a5835" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="7335.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="227197"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs2" Type="GeneProduct" BackpageHead="Ndufs2" GraphId="e4e03" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="8835.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="226646"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufb8" Type="GeneProduct" BackpageHead="Ndufb8" GraphId="b8ffa" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="13635.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67264"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs3" Type="GeneProduct" GraphId="d5a47" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="10335.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68349"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs8" Type="GeneProduct" BackpageHead="Ndufs8" GraphId="e63cc" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="16335.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="225887"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufb2" Type="GeneProduct" BackpageHead="Ndufb2" GraphId="a9d8a" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="5535.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68198"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs6" Type="GeneProduct" GraphId="b6c0f" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="15135.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="407785"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs4" Type="GeneProduct" BackpageHead="Ndufs4" GraphId="c9e09" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="12735.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17993"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufb10" Type="GeneProduct" BackpageHead="Ndufb10" GraphId="d150d" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="16035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68342"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufc1" Type="GeneProduct" BackpageHead="Ndufc1" GraphId="b80a3" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="17235.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66377"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufs5" Type="GeneProduct" BackpageHead="Ndufs5" GraphId="a52ad" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="13935.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="595136"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufv1" Type="GeneProduct" BackpageHead="Ndufv1" GraphId="ff685" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="11535.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17995"/>
+  </DataNode>
+  <DataNode TextLabel="Gzmb" Type="GeneProduct" GraphId="d219b" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="7035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14939"/>
+  </DataNode>
+  <DataNode TextLabel="B15" Type="GeneProduct" GraphId="e1559" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="8535.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ndufb7" Type="GeneProduct" BackpageHead="Ndufb7" GraphId="a6b6b" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="12435.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66916"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufb6" Type="GeneProduct" BackpageHead="Ndufb6" GraphId="be637" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="11235.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="230075"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufc2" Type="GeneProduct" BackpageHead="Ndufc2" GraphId="c6383" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="5835.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68197"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufb5" Type="GeneProduct" BackpageHead="Ndufb5" GraphId="ea3f1" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="10035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66046"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufb9" Type="GeneProduct" BackpageHead="Ndufb9" GraphId="a5623" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="14835.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66218"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufv2" Type="GeneProduct" BackpageHead="Ndufv2" GraphId="d60aa" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="17535.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="72900"/>
+  </DataNode>
+  <DataNode TextLabel="LOC727762" Type="GeneProduct" GraphId="a43ad" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="9135.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ndufa4l2" Type="GeneProduct" BackpageHead="Ndufa4l2" GraphId="ccd3a" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="7635.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="407790"/>
+  </DataNode>
+  <DataNode TextLabel="Ndufv3" Type="GeneProduct" BackpageHead="Ndufv3" GraphId="b8dbf" GroupRef="daf0d">
+    <Graphics Color="000000" CenterX="10080.0" CenterY="6135.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="78330"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="fdce3">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="11970.0" y="7533.75" GraphRef="c6b79" relX="1.0" relY="-0.5"/>
+      <Point x="8865.0" y="3000.0" GraphRef="a85cb" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cdde1">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4155.0" y="3900.0" GraphRef="cb500" relX="1.0" relY="0.0"/>
+      <Point x="6345.0" y="3900.0" GraphRef="c7d5a" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5" Shape="None" GraphId="cba25"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b45f9">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5250.0" y="2325.0" GraphRef="e8c16" relX="0.0" relY="1.0"/>
+      <Point x="5250.0" y="3900.0" GraphRef="cba25" relX="0.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c6f84">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1395.0" y="3899.75" GraphRef="c6275" relX="1.0" relY="0.0"/>
+      <Point x="2715.0" y="3900.0" GraphRef="cb500" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d0955">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="11970.0" y="7533.75" GraphRef="c6b79" relX="1.0" relY="-0.5"/>
+      <Point x="5250.0" y="2025.0" GraphRef="e8c16" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c01e8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7410.0" y="7530.0" GraphRef="bb285" relX="1.0" relY="0.0"/>
+      <Point x="8520.0" y="7533.75" GraphRef="c6b79" relX="-1.0" relY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="ATP synthase" GraphId="c595e" GroupRef="a4096">
+    <Graphics FontSize="150" Color="000000" CenterX="3435.0" CenterY="750.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nicotinamide nucleotide transhydrogenase." GraphId="c4ec9" GroupRef="daf0d">
+    <Graphics FontSize="150" Color="000000" CenterX="10245.0" CenterY="4485.0" Width="3210.0" Height="510.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="a4096" GraphId="cb500" Style="Group"/>
+  <Group GroupId="daf0d" GraphId="c6b79" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="f1c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">4291593</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chemiosmotic hypothesis of oxidative phosphorylation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1967</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitchell P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moyle J</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="fa1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10600673</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crucial role of the membrane potential for ATP synthesis by F(1)F(o) ATP synthases.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Exp Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dimroth P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaim G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matthey U</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="c4d">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7654171</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial proton conductance and H+/O ratio are independent of electron transport rate in isolated hepatocytes.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Porter RK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brand MD</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="a9c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11340051</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structures and proton-pumping strategies of mitochondrial respiratory enzymes.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biophys Biomol Struct</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schultz BE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan SI</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="f85">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">4381909</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chemi-osmotic theory of oxidative phosphorylation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1966</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tager JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Veldsema-Currie RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slater EC</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ca6">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11771674</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemical functions of coenzyme Q10.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Am Coll Nutr</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crane FL</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="dc8">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">388618</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keilin's respiratory chain concept and its chemiosmotic consequences.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1979</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitchell P</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="f60">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14641005</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The molecular machinery of Keilin's respiratory chain.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Soc Trans</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rich PR</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="fe3">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3881803</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The structure, function and evolution of cytochromes.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prog Biophys Mol Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1985</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mathews FS</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="aac">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15869601</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lipid rafts are required in Galpha(i) signaling downstream of the P2Y12 receptor during ADP-mediated platelet activation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quinton TM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jin J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kunapuli SP</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b84">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15490415</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Disturbances of purine nucleotide metabolism in uremia.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Semin Nephrol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rutkowski B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Swierczynski J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slominska E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Szolkiewicz M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smolenski RT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marlewski M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butto B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rutkowski P</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

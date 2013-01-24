@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Macrophage markers" Version="20120814" Organism="Mus musculus"><Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Comment Source="WikiPathways-description">Overview of macrophage markers.
+
+Based on [http://www.antibodybeyond.com/reviews/cell-markers/macrophage-marker.htm this list] and tissue-specific gene expression from [http://biogps.org/ GeneAtlas].</Comment>
+  <Graphics BoardWidth="561.5215215215239" BoardHeight="363.21321321321324"/>
+  <DataNode TextLabel="Cd14" GraphId="e2e9c" Type="GeneProduct">
+    <BiopaxRef>c38</BiopaxRef>
+    <BiopaxRef>cf7</BiopaxRef>
+    <Graphics CenterX="418.3983983983985" CenterY="98.0980980980984" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12475"/>
+  </DataNode>
+  <DataNode TextLabel="Cd83" GraphId="d1bf4" Type="GeneProduct">
+    <Graphics CenterX="421.39139139139115" CenterY="283.2132132132132" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12522"/>
+  </DataNode>
+  <DataNode TextLabel="Cd68" GraphId="b5add" Type="GeneProduct">
+    <BiopaxRef>efd</BiopaxRef>
+    <Graphics CenterX="418.3983983983985" CenterY="118.09809809809818" Width="80.0" Height="20.0" ZOrder="32769" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12514"/>
+  </DataNode>
+  <DataNode TextLabel="F3" GraphId="d431e" Type="GeneProduct">
+    <BiopaxRef>d0c</BiopaxRef>
+    <Graphics CenterX="418.3983983983985" CenterY="138.09809809809818" Width="80.0" Height="20.0" ZOrder="32770" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="14066"/>
+  </DataNode>
+  <DataNode TextLabel="Cd163" GraphId="d30f7" Type="GeneProduct">
+    <BiopaxRef>b5c</BiopaxRef>
+    <BiopaxRef>d34</BiopaxRef>
+    <BiopaxRef>f4e</BiopaxRef>
+    <Graphics CenterX="418.3983983983985" CenterY="158.0980980980981" Width="80.0" Height="20.0" ZOrder="32771" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="93671"/>
+  </DataNode>
+  <DataNode TextLabel="Cd86" GraphId="ad3bd" Type="GeneProduct">
+    <Graphics CenterX="421.39139139139115" CenterY="243.21321321321307" Width="80.0" Height="20.0" ZOrder="32772" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12524"/>
+  </DataNode>
+  <DataNode TextLabel="Cd74" GraphId="a3670" Type="GeneProduct">
+    <Graphics CenterX="421.39139139139115" CenterY="263.2132132132133" Width="80.0" Height="20.0" ZOrder="32773" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16149"/>
+  </DataNode>
+  <DataNode TextLabel="Cd52" GraphId="dbb52" Type="GeneProduct">
+    <Graphics CenterX="421.39139139139115" CenterY="303.2132132132132" Width="80.0" Height="20.0" ZOrder="32774" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="23833"/>
+  </DataNode>
+  <DataNode TextLabel="Rac2" GraphId="d4c29" Type="GeneProduct">
+    <Graphics CenterX="421.39139139139115" CenterY="323.21321321321324" Width="80.0" Height="20.0" ZOrder="32775" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="19354"/>
+  </DataNode>
+  <DataNode TextLabel="Lyz2" GraphId="e4277" Type="GeneProduct">
+    <BiopaxRef>f0b</BiopaxRef>
+    <Graphics CenterX="418.3983983983985" CenterY="178.0980980980981" Width="80.0" Height="20.0" ZOrder="32776" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="17105"/>
+  </DataNode>
+  <Label TextLabel="Immune cell specific expression&#10;(based on GeneAtlas)" GraphId="e702c">
+    <Graphics CenterX="421.42142142142393" CenterY="216.2202202202198" Width="216.21621621621563" Height="34.03403403403411" ZOrder="28672" FillColor="ffffff" FontName="Dialog" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Macrophage markers" GraphId="d859a">
+    <Graphics CenterX="423.41341341341615" CenterY="69.06706706706677" Width="216.21621621621563" Height="34.03403403403411" ZOrder="32777" FillColor="ffffff" FontName="Dialog" FontSize="12" Valign="Middle"/>
+  </Label>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Legend CenterX="112.01201201201175" CenterY="255.05505505505516"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c38">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12446022</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The macrophage activity marker sCD14 is increased in patients with multiple sclerosis and upregulated by interferon beta-1b.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neuroimmunol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brettschneider J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ecker D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bitsch A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bahner D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bogumil T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dressel A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elitok E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitze B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poser S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weber F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tumani H</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d0c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16132226</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of factor XIII-A as a marker of alternative macrophage activation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Mol Life Sci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Töröcsik D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bárdos H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagy L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adány R</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="efd">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16888915</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">[The "classical" macrophage marker CD68 is strongly expressed in primary human fibroblasts].</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verh Dtsch Ges Pathol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kunz-Schughart LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weber A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rehli M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gottfried E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brockhoff G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krause SW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andreesen R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kreutz M</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="cf7">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9286353</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CD14 is expressed by subsets of murine dendritic cells and upregulated by lipopolysaccharide.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adv Exp Med Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mahnke K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Becher E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ricciardi-Castagnoli P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luger TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schwarz T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grabbe S</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b5c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15491976</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CD163: a specific marker of macrophages in paraffin-embedded tissue samples.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Clin Pathol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lau SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chu PG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiss LM</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d34">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12115225</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Macrophage subpopulations in rheumatoid synovium: reduced CD163 expression in CD4+ T lymphocyte-rich microenvironments.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arthritis Rheum</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fonseca JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Edwards JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blades S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goulding NJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="f4e">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16047947</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expression of CD163 in the liver of patients with viral hepatitis.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pathol Res Pract</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hiraoka A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horiike N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akbar SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michitaka K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuyama T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Onji M</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="f0b">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9831245</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Synergistic effects of colony-stimulating factor 1 and leukemia inhibitory factor in inducing early myeloid cell differentiation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Growth Differ</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aperlo C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sevilla L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guerin S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pognonec P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boulukos KE</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

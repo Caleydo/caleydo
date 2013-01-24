@@ -1,0 +1,1371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Signaling by PDGF" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V, Jassal, B" Maintainer="Garapati, P V, Jassal, B" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Platelet-derived Growth Factor (PDGF) is a potent stimulator of growth and motility of connective tissue cells such as fibroblasts and smooth muscle cells as well as other cells such as capillary endothelial cells and neurons.The PDGF family of growth factors is composed of four different polypeptide chains encoded by four different genes. The classical PDGF chains, PDGF-A and PDGF-B, and more recently discovered PDGF-C and PDGF-D. The four PDGF chains assemble into disulphide-bonded dimers via homo- or heterodimerization, and five different dimeric isoforms have been described so far; PDGF-AA, PDGF-AB, PDGF-BB, PDGF-CC and PDGF-DD. It is notable that no heterodimers involving PDGF-C and PDGF-D chains have been described. PDGF exerts its effects by binding to, and activating, two protein tyrosine kinase (PTK) receptors, alpha and beta. These receptors dimerize and undergo autophosphorylation. The phosphorylation sites then attract downstream effectors to transduct the signal into the cell.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_380730</BiopaxRef>
+  <BiopaxRef>lit_380735</BiopaxRef>
+  <BiopaxRef>lit_380726</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_381936" TextLabel="PDGF precursor &#10;dimers  (AA, BB, &#10;A/B, CC, DD)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="351.0" CenterY="562.0" Width="106.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17541"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_381926" TextLabel="PDGF precursor &#10;dimers (AA, BB, A/B, &#10;CC, DD)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="561.5" CenterY="560.0" Width="131.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17912"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_186822" TextLabel="Classical PDGF &#10;precursor dimers &#10;(AA, AB, BB)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="878.0" CenterY="560.0" Width="112.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17671"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_380760" TextLabel="Active PDGF dimers &#10;(AA, AB, BB)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1003.5" CenterY="241.0" Width="125.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17845"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_389066" TextLabel="Cleaved classical &#10;PDGF peptides&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1089.5" CenterY="559.0" Width="109.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17262"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_157049" TextLabel="furin&#10;" Type="Protein">
+    <BiopaxRef>lit_159838</BiopaxRef>
+    <Graphics Color="000000" CenterX="791.0" CenterY="561.0" Width="34.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P09958"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_381942" TextLabel="Novel PDGF &#10;precursor dimers &#10;(CC, DD)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="701.0" CenterY="561.0" Width="112.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17079"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_381947" TextLabel="Novel PDGF &#10;precursor dimers &#10;(CC, DD)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="700.0" CenterY="280.0" Width="112.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17162"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_389070" TextLabel="Cleaved novel PDGF &#10;fragments&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="562.5" CenterY="88.0" Width="127.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_18041"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_381939" TextLabel="Active PDGF dimers &#10;(CC, DD)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="701.5" CenterY="88.0" Width="125.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17802"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_381937" TextLabel="serine-type &#10;endopeptidases &#10;involved in novel &#10;PDGF processing&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="573.5" CenterY="203.0" Width="107.0" Height="64.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_17837"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_381946" TextLabel="Extracellular matrix &#10;ligands&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="944.0" CenterY="197.0" Width="124.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17129"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_381934" TextLabel="PDGF A and B chains &#10;with retention motif&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="838.0" CenterY="240.0" Width="132.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17714"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_381952" TextLabel="PDGF A and B chains:&#10;ECM complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="838.0" CenterY="89.0" Width="126.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17710"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_186792" TextLabel="PDGF receptor &#10;monomer&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1084.0" CenterY="393.0" Width="96.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_18211"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_186766" TextLabel="PDGF:PDGF receptor &#10;dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1343.5" CenterY="394.0" Width="131.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18025"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1543.5" CenterY="442.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_389078" TextLabel="PDGF beta receptor:&#10;PDGF chain B &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1492.0" CenterY="387.0" Width="126.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17457"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1728.0" CenterY="441.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_389074" TextLabel="Phospho PDGF beta &#10;receptor: PDGF chain B &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1783.0" CenterY="386.0" Width="134.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17403"/>
+  </DataNode>
+  <DataNode GraphId="n56_REACTOME_389079" TextLabel="PDGF alpha &#10;receptor: PDGF &#10;dimers&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1913.0" CenterY="386.0" Width="100.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17393"/>
+  </DataNode>
+  <DataNode GraphId="n57_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1935.5" CenterY="453.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_389073" TextLabel="Phospho PDGF alpha &#10;receptor:PDGF dimers&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2196.0" CenterY="388.0" Width="132.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17261"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2154.0" CenterY="460.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_389077" TextLabel="PDGF alpha/beta:&#10;PDGF AB and BB &#10;dimers&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2339.5" CenterY="387.0" Width="111.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17544"/>
+  </DataNode>
+  <DataNode GraphId="n69_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2371.5" CenterY="449.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_389076" TextLabel="Phospho PDGF &#10;alpha-beta dimer:&#10;PDGF AB or BB &#10;dimers&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2634.5" CenterY="386.0" Width="115.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17875"/>
+  </DataNode>
+  <DataNode GraphId="n71_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2617.0" CenterY="456.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n79_REACTOME_186811" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1656.0" CenterY="940.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17756"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_74693" TextLabel="PI3K&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1717.0" CenterY="871.0" Width="34.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4240"/>
+  </DataNode>
+  <DataNode GraphId="n81_REACTOME_186789" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:PI3K&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1901.0" CenterY="941.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17825"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_186783" TextLabel="Phospholipase C &#10;gamma 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1594.5" CenterY="978.0" Width="107.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P19174"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_186795" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:PLC-&#10;gamma&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1413.0" CenterY="940.0" Width="134.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17327"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_179856" TextLabel="Phosphatidylinositol-&#10;4,5-bisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2113.5" CenterY="935.0" Width="137.0" Height="60.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18348"/>
+  </DataNode>
+  <DataNode GraphId="n92_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2180.5" CenterY="888.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n93_REACTOME_179838" TextLabel="Phosphatidylinositol-&#10;3,4,5-trisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2363.0" CenterY="936.0" Width="136.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16618"/>
+  </DataNode>
+  <DataNode GraphId="n94_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2311.0" CenterY="886.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_29356" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1231.0" CenterY="882.0" Width="42.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n99_REACTOME_112275" TextLabel="diacylglycerols&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="969.5" CenterY="937.0" Width="99.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18035"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_179856" TextLabel="Phosphatidylinositol-&#10;4,5-bisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1266.0" CenterY="939.0" Width="136.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18348"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_65043" TextLabel="SRC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2011.0" CenterY="933.0" Width="30.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12931-1"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_186831" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:Src&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2512.0" CenterY="938.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18132"/>
+  </DataNode>
+  <DataNode GraphId="n111_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2599.5" CenterY="886.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n112_REACTOME_380768" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:&#10;phospho-Src&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2788.0" CenterY="938.0" Width="134.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17206"/>
+  </DataNode>
+  <DataNode GraphId="n113_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2740.0" CenterY="870.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n116_REACTOME_162563" TextLabel="SHP2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1586.5" CenterY="767.0" Width="83.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q06124"/>
+  </DataNode>
+  <DataNode GraphId="n117_REACTOME_186839" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:SHP2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="823.0" CenterY="935.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17654"/>
+  </DataNode>
+  <DataNode GraphId="n126_REACTOME_109797" TextLabel="GRB2:&#10;SOS1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1444.0" CenterY="883.5" Width="56.0" Height="33.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4435"/>
+  </DataNode>
+  <DataNode GraphId="n127_REACTOME_186827" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:Grb2:&#10;Sos1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="675.0" CenterY="933.0" Width="134.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18248"/>
+  </DataNode>
+  <DataNode GraphId="n132_REACTOME_109796" TextLabel="p21 RAS:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="428.5" CenterY="936.0" Width="87.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2657"/>
+  </DataNode>
+  <DataNode GraphId="n133_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="385.0" CenterY="902.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n134_REACTOME_109783" TextLabel="p21 RAS:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="210.0" CenterY="936.0" Width="86.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4782"/>
+  </DataNode>
+  <DataNode GraphId="n135_REACTOME_29420" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="264.5" CenterY="884.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n142_REACTOME_380756" TextLabel="STAT family &#10;members&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1738.0" CenterY="766.0" Width="80.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17706"/>
+  </DataNode>
+  <DataNode GraphId="n143_REACTOME_380766" TextLabel="PDGF:phospho-&#10;PDGF receptor &#10;dimer:STAT&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="538.0" CenterY="935.0" Width="100.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17883"/>
+  </DataNode>
+  <DataNode GraphId="n150_REACTOME_381945" TextLabel="Crk isoforms&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1854.5" CenterY="767.0" Width="81.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17492"/>
+  </DataNode>
+  <DataNode GraphId="n151_REACTOME_381955" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:Crk&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2939.0" CenterY="938.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17941"/>
+  </DataNode>
+  <DataNode GraphId="n155_REACTOME_201625" TextLabel="p130Cas&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="3051.5" CenterY="812.0" Width="61.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P56945"/>
+  </DataNode>
+  <DataNode GraphId="n156_REACTOME_169876" TextLabel="C3G isoform 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2995.0" CenterY="860.0" Width="92.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13905-1"/>
+  </DataNode>
+  <DataNode GraphId="n157_REACTOME_381957" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:Crk:&#10;p130Cas:C3G&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3216.0" CenterY="936.0" Width="134.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17351"/>
+  </DataNode>
+  <DataNode GraphId="n161_REACTOME_381949" TextLabel="NCK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2086.5" CenterY="707.0" Width="33.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17190"/>
+  </DataNode>
+  <DataNode GraphId="n162_REACTOME_381954" TextLabel="PDGF:Phospho-&#10;PDGFR receptor &#10;dimer:Nck&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3298.0" CenterY="748.0" Width="104.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17490"/>
+  </DataNode>
+  <DataNode GraphId="n168_REACTOME_204819" TextLabel="Grb7&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1456.0" CenterY="755.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14451"/>
+  </DataNode>
+  <DataNode GraphId="n169_REACTOME_381956" TextLabel="PDGF:Phospho-PDGF &#10;receptor dimer:Grb7&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="93.0" CenterY="937.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17607"/>
+  </DataNode>
+  <DataNode GraphId="n178_REACTOME_186833" TextLabel="Ras GTPase-&#10;activating protein 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1768.5" CenterY="589.0" Width="119.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P20936"/>
+  </DataNode>
+  <DataNode GraphId="n180_REACTOME_186830" TextLabel="Phospho-beta &#10;receptor &#10;homodimer:GAP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2775.0" CenterY="386.0" Width="102.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17783"/>
+  </DataNode>
+  <DataNode GraphId="n185_REACTOME_110029" TextLabel="RAF activation&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Phosphorylated RAF is activated by Ras binding and stabilised in its active form by transient disassociation and reassociation of 14-3-3, as well as further phosphorylation.</Comment>
+    <BiopaxRef>lit_110028</BiopaxRef>
+    <Graphics Color="000000" CenterX="208.0" CenterY="715.0" Width="108.0" Height="40.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2077"/>
+  </DataNode>
+  <DataNode GraphId="n187_REACTOME_109869" TextLabel="MAP kinase &#10;cascade&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The MAP kinase cascade describes a sequence of phosphorylation events involving serine/threonine-specific protein kinases. Used by various signal transduction pathways, this cascade constitutes a common 'module' in the transmission of an extracellular signal into the nucleus.</Comment>
+    <Graphics Color="000000" CenterX="413.5" CenterY="715.5" Width="103.0" Height="51.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_634"/>
+  </DataNode>
+  <DataNode GraphId="n188_REACTOME_114520" TextLabel="1D-myo-Inositol &#10;1,4,5-trisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="991.0" CenterY="886.0" Width="134.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16595"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_382053">
+    <Comment Source="WikiPathways-description">All the newly synthesized PDGF chains are dimerized in the ER and thereafter transferred to the Golgi complex for proteolytic processing. The four PDGF chains assemble into disulphide-bonded dimers via homo- or heterodimerization, and five different dimeric isoforms have been described so far; PDGF-AA, PDGF-AB, PDGF-BB, PDGF-CC and PDGF-DD.</Comment>
+    <BiopaxRef>lit_380776</BiopaxRef>
+    <BiopaxRef>lit_380726</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="407.0" Y="560.0" GraphId="e_1_0" GraphRef="n2_REACTOME_381936" RelX="1.0566037735849056" RelY="-0.08"/>
+      <Point X="435.0" Y="560.0" GraphId="e_1_1"/>
+      <Point X="493.0" Y="560.0" GraphId="e_1_2" GraphRef="n3_REACTOME_381926" RelX="-1.0381679389312977" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.32558139534883723" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_REACTOME_186785">
+    <Comment Source="WikiPathways-description">After dimerization of the PDGF-A and PDGF-B chains in the ER of producing cells, the dimers are proteolytically cleaved in the trans-Golgi network during protein maturation and secretion. The dibasic-specific proprotein convertase, furin, or related convertases are involved in the conversion of proPDGF forms to active PDGF forms.</Comment>
+    <BiopaxRef>lit_380776</BiopaxRef>
+    <BiopaxRef>lit_380726</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="937.0" Y="559.0" GraphId="e_6_0" GraphRef="n7_REACTOME_186822" RelX="1.0535714285714286" RelY="-0.04"/>
+      <Point X="970.0" Y="559.0" GraphId="e_6_1"/>
+      <Point X="1002.0" Y="559.0" GraphId="e_6_2"/>
+      <Anchor Position="0.5076923076923077" GraphId="e_6_a_p"/>
+      <Anchor Position="1.0" GraphId="e_6_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1032.0" Y="559.0" GraphId="e_6_o0_0" ArrowHead="Arrow" GraphRef="n9_REACTOME_389066" RelX="-1.0458715596330275" RelY="0.0"/>
+      <Point X="1002.0" Y="559.0" GraphId="e_6_o0_1" GraphRef="e_6_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1002.0" Y="262.0" GraphId="e_6_o1_0" ArrowHead="Arrow" GraphRef="n8_REACTOME_380760" RelX="-0.016" RelY="1.1666666666666667"/>
+      <Point X="1002.0" Y="559.0" GraphId="e_6_o1_1" GraphRef="e_6_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="791.0" Y="547.0" GraphId="e_6_c__0_0" GraphRef="n10_REACTOME_157049" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="791.0" Y="508.0" GraphId="e_6_c__0_1"/>
+      <Point X="970.0" Y="508.0" GraphId="e_6_c__0_2"/>
+      <Point X="970.0" Y="559.0" GraphId="e_6_c__0_3" GraphRef="e_6_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_382057">
+    <Comment Source="WikiPathways-description">Novel PDGFs both PDGF-CC and PDGF-DD dimers are secreted as latent factors without removal of the N-terminal CUB domain. These require further activation by extracellular proteolysis.</Comment>
+    <BiopaxRef>lit_380726</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="700.0" Y="533.0" GraphId="e_14_0" GraphRef="n15_REACTOME_381942" RelX="-0.017857142857142856" RelY="-1.12"/>
+      <Point X="700.0" Y="444.0" GraphId="e_14_1"/>
+      <Point X="700.0" Y="308.0" GraphId="e_14_2" GraphRef="n16_REACTOME_381947" RelX="0.0" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.39555555555555555" GraphId="e_14_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_382061">
+    <Comment Source="WikiPathways-description">During the extracellular proteolytic activation of PDGF-C and PDGF-D chains, the CUB domains is removed and plasmin protease has been shown to proteolytically cleave within the hinge regions, and thus releasing the corresponding growth factor domains. In addition the protease tissue-type plasminogen activator (tPA) is also involved in the activation of PDGF-CC but not able to cleave and activate PDGF-DD.</Comment>
+    <BiopaxRef>lit_380726</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="700.0" Y="252.0" GraphId="e_19_0" GraphRef="n16_REACTOME_381947" RelX="0.0" RelY="-1.12"/>
+      <Point X="700.0" Y="203.0" GraphId="e_19_1"/>
+      <Point X="700.0" Y="167.0" GraphId="e_19_2"/>
+      <Anchor Position="0.5764705882352941" GraphId="e_19_a_p"/>
+      <Anchor Position="1.0" GraphId="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="593.0" Y="109.0" GraphId="e_19_o0_0" ArrowHead="Arrow" GraphRef="n20_REACTOME_389070" RelX="0.4881889763779528" RelY="1.1666666666666667"/>
+      <Point X="700.0" Y="167.0" GraphId="e_19_o0_1" GraphRef="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="700.0" Y="109.0" GraphId="e_19_o1_0" ArrowHead="Arrow" GraphRef="n21_REACTOME_381939" RelX="-0.016" RelY="1.1666666666666667"/>
+      <Point X="700.0" Y="167.0" GraphId="e_19_o1_1" GraphRef="e_19_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="630.0" Y="203.0" GraphId="e_19_c__0_0" GraphRef="n22_REACTOME_381937" RelX="1.0654205607476634" RelY="0.0"/>
+      <Point X="700.0" Y="203.0" GraphId="e_19_c__0_1" GraphRef="e_19_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_REACTOME_382054">
+    <Comment Source="WikiPathways-description">The long splice version of the PDGF-A chain as well as the COOH-terminal part of the PDGF-B precursor contain C-terminal protein motifs that confer retention of the secreted factors. In both the PDGF A- and B-chains, exon 6 encodes a basic sequence that mediates interaction with components of the extracellular matrix. PDGF binds to various types of collagens, thrombospondin and osteopontin; however, the major component of the matrix involved in PDGF binding is likely to be haparan sulphate. The negatively charged sulfate groups on the disaccharide building blocks of heparan sulfate (HS) polysaccharide chains provide binding sites for positively charged amino acid sequence motifs. &lt;br&gt;The precursor of the B-chain may be retained in the matrix; after maturation when the COOH-terminal retention sequence has been cleaved off, the molecule may become more diffusible.</Comment>
+    <BiopaxRef>lit_380730</BiopaxRef>
+    <BiopaxRef>lit_382046</BiopaxRef>
+    <BiopaxRef>lit_382044</BiopaxRef>
+    <BiopaxRef>lit_382014</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="838.0" Y="169.0" GraphId="e_26_0"/>
+      <Point X="838.0" Y="150.0" GraphId="e_26_1"/>
+      <Point X="838.0" Y="110.0" GraphId="e_26_2" GraphRef="n29_REACTOME_381952" RelX="0.0" RelY="1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_26_a_i"/>
+      <Anchor Position="0.3220338983050847" GraphId="e_26_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="879.0" Y="180.0" GraphId="e_26_i0_0" GraphRef="n27_REACTOME_381946" RelX="-1.0483870967741935" RelY="-0.9444444444444444"/>
+      <Point X="838.0" Y="169.0" GraphId="e_26_i0_1" GraphRef="e_26_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_26_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="838.0" Y="219.0" GraphId="e_26_i1_0" GraphRef="n28_REACTOME_381934" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="838.0" Y="169.0" GraphId="e_26_i1_1" GraphRef="e_26_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_186773">
+    <Comment Source="WikiPathways-description">PDGF dimer binds two receptors simultaneously. The receptors dimerise on binding and this is key to receptor autophosphorylation.</Comment>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1182.0" Y="392.0" GraphId="e_33_0"/>
+      <Point X="1218.0" Y="392.0" GraphId="e_33_1"/>
+      <Point X="1275.0" Y="392.0" GraphId="e_33_2" GraphRef="n35_REACTOME_186766" RelX="-1.0381679389312977" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_33_a_i"/>
+      <Anchor Position="0.3870967741935484" GraphId="e_33_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1135.0" Y="392.0" GraphId="e_33_i0_0" GraphRef="n34_REACTOME_186792" RelX="1.0625" RelY="-0.05555555555555555"/>
+      <Point X="1182.0" Y="392.0" GraphId="e_33_i0_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1069.0" Y="241.0" GraphId="e_33_i1_0" GraphRef="n8_REACTOME_380760" RelX="1.056" RelY="0.0"/>
+      <Point X="1182.0" Y="241.0" GraphId="e_33_i1_1"/>
+      <Point X="1182.0" Y="392.0" GraphId="e_33_i1_2" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_REACTOME_186786">
+    <Comment Source="WikiPathways-description">Receptor dimerisation is key event in PDGF receptor activation. The intracellular parts of the receptors are juxtaposed which allows trans-phosphorylation between the two receptors in the complex.&lt;br&gt;The autophosphorylation site Y857 located inside the kinase domain of beta-receptor is important for activation of the kinase. This tyrosine is conserved in the alpha-receptor (Y849 ) and in almost all other tyrosine kinase receptors. The other known autophosphorylation sites are localized outside the kinase domains of the alpha- and beta- receptors ; 11 out of 15 tyrosine residues in the intracellular, non-catalytic part of the beta-receptor are autophosphorylation sites</Comment>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1590.0" Y="386.0" GraphId="e_38_0"/>
+      <Point X="1633.0" Y="386.0" GraphId="e_38_1"/>
+      <Point X="1661.0" Y="386.0" GraphId="e_38_2"/>
+      <Anchor Position="0.0" GraphId="e_38_a_i"/>
+      <Anchor Position="0.6056338028169014" GraphId="e_38_a_p"/>
+      <Anchor Position="1.0" GraphId="e_38_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1555.0" Y="424.0" GraphId="e_38_i0_0" GraphRef="n39_REACTOME_113592" RelX="0.6153846153846154" RelY="-1.2"/>
+      <Point X="1590.0" Y="386.0" GraphId="e_38_i0_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1558.0" Y="386.0" GraphId="e_38_i1_0" GraphRef="n40_REACTOME_389078" RelX="1.0476190476190477" RelY="-0.04"/>
+      <Point X="1590.0" Y="386.0" GraphId="e_38_i1_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1709.0" Y="423.0" GraphId="e_38_o0_0" ArrowHead="Arrow" GraphRef="n41_REACTOME_29370" RelX="-0.95" RelY="-1.2"/>
+      <Point X="1661.0" Y="386.0" GraphId="e_38_o0_1" GraphRef="e_38_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1713.0" Y="386.0" GraphId="e_38_o1_0" ArrowHead="Arrow" GraphRef="n42_REACTOME_389074" RelX="-1.044776119402985" RelY="0.0"/>
+      <Point X="1661.0" Y="386.0" GraphId="e_38_o1_1" GraphRef="e_38_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1491.0" Y="359.0" GraphId="e_38_c__0_0" GraphRef="n40_REACTOME_389078" RelX="-0.015873015873015872" RelY="-1.12"/>
+      <Point X="1491.0" Y="333.0" GraphId="e_38_c__0_1"/>
+      <Point X="1633.0" Y="333.0" GraphId="e_38_c__0_2"/>
+      <Point X="1633.0" Y="386.0" GraphId="e_38_c__0_3" GraphRef="e_38_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_REACTOME_389083">
+    <Comment Source="WikiPathways-description">Receptor dimerisation is key event in PDGF receptor activation. The intracellular parts of the receptors are juxtaposed which allows trans-phosphorylation between the two receptors in the complex.&lt;br&gt;The autophosphorylation site Y857 located inside the kinase domain of beta-receptor is important for activation of the kinase. This tyrosine is conserved in the alpha-receptor (Y849 ) and in almost all other tyrosine kinase receptors. The other known autophosphorylation sites are localized outside the kinase domains of the alpha- and beta- receptors ; 11 out of 15 tyrosine residues in the intracellular, non-catalytic part of the beta-receptor are autophosphorylation sites</Comment>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2004.0" Y="385.0" GraphId="e_55_0"/>
+      <Point X="2038.0" Y="385.0" GraphId="e_55_1"/>
+      <Point X="2075.0" Y="386.0" GraphId="e_55_2"/>
+      <Anchor Position="0.0" GraphId="e_55_a_i"/>
+      <Anchor Position="0.4787821289059758" GraphId="e_55_a_p"/>
+      <Anchor Position="1.0" GraphId="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1966.0" Y="385.0" GraphId="e_55_i0_0" GraphRef="n56_REACTOME_389079" RelX="1.06" RelY="-0.04"/>
+      <Point X="2004.0" Y="385.0" GraphId="e_55_i0_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1950.0" Y="435.0" GraphId="e_55_i1_0" GraphRef="n57_REACTOME_113592" RelX="0.7692307692307693" RelY="-1.2"/>
+      <Point X="2004.0" Y="385.0" GraphId="e_55_i1_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2127.0" Y="386.0" GraphId="e_55_o0_0" ArrowHead="Arrow" GraphRef="n58_REACTOME_389073" RelX="-1.0454545454545454" RelY="-0.08"/>
+      <Point X="2075.0" Y="386.0" GraphId="e_55_o0_1" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2137.0" Y="442.0" GraphId="e_55_o1_0" ArrowHead="Arrow" GraphRef="n59_REACTOME_29370" RelX="-0.85" RelY="-1.2"/>
+      <Point X="2075.0" Y="386.0" GraphId="e_55_o1_1" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1912.0" Y="358.0" GraphId="e_55_c__0_0" GraphRef="n56_REACTOME_389079" RelX="-0.02" RelY="-1.12"/>
+      <Point X="1912.0" Y="325.0" GraphId="e_55_c__0_1"/>
+      <Point X="2037.0" Y="325.0" GraphId="e_55_c__0_2"/>
+      <Point X="2038.0" Y="385.0" GraphId="e_55_c__0_3" GraphRef="e_55_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_REACTOME_389086">
+    <Comment Source="WikiPathways-description">Receptor dimerisation is key event in PDGF receptor activation. The intracellular parts of the receptors are juxtaposed which allows trans-phosphorylation between the two receptors in the complex.&lt;br&gt;The autophosphorylation site Y857 located inside the kinase domain of beta-receptor is important for activation of the kinase. This tyrosine is conserved in the alpha-receptor (Y849 ) and in almost all other tyrosine kinase receptors. The other known autophosphorylation sites are localized outside the kinase domains of the alpha- and beta- receptors ; 11 out of 15 tyrosine residues in the intracellular, non-catalytic part of the beta-receptor are autophosphorylation sites</Comment>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2438.0" Y="385.0" GraphId="e_67_0"/>
+      <Point X="2477.0" Y="385.0" GraphId="e_67_1"/>
+      <Point X="2519.0" Y="385.0" GraphId="e_67_2"/>
+      <Anchor Position="0.0" GraphId="e_67_a_i"/>
+      <Anchor Position="0.48148148148148145" GraphId="e_67_a_p"/>
+      <Anchor Position="1.0" GraphId="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2398.0" Y="385.0" GraphId="e_67_i0_0" GraphRef="n68_REACTOME_389077" RelX="1.063063063063063" RelY="-0.08"/>
+      <Point X="2438.0" Y="385.0" GraphId="e_67_i0_1" GraphRef="e_67_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2386.0" Y="431.0" GraphId="e_67_i1_0" GraphRef="n69_REACTOME_113592" RelX="0.7692307692307693" RelY="-1.2"/>
+      <Point X="2438.0" Y="385.0" GraphId="e_67_i1_1" GraphRef="e_67_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2574.0" Y="385.0" GraphId="e_67_o0_0" ArrowHead="Arrow" GraphRef="n70_REACTOME_389076" RelX="-1.0434782608695652" RelY="-0.03125"/>
+      <Point X="2519.0" Y="385.0" GraphId="e_67_o0_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2594.0" Y="441.0" GraphId="e_67_o1_0" ArrowHead="Arrow" GraphRef="n71_REACTOME_29370" RelX="-1.15" RelY="-1.0"/>
+      <Point X="2519.0" Y="385.0" GraphId="e_67_o1_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2338.0" Y="359.0" GraphId="e_67_c__0_0" GraphRef="n68_REACTOME_389077" RelX="-0.018018018018018018" RelY="-1.12"/>
+      <Point X="2338.0" Y="327.0" GraphId="e_67_c__0_1"/>
+      <Point X="2477.0" Y="326.0" GraphId="e_67_c__0_2"/>
+      <Point X="2477.0" Y="385.0" GraphId="e_67_c__0_3" GraphRef="e_67_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_REACTOME_186780">
+    <Comment Source="WikiPathways-description">Phosphatidylinositol 3'-kinases (PI3Ks) are a family of enzymes which can phosphorylate phosphoinositides. These bind to and are activated by PDGF receptors. Tyr 740 and tyr 751 in PDGF beta-receptor, and tyr 731 and tyr 742 in PDGF alpha-receptor have been shown to be autophosphorylation sites and to bind PI3-kinase.  &lt;br&gt;</Comment>
+    <BiopaxRef>lit_381866</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <BiopaxRef>lit_382017</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1749.0" Y="940.0" GraphId="e_78_0"/>
+      <Point X="1786.0" Y="940.0" GraphId="e_78_1"/>
+      <Point X="1831.0" Y="940.0" GraphId="e_78_2" GraphRef="n81_REACTOME_186789" RelX="-1.044776119402985" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_78_a_i"/>
+      <Anchor Position="0.45121951219512196" GraphId="e_78_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1726.0" Y="940.0" GraphId="e_78_i0_0" GraphRef="n79_REACTOME_186811" RelX="1.044776119402985" RelY="0.0"/>
+      <Point X="1749.0" Y="940.0" GraphId="e_78_i0_1" GraphRef="e_78_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1722.0" Y="885.0" GraphId="e_78_i1_0" GraphRef="n80_REACTOME_74693" RelX="0.29411764705882354" RelY="1.2727272727272727"/>
+      <Point X="1749.0" Y="940.0" GraphId="e_78_i1_1" GraphRef="e_78_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_REACTOME_186765">
+    <Comment Source="WikiPathways-description">PLC-gamma 1 has been shown to bind to phosphorylated Tyr 1021 of the PDGF beta-receptor with high affinity and to Tyr 1009 with low affinity. In the alpha-receptor, Tyr 988 and Tyr 1018 bind PLC-gamma1. Association of PLC-gamma1 with the activated PDGF receptor has been shown to be necessary for its activation.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_381858</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <BiopaxRef>lit_382010</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1555.0" Y="939.0" GraphId="e_84_0"/>
+      <Point X="1525.0" Y="939.0" GraphId="e_84_1"/>
+      <Point X="1483.0" Y="939.0" GraphId="e_84_2" GraphRef="n86_REACTOME_186795" RelX="1.044776119402985" RelY="-0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_84_a_i"/>
+      <Anchor Position="0.4166666666666667" GraphId="e_84_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1586.0" Y="939.0" GraphId="e_84_i0_0" GraphRef="n79_REACTOME_186811" RelX="-1.044776119402985" RelY="-0.05555555555555555"/>
+      <Point X="1555.0" Y="939.0" GraphId="e_84_i0_1" GraphRef="e_84_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1576.0" Y="957.0" GraphId="e_84_i1_0" GraphRef="n85_REACTOME_186783" RelX="-0.3364485981308411" RelY="-1.1666666666666667"/>
+      <Point X="1555.0" Y="939.0" GraphId="e_84_i1_1" GraphRef="e_84_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_REACTOME_186800">
+    <Comment Source="WikiPathways-description">PI3K's preferred substrate is phosphatidylinositol 4,5-bisphosphate [PI(4,5)P2] which is phosphorylated to the trisphosphate [PI(3,4,5)P3]. PI3-kinase and its products have been found to be of importance in PDGF-stimulated actin reorganization, and directed cell movement, as well as in the stimulation of cell growth and inhibition of apoptosis.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2206.0" Y="934.0" GraphId="e_90_0"/>
+      <Point X="2228.0" Y="934.0" GraphId="e_90_1"/>
+      <Point X="2259.0" Y="934.0" GraphId="e_90_2"/>
+      <Anchor Position="0.0" GraphId="e_90_a_i"/>
+      <Anchor Position="0.41509433962264153" GraphId="e_90_a_p"/>
+      <Anchor Position="1.0" GraphId="e_90_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2185.0" Y="934.0" GraphId="e_90_i0_0" GraphRef="n91_REACTOME_179856" RelX="1.051094890510949" RelY="-0.03333333333333333"/>
+      <Point X="2206.0" Y="934.0" GraphId="e_90_i0_1" GraphRef="e_90_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2188.0" Y="906.0" GraphId="e_90_i1_0" GraphRef="n92_REACTOME_113592" RelX="0.41025641025641024" RelY="1.2"/>
+      <Point X="2206.0" Y="934.0" GraphId="e_90_i1_1" GraphRef="e_90_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2292.0" Y="934.0" GraphId="e_90_o0_0" ArrowHead="Arrow" GraphRef="n93_REACTOME_179838" RelX="-1.0441176470588236" RelY="-0.09090909090909091"/>
+      <Point X="2259.0" Y="934.0" GraphId="e_90_o0_1" GraphRef="e_90_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2294.0" Y="904.0" GraphId="e_90_o1_0" ArrowHead="Arrow" GraphRef="n94_REACTOME_29370" RelX="-0.85" RelY="1.2"/>
+      <Point X="2259.0" Y="934.0" GraphId="e_90_o1_1" GraphRef="e_90_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1915.0" Y="962.0" GraphId="e_90_c__0_0" GraphRef="n81_REACTOME_186789" RelX="0.208955223880597" RelY="1.1666666666666667"/>
+      <Point X="1933.0" Y="980.0" GraphId="e_90_c__0_1"/>
+      <Point X="2228.0" Y="980.0" GraphId="e_90_c__0_2"/>
+      <Point X="2228.0" Y="934.0" GraphId="e_90_c__0_3" GraphRef="e_90_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_REACTOME_186776">
+    <Comment Source="WikiPathways-description">Phospholipase C-gamma (PLC) acts on the same substrate as PI3K, namely PI(4,5)P2. The products produced are inositol 1,4,5-trisphosphate (IP3) which can increase cytoplasmic calcium ion concentrations and diacylglycerol which can activate certain PKC family members.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1158.0" Y="937.0" GraphId="e_96_0"/>
+      <Point X="1122.0" Y="937.0" GraphId="e_96_1"/>
+      <Point X="1075.0" Y="924.0" GraphId="e_96_2"/>
+      <Anchor Position="0.0" GraphId="e_96_a_i"/>
+      <Anchor Position="0.4247048881645764" GraphId="e_96_a_p"/>
+      <Anchor Position="1.0" GraphId="e_96_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1211.0" Y="900.0" GraphId="e_96_i0_0" GraphRef="n97_REACTOME_29356" RelX="-0.9523809523809523" RelY="1.2"/>
+      <Point X="1158.0" Y="937.0" GraphId="e_96_i0_1" GraphRef="e_96_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1195.0" Y="937.0" GraphId="e_96_i1_0" GraphRef="n100_REACTOME_179856" RelX="-1.0441176470588236" RelY="-0.09090909090909091"/>
+      <Point X="1158.0" Y="937.0" GraphId="e_96_i1_1" GraphRef="e_96_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1022.0" Y="930.0" GraphId="e_96_o0_0" ArrowHead="Arrow" GraphRef="n99_REACTOME_112275" RelX="1.0707070707070707" RelY="-0.4666666666666667"/>
+      <Point X="1075.0" Y="924.0" GraphId="e_96_o0_1" GraphRef="e_96_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1039.0" Y="911.0" GraphId="e_96_o1_0" ArrowHead="Arrow" GraphRef="n188_REACTOME_114520" RelX="0.7164179104477612" RelY="1.1363636363636365"/>
+      <Point X="1075.0" Y="924.0" GraphId="e_96_o1_1" GraphRef="e_96_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1413.0" Y="968.0" GraphId="e_96_c__0_0" GraphRef="n86_REACTOME_186795" RelX="0.0" RelY="1.12"/>
+      <Point X="1413.0" Y="996.0" GraphId="e_96_c__0_1"/>
+      <Point X="1121.0" Y="996.0" GraphId="e_96_c__0_2"/>
+      <Point X="1122.0" Y="937.0" GraphId="e_96_c__0_3" GraphRef="e_96_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_REACTOME_186819">
+    <Comment Source="WikiPathways-description">The Src family of tyrosine kinases are characterized by a SH3 and a SH2 domain in addition to the kinase domain.Src is activated when the SH2 domain binds to autophosphorylation sites on PDGF receptors (Tyr579 and 581 in the beta-receptor, Tyr572 and 574 in the alpha receptor), in conjuction with dephosporylation of the COOH-terminal phosphorylated tyrosine 527.</Comment>
+    <BiopaxRef>lit_382036</BiopaxRef>
+    <BiopaxRef>lit_381870</BiopaxRef>
+    <BiopaxRef>lit_380730</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2056.0" Y="841.0" GraphId="e_106_0"/>
+      <Point X="2215.0" Y="842.0" GraphId="e_106_1"/>
+      <Point X="2447.0" Y="842.0" GraphId="e_106_2"/>
+      <Point X="2511.0" Y="868.0" GraphId="e_106_3"/>
+      <Point X="2511.0" Y="917.0" GraphId="e_106_4" GraphRef="n108_REACTOME_186831" RelX="-0.014925373134328358" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_106_a_i"/>
+      <Anchor Position="0.3123325751347591" GraphId="e_106_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1655.0" Y="919.0" GraphId="e_106_i0_0" GraphRef="n79_REACTOME_186811" RelX="-0.014925373134328358" RelY="-1.1666666666666667"/>
+      <Point X="1655.0" Y="860.0" GraphId="e_106_i0_1"/>
+      <Point X="1716.0" Y="842.0" GraphId="e_106_i0_2"/>
+      <Point X="2056.0" Y="841.0" GraphId="e_106_i0_3" GraphRef="e_106_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2016.0" Y="919.0" GraphId="e_106_i1_0" GraphRef="n107_REACTOME_65043" RelX="0.3333333333333333" RelY="-1.2727272727272727"/>
+      <Point X="2056.0" Y="841.0" GraphId="e_106_i1_1" GraphRef="e_106_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_REACTOME_380780">
+    <Comment Source="WikiPathways-description">Activation of Src kinases involves displacement of Tyr527 from the SH2 domain and phosphorylation of other tyrosine residues in the kinase domain. Src activation appears to be important for the mitogenic response of PDGF.</Comment>
+    <BiopaxRef>lit_382024</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2630.0" Y="937.0" GraphId="e_110_0"/>
+      <Point X="2651.0" Y="937.0" GraphId="e_110_1"/>
+      <Point X="2686.0" Y="937.0" GraphId="e_110_2"/>
+      <Anchor Position="0.0" GraphId="e_110_a_i"/>
+      <Anchor Position="0.375" GraphId="e_110_a_p"/>
+      <Anchor Position="1.0" GraphId="e_110_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2582.0" Y="937.0" GraphId="e_110_i0_0" GraphRef="n108_REACTOME_186831" RelX="1.044776119402985" RelY="-0.05555555555555555"/>
+      <Point X="2630.0" Y="937.0" GraphId="e_110_i0_1" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2608.0" Y="904.0" GraphId="e_110_i1_0" GraphRef="n111_REACTOME_113592" RelX="0.46153846153846156" RelY="1.2"/>
+      <Point X="2630.0" Y="937.0" GraphId="e_110_i1_1" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2718.0" Y="937.0" GraphId="e_110_o0_0" ArrowHead="Arrow" GraphRef="n112_REACTOME_380768" RelX="-1.044776119402985" RelY="-0.04"/>
+      <Point X="2686.0" Y="937.0" GraphId="e_110_o0_1" GraphRef="e_110_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2727.0" Y="888.0" GraphId="e_110_o1_0" ArrowHead="Arrow" GraphRef="n113_REACTOME_29370" RelX="-0.65" RelY="1.2"/>
+      <Point X="2686.0" Y="937.0" GraphId="e_110_o1_1" GraphRef="e_110_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2011.0" Y="919.0" GraphId="e_110_c__0_0" GraphRef="n107_REACTOME_65043" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="2013.0" Y="830.0" GraphId="e_110_c__0_1"/>
+      <Point X="2105.0" Y="815.0" GraphId="e_110_c__0_2"/>
+      <Point X="2586.0" Y="815.0" GraphId="e_110_c__0_3"/>
+      <Point X="2650.0" Y="851.0" GraphId="e_110_c__0_4"/>
+      <Point X="2651.0" Y="937.0" GraphId="e_110_c__0_5" GraphRef="e_110_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_REACTOME_186778">
+    <Comment Source="WikiPathways-description">Protein-tyrosine phosphatase 2C (SHP2) is ubiquitously expressed and has two SH2 domains, both of which need to be bound to phosphorylated tyrosine residues for full activation of catalytic activity. SHP-2 binds with high affinity to Tyr 1009 of the PDGF beta-receptor and with lower affinity to Tyr 763; it also binds to the alpha-receptor and Tyr 720 in the interkinase domain has been implicated in this binding. &lt;br&gt;The phosphatase is able to dephosphorylate autophosphorylated PDGF receptors and substrates for PDGF receptors so SHP2 can be thought of as a negative regulator of signaling from PDGF receptors. SHP2 may be involved in positive signaling by binding Grb2/Sos1 and dephosphorylating the COOH-terminal tyrosine of Src, factors important for Src activation.</Comment>
+    <BiopaxRef>lit_381875</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1514.0" Y="840.0" GraphId="e_115_0"/>
+      <Point X="1372.0" Y="840.0" GraphId="e_115_1"/>
+      <Point X="877.0" Y="841.0" GraphId="e_115_2"/>
+      <Point X="823.0" Y="872.0" GraphId="e_115_3"/>
+      <Point X="823.0" Y="914.0" GraphId="e_115_4" GraphRef="n117_REACTOME_186839" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_115_a_i"/>
+      <Anchor Position="0.1915640144443146" GraphId="e_115_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1630.0" Y="919.0" GraphId="e_115_i0_0" GraphRef="n79_REACTOME_186811" RelX="-0.3880597014925373" RelY="-1.1666666666666667"/>
+      <Point X="1514.0" Y="840.0" GraphId="e_115_i0_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1575.0" Y="781.0" GraphId="e_115_i1_0" GraphRef="n116_REACTOME_162563" RelX="-0.26506024096385544" RelY="1.2727272727272727"/>
+      <Point X="1514.0" Y="840.0" GraphId="e_115_i1_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_REACTOME_186826">
+    <Comment Source="WikiPathways-description">Grb2 is an adaptor molecule containing one SH2 domain and two SH3 domains. The SH2 domain of Grb2 binds directly to autophosphorylated PDGF receptors and with its SH3 domain it forms a complex with Sos1. The binding of Grb2/Sos1 to the PDGF receptor juxtaposes the complex towards Ras molecules leading to Ras activation. Ras is implicated in the MAP kinase cascade, a pathway in cell growth stimulation, migration and differentiation.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_382023</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <BiopaxRef>lit_382033</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1377.0" Y="857.0" GraphId="e_125_0"/>
+      <Point X="1263.0" Y="857.0" GraphId="e_125_1"/>
+      <Point X="720.0" Y="857.0" GraphId="e_125_2"/>
+      <Point X="674.0" Y="869.0" GraphId="e_125_3"/>
+      <Point X="674.0" Y="905.0" GraphId="e_125_4" GraphRef="n127_REACTOME_186827" RelX="-0.014925373134328358" RelY="-1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_125_a_i"/>
+      <Anchor Position="0.15394183102174705" GraphId="e_125_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1413.0" Y="872.0" GraphId="e_125_i0_0" GraphRef="n126_REACTOME_109797" RelX="-1.1071428571428572" RelY="-0.6666666666666666"/>
+      <Point X="1377.0" Y="857.0" GraphId="e_125_i0_1" GraphRef="e_125_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1647.0" Y="919.0" GraphId="e_125_i1_0" GraphRef="n79_REACTOME_186811" RelX="-0.13432835820895522" RelY="-1.1666666666666667"/>
+      <Point X="1617.0" Y="857.0" GraphId="e_125_i1_1"/>
+      <Point X="1377.0" Y="857.0" GraphId="e_125_i1_2" GraphRef="e_125_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_REACTOME_186834">
+    <Comment Source="WikiPathways-description">SOS is the guanine nucleotide exchange factor (GEF) for Ras. SOS activates Ras nucleotide exchange from the inactive form (bound to GDP) to an active form (bound to GTP).&lt;br&gt;</Comment>
+    <BiopaxRef>lit_382033</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="357.0" Y="936.0" GraphId="e_131_0"/>
+      <Point X="322.0" Y="936.0" GraphId="e_131_1"/>
+      <Point X="294.0" Y="936.0" GraphId="e_131_2"/>
+      <Anchor Position="0.0" GraphId="e_131_a_i"/>
+      <Anchor Position="0.5555555555555556" GraphId="e_131_a_p"/>
+      <Anchor Position="1.0" GraphId="e_131_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="382.0" Y="936.0" GraphId="e_131_i0_0" GraphRef="n132_REACTOME_109796" RelX="-1.0574712643678161" RelY="0.0"/>
+      <Point X="357.0" Y="936.0" GraphId="e_131_i0_1" GraphRef="e_131_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="372.0" Y="920.0" GraphId="e_131_i1_0" GraphRef="n133_REACTOME_29438" RelX="-0.65" RelY="1.2"/>
+      <Point X="357.0" Y="936.0" GraphId="e_131_i1_1" GraphRef="e_131_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="256.0" Y="936.0" GraphId="e_131_o0_0" ArrowHead="Arrow" GraphRef="n134_REACTOME_109783" RelX="1.069767441860465" RelY="0.0"/>
+      <Point X="294.0" Y="936.0" GraphId="e_131_o0_1" GraphRef="e_131_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="272.0" Y="902.0" GraphId="e_131_o1_0" ArrowHead="Arrow" GraphRef="n135_REACTOME_29420" RelX="0.3902439024390244" RelY="1.2"/>
+      <Point X="294.0" Y="936.0" GraphId="e_131_o1_1" GraphRef="e_131_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="660.0" Y="905.0" GraphId="e_131_c__0_0" GraphRef="n127_REACTOME_186827" RelX="-0.22388059701492538" RelY="-1.12"/>
+      <Point X="647.0" Y="886.0" GraphId="e_131_c__0_1"/>
+      <Point X="620.0" Y="876.0" GraphId="e_131_c__0_2"/>
+      <Point X="364.0" Y="877.0" GraphId="e_131_c__0_3"/>
+      <Point X="331.0" Y="893.0" GraphId="e_131_c__0_4"/>
+      <Point X="322.0" Y="936.0" GraphId="e_131_c__0_5" GraphRef="e_131_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_REACTOME_380782">
+    <Comment Source="WikiPathways-description">Among the seven members of the Stat family, Stat1, Stat3, Stat5 alpha and -beta, and Stat6 have been shown to bind to the activated PDGF beta-receptor and to be phosphorylated after PDGF stimulation; binding also occurs to the alpha-receptor, albeit only weakly.</Comment>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <BiopaxRef>lit_382039</BiopaxRef>
+    <BiopaxRef>lit_382035</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1612.0" Y="821.0" GraphId="e_141_0"/>
+      <Point X="1469.0" Y="821.0" GraphId="e_141_1"/>
+      <Point X="597.0" Y="821.0" GraphId="e_141_2"/>
+      <Point X="537.0" Y="846.0" GraphId="e_141_3"/>
+      <Point X="537.0" Y="907.0" GraphId="e_141_4" GraphRef="n143_REACTOME_380766" RelX="-0.02" RelY="-1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_141_a_i"/>
+      <Anchor Position="0.12532865907099036" GraphId="e_141_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1649.0" Y="919.0" GraphId="e_141_i0_0" GraphRef="n79_REACTOME_186811" RelX="-0.1044776119402985" RelY="-1.1666666666666667"/>
+      <Point X="1612.0" Y="821.0" GraphId="e_141_i0_1" GraphRef="e_141_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1695.0" Y="783.0" GraphId="e_141_i1_0" GraphRef="n142_REACTOME_380756" RelX="-1.075" RelY="0.9444444444444444"/>
+      <Point X="1612.0" Y="821.0" GraphId="e_141_i1_1" GraphRef="e_141_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_REACTOME_382056">
+    <Comment Source="WikiPathways-description">Crk family of adaptor molecules consists of CrkI with one SH2 and one SH3 domains and CrkII and CrkL with one SH2 and two SH3 domains each. They bind to Tyr762 of the PDGF alpha-receptor and represent the only known SH2-domain containing molecule which binds with significantly higher affinity to the alpha-receptor than to the beta-receptor.</Comment>
+    <BiopaxRef>lit_381883</BiopaxRef>
+    <BiopaxRef>lit_380730</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1932.0" Y="794.0" GraphId="e_149_0"/>
+      <Point X="2266.0" Y="794.0" GraphId="e_149_1"/>
+      <Point X="2864.0" Y="794.0" GraphId="e_149_2"/>
+      <Point X="2939.0" Y="834.0" GraphId="e_149_3"/>
+      <Point X="2939.0" Y="917.0" GraphId="e_149_4" GraphRef="n151_REACTOME_381955" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_149_a_i"/>
+      <Anchor Position="0.30363636363636365" GraphId="e_149_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1690.0" Y="919.0" GraphId="e_149_i0_0" GraphRef="n79_REACTOME_186811" RelX="0.5074626865671642" RelY="-1.1666666666666667"/>
+      <Point X="1932.0" Y="794.0" GraphId="e_149_i0_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1885.0" Y="781.0" GraphId="e_149_i1_0" GraphRef="n150_REACTOME_381945" RelX="0.7654320987654321" RelY="1.2727272727272727"/>
+      <Point X="1932.0" Y="794.0" GraphId="e_149_i1_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_154_REACTOME_382052">
+    <Comment Source="WikiPathways-description">The presence of both SH2 and SH3 domains in Crk proteins is of crucial importance for their function as adaptor molecules. Crk forms complex with Cas, an SH3 domain-containing docking protein which has been shown to be phosphorylated after PDGF-stimulation of cells, and C3G, a nucleotide exchange protein which has been linked to the activation of JNK.</Comment>
+    <BiopaxRef>lit_381883</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3050.0" Y="936.0" GraphId="e_154_0"/>
+      <Point X="3094.0" Y="937.0" GraphId="e_154_1"/>
+      <Point X="3146.0" Y="936.0" GraphId="e_154_2" GraphRef="n157_REACTOME_381957" RelX="-1.044776119402985" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_154_a_i"/>
+      <Anchor Position="0.4583515362776013" GraphId="e_154_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_154_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3009.0" Y="936.0" GraphId="e_154_i0_0" GraphRef="n151_REACTOME_381955" RelX="1.044776119402985" RelY="-0.1111111111111111"/>
+      <Point X="3050.0" Y="936.0" GraphId="e_154_i0_1" GraphRef="e_154_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_154_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3050.0" Y="826.0" GraphId="e_154_i1_0" GraphRef="n155_REACTOME_201625" RelX="-0.03278688524590164" RelY="1.2727272727272727"/>
+      <Point X="3050.0" Y="936.0" GraphId="e_154_i1_1" GraphRef="e_154_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_154_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3002.0" Y="874.0" GraphId="e_154_i2_0" GraphRef="n156_REACTOME_169876" RelX="0.15217391304347827" RelY="1.2727272727272727"/>
+      <Point X="3050.0" Y="936.0" GraphId="e_154_i2_1" GraphRef="e_154_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_160_REACTOME_382058">
+    <Comment Source="WikiPathways-description">Nck is a widely expressed protein consisting exclusively of SH2 and SH3 domains. With its SH2 doamin Nck interacts with Tyr571 of the PDGF beta-receptor and it also interacts with the alpha-receptor, but the sites of interaction has not been determined. Nck is involved in the activation of the JNK serine/threonine kinase through interaction with the serine/threonine kinases PAK1 and NIK.</Comment>
+    <BiopaxRef>lit_380730</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <BiopaxRef>lit_382018</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2176.0" Y="748.0" GraphId="e_160_0"/>
+      <Point X="2312.0" Y="748.0" GraphId="e_160_1"/>
+      <Point X="3085.0" Y="748.0" GraphId="e_160_2"/>
+      <Point X="3243.0" Y="748.0" GraphId="e_160_3" GraphRef="n162_REACTOME_381954" RelX="-1.0576923076923077" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_160_a_i"/>
+      <Anchor Position="0.1274601686972821" GraphId="e_160_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_160_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1704.0" Y="919.0" GraphId="e_160_i0_0" GraphRef="n79_REACTOME_186811" RelX="0.7164179104477612" RelY="-1.1666666666666667"/>
+      <Point X="2176.0" Y="748.0" GraphId="e_160_i0_1" GraphRef="e_160_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_160_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2106.0" Y="714.0" GraphId="e_160_i1_0" GraphRef="n161_REACTOME_381949" RelX="1.2121212121212122" RelY="0.6363636363636364"/>
+      <Point X="2176.0" Y="748.0" GraphId="e_160_i1_1" GraphRef="e_160_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_REACTOME_382055">
+    <Comment Source="WikiPathways-description">Grb7 an adapter protein contains a single SH2 domain, a pleckstrin homology (PH) domain, and a proline-rich region. Similar to Grb2, Grb7 interacts with phosphorylated tyrosines in pYXNX motifs, including Tyr716 and Tyr775 of the PDGF beta-receptor.</Comment>
+    <BiopaxRef>lit_381890</BiopaxRef>
+    <BiopaxRef>lit_380730</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1388.0" Y="801.0" GraphId="e_167_0"/>
+      <Point X="1177.0" Y="800.0" GraphId="e_167_1"/>
+      <Point X="174.0" Y="801.0" GraphId="e_167_2"/>
+      <Point X="93.0" Y="837.0" GraphId="e_167_3"/>
+      <Point X="93.0" Y="916.0" GraphId="e_167_4" GraphRef="n169_REACTOME_381956" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_167_a_i"/>
+      <Anchor Position="0.15271848988314426" GraphId="e_167_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1439.0" Y="769.0" GraphId="e_167_i0_0" GraphRef="n168_REACTOME_204819" RelX="-0.8947368421052632" RelY="1.2727272727272727"/>
+      <Point X="1388.0" Y="801.0" GraphId="e_167_i0_1" GraphRef="e_167_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1621.0" Y="919.0" GraphId="e_167_i1_0" GraphRef="n79_REACTOME_186811" RelX="-0.5223880597014925" RelY="-1.1666666666666667"/>
+      <Point X="1388.0" Y="801.0" GraphId="e_167_i1_1" GraphRef="e_167_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_REACTOME_186798">
+    <Comment Source="WikiPathways-description">GTPase-activating protein (GAP) has two SH2 domains which bind only to PDGF beta-receptors on Tyr771. GAP does not bind the alpha-receptor. GAP converts Ras-GTP to Ras-GDP, deactivating Ras.</Comment>
+    <BiopaxRef>lit_381873</BiopaxRef>
+    <BiopaxRef>lit_382041</BiopaxRef>
+    <BiopaxRef>lit_380735</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1922.0" Y="518.0" GraphId="e_177_0"/>
+      <Point X="2284.0" Y="518.0" GraphId="e_177_1"/>
+      <Point X="2775.0" Y="518.0" GraphId="e_177_2"/>
+      <Point X="2775.0" Y="414.0" GraphId="e_177_3" GraphRef="n180_REACTOME_186830" RelX="0.0" RelY="1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_177_a_i"/>
+      <Anchor Position="0.3782654127481714" GraphId="e_177_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1807.0" Y="568.0" GraphId="e_177_i0_0" GraphRef="n178_REACTOME_186833" RelX="0.6554621848739496" RelY="-1.1666666666666667"/>
+      <Point X="1922.0" Y="518.0" GraphId="e_177_i0_1" GraphRef="e_177_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1809.0" Y="414.0" GraphId="e_177_i1_0" GraphRef="n42_REACTOME_389074" RelX="0.3880597014925373" RelY="1.12"/>
+      <Point X="1922.0" Y="518.0" GraphId="e_177_i1_1" GraphRef="e_177_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_186">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="209.0" Y="922.0" GraphId="e_186_0" GraphRef="n134_REACTOME_109783" RelX="-0.023255813953488372" RelY="-1.2727272727272727"/>
+      <Point X="208.0" Y="738.0" GraphId="e_186_1" GraphRef="n185_REACTOME_110029" RelX="0.0" RelY="1.15" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_189">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="265.0" Y="715.0" GraphId="e_189_0" GraphRef="n185_REACTOME_110029" RelX="1.0555555555555556" RelY="0.0"/>
+      <Point X="359.0" Y="715.0" GraphId="e_189_1" GraphRef="n187_REACTOME_109869" RelX="-1.0485436893203883" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_4" GroupRef="group_comp_4" TextLabel="endoplasmic reticulum lumen">
+    <Graphics Color="000000" CenterX="345.5" CenterY="595.5" Width="189.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_45" GroupRef="group_comp_45" TextLabel="Golgi lumen">
+    <Graphics Color="000000" CenterX="527.0" CenterY="627.5" Width="88.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_164" GroupRef="group_comp_164" TextLabel="extracellular region">
+    <Graphics Color="000000" CenterX="533.5" CenterY="302.5" Width="131.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_184" GroupRef="group_comp_184" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="1711.5" CenterY="660.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_4" GroupRef="group_comp_4">
+    <Graphics Color="000000" CenterX="353.0" CenterY="568.5" Width="212.0" Height="95.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_45" GroupRef="group_comp_45">
+    <Graphics Color="000000" CenterX="815.5" CenterY="602.0" Width="689.0" Height="96.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_164" GroupRef="group_comp_164">
+    <Graphics Color="000000" CenterX="853.0" CenterY="189.0" Width="820.0" Height="288.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_184" GroupRef="group_comp_184">
+    <Graphics Color="000000" CenterX="1711.5" CenterY="661.0" Width="3235.0" Height="562.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_380730" rdf:id="lit_380730">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10508235</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanism of action and in vivo role of platelet-derived growth factor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Westermark, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiol Rev 79:1283-316</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_380735" rdf:id="lit_380735">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9739761</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signal transduction via platelet-derived growth factor receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ostman, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¶nnstrand, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1378:F79-113</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_380726" rdf:id="lit_380726">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15207811</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The PDGF family: four gene products form five dimeric isoforms</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fredriksson, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eriksson, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 15:197-204</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159838" rdf:id="lit_159838">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1629222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of human furin precursor processing endoprotease occurs by an intramolecular autoproteolytic cleavage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leduc, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molloy, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thorne, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 267:14304-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110028" rdf:id="lit_110028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9069260</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The complexity of Raf-1 regulation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morrison, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cutler, RE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 9:174-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_380776" rdf:id="lit_380776">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1639841</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PDGF-AA and PDGF-BB biosynthesis: proprotein processing in the Golgi complex and lysosomal degradation of PDGF-BB retained intracellularly</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ostman, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thyberg, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Westermark, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 118:509-19</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382046" rdf:id="lit_382046">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8900172</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Type I, II, III, IV, V, and VI collagens serve as extracellular ligands for the isoforms of platelet-derived growth factor (AA, BB, and AB)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Somasundaram, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schuppan, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:26884-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382044" rdf:id="lit_382044">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1311092</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The extracellular glycoprotein SPARC interacts with platelet-derived growth factor (PDGF)-AB and -BB and inhibits the binding of PDGF to its receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raines, EW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lane, TF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iruela-Arispe, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ross, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sage, EH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 89:1281-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382014" rdf:id="lit_382014">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9334164</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction of platelet-derived growth factor with thrombospondin 1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hogg, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hotchkiss, KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JimÃ©nez, BM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stathakis, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chesterman, CN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 326:709-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_381866" rdf:id="lit_381866">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2466336</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of phosphatidylinositol kinase in PDGF receptor signal transduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coughlin, SR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Escobedo, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, LT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 243:1191-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382017" rdf:id="lit_382017">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1374684</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Distinct phosphotyrosines on a growth factor receptor bind to specific molecules that mediate different signaling pathways</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fantl, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Escobedo, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turck, CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">del Rosario, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCormick, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, LT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 69:413-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_381858" rdf:id="lit_381858">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1396585</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of two C-terminal autophosphorylation sites in the PDGF beta-receptor: involvement in the interaction with phospholipase C-gamma</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¶nnstrand, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mori, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arridsson, AK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eriksson, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wernstedt, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hellman, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 11:3911-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382010" rdf:id="lit_382010">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8443409</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation sites at the C-terminus of the platelet-derived growth factor receptor bind phospholipase C gamma 1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kashishian, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 4:49-57</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382036" rdf:id="lit_382036">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7685273</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of two juxtamembrane autophosphorylation sites in the PDGF beta-receptor; involvement in the interaction with Src family tyrosine kinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mori, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¶nnstrand, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yokote, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EngstrÃ¶m, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Courtneidge, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 12:2257-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_381870" rdf:id="lit_381870">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9488729</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A role for Src in signal relay by the platelet-derived growth factor alpha receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gelderloos, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosenkranz, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bazenet, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kazlauskas, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:5908-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382024" rdf:id="lit_382024">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8647855</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Modulation of the SH2 binding specificity and kinase activity of Src by tyrosine phosphorylation within its SH2 domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stover, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furet, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lydon, NB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:12481-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_381875" rdf:id="lit_381875">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7691811</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of the SH2-containing phosphotyrosine phosphatase SH-PTP2 by its binding site, phosphotyrosine 1009, on the human platelet-derived growth factor receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lechleider, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sugimoto, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bennett, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kashishian, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shoelson, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walsh, CT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neel, BG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 268:21478-81</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382023" rdf:id="lit_382023">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7935391</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tyr-716 in the platelet-derived growth factor beta-receptor kinase insert is involved in GRB2 binding and Ras activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arvidsson, AK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rupp, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NÃ¥nberg, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Downward, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¶nnstrand, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">WennstrÃ¶m, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 14:6715-26</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382033" rdf:id="lit_382033">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8388543</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet-derived growth factor receptor mediates activation of ras through different signaling pathways in different cell types</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Satoh, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fantl, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Escobedo, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, LT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaziro, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 13:3706-13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382039" rdf:id="lit_382039">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9484840</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of Stat5 by platelet-derived growth factor (PDGF) is dependent on phosphorylation sites in PDGF beta-receptor juxtamembrane and kinase insert domains</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ValgeirsdÃ³ttir, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paukku, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Silvennoinen, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 16:505-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382035" rdf:id="lit_382035">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8657151</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet-derived growth factor induces phosphorylation of multiple JAK family kinases and STAT proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vignais, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sadowski, HB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watling, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rogers, NC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gilman, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 16:1759-69</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_381883" rdf:id="lit_381883">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9546424</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of Tyr-762 in the platelet-derived growth factor alpha-receptor as the binding site for Crk proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yokote, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hellman, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ekman, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¶nnstrand, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mori, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 16:1229-39</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382018" rdf:id="lit_382018">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7692233</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Two signaling molecules share a phosphotyrosine-containing binding site in the platelet-derived growth factor receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishimura, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kashishian, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mondino, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 13:6889-96</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_381890" rdf:id="lit_381890">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8940081</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grb7 is a downstream signaling component of platelet-derived growth factor alpha- and beta-receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yokote, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Margolis, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heldin, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:30942-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_381873" rdf:id="lit_381873">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1375321</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GTPase-activating protein and phosphatidylinositol 3-kinase bind to distinct regions of the platelet-derived growth factor receptor beta subunit</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kazlauskas, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kashishian, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Valius, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 12:2534-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382041" rdf:id="lit_382041">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1314164</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation sites in the PDGF receptor with different specificities for binding GAP and PI3 kinase in vivo</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kashishian, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kazlauskas, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 11:1373-82</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>PDGF signaling pathway</bp:TERM><bp:ID>PW:0000297</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

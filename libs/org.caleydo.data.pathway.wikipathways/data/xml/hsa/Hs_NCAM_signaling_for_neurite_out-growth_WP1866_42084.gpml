@@ -1,0 +1,1187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="NCAM signaling for neurite out-growth" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">The neural cell adhesion molecule, NCAM, is a member of the immunoglobulin (Ig) superfamily and is involved in a variety of cellular processes of importance for the formation and maintenance of the nervous system. The role of NCAM in neural differentiation and synaptic plasticity is presumed to depend on the modulation of intracellular signal transduction cascades. NCAM based signaling complexes can initiate downstream intracellular signals by at least two mechanisms: (1) activation of FGFR and (2) formation of intracellular signaling complexes by direct interaction with cytoplasmic interaction partners such as Fyn and FAK. Tyrosine kinases Fyn and FAK interact with NCAM and undergo phosphorylation and this transiently activates the MAPK, ERK 1 and 2, cAMP response element binding protein (CREB) and transcription factors ELK and NFkB. CREB activates transcription of genes which are important for axonal growth, survival, and synaptic plasticity in neurons.&lt;br&gt;&lt;br&gt;NCAM1 mediated intracellular signal transduction is represented in the figure below. The Ig domains in NCAM1 are represented in orange ovals and Fn domains in green squares. The tyrosine residues susceptible to phosphorylation are represented in red circles and their positions are numbered. Phosphorylation is represented by red arrows and dephosphorylation by yellow. Ig, Immunoglobulin domain; Fn, Fibronectin domain; Fyn, Proto-oncogene tyrosine-protein kinase Fyn; FAK, focal adhesion kinase; RPTPalpha, Receptor-type tyrosine-protein phosphatase; Grb2, Growth factor receptor-bound protein 2; SOS, Son of sevenless homolog; Raf, RAF proto-oncogene serine/threonine-protein kinase; MEK, MAPK and ERK kinase; ERK, Extracellular signal-regulated kinase; MSK1, Mitogen and stress activated protein kinase 1; CREB, Cyclic AMP-responsive element-binding protein; CRE, cAMP response elements.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_375122</BiopaxRef>
+  <BiopaxRef>lit_375119</BiopaxRef>
+  <BiopaxRef>lit_419030</BiopaxRef>
+  <BiopaxRef>lit_391814</BiopaxRef>
+  <BiopaxRef>lit_419275</BiopaxRef>
+  <BiopaxRef>lit_419276</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_190987" TextLabel="NCAM1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="749.5" CenterY="86.0" Width="51.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P13591"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_190988" TextLabel="NCAM1 cis-&#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="957.5" CenterY="86.0" Width="77.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19070"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_375103" TextLabel="NCAM1:NCAM1 &#10;trans-homotetramer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1169.0" CenterY="63.0" Width="126.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18931"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_190222" TextLabel="FGFR1c homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="603.5" CenterY="88.0" Width="121.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9800"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_419028" TextLabel="NCAM1:FGFR-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="395.5" CenterY="88.0" Width="99.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18900"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_391819" TextLabel="pFyn-Y531&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1232.5" CenterY="154.0" Width="73.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P06241"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_391847" TextLabel="NCAM1 complexed &#10;with Fyn&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1370.5" CenterY="111.0" Width="123.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18556"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_391839" TextLabel="Spectrin heterodimer&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Spectrin is a protein found at the intracellular surface of the plasma membrane in many cell types. In association with other proteins particularly protein 4.1 and ankyrin it forms hexagonal or pentagonal structures that act as a plasma membrane scaffold for other membrane structures and as an attachment point for cytoskeletal proteins such as actin. The erythrocyte forms of spectrin are the best studied (and not exclusievely expressed in erthrocytes).</Comment>
+    <Graphics Color="000000" CenterX="1361.5" CenterY="153.0" Width="129.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19000"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_388755" TextLabel="Receptor-type &#10;tyrosine-protein &#10;phosphatase alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1370.0" CenterY="65.0" Width="118.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18433"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1549.5" CenterY="132.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_391845" TextLabel="Fyn:NCAM1:RPTP-&#10;alpha&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1608.5" CenterY="86.0" Width="115.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18571"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1642.5" CenterY="132.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_391842" TextLabel="NCAM1 complexed &#10;with pFyn-Y420&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1836.5" CenterY="84.0" Width="123.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18470"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1784.0" CenterY="135.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_200917" TextLabel="FYN&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1713.5" CenterY="154.0" Width="27.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P06241"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1863.5" CenterY="123.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_201621" TextLabel="FADK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1851.5" CenterY="160.0" Width="51.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q05397"/>
+  </DataNode>
+  <DataNode GraphId="n53_REACTOME_391841" TextLabel="pFAK (391) bound to &#10;NCAM1:pFyn&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1937.0" CenterY="243.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18498"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1863.0" CenterY="210.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1863.5" CenterY="279.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_391848" TextLabel="Multiple &#10;phosphorylated FAK &#10;bound to NCAM:pFyn&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1937.0" CenterY="402.0" Width="130.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18768"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1862.0" CenterY="359.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_354153" TextLabel="SRC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1814.0" CenterY="317.0" Width="30.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12931-1"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_74686" TextLabel="GRB2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1826.0" CenterY="431.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62993-1"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_392047" TextLabel="Grb2:pFAK bound to &#10;NCAM1:pFyn&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1937.0" CenterY="522.0" Width="132.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18783"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_64847" TextLabel="Son of sevenless &#10;protein homolog 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1797.0" CenterY="531.0" Width="114.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q07889"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_392045" TextLabel="Grb2:Sos:pFAK &#10;bound to NCAM1:&#10;pFyn&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1937.5" CenterY="641.0" Width="111.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18839"/>
+  </DataNode>
+  <DataNode GraphId="n79_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1840.0" CenterY="699.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_109796" TextLabel="p21 RAS:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1937.5" CenterY="692.0" Width="87.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2657"/>
+  </DataNode>
+  <DataNode GraphId="n81_REACTOME_109783" TextLabel="p21 RAS:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1937.0" CenterY="818.0" Width="86.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4782"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_29420" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1836.5" CenterY="791.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n84_REACTOME_434924" TextLabel="GFRalpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="884.5" CenterY="877.0" Width="63.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19467"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_375101" TextLabel="NCAM1:GFRalpha-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1059.5" CenterY="891.0" Width="125.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18445"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_434920" TextLabel="GDNF family ligands &#10;(GFLs)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1088.0" CenterY="980.0" Width="128.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20000"/>
+  </DataNode>
+  <DataNode GraphId="n88_REACTOME_375111" TextLabel="NCAM1:GFRalpha-1:&#10;GDNF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1259.5" CenterY="891.0" Width="129.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18598"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_374591" TextLabel="Neurocan&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="815.5" CenterY="877.0" Width="63.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14594"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_375100" TextLabel="NCAM-1:Neurocan&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="640.5" CenterY="891.0" Width="117.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18891"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_190987" TextLabel="NCAM1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="810.5" CenterY="901.0" Width="51.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P13591"/>
+  </DataNode>
+  <DataNode GraphId="n103_REACTOME_375078" TextLabel="Collagens&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="788.5" CenterY="982.0" Width="63.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18161"/>
+  </DataNode>
+  <DataNode GraphId="n104_REACTOME_375098" TextLabel="NCAM-1:Collagen &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="474.5" CenterY="891.0" Width="115.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18833"/>
+  </DataNode>
+  <DataNode GraphId="n106_REACTOME_375060" TextLabel="Major prion protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="348.0" CenterY="891.0" Width="120.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P04156"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_375105" TextLabel="NCAM-1:Major prion &#10;protein&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="144.5" CenterY="891.0" Width="133.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18842"/>
+  </DataNode>
+  <DataNode GraphId="n113_REACTOME_375056" TextLabel="Agrin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="861.0" CenterY="983.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O00468"/>
+  </DataNode>
+  <DataNode GraphId="n114_REACTOME_375096" TextLabel="NCAM-1:Agrin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1427.0" CenterY="891.0" Width="92.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19071"/>
+  </DataNode>
+  <DataNode GraphId="n124_REACTOME_373618" TextLabel="Axonin-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1523.0" CenterY="891.0" Width="76.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q02246"/>
+  </DataNode>
+  <DataNode GraphId="n125_REACTOME_375108" TextLabel="NCAM1-Contactin-2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1708.0" CenterY="889.0" Width="126.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19032"/>
+  </DataNode>
+  <DataNode GraphId="n135_REACTOME_114570" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="769.5" CenterY="199.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n136_REACTOME_375093" TextLabel="NCAM-1:ATP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="272.5" CenterY="88.0" Width="85.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18582"/>
+  </DataNode>
+  <DataNode GraphId="n144_REACTOME_422430" TextLabel="Glycosylated NCAM1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="538.5" CenterY="506.0" Width="127.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P13591"/>
+  </DataNode>
+  <DataNode GraphId="n145_REACTOME_422427" TextLabel="Polysialic acid&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="550.5" CenterY="556.0" Width="87.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_18892"/>
+  </DataNode>
+  <DataNode GraphId="n146_REACTOME_422441" TextLabel="Polysialylated NCAM&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="793.0" CenterY="529.0" Width="124.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18914"/>
+  </DataNode>
+  <DataNode GraphId="n147_REACTOME_422438" TextLabel="alpha 2-8 &#10;polysialyltransferases&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="691.5" CenterY="445.0" Width="125.0" Height="50.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_18945"/>
+  </DataNode>
+  <DataNode GraphId="n150_REACTOME_525824" TextLabel="T- and L-type VDCC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1169.0" CenterY="98.0" Width="128.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21538"/>
+  </DataNode>
+  <DataNode GraphId="n151_REACTOME_525828" TextLabel="NCAM1:T- and L-&#10;type VDCC&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="78.5" CenterY="256.0" Width="113.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21777"/>
+  </DataNode>
+  <DataNode GraphId="n168_REACTOME_110029" TextLabel="RAF activation&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Phosphorylated RAF is activated by Ras binding and stabilised in its active form by transient disassociation and reassociation of 14-3-3, as well as further phosphorylation.</Comment>
+    <BiopaxRef>lit_110028</BiopaxRef>
+    <Graphics Color="000000" CenterX="1465.0" CenterY="630.0" Width="96.0" Height="30.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_2077"/>
+  </DataNode>
+  <DataNode GraphId="n170_REACTOME_109869" TextLabel="MAP kinase &#10;cascade&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The MAP kinase cascade describes a sequence of phosphorylation events involving serine/threonine-specific protein kinases. Used by various signal transduction pathways, this cascade constitutes a common 'module' in the transmission of an extracellular signal into the nucleus.</Comment>
+    <Graphics Color="000000" CenterX="1325.0" CenterY="632.0" Width="86.0" Height="44.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_634"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1276.5" CenterY="386.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n173_REACTOME_198657" TextLabel="MSK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1257.0" CenterY="435.0" Width="40.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O75582"/>
+  </DataNode>
+  <DataNode GraphId="n174_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1380.0" CenterY="382.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n175_REACTOME_198683" TextLabel="Phospho-MSK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1438.0" CenterY="436.0" Width="100.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O75582"/>
+  </DataNode>
+  <DataNode GraphId="n176_REACTOME_198701" TextLabel="Phospho-ERK dimer&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1324.5" CenterY="505.0" Width="125.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_12827"/>
+  </DataNode>
+  <DataNode GraphId="n178_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1606.5" CenterY="486.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n179_REACTOME_52777" TextLabel="CREB&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1548.0" CenterY="508.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16220"/>
+  </DataNode>
+  <DataNode GraphId="n180_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1613.0" CenterY="382.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n181_REACTOME_111910" TextLabel="phospho-CREB&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1548.5" CenterY="345.0" Width="95.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16220"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_391872">
+    <Comment Source="WikiPathways-description">NCAM1 located on the cell membrane can participate in parallel cis and antiparallel trans-homophilic interactions. The cis-interaction is mediated by reciprocal IgI-IgII interactions: the IgI domain of one NCAM1 molecule interacts with the IgII domain of a second.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="778.0" Y="86.0" GraphId="e_1_0" GraphRef="n2_REACTOME_190987" RelX="1.1372549019607843" RelY="0.0"/>
+      <Point X="854.0" Y="86.0" GraphId="e_1_1"/>
+      <Point X="916.0" Y="86.0" GraphId="e_1_2" GraphRef="n3_REACTOME_190988" RelX="-1.0649350649350648" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5507246376811594" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_REACTOME_375161">
+    <Comment Source="WikiPathways-description">Antiparallel NCAM interactions involve trans-interactions of NCAM molecules on opposed cell membranes. Based on structural and functional studies a 'double zipper' model has been proposed to describe these interactions. The first model - the 'flat zipper'- formed between NCAM1 cis-dimers from one cell surface interacting in trans through IgII-IgIII contacts with NCAM1 cis-dimers from another cell surface. The second model - the 'compact zipper'- is formed between NCAM1 cis-dimers from one cell surface interacting in trans through IgI-IgIII and IgII-IgII contacts with cis-dimers from another cell surface.&lt;p&gt;Abrogation of cis-dimerization inhibits NCAM mediated neurite outgrowth, and cis-dimerization of NCAM1 may be a necessary prerequisite for subsequent trans-interactions.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="999.0" Y="85.0" GraphId="e_4_0" GraphRef="n3_REACTOME_190988" RelX="1.0909090909090908" RelY="-0.05555555555555555"/>
+      <Point X="1056.0" Y="85.0" GraphId="e_4_1"/>
+      <Point X="1076.0" Y="62.0" GraphId="e_4_2"/>
+      <Point X="1103.0" Y="62.0" GraphId="e_4_3" GraphRef="n5_REACTOME_375103" RelX="-1.0476190476190477" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.49790573289201706" GraphId="e_4_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_419033">
+    <Comment Source="WikiPathways-description">FGFR is one of the heterophilic interactors of NCAM. The FG loop region of the second Fn3 module of NCAM binds to Ig domains 2 and 3 of FGFR. The FGFR binding site to NCAM overlaps with the site of NCAM-ATP interaction, and ATP is capable of disrupting NCAM-FGFR binding and signaling.  &lt;br&gt;The interaction of NCAM activates FGFR and NCAM might merely mimic FGF's in FGFR stimulation, but there is a difference in the activation pattern induced by NCAM and FGF-2. NCAM activated FGFR stimulates neurite outgrowth by stimulating PLCgamma and DAG lipase leading to generation of arachidonic acid.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="519.0" Y="86.0" GraphId="e_9_0"/>
+      <Point X="493.0" Y="86.0" GraphId="e_9_1"/>
+      <Point X="448.0" Y="86.0" GraphId="e_9_2" GraphRef="n11_REACTOME_419028" RelX="1.0707070707070707" RelY="-0.18181818181818182" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_9_a_i"/>
+      <Anchor Position="0.36619718309859156" GraphId="e_9_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="540.0" Y="86.0" GraphId="e_9_i0_0" GraphRef="n10_REACTOME_190222" RelX="-1.0413223140495869" RelY="-0.18181818181818182"/>
+      <Point X="519.0" Y="86.0" GraphId="e_9_i0_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="956.0" Y="107.0" GraphId="e_9_i1_0" GraphRef="n3_REACTOME_190988" RelX="-0.025974025974025976" RelY="1.1666666666666667"/>
+      <Point X="956.0" Y="127.0" GraphId="e_9_i1_1"/>
+      <Point X="925.0" Y="136.0" GraphId="e_9_i1_2"/>
+      <Point X="561.0" Y="136.0" GraphId="e_9_i1_3"/>
+      <Point X="519.0" Y="121.0" GraphId="e_9_i1_4"/>
+      <Point X="519.0" Y="86.0" GraphId="e_9_i1_5" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="271.0" Y="74.0" GraphId="e_9_i__0_0" GraphRef="n136_REACTOME_375093" RelX="-0.023529411764705882" RelY="-1.2727272727272727"/>
+      <Point X="270.0" Y="38.0" GraphId="e_9_i__0_1"/>
+      <Point X="493.0" Y="38.0" GraphId="e_9_i__0_2"/>
+      <Point X="493.0" Y="86.0" GraphId="e_9_i__0_3" GraphRef="e_9_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_REACTOME_391867">
+    <Comment Source="WikiPathways-description">Fyn constitutively associates with the 140 kD isoform of NCAM1 in the plasma membrane, probably indirectly. Fyn is attached to the lipid raft membrane compartment via palmitoylation and is inactivated by tyrosine phosphorylation (Y531) within its C-terminal regulatory region. Fyn kinase has two well-known phosphorylation sites which affect its activity in opposite ways. The phosphorylation of Tyr531 located in the C-terminus of the protein inhibits the Fyn kinase activity, due to the binding of this tyrosine residue to the SH2 domain of the protein, which stabilizes its catalytically inactive conformation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1251.0" Y="111.0" GraphId="e_15_0"/>
+      <Point X="1275.0" Y="110.0" GraphId="e_15_1"/>
+      <Point X="1306.0" Y="110.0" GraphId="e_15_2" GraphRef="n17_REACTOME_391847" RelX="-1.0406504065040652" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_15_a_i"/>
+      <Anchor Position="0.43657696163225895" GraphId="e_15_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1236.0" Y="140.0" GraphId="e_15_i0_0" GraphRef="n16_REACTOME_391819" RelX="0.1095890410958904" RelY="-1.2727272727272727"/>
+      <Point X="1251.0" Y="111.0" GraphId="e_15_i0_1" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1235.0" Y="63.0" GraphId="e_15_i1_0" GraphRef="n5_REACTOME_375103" RelX="1.0476190476190477" RelY="0.0"/>
+      <Point X="1251.0" Y="63.0" GraphId="e_15_i1_1"/>
+      <Point X="1251.0" Y="111.0" GraphId="e_15_i1_2" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_REACTOME_391868">
+    <Comment Source="WikiPathways-description">The homophilic NCAM1:NCAM1 interaction redistributes these molecules and leads to the formation of clusters within lipid rafts. Spectrin, an NCAM1 binding cytoskeletal protein, colocalizes with NCAM1 and codistribute to lipid rafts. Spectrin associates with RPTP-alpha, linking it to the cytoplasmic NCAM1 domain and causing its coredistribution to lipid rafts on NCAM1 clustering. The receptor tyrosine phosphatase RPTP-alpha is an activator of all kinases of the Src family, including Fyn kinase.&lt;p&gt;The interaction of RPTP-alpha and the SH2 domain of Fyn induces an interaction of Fyn Tyr531 with the D1 domain of RPTP-alpha. This induces dephosphorylation of Tyr531 and activates Fyn.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1463.0" Y="84.0" GraphId="e_21_0"/>
+      <Point X="1494.0" Y="84.0" GraphId="e_21_1"/>
+      <Point X="1520.0" Y="84.0" GraphId="e_21_2"/>
+      <Anchor Position="0.0" GraphId="e_21_a_i"/>
+      <Anchor Position="0.543859649122807" GraphId="e_21_a_p"/>
+      <Anchor Position="1.0" GraphId="e_21_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1429.0" Y="152.0" GraphId="e_21_i0_0" GraphRef="n22_REACTOME_391839" RelX="1.054263565891473" RelY="-0.09090909090909091"/>
+      <Point X="1458.0" Y="152.0" GraphId="e_21_i0_1"/>
+      <Point X="1463.0" Y="84.0" GraphId="e_21_i0_2" GraphRef="e_21_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1435.0" Y="111.0" GraphId="e_21_i1_0" GraphRef="n17_REACTOME_391847" RelX="1.056910569105691" RelY="0.0"/>
+      <Point X="1453.0" Y="111.0" GraphId="e_21_i1_1"/>
+      <Point X="1463.0" Y="84.0" GraphId="e_21_i1_2" GraphRef="e_21_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1432.0" Y="63.0" GraphId="e_21_i2_0" GraphRef="n23_REACTOME_388755" RelX="1.0508474576271187" RelY="-0.08"/>
+      <Point X="1453.0" Y="63.0" GraphId="e_21_i2_1"/>
+      <Point X="1463.0" Y="84.0" GraphId="e_21_i2_2" GraphRef="e_21_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1539.0" Y="114.0" GraphId="e_21_o0_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_29372" RelX="-0.1834862385321101" RelY="-1.2"/>
+      <Point X="1520.0" Y="84.0" GraphId="e_21_o0_1" GraphRef="e_21_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1548.0" Y="84.0" GraphId="e_21_o1_0" ArrowHead="Arrow" GraphRef="n25_REACTOME_391845" RelX="-1.0434782608695652" RelY="-0.1111111111111111"/>
+      <Point X="1520.0" Y="84.0" GraphId="e_21_o1_1" GraphRef="e_21_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1369.0" Y="37.0" GraphId="e_21_c__0_0" GraphRef="n23_REACTOME_388755" RelX="-0.01694915254237288" RelY="-1.12"/>
+      <Point X="1369.0" Y="17.0" GraphId="e_21_c__0_1"/>
+      <Point X="1493.0" Y="17.0" GraphId="e_21_c__0_2"/>
+      <Point X="1494.0" Y="84.0" GraphId="e_21_c__0_3" GraphRef="e_21_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_391871">
+    <Comment Source="WikiPathways-description">The Tyr420 residue located in the activation loop of Fyn is responsible for its enzymatic activity. Once the Tyr531 in its negative regulatory site is dephosphorylated by RPTPalpha, Fyn undergoes autophosphorylation on Tyr420  for its maximum activity.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1689.0" Y="83.0" GraphId="e_33_0"/>
+      <Point X="1712.0" Y="83.0" GraphId="e_33_1"/>
+      <Point X="1737.0" Y="83.0" GraphId="e_33_2"/>
+      <Anchor Position="0.0" GraphId="e_33_a_i"/>
+      <Anchor Position="0.4791666666666667" GraphId="e_33_a_p"/>
+      <Anchor Position="1.0" GraphId="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1669.0" Y="83.0" GraphId="e_33_i0_0" GraphRef="n25_REACTOME_391845" RelX="1.0608695652173914" RelY="-0.16666666666666666"/>
+      <Point X="1689.0" Y="83.0" GraphId="e_33_i0_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1656.0" Y="114.0" GraphId="e_33_i1_0" GraphRef="n34_REACTOME_113592" RelX="0.717948717948718" RelY="-1.2"/>
+      <Point X="1689.0" Y="83.0" GraphId="e_33_i1_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1772.0" Y="83.0" GraphId="e_33_o0_0" ArrowHead="Arrow" GraphRef="n35_REACTOME_391842" RelX="-1.0406504065040652" RelY="-0.05555555555555555"/>
+      <Point X="1737.0" Y="83.0" GraphId="e_33_o0_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1770.0" Y="117.0" GraphId="e_33_o1_0" ArrowHead="Arrow" GraphRef="n36_REACTOME_29370" RelX="-0.7" RelY="-1.2"/>
+      <Point X="1737.0" Y="83.0" GraphId="e_33_o1_1" GraphRef="e_33_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1712.0" Y="140.0" GraphId="e_33_c__0_0" GraphRef="n37_REACTOME_200917" RelX="-0.07407407407407407" RelY="-1.2727272727272727"/>
+      <Point X="1712.0" Y="83.0" GraphId="e_33_c__0_1" GraphRef="e_33_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_REACTOME_391865">
+    <Comment Source="WikiPathways-description">Fyn activation leads to the recruitment and activation of the non-receptor tyrosine kinase FAK. Once recruited to Fyn, FAK undergoes autophosphorylation on tyrosine 397. This tyrosine allows the binding of SH2 domain containing proteins.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="119.0" GraphId="e_50_0"/>
+      <Point X="1936.0" Y="160.0" GraphId="e_50_1"/>
+      <Point X="1936.0" Y="189.0" GraphId="e_50_2"/>
+      <Anchor Position="0.0" GraphId="e_50_a_i"/>
+      <Anchor Position="0.5857142857142857" GraphId="e_50_a_p"/>
+      <Anchor Position="1.0" GraphId="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1901.0" Y="95.0" GraphId="e_50_i0_0" GraphRef="n35_REACTOME_391842" RelX="1.056910569105691" RelY="0.6111111111111112"/>
+      <Point X="1921.0" Y="100.0" GraphId="e_50_i0_1"/>
+      <Point X="1936.0" Y="119.0" GraphId="e_50_i0_2" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1886.0" Y="121.0" GraphId="e_50_i1_0" GraphRef="n51_REACTOME_113592" RelX="1.1794871794871795" RelY="-0.13333333333333333"/>
+      <Point X="1936.0" Y="119.0" GraphId="e_50_i1_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1873.0" Y="146.0" GraphId="e_50_i2_0" GraphRef="n52_REACTOME_201621" RelX="0.8627450980392157" RelY="-1.2727272727272727"/>
+      <Point X="1936.0" Y="119.0" GraphId="e_50_i2_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="222.0" GraphId="e_50_o0_0" ArrowHead="Arrow" GraphRef="n53_REACTOME_391841" RelX="-0.014925373134328358" RelY="-1.1666666666666667"/>
+      <Point X="1936.0" Y="189.0" GraphId="e_50_o0_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1886.0" Y="204.0" GraphId="e_50_o1_0" ArrowHead="Arrow" GraphRef="n54_REACTOME_29370" RelX="1.15" RelY="-0.4"/>
+      <Point X="1936.0" Y="189.0" GraphId="e_50_o1_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1880.0" Y="160.0" GraphId="e_50_c__0_0" GraphRef="n52_REACTOME_201621" RelX="1.1372549019607843" RelY="0.0"/>
+      <Point X="1936.0" Y="160.0" GraphId="e_50_c__0_1" GraphRef="e_50_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_REACTOME_391866">
+    <Comment Source="WikiPathways-description">Phosphorylation of Tyr397 in FAK triggers the phosphorylation of other tyrosine residues (Tyr407, Tyr576, Tyr577, Tyr861 and Tyr925) in a Src-dependent manner. The initial phosphorylation of FAK at Tyr397 is thought to create a high-affinity binding site for SH2 domains, enabling formation of a signalling complex between FAK and members of the Src-family kinases. Tyr-576 and Tyr-577 are located in the central catalytic domain and their phosphorylation is required for the maximum kinase activity of FAK. The tyrosine phosphorylation of these residues is likely to be mediated by Src (or other members of the src family).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1937.0" Y="289.0" GraphId="e_58_0"/>
+      <Point X="1937.0" Y="318.0" GraphId="e_58_1"/>
+      <Point X="1937.0" Y="348.0" GraphId="e_58_2"/>
+      <Anchor Position="0.0" GraphId="e_58_a_i"/>
+      <Anchor Position="0.4915254237288136" GraphId="e_58_a_p"/>
+      <Anchor Position="1.0" GraphId="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1937.0" Y="264.0" GraphId="e_58_i0_0" GraphRef="n53_REACTOME_391841" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="1937.0" Y="289.0" GraphId="e_58_i0_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1886.0" Y="281.0" GraphId="e_58_i1_0" GraphRef="n59_REACTOME_113592" RelX="1.1794871794871795" RelY="0.13333333333333333"/>
+      <Point X="1937.0" Y="289.0" GraphId="e_58_i1_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1937.0" Y="374.0" GraphId="e_58_o0_0" ArrowHead="Arrow" GraphRef="n60_REACTOME_391848" RelX="0.0" RelY="-1.12"/>
+      <Point X="1937.0" Y="348.0" GraphId="e_58_o0_1" GraphRef="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1885.0" Y="356.0" GraphId="e_58_o1_0" ArrowHead="Arrow" GraphRef="n61_REACTOME_29370" RelX="1.15" RelY="-0.2"/>
+      <Point X="1937.0" Y="348.0" GraphId="e_58_o1_1" GraphRef="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1832.0" Y="317.0" GraphId="e_58_c__0_0" GraphRef="n62_REACTOME_354153" RelX="1.2" RelY="0.0"/>
+      <Point X="1937.0" Y="318.0" GraphId="e_58_c__0_1" GraphRef="e_58_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_REACTOME_392051">
+    <Comment Source="WikiPathways-description">Phosphorylated tyrosine 925 in the FAT domain of FADK1 creates a docking site for the SH2 domain of GRB2 and recruits the GRB2/SOS complex. FADK1 may use this mechanism to activate Ras and the MAP kinase pathway.</Comment>
+    <BiopaxRef>lit_354156</BiopaxRef>
+    <BiopaxRef>lit_391814</BiopaxRef>
+    <BiopaxRef>lit_375028</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1937.0" Y="449.0" GraphId="e_66_0"/>
+      <Point X="1937.0" Y="472.0" GraphId="e_66_1"/>
+      <Point X="1937.0" Y="501.0" GraphId="e_66_2" GraphRef="n68_REACTOME_392047" RelX="0.0" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_66_a_i"/>
+      <Anchor Position="0.4423076923076923" GraphId="e_66_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1937.0" Y="430.0" GraphId="e_66_i0_0" GraphRef="n60_REACTOME_391848" RelX="0.0" RelY="1.12"/>
+      <Point X="1937.0" Y="449.0" GraphId="e_66_i0_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1849.0" Y="434.0" GraphId="e_66_i1_0" GraphRef="n67_REACTOME_74686" RelX="1.15" RelY="0.2727272727272727"/>
+      <Point X="1937.0" Y="449.0" GraphId="e_66_i1_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_REACTOME_392053">
+    <Comment Source="WikiPathways-description">Guanine nucleotide releasing factor Sos associates with FAK bound Grb2 to activate Ras and initiate Ras-MAPK signaling. This interaction occurs between  the carboxy terminal domain of SOS and the Src homology 3 (SH3) domains of GRB2.</Comment>
+    <BiopaxRef>lit_391814</BiopaxRef>
+    <BiopaxRef>lit_375028</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="562.0" GraphId="e_72_0"/>
+      <Point X="1936.0" Y="583.0" GraphId="e_72_1"/>
+      <Point X="1936.0" Y="613.0" GraphId="e_72_2" GraphRef="n74_REACTOME_392045" RelX="-0.018018018018018018" RelY="-1.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_72_a_i"/>
+      <Anchor Position="0.4117647058823529" GraphId="e_72_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1857.0" Y="543.0" GraphId="e_72_i0_0" GraphRef="n73_REACTOME_64847" RelX="1.0526315789473684" RelY="0.6666666666666666"/>
+      <Point X="1936.0" Y="562.0" GraphId="e_72_i0_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="543.0" GraphId="e_72_i1_0" GraphRef="n68_REACTOME_392047" RelX="-0.015151515151515152" RelY="1.1666666666666667"/>
+      <Point X="1936.0" Y="562.0" GraphId="e_72_i1_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_REACTOME_392054">
+    <Comment Source="WikiPathways-description">The guanine nucleotide exchange factor SOS interacts with GRB2 bound to phosphorylated FAK bound to NCAM. Upon formation of this complex, SOS activates Ras by promoting GDP release and GTP binding.</Comment>
+    <BiopaxRef>lit_179827</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="726.0" GraphId="e_78_0"/>
+      <Point X="1936.0" Y="748.0" GraphId="e_78_1"/>
+      <Point X="1936.0" Y="771.0" GraphId="e_78_2"/>
+      <Anchor Position="0.0" GraphId="e_78_a_i"/>
+      <Anchor Position="0.4888888888888889" GraphId="e_78_a_p"/>
+      <Anchor Position="1.0" GraphId="e_78_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1863.0" Y="704.0" GraphId="e_78_i0_0" GraphRef="n79_REACTOME_29438" RelX="1.15" RelY="0.3333333333333333"/>
+      <Point X="1936.0" Y="726.0" GraphId="e_78_i0_1" GraphRef="e_78_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="706.0" GraphId="e_78_i1_0" GraphRef="n80_REACTOME_109796" RelX="-0.022988505747126436" RelY="1.2727272727272727"/>
+      <Point X="1936.0" Y="726.0" GraphId="e_78_i1_1" GraphRef="e_78_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1936.0" Y="804.0" GraphId="e_78_o0_0" ArrowHead="Arrow" GraphRef="n81_REACTOME_109783" RelX="-0.023255813953488372" RelY="-1.2727272727272727"/>
+      <Point X="1936.0" Y="771.0" GraphId="e_78_o0_1" GraphRef="e_78_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1860.0" Y="786.0" GraphId="e_78_o1_0" ArrowHead="Arrow" GraphRef="n82_REACTOME_29420" RelX="1.170731707317073" RelY="-0.3333333333333333"/>
+      <Point X="1936.0" Y="771.0" GraphId="e_78_o1_1" GraphRef="e_78_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1996.0" Y="639.0" GraphId="e_78_c__0_0" GraphRef="n74_REACTOME_392045" RelX="1.063063063063063" RelY="-0.08"/>
+      <Point X="2017.0" Y="639.0" GraphId="e_78_c__0_1"/>
+      <Point X="2017.0" Y="747.0" GraphId="e_78_c__0_2"/>
+      <Point X="1936.0" Y="748.0" GraphId="e_78_c__0_3" GraphRef="e_78_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_REACTOME_375149">
+    <Comment Source="WikiPathways-description">GFRalpha receptors GFRalpha1 and possibly also GFRalpha2 and GFRalpha4 subunit of the GDNF (glial cell line-derived neurotrophic factor) receptor interact in cis with NCAM and functions as a coreceptor for GDNF in the absence of RET. The NCAM1-GFRalpha1 interaction down regulates NCAM1-mediated cell adhesion and promotes GDNF-NCAM1 binding.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="953.0" Y="889.0" GraphId="e_83_0"/>
+      <Point X="966.0" Y="889.0" GraphId="e_83_1"/>
+      <Point X="994.0" Y="889.0" GraphId="e_83_2" GraphRef="n85_REACTOME_375101" RelX="-1.04" RelY="-0.18181818181818182" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_83_a_i"/>
+      <Anchor Position="0.3170731707317073" GraphId="e_83_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="919.0" Y="877.0" GraphId="e_83_i0_0" GraphRef="n84_REACTOME_434924" RelX="1.1111111111111112" RelY="0.0"/>
+      <Point X="938.0" Y="877.0" GraphId="e_83_i0_1"/>
+      <Point X="953.0" Y="889.0" GraphId="e_83_i0_2" GraphRef="e_83_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="839.0" Y="900.0" GraphId="e_83_i1_0" GraphRef="n97_REACTOME_190987" RelX="1.1372549019607843" RelY="-0.09090909090909091"/>
+      <Point X="935.0" Y="900.0" GraphId="e_83_i1_1"/>
+      <Point X="953.0" Y="889.0" GraphId="e_83_i1_2" GraphRef="e_83_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_REACTOME_375144">
+    <Comment Source="WikiPathways-description">NCAM was identified as an alternative signaling receptor for GDNF family ligands (GFLs). The GFLs is a small group of soluble neurotrophic growth factors involved in neuronal survival, neurite growth and differentiation. Four members are known in the family including GDNF, Neurturin (NTN), Persephin (PSP), and Artemin (ART). NCAM, in collaboration with GFR? receptors, function as a signaling receptor for these GFLs. Signaling downstream of GDNF binding to the NCAM-GFRalpha1 complex activates Fyn-FAK-MAPK signaling pathway and mediates long-range intercellular communication.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1142.0" Y="891.0" GraphId="e_86_0"/>
+      <Point X="1163.0" Y="891.0" GraphId="e_86_1"/>
+      <Point X="1192.0" Y="891.0" GraphId="e_86_2" GraphRef="n88_REACTOME_375111" RelX="-1.0387596899224807" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_86_a_i"/>
+      <Anchor Position="0.42" GraphId="e_86_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1125.0" Y="891.0" GraphId="e_86_i0_0" GraphRef="n85_REACTOME_375101" RelX="1.056" RelY="0.0"/>
+      <Point X="1142.0" Y="891.0" GraphId="e_86_i0_1" GraphRef="e_86_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1098.0" Y="959.0" GraphId="e_86_i1_0" GraphRef="n87_REACTOME_434920" RelX="0.15625" RelY="-1.1666666666666667"/>
+      <Point X="1142.0" Y="891.0" GraphId="e_86_i1_1" GraphRef="e_86_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_89_REACTOME_375148">
+    <Comment Source="WikiPathways-description">NCAM1 bind all major components of neurocan (N-terminal, central and C-terminal regions as well as CS chains), a brain-specific chondroitin sulfate proteoglycan. This molecule interferes with homophilic NCAM1 interactions and inhibits neuronal adhesion and neurite outgrowth.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="752.0" Y="889.0" GraphId="e_89_0"/>
+      <Point X="729.0" Y="889.0" GraphId="e_89_1"/>
+      <Point X="702.0" Y="889.0" GraphId="e_89_2" GraphRef="n91_REACTOME_375100" RelX="1.0598290598290598" RelY="-0.18181818181818182" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_89_a_i"/>
+      <Anchor Position="0.46" GraphId="e_89_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_89_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="781.0" Y="875.0" GraphId="e_89_i0_0" GraphRef="n90_REACTOME_374591" RelX="-1.0793650793650793" RelY="-0.18181818181818182"/>
+      <Point X="764.0" Y="875.0" GraphId="e_89_i0_1"/>
+      <Point X="752.0" Y="889.0" GraphId="e_89_i0_2" GraphRef="e_89_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_89_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="782.0" Y="901.0" GraphId="e_89_i1_0" GraphRef="n97_REACTOME_190987" RelX="-1.0980392156862746" RelY="0.0"/>
+      <Point X="765.0" Y="901.0" GraphId="e_89_i1_1"/>
+      <Point X="752.0" Y="889.0" GraphId="e_89_i1_2" GraphRef="e_89_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_REACTOME_375151">
+    <Comment Source="WikiPathways-description">NCAM1 interacts with several extracellular matrix proteins. NCAM1 has been reported to bind collagens I-IV and IX.</Comment>
+    <BiopaxRef>lit_375028</BiopaxRef>
+    <BiopaxRef>lit_420378</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="732.0" Y="930.0" GraphId="e_102_0"/>
+      <Point X="593.0" Y="930.0" GraphId="e_102_1"/>
+      <Point X="566.0" Y="890.0" GraphId="e_102_2"/>
+      <Point X="535.0" Y="890.0" GraphId="e_102_3" GraphRef="n104_REACTOME_375098" RelX="1.0608695652173914" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_102_a_i"/>
+      <Anchor Position="0.8579673755406154" GraphId="e_102_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="776.0" Y="968.0" GraphId="e_102_i0_0" GraphRef="n103_REACTOME_375078" RelX="-0.38095238095238093" RelY="-1.2727272727272727"/>
+      <Point X="732.0" Y="930.0" GraphId="e_102_i0_1" GraphRef="e_102_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_102_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="782.0" Y="910.0" GraphId="e_102_i1_0" GraphRef="n97_REACTOME_190987" RelX="-1.0980392156862746" RelY="0.8181818181818182"/>
+      <Point X="732.0" Y="930.0" GraphId="e_102_i1_1" GraphRef="e_102_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_REACTOME_375154">
+    <Comment Source="WikiPathways-description">Prion protein (PrP) is a GPI-anchored protein predominately localized in lipid rafts. NCAM1 is one of the membrane localized proteins that binds PrP. PrP is though to bind NCAM1 at the IgV, F3I and/or F3II domains in an interaction not involving the various carbohydrate moieties of NCAM1. The functional relevance of this interaction is unknown, but may be related to the effects of PrP on activation and proliferation of haemopoietic cells expressing NCAM1.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="260.0" Y="891.0" GraphId="e_105_0"/>
+      <Point X="242.0" Y="891.0" GraphId="e_105_1"/>
+      <Point X="214.0" Y="891.0" GraphId="e_105_2" GraphRef="n107_REACTOME_375105" RelX="1.0526315789473684" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_105_a_i"/>
+      <Anchor Position="0.391304347826087" GraphId="e_105_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="285.0" Y="891.0" GraphId="e_105_i0_0" GraphRef="n106_REACTOME_375060" RelX="-1.05" RelY="0.0"/>
+      <Point X="260.0" Y="891.0" GraphId="e_105_i0_1" GraphRef="e_105_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="789.0" Y="887.0" GraphId="e_105_i1_0" GraphRef="n97_REACTOME_190987" RelX="-0.8235294117647058" RelY="-1.2727272727272727"/>
+      <Point X="743.0" Y="865.0" GraphId="e_105_i1_1"/>
+      <Point X="689.0" Y="858.0" GraphId="e_105_i1_2"/>
+      <Point X="288.0" Y="858.0" GraphId="e_105_i1_3"/>
+      <Point X="261.0" Y="870.0" GraphId="e_105_i1_4"/>
+      <Point X="260.0" Y="891.0" GraphId="e_105_i1_5" GraphRef="e_105_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_REACTOME_375155">
+    <Comment Source="WikiPathways-description">Agrin, a Heparin Sulfate Proteoglycan (HSPG), plays a role in synaptogenesis and axonal growth. It interacts with NCAM1 both via NCAM's heparin binding domain in the IgII domain and through polysialic acid on the IgV domain.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="902.0" Y="930.0" GraphId="e_112_0"/>
+      <Point X="1333.0" Y="930.0" GraphId="e_112_1"/>
+      <Point X="1333.0" Y="890.0" GraphId="e_112_2"/>
+      <Point X="1353.0" Y="890.0" GraphId="e_112_3"/>
+      <Point X="1378.0" Y="890.0" GraphId="e_112_4" GraphRef="n114_REACTOME_375096" RelX="-1.065217391304348" RelY="-0.09090909090909091" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_112_a_i"/>
+      <Anchor Position="0.9515503875968992" GraphId="e_112_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="869.0" Y="969.0" GraphId="e_112_i0_0" GraphRef="n113_REACTOME_375056" RelX="0.42105263157894735" RelY="-1.2727272727272727"/>
+      <Point X="902.0" Y="930.0" GraphId="e_112_i0_1" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="839.0" Y="911.0" GraphId="e_112_i1_0" GraphRef="n97_REACTOME_190987" RelX="1.1372549019607843" RelY="0.9090909090909091"/>
+      <Point X="865.0" Y="924.0" GraphId="e_112_i1_1"/>
+      <Point X="902.0" Y="930.0" GraphId="e_112_i1_2" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_123_REACTOME_375157">
+    <Comment Source="WikiPathways-description">NCAM1 binds with high affinity to the neuronal IgSF receptor, contactin-2/TAG-1/axonin-1.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1585.0" Y="889.0" GraphId="e_123_0"/>
+      <Point X="1611.0" Y="889.0" GraphId="e_123_1"/>
+      <Point X="1642.0" Y="889.0" GraphId="e_123_2" GraphRef="n125_REACTOME_375108" RelX="-1.0476190476190477" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_123_a_i"/>
+      <Anchor Position="0.45614035087719296" GraphId="e_123_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_123_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1564.0" Y="889.0" GraphId="e_123_i0_0" GraphRef="n124_REACTOME_373618" RelX="1.0789473684210527" RelY="-0.18181818181818182"/>
+      <Point X="1585.0" Y="889.0" GraphId="e_123_i0_1" GraphRef="e_123_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_123_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="809.0" Y="915.0" GraphId="e_123_i1_0" GraphRef="n97_REACTOME_190987" RelX="-0.0392156862745098" RelY="1.2727272727272727"/>
+      <Point X="809.0" Y="935.0" GraphId="e_123_i1_1"/>
+      <Point X="844.0" Y="952.0" GraphId="e_123_i1_2"/>
+      <Point X="1555.0" Y="952.0" GraphId="e_123_i1_3"/>
+      <Point X="1586.0" Y="928.0" GraphId="e_123_i1_4"/>
+      <Point X="1585.0" Y="889.0" GraphId="e_123_i1_5" GraphRef="e_123_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_REACTOME_375160">
+    <Comment Source="WikiPathways-description">NCAM1 has been demonstrated to possess (Ca++ or Mg++) dependant ATP hydrolyzing activity. ATP can bind to NCAM directly and that NCAM can act as an ecto-ATPase hydrolyzing around 1000 molecules of ATP/minute. Binding of ATP to NCAM1 inhibits cellular aggregation and neurite outgrowth induced by NCAM1-FGFR binding. The NCAM binding site to ATP overlaps with the site of NCAM-FGFR interaction, and ATP is capable of disrupting NCAM-FGFR binding.</Comment>
+    <BiopaxRef>lit_375016</BiopaxRef>
+    <BiopaxRef>lit_375030</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="712.0" Y="159.0" GraphId="e_134_0"/>
+      <Point X="492.0" Y="159.0" GraphId="e_134_1"/>
+      <Point X="314.0" Y="159.0" GraphId="e_134_2"/>
+      <Point X="271.0" Y="138.0" GraphId="e_134_3"/>
+      <Point X="271.0" Y="102.0" GraphId="e_134_4" GraphRef="n136_REACTOME_375093" RelX="-0.023529411764705882" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_134_a_i"/>
+      <Anchor Position="0.4565698849853022" GraphId="e_134_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="748.0" Y="100.0" GraphId="e_134_i0_0" GraphRef="n2_REACTOME_190987" RelX="-0.0392156862745098" RelY="1.2727272727272727"/>
+      <Point X="748.0" Y="142.0" GraphId="e_134_i0_1"/>
+      <Point X="712.0" Y="159.0" GraphId="e_134_i0_2" GraphRef="e_134_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="747.0" Y="185.0" GraphId="e_134_i1_0" GraphRef="n135_REACTOME_114570" RelX="-1.1282051282051282" RelY="-0.9333333333333333"/>
+      <Point X="712.0" Y="159.0" GraphId="e_134_i1_1" GraphRef="e_134_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_REACTOME_422454">
+    <Comment Source="WikiPathways-description">NCAM in the developing brain is highly polysialylated and is referred as the embryonic form of NCAM. Polysialic acid is a developmentally regulated, anti-adhesive glycan with a linear homopolymer of alpha2,8-linked sialic acid units. They are mainly attached to the fifth and sixth N-glycosylation sites of the fifth Ig-like domain of NCAM. Polysialylation of NCAM is catalyzed by two polysialyltransferases, ST8Sia II (STX) and ST8Sia IV (PST), which belong to the family of six genes encoding alpha2,8-sialyltransferases. These enzymes add polysialic acid to NCAM N-glycans until it reaches a certain size (up to 200 sialic acid residues), where neither enzyme can interact with polysialylated N-glycans, and the polymerization of sialic acid is terminated.&lt;br&gt;Due to the structure with its chemical nature, polysialic acid can attenuate the interaction of NCAM with NCAM and other molecules in the same membrane (cis-interaction) or in another cell membrane (trans-interaction). During axonal growth the presence of polysialic acid along axons seems to prevent inappropriate synapse formation.</Comment>
+    <BiopaxRef>lit_422446</BiopaxRef>
+    <BiopaxRef>lit_422420</BiopaxRef>
+    <BiopaxRef>lit_422442</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="659.0" Y="526.0" GraphId="e_143_0"/>
+      <Point X="692.0" Y="527.0" GraphId="e_143_1"/>
+      <Point X="728.0" Y="527.0" GraphId="e_143_2" GraphRef="n146_REACTOME_422441" RelX="-1.0483870967741935" RelY="-0.18181818181818182" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_143_a_i"/>
+      <Anchor Position="0.4783753853581592" GraphId="e_143_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="605.0" Y="504.0" GraphId="e_143_i0_0" GraphRef="n144_REACTOME_422430" RelX="1.0551181102362204" RelY="-0.18181818181818182"/>
+      <Point X="639.0" Y="504.0" GraphId="e_143_i0_1"/>
+      <Point X="659.0" Y="526.0" GraphId="e_143_i0_2" GraphRef="e_143_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="597.0" Y="554.0" GraphId="e_143_i1_0" GraphRef="n145_REACTOME_422427" RelX="1.0804597701149425" RelY="-0.18181818181818182"/>
+      <Point X="645.0" Y="553.0" GraphId="e_143_i1_1"/>
+      <Point X="659.0" Y="526.0" GraphId="e_143_i1_2" GraphRef="e_143_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="691.0" Y="473.0" GraphId="e_143_c__0_0" GraphRef="n147_REACTOME_422438" RelX="0.0" RelY="1.12"/>
+      <Point X="692.0" Y="527.0" GraphId="e_143_c__0_1" GraphRef="e_143_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_REACTOME_525833">
+    <Comment Source="WikiPathways-description">NCAM1 associates with T- and L-type voltage-dependent Ca+2 channels (VDCC) in growthcones at the sites of NCAM1 clustering. This interaction leads to the NCAM-dependent Ca+2 influx to the cell.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1114.0" Y="191.0" GraphId="e_149_0"/>
+      <Point X="1083.0" Y="243.0" GraphId="e_149_1"/>
+      <Point X="1010.0" Y="256.0" GraphId="e_149_2"/>
+      <Point X="713.0" Y="256.0" GraphId="e_149_3"/>
+      <Point X="138.0" Y="256.0" GraphId="e_149_4" GraphRef="n151_REACTOME_525828" RelX="1.0619469026548674" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_149_a_i"/>
+      <Anchor Position="0.42881990574468176" GraphId="e_149_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1168.0" Y="84.0" GraphId="e_149_i0_0" GraphRef="n5_REACTOME_375103" RelX="-0.015873015873015872" RelY="1.1666666666666667"/>
+      <Point X="1168.0" Y="190.0" GraphId="e_149_i0_1"/>
+      <Point X="1114.0" Y="191.0" GraphId="e_149_i0_2" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1162.0" Y="112.0" GraphId="e_149_i1_0" GraphRef="n150_REACTOME_525824" RelX="-0.109375" RelY="1.2727272727272727"/>
+      <Point X="1114.0" Y="191.0" GraphId="e_149_i1_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_169">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1891.0" Y="818.0" GraphId="e_169_0" GraphRef="n81_REACTOME_109783" RelX="-1.069767441860465" RelY="0.0"/>
+      <Point X="1464.0" Y="818.0" GraphId="e_169_1"/>
+      <Point X="1464.0" Y="648.0" GraphId="e_169_2" GraphRef="n168_REACTOME_110029" RelX="-0.020833333333333332" RelY="1.2" ArrowHead="Arrow"/>
+      <Anchor Position="0.7152428810720268" GraphId="e_169_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_REACTOME_198756">
+    <Comment Source="WikiPathways-description">MSK1 (Ribosomal protein S6 kinase alpha-5) is a serine/threonine kinase that is localised in the nucleus. It contains two protein kinase domains in a single polypeptide. It can be activated 5-fold by ERK1/2 through phosphorylation at four key residues.</Comment>
+    <BiopaxRef>lit_199367</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1304.0" Y="435.0" GraphId="e_171_0"/>
+      <Point X="1324.0" Y="435.0" GraphId="e_171_1"/>
+      <Point X="1347.0" Y="435.0" GraphId="e_171_2"/>
+      <Anchor Position="0.0" GraphId="e_171_a_i"/>
+      <Anchor Position="0.46511627906976744" GraphId="e_171_a_p"/>
+      <Anchor Position="1.0" GraphId="e_171_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1284.0" Y="404.0" GraphId="e_171_i0_0" GraphRef="n172_REACTOME_29358" RelX="0.41025641025641024" RelY="1.2"/>
+      <Point X="1304.0" Y="435.0" GraphId="e_171_i0_1" GraphRef="e_171_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1280.0" Y="435.0" GraphId="e_171_i1_0" GraphRef="n173_REACTOME_198657" RelX="1.15" RelY="0.0"/>
+      <Point X="1304.0" Y="435.0" GraphId="e_171_i1_1" GraphRef="e_171_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1370.0" Y="400.0" GraphId="e_171_o0_0" ArrowHead="Arrow" GraphRef="n174_REACTOME_113582" RelX="-0.5" RelY="1.2"/>
+      <Point X="1347.0" Y="435.0" GraphId="e_171_o0_1" GraphRef="e_171_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1385.0" Y="435.0" GraphId="e_171_o1_0" ArrowHead="Arrow" GraphRef="n175_REACTOME_198683" RelX="-1.06" RelY="-0.07142857142857142"/>
+      <Point X="1347.0" Y="435.0" GraphId="e_171_o1_1" GraphRef="e_171_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_171_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1324.0" Y="491.0" GraphId="e_171_c__0_0" GraphRef="n176_REACTOME_198701" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1324.0" Y="435.0" GraphId="e_171_c__0_1" GraphRef="e_171_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_REACTOME_199935">
+    <Comment Source="WikiPathways-description">MSK1 is required for the mitogen-induced phosphorylation of the transcription factor, cAMP response element-binding protein (CREB).</Comment>
+    <BiopaxRef>lit_199367</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1547.0" Y="467.0" GraphId="e_177_0"/>
+      <Point X="1547.0" Y="437.0" GraphId="e_177_1"/>
+      <Point X="1547.0" Y="397.0" GraphId="e_177_2"/>
+      <Anchor Position="0.0" GraphId="e_177_a_i"/>
+      <Anchor Position="0.42857142857142855" GraphId="e_177_a_p"/>
+      <Anchor Position="1.0" GraphId="e_177_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1584.0" Y="479.0" GraphId="e_177_i0_0" GraphRef="n178_REACTOME_29358" RelX="-1.1282051282051282" RelY="-0.4666666666666667"/>
+      <Point X="1547.0" Y="467.0" GraphId="e_177_i0_1" GraphRef="e_177_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1547.0" Y="494.0" GraphId="e_177_i1_0" GraphRef="n179_REACTOME_52777" RelX="-0.05263157894736842" RelY="-1.2727272727272727"/>
+      <Point X="1547.0" Y="467.0" GraphId="e_177_i1_1" GraphRef="e_177_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1590.0" Y="386.0" GraphId="e_177_o0_0" ArrowHead="Arrow" GraphRef="n180_REACTOME_113582" RelX="-1.15" RelY="0.26666666666666666"/>
+      <Point X="1547.0" Y="397.0" GraphId="e_177_o0_1" GraphRef="e_177_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1547.0" Y="359.0" GraphId="e_177_o1_0" ArrowHead="Arrow" GraphRef="n181_REACTOME_111910" RelX="-0.021052631578947368" RelY="1.2727272727272727"/>
+      <Point X="1547.0" Y="397.0" GraphId="e_177_o1_1" GraphRef="e_177_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1491.0" Y="436.0" GraphId="e_177_c__0_0" GraphRef="n175_REACTOME_198683" RelX="1.06" RelY="0.0"/>
+      <Point X="1547.0" Y="437.0" GraphId="e_177_c__0_1" GraphRef="e_177_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_186">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1324.0" Y="607.0" GraphId="e_186_0" GraphRef="n170_REACTOME_109869" RelX="-0.023255813953488372" RelY="-1.1363636363636365"/>
+      <Point X="1324.0" Y="519.0" GraphId="e_186_1" GraphRef="n176_REACTOME_198701" RelX="0.0" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_189">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1414.0" Y="630.0" GraphId="e_189_0" GraphRef="n168_REACTOME_110029" RelX="-1.0625" RelY="0.0"/>
+      <Point X="1371.0" Y="631.0" GraphId="e_189_1" GraphRef="n170_REACTOME_109869" RelX="1.069767441860465" RelY="-0.045454545454545456" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_26" GroupRef="group_comp_26" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="117.5" CenterY="831.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_148" GroupRef="group_comp_148" TextLabel="Golgi lumen">
+    <Graphics Color="000000" CenterX="682.0" CenterY="589.5" Width="88.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_187" GroupRef="group_comp_187" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="1199.0" CenterY="550.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_26" GroupRef="group_comp_26">
+    <Graphics Color="000000" CenterX="995.0" CenterY="487.5" Width="1892.0" Height="813.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_148" GroupRef="group_comp_148">
+    <Graphics Color="000000" CenterX="665.0" CenterY="507.5" Width="456.0" Height="253.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_187" GroupRef="group_comp_187">
+    <Graphics Color="000000" CenterX="1418.0" CenterY="438.0" Width="542.0" Height="266.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375122" rdf:id="lit_375122">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15662836</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zippers make signals: NCAM-mediated molecular interactions and signal transduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walmod, PS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kolkova, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neurochem Res 29:2015-35</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375119" rdf:id="lit_375119">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17975827</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCAM-induced intracellular signaling revisited</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ditlevsen, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Povlsen, GK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neurosci Res 86:727-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419030" rdf:id="lit_419030">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18760361</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">L1 and NCAM adhesion molecules as signaling coreceptors in neuronal migration and process outgrowth</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmid, RS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maness, PF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Neurobiol 18:245-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_391814" rdf:id="lit_391814">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12700044</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cellular signalling mechanisms of neural cell adhesion molecules</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Panicker, AK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Buhusi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thelen, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maness, PF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Front Biosci 8:d900-11</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419275" rdf:id="lit_419275">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15153429</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulators of neurite outgrowth: role of cell adhesion molecules</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiryushko, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ann N Y Acad Sci 1014:140-54</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419276" rdf:id="lit_419276">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12587671</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Intracellular signaling by the neural cell adhesion molecule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Povlsen, GK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ditlevsen, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berezin, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neurochem Res 28:127-41</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_110028" rdf:id="lit_110028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9069260</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The complexity of Raf-1 regulation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morrison, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cutler, RE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 9:174-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_354156" rdf:id="lit_354156">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7997267</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrin-mediated signal transduction linked to Ras pathway by GRB2 binding to focal adhesion kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlaepfer, DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanks, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hunter, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Geer, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 372:786-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375028" rdf:id="lit_375028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2809592</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Binding properties of the neural cell adhesion molecule to different components of the extracellular matrix</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Probstmeier, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kuhn, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schachner, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neurochem 53:1794-801</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_179827" rdf:id="lit_179827">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8493579</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human Sos1: a guanine nucleotide exchange factor for Ras that binds to GRB2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chardin, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Camonis, JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gale, NW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Aelst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wigler, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bar-Sagi, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 260:1338-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_420378" rdf:id="lit_420378">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18607724</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Extracellular Protein Interactions Mediated by the Neural Cell Adhesion Molecule, NCAM: Heterophilic Interactions Between NCAM and Cell Adhesion Molecules, Extracellular Matrix Proteins, and Viruses</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kulahin, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walmod, PS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neurochem Res</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375016" rdf:id="lit_375016">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9398268</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Demonstration of an extracellular ATP-binding site in NCAM: functional implications of nucleotide binding</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dzhandzhugazyan, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 36:15381-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375030" rdf:id="lit_375030">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8262246</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Demonstration of (Ca(2+)-Mg2+)-ATPase activity of the neural cell adhesion molecule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dzhandzhugazyan, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bock, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 336:279-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_422446" rdf:id="lit_422446">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18059411</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Polysialic acid in the plasticity of the developing and adult vertebrate nervous system</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rutishauser, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Neurosci 9:26-35</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_422420" rdf:id="lit_422420">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12765789</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Polysialyltransferases: major players in polysialic acid synthesis on the neural cell adhesion molecule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Angata, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukuda, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochimie 85:195-206</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_422442" rdf:id="lit_422442">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16267048</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetic ablation of polysialic acid causes severe neurodevelopmental defects rescued by deletion of the neural cell adhesion molecule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinhold, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seidenfaden, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RÃ¶ckle, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MÃ¼hlenhoff, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schertzinger, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conzelmann, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marth, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerardy-Schahn, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hildebrandt, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:42971-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_199367" rdf:id="lit_199367">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9687510</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitogen- and stress-activated protein kinase-1 (MSK1) is directly activated by MAPK and SAPK2/p38, and may mediate activation of CREB</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deak, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clifton, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lucocq, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alessi, DR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 17:4426-41</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

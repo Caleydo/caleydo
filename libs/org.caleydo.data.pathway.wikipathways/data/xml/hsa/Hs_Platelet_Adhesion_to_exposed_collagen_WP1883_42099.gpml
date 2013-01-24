@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Platelet Adhesion to exposed collagen" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="de Bono, B">
+  <Comment Source="WikiPathways-description">Initiation is the first step in the formation of the platelet plug. This occurs whenever circulating platelets are arrested and subsequently activated by exposed collagen and vWF. Several collagen binding proteins are expressed on platelets, including integrin Alpha2 Beta1, GP VI, and GP IV. Integrin Alpha2 Beta1, also known on leukocytes as VLA-2, is the major collagen receptor. It requires Mg2+ for interacting with collagen. Binding occurs via the alpha2 subunit I domain to a collagen motif with the sequence Gly-Phe-Hyp-Gly-Glu-Arg (Emsley 2000). Binding of collagen to Alpha2 Beta1 also generates the intracellular signals that contribute to platelet activation. These facilitate the engagement of the lower-affinity collagen receptor, GP VI (Keely 1996). The second platelet receptor for collagen is GP VI. This is part of the immunoglobulin superfamily and is the most potent receptor that generates intracellular signals. Its signaling ability is strictly dependent on its association with the Fc receptor epsilon chain, which contains Immunoreceptor Tyrosine-based Activation Motifs (ITAM). GP VI is the key player in collagen-induced platelet activation. vWF  protein is a polymeric structure of variable size. It is secreted in two directions by the endothelium - basolaterally and into the bloodstream.  Shear-induced aggregation is achieved when vWF binds via its A1 domain to GPIb (part of GPIb - IX - V), and via its A3 domain mediating collagen binding to the subendothelium. The interaction between vWF and GPIb is regulated by shear force, an increase in the shear stress results in a corresponding increase in the affinity of vWF for GPIb.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n2_REACTOME_114562" TextLabel="Integrin &#10;alpha2beta1:&#10;Collagen I:Mg++&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="124.5" CenterY="165.0" Width="123.0" Height="54.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5070"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_114632" TextLabel="Magnesium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="311.5" CenterY="91.5" Width="81.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18420"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_114501" TextLabel="Collagen I&#10;" Type="Complex">
+    <BiopaxRef>lit_114502</BiopaxRef>
+    <Graphics Color="000000" CenterX="508.0" CenterY="59.5" Width="64.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2739"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_114561" TextLabel="Integrin &#10;alpha2beta1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="322.0" CenterY="172.0" Width="90.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2290"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_114503" TextLabel="GP IV : Collagen &#10;IV complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="609.0" CenterY="171.0" Width="100.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5328"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_51645" TextLabel="Platelet &#10;glycoprotein IV&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="497.5" CenterY="171.0" Width="87.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16671"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_114668" TextLabel="GPIb-IX-V &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="811.0" CenterY="169.0" Width="82.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3007"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_67271" TextLabel="Von Willebrand &#10;factor precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="686.0" CenterY="118.5" Width="116.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P04275"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_435464" TextLabel="GpIb-IX-V:vWF:&#10;Collagen IV&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1033.0" CenterY="169.5" Width="98.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20048"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_114596" TextLabel="Collagen IV : &#10;vWF complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="864.5" CenterY="85.5" Width="95.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2576"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_354251" TextLabel="LYN&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="553.5" CenterY="379.5" Width="31.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P07948"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_114575" TextLabel="GP VI : FceRI &#10;gamma dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="610.0" CenterY="470.0" Width="100.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5147"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_432297" TextLabel="GPVI:FceRI &#10;gamma:FYN:&#10;LYN&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="409.0" CenterY="469.5" Width="80.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20322"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_210223" TextLabel="FceRI gamma &#10;dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="748.5" CenterY="470.0" Width="89.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20921"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_114574" TextLabel="Platelet &#10;Glycoprotein VI&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="922.5" CenterY="474.5" Width="103.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9HCN6"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_434812" TextLabel="GPVI:FceRI &#10;gamma:FYN:&#10;LYN:Collagen I&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="293.0" CenterY="469.5" Width="90.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20373"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_200917" TextLabel="FYN&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="496.0" CenterY="381.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P06241"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_114594" TextLabel="Collagen I (alpha 1, &#10;alpha 1, alpha 2)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="260.0" CenterY="286.5" Width="124.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2604"/>
+  </DataNode>
+  <Line GraphId="e_6_REACTOME_114563">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Magnesium', 1 molecule of 'Collagen I', and 1 molecule of 'Alpha 2 Beta 1 Integrin' are present. At the end of this reaction, 1 molecule of 'Alpha 2 Beta 1 Integrin : Collagen IV: Mg++ complex' is present.&lt;br&gt;&lt;br&gt; &lt;br&gt;</Comment>
+    <BiopaxRef>lit_140043</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="258.0" Y="133.0" GraphId="e_6_0"/>
+      <Point X="238.0" Y="135.0" GraphId="e_6_1"/>
+      <Point X="189.0" Y="148.0" GraphId="e_6_2" GraphRef="n2_REACTOME_114562" RelX="1.056910569105691" RelY="-0.6296296296296297" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_6_a_i"/>
+      <Anchor Position="0.2839151682257526" GraphId="e_6_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="291.0" Y="110.0" GraphId="e_6_i0_0" GraphRef="n3_REACTOME_114632" RelX="-0.49382716049382713" RelY="1.2258064516129032"/>
+      <Point X="258.0" Y="133.0" GraphId="e_6_i0_1" GraphRef="e_6_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="259.0" Y="266.0" GraphId="e_6_i1_0" GraphRef="n26_REACTOME_114594" RelX="-0.016129032258064516" RelY="-1.1428571428571428"/>
+      <Point X="258.0" Y="133.0" GraphId="e_6_i1_1" GraphRef="e_6_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="290.0" Y="150.0" GraphId="e_6_i2_0" GraphRef="n5_REACTOME_114561" RelX="-0.7111111111111111" RelY="-1.1578947368421053"/>
+      <Point X="258.0" Y="133.0" GraphId="e_6_i2_1" GraphRef="e_6_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_114504">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Platelet glycoprotein IV', and 1 molecule of 'Collagen I' are present. At the end of this reaction, 1 molecule of 'GP IV : Collagen IV complex' is present.&lt;br&gt;&lt;br&gt; &lt;br&gt;</Comment>
+    <BiopaxRef>lit_140149</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="527.0" Y="127.0" GraphId="e_9_0"/>
+      <Point X="553.0" Y="138.0" GraphId="e_9_1"/>
+      <Point X="576.0" Y="149.0" GraphId="e_9_2" GraphRef="n7_REACTOME_114503" RelX="-0.66" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_9_a_i"/>
+      <Anchor Position="0.5254632421388615" GraphId="e_9_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="511.0" Y="74.0" GraphId="e_9_i0_0" GraphRef="n4_REACTOME_114501" RelX="0.09375" RelY="1.3043478260869565"/>
+      <Point X="527.0" Y="127.0" GraphId="e_9_i0_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="509.0" Y="149.0" GraphId="e_9_i1_0" GraphRef="n8_REACTOME_51645" RelX="0.27586206896551724" RelY="-1.1578947368421053"/>
+      <Point X="527.0" Y="127.0" GraphId="e_9_i1_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_114670">
+    <Comment Source="WikiPathways-description">The initial tethering of platelets at sites of vascular injury is mediated by a receptor complex of glycoproteins 1b, IX and V (GP1b-IX-V - frequently referred to as the GPIb receptor). The GP1b component binds to von Willebrand factor (vWF) complexed with collagen exposed in vascular epithelium following injury. In conditions of high shear stress, when a blood vessel is partially blocked, vWF can bind to GP1b:V:IX in tha absence of collagen, a major factor in heart attack and stroke. GPIb-IX-V interaction with vWF:collagen potentiates the ability of alphaIIb betaIII integrin to bind vWF and fibrinogen, triggering stable platelet adhesion and generation of further signals that lead to aggregation.</Comment>
+    <BiopaxRef>lit_140136</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="918.0" Y="132.0" GraphId="e_14_0"/>
+      <Point X="949.0" Y="144.0" GraphId="e_14_1"/>
+      <Point X="981.0" Y="154.0" GraphId="e_14_2" GraphRef="n12_REACTOME_435464" RelX="-1.0612244897959184" RelY="-0.7692307692307693" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_14_a_i"/>
+      <Anchor Position="0.49786896084108123" GraphId="e_14_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="855.0" Y="154.0" GraphId="e_14_i0_0" GraphRef="n10_REACTOME_114668" RelX="1.0731707317073171" RelY="-0.7894736842105263"/>
+      <Point X="918.0" Y="132.0" GraphId="e_14_i0_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="886.0" Y="108.0" GraphId="e_14_i1_0" GraphRef="n13_REACTOME_114596" RelX="0.4631578947368421" RelY="1.1794871794871795"/>
+      <Point X="918.0" Y="132.0" GraphId="e_14_i1_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_REACTOME_114671">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Collagen I', and 1 molecule of 'Von Willebrand factor precursor' are present. At the end of this reaction, 1 molecule of 'Collagen IV : vWF complex' is present.&lt;br&gt;&lt;br&gt; &lt;br&gt;</Comment>
+    <BiopaxRef>lit_140122</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="702.0" Y="84.0" GraphId="e_15_0"/>
+      <Point X="742.0" Y="85.0" GraphId="e_15_1"/>
+      <Point X="814.0" Y="85.0" GraphId="e_15_2" GraphRef="n13_REACTOME_114596" RelX="-1.0526315789473684" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_15_a_i"/>
+      <Anchor Position="0.3572145853806665" GraphId="e_15_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="694.0" Y="98.0" GraphId="e_15_i0_0" GraphRef="n11_REACTOME_67271" RelX="0.13793103448275862" RelY="-1.1428571428571428"/>
+      <Point X="702.0" Y="84.0" GraphId="e_15_i0_1" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="543.0" Y="63.0" GraphId="e_15_i1_0" GraphRef="n4_REACTOME_114501" RelX="1.09375" RelY="0.34782608695652173"/>
+      <Point X="702.0" Y="84.0" GraphId="e_15_i1_1" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_432295">
+    <Comment Source="WikiPathways-description">Fyn and Lyn constitutively associate with GPVI-Fc epsilon R1 gamma in platelets. The proline-rich region of GPVI is required for this interaction.</Comment>
+    <BiopaxRef>lit_210193</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="534.0" Y="425.0" GraphId="e_23_0"/>
+      <Point X="505.0" Y="428.0" GraphId="e_23_1"/>
+      <Point X="452.0" Y="451.0" GraphId="e_23_2" GraphRef="n18_REACTOME_432297" RelX="1.075" RelY="-0.6792452830188679" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_23_a_i"/>
+      <Anchor Position="0.33538130487478374" GraphId="e_23_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="548.0" Y="394.0" GraphId="e_23_i0_0" GraphRef="n16_REACTOME_354251" RelX="-0.3225806451612903" RelY="1.3043478260869565"/>
+      <Point X="534.0" Y="425.0" GraphId="e_23_i0_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="577.0" Y="448.0" GraphId="e_23_i1_0" GraphRef="n17_REACTOME_114575" RelX="-0.66" RelY="-1.1578947368421053"/>
+      <Point X="534.0" Y="425.0" GraphId="e_23_i1_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="505.0" Y="395.0" GraphId="e_23_i2_0" GraphRef="n22_REACTOME_200917" RelX="0.47368421052631576" RelY="1.2727272727272727"/>
+      <Point X="534.0" Y="425.0" GraphId="e_23_i2_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_REACTOME_114577">
+    <Comment Source="WikiPathways-description">The GPVI receptor is a complex of the GPVI protein with Fc epsilon R1 gamma (FceRIgamma). The Src family kinases Fyn and Lyn constitutively associate with the GPVI-FceRIgamma complex in platelets and initiate platelet activation through phosphorylation of the immunoreceptor tyrosine-based activation motif (ITAM) in the FceRIgamma chain, leading to binding and activation of the tyrosine kinase Syk. Downstream of Syk, a series of adapter molecules and effectors lead to platelet activation.</Comment>
+    <BiopaxRef>lit_139996</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="320.0" Y="348.0" GraphId="e_24_0"/>
+      <Point X="297.0" Y="392.0" GraphId="e_24_1"/>
+      <Point X="294.0" Y="440.0" GraphId="e_24_2" GraphRef="n21_REACTOME_434812" RelX="0.022222222222222223" RelY="-1.0943396226415094" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_24_a_i"/>
+      <Anchor Position="0.507955131684022" GraphId="e_24_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="389.0" Y="440.0" GraphId="e_24_i0_0" GraphRef="n18_REACTOME_432297" RelX="-0.5" RelY="-1.0943396226415094"/>
+      <Point X="320.0" Y="348.0" GraphId="e_24_i0_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="500.0" Y="74.0" GraphId="e_24_i1_0" GraphRef="n4_REACTOME_114501" RelX="-0.25" RelY="1.3043478260869565"/>
+      <Point X="320.0" Y="348.0" GraphId="e_24_i1_1" GraphRef="e_24_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_REACTOME_210282">
+    <Comment Source="WikiPathways-description">Glycoprotein VI (GPVI) was identified as a collagen receptor from studies of patients with a GPVI deficiency. GPVI-deficient platelets lack collagen-induced aggregation and the ability to form thrombi on a collagen surface under flow conditions. GPVI complexes with the Fc epsilon R1 receptor gamma chain, with a possible stochiometry of two GPVI molecules and one FceRI gamma-chain dimer (Jung &amp; Moroi 2008). GPVI binding to FcR gamma is necessary for high affinity GPVI binding to collagen.</Comment>
+    <BiopaxRef>lit_140134</BiopaxRef>
+    <BiopaxRef>lit_210067</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="743.0" Y="425.0" GraphId="e_25_0"/>
+      <Point X="704.0" Y="428.0" GraphId="e_25_1"/>
+      <Point X="652.0" Y="448.0" GraphId="e_25_2" GraphRef="n17_REACTOME_114575" RelX="0.84" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_25_a_i"/>
+      <Anchor Position="0.41248257723834947" GraphId="e_25_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="868.0" Y="459.0" GraphId="e_25_i0_0" GraphRef="n20_REACTOME_114574" RelX="-1.0485436893203883" RelY="-0.8571428571428571"/>
+      <Point X="743.0" Y="425.0" GraphId="e_25_i0_1" GraphRef="e_25_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="745.0" Y="448.0" GraphId="e_25_i1_0" GraphRef="n19_REACTOME_210223" RelX="-0.06741573033707865" RelY="-1.1578947368421053"/>
+      <Point X="743.0" Y="425.0" GraphId="e_25_i1_1" GraphRef="e_25_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="1052.5" CenterY="459.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="572.0" CenterY="322.0" Width="1070.0" Height="314.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114502" rdf:id="lit_114502">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Extracellular Matrix Factsbook</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ayad, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kadler, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boot-Handford, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Humphries, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shuttleworth, A</bp:AUTHORS>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140043" rdf:id="lit_140043">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10778855</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis of collagen recognition by integrin alpha2beta1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Emsley, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Knight, CG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Farndale, RW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barnes, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liddington, RC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 101:47-56</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140149" rdf:id="lit_140149">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1715582</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Membrane glycoprotein IV (CD36) is physically associated with the Fyn, Lyn, and Yes protein-tyrosine kinases in human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bolen, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barnwell, JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shattil, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brugge, JS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 88:7844-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140136" rdf:id="lit_140136">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1939645</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">von Willebrand factor binding to platelet GpIb initiates signals for platelet activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kroll, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, TS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moake, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handin, RI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schafer, AI</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest 88:1568-73</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140122" rdf:id="lit_140122">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3872140</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1985</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Factor VIII/von Willebrand factor in subendothelium mediates platelet adhesion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turitto, VT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiss, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zimmerman, TS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sussman, II</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 65:823-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210193" rdf:id="lit_210193">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11943772</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Association of Fyn and Lyn with the proline-rich domain of glycoprotein VI regulates intracellular signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki-Inoue, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tulasne, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shen, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bori-Sanz, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inoue, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jung, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moroi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andrews, RK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berndt, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:21561-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_139996" rdf:id="lit_139996">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9295288</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A novel association of Fc receptor gamma-chain with glycoprotein VI and their co-expression as a collagen receptor in human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsuji, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ezumi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arai, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takayama, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:23528-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140134" rdf:id="lit_140134">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9280292</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glycoprotein VI is the collagen receptor in platelets which underlies tyrosine phosphorylation of the Fc receptor gamma-chain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gibbins, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okuma, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Farndale, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barnes, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson, SP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 413:255-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_210067" rdf:id="lit_210067">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16102042</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GPVI and integrin alphaIIb beta3 signaling in platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Auger, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCarty, OJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pearce, AC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost 3:1752-62</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

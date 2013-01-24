@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Myogenesis" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n1_REACTOME_197892" TextLabel="CDO&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="421.0" CenterY="61.0" Width="34.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q4KMG0"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_197785" TextLabel="BOC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="421.0" CenterY="38.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BWV1-1"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_375094" TextLabel="CDO:BOC&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="561.0" CenterY="61.0" Width="62.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21552"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_448888" TextLabel="Trans-cadherin &#10;homodimers&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="564.0" CenterY="34.0" Width="102.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21790"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_375092" TextLabel="CDO:BOC:Trans-&#10;cadherin &#10;homodimer:catenin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="752.5" CenterY="63.0" Width="119.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21975"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_200792" TextLabel="BNIP2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="792.0" CenterY="132.0" Width="42.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q12982"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_376008" TextLabel="Cadherin-catenin:&#10;CDO:BOC:Bnip2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="958.0" CenterY="62.0" Width="112.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21887"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_182921" TextLabel="CDC42-GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="972.0" CenterY="132.0" Width="80.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_12889"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_448875" TextLabel="Cadherin-catenin:&#10;CDO:BOC:Bnip2:&#10;CDC42-GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1162.0" CenterY="62.0" Width="112.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22063"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_375975" TextLabel="JLP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1203.5" CenterY="132.0" Width="25.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60271"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_376011" TextLabel="Cadherin-catenin:JLP:&#10;CDO:BOC:Bnip2-&#10;Cdc42&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1375.5" CenterY="61.0" Width="127.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21868"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_375987" TextLabel="ABL1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1420.5" CenterY="132.0" Width="37.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00519"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_449191" TextLabel="ABL1:JLP:CDO &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1493.0" CenterY="193.0" Width="92.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21587"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_448855" TextLabel="p38 MAPK &#10;alpha/beta/gamma&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1351.5" CenterY="192.0" Width="121.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21979"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_448887" TextLabel="p38 &#10;alpha/beta/gamma:&#10;ABL1:JLP:CDO &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1493.5" CenterY="370.0" Width="129.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21610"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1384.5" CenterY="418.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1380.0" CenterY="499.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_448881" TextLabel="pp38 &#10;alpha/beta/gamma:&#10;ABL1:JLP:CDO &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1493.5" CenterY="545.0" Width="125.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21750"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_206255" TextLabel="Phospho MKK6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1359.5" CenterY="458.0" Width="95.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P52564"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_448858" TextLabel="phospho-p38 &#10;alpha/beta/gamma &#10;MAPK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1080.5" CenterY="491.0" Width="125.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21534"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_448859" TextLabel="E12/E47&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1168.0" CenterY="309.0" Width="60.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21923"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1172.5" CenterY="391.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_448853" TextLabel="phospho-E12/E47&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="978.5" CenterY="309.0" Width="117.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21834"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="983.0" CenterY="391.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_448867" TextLabel="phospho-E proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="853.5" CenterY="310.0" Width="123.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21977"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_448854" TextLabel="Myod&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="867.5" CenterY="391.0" Width="39.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22068"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_448886" TextLabel="Myod:phospho-E &#10;heterodimers&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="672.5" CenterY="353.0" Width="111.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22043"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_448868" TextLabel="MEF2 proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1050.0" CenterY="544.0" Width="90.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21665"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="994.5" CenterY="572.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="842.0" CenterY="569.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n32_REACTOME_448874" TextLabel="phospho p38:&#10;phospho MEF2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="787.5" CenterY="491.0" Width="93.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21504"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_448866" TextLabel="phospho-MEF2 &#10;proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="672.0" CenterY="417.0" Width="100.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21928"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_448877" TextLabel="MyoD:phospho-E:&#10;phospho MEF2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="451.0" CenterY="384.0" Width="112.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21758"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_448880" TextLabel="Netrin-3:Neogenin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="326.0" CenterY="61.0" Width="116.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21427"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_375091" TextLabel="CDO:BOC:Neogenin:&#10;Netrin-3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="96.0" CenterY="61.0" Width="124.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22053"/>
+  </DataNode>
+  <Line GraphId="e_38_REACTOME_375138">
+    <Comment Source="WikiPathways-description">CDO and BOC form complexes in a cis fashion via association of both their ectodomains and their intracellular domains. CDO and BOC exert their effects as components of a receptor, in which the role of BOC is primarily extracellular and that of CDO includes intracellular signaling.</Comment>
+    <BiopaxRef>lit_374997</BiopaxRef>
+    <BiopaxRef>lit_448927</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="461.0" Y="61.0" GraphId="e_38_0"/>
+      <Point X="488.0" Y="61.0" GraphId="e_38_1"/>
+      <Point X="527.0" Y="61.0" GraphId="e_38_2" GraphRef="n3_REACTOME_375094" RelX="-1.096774193548387" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_38_a_i"/>
+      <Anchor Position="0.4090909090909091" GraphId="e_38_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="441.0" Y="61.0" GraphId="e_38_i0_0" GraphRef="n1_REACTOME_197892" RelX="1.1764705882352942" RelY="0.0"/>
+      <Point X="461.0" Y="61.0" GraphId="e_38_i0_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="440.0" Y="47.0" GraphId="e_38_i1_0" GraphRef="n2_REACTOME_197785" RelX="1.1875" RelY="0.8181818181818182"/>
+      <Point X="461.0" Y="61.0" GraphId="e_38_i1_1" GraphRef="e_38_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_REACTOME_375140">
+    <Comment Source="WikiPathways-description">In myoblasts, CDO forms cis complexes with the cellâcell adhesion molecule N-cadherin, which is itself involved in regulation of myogenesis. These cadherin complexes contain beta- and alpha-catenins which are important for N-cadherin's effect in myoblast.
+When CDO binds with ligated cadherins, its intracellular region undergoes a change in conformation and/or posttranslational modi?cation that permits its stable association with Bnip-2 and JLP and, consequently, activation of p38.</Comment>
+    <BiopaxRef>lit_375845</BiopaxRef>
+    <BiopaxRef>lit_525775</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="626.0" Y="61.0" GraphId="e_39_0"/>
+      <Point X="651.0" Y="61.0" GraphId="e_39_1"/>
+      <Point X="690.0" Y="61.0" GraphId="e_39_2" GraphRef="n5_REACTOME_375092" RelX="-1.0420168067226891" RelY="-0.08" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_39_a_i"/>
+      <Anchor Position="0.390625" GraphId="e_39_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="605.0" Y="55.0" GraphId="e_39_i0_0" GraphRef="n4_REACTOME_448888" RelX="0.803921568627451" RelY="1.1666666666666667"/>
+      <Point X="626.0" Y="61.0" GraphId="e_39_i0_1" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="595.0" Y="61.0" GraphId="e_39_i1_0" GraphRef="n3_REACTOME_375094" RelX="1.096774193548387" RelY="0.0"/>
+      <Point X="626.0" Y="61.0" GraphId="e_39_i1_1" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_376121">
+    <Comment Source="WikiPathways-description">Bnip-2 is a scaffold protein with a single recognizable motif, a BCH domain that spans its C-terminal half involved in the dynamic regulation of Cdc42 signaling. The CDO intracellular region binds Bnip-2 and this complex regulates Cdc42 activity.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="838.0" Y="61.0" GraphId="e_40_0"/>
+      <Point X="862.0" Y="61.0" GraphId="e_40_1"/>
+      <Point X="899.0" Y="61.0" GraphId="e_40_2" GraphRef="n7_REACTOME_376008" RelX="-1.0535714285714286" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_40_a_i"/>
+      <Anchor Position="0.39344262295081966" GraphId="e_40_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="799.0" Y="118.0" GraphId="e_40_i0_0" GraphRef="n6_REACTOME_200792" RelX="0.3333333333333333" RelY="-1.2727272727272727"/>
+      <Point X="838.0" Y="61.0" GraphId="e_40_i0_1" GraphRef="e_40_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="815.0" Y="61.0" GraphId="e_40_i1_0" GraphRef="n5_REACTOME_375092" RelX="1.0588235294117647" RelY="-0.08"/>
+      <Point X="838.0" Y="61.0" GraphId="e_40_i1_1" GraphRef="e_40_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_REACTOME_376119">
+    <Comment Source="WikiPathways-description">Bnip-2 interacts with Cdc42 through its Bnip-2 and Cdc42GAP homology (BCH) domain and thus it acts as a linkage between the CDO receptor and the Cdc42 activity. Formation of a CDO-Bnip-2-Cdc42 complex stimulates Cdc42 activation which in turn promotes p38 alpha/beta activity and cell differentiation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1039.0" Y="61.0" GraphId="e_41_0"/>
+      <Point X="1066.0" Y="61.0" GraphId="e_41_1"/>
+      <Point X="1103.0" Y="61.0" GraphId="e_41_2" GraphRef="n9_REACTOME_448875" RelX="-1.0535714285714286" RelY="-0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_41_a_i"/>
+      <Anchor Position="0.421875" GraphId="e_41_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="982.0" Y="118.0" GraphId="e_41_i0_0" GraphRef="n8_REACTOME_182921" RelX="0.25" RelY="-1.2727272727272727"/>
+      <Point X="1039.0" Y="61.0" GraphId="e_41_i0_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1017.0" Y="61.0" GraphId="e_41_i1_0" GraphRef="n7_REACTOME_376008" RelX="1.0535714285714286" RelY="-0.05555555555555555"/>
+      <Point X="1039.0" Y="61.0" GraphId="e_41_i1_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_REACTOME_376117">
+    <Comment Source="WikiPathways-description">JLP is a scaffold protein for the p38 MAPK pathway. During myogenic differentiation JLP binds the intracellular region of CDO which in turn binds p38 leading to p38 activation. The major CDO-binding region of JLP resides between amino acids 465-647.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1246.0" Y="61.0" GraphId="e_42_0"/>
+      <Point X="1275.0" Y="61.0" GraphId="e_42_1"/>
+      <Point X="1309.0" Y="61.0" GraphId="e_42_2" GraphRef="n12_REACTOME_376011" RelX="-1.0393700787401574" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_42_a_i"/>
+      <Anchor Position="0.4603174603174603" GraphId="e_42_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1221.0" Y="61.0" GraphId="e_42_i0_0" GraphRef="n9_REACTOME_448875" RelX="1.0535714285714286" RelY="-0.04"/>
+      <Point X="1246.0" Y="61.0" GraphId="e_42_i0_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1209.0" Y="118.0" GraphId="e_42_i1_0" GraphRef="n11_REACTOME_375975" RelX="0.48" RelY="-1.2727272727272727"/>
+      <Point X="1246.0" Y="61.0" GraphId="e_42_i1_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_REACTOME_449200">
+    <Comment Source="WikiPathways-description">ABL binds to the cytoplasmic tail of CDO and also to the p38 MAPK scaffold protein JLP. ABL binds a proline-rich motif in CDO via its SH3 domain, and ABL is necessary for full activation of p38 MAPK, during myogenic differentiation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1463.0" Y="59.0" GraphId="e_43_0"/>
+      <Point X="1491.0" Y="59.0" GraphId="e_43_1"/>
+      <Point X="1492.0" Y="172.0" GraphId="e_43_2" GraphRef="n14_REACTOME_449191" RelX="-0.021739130434782608" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_43_a_i"/>
+      <Anchor Position="0.19857532883194806" GraphId="e_43_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1442.0" Y="59.0" GraphId="e_43_i0_0" GraphRef="n12_REACTOME_376011" RelX="1.0551181102362204" RelY="-0.08"/>
+      <Point X="1463.0" Y="59.0" GraphId="e_43_i0_1" GraphRef="e_43_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1426.0" Y="118.0" GraphId="e_43_i1_0" GraphRef="n13_REACTOME_375987" RelX="0.32432432432432434" RelY="-1.2727272727272727"/>
+      <Point X="1463.0" Y="59.0" GraphId="e_43_i1_1" GraphRef="e_43_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_REACTOME_448957">
+    <Comment Source="WikiPathways-description">JLP is a p38 alpha/beta MAPK scaffold protein. p38 alpha/beta MAPK binds to two sites within JLP (amino acids 1-110 and 160-209), neither of which overlaps the CDO binding region.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1493.0" Y="257.0" GraphId="e_44_0"/>
+      <Point X="1493.0" Y="289.0" GraphId="e_44_1"/>
+      <Point X="1493.0" Y="335.0" GraphId="e_44_2" GraphRef="n16_REACTOME_448887" RelX="0.0" RelY="-1.09375" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_44_a_i"/>
+      <Anchor Position="0.41025641025641024" GraphId="e_44_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1493.0" Y="214.0" GraphId="e_44_i0_0" GraphRef="n14_REACTOME_449191" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="1493.0" Y="257.0" GraphId="e_44_i0_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1390.0" Y="213.0" GraphId="e_44_i1_0" GraphRef="n15_REACTOME_448855" RelX="0.6446280991735537" RelY="1.1666666666666667"/>
+      <Point X="1493.0" Y="257.0" GraphId="e_44_i1_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_REACTOME_448951">
+    <Comment Source="WikiPathways-description">p38 alpha/beta MAPK is well established as a promyogenic kinase, but the mechanishms by which it is activated during differentiation is not well understood. CDO, JLP and p38 form a ternary complex and it is anticipated that in its role as a scaffold, JLP brings additional components of the pathway, such as MKKs, to these complexes and cooperate to activate p38 alpha/beta MAPK pathway. [p38 is activated by phosphorylation on a canonical TxY motif by dual specificity kinases MKK6 and MKK3. MKK6 is most abundant in skeletal muscles and displays minimal substrate selectivity among all p38 isoforms.]</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1491.0" Y="433.0" GraphId="e_45_0"/>
+      <Point X="1491.0" Y="458.0" GraphId="e_45_1"/>
+      <Point X="1491.0" Y="486.0" GraphId="e_45_2"/>
+      <Anchor Position="0.0" GraphId="e_45_a_i"/>
+      <Anchor Position="0.4716981132075472" GraphId="e_45_a_p"/>
+      <Anchor Position="1.0" GraphId="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1407.0" Y="420.0" GraphId="e_45_i0_0" GraphRef="n17_REACTOME_113592" RelX="1.1794871794871795" RelY="0.13333333333333333"/>
+      <Point X="1491.0" Y="433.0" GraphId="e_45_i0_1" GraphRef="e_45_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1491.0" Y="405.0" GraphId="e_45_i1_0" GraphRef="n16_REACTOME_448887" RelX="-0.031007751937984496" RelY="1.09375"/>
+      <Point X="1491.0" Y="433.0" GraphId="e_45_i1_1" GraphRef="e_45_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1403.0" Y="496.0" GraphId="e_45_o0_0" ArrowHead="Arrow" GraphRef="n18_REACTOME_29370" RelX="1.15" RelY="-0.2"/>
+      <Point X="1491.0" Y="486.0" GraphId="e_45_o0_1" GraphRef="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1491.0" Y="510.0" GraphId="e_45_o1_0" ArrowHead="Arrow" GraphRef="n19_REACTOME_448881" RelX="-0.032" RelY="-1.09375"/>
+      <Point X="1491.0" Y="486.0" GraphId="e_45_o1_1" GraphRef="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1410.0" Y="458.0" GraphId="e_45_c__0_0" GraphRef="n20_REACTOME_206255" RelX="1.0736842105263158" RelY="0.0"/>
+      <Point X="1491.0" Y="458.0" GraphId="e_45_c__0_1" GraphRef="e_45_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_REACTOME_448958">
+    <Comment Source="WikiPathways-description">p38 MAPK is activated by phosphorylation in response to CDO-BOC interactions. Activated p38 MAPK may translocate into the nucleus to further activate myogenic related transcription factors.</Comment>
+    <BiopaxRef>lit_448923</BiopaxRef>
+    <BiopaxRef>lit_448920</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1493.0" Y="580.0" GraphId="e_46_0" GraphRef="n19_REACTOME_448881" RelX="0.0" RelY="1.09375"/>
+      <Point X="1493.0" Y="611.0" GraphId="e_46_1"/>
+      <Point X="1493.0" Y="648.0" GraphId="e_46_2"/>
+      <Anchor Position="0.45588235294117646" GraphId="e_46_a_p"/>
+      <Anchor Position="1.0" GraphId="e_46_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1542.0" Y="192.0" GraphId="e_46_o0_0" ArrowHead="Arrow" GraphRef="n14_REACTOME_449191" RelX="1.065217391304348" RelY="-0.05555555555555555"/>
+      <Point X="1585.0" Y="192.0" GraphId="e_46_o0_1"/>
+      <Point X="1585.0" Y="593.0" GraphId="e_46_o0_2"/>
+      <Point X="1493.0" Y="648.0" GraphId="e_46_o0_3" GraphRef="e_46_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1146.0" Y="514.0" GraphId="e_46_o1_0" ArrowHead="Arrow" GraphRef="n21_REACTOME_448858" RelX="1.056" RelY="0.92"/>
+      <Point X="1493.0" Y="648.0" GraphId="e_46_o1_1" GraphRef="e_46_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_REACTOME_448948">
+    <Comment Source="WikiPathways-description">p38 MAPK plays a fundamental role in the transition of myoblasts to different myocytes. Activated p38 MAPK phosphorylates E12/E47, a member of the E protein subfamily of bHLH proteins. p38 MAPK in particular phosphorylates Ser140 of E47. Its been observed that phosphorylation of E47 improves its ability to form heterodimers with Myod transcription factor.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1120.0" Y="351.0" GraphId="e_47_0"/>
+      <Point X="1079.0" Y="351.0" GraphId="e_47_1"/>
+      <Point X="1038.0" Y="351.0" GraphId="e_47_2"/>
+      <Anchor Position="0.0" GraphId="e_47_a_i"/>
+      <Anchor Position="0.5" GraphId="e_47_a_p"/>
+      <Anchor Position="1.0" GraphId="e_47_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1155.0" Y="323.0" GraphId="e_47_i0_0" GraphRef="n22_REACTOME_448859" RelX="-0.43333333333333335" RelY="1.2727272727272727"/>
+      <Point X="1120.0" Y="351.0" GraphId="e_47_i0_1" GraphRef="e_47_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1150.0" Y="376.0" GraphId="e_47_i1_0" GraphRef="n23_REACTOME_29358" RelX="-1.1282051282051282" RelY="-1.0"/>
+      <Point X="1120.0" Y="351.0" GraphId="e_47_i1_1" GraphRef="e_47_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="993.0" Y="323.0" GraphId="e_47_o0_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_448853" RelX="0.2564102564102564" RelY="1.2727272727272727"/>
+      <Point X="1038.0" Y="351.0" GraphId="e_47_o0_1" GraphRef="e_47_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1006.0" Y="376.0" GraphId="e_47_o1_0" ArrowHead="Arrow" GraphRef="n25_REACTOME_113582" RelX="1.15" RelY="-1.0"/>
+      <Point X="1038.0" Y="351.0" GraphId="e_47_o1_1" GraphRef="e_47_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1079.0" Y="463.0" GraphId="e_47_c__0_0" GraphRef="n21_REACTOME_448858" RelX="-0.016" RelY="-1.12"/>
+      <Point X="1079.0" Y="351.0" GraphId="e_47_c__0_1" GraphRef="e_47_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_48_REACTOME_448962">
+    <Comment Source="WikiPathways-description">MyoD is a basic helix loop helix (bHLH) myoblast specific transcription factor defined as a 'master switch' gene in that it can convert other cell types into muscles if the gene is active in them. bHLH proteins Myf5, Myogenin and MRF4/Myf6 are highly related to MyoD and these along with MyoD form the 'MyoD family' of transcription factors, also called the myogenic regulatory factors (MRFs). &lt;br&gt;MRFs form transcriptionally active heterodimers with the widely expressed E proteins, a distinct group of bHLH proteins including E12/E47, ITF-2 and HEB. Dimerization of these proteins juxtaposes their basic domains forming a functional DNA binding domain. MyoD/E protein heterodimers preferentially bind the DNA consensus sequence referred to as an E-box (CANNTG) in the control regions of muscle-specific genes and activate gene transcription of genes that are expressed in skeletal muscle.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="820.0" Y="351.0" GraphId="e_48_0"/>
+      <Point X="775.0" Y="351.0" GraphId="e_48_1"/>
+      <Point X="731.0" Y="351.0" GraphId="e_48_2" GraphRef="n28_REACTOME_448886" RelX="1.063063063063063" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_48_a_i"/>
+      <Anchor Position="0.5056179775280899" GraphId="e_48_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_48_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="844.0" Y="324.0" GraphId="e_48_i0_0" GraphRef="n26_REACTOME_448867" RelX="-0.14634146341463414" RelY="1.2727272727272727"/>
+      <Point X="820.0" Y="351.0" GraphId="e_48_i0_1" GraphRef="e_48_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_48_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="854.0" Y="377.0" GraphId="e_48_i1_0" GraphRef="n27_REACTOME_448854" RelX="-0.6666666666666666" RelY="-1.2727272727272727"/>
+      <Point X="820.0" Y="351.0" GraphId="e_48_i1_1" GraphRef="e_48_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_REACTOME_448955">
+    <Comment Source="WikiPathways-description">The family of transcription factors myocyte enhancer factor-2 (MEF2) regulate myogenesis through combinatorial interactions with other transcription factors to the MEF2 site found in the promoter regions of numerous muscle specific genes. There are four members of the MEF2 family, MEF2A to D.&lt;br&gt;p38 MAPK plays a role in the regulation of the MEF2 family members and this is mediated by the phosphorylation of two or three (Thr312 and 319 in MEF2A and Thr 293, 300 and ser387 in MEF2C) amino acids in the C-terminal activation domain of MEF2 factors. MEF2A and MEF2C are preferred substrates for p38 compared with MEF2B and MEF2D. The phosphorylation of MEF2 members results in their increased transcriptional activity.</Comment>
+    <BiopaxRef>lit_448932</BiopaxRef>
+    <BiopaxRef>lit_448930</BiopaxRef>
+    <BiopaxRef>lit_448936</BiopaxRef>
+    <BiopaxRef>lit_448894</BiopaxRef>
+    <BiopaxRef>lit_448906</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="969.0" Y="491.0" GraphId="e_49_0"/>
+      <Point X="922.0" Y="491.0" GraphId="e_49_1"/>
+      <Point X="879.0" Y="491.0" GraphId="e_49_2"/>
+      <Anchor Position="0.0" GraphId="e_49_a_i"/>
+      <Anchor Position="0.5222222222222223" GraphId="e_49_a_p"/>
+      <Anchor Position="1.0" GraphId="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1033.0" Y="530.0" GraphId="e_49_i0_0" GraphRef="n29_REACTOME_448868" RelX="-0.37777777777777777" RelY="-1.2727272727272727"/>
+      <Point X="969.0" Y="491.0" GraphId="e_49_i0_1" GraphRef="e_49_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="989.0" Y="554.0" GraphId="e_49_i1_0" GraphRef="n30_REACTOME_29358" RelX="-0.2564102564102564" RelY="-1.2"/>
+      <Point X="969.0" Y="491.0" GraphId="e_49_i1_1" GraphRef="e_49_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1015.0" Y="491.0" GraphId="e_49_i2_0" GraphRef="n21_REACTOME_448858" RelX="-1.04" RelY="0.0"/>
+      <Point X="969.0" Y="491.0" GraphId="e_49_i2_1" GraphRef="e_49_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="849.0" Y="551.0" GraphId="e_49_o0_0" ArrowHead="Arrow" GraphRef="n31_REACTOME_113582" RelX="0.35" RelY="-1.2"/>
+      <Point X="879.0" Y="491.0" GraphId="e_49_o0_1" GraphRef="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="837.0" Y="491.0" GraphId="e_49_o1_0" ArrowHead="Arrow" GraphRef="n32_REACTOME_448874" RelX="1.075268817204301" RelY="0.0"/>
+      <Point X="879.0" Y="491.0" GraphId="e_49_o1_1" GraphRef="e_49_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_49_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1079.0" Y="463.0" GraphId="e_49_c__0_0" GraphRef="n21_REACTOME_448858" RelX="-0.016" RelY="-1.12"/>
+      <Point X="1079.0" Y="448.0" GraphId="e_49_c__0_1"/>
+      <Point X="921.0" Y="448.0" GraphId="e_49_c__0_2"/>
+      <Point X="922.0" Y="491.0" GraphId="e_49_c__0_3" GraphRef="e_49_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_REACTOME_448963">
+    <Comment Source="WikiPathways-description">MyoD-E protein heterodimers interact with MEF2 proteins to synergistically activate myogenesis. This interaction occurs via association of these two heterologous classes of transcription factors through their DNA-binding and dimerization motifs. The combinatorial associations of these two protein families appear to establish a transcriptional code specific for skeletal muscle gene activation. Together with the Mef2 proteins and E proteins, MyoD transcription factors are responsible for coordinating muscle-specific gene expression in the undifferentiated myoblast. MyoD activation leads to expression of myogenin, M-cadherin, myosin heavy and light chains, and muscle creatine kinase.</Comment>
+    <BiopaxRef>lit_448899</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="590.0" Y="384.0" GraphId="e_50_0"/>
+      <Point X="555.0" Y="384.0" GraphId="e_50_1"/>
+      <Point X="510.0" Y="384.0" GraphId="e_50_2" GraphRef="n34_REACTOME_448877" RelX="1.0535714285714286" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_50_a_i"/>
+      <Anchor Position="0.4375" GraphId="e_50_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="627.0" Y="396.0" GraphId="e_50_i0_0" GraphRef="n33_REACTOME_448866" RelX="-0.9" RelY="-1.1666666666666667"/>
+      <Point X="590.0" Y="384.0" GraphId="e_50_i0_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="624.0" Y="374.0" GraphId="e_50_i1_0" GraphRef="n28_REACTOME_448886" RelX="-0.8648648648648649" RelY="1.1666666666666667"/>
+      <Point X="590.0" Y="384.0" GraphId="e_50_i1_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_REACTOME_375141">
+    <Comment Source="WikiPathways-description">CDO selectively binds to neogenin in a cis fashion and this interaction involves extracellular domains of both proteins. CDO is essential in mediating netrin-3-induced differentiation of myoblasts by neogenin. Neogenin and netrin-3 stimulate myotube formation and enhance myogenic bHLH-and NFAT-dependent transcription.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="236.0" Y="61.0" GraphId="e_51_0"/>
+      <Point X="204.0" Y="61.0" GraphId="e_51_1"/>
+      <Point X="161.0" Y="61.0" GraphId="e_51_2" GraphRef="n36_REACTOME_375091" RelX="1.0483870967741935" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_51_a_i"/>
+      <Anchor Position="0.4266666666666667" GraphId="e_51_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="265.0" Y="61.0" GraphId="e_51_i0_0" GraphRef="n35_REACTOME_448880" RelX="-1.0517241379310345" RelY="0.0"/>
+      <Point X="236.0" Y="61.0" GraphId="e_51_i0_1" GraphRef="e_51_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="537.0" Y="75.0" GraphId="e_51_i1_0" GraphRef="n3_REACTOME_375094" RelX="-0.7741935483870968" RelY="1.2727272727272727"/>
+      <Point X="490.0" Y="94.0" GraphId="e_51_i1_1"/>
+      <Point X="259.0" Y="94.0" GraphId="e_51_i1_2"/>
+      <Point X="236.0" Y="61.0" GraphId="e_51_i1_3" GraphRef="e_51_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_10" GroupRef="group_comp_10" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="756.5" CenterY="373.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_37" GroupRef="group_comp_37" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="488.0" CenterY="521.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_10" GroupRef="group_comp_10">
+    <Graphics Color="000000" CenterX="756.5" CenterY="374.5" Width="1483.0" Height="641.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_37" GroupRef="group_comp_37">
+    <Graphics Color="000000" CenterX="801.0" CenterY="430.0" Width="876.0" Height="384.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_374997" rdf:id="lit_374997">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11782431</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BOC, an Ig superfamily member, associates with CDO to positively regulate myogenic differentiation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kang, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mulieri, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taliana, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krauss, RS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 21:114-24</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448927" rdf:id="lit_448927">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9786951</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CDO, a robo-related cell surface protein that mediates myogenic differentiation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kang, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mulieri, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miller, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sassoon, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krauss, RS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 143:403-13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375845" rdf:id="lit_375845">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12634428</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Promyogenic members of the Ig and cadherin families associate to positively regulate differentiation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kang, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feinleib, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Knox, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ketteringham, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krauss, RS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 100:3989-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_525775" rdf:id="lit_525775">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20160094</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">N-cadherin ligation, but not Sonic hedgehog binding, initiates Cdo-dependent p38{alpha}/{beta} MAPK signaling in skeletal myoblasts</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lu, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krauss, RS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448923" rdf:id="lit_448923">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10601328</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A novel regulatory mechanism of MAP kinases activation and nuclear translocation mediated by PKA and the PTP-SL tyrosine phosphatase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blanco-Aparicio, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Torres, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pulido, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 147:1129-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448920" rdf:id="lit_448920">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19564926</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nuclear localization of p38 MAPK in response to DNA damage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wood, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thornton, TM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sabio, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis, RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rincon, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Int J Biol Sci 5:428-37</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448932" rdf:id="lit_448932">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9858528</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of the MEF2 family of transcription factors by p38</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kravchenko, VV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kato, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gram, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">di Padova, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olson, EN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ulevitch, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Han, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 19:21-30</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448930" rdf:id="lit_448930">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10330143</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Targeting of p38 mitogen-activated protein kinases to MEF2 transcription factors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Galanis, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharrocks, AD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 19:4028-38</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448936" rdf:id="lit_448936">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10805738</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">p38 and extracellular signal-regulated kinases regulate the myogenic program at multiple steps</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Woodring, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bhakta, KS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamura, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wen, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feramisco, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karin, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, JY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Puri, PL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 20:3951-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448894" rdf:id="lit_448894">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9069290</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of the transcription factor MEF2C by the MAP kinase p38 in inflammation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Han, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kravchenko, VV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ulevitch, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 386:296-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448906" rdf:id="lit_448906">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9988769</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">p38 mitogen-activated protein kinase pathway promotes skeletal muscle differentiation. Participation of the Mef2c transcription factor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zetser, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gredinger, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bengal, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 274:5193-200</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_448899" rdf:id="lit_448899">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9418854</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Multiple roles for the MyoD basic region in transmission of transcriptional activation signals and interaction with MEF2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Black, BL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molkentin, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olson, EN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 18:69-77</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>muscle cell</bp:TERM><bp:ID>CL:0000187</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

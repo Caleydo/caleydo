@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Oxidative Stress" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes">Adapted from Biochem J 1999 Sep 15;342 Pt 3:481-96   Morel Y, Barouki R. Repression of gene expression by oxidative stress. Biochem J 1999 Sep 15;342 Pt 3:481-96&#13;
+</Comment>
+  <Comment Source="GenMAPP remarks">Adapted from rat by GenMAPP.org</Comment>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Graphics BoardWidth="12375.0" BoardHeight="10752.5" WindowWidth="12212.0" WindowHeight="12894.0"/>
+  <DataNode TextLabel="Maoa" Type="GeneProduct" BackpageHead="Maoa | monoamine oxidase A" GraphId="ad3" GroupRef="e6371">
+    <Graphics Color="000000" CenterX="10300.0" CenterY="5000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17161"/>
+  </DataNode>
+  <DataNode TextLabel="Nfix" Type="GeneProduct" BackpageHead="Nfix | nuclear factor I/X" GraphId="c87" GroupRef="ab769">
+    <Graphics Color="000000" CenterX="7250.0" CenterY="4540.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18032"/>
+  </DataNode>
+  <DataNode TextLabel="NRF2B1" Type="GeneProduct" BackpageHead="Nrf2" GraphId="eec" GroupRef="f60ff">
+    <Graphics Color="000000" CenterX="746.25" CenterY="4900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14391"/>
+  </DataNode>
+  <DataNode TextLabel="Nfkb1" Type="GeneProduct" BackpageHead="Nfkb1 | nuclear factor of kappa light chain ge..." GraphId="f18" GroupRef="f60ff">
+    <Graphics Color="000000" CenterX="746.25" CenterY="5200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18033"/>
+  </DataNode>
+  <DataNode TextLabel="Sp1" Type="GeneProduct" BackpageHead="Sp1 | trans-acting transcription factor 1" GraphId="bc6" GroupRef="f60ff">
+    <Graphics Color="000000" CenterX="746.25" CenterY="5500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20683"/>
+  </DataNode>
+  <DataNode TextLabel="Hmox1" Type="GeneProduct" BackpageHead="Hmox1 | heme oxygenase (decycling) 1" GraphId="eb6" GroupRef="e8611">
+    <Graphics Color="000000" CenterX="2500.0" CenterY="6500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15368"/>
+  </DataNode>
+  <DataNode TextLabel="Gpx1" Type="GeneProduct" BackpageHead="Gpx1 | glutathione peroxidase 1" GraphId="ef7" GroupRef="e8611">
+    <Graphics Color="000000" CenterX="2500.0" CenterY="6800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14775"/>
+  </DataNode>
+  <DataNode TextLabel="Gpx3" Type="GeneProduct" BackpageHead="Gpx3 | glutathione peroxidase 3" GraphId="d9f" GroupRef="e8611">
+    <Graphics Color="000000" CenterX="2500.0" CenterY="7100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14778"/>
+  </DataNode>
+  <DataNode TextLabel="Nqo1" Type="GeneProduct" BackpageHead="Nqo1 | NAD(P)H dehydrogenase quinone 1" GraphId="e80" GroupRef="e8611">
+    <Graphics Color="000000" CenterX="2500.0" CenterY="7400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18104"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a1" Type="GeneProduct" BackpageHead="Ugt1a@ | UDP glycosyltransferase 1 family pol..." GraphId="a09" GroupRef="e8611">
+    <Graphics Color="000000" CenterX="2500.0" CenterY="7700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="394436"/>
+  </DataNode>
+  <DataNode TextLabel="Cat" Type="GeneProduct" BackpageHead="Cat | catalase" GraphId="c89" GroupRef="bad57">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="8000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12359"/>
+  </DataNode>
+  <DataNode TextLabel="Txn2" Type="GeneProduct" BackpageHead="Txn2 | thioredoxin 2" GraphId="fe4" GroupRef="bad57">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="8300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56551"/>
+  </DataNode>
+  <DataNode TextLabel="Txnrd1" Type="GeneProduct" BackpageHead="Txnrd1 | thioredoxin reductase 1" GraphId="ea1" GroupRef="bad57">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="8600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50493"/>
+  </DataNode>
+  <DataNode TextLabel="Txnrd2" Type="GeneProduct" BackpageHead="Txnrd2 | thioredoxin reductase 2" GraphId="a26" GroupRef="bad57">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="8900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26462"/>
+  </DataNode>
+  <DataNode TextLabel="Gclc" Type="GeneProduct" BackpageHead="Gclc | glutamate-cysteine ligase catalytic su..." GraphId="df6" GroupRef="bad57">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="9200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14629"/>
+  </DataNode>
+  <DataNode TextLabel="Gsr" Type="GeneProduct" BackpageHead="Gsr | glutathione reductase 1" GraphId="d4b" GroupRef="f50bd">
+    <Graphics Color="000000" CenterX="3800.0" CenterY="8000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14782"/>
+  </DataNode>
+  <DataNode TextLabel="Mt1" Type="GeneProduct" BackpageHead="Mt1 | metallothionein 1" GraphId="dfa" GroupRef="bad57">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="9500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17748"/>
+  </DataNode>
+  <DataNode TextLabel="Gstt2" Type="GeneProduct" BackpageHead="Gstt2 | glutathione S-transferase theta 2" GraphId="c58" GroupRef="f50bd">
+    <Graphics Color="000000" CenterX="3800.0" CenterY="8300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14872"/>
+  </DataNode>
+  <DataNode TextLabel="Mgst1" Type="GeneProduct" BackpageHead="Mgst1 | microsomal glutathione S-transferase 1" GraphId="f55" GroupRef="f50bd">
+    <Graphics Color="000000" CenterX="3800.0" CenterY="8600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56615"/>
+  </DataNode>
+  <DataNode TextLabel="Cyp1a1" Type="GeneProduct" BackpageHead="Cyp1a1 | cytochrome P450 family 1 subfamily ..." GraphId="c4f">
+    <Graphics Color="000000" CenterX="7250.0" CenterY="5355.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13076"/>
+  </DataNode>
+  <DataNode TextLabel="Xdh" Type="GeneProduct" BackpageHead="Xanthine oxidase" GraphId="dd6" GroupRef="e6371">
+    <Graphics Color="000000" CenterX="10300.0" CenterY="4700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="29289"/>
+  </DataNode>
+  <DataNode TextLabel="Cyba" Type="GeneProduct" BackpageHead="Cyba | cytochrome b-245 alpha polypeptide" GraphId="a50" GroupRef="e6371">
+    <Comment Source="GenMAPP remarks">Probe set ID: u18729</Comment>
+    <Graphics Color="000000" CenterX="10300.0" CenterY="4400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13057"/>
+  </DataNode>
+  <DataNode TextLabel="Fos" Type="GeneProduct" BackpageHead="Fos | FBJ osteosarcoma oncogene" GraphId="a42" GroupRef="fb266">
+    <Graphics Color="000000" CenterX="3915.0" CenterY="5405.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14281"/>
+  </DataNode>
+  <DataNode TextLabel="Junb" Type="GeneProduct" BackpageHead="Junb | Jun-B oncogene" GraphId="eea" GroupRef="fb266">
+    <Graphics Color="000000" CenterX="3915.0" CenterY="5105.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16477"/>
+  </DataNode>
+  <DataNode TextLabel="Sod2" Type="GeneProduct" BackpageHead="Sod2 | superoxide dismutase 2 mitochondrial" GraphId="eb3" GroupRef="f50bd">
+    <Graphics Color="000000" CenterX="3800.0" CenterY="9200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20656"/>
+  </DataNode>
+  <DataNode TextLabel="Sod1" Type="GeneProduct" BackpageHead="Superoxide dismutase" GraphId="f7b" GroupRef="f50bd">
+    <Graphics Color="000000" CenterX="3800.0" CenterY="8900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20655"/>
+  </DataNode>
+  <DataNode TextLabel="Sod3" Type="GeneProduct" BackpageHead="Sod3 | superoxide dismutase 3 extracellular" GraphId="d64" GroupRef="f50bd">
+    <Graphics Color="000000" CenterX="3800.0" CenterY="9500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20657"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk14" Type="GeneProduct" BackpageHead="Mapk14 | mitogen activated protein kinase 14" GraphId="bee" GroupRef="a419d">
+    <Graphics Color="000000" CenterX="2040.0" CenterY="2400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26416"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk10" Type="GeneProduct" BackpageHead="Mapk10 | mitogen activated protein kinase 10" GraphId="c45" GroupRef="a419d">
+    <Graphics Color="000000" CenterX="2040.0" CenterY="2100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26414"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="db546">
+    <Graphics ZOrder="12288" Color="0000ff">
+      <Point x="5800.0" y="1062.5" GraphRef="b2a" relX="0.0" relY="1.0"/>
+      <Point x="5800.0" y="1707.5" GraphRef="ef6" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b47fc">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="1410.0" y="5053.75" GraphRef="c5ec5" relX="1.0" relY="0.0"/>
+      <Point x="2000.625" y="5830.0" GraphRef="e9d" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="c874d">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="3245.0" y="5057.5" GraphRef="ed393" relX="-1.0" relY="0.0"/>
+      <Point x="1410.0" y="5053.75" GraphRef="c5ec5" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="a0323">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="3245.0" y="5366.25" GraphRef="ed393" relX="-1.0" relY="0.5"/>
+      <Point x="2378.75" y="5830.0" GraphRef="e9d" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b4ab9">
+    <Graphics ZOrder="12288" Color="008000">
+      <Point x="6912.5" y="1850.0" GraphRef="ef6" relX="1.0" relY="0.0"/>
+      <Point x="9047.5" y="2630.0" GraphRef="a69" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a29b6">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9000.0" y="3150.0"/>
+      <Point x="9000.0" y="3550.0"/>
+      <Anchor position="0.9375" Shape="None" GraphId="d9c85"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a9011">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="9000.0" y="3525.0" GraphRef="d9c85" relX="0.0" relY="0.0"/>
+      <Point x="7250.0" y="4015.0" GraphRef="ca9ca" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fd377">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7250.0" y="4810.0" GraphRef="ca9ca" relX="0.0" relY="1.0"/>
+      <Point x="7250.0" y="5205.0" GraphRef="c4f" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="da7ef">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="9000.0" y="3525.0" GraphRef="d9c85" relX="0.0" relY="0.0"/>
+      <Point x="10305.0" y="3870.0" GraphRef="eb075" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ad5b2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4505.0" y="920.0" GraphRef="b2a" relX="-1.0" relY="0.0"/>
+      <Point x="2140.0" y="1560.0" GraphRef="d1487" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d94e6">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4687.5" y="1850.0" GraphRef="ef6" relX="-1.0" relY="0.0"/>
+      <Point x="2760.0" y="3400.0" GraphRef="c09" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d4a77">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2140.0" y="2670.0" GraphRef="d1487" relX="0.0" relY="1.0"/>
+      <Point x="2150.0" y="3257.5" GraphRef="c09" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ddcfa">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2150.0" y="3550.0"/>
+      <Point x="2150.0" y="4000.0"/>
+      <Anchor position="0.9111111111111111" Shape="None" GraphId="b2c3d"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ab68e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="2150.0" y="3960.0" GraphRef="b2c3d" relX="0.0" relY="0.0"/>
+      <Point x="3955.0" y="4440.0" GraphRef="ed393" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ca126">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="2150.0" y="3960.0" GraphRef="b2c3d" relX="0.0" relY="0.0"/>
+      <Point x="727.5" y="4337.5" GraphRef="c5ec5" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Induction of&#10;antioxidant genes" GraphId="e9d">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff0000" CenterX="2378.75" CenterY="6050.0" Width="1512.5" Height="440.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Inhibition of oxidases" GraphId="c66" GroupRef="e6371">
+    <Graphics FontWeight="Bold" FontSize="150" Color="008000" CenterX="10305.0" CenterY="4105.0" Width="1650.0" Height="230.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TF inhibition" GraphId="ba9" GroupRef="ab769">
+    <Graphics FontWeight="Bold" FontSize="150" Color="008000" CenterX="7250.0" CenterY="4255.0" Width="1100.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="repression" GraphId="ba0">
+    <Graphics FontStyle="Italic" FontSize="180" Color="008000" CenterX="7300.0" CenterY="5655.0" Width="1205.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="TF activation" GraphId="d74" GroupRef="f60ff">
+    <Graphics FontWeight="Bold" FontSize="180" Color="ff0000" CenterX="727.5" CenterY="4600.0" Width="1125.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Immediate-early&#10;gene induction" GraphId="ba3" GroupRef="fb266">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff0000" CenterX="3955.0" CenterY="4770.0" Width="1180.0" Height="420.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Reactive Oxygen Species" Outline="Rectangle" GraphId="b2a">
+    <Graphics FontWeight="Bold" FontSize="180" Color="0000ff" CenterX="5800.0" CenterY="920.0" Width="2590.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Adaptive response" Outline="RoundedRectangle" GraphId="ef6">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000080" CenterX="5800.0" CenterY="1850.0" Width="2225.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Repression of ROS-&#10;producing systems" Outline="Rectangle" GraphId="a69">
+    <Graphics FontWeight="Bold" FontSize="150" Color="008000" CenterX="9047.5" CenterY="2852.5" Width="1705.0" Height="445.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Activation" GraphId="c09">
+    <Graphics FontWeight="Bold" FontSize="180" Color="ff0000" CenterX="2150.0" CenterY="3400.0" Width="1220.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Stress-regulated MAP kinase" GraphId="c7f" GroupRef="a419d">
+    <Graphics FontWeight="Bold" FontSize="150" Color="ff0000" CenterX="2140.0" CenterY="1800.0" Width="2795.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="a419d" GraphId="d1487" Style="Group"/>
+  <Group GroupId="e8611" GraphId="b6da2" Style="Group"/>
+  <Group GroupId="f50bd" GraphId="bd33b" Style="Group"/>
+  <Group GroupId="bad57" GraphId="d3962" Style="Group"/>
+  <Group GroupId="f60ff" GraphId="c5ec5" Style="Group"/>
+  <Group GroupId="fb266" GraphId="ed393" Style="Group"/>
+  <Group GroupId="e6371" GraphId="eb075" Style="Group"/>
+  <Group GroupId="ab769" GraphId="ca9ca" Style="Group"/>
+  <InfoBox CenterX="6675.0" CenterY="9775.0"/>
+  <Legend CenterX="8225.0" CenterY="6225.0"/>
+</Pathway>

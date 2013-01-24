@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="p38 MAPK Signaling Pathway" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">p38 MAPKs are members of the MAPK family that are activated by a variety of environmental stresses and inflammatory cytokines. Stress signals are delivered to this cascade by members of small GTPases of the Rho family (Rac, Rho, Cdc42). As with other MAPK cascades, the membrane-proximal component is a MAPKKK, typically a MEKK or a mixed lineage kinase (MLK). The MAPKKK phosphorylates and activated MKK3/5, the p38 MAPK kinase. MKK3/6 can also be activated directly by ASK1, which is stimulated by apoptotic stimuli. P38 MAK is involved in regulation of Hsp27 and MAPKAP-2 and several transcription factors including ATF2, STAT1, THE Max/Myc complex, MEF-2, ELK-1 and indirectly CREB via activation of MSK1.</Comment>
+  <BiopaxRef>a09</BiopaxRef>
+  <BiopaxRef>d07</BiopaxRef>
+  <BiopaxRef>c22</BiopaxRef>
+  <BiopaxRef>a36</BiopaxRef>
+  <BiopaxRef>cae</BiopaxRef>
+  <BiopaxRef>c41</BiopaxRef>
+  <BiopaxRef>bb5</BiopaxRef>
+  <BiopaxRef>f85</BiopaxRef>
+  <Graphics BoardWidth="808.1333333333333" BoardHeight="927.3"/>
+  <DataNode TextLabel="MAPK14" GraphId="c82" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK14 | mitogen-activated protein kinase 14"/>
+    <Graphics CenterX="363.3333333333333" CenterY="466.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK14" GraphId="cd6" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK14 | mitogen-activated protein kinase 14"/>
+    <Graphics CenterX="364.3333333333333" CenterY="568.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K6" GraphId="ab1" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP2K6 | mitogen-activated protein kinase kinas..."/>
+    <Graphics CenterX="363.3333333333333" CenterY="403.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5608"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K9" GraphId="aba" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP3K9 | mitogen-activated protein kinase kinas..."/>
+    <Graphics CenterX="323.3333333333333" CenterY="310.0" Width="93.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4293"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K7" GraphId="c47" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP3K7 | mitogen-activated protein kinase kinas..."/>
+    <Graphics CenterX="475.6666666666667" CenterY="332.3333333333333" Width="86.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6885"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K5" GraphId="c2f" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP3K5 | mitogen-activated protein kinase kinas..."/>
+    <Graphics CenterX="603.3333333333334" CenterY="333.3333333333333" Width="86.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4217"/>
+  </DataNode>
+  <DataNode TextLabel="MKNK1" GraphId="c44" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MKNK1 | MAP kinase interacting serine/threonine..."/>
+    <Graphics CenterX="486.6666666666667" CenterY="466.6666666666667" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8569"/>
+  </DataNode>
+  <DataNode TextLabel="MAPKAPK5" GraphId="a3f" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPKAPK5 | mitogen-activated protein kinase-act..."/>
+    <Graphics CenterX="523.3333333333333" CenterY="503.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8550"/>
+  </DataNode>
+  <DataNode TextLabel="HSPB1" GraphId="a76" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSPB1 | heat shock 27kDa protein 1"/>
+    <Graphics CenterX="629.3333333333334" CenterY="503.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3315"/>
+  </DataNode>
+  <DataNode TextLabel="MAPKAPK2" GraphId="a00" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPKAPK2 | mitogen-activated protein kinase-act..."/>
+    <Graphics CenterX="662.3333333333334" CenterY="570.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9261"/>
+  </DataNode>
+  <DataNode TextLabel="MAPKAPK2" GraphId="e60" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPKAPK2 | mitogen-activated protein kinase-act..."/>
+    <Graphics CenterX="498.3333333333333" CenterY="582.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9261"/>
+  </DataNode>
+  <DataNode TextLabel="ATF2" GraphId="b55" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ATF2 | activating transcription factor 2"/>
+    <Graphics CenterX="495.6666666666667" CenterY="684.6666666666666" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1386"/>
+  </DataNode>
+  <DataNode TextLabel="RPS6KA5" GraphId="c62" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RPS6KA5 | ribosomal protein S6 kinase 90kDa p..."/>
+    <Graphics CenterX="533.6666666666666" CenterY="636.0" Width="93.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9252"/>
+  </DataNode>
+  <DataNode TextLabel="MEF2D" GraphId="b4f" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MEF2D | MADS box transcription enhancer factor ..."/>
+    <Graphics CenterX="440.0" CenterY="658.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4209"/>
+  </DataNode>
+  <DataNode TextLabel="DDIT3" GraphId="e31" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DDIT3 | DNA-damage-inducible transcript 3"/>
+    <Graphics CenterX="393.3333333333333" CenterY="688.0" Width="73.33333333333333" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1649"/>
+  </DataNode>
+  <DataNode TextLabel="ELK1" GraphId="c95" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ELK1 | ELK1 member of ETS oncogene family"/>
+    <Graphics CenterX="257.33333333333337" CenterY="655.3333333333334" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2002"/>
+  </DataNode>
+  <DataNode TextLabel="STAT1" GraphId="b96" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT1 | signal transducer and activator of tran..."/>
+    <Graphics CenterX="186.66666666666666" CenterY="674.6666666666666" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6772"/>
+  </DataNode>
+  <DataNode TextLabel="MAX" GraphId="cae" Type="GeneProduct" GroupRef="c6022">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAX | MYC associated factor X"/>
+    <Graphics CenterX="320.0" CenterY="668.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4149"/>
+  </DataNode>
+  <DataNode TextLabel="MYC" GraphId="ffb" Type="GeneProduct" GroupRef="c6022">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MYC | v-myc myelocytomatosis viral oncogene hom..."/>
+    <Graphics CenterX="320.0" CenterY="688.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4609"/>
+  </DataNode>
+  <DataNode TextLabel="HMGN1" GraphId="d8d" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HMGN1 | high-mobility group nucleosome binding ..."/>
+    <Graphics CenterX="576.6666666666666" CenterY="688.0" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3150"/>
+  </DataNode>
+  <DataNode TextLabel="CREB1" GraphId="be9" Type="GeneProduct" GroupRef="cae9b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CREB1 | cAMP responsive element binding protein..."/>
+    <Graphics CenterX="633.3333333333334" CenterY="671.3333333333334" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1385"/>
+  </DataNode>
+  <DataNode TextLabel="PLA2G4A" GraphId="ddc" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PLA2G4A | phospholipase A2 group IVA (cytosoli..."/>
+    <Graphics CenterX="130.33333333333334" CenterY="466.3333333333333" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5321"/>
+  </DataNode>
+  <DataNode TextLabel="MAP2K4" GraphId="de9" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP2K4 | mitogen-activated protein kinase kinas..."/>
+    <Graphics CenterX="196.66666666666666" CenterY="373.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6416"/>
+  </DataNode>
+  <DataNode TextLabel="MAP3K1" GraphId="f22" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAP3K1 | mitogen-activated protein kinase kinas..."/>
+    <Graphics CenterX="196.66666666666666" CenterY="313.3333333333333" Width="100.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4214"/>
+  </DataNode>
+  <DataNode TextLabel="RAC1" GraphId="b32" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RAC1 | ras-related C3 botulinum toxin substrate..."/>
+    <Graphics CenterX="273.33333333333337" CenterY="236.66666666666666" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5879"/>
+  </DataNode>
+  <DataNode TextLabel="CDC42" GraphId="d7c" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CDC42 | cell division cycle 42 (GTP binding pro..."/>
+    <Graphics CenterX="346.6666666666667" CenterY="223.33333333333334" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="998"/>
+  </DataNode>
+  <DataNode TextLabel="HRAS" GraphId="d27" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HRAS | v-Ha-ras Harvey rat sarcoma viral oncoge..."/>
+    <Graphics CenterX="173.33333333333334" CenterY="236.66666666666666" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3265"/>
+  </DataNode>
+  <DataNode TextLabel="TGFBR1" GraphId="b42" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TGFBR1 | transforming growth factor beta recep..."/>
+    <Graphics CenterX="475.3333333333333" CenterY="168.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7046"/>
+  </DataNode>
+  <DataNode TextLabel="TGFB2" GraphId="ed6" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TGFB2 | transforming growth factor beta 2"/>
+    <Graphics CenterX="475.0" CenterY="100.66666666666667" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7042"/>
+  </DataNode>
+  <DataNode TextLabel="TRADD" GraphId="ffe" Type="GeneProduct" GroupRef="e6a4d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TRADD | TNFRSF1A-associated via death domain"/>
+    <Graphics CenterX="626.6666666666666" CenterY="203.33333333333334" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8717"/>
+  </DataNode>
+  <DataNode TextLabel="TRAF2" GraphId="a3c" Type="GeneProduct" GroupRef="e6a4d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TRAF2 | TNF receptor-associated factor 2"/>
+    <Graphics CenterX="666.6666666666666" CenterY="220.0" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7186"/>
+  </DataNode>
+  <DataNode TextLabel="DAXX" GraphId="f1f" Type="GeneProduct" GroupRef="e6a4d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DAXX | death-associated protein 6"/>
+    <Graphics CenterX="703.3333333333334" CenterY="186.66666666666666" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1616"/>
+  </DataNode>
+  <DataNode TextLabel="RIPK1" GraphId="c5a" Type="GeneProduct" GroupRef="e6a4d">
+    <Comment Source="GenMAPP remarks">receptor (TNFRSF)-interacting serine-threonine kinase 1</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RIPK1 | receptor (TNFRSF)-interacting serine-th..."/>
+    <Graphics CenterX="652.6666666666666" CenterY="176.33333333333334" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8737"/>
+  </DataNode>
+  <DataNode TextLabel="SHC1" GraphId="aa6" Type="GeneProduct" GroupRef="b85a4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SHC1 | SHC (Src homology 2 domain containing) t..."/>
+    <Graphics CenterX="140.0" CenterY="210.0" Width="40.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6464"/>
+  </DataNode>
+  <DataNode TextLabel="GRB2" GraphId="a30" Type="GeneProduct" GroupRef="b85a4">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GRB2 | growth factor receptor-bound protein 2"/>
+    <Graphics CenterX="163.33333333333334" CenterY="230.0" Width="46.666666666666664" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2885"/>
+  </DataNode>
+  <DataNode TextLabel="RASGRF1" GraphId="e3e" Type="GeneProduct" GroupRef="b85a4">
+    <Comment Source="GenMAPP remarks">PDZ domain containing guanine nucleotide exchange</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="RASGRF1 | Ras protein-specific guanine nucleoti..."/>
+    <Graphics CenterX="181.25" CenterY="193.66666666666666" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5923"/>
+  </DataNode>
+  <DataNode TextLabel="Apoptosis" GraphId="db701" Type="Pathway">
+    <Graphics CenterX="603.0" CenterY="396.0" Width="80.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID="WP254"/>
+  </DataNode>
+  <Line GraphId="a0585">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="364.3333333333333" Y="578.0" GraphRef="cd6" RelX="0.0" RelY="1.0"/>
+      <Point X="393.33333333333326" Y="678.0" GraphRef="e31" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fba54">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="196.66666666666666" Y="323.3333333333333" GraphRef="f22" RelX="0.0" RelY="1.0"/>
+      <Point X="196.66666666666666" Y="363.6666666666667" GraphRef="de9" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f61bc">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="403.3333333333333" Y="466.6666666666667" GraphRef="c82" RelX="1.0" RelY="0.0"/>
+      <Point X="460.0" Y="466.6666666666667" GraphRef="c44" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bbf9b">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="475.6666666666667" Y="342.3333333333333" GraphRef="c47" RelX="0.0" RelY="1.0"/>
+      <Point X="378.3333333333333" Y="393.3333333333333" GraphRef="ab1" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e0852">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="403.3333333333333" Y="466.6666666666667" GraphRef="c82" RelX="1.0" RelY="0.0"/>
+      <Point X="483.33333333333326" Y="503.33333333333326" GraphRef="a3f" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3d19">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="384.3333333333333" Y="578.0" GraphRef="cd6" RelX="0.5" RelY="1.0"/>
+      <Point X="510.3333333333333" Y="626.0" GraphRef="c62" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f8bdf">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="263.33333333333337" Y="246.66666666666666" GraphRef="b32" RelX="-0.5" RelY="1.0"/>
+      <Point X="196.66666666666666" Y="303.3333333333333" GraphRef="f22" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e85a0">
+    <Comment Source="GenMAPP remarks">Translocate</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="538.3333333333333" Y="582.0" GraphRef="e60" RelX="1.0" RelY="0.0"/>
+      <Point X="622.3333333333334" Y="570.0" GraphRef="a00" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ff02f">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="346.66666666666674" Y="236.66666666666669" GraphRef="d7c" RelX="0.0" RelY="1.3333333333333333"/>
+      <Point X="346.6666666666666" Y="300.0" GraphRef="aba" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dd7f9">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="475.3333333333333" Y="178.66666666666666" GraphRef="b42" RelX="0.0" RelY="1.0"/>
+      <Point X="475.6666666666667" Y="322.3333333333333" GraphRef="c47" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de0f5">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="283.33333333333337" Y="246.66666666666666" GraphRef="b32" RelX="0.5" RelY="1.0"/>
+      <Point X="299.99999999999994" Y="300.0" GraphRef="aba" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ae1ee">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="196.66666666666666" Y="383.6666666666667" GraphRef="de9" RelX="0.0" RelY="1.0"/>
+      <Point X="270.0" Y="428.0"/>
+      <Point X="343.3333333333333" Y="456.6666666666667" GraphRef="c82" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e000f">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="346.6666666666666" Y="320.0" GraphRef="aba" RelX="0.5" RelY="1.0"/>
+      <Point X="348.3333333333333" Y="393.3333333333333" GraphRef="ab1" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b0108">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="364.3333333333333" Y="578.0" GraphRef="cd6" RelX="0.0" RelY="1.0"/>
+      <Point X="440.0" Y="648.0" GraphRef="b4f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f805b">
+    <Comment Source="GenMAPP remarks">Translocate</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="363.3333333333333" Y="476.6666666666667" GraphRef="c82" RelX="0.0" RelY="1.0"/>
+      <Point X="364.3333333333333" Y="558.0" GraphRef="cd6" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a92c6">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="300.41666666666663" Y="121.0" GraphRef="d55" RelX="0.0" RelY="1.0"/>
+      <Point X="273.33333333333337" Y="226.66666666666666" GraphRef="b32" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4295">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="380.0" Y="774.6666666666666" GraphRef="ea8" RelX="1.0" RelY="0.0"/>
+      <Point X="401.0" Y="774.3333333333335" GraphRef="e1b" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a3716">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="323.3333333333333" Y="466.6666666666667" GraphRef="c82" RelX="-1.0" RelY="0.0"/>
+      <Point X="163.66666666666669" Y="466.3333333333333" GraphRef="ddc" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ac5a2">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="663.3333333333333" Y="234.55288461538464" GraphRef="fc6c0" RelX="0.0" RelY="0.9134615384615384"/>
+      <Point X="581.6666666666666" Y="323.3333333333333" GraphRef="c2f" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4557">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="324.3333333333333" Y="568.0" GraphRef="cd6" RelX="-1.0" RelY="0.0"/>
+      <Point X="186.66666666666663" Y="664.6666666666666" GraphRef="b96" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f86b0">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="299.99999999999994" Y="320.0" GraphRef="aba" RelX="-0.5" RelY="1.0"/>
+      <Point X="226.66666666666666" Y="373.6666666666667" GraphRef="de9" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a00bd">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="513.3333333333334" Y="466.6666666666667" GraphRef="c44" RelX="1.0" RelY="0.0"/>
+      <Point X="560.3333333333333" Y="466.6666666666667" GraphRef="a71" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e800f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="663.3333333333333" Y="161.78044871794873" GraphRef="fc6c0" RelX="0.0" RelY="-0.9134615384615384"/>
+      <Point X="628.3333333333335" Y="128.0" GraphRef="a1c" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d24c0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="151.25" Y="170.33333333333331" GraphRef="e3e" RelX="-0.9" RelY="-2.3333333333333335"/>
+      <Point X="142.66666666666666" Y="132.0" GraphRef="c9f" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="da9c2">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="410.0" Y="731.9741379310345" GraphRef="ef3d1" RelX="0.0" RelY="0.9482758620689655"/>
+      <Point X="349.25" Y="765.1666666666666" GraphRef="ea8" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c71e5">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="518.3333333333333" Y="592.0" GraphRef="e60" RelX="0.5" RelY="1.0"/>
+      <Point X="633.3333333333333" Y="661.3333333333334" GraphRef="be9" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cc213">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="580.3333333333333" Y="636.0" GraphRef="c62" RelX="1.0" RelY="0.0"/>
+      <Point X="621.6666666666666" Y="661.3333333333334" GraphRef="be9" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c1494">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="196.66666666666663" Y="236.66666666666666" GraphRef="d27" RelX="1.0" RelY="0.0"/>
+      <Point X="253.33333333333337" Y="236.66666666666666" GraphRef="b32" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed14d">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="563.3333333333333" Y="503.33333333333326" GraphRef="a3f" RelX="1.0" RelY="0.0"/>
+      <Point X="602.6666666666667" Y="503.0" GraphRef="a76" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ed3ad">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="363.3333333333333" Y="413.3333333333333" GraphRef="ab1" RelX="0.0" RelY="1.0"/>
+      <Point X="363.3333333333333" Y="456.6666666666667" GraphRef="c82" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b9f19">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="663.3333333333333" Y="234.55288461538464" GraphRef="fc6c0" RelX="0.0" RelY="0.9134615384615384"/>
+      <Point X="624.9999999999999" Y="323.3333333333333" GraphRef="c2f" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2da6">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="404.3333333333333" Y="568.0" GraphRef="cd6" RelX="1.0" RelY="0.0"/>
+      <Point X="458.33333333333326" Y="582.0" GraphRef="e60" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bd0b7">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="384.3333333333333" Y="578.0" GraphRef="cd6" RelX="0.5" RelY="1.0"/>
+      <Point X="495.66666666666674" Y="674.6666666666666" GraphRef="b55" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ccbb9">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="560.0" Y="333.3333333333333" GraphRef="c2f" RelX="-1.0" RelY="0.0"/>
+      <Point X="393.3333333333333" Y="403.3333333333333" GraphRef="ab1" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a06eb">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="344.3333333333333" Y="578.0" GraphRef="cd6" RelX="-0.5" RelY="1.0"/>
+      <Point X="320.0" Y="653.0" GraphRef="bb8e2" RelX="0.0" RelY="-0.8928571428571429" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ccaf0">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff8000">
+      <Point X="300.41666666666663" Y="121.0" GraphRef="d55" RelX="0.0" RelY="1.0"/>
+      <Point X="346.66666666666674" Y="213.33333333333334" GraphRef="d7c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e17a1">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="557.0" Y="646.0" GraphRef="c62" RelX="0.5" RelY="1.0"/>
+      <Point X="576.6666666666667" Y="678.0" GraphRef="d8d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="db621">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="344.3333333333333" Y="578.0" GraphRef="cd6" RelX="-0.5" RelY="1.0"/>
+      <Point X="257.33333333333337" Y="645.3333333333334" GraphRef="c95" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="da21c">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="603.3333333333333" Y="343.3333333333333" GraphRef="c2f" RelX="0.0" RelY="1.0"/>
+      <Point X="603.0" Y="386.0" GraphRef="db701" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b9344">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="00ff00">
+      <Point X="642.3333333333334" Y="560.0" GraphRef="a00" RelX="-0.5" RelY="-1.0"/>
+      <Point X="642.6666666666669" Y="513.0" GraphRef="a76" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5743">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="167.29166666666666" Y="244.8701923076923" GraphRef="d0c2c" RelX="0.0" RelY="0.9134615384615384"/>
+      <Point X="150.0" Y="236.66666666666666" GraphRef="d27" RelX="-1.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cf8a2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="475.0" Y="110.66666666666667" GraphRef="ed6" RelX="0.0" RelY="1.0"/>
+      <Point X="475.3333333333333" Y="158.66666666666666" GraphRef="b42" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Translation" GraphId="a71">
+    <Graphics CenterX="605.9999999999999" CenterY="466.6666666666667" Width="91.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="?" GraphId="c4e">
+    <Graphics CenterX="321.6666666666667" CenterY="182.66666666666666" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="?" GraphId="d9e">
+    <Graphics CenterX="274.00000000000006" CenterY="186.66666666666666" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="?" GraphId="ac4">
+    <Graphics CenterX="549.6666666666666" CenterY="603.3333333333334" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Stress: Osmotic shock&#10;g-radiation, Anisomycin" GraphId="d55">
+    <Graphics CenterX="300.41666666666663" CenterY="106.5" Width="131.16666666666666" Height="29.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="FASL, Inflammatory&#10;Cytokines, UV, etc." GraphId="a1c">
+    <Graphics CenterX="628.3333333333334" CenterY="109.83333333333333" Width="131.33333333333334" Height="36.333333333333336" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="Growth Factors, UV&#10;Trophic Factors, etc." GraphId="c9f">
+    <Graphics CenterX="142.66666666666666" CenterY="111.33333333333333" Width="127.33333333333333" Height="41.333333333333336" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="DNA transcription" GraphId="ea8">
+    <Graphics CenterX="318.5" CenterY="774.6666666666666" Width="123.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="00ff00"/>
+  </Label>
+  <Label TextLabel="Cytokines Production,&#10;Apoptosis, etc." GraphId="e1b">
+    <Graphics CenterX="464.1666666666667" CenterY="774.3333333333334" Width="126.33333333333333" Height="29.333333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="10" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="?" GraphId="c24">
+    <Graphics CenterX="581.6666666666666" CenterY="290.0" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="?" GraphId="d58">
+    <Graphics CenterX="624.6666666666666" CenterY="290.0" Width="15.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="c40" GroupRef="cae9b">
+    <Graphics CenterX="412.3333333333333" CenterY="718.0" Width="431.3333333333333" Height="18.0" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Color="00ff00" Rotation="3.141592653589793"/>
+  </Shape>
+  <Shape GraphId="aac3a">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="355.0" CenterY="670.0" Width="602.0" Height="286.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="fedc6">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="379.5" CenterY="502.0" Width="701.0" Height="682.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="b85a4" GraphId="d0c2c"/>
+  <Group GroupId="e6a4d" GraphId="fc6c0"/>
+  <Group GroupId="c6022" GraphId="bb8e2" GroupRef="cae9b"/>
+  <Group GroupId="cae9b" GraphId="ef3d1"/>
+  <InfoBox CenterX="588.3333333333334" CenterY="815.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="d07">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10557099</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">From receptors to stress-activated MAP kinases.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ichijo H</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="cae">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10527909</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell-type-specific activation of p38 protein kinase cascades by the novel tumor promoter palytoxin.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toxicol Appl Pharmacol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wattenberg EV</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a09">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10498912</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">p38 MAPK signalling cascades in inflammatory disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Med Today</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Herlaar E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown Z</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="f85">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10097111</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Requirement of mitogen-activated protein kinase kinase 3 (MKK3) for tumor necrosis factor-induced cytokine expression.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wysk M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lu HT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Flavell RA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis RJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="c41">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10067858</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of the p38 mitogen-activated protein kinase pathway by gonadotropin-releasing hormone.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endocrinology</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberson MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li HL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mulvaney JM</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="c22">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10207619</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Making the connection: coupling of stress-activated ERK/MAPK (extracellular-signal-regulated kinase/mitogen-activated protein kinase) core signalling modules to extracellular stimuli and biological responses.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Soc Symp</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kyriakis JM</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="bb5">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10487205</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The stress-activated protein kinase pathways.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Mol Life Sci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tibbles LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Woodgett JR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a36">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11163208</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of novel MAP kinase pathway signaling targets by functional proteomics and mass spectrometry.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lewis TS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hunt JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aveline LD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jonscher KR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Louie DF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yeh JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nahreini TS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Resing KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ahn NG</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>p38 MAPK signaling pathway</bp:TERM><bp:ID>PW:0000198</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

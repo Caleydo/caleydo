@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Regulation of beta-cell development" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Ferrer, J" Maintainer="D'Eustachio, P" Email="deustp01@nyumc.org">
+  <Comment Source="WikiPathways-description">The normal development of the pancreas during gestation has been intensively investigated over the past decade especially in the mouse (Servitja and Ferrer 2004; Chakrabarti and Mirmira 2003). Studies of genetic defects associated with maturity onset diabetes of the young (MODY) has provided direct insight into these processes as they take place in humans (Fajans et al. 2001). During embryogenesis, committed epithelial cells from the early pancreatic buds differentiate into mature endocrine and exocrine cells. It is helpful to schematize this process into four consecutive cellular stages, to begin to describe the complex interplay of signal transduction pathways and transcriptional networks. The annotations here are by no means complete - factors in addition to the ones described here must be active, and even for the ones that are described, only key examples of their regulatory effects and interactions have been annotated.&lt;p&gt;It is also important to realize that in the human, unlike the mouse, cells of the different stages can be present simultaneously in the developing pancreas and the linear representation of these developmental events shown here is an over-simplification of the actual developmental process (e.g., Sarkar et al. 2008).&lt;p&gt;The first stage of this process involves the predifferentiated epithelial cells of the two pancreatic anlagen that arise from the definitive endoderm at approximately somite stages 11-15 and undergo budding from somite stages 20-22. This period corresponds to gestational days 8.75-9.5 in the mouse, and 26 in the human.&lt;p&gt;Pancreatic buds subsequently coalesce to form a single primitive gland, while concomitantly a ductal tree lined by highly proliferative epithelial cells is formed. A subset of such epithelial cells is thought to differentiate into either endocrine or acinar exocrine cells. A third cellular stage is defined by the endocrine-committed progenitors that selectively express the basic helix-loop-helix transcription factor NEUROG3. NEUROG3 is known to activate a complex transcriptional network that is essential for the specification of endocrine cells. Many transcription factors that are activated by NEUROG3 are also involved in islet-subtype cellular specification and in subsequent stages of differentiation of endocrine cells. This transient cellular stage thus leads to the generation of all known pancreatic endocrine cells, including insulin-producing beta-cells, and glucagon-producing alpha cells, the final stage of this schematic developmental process.&lt;p&gt;The diagram below summarizes interactions that take place between transcription factors and transcription factor target genes during these cellular stages, and shows cases where there is both functional evidence that a transcription factor is required for the target gene to be expressed, and biochemical evidence that this interaction is direct. We also describe instances where a signaling pathway is known to regulate a transcription factor gene in this process, even if the intervening signaling pathway is not fully understood.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n4_REACTOME_210782" TextLabel="HNF6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="553.0" CenterY="394.0" Width="50.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UBC0"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_210762" TextLabel="HNF1B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="480.0" CenterY="318.5" Width="68.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14001"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_210783" TextLabel="PTF1A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="401.0" CenterY="374.5" Width="46.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q7RTS3"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_189869" TextLabel="FGF10&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="72.0" CenterY="354.5" Width="50.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O15520"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_210770" TextLabel="ONECUT3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="625.0" CenterY="433.5" Width="68.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60422"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_211179" TextLabel="PDX1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="491.0" CenterY="454.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P52945"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_210772" TextLabel="NR5A2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="433.5" CenterY="500.5" Width="51.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14385"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_210765" TextLabel="NKX6-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="553.5" CenterY="500.5" Width="53.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P78426"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_210762" TextLabel="HNF1B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="781.0" CenterY="424.5" Width="68.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14001"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_210782" TextLabel="HNF6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="819.0" CenterY="333.0" Width="50.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UBC0"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_210770" TextLabel="ONECUT3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="870.0" CenterY="425.5" Width="68.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60422"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_189530" TextLabel="NEUROG3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="959.0" CenterY="426.5" Width="74.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y4Z2"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_210825" TextLabel="HES1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1004.0" CenterY="369.5" Width="36.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14469"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_210850" TextLabel="RBPJ&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="953.5" CenterY="315.5" Width="35.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14564"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_157939" TextLabel="NICD 1 &#10;fragment&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1070.0" CenterY="316.5" Width="64.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P46531"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_210889" TextLabel="PAX4&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="836.0" CenterY="599.0" Width="38.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14111"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_186689" TextLabel="NEUROD1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="905.5" CenterY="598.0" Width="69.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13562"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_186537" TextLabel="NKX2-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="984.5" CenterY="596.5" Width="53.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O95096"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_210915" TextLabel="INSM1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1050.5" CenterY="600.0" Width="49.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q01101"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="707.0" CenterY="691.5" Width="40.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_199300" TextLabel="Forkhead box &#10;protein O1A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="753.0" CenterY="746.0" Width="94.0" Height="40.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q12778"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_199306" TextLabel="Phospho-Forkhead &#10;box protein O1A &#10;(T24, S256, S319)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="473.0" CenterY="747.0" Width="128.0" Height="48.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q12778"/>
+  </DataNode>
+  <DataNode GraphId="n50_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="562.0" CenterY="696.5" Width="40.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_202072" TextLabel="Active AKT&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="636.0" CenterY="703.0" Width="66.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13116"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_211158" TextLabel="Phospho-Forkhead &#10;box protein O1A (T24, &#10;S256, S319)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="254.0" CenterY="744.5" Width="134.0" Height="51.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q12778"/>
+  </DataNode>
+  <DataNode GraphId="n57_REACTOME_211276" TextLabel="PAX6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="916.5" CenterY="744.5" Width="41.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14342"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_211275" TextLabel="FOXOA2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="908.0" CenterY="709.5" Width="60.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y261"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_211283" TextLabel="MAFA&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="909.0" CenterY="775.5" Width="44.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8NHW3"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_211179" TextLabel="PDX1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="862.0" CenterY="812.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P52945"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_72500" TextLabel="80S ribosome&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1020.5" CenterY="708.5" Width="89.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4330"/>
+  </DataNode>
+  <DataNode GraphId="n64_REACTOME_445217" TextLabel="Preproinsulin: &#10;Ribosome Nascent &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1025.5" CenterY="827.0" Width="115.0" Height="54.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21205"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_211179" TextLabel="PDX1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1082.0" CenterY="744.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P52945"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_186537" TextLabel="NKX2-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1089.5" CenterY="776.5" Width="53.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O95096"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_186631" TextLabel="Islet &#10;amyloi&#10;d &#10;polyp&#10;eptide&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="723.0" CenterY="857.5" Width="38.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P10997"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_210765" TextLabel="NKX6-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="768.5" CenterY="902.5" Width="53.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P78426"/>
+  </DataNode>
+  <DataNode GraphId="n75_REACTOME_450094" TextLabel="glucokinase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="848.0" CenterY="919.5" Width="78.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P35557"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_186689" TextLabel="NEUROD1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="917.5" CenterY="873.0" Width="69.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13562"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_211388" TextLabel="Pyruvate kinase, &#10;L isozyme&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="337.0" CenterY="1105.5" Width="100.0" Height="39.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30613-2"/>
+  </DataNode>
+  <DataNode GraphId="n83_REACTOME_211495" TextLabel="HNF1A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="580.5" CenterY="853.5" Width="49.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14443"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_211468" TextLabel="HNF4A &#10;(pancreas-&#10;specific)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="543.5" CenterY="978.5" Width="75.0" Height="43.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_14480"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_211483" TextLabel="HNF4G&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="619.0" CenterY="972.0" Width="52.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14541"/>
+  </DataNode>
+  <DataNode GraphId="n89_REACTOME_211484" TextLabel="FOXA3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="667.0" CenterY="931.5" Width="54.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55318"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_70421" TextLabel="GLUT2&#10;" Type="Protein">
+    <BiopaxRef>lit_70157</BiopaxRef>
+    <Graphics Color="000000" CenterX="420.0" CenterY="1145.0" Width="62.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P11168"/>
+  </DataNode>
+  <Line GraphId="e_3_REACTOME_210784">
+    <Comment Source="WikiPathways-description">The HNF6 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. HNF6 transcription requires the activity of the HNF1B transcription factor. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="554.0" Y="298.0" GraphId="e_3_0"/>
+      <Point X="554.0" Y="318.0" GraphId="e_3_1"/>
+      <Point X="553.0" Y="380.0" GraphId="e_3_2" GraphRef="n4_REACTOME_210782" RelX="0.0" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.2438784556848185" GraphId="e_3_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_3_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="517.0" Y="318.0" GraphId="e_3_a__0_0" GraphRef="n5_REACTOME_210762" RelX="1.088235294117647" RelY="0.0"/>
+      <Point X="554.0" Y="318.0" GraphId="e_3_a__0_1" GraphRef="e_3_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_REACTOME_210788">
+    <Comment Source="WikiPathways-description">The PTF1A gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. PTF1A transcription requires the activity of the HNF1B transcription factor and FGF10. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="403.0" Y="295.0" GraphId="e_6_0"/>
+      <Point X="402.0" Y="317.0" GraphId="e_6_1"/>
+      <Point X="401.0" Y="360.0" GraphId="e_6_2" GraphRef="n7_REACTOME_210783" RelX="0.0" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.3386320966532464" GraphId="e_6_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="443.0" Y="317.0" GraphId="e_6_a__0_0" GraphRef="n5_REACTOME_210762" RelX="-1.088235294117647" RelY="-0.08695652173913043"/>
+      <Point X="402.0" Y="317.0" GraphId="e_6_a__0_1" GraphRef="e_6_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="100.0" Y="344.0" GraphId="e_6_a__1_0" GraphRef="n8_REACTOME_189869" RelX="1.12" RelY="-0.6451612903225806"/>
+      <Point X="169.0" Y="316.0" GraphId="e_6_a__1_1"/>
+      <Point X="402.0" Y="317.0" GraphId="e_6_a__1_2" GraphRef="e_6_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_210767">
+    <Comment Source="WikiPathways-description">The ONECUT3 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. ONECUT3 transcription requires the activity of the HNF6 transcription factor. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="625.0" Y="374.0" GraphId="e_9_0"/>
+      <Point X="625.0" Y="394.0" GraphId="e_9_1"/>
+      <Point X="625.0" Y="420.0" GraphId="e_9_2" GraphRef="n10_REACTOME_210770" RelX="0.0" RelY="-1.2380952380952381" ArrowHead="Arrow"/>
+      <Anchor Position="0.43478260869565216" GraphId="e_9_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="581.0" Y="394.0" GraphId="e_9_a__0_0" GraphRef="n4_REACTOME_210782" RelX="1.12" RelY="0.0"/>
+      <Point X="625.0" Y="394.0" GraphId="e_9_a__0_1" GraphRef="e_9_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_REACTOME_210769">
+    <Comment Source="WikiPathways-description">The PDX1 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. PDX1 transcription requires the activities of the HNF6 transcription factor and FGF10. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="492.0" Y="375.0" GraphId="e_11_0"/>
+      <Point X="492.0" Y="397.0" GraphId="e_11_1"/>
+      <Point X="491.0" Y="440.0" GraphId="e_11_2" GraphRef="n12_REACTOME_211179" RelX="0.0" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.3384010097911339" GraphId="e_11_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="525.0" Y="395.0" GraphId="e_11_a__0_0" GraphRef="n4_REACTOME_210782" RelX="-1.12" RelY="0.09090909090909091"/>
+      <Point X="492.0" Y="397.0" GraphId="e_11_a__0_1" GraphRef="e_11_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="100.0" Y="364.0" GraphId="e_11_a__1_0" GraphRef="n8_REACTOME_189869" RelX="1.12" RelY="0.6451612903225806"/>
+      <Point X="174.0" Y="397.0" GraphId="e_11_a__1_1"/>
+      <Point X="492.0" Y="397.0" GraphId="e_11_a__1_2" GraphRef="e_11_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_210773">
+    <Comment Source="WikiPathways-description">The NR5A2 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. NR5A2 transcription requires the activity of the PDX1 transcription factor. These events and interactions have not been studied in vivo in humans, but are inferred from corresponding ones worked out in the mouse and from in vitro studies of PDX1 protein binding to the Nr5A2 gene (Annicotte et al. 2003).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="433.0" Y="431.0" GraphId="e_14_0"/>
+      <Point X="433.0" Y="453.0" GraphId="e_14_1"/>
+      <Point X="433.0" Y="486.0" GraphId="e_14_2" GraphRef="n15_REACTOME_210772" RelX="0.0" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" GraphId="e_14_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="464.0" Y="453.0" GraphId="e_14_a__0_0" GraphRef="n12_REACTOME_211179" RelX="-1.125" RelY="-0.09090909090909091"/>
+      <Point X="433.0" Y="453.0" GraphId="e_14_a__0_1" GraphRef="e_14_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_210780">
+    <Comment Source="WikiPathways-description">The NKX6-1 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. NKX6-1 transcription requires the activity of the PDX1 transcription factor. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="552.0" Y="433.0" GraphId="e_16_0"/>
+      <Point X="552.0" Y="455.0" GraphId="e_16_1"/>
+      <Point X="552.0" Y="487.0" GraphId="e_16_2" GraphRef="n17_REACTOME_210765" RelX="-0.03773584905660377" RelY="-1.2380952380952381" ArrowHead="Arrow"/>
+      <Anchor Position="0.4074074074074074" GraphId="e_16_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="518.0" Y="454.0" GraphId="e_16_a__0_0" GraphRef="n12_REACTOME_211179" RelX="1.125" RelY="0.0"/>
+      <Point X="552.0" Y="455.0" GraphId="e_16_a__0_1" GraphRef="e_16_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_REACTOME_210824">
+    <Comment Source="WikiPathways-description">The HNF1B gene is transcribed, its mRNA is translated, and the protein products are transported to the nucleus. HNF1B transcription requires the activity of the HNF6 transcription factor. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="780.0" Y="350.0" GraphId="e_20_0"/>
+      <Point X="780.0" Y="370.0" GraphId="e_20_1"/>
+      <Point X="780.0" Y="410.0" GraphId="e_20_2" GraphRef="n21_REACTOME_210762" RelX="-0.029411764705882353" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.3333333333333333" GraphId="e_20_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="807.0" Y="347.0" GraphId="e_20_a__0_0" GraphRef="n22_REACTOME_210782" RelX="-0.48" RelY="1.2727272727272727"/>
+      <Point X="780.0" Y="370.0" GraphId="e_20_a__0_1" GraphRef="e_20_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_210837">
+    <Comment Source="WikiPathways-description">The ONECUT3 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus during morphogenesis of the pancreas. ONECUT3 transcription requires the activity of the HNF6 transcription factor. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="868.0" Y="348.0" GraphId="e_23_0"/>
+      <Point X="868.0" Y="370.0" GraphId="e_23_1"/>
+      <Point X="869.0" Y="412.0" GraphId="e_23_2" GraphRef="n24_REACTOME_210770" RelX="-0.029411764705882353" RelY="-1.2380952380952381" ArrowHead="Arrow"/>
+      <Anchor Position="0.34368607935550366" GraphId="e_23_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="833.0" Y="347.0" GraphId="e_23_a__0_0" GraphRef="n22_REACTOME_210782" RelX="0.56" RelY="1.2727272727272727"/>
+      <Point X="868.0" Y="370.0" GraphId="e_23_a__0_1" GraphRef="e_23_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_REACTOME_210836">
+    <Comment Source="WikiPathways-description">The NEUROG3 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus during morphogenesis of the pancreas. NEUROG3 transcription requires the activity of the HNF6 transcription factor. HES1 represses NEUROG3 transcription. In vivo, the interplay between HNF6 and HES6 deteremines the timing and level of NEUROG3 expression, which is critical for normal development of the pancreas. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="958.0" Y="350.0" GraphId="e_25_0"/>
+      <Point X="959.0" Y="372.0" GraphId="e_25_1"/>
+      <Point X="959.0" Y="412.0" GraphId="e_25_2" GraphRef="n26_REACTOME_189530" RelX="0.0" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.355074997149605" GraphId="e_25_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="983.0" Y="370.0" GraphId="e_25_i__0_0" GraphRef="n27_REACTOME_210825" RelX="-1.1666666666666667" RelY="0.08695652173913043"/>
+      <Point X="959.0" Y="372.0" GraphId="e_25_i__0_1" GraphRef="e_25_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="847.0" Y="339.0" GraphId="e_25_a__0_0" GraphRef="n22_REACTOME_210782" RelX="1.12" RelY="0.5454545454545454"/>
+      <Point X="959.0" Y="372.0" GraphId="e_25_a__0_1" GraphRef="e_25_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_REACTOME_210834">
+    <Comment Source="WikiPathways-description">The HES1 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus during morphogenesis of the pancreas. HES1 transcription requires the activity of the RBPJ transcription factor and the NOTCH1 intracellular domain, probably as a complex (Aster et al. 1997). These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1003.0" Y="295.0" GraphId="e_29_0"/>
+      <Point X="1004.0" Y="315.0" GraphId="e_29_1"/>
+      <Point X="1004.0" Y="355.0" GraphId="e_29_2" GraphRef="n27_REACTOME_210825" RelX="0.0" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.33361082216849997" GraphId="e_29_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="974.0" Y="315.0" GraphId="e_29_a__0_0" GraphRef="n30_REACTOME_210850" RelX="1.2" RelY="0.0"/>
+      <Point X="1004.0" Y="315.0" GraphId="e_29_a__0_1" GraphRef="e_29_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1035.0" Y="315.0" GraphId="e_29_a__1_0" GraphRef="n31_REACTOME_157939" RelX="-1.09375" RelY="-0.06060606060606061"/>
+      <Point X="1004.0" Y="315.0" GraphId="e_29_a__1_1" GraphRef="e_29_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_210886">
+    <Comment Source="WikiPathways-description">The PAX4 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. PAX4 transcription requires the activity of the NEUROG3 transcription factor (Heremans et al. 2002; Mellitzer et al. 2006).</Comment>
+    <BiopaxRef>lit_187244</BiopaxRef>
+    <BiopaxRef>lit_186602</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="836.0" Y="529.0" GraphId="e_33_0"/>
+      <Point X="836.0" Y="551.0" GraphId="e_33_1"/>
+      <Point X="836.0" Y="584.0" GraphId="e_33_2" GraphRef="n34_REACTOME_210889" RelX="0.0" RelY="-1.25" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" GraphId="e_33_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="947.0" Y="441.0" GraphId="e_33_a__0_0" GraphRef="n26_REACTOME_189530" RelX="-0.32432432432432434" RelY="1.3043478260869565"/>
+      <Point X="836.0" Y="551.0" GraphId="e_33_a__0_1" GraphRef="e_33_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_36_REACTOME_210920">
+    <Comment Source="WikiPathways-description">The NEUROD1 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. NEUROD1 transcription requires the activity of the NEUROG3 transcription factor (Heremans et al. 2002; Mellitzer et al. 2006).</Comment>
+    <BiopaxRef>lit_187244</BiopaxRef>
+    <BiopaxRef>lit_186602</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="903.0" Y="527.0" GraphId="e_36_0"/>
+      <Point X="903.0" Y="547.0" GraphId="e_36_1"/>
+      <Point X="904.0" Y="583.0" GraphId="e_36_2" GraphRef="n37_REACTOME_186689" RelX="-0.028985507246376812" RelY="-1.25" ArrowHead="Arrow"/>
+      <Anchor Position="0.35705431908000473" GraphId="e_36_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_36_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="953.0" Y="441.0" GraphId="e_36_a__0_0" GraphRef="n26_REACTOME_189530" RelX="-0.16216216216216217" RelY="1.3043478260869565"/>
+      <Point X="903.0" Y="547.0" GraphId="e_36_a__0_1" GraphRef="e_36_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_REACTOME_210921">
+    <Comment Source="WikiPathways-description">The NKX2-2 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. NKX2-2 transcription requires the activity of the NEUROG3 transcription factor (Heremans et al. 2002; Mellitzer et al. 2006).</Comment>
+    <BiopaxRef>lit_187244</BiopaxRef>
+    <BiopaxRef>lit_186602</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="984.0" Y="528.0" GraphId="e_38_0"/>
+      <Point X="983.0" Y="549.0" GraphId="e_38_1"/>
+      <Point X="983.0" Y="582.0" GraphId="e_38_2" GraphRef="n39_REACTOME_186537" RelX="-0.03773584905660377" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.38915806703824585" GraphId="e_38_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="961.0" Y="441.0" GraphId="e_38_a__0_0" GraphRef="n26_REACTOME_189530" RelX="0.05405405405405406" RelY="1.3043478260869565"/>
+      <Point X="983.0" Y="549.0" GraphId="e_38_a__0_1" GraphRef="e_38_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_REACTOME_210913">
+    <Comment Source="WikiPathways-description">The INSM1 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. INSM1 transcription requires the activity of the NEUROG3 transcription factor (Mellitzer et al. 2006).</Comment>
+    <BiopaxRef>lit_187244</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1049.0" Y="527.0" GraphId="e_41_0"/>
+      <Point X="1049.0" Y="549.0" GraphId="e_41_1"/>
+      <Point X="1049.0" Y="585.0" GraphId="e_41_2" GraphRef="n42_REACTOME_210915" RelX="-0.04081632653061224" RelY="-1.25" ArrowHead="Arrow"/>
+      <Anchor Position="0.3793103448275862" GraphId="e_41_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="967.0" Y="441.0" GraphId="e_41_a__0_0" GraphRef="n26_REACTOME_189530" RelX="0.21621621621621623" RelY="1.3043478260869565"/>
+      <Point X="1049.0" Y="549.0" GraphId="e_41_a__0_1" GraphRef="e_41_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_REACTOME_211164">
+    <Comment Source="WikiPathways-description">One or more of the isoforms of AKT catalyzes the phosphorylation of FOXO1A protein at three sites, threonine-24, serine-256, and serine-319 (Zhang et al. 2002, 2006). This reaction occurs in the nucleoplasm, and thus is dependent on the phosphorylation and nuclear import of AKT in response to upstream regulatory factors (Burgering and Kops 2002).</Comment>
+    <BiopaxRef>lit_211151</BiopaxRef>
+    <BiopaxRef>lit_211262</BiopaxRef>
+    <BiopaxRef>lit_166891</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="678.0" Y="746.0" GraphId="e_46_0"/>
+      <Point X="639.0" Y="746.0" GraphId="e_46_1"/>
+      <Point X="601.0" Y="746.0" GraphId="e_46_2"/>
+      <Anchor Position="0.0" GraphId="e_46_a_i"/>
+      <Anchor Position="0.5064935064935064" GraphId="e_46_a_p"/>
+      <Anchor Position="1.0" GraphId="e_46_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="698.0" Y="710.0" GraphId="e_46_i0_0" GraphRef="n47_REACTOME_29358" RelX="-0.45" RelY="1.2258064516129032"/>
+      <Point X="678.0" Y="746.0" GraphId="e_46_i0_1" GraphRef="e_46_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="703.0" Y="746.0" GraphId="e_46_i1_0" GraphRef="n48_REACTOME_199300" RelX="-1.0638297872340425" RelY="0.0"/>
+      <Point X="678.0" Y="746.0" GraphId="e_46_i1_1" GraphRef="e_46_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="540.0" Y="746.0" GraphId="e_46_o0_0" ArrowHead="Arrow" GraphRef="n49_REACTOME_199306" RelX="1.046875" RelY="-0.041666666666666664"/>
+      <Point X="601.0" Y="746.0" GraphId="e_46_o0_1" GraphRef="e_46_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="574.0" Y="715.0" GraphId="e_46_o1_0" ArrowHead="Arrow" GraphRef="n50_REACTOME_113582" RelX="0.6" RelY="1.2258064516129032"/>
+      <Point X="601.0" Y="746.0" GraphId="e_46_o1_1" GraphRef="e_46_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="636.0" Y="717.0" GraphId="e_46_c__0_0" GraphRef="n51_REACTOME_202072" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="639.0" Y="746.0" GraphId="e_46_c__0_1" GraphRef="e_46_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_53_REACTOME_211178">
+    <Comment Source="WikiPathways-description">Phosphorylated FOXO1A is transported from the nucleoplasm to the cytosol (Zhang et al. 2002).</Comment>
+    <BiopaxRef>lit_211151</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="406.0" Y="746.0" GraphId="e_53_0" GraphRef="n49_REACTOME_199306" RelX="-1.046875" RelY="-0.041666666666666664"/>
+      <Point X="360.0" Y="746.0" GraphId="e_53_1"/>
+      <Point X="324.0" Y="745.0" GraphId="e_53_2" GraphRef="n54_REACTOME_211158" RelX="1.044776119402985" RelY="0.0392156862745098" ArrowHead="Arrow"/>
+      <Anchor Position="0.5608806279683055" GraphId="e_53_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_REACTOME_211272">
+    <Comment Source="WikiPathways-description">The PDX1 (IPF1) gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. PDX1 transcription is positively regulated by the activities of the FOXA2, MAFA, and PAX6 transcription factors. It is negatively regulated by FOXO1A, so events that deplete the nucleoplasmic pool of FOXO1A increase expression of PDX1. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="860.0" Y="725.0" GraphId="e_56_0"/>
+      <Point X="860.0" Y="745.0" GraphId="e_56_1"/>
+      <Point X="861.0" Y="798.0" GraphId="e_56_2" GraphRef="n60_REACTOME_211179" RelX="-0.041666666666666664" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.2739372043385418" GraphId="e_56_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="803.0" Y="745.0" GraphId="e_56_i__0_0" GraphRef="n48_REACTOME_199300" RelX="1.0638297872340425" RelY="-0.05"/>
+      <Point X="860.0" Y="745.0" GraphId="e_56_i__0_1" GraphRef="e_56_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="893.0" Y="744.0" GraphId="e_56_a__0_0" GraphRef="n57_REACTOME_211276" RelX="-1.1219512195121952" RelY="0.0"/>
+      <Point X="860.0" Y="745.0" GraphId="e_56_a__0_1" GraphRef="e_56_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="892.0" Y="724.0" GraphId="e_56_a__1_0" GraphRef="n58_REACTOME_211275" RelX="-0.5333333333333333" RelY="1.3043478260869565"/>
+      <Point X="860.0" Y="745.0" GraphId="e_56_a__1_1" GraphRef="e_56_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_a__2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="890.0" Y="761.0" GraphId="e_56_a__2_0" GraphRef="n59_REACTOME_211283" RelX="-0.8636363636363636" RelY="-1.2173913043478262"/>
+      <Point X="860.0" Y="745.0" GraphId="e_56_a__2_1" GraphRef="e_56_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_REACTOME_211289">
+    <Comment Source="WikiPathways-description">The INS1 gene, encoding insulin precursor protein, is transcribed and its mRNA is translated on membrane-associated ribosomes. INS1 transcription is positively regulated by the activities of the MAFA, NKX2-2, PAX6, and PDX1 transcription factors. These events and interactions are inferred from corresponding ones studied in molecular detail in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1020.0" Y="723.0" GraphId="e_62_0" GraphRef="n63_REACTOME_72500" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="1022.0" Y="775.0" GraphId="e_62_1"/>
+      <Point X="1023.0" Y="797.0" GraphId="e_62_2" GraphRef="n64_REACTOME_445217" RelX="-0.034782608695652174" RelY="-1.1111111111111112" ArrowHead="Arrow"/>
+      <Anchor Position="0.7026415101794908" GraphId="e_62_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="934.0" Y="775.0" GraphId="e_62_a__0_0" GraphRef="n59_REACTOME_211283" RelX="1.1363636363636365" RelY="0.0"/>
+      <Point X="1022.0" Y="775.0" GraphId="e_62_a__0_1" GraphRef="e_62_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="940.0" Y="749.0" GraphId="e_62_a__1_0" GraphRef="n57_REACTOME_211276" RelX="1.170731707317073" RelY="0.43478260869565216"/>
+      <Point X="1022.0" Y="775.0" GraphId="e_62_a__1_1" GraphRef="e_62_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_a__2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1060.0" Y="758.0" GraphId="e_62_a__2_0" GraphRef="n66_REACTOME_211179" RelX="-0.9166666666666666" RelY="1.2727272727272727"/>
+      <Point X="1022.0" Y="775.0" GraphId="e_62_a__2_1" GraphRef="e_62_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_a__3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1060.0" Y="775.0" GraphId="e_62_a__3_0" GraphRef="n68_REACTOME_186537" RelX="-1.0943396226415094" RelY="-0.08695652173913043"/>
+      <Point X="1022.0" Y="775.0" GraphId="e_62_a__3_1" GraphRef="e_62_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_REACTOME_211301">
+    <Comment Source="WikiPathways-description">The IAPP gene, encoding islet amyloid precursor protein, is transcribed and its mRNA is translated. IAPP transcription is positively regulated by PDX1 transcription factor. These events and interactions are inferred from corresponding ones studied in molecular detail in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="722.0" Y="788.0" GraphId="e_69_0"/>
+      <Point X="722.0" Y="810.0" GraphId="e_69_1"/>
+      <Point X="722.0" Y="843.0" GraphId="e_69_2" GraphRef="n70_REACTOME_186631" RelX="-0.05263157894736842" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" GraphId="e_69_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="835.0" Y="811.0" GraphId="e_69_a__0_0" GraphRef="n60_REACTOME_211179" RelX="-1.125" RelY="-0.09090909090909091"/>
+      <Point X="722.0" Y="810.0" GraphId="e_69_a__0_1" GraphRef="e_69_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_REACTOME_211350">
+    <Comment Source="WikiPathways-description">In mature beta-cells of the pancreas, the NKX6-1 gene is transcribed, its mRNA is translated, and the protein product is transported to the nucleus. NKX6-1 transcription is positively regulated by the activity of the PDX1 transcription factor. These events and interactions have not been studied directly in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="767.0" Y="834.0" GraphId="e_71_0"/>
+      <Point X="767.0" Y="856.0" GraphId="e_71_1"/>
+      <Point X="767.0" Y="889.0" GraphId="e_71_2" GraphRef="n73_REACTOME_210765" RelX="-0.03773584905660377" RelY="-1.2380952380952381" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" GraphId="e_71_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="838.0" Y="826.0" GraphId="e_71_a__0_0" GraphRef="n60_REACTOME_211179" RelX="-1.0" RelY="1.2727272727272727"/>
+      <Point X="767.0" Y="856.0" GraphId="e_71_a__0_1" GraphRef="e_71_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_REACTOME_211346">
+    <Comment Source="WikiPathways-description">The glucokinase (GCK) gene is transcribed and its mRNA is translated. GCK transcription is positively regulated by the activity of the NEUROD1 and PDX1 transcription factors. These events and interactions are inferred from corresponding ones studied in molecular detail in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="845.0" Y="845.0" GraphId="e_74_0"/>
+      <Point X="846.0" Y="873.0" GraphId="e_74_1"/>
+      <Point X="847.0" Y="905.0" GraphId="e_74_2" GraphRef="n75_REACTOME_450094" RelX="-0.02564102564102564" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.4667038273886544" GraphId="e_74_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="880.0" Y="873.0" GraphId="e_74_a__0_0" GraphRef="n78_REACTOME_186689" RelX="-1.0724637681159421" RelY="0.0"/>
+      <Point X="846.0" Y="873.0" GraphId="e_74_a__0_1" GraphRef="e_74_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="859.0" Y="826.0" GraphId="e_74_a__1_0" GraphRef="n60_REACTOME_211179" RelX="-0.125" RelY="1.2727272727272727"/>
+      <Point X="846.0" Y="873.0" GraphId="e_74_a__1_1" GraphRef="e_74_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_REACTOME_211461">
+    <Comment Source="WikiPathways-description">The PKLR gene is transcribed, its mRNA is translated, spliced, and translated to yield the L isoform of PKLR protein. PKLR expression is positively regulated by HNF1A. Mutations in HNF1A are associated with a form of MODY (maturity onset diabetes of the young) (Fanjans et al. 2001) but the molecular details of PKLR expression in intact pancreatic beta cells have not been studied in humans, and are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="337.0" Y="1031.0" GraphId="e_81_0"/>
+      <Point X="337.0" Y="1052.0" GraphId="e_81_1"/>
+      <Point X="337.0" Y="1083.0" GraphId="e_81_2" GraphRef="n82_REACTOME_211388" RelX="0.0" RelY="-1.1282051282051282" ArrowHead="Arrow"/>
+      <Anchor Position="0.40384615384615385" GraphId="e_81_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="565.0" Y="868.0" GraphId="e_81_a__0_0" GraphRef="n83_REACTOME_211495" RelX="-0.6122448979591837" RelY="1.3043478260869565"/>
+      <Point X="337.0" Y="1052.0" GraphId="e_81_a__0_1" GraphRef="e_81_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_REACTOME_211466">
+    <Comment Source="WikiPathways-description">The HNF4A gene is transcribed from either of two promoters, P1 and P2, the resulting mRNA is translated, and the protein products localize in the nucleoplasm. Transcription is positively regulated by HNF1A. Many of the molecular details of these events have not been studied experimentally in humans, but are inferred from mouse model systems (Boj et al. 2001). Transcription in mouse and human pancreatic beta cells is P2-dependent and in humans yields three isoforms of mature HNF4A protein. A point mutation in the human P2 genomic DNA sequence is associated with MODY (maturity onset diabetes of the young), consistent with the hypothesis that P2-mediated transcription is essential for HNF4A expression and normal beta cell function (Hansen et al. 2002).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="543.0" Y="905.0" GraphId="e_84_0"/>
+      <Point X="543.0" Y="927.0" GraphId="e_84_1"/>
+      <Point X="543.0" Y="954.0" GraphId="e_84_2" GraphRef="n85_REACTOME_211468" RelX="0.0" RelY="-1.1162790697674418" ArrowHead="Arrow"/>
+      <Anchor Position="0.4489795918367347" GraphId="e_84_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="574.0" Y="868.0" GraphId="e_84_a__0_0" GraphRef="n83_REACTOME_211495" RelX="-0.24489795918367346" RelY="1.3043478260869565"/>
+      <Point X="543.0" Y="927.0" GraphId="e_84_a__0_1" GraphRef="e_84_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_REACTOME_211467">
+    <Comment Source="WikiPathways-description">The HNF4G gene is transcribed, its mRNA is translated, and the protein product is localized to the nucleoplasm. HNF4G expression is positively regulated by HNF1A. The molecular details of HNF4G expression in intact pancreatic beta cells have not been studied in humans, but are inferred from corresponding ones worked out in the mouse (Boj et al. 2001).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="617.0" Y="901.0" GraphId="e_86_0"/>
+      <Point X="617.0" Y="923.0" GraphId="e_86_1"/>
+      <Point X="618.0" Y="957.0" GraphId="e_86_2" GraphRef="n87_REACTOME_211483" RelX="-0.038461538461538464" RelY="-1.25" ArrowHead="Arrow"/>
+      <Anchor Position="0.3927540259651972" GraphId="e_86_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="586.0" Y="868.0" GraphId="e_86_a__0_0" GraphRef="n83_REACTOME_211495" RelX="0.24489795918367346" RelY="1.3043478260869565"/>
+      <Point X="617.0" Y="923.0" GraphId="e_86_a__0_1" GraphRef="e_86_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_211482">
+    <Comment Source="WikiPathways-description">The FOXA3 gene is transcribed, its mRNA is translated, and the protein product is localized to the nucleoplasm. FOXA3 expression is positively regulated by HNF1A. The molecular details of FOXA3 expression in intact pancreatic beta cells have not been studied in humans, but are inferred from corresponding ones worked out in the mouse (Boj et al. 2001).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="667.0" Y="860.0" GraphId="e_88_0"/>
+      <Point X="667.0" Y="882.0" GraphId="e_88_1"/>
+      <Point X="667.0" Y="917.0" GraphId="e_88_2" GraphRef="n89_REACTOME_211484" RelX="0.0" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.38596491228070173" GraphId="e_88_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="608.0" Y="861.0" GraphId="e_88_a__0_0" GraphRef="n83_REACTOME_211495" RelX="1.1428571428571428" RelY="0.6956521739130435"/>
+      <Point X="667.0" Y="882.0" GraphId="e_88_a__0_1" GraphRef="e_88_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_REACTOME_211476">
+    <Comment Source="WikiPathways-description">The GLUT2 gene is transcribed, its mRNA is translated, and the protein product is localized to the plasma membrane. GLUT2 expression is positively regulated by HNF1A. In vivo, pancreatic GLUT2 expression is positively regulated by HNF1A. Mutations in HNF1A are associated with a form of MODY (maturity onset diabetes of the young) (Fanjans et al. 2001) and interactions between the HNF1A protein product and the GLUT2 promoter have been demomstrated in vitro (Ban et al. 2002). However, the molecular details of GLUT2 expression in intact pancreatic beta cells have not been studied in humans, but are inferred from corresponding ones worked out in the mouse.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="418.0" Y="1057.0" GraphId="e_90_0"/>
+      <Point X="418.0" Y="1103.0" GraphId="e_90_1"/>
+      <Point X="419.0" Y="1128.0" GraphId="e_90_2" GraphRef="n91_REACTOME_70421" RelX="-0.03225806451612903" RelY="-1.2142857142857142" ArrowHead="Arrow"/>
+      <Anchor Position="0.6477049447690564" GraphId="e_90_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="572.0" Y="868.0" GraphId="e_90_a__0_0" GraphRef="n83_REACTOME_211495" RelX="-0.32653061224489793" RelY="1.3043478260869565"/>
+      <Point X="418.0" Y="1103.0" GraphId="e_90_a__0_1" GraphRef="e_90_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="210.5" CenterY="1108.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_2" GroupRef="group_comp_2" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="559.0" CenterY="1031.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="749.5" CenterY="612.0" Width="1205.0" Height="1090.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics Color="000000" CenterX="793.0" CenterY="618.5" Width="878.0" Height="905.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_70157" rdf:id="lit_70157">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1562197</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mammalian facilitative glucose transporter family: structure and molecular regulation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pessin, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bell, GI</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Physiol 54:911-30</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_187244" rdf:id="lit_187244">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16511571</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IA1 is NGN3-dependent and essential for differentiation of the endocrine pancreas</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mellitzer, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bonne, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luco, RF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van De Casteele, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lenne-Samuel, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Collombat, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mansouri, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lan, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pipeleers, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, FC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferrer, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gradwohl, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heimberg, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 25:1344-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_186602" rdf:id="lit_186602">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12403815</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Recapitulation of embryonic neuroendocrine differentiation in adult human pancreatic duct cells expressing neurogenin 3</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heremans, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van De Casteele, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">in't Veld, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gradwohl, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Serup, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Madsen, OD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pipeleers, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heimberg, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 159:303-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_211151" rdf:id="lit_211151">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12228231</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation of serine 256 suppresses transactivation by FKHR (FOXO1) by multiple mechanisms. Direct and indirect effects on nuclear/cytoplasmic shuttling and DNA binding</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gan, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pan, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guo, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">He, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olson, ST</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mesecar, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adam, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Unterman, TG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:45276-84</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_211262" rdf:id="lit_211262">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16540465</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinetic mechanism of AKT/PKB enzyme family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamane, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wahl, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ali, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lofgren, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kendall, RL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:13949-56</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_166891" rdf:id="lit_166891">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12114024</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell cycle and death control: long live Forkheads</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burgering, BM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kops, GJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Biochem Sci 27:352-60</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>endocrine cell</bp:TERM><bp:ID>CL:0000163</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

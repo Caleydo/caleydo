@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="CAMK" Organism="Homo sapiens">
+<Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment></Comment>
+  <Graphics BoardWidth="581.0" BoardHeight="310.0" />
+  <DataNode TextLabel="CAMK" GraphId="ca53d" Type="SimplePhysicalEntity">
+    <Graphics CenterX="188.0" CenterY="167.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="CAS" ID="camk_dbid" />
+  </DataNode>
+  <DataNode TextLabel="Kinase" GraphId="be41c" Type="SimplePhysicalEntity">
+    <Graphics CenterX="280.0" CenterY="167.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="CAS" ID="kinase_dbid" />
+  </DataNode>
+  <DataNode TextLabel="Reg" GraphId="d312c" Type="SimplePhysicalEntity">
+    <Graphics CenterX="365.0" CenterY="166.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="CAS" ID="reg_dbid" />
+  </DataNode>
+  <DataNode TextLabel="CAM" GraphId="b2418" Type="SimplePhysicalEntity">
+    <Graphics CenterX="511.0" CenterY="204.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Phtase" GraphId="b3858" Type="SimplePhysicalEntity">
+    <Graphics CenterX="384.0" CenterY="112.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Substrates" GraphId="d381d" Type="SimplePhysicalEntity">
+    <Graphics CenterX="340.0" CenterY="270.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="P" GraphId="b82a9" Type="Modifier">
+    <Attribute Key="Number" Value="nnn" />
+    <Attribute Key="Source" Value="sourceId" />
+    <Attribute Key="Target" Value="targetId" />
+    <Graphics CenterX="299.0" CenterY="90.0" Width="20.0" Height="20.0" ZOrder="32768" FillColor="Transparent" FontSize="10" Valign="Middle" ShapeType="None" LineThickness="0.0" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="P" GraphId="f683d" Type="Modifier">
+    <Attribute Key="Number" Value="nnn" />
+    <Attribute Key="Source" Value="sourceId" />
+    <Attribute Key="Target" Value="targetId" />
+    <Graphics CenterX="224.0" CenterY="270.0" Width="20.0" Height="20.0" ZOrder="32768" FillColor="Transparent" FontSize="10" Valign="Middle" ShapeType="None" LineThickness="0.0" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ca++" GraphId="bd329" Type="SimplePhysicalEntity">
+    <Attribute Key="NumberOfAnchors" Value="3" />
+    <Graphics CenterX="511.0" CenterY="101.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <Line GraphId="b756a">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="228.0" Y="167.0" GraphRef="ca53d" RelX="1.0" RelY="0.0" ArrowHead="mim-first-feature" />
+      <Point X="240.0" Y="167.0" GraphRef="be41c" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="beb81">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="320.0" Y="167.0" GraphRef="be41c" RelX="1.0" RelY="0.0" ArrowHead="mim-next-feature" />
+      <Point X="325.0" Y="166.0" GraphRef="d312c" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a02db">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="365.0" Y="202.16803493449783" GraphRef="b739e" RelX="0.0" RelY="0.0" ArrowHead="mim-branching-right" />
+      <Point X="280.0" Y="177.0" GraphRef="be41c" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+      <Anchor Position="0.47368421052631576" Shape="None" GraphId="c55ac" />
+      <Anchor Position="0.6578947368421053" Shape="Circle" GraphId="c8cfc" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fb763">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="511.0" Y="111.0" GraphRef="bd329" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+      <Point X="511.0" Y="194.0" GraphRef="b2418" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+      <Anchor Position="0.4" Shape="Circle" GraphId="a60d7" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cd6b0">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="0000cc">
+      <Point X="300.0" Y="157.0" GraphRef="be41c" RelX="0.5" RelY="-1.0" ArrowHead="mim-modification" />
+      <Point X="299.0" Y="100.0" GraphRef="b82a9" RelX="0.0" RelY="1.0" />
+      <Anchor Position="0.30357142857142855" Shape="Circle" GraphId="a37e6" />
+      <Anchor Position="0.7948717948717948" Shape="None" GraphId="b6ece" />
+      <Anchor Position="0.5" Shape="None" GraphId="f9c9d" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f8ac5">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="344.0" Y="112.0" GraphRef="b3858" RelX="-1.0" RelY="0.0" />
+      <Point X="313.0" Y="111.94871794871796" />
+      <Point X="299.0" Y="111.8974358974359" GraphRef="b6ece" RelX="0.0" RelY="0.0" ArrowHead="mim-cleavage" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c7f41">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="471.0" Y="204.0" GraphRef="b2418" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding" />
+      <Point X="365.0" Y="176.0" GraphRef="d312c" RelX="0.0" RelY="1.0" ArrowHead="mim-binding" />
+      <Anchor Position="0.1475873544093177" Shape="None" GraphId="d03e0" />
+      <Anchor Position="0.80471615720524" Shape="None" GraphId="b739e" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fc57e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="300.0" Y="139.39285714285714" GraphRef="a37e6" RelX="0.0" RelY="0.0" />
+      <Point X="441.0" Y="182.54464285714286" />
+      <Point X="382.7894736842105" Y="226.0" />
+      <Point X="312.8151413468168" Y="202.16803493449783" GraphRef="c55ac" RelX="0.0" RelY="0.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a54b3">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="0000cc">
+      <Point X="234.0" Y="270.0" GraphRef="f683d" RelX="1.0" RelY="0.0" />
+      <Point X="300.0" Y="270.0" GraphRef="d381d" RelX="-1.0" RelY="0.0" ArrowHead="mim-modification" />
+      <Anchor Position="0.3939393939393939" Shape="None" GraphId="d3ccb" />
+    </Graphics>
+  </Line>
+  <Line GraphId="a3a8f">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00cc00">
+      <Point X="260.0" Y="177.0" GraphRef="be41c" RelX="-0.5" RelY="1.0" />
+      <Point X="260.0" Y="270.0" GraphRef="d3ccb" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+      <Anchor Position="0.44080581235634453" Shape="None" GraphId="e089d" />
+      <Anchor Position="0.6988983748485381" Shape="None" GraphId="e0e91" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b4e30">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="292.5210296483567" Y="202.16803493449783" GraphRef="c8cfc" RelX="0.0" RelY="0.0" />
+      <Point X="289.66315789473686" Y="218.0" />
+      <Point X="279.8" Y="217.8856314370413" />
+      <Point X="260.0" Y="217.99494054914004" GraphRef="e089d" RelX="0.0" RelY="0.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="aefde">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00cc00">
+      <Point X="260.0" Y="241.99754886091404" GraphRef="e0e91" RelX="0.0" RelY="0.0" ArrowHead="mim-branching-right" />
+      <Point X="104.0" Y="185.43855410542673" />
+      <Point X="299.0" Y="129.0" GraphRef="f9c9d" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+      <Anchor Position="0.4" Shape="Intermolecular" GraphId="fbcd1" />
+    </Graphics>
+  </Line>
+  <Line GraphId="aa2b5">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="00cc00">
+      <Point X="511.0" Y="144.2" GraphRef="a60d7" RelX="0.0" RelY="0.0" />
+      <Point X="451.0" Y="164.1" />
+      <Point X="451.0" Y="184.0" />
+      <Point X="451.2232945091514" Y="204.0" GraphRef="d03e0" RelX="0.0" RelY="0.0" ArrowHead="mim-necessary-stimulation" />
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax />
+</Pathway>

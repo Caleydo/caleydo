@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Cholesterol Biosynthesis" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP197&amp;amp;oldid=21093 WP197(r21093)] with a 88% conversion rate.</Comment>
+  <Comment Source="WikiPathways-description">Cholesterol is a waxy steroid metabolite found in the cell membranes and transported in the blood plasma of all animals. It is an essential structural component of mammalian cell membranes, where it is required to establish proper membrane permeability and fluidity. In addition, cholesterol is an important component for the manufacture of bile acids, steroid hormones, and several fat-soluble vitamins. Cholesterol is the principal sterol synthesized by animals, but small quantities are synthesized in other eukaryotes, such as plants and fungi. It is almost completely absent among prokaryotes, which include bacteria.
+
+Source: [[wikipedia:Cholesterol|Wikipedia]]</Comment>
+  <BiopaxRef>cb0</BiopaxRef>
+  <BiopaxRef>af4</BiopaxRef>
+  <BiopaxRef>c95</BiopaxRef>
+  <BiopaxRef>e3e</BiopaxRef>
+  <BiopaxRef>f61</BiopaxRef>
+  <BiopaxRef>b27</BiopaxRef>
+  <BiopaxRef>bb3</BiopaxRef>
+  <Graphics BoardWidth="10862.5" BoardHeight="10972.5"/>
+  <DataNode BackpageHead="Fdps" TextLabel="Fdps" Type="GeneProduct" GraphId="aa8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Fdps"/>
+    <Graphics Color="000000" CenterX="1675.0" CenterY="9500.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="110196"/>
+  </DataNode>
+  <DataNode BackpageHead="Idi1" TextLabel="Idi1" Type="GeneProduct" GraphId="c3b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Idi1"/>
+    <Graphics Color="000000" CenterX="2970.0" CenterY="6365.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="319554"/>
+  </DataNode>
+  <DataNode TextLabel="Hmgcs1" Type="GeneProduct" GraphId="b21">
+    <Graphics Color="000000" CenterX="4475.0" CenterY="2045.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="208715"/>
+  </DataNode>
+  <DataNode BackpageHead="Hmgcr" TextLabel="Hmgcr" Type="GeneProduct" GraphId="d8b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Hmgcr"/>
+    <Graphics Color="000000" CenterX="4475.0" CenterY="3165.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15357"/>
+  </DataNode>
+  <DataNode BackpageHead="Mvk" TextLabel="Mvk" Type="GeneProduct" GraphId="fa9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Mvk"/>
+    <Graphics Color="000000" CenterX="4475.0" CenterY="4275.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17855"/>
+  </DataNode>
+  <DataNode BackpageHead="Mvd" TextLabel="Mvd" Type="GeneProduct" GraphId="c55">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Mvd"/>
+    <Graphics Color="000000" CenterX="4475.0" CenterY="6365.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="192156"/>
+  </DataNode>
+  <DataNode BackpageHead="Fdps" TextLabel="Fdps" Type="GeneProduct" GraphId="ee8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Fdps"/>
+    <Graphics Color="000000" CenterX="4145.0" CenterY="7775.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="110196"/>
+  </DataNode>
+  <DataNode BackpageHead="Fdft1" TextLabel="Fdft1" Type="GeneProduct" GraphId="f32">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Fdft1"/>
+    <Graphics Color="000000" CenterX="6185.0" CenterY="9825.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14137"/>
+  </DataNode>
+  <DataNode BackpageHead="Dhcr7" TextLabel="Dhcr7" Type="GeneProduct" GraphId="db2">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Dhcr7"/>
+    <Graphics Color="000000" CenterX="9255.0" CenterY="3100.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13360"/>
+  </DataNode>
+  <DataNode BackpageHead="Sc5d" TextLabel="Sc5d" Type="GeneProduct" GraphId="f2b">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sc5d"/>
+    <Graphics Color="000000" CenterX="9255.0" CenterY="4250.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="235293"/>
+  </DataNode>
+  <DataNode BackpageHead="Lss" TextLabel="Lss" Type="GeneProduct" GraphId="f92">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Lss"/>
+    <Graphics Color="000000" CenterX="9255.0" CenterY="7185.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16987"/>
+  </DataNode>
+  <DataNode BackpageHead="Sqle" TextLabel="Sqle" Type="GeneProduct" GraphId="b6d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sqle"/>
+    <Graphics Color="000000" CenterX="9255.0" CenterY="8485.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20775"/>
+  </DataNode>
+  <DataNode BackpageHead="Pmvk" TextLabel="Pmvk" Type="GeneProduct" GraphId="e5c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Pmvk"/>
+    <Graphics Color="000000" CenterX="4475.0" CenterY="5325.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68603"/>
+  </DataNode>
+  <DataNode BackpageHead="Nsdhl" TextLabel="Nsdhl" Type="GeneProduct" GraphId="a12" GroupRef="c1291">
+    <Comment Source="GenMAPP remarks">NAD(P) dependent steroid dehydrogenase-like</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Nsdhl"/>
+    <Graphics Color="000000" CenterX="9255.0" CenterY="5205.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18194"/>
+  </DataNode>
+  <DataNode BackpageHead="Cyp51" TextLabel="Cyp51" Type="GeneProduct" GraphId="d4d" GroupRef="c1291">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cyp51"/>
+    <Graphics Color="000000" CenterX="9255.0" CenterY="5805.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13121"/>
+  </DataNode>
+  <DataNode BackpageHead="Sc4mol" TextLabel="Sc4mol" Type="GeneProduct" GraphId="b31" GroupRef="c1291">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sc4mol"/>
+    <Graphics Color="000000" CenterX="9255.0" CenterY="5505.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="66234"/>
+  </DataNode>
+  <DataNode TextLabel="Acetyl-CoA" Type="Metabolite" GraphId="fb3">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="1485.0" Width="1115.0" Height="240.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01206"/>
+  </DataNode>
+  <DataNode TextLabel="Squalene" Type="Metabolite" GraphId="f02">
+    <Graphics Color="0000ff" CenterX="8100.0" CenterY="9135.0" Width="995.0" Height="240.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="111-02-4"/>
+  </DataNode>
+  <DataNode TextLabel="Lathosterol" Type="Metabolite" GraphId="b63">
+    <Graphics Color="0000ff" CenterX="8100.0" CenterY="4700.0" Width="1145.0" Height="240.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="80-99-9"/>
+  </DataNode>
+  <DataNode TextLabel="Cholesterol" Type="Metabolite" GraphId="e9f">
+    <Graphics Color="0000ff" CenterX="8100.0" CenterY="2500.0" Width="1160.0" Height="240.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="57-88-5"/>
+  </DataNode>
+  <DataNode TextLabel="HMG-CoA" Type="Metabolite" GraphId="e89f4">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="2692.5" Width="1260.5" Height="285.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Mevalonic acid" Type="Metabolite" GraphId="a6a21">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="3825.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="150-97-0"/>
+  </DataNode>
+  <DataNode TextLabel="Mevalonic acid-5P" Type="Metabolite" GraphId="ef0dc">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="4905.0" Width="1470.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="73566-35-5"/>
+  </DataNode>
+  <DataNode TextLabel="Mevalonic acid 5-pyrophosphate" Type="Metabolite" GraphId="c3220">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="5880.0" Width="2535.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="1492-08-6"/>
+  </DataNode>
+  <DataNode TextLabel="farnesyl pyrophosphate" Type="Metabolite" GraphId="a7690">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="8670.0" Width="1860.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="13058-04-3"/>
+  </DataNode>
+  <DataNode TextLabel="Geranyl-PP" Type="Metabolite" GraphId="e993b">
+    <Graphics Color="0000ff" CenterX="3135.0" CenterY="8670.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="6699-20-3"/>
+  </DataNode>
+  <DataNode TextLabel="Dimethylallylpyrophosphate" Type="Metabolite" GraphId="fce72">
+    <Graphics Color="0000ff" CenterX="1215.0" CenterY="6990.0" Width="2130.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="358-72-5"/>
+  </DataNode>
+  <DataNode TextLabel="7-Dehydrocholesterol" Type="Metabolite" GraphId="d931a">
+    <Graphics Color="0000ff" CenterX="8100.0" CenterY="3629.75" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="434-16-2"/>
+  </DataNode>
+  <DataNode TextLabel="Lanosterin" Type="Metabolite" GraphId="b6fae">
+    <Graphics Color="0000ff" CenterX="8100.0" CenterY="6555.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="79-63-0"/>
+  </DataNode>
+  <DataNode TextLabel="(S)-2,3-Epoxysqualene" Type="Metabolite" GraphId="a6667">
+    <Graphics Color="0000ff" CenterX="8100.0" CenterY="7890.0" Width="1845.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="9029-62-3"/>
+  </DataNode>
+  <DataNode TextLabel="isopentenyl pyrophosphate" Type="Metabolite" GraphId="db29a">
+    <Graphics Color="0000ff" CenterX="5550.0" CenterY="7005.0" Width="2010.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="CAS" ID="358-71-4"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="d8c39">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="767.5" GraphRef="eba" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="1365.0" GraphRef="fb3" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b4e66">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="2835.0" GraphRef="e89f4" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="3675.0" GraphRef="a6a21" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="f9df0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f348a">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="3975.0" GraphRef="a6a21" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="4755.0" GraphRef="ef0dc" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="bba75"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b3039">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="5055.0" GraphRef="ef0dc" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="5730.0" GraphRef="c3220" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="fbcdb"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f4034">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="6030.0" GraphRef="c3220" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="6855.0" GraphRef="db29a" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="cd7d3"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d9ed5">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="7155.0" GraphRef="db29a" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="8520.0" GraphRef="a7690" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.45054945054945056" Shape="None" GraphId="c86c0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4a4b">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="1215.0" y="7140.0" GraphRef="fce72" relX="0.0" relY="1.0"/>
+      <Point x="2535.0" y="8670.0" GraphRef="e993b" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.6952832268018515" Shape="None" GraphId="c4ce3"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f1c67">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3735.0" y="8670.0" GraphRef="e993b" relX="1.0" relY="0.0"/>
+      <Point x="4620.0" y="8670.0" GraphRef="a7690" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4576271186440678" Shape="None" GraphId="d6cf4"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b96c7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2280.0" y="6990.0" GraphRef="fce72" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Point x="4545.0" y="7005.0" GraphRef="db29a" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.3046662573458469" Shape="None" GraphId="a45b2"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa6f1">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="8820.0" GraphRef="a7690" relX="0.0" relY="1.0"/>
+      <Point x="7602.5" y="9135.0" GraphRef="f02" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="dc8c8"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c094d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8100.0" y="9015.0" GraphRef="f02" relX="0.0" relY="-1.0"/>
+      <Point x="8100.0" y="8040.0" GraphRef="a6667" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5538461538461539" Shape="None" GraphId="c8fcf"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cadcd">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8100.0" y="7740.0" GraphRef="a6667" relX="0.0" relY="-1.0"/>
+      <Point x="8100.0" y="6705.0" GraphRef="b6fae" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5362318840579711" Shape="None" GraphId="b1970"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="f5c39">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8100.0" y="6405.0" GraphRef="b6fae" relX="0.0" relY="-1.0"/>
+      <Point x="8100.0" y="4820.0" GraphRef="b63" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5594855305466238" Shape="None" GraphId="a90f7"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="de82c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8100.0" y="4580.0" GraphRef="b63" relX="0.0" relY="-1.0"/>
+      <Point x="8100.0" y="3779.75" GraphRef="d931a" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="dc6bd"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fb40f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8100.0" y="3479.75" GraphRef="d931a" relX="0.0" relY="-1.0"/>
+      <Point x="8100.0" y="2620.0" GraphRef="e9f" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.45332945623727827" Shape="None" GraphId="a0eb0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="afb1c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5550.0" y="1605.0" GraphRef="fb3" relX="0.0" relY="1.0"/>
+      <Point x="5550.0" y="2550.0" GraphRef="e89f4" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4603174603174603" Shape="None" GraphId="d94e5"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a9dce">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4975.0" y="2045.0" GraphRef="b21" relX="1.0" relY="0.0"/>
+      <Point x="5550.0" y="2040.0" GraphRef="d94e5" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="be694">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4975.0" y="3165.0" GraphRef="d8b" relX="1.0" relY="0.0"/>
+      <Point x="5550.0" y="3171.0" GraphRef="f9df0" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa434">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4975.0" y="4275.0" GraphRef="fa9" relX="1.0" relY="0.0"/>
+      <Point x="5550.0" y="4287.0" GraphRef="bba75" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e2dd3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4975.0" y="5325.0" GraphRef="e5c" relX="1.0" relY="0.0"/>
+      <Point x="5550.0" y="5325.0" GraphRef="fbcdb" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a6601">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4975.0" y="6365.0" GraphRef="c55" relX="1.0" relY="0.0"/>
+      <Point x="5550.0" y="6360.0" GraphRef="cd7d3" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7e00">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2970.0" y="6515.0" GraphRef="c3b" relX="0.0" relY="1.0"/>
+      <Point x="2970.0690728883433" y="6994.569993860187" GraphRef="a45b2" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="faf9c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1675.0" y="9350.0" GraphRef="aa8" relX="0.0" relY="-1.0"/>
+      <Point x="1666.5571963852767" y="8670.0" GraphRef="c4ce3" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f9740">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6185.0" y="9675.0" GraphRef="f32" relX="0.0" relY="-1.0"/>
+      <Point x="6182.0" y="9135.0" GraphRef="dc8c8" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cff69">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8755.0" y="8485.0" GraphRef="b6d" relX="-1.0" relY="0.0"/>
+      <Point x="8100.0" y="8475.0" GraphRef="c8fcf" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c6506">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8755.0" y="7185.0" GraphRef="f92" relX="-1.0" relY="0.0"/>
+      <Point x="8100.0" y="7185.0" GraphRef="b1970" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c1d5b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8635.0" y="5505.0" GraphRef="c2be5" relX="-1.0" relY="0.0"/>
+      <Point x="8100.0" y="5518.215434083601" GraphRef="a90f7" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ebd13">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8755.0" y="4250.0" GraphRef="f2b" relX="-1.0" relY="0.0"/>
+      <Point x="8100.0" y="4259.9" GraphRef="dc6bd" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bf3a8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8755.0" y="3100.0" GraphRef="db2" relX="-1.0" relY="0.0"/>
+      <Point x="8100.0" y="3090.0" GraphRef="a0eb0" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a46d7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4645.0" y="7775.0" GraphRef="ee8" relX="1.0" relY="0.0"/>
+      <Point x="5550.0" y="7770.0" GraphRef="c86c0" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d01b4">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4145.0" y="7925.0" GraphRef="ee8" relX="0.0" relY="1.0"/>
+      <Point x="4140.0" y="8670.0" GraphRef="d6cf4" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Fatty Acid Degradation" GraphId="eba">
+    <Graphics FontWeight="Bold" FontSize="180" Color="0000ff" CenterX="5550.0" CenterY="625.0" Width="2690.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="c1291" GraphId="c2be5"/>
+  <InfoBox CenterX="125.0" CenterY="75.0"/>
+  <Legend CenterX="9875.0" CenterY="775.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="e3e">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10369263</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The gene mutated in bare patches and striated mice encodes a novel 3beta-hydroxysteroid dehydrogenase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu XY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dangel AW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kelley RI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denny P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Botcherby M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cattanach B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peters J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hunsicker PR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mallon AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strivens MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bate R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miller W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rhodes M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown SD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Herman GE</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="c95">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8663358</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of yeast methyl sterol oxidase (ERG25) and identification of a human homologue.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaplan J</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b27">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8407863</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Geranylgeranyl diphosphate synthase catalyzing the single condensation between isopentenyl diphosphate and farnesyl diphosphate.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1993</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sagami H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korenaga T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ogura K</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="cb0">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8552601</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and characterization of ERG25, the Saccharomyces cerevisiae gene encoding C-4 sterol methyl oxidase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1996</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bard M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bruner DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pierson CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lees ND</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biermann B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frye L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koegel C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barbuch R</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="bb3">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9498553</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural and evolutionary studies on sterol 14-demethylase P450 (CYP51), the most conserved P450 monooxygenase: I. Structural analyses of the gene and multiple sizes of mRNA.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noshiro M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aoyama Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawamoto T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gotoh O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horiuchi T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshida Y</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="f61">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12837764</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Localization of mammalian NAD(P)H steroid dehydrogenase-like protein on lipid droplets.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohashi M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizushima N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kabeya Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshimori T</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="af4">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11969204</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Membrane-bound enzymes of cholesterol synthesis from lanosterol.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gaylor JL</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

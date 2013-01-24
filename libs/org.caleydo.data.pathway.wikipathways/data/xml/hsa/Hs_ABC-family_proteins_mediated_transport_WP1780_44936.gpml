@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="ABC-family proteins mediated transport" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Gopinathrao, G" Maintainer="Gopinathrao, G">
+  <Comment Source="WikiPathways-description">The ATP-binding cassette (ABC) superfamily of active transporters involves a large number of functionally diverse transmembrane proteins. They transport  a variety of compounds through membranes against steep concentration gradients at the cost of ATP hydrolysis.  These substrates include amino acids, lipids, inorganic ions, peptides, saccharides, peptides for antigen presentation, metals, drugs, and proteins. The ABC transporters not only move a variety of substrates into and out of the cell, but also are also involved in intracellular compartmental transport. Energy derived from the hydrolysis of ATP is used to transport the substrate across the membrane against a concentration gradient. Human genome contains 48 ABC genes; 16 of these have a known function and 14 are associated with a defined human disease.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_387001</BiopaxRef>
+  <BiopaxRef>lit_386999</BiopaxRef>
+  <DataNode GraphId="n7_REACTOME_382526" TextLabel="ABCA7-dependent &#10;phospholipids&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="292.5" CenterY="446.0" Width="129.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_15647"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_382530" TextLabel="ABCA7-dependent &#10;phospholipids&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="95.5" CenterY="444.0" Width="129.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_16108"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_382558" TextLabel="ABCA7-1:ApoA1 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="193.5" CenterY="502.0" Width="109.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17496"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_71185" TextLabel="heme&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="424.0" CenterY="385.0" Width="48.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17627"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_189444" TextLabel="heme&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="423.0" CenterY="271.0" Width="48.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17627"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_382544" TextLabel="ABCB7&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="487.5" CenterY="325.0" Width="53.0" Height="24.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_23221"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_382577" TextLabel="long-chain fatty &#10;acids&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="566.0" CenterY="511.0" Width="110.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15904"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_382571" TextLabel="long-chain fatty &#10;acids&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="756.0" CenterY="656.0" Width="110.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15904"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_382572" TextLabel="ABCD1/ABCD3 &#10;homodimer&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="755.0" CenterY="592.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_15658"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_171149" TextLabel="cholesterol&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="113.0" CenterY="575.0" Width="78.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16113"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_176478" TextLabel="cholesterol&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="327.0" CenterY="574.0" Width="78.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16113"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_383207" TextLabel="ABCA6, 10, 12 &#10;transporters&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="194.5" CenterY="631.0" Width="99.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_17258"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_382586" TextLabel="PEX19:&#10;ABCD1/ABCD3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="679.0" CenterY="379.0" Width="94.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15838"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_382608" TextLabel="PEX3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="746.0" CenterY="487.0" Width="38.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P56589"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_382609" TextLabel="PEX19&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="609.0" CenterY="439.0" Width="46.0" Height="22.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_15871"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_111627" TextLabel="HCO3-&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="242.5" CenterY="246.0" Width="57.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17544"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_383188" TextLabel="CFTR&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="315.5" CenterY="194.0" Width="55.0" Height="18.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P13569"/>
+  </DataNode>
+  <DataNode GraphId="n101_REACTOME_425425" TextLabel="HCO3-&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="240.5" CenterY="139.0" Width="57.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17544"/>
+  </DataNode>
+  <DataNode GraphId="n110_REACTOME_29356" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="504.0" CenterY="547.5" Width="42.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n111_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="559.5" CenterY="580.5" Width="39.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n122_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="670.5" CenterY="700.5" Width="109.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n123_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="613.0" CenterY="657.5" Width="40.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <Line GraphId="e_6_REACTOME_382553">
+    <Comment Source="WikiPathways-description">ABCA7 has the ability to bind apolipoproteins and promote efflux of cellular phospholipids and may have a possible role in cellular phospholipid metabolism in peripheral tissues. Like many other ABC-transporters, the exact role of ABCA7 is waiting to be elucidated.</Comment>
+    <BiopaxRef>lit_382532</BiopaxRef>
+    <BiopaxRef>lit_382528</BiopaxRef>
+    <BiopaxRef>lit_382548</BiopaxRef>
+    <BiopaxRef>lit_382549</BiopaxRef>
+    <BiopaxRef>lit_387010</BiopaxRef>
+    <BiopaxRef>lit_382541</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="225.0" Y="446.0" GraphId="e_6_0" GraphRef="n7_REACTOME_382526" RelX="-1.0387596899224807" RelY="0.0"/>
+      <Point X="195.0" Y="446.0" GraphId="e_6_1"/>
+      <Point X="163.0" Y="445.0" GraphId="e_6_2" GraphRef="n8_REACTOME_382530" RelX="1.054263565891473" RelY="0.045454545454545456" ArrowHead="Arrow"/>
+      <Anchor Position="0.4837490849194184" GraphId="e_6_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="193.0" Y="481.0" GraphId="e_6_c__0_0" GraphRef="n9_REACTOME_382558" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="195.0" Y="446.0" GraphId="e_6_c__0_1" GraphRef="e_6_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_REACTOME_382560">
+    <Comment Source="WikiPathways-description">Mutations in ABCB7 (frataxin), a mitochondrial protein, are responsible for the neuro-degenerative disorder Friedreich's ataxia. ABCB7 is involved in heme transport.</Comment>
+    <BiopaxRef>lit_382534</BiopaxRef>
+    <BiopaxRef>lit_382543</BiopaxRef>
+    <BiopaxRef>lit_382511</BiopaxRef>
+    <BiopaxRef>lit_382517</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="424.0" Y="367.0" GraphId="e_10_0" GraphRef="n11_REACTOME_71185" RelX="0.0" RelY="-1.2"/>
+      <Point X="426.0" Y="325.0" GraphId="e_10_1"/>
+      <Point X="423.0" Y="289.0" GraphId="e_10_2" GraphRef="n12_REACTOME_189444" RelX="0.0" RelY="1.2" ArrowHead="Arrow"/>
+      <Anchor Position="0.5378830007709244" GraphId="e_10_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="458.0" Y="325.0" GraphId="e_10_c__0_0" GraphRef="n13_REACTOME_382544" RelX="-1.0943396226415094" RelY="0.0"/>
+      <Point X="426.0" Y="325.0" GraphId="e_10_c__0_1" GraphRef="e_10_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_382575">
+    <Comment Source="WikiPathways-description">The 70-kDa peroxisomal membrane protein (PMP70) and the adrenoleukodystrophy protein (ALDP) are half ATP binding cassette (ABC) transporters in the peroxisome membrane. Mutations in the ALD gene encoding ALDP result in the X-linked neurodegenerative disorder adrenoleukodystrophy (Roerig et al.,2001). They are involved in metabolic transport of long and very long chain fatty acids into peroxisomes. ATP binding/hydrolysis by and phosphorylation of PMP70 and ALDP are involved in the regulation of fatty acid transport into peroxisomes (Tanaka et al., 2002).</Comment>
+    <BiopaxRef>lit_387009</BiopaxRef>
+    <BiopaxRef>lit_382588</BiopaxRef>
+    <BiopaxRef>lit_382598</BiopaxRef>
+    <BiopaxRef>lit_386995</BiopaxRef>
+    <BiopaxRef>lit_387021</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="669.0" Y="563.0" GraphId="e_14_0"/>
+      <Point X="670.0" Y="590.0" GraphId="e_14_1"/>
+      <Point X="671.0" Y="644.0" GraphId="e_14_2"/>
+      <Anchor Position="0.0" GraphId="e_14_a_i"/>
+      <Anchor Position="0.33344755704800766" GraphId="e_14_a_p"/>
+      <Anchor Position="1.0" GraphId="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="528.0" Y="549.0" GraphId="e_14_i0_0" GraphRef="n110_REACTOME_29356" RelX="1.1428571428571428" RelY="0.13793103448275862"/>
+      <Point X="669.0" Y="563.0" GraphId="e_14_i0_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="582.0" Y="576.0" GraphId="e_14_i1_0" GraphRef="n111_REACTOME_113592" RelX="1.1794871794871795" RelY="-0.27586206896551724"/>
+      <Point X="669.0" Y="563.0" GraphId="e_14_i1_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="609.0" Y="536.0" GraphId="e_14_i2_0" GraphRef="n15_REACTOME_382577" RelX="0.7818181818181819" RelY="1.1363636363636365"/>
+      <Point X="669.0" Y="563.0" GraphId="e_14_i2_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="670.0" Y="683.0" GraphId="e_14_o0_0" ArrowHead="Arrow" GraphRef="n122_REACTOME_29372" RelX="0.0" RelY="-1.1724137931034482"/>
+      <Point X="671.0" Y="644.0" GraphId="e_14_o0_1" GraphRef="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="698.0" Y="648.0" GraphId="e_14_o1_0" ArrowHead="Arrow" GraphRef="n18_REACTOME_382571" RelX="-1.0545454545454545" RelY="-0.36363636363636365"/>
+      <Point X="671.0" Y="644.0" GraphId="e_14_o1_1" GraphRef="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="636.0" Y="652.0" GraphId="e_14_o2_0" ArrowHead="Arrow" GraphRef="n123_REACTOME_29370" RelX="1.15" RelY="-0.3448275862068966"/>
+      <Point X="671.0" Y="644.0" GraphId="e_14_o2_1" GraphRef="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="703.0" Y="590.0" GraphId="e_14_c__0_0" GraphRef="n20_REACTOME_382572" RelX="-1.0612244897959184" RelY="-0.1111111111111111"/>
+      <Point X="670.0" Y="590.0" GraphId="e_14_c__0_1" GraphRef="e_14_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_REACTOME_383189">
+    <Comment Source="WikiPathways-description">The ATP-binding cassette (ABC) transporter superfamily contains membrane proteins that translocate a variety of substrates across extra- and intra-cellular membranes. Genetic variation in these genes is the cause of or contributor to a wide variety of human disorders with Mendelian and complex inheritance, including cystic fibrosis, neurological disease, retinal degeneration, cholesterol and bile transport defects, anemia, and drug response (Dean  et al., 2001). The exact role of ABCA6, ABCA10 and ABCA12, candidates for ABC tranporter related activities,  needs to be elucidated. Even thought cholesterol-responsiveness has been noted in experimental systems, contribution of these proteins in regulation or in active transport is not yet clear.</Comment>
+    <BiopaxRef>lit_383192</BiopaxRef>
+    <BiopaxRef>lit_383182</BiopaxRef>
+    <BiopaxRef>lit_387013</BiopaxRef>
+    <BiopaxRef>lit_387020</BiopaxRef>
+    <BiopaxRef>lit_387032</BiopaxRef>
+    <BiopaxRef>lit_387030</BiopaxRef>
+    <BiopaxRef>lit_387024</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="155.0" Y="574.0" GraphId="e_24_0" GraphRef="n25_REACTOME_171149" RelX="1.0769230769230769" RelY="-0.06666666666666667"/>
+      <Point X="196.0" Y="574.0" GraphId="e_24_1"/>
+      <Point X="285.0" Y="574.0" GraphId="e_24_2" GraphRef="n26_REACTOME_176478" RelX="-1.0769230769230769" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3153846153846154" GraphId="e_24_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="194.0" Y="610.0" GraphId="e_24_c__0_0" GraphRef="n27_REACTOME_383207" RelX="0.0" RelY="-1.1666666666666667"/>
+      <Point X="196.0" Y="574.0" GraphId="e_24_c__0_1" GraphRef="e_24_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_REACTOME_382613">
+    <Comment Source="WikiPathways-description">PEX19 is a chaperone protein that binds a broad spectrum of peroxisomal membrane proteins (PMPs), and interacts with regions of PMPs required for their targeting to peroxisomes. PEX3 is required for PEX19 to dock at peroxisomes, interacts specifically with the docking domain of PEX19, and is required for recruitment of the PEX19 docking domain to peroxisomes.</Comment>
+    <BiopaxRef>lit_382605</BiopaxRef>
+    <BiopaxRef>lit_382607</BiopaxRef>
+    <BiopaxRef>lit_382588</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="794.0" Y="437.0" GraphId="e_44_0"/>
+      <Point X="755.0" Y="436.0" GraphId="e_44_1"/>
+      <Point X="677.0" Y="437.0" GraphId="e_44_2"/>
+      <Anchor Position="0.0" GraphId="e_44_a_i"/>
+      <Anchor Position="0.3333881015959573" GraphId="e_44_a_p"/>
+      <Anchor Position="1.0" GraphId="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="714.0" Y="400.0" GraphId="e_44_i0_0" GraphRef="n45_REACTOME_382586" RelX="0.7446808510638298" RelY="1.1666666666666667"/>
+      <Point X="794.0" Y="437.0" GraphId="e_44_i0_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="756.0" Y="473.0" GraphId="e_44_i1_0" GraphRef="n46_REACTOME_382608" RelX="0.5263157894736842" RelY="-1.2727272727272727"/>
+      <Point X="794.0" Y="437.0" GraphId="e_44_i1_1" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="745.0" Y="571.0" GraphId="e_44_o0_0" ArrowHead="Arrow" GraphRef="n20_REACTOME_382572" RelX="-0.20408163265306123" RelY="-1.1666666666666667"/>
+      <Point X="677.0" Y="437.0" GraphId="e_44_o0_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="635.0" Y="438.0" GraphId="e_44_o1_0" ArrowHead="Arrow" GraphRef="n47_REACTOME_382609" RelX="1.1304347826086956" RelY="-0.09090909090909091"/>
+      <Point X="677.0" Y="437.0" GraphId="e_44_o1_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="730.0" Y="473.0" GraphId="e_44_o2_0" ArrowHead="Arrow" GraphRef="n46_REACTOME_382608" RelX="-0.8421052631578947" RelY="-1.2727272727272727"/>
+      <Point X="677.0" Y="437.0" GraphId="e_44_o2_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_48_REACTOME_383190">
+    <Comment Source="WikiPathways-description">Regulation of epithelial chloride flux, which is defective in patients with cystic fibrosis, may be mediated by phosphorylation of the cystic fibrosis transmembrane conductance regulator (CFTR) by cyclic AMP-dependent protein kinase (PKA) or protein kinase C (PKC). CFTR regulates both HCO(3)(-) secretion and HCO(3)(-) salvage in secretory epithelia.</Comment>
+    <BiopaxRef>lit_387095</BiopaxRef>
+    <BiopaxRef>lit_387090</BiopaxRef>
+    <BiopaxRef>lit_387087</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="242.0" Y="228.0" GraphId="e_48_0" GraphRef="n49_REACTOME_111627" RelX="0.0" RelY="-1.2"/>
+      <Point X="243.0" Y="195.0" GraphId="e_48_1"/>
+      <Point X="240.0" Y="157.0" GraphId="e_48_2" GraphRef="n101_REACTOME_425425" RelX="0.0" RelY="1.2" ArrowHead="Arrow"/>
+      <Anchor Position="0.4641301404652916" GraphId="e_48_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_48_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="285.0" Y="194.0" GraphId="e_48_c__0_0" GraphRef="n51_REACTOME_383188" RelX="-1.0909090909090908" RelY="0.0"/>
+      <Point X="243.0" Y="195.0" GraphId="e_48_c__0_1" GraphRef="e_48_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="mitochondrial matrix">
+    <Graphics Color="000000" CenterX="616.5" CenterY="301.5" Width="139.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_2" GroupRef="group_comp_2" TextLabel="peroxisomal matrix">
+    <Graphics Color="000000" CenterX="835.0" CenterY="862.5" Width="132.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_3" GroupRef="group_comp_3" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="237.5" CenterY="903.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="533.5" CenterY="277.0" Width="331.0" Height="108.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics Color="000000" CenterX="833.5" CenterY="606.5" Width="175.0" Height="565.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics Color="000000" CenterX="573.0" CenterY="566.0" Width="770.0" Height="752.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387001" rdf:id="lit_387001">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12045106</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mammalian ABC transporters in health and disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borst, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elferink, RO</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 71:537-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_386999" rdf:id="lit_386999">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10856718</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ABC transporters in lipid transport</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borst, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zelcer, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Helvoort, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1486:128-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382532" rdf:id="lit_382532">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12917409</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATP-binding cassette transporter A7 (ABCA7) binds apolipoprotein A-I and mediates cellular phospholipid but not cholesterol efflux</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lan, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerbod-Giannone, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Linsel-Nitschke, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jehle, AW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martinez, LO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tall, AR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:42906-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382528" rdf:id="lit_382528">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12509503</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of ABC transporters in secretion of cholesterol from liver into bile</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Small, DM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 100:4-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382548" rdf:id="lit_382548">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14592415</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Posttranscriptional regulation of human ABCA7 and its function for the apoA-I-dependent lipid release</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ikeda, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abe-Dohmae, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Munehira, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aoki, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawamoto, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furuya, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shitara, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amachi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kioka, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuo, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yokoyama, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueda, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 311:313-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382549" rdf:id="lit_382549">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10873640</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a novel human sterol-sensitive ATP-binding cassette transporter (ABCA7)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaminski, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">OrsÃ³, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diederich, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klucken, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Drobnik, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmitz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 273:532-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387010" rdf:id="lit_387010">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14570867</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human ABCA7 supports apolipoprotein-mediated release of cellular cholesterol and phospholipid to generate high density lipoprotein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abe-Dohmae, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ikeda, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuo, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hayashi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okuhira, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueda, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yokoyama, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:604-11</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382541" rdf:id="lit_382541">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11095984</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genomic organization of the human cholesterol-responsive ABC transporter ABCA7: tandem linkage with the minor histocompatibility antigen HA-1 gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaminski, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piehler, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmitz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 278:782-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382534" rdf:id="lit_382534">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9883897</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a human mitochondrial ABC transporter, the functional orthologue of yeast Atm1p</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Csere, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lill, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kispal, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 441:266-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382543" rdf:id="lit_382543">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11421280</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial ABC transporters</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lill, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kispal, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Res Microbiol 152:331-40</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382511" rdf:id="lit_382511">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17656326</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial ATP-binding cassette proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burke, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ardehali, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transl Res 150:73-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382517" rdf:id="lit_382517">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9621516</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and chromosomal mapping of a novel ABC transporter gene (hABC7), a candidate for X-linked sideroblastic anemia with spinocerebellar ataxia</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimada, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okuno, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawai, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shinomiya, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Omori, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishino, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kanemoto, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujiwara, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horie, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Hum Genet 43:115-22</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387009" rdf:id="lit_387009">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8507690</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adrenoleukodystrophy gene: unexpected homology to a protein involved in peroxisome biogenesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aubourg, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mosser, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Douar, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sarde, CO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lopez, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mandel, JL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochimie 75:293-302</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382588" rdf:id="lit_382588">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10777694</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human adrenoleukodystrophy protein and related peroxisomal ABC transporters interact with the peroxisomal assembly protein PEX19p</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gloeckner, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mayerhofer, PU</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Landgraf, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muntau, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holzinger, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerber, JK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kammerer, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adamski, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roscher, AA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 271:144-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382598" rdf:id="lit_382598">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11248239</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization and functional analysis of the nucleotide binding fold in human peroxisomal ATP binding cassette transporters</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roerig, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mayerhofer, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holzinger, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GÃ¤rtner, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 492:66-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_386995" rdf:id="lit_386995">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8411712</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PMP70, the 70-kDa peroxisomal membrane protein: a member of the ATP-binding cassette transporters</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamijo, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Osumi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hashimoto, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nippon Rinsho 51:2343-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387021" rdf:id="lit_387021">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15209530</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATP-binding cassette (ABC) transporters in human metabolism and diseases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StefkovÃ¡, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poledne, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HubÃ¡cek, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiol Res 53:235-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_383192" rdf:id="lit_383192">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12764137</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MRP8, ATP-binding cassette C11 (ABCC11), is a cyclic nucleotide efflux pump and a resistance factor for fluoropyrimidines 2',3'-dideoxycytidine and 9'-(2'-phosphonylmethoxyethyl)adenine</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guo, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kotova, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, ZS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hopper-Borge, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Belinsky, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kruh, GD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:29509-14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_383182" rdf:id="lit_383182">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11478798</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ABCA6, a novel a subclass ABC transporter</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaminski, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wenzel, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piehler, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Langmann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmitz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 285:1295-301</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387013" rdf:id="lit_387013">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12915478</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutations in the transporter ABCA12 are associated with lamellar ichthyosis type 2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lefevre, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Audebert, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jobard, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bouadjar, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lakhdar, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boughdene-Stambouli, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blanchet-Bardon, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heilig, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foglio, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weissenbach, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lathrop, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prud'homme, JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 12:2369-78</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387020" rdf:id="lit_387020">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12821155</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ABCA10, a novel cholesterol-regulated ABCA6-like ABC transporter</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wenzel, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaminski, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piehler, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heimerl, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Langmann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmitz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 306:1089-98</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387032" rdf:id="lit_387032">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11048892</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ABC transporters in cellular lipid trafficking</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmitz, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaminski, WE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">OrsÃ³, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Lipidol 11:493-501</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387030" rdf:id="lit_387030">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11229879</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ABC transporters and cholesterol metabolism</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmitz, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaminski, WE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Front Biosci 6:D505-14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387024" rdf:id="lit_387024">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11435397</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human ATP-binding cassette (ABC) transporter superfamily</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dean, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rzhetsky, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Allikmets, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genome Res 11:1156-66</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382605" rdf:id="lit_382605">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10704444</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PEX19 binds multiple peroxisomal membrane proteins, is predominantly cytoplasmic, and is required for peroxisome membrane synthesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sacksteder, KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">South, ST</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gould, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 148:931-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_382607" rdf:id="lit_382607">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15007061</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PEX3 functions as a PEX19 docking factor in the import of class I peroxisomal membrane proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morrell, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gould, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 164:863-75</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387095" rdf:id="lit_387095">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1377674</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation of the cystic fibrosis transmembrane conductance regulator</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Picciotto, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohn, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bertuzzi, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greengard, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nairn, AC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 267:12742-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387090" rdf:id="lit_387090">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12403779</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The cystic fibrosis transmembrane conductance regulator interacts with and regulates the activity of the HCO3- salvage transporter human Na+-HCO3- cotransport isoform 3</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ko, SB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Choi, JY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muallem, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pushkin, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, JY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muallem, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurtz, I</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:50503-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387087" rdf:id="lit_387087">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11562789</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Na+:HCO(3-) cotransporters (NBC): cloning and characterization</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soleimani, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burnham, CE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Membr Biol 183:71-84</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>transport pathway</bp:TERM><bp:ID>PW:0000103</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

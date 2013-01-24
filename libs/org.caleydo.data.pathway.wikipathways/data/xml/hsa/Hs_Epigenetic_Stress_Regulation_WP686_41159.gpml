@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Epigenetic Stress Regulation" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">Methylation of NR3C1 gene regulatory sequence was found in individuals that commited suicide and in rats that were treated badly at young age. Higher methylation and and lower glucocortoid receptor expression was confirmed in humans with a "bad youth". See McGowan et al. in Nat Neurosci. 2009. </Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="8497.5" BoardHeight="2607.0" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="NR3C1" Type="GeneProduct" BackpageHead="NR3C1 glucocorticoid receptor" GraphId="fdf0d">
+    <BiopaxRef>cd2</BiopaxRef>
+    <Graphics Color="000000" CenterX="7125.0" CenterY="2220.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="2908"/>
+  </DataNode>
+  <DataNode TextLabel="NGFI-A" Type="GeneProduct" BackpageHead="Nerve growth factor-induced protein A member 1" GraphId="fe3e9">
+    <Graphics Color="000000" CenterX="3547.25" CenterY="2220.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="1958"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="deea0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4147.25" y="2220.0" GraphRef="fe3e9" relX="1.0" relY="0.0"/>
+      <Point x="6525.0" y="2220.0" GraphRef="fdf0d" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="cd2">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19234457</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Epigenetic regulation of the glucocorticoid receptor in human brain associates with childhood abuse.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Neurosci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19234457</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Epigenetic regulation of the glucocorticoid receptor in human brain associates with childhood abuse.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Neurosci</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McGowan PO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sasaki A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Alessio AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dymov S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Labonte B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Szyf M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turecki G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meaney MJ</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

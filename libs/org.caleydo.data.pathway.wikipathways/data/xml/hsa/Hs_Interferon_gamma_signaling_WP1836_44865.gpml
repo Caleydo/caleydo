@@ -1,0 +1,1456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Interferon gamma signaling" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Interferon-gamma (IFN-gamma) belongs to the type II interferon family and is secreted by activated immune cells-primarily T and NK cells, but also B-cells and APC. INFG exerts its effect on cells by interacting with the specific IFN-gamma receptor (IFNGR). IFNGR consists of two chains, namely IFNGR1 (also known as the IFNGR alpha chain) and IFNGR2 (also known as the IFNGR beta chain). IFNGR1 is the ligand binding receptor and is required but not sufficient for signal transduction, whereas IFNGR2 do not bind IFNG independently but mainly plays a role in IFNG signaling and is generally the limiting factor in IFNG responsiveness. Both IFNGR chains lack intrinsic kinase/phosphatase activity and thus rely on other signaling proteins like Janus-activated kinase 1 (JAK1), JAK2 and Signal transducer and activator of transcription 1 (STAT-1) for signal transduction. IFNGR complex in its resting state is a preformed tetramer and upon IFNG association undergoes a conformational change. This conformational change induces the phosphorylation and activation of JAK1, JAK2, and STAT1 which in turn induces genes containing the gamma-interferon activation sequence (GAS) in the promoter.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_873893</BiopaxRef>
+  <BiopaxRef>lit_873880</BiopaxRef>
+  <BiopaxRef>lit_873861</BiopaxRef>
+  <BiopaxRef>lit_873858</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_873823" TextLabel="IFNG homodimer&#10;" Type="Complex">
+    <BiopaxRef>lit_873816</BiopaxRef>
+    <Graphics Color="000000" CenterX="241.5" CenterY="17.5" Width="125.0" Height="21.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26955"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_873810" TextLabel="IFNGR1:JAK1:&#10;INFG2:JAK2&#10;" Type="Complex">
+    <BiopaxRef>lit_873818</BiopaxRef>
+    <BiopaxRef>lit_873815</BiopaxRef>
+    <Graphics Color="000000" CenterX="151.0" CenterY="174.5" Width="98.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25803"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_873829" TextLabel="IFNG:IFNGR1:JAK1:&#10;IFNGR2:JAK2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="370.5" CenterY="174.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25865"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="434.5" CenterY="224.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_873811" TextLabel="IFNG:IFNGR1:JAK1:&#10;IFNGR2:p-JAK2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="627.0" CenterY="174.5" Width="116.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26738"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="557.5" CenterY="227.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="678.5" CenterY="228.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_873820" TextLabel="IFNG:IFNGR1:p-&#10;JAK1:IFNGR2:p-&#10;JAK2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="871.0" CenterY="174.5" Width="116.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26286"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="806.5" CenterY="229.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="940.5" CenterY="238.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1053.5" CenterY="238.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_873814" TextLabel="IFNG:p-IFNGR1:p-&#10;JAK1:IFNGR2:p-&#10;JAK2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1135.0" CenterY="174.5" Width="116.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25650"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_380745" TextLabel="STAT1-alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1183.0" CenterY="234.5" Width="102.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P42224-1"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_873828" TextLabel="STAT1 bound to p-&#10;IFNGR1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1258.5" CenterY="337.5" Width="125.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26587"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1195.5" CenterY="381.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1198.5" CenterY="479.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n43_REACTOME_873817" TextLabel="p-STAT1(Y701) &#10;bound to p-IFNGR1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1258.0" CenterY="627.5" Width="120.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26108"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_873827" TextLabel="IFNG-activated &#10;factor (GAF)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="843.0" CenterY="428.5" Width="120.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26637"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_873824" TextLabel="IFNG-activated &#10;factor (GAF)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="669.0" CenterY="428.5" Width="120.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26144"/>
+  </DataNode>
+  <DataNode GraphId="n159_REACTOME_873821" TextLabel="IFNG:IFNGR1:JAK1:&#10;IFNGR2:p-JAK2:&#10;SOCS-1/-3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="63.5" CenterY="286.5" Width="125.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26775"/>
+  </DataNode>
+  <DataNode GraphId="n163_REACTOME_877267" TextLabel="SOCS-1 and &#10;SOCS-3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="272.0" CenterY="234.5" Width="98.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25587"/>
+  </DataNode>
+  <DataNode GraphId="n165_REACTOME_197938" TextLabel="SHP1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="744.0" CenterY="267.5" Width="44.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29350"/>
+  </DataNode>
+  <DataNode GraphId="n199_REACTOME_877307" TextLabel="PIAS1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="708.0" CenterY="636.5" Width="48.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O75925"/>
+  </DataNode>
+  <DataNode GraphId="n200_REACTOME_877304" TextLabel="SUMO1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="706.5" CenterY="582.5" Width="57.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P63165"/>
+  </DataNode>
+  <DataNode GraphId="n201_REACTOME_877297" TextLabel="p-STAT1 dimer:&#10;PIAS:SUMO1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="555.0" CenterY="610.5" Width="120.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25840"/>
+  </DataNode>
+  <DataNode GraphId="n212_REACTOME_909556" TextLabel="p-STAT1 dimer &#10;bound to p-IFNGR1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="970.0" CenterY="626.5" Width="120.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25936"/>
+  </DataNode>
+  <DataNode GraphId="n214_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1189.5" CenterY="554.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n215_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1041.5" CenterY="556.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n216_REACTOME_909568" TextLabel="CaMKII and PKC-delta&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1119.5" CenterY="509.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26704"/>
+  </DataNode>
+  <DataNode GraphId="n224_REACTOME_210625" TextLabel="PTP1B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="495.5" CenterY="254.5" Width="53.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18031"/>
+  </DataNode>
+  <DataNode GraphId="n225_REACTOME_29356" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="715.5" CenterY="320.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n226_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="292.0" CenterY="334.5" Width="128.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n227_REACTOME_997298" TextLabel="PTPs-&#10;SHP1/2/PTP1B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="481.0" CenterY="344.5" Width="116.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26675"/>
+  </DataNode>
+  <DataNode GraphId="n230_REACTOME_997294" TextLabel="STAT1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="378.5" CenterY="484.5" Width="53.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P42224-1"/>
+  </DataNode>
+  <DataNode GraphId="n232_REACTOME_997295" TextLabel="TC-PTPa&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="489.5" CenterY="563.5" Width="71.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P17706-2"/>
+  </DataNode>
+  <DataNode GraphId="n236_REACTOME_113518" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="585.5" CenterY="545.5" Width="43.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n245_REACTOME_113550" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="389.0" CenterY="557.5" Width="128.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n255_REACTOME_1031708" TextLabel="GAS promoter region &#10;in IFNG-regulated &#10;genes&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="535.5" CenterY="428.5" Width="125.0" Height="49.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_26763"/>
+  </DataNode>
+  <DataNode GraphId="n256_REACTOME_1031710" TextLabel="GAF bound to GAS &#10;promoter element&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="296.5" CenterY="428.5" Width="107.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25470"/>
+  </DataNode>
+  <DataNode GraphId="n258_REACTOME_1031695" TextLabel="GBP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="325.5" CenterY="879.5" Width="35.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26189"/>
+  </DataNode>
+  <DataNode GraphId="n259_REACTOME_1031702" TextLabel="MHC class II &#10;transactivator&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="180.5" CenterY="560.5" Width="107.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P33076"/>
+  </DataNode>
+  <DataNode GraphId="n260_REACTOME_1031694" TextLabel="FCGR&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="62.0" CenterY="647.5" Width="44.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26475"/>
+  </DataNode>
+  <DataNode GraphId="n261_REACTOME_983117" TextLabel="Class I MHC &#10;heavy chain (MHC &#10;HC)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="729.0" CenterY="856.5" Width="102.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26784"/>
+  </DataNode>
+  <DataNode GraphId="n262_REACTOME_419376" TextLabel="PAF receptor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="56.0" CenterY="796.5" Width="98.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P25105"/>
+  </DataNode>
+  <DataNode GraphId="n263_REACTOME_1031707" TextLabel="Metallothionein-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="393.5" CenterY="820.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P02795"/>
+  </DataNode>
+  <DataNode GraphId="n264_REACTOME_1031706" TextLabel="PML&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="162.5" CenterY="637.5" Width="39.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29590"/>
+  </DataNode>
+  <DataNode GraphId="n265_REACTOME_1015696" TextLabel="OAS proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="523.0" CenterY="867.5" Width="98.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26755"/>
+  </DataNode>
+  <DataNode GraphId="n266_REACTOME_1031690" TextLabel="IFN-gamma &#10;upregulated &#10;CAMs&#10;" Type="Protein">
+    <BiopaxRef>lit_1031657</BiopaxRef>
+    <BiopaxRef>lit_1031658</BiopaxRef>
+    <Graphics Color="000000" CenterX="59.0" CenterY="871.5" Width="98.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26072"/>
+  </DataNode>
+  <DataNode GraphId="n267_REACTOME_983063" TextLabel="Beta-2-&#10;microglobulin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="721.5" CenterY="788.5" Width="107.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P61769"/>
+  </DataNode>
+  <DataNode GraphId="n268_REACTOME_1015695" TextLabel="IRF 1-9&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="253.0" CenterY="839.5" Width="62.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26465"/>
+  </DataNode>
+  <DataNode GraphId="n269_REACTOME_1031705" TextLabel="SP100&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="229.5" CenterY="697.5" Width="53.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P23497"/>
+  </DataNode>
+  <DataNode GraphId="n270_REACTOME_1031704" TextLabel="Gamma-interferon-&#10;inducible lysosomal &#10;thiol reductase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="680.5" CenterY="957.5" Width="125.0" Height="77.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P13284"/>
+  </DataNode>
+  <DataNode GraphId="n289_REACTOME_203467" TextLabel="HLA II&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="58.5" CenterY="431.5" Width="41.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13194"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_873926">
+    <Comment Source="WikiPathways-description">The IFNG receptor complex is a pre-assembled entity, as constitutive interactions are seen between IFNGR1 and IFNGR2, and between two IFNGR2 chains in the absence of ligand IFNG. JAK1 and JAK2 constitutively associate with the intracellular domains of the subunits of the IFNG receptor complex, providing it with tyrosine kinase activity. In unstimulated cells JAK1 preferentially associates with IFNGR1 and while JAK2 associates with IFNGR2 chains. JAK1 enhances the interaction between IFNGR1 and IFNGR2 chains, and thus has a major role in the pre-assembly of the IFNGR complex, in contrast the kinase activity of JAK2 is required to observe any signaling by IFNG.&lt;br&gt;IFNG binds directly to both the receptor chains IFNGR1 and IFNGR2. IFNGR1 is a high affinity receptor and binds directly to IFNG whereas IFNGR2 binds to IFNG in presence of IFNGR1. According to Krause et al. model IFNG binds to IFNGR1 chains first and then IFNGR2 chains interact with the IFNGR1:IFNG:IFNGR1 complex.</Comment>
+    <BiopaxRef>lit_873818</BiopaxRef>
+    <BiopaxRef>lit_873815</BiopaxRef>
+    <BiopaxRef>lit_873873</BiopaxRef>
+    <BiopaxRef>lit_873872</BiopaxRef>
+    <BiopaxRef>lit_873901</BiopaxRef>
+    <BiopaxRef>lit_873874</BiopaxRef>
+    <BiopaxRef>lit_873864</BiopaxRef>
+    <BiopaxRef>lit_873876</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="240.0" Y="173.0" GraphId="e_1_0"/>
+      <Point X="268.0" Y="173.0" GraphId="e_1_1"/>
+      <Point X="303.0" Y="173.0" GraphId="e_1_2" GraphRef="n4_REACTOME_873829" RelX="-1.0387596899224807" RelY="-0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.4444444444444444" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="240.0" Y="31.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_873823" RelX="-0.016" RelY="1.3333333333333333"/>
+      <Point X="240.0" Y="173.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="203.0" Y="173.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_873810" RelX="1.0612244897959184" RelY="-0.05714285714285714"/>
+      <Point X="240.0" Y="173.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_REACTOME_873919">
+    <Comment Source="WikiPathways-description">IFN-gamma binding to the receptor complex, induces JAK2 autophosphorylation and activation. Like all protein tyrosine kinases (PTKs) JAK2 activity also depends on the phosphorylation of tandem tyrosine residues within the activation loop that results in the removal of the activation loop from the active site. Multiple phosphorylation sites have been identified in JAK2 (tyrosines 221, 570, 868, 966, 972, 1007 and 1008 ) of which phosphorylation of tyrosine 1007 is essential for kinase activity. Tyrosine 1007 is in the activation loop and phosphorylation allows access of the catalytic loop to the ATP in the ATP binding domain. Of all the predicted phoshorylation sites only tyrosine 1007 is represented in the reaction.</Comment>
+    <BiopaxRef>lit_873856</BiopaxRef>
+    <BiopaxRef>lit_873836</BiopaxRef>
+    <BiopaxRef>lit_873860</BiopaxRef>
+    <BiopaxRef>lit_873895</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="463.0" Y="174.0" GraphId="e_22_0"/>
+      <Point X="496.0" Y="174.0" GraphId="e_22_1"/>
+      <Point X="529.0" Y="174.0" GraphId="e_22_2"/>
+      <Anchor Position="0.0" GraphId="e_22_a_i"/>
+      <Anchor Position="0.5" GraphId="e_22_a_p"/>
+      <Anchor Position="1.0" GraphId="e_22_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="438.0" Y="174.0" GraphId="e_22_i0_0" GraphRef="n4_REACTOME_873829" RelX="1.054263565891473" RelY="0.0"/>
+      <Point X="463.0" Y="174.0" GraphId="e_22_i0_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="442.0" Y="207.0" GraphId="e_22_i1_0" GraphRef="n23_REACTOME_113592" RelX="0.37209302325581395" RelY="-1.1724137931034482"/>
+      <Point X="463.0" Y="174.0" GraphId="e_22_i1_1" GraphRef="e_22_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="566.0" Y="174.0" GraphId="e_22_o0_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_873811" RelX="-1.0517241379310345" RelY="0.0"/>
+      <Point X="529.0" Y="174.0" GraphId="e_22_o0_1" GraphRef="e_22_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="549.0" Y="210.0" GraphId="e_22_o1_0" ArrowHead="Arrow" GraphRef="n25_REACTOME_29370" RelX="-0.37209302325581395" RelY="-1.1724137931034482"/>
+      <Point X="529.0" Y="174.0" GraphId="e_22_o1_1" GraphRef="e_22_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_22_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="370.0" Y="154.0" GraphId="e_22_c__0_0" GraphRef="n4_REACTOME_873829" RelX="0.0" RelY="-1.1428571428571428"/>
+      <Point X="370.0" Y="124.0" GraphId="e_22_c__0_1"/>
+      <Point X="496.0" Y="124.0" GraphId="e_22_c__0_2"/>
+      <Point X="496.0" Y="174.0" GraphId="e_22_c__0_3" GraphRef="e_22_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_REACTOME_873918">
+    <Comment Source="WikiPathways-description">The initial phosphorylation of JAK1 and JAK2 is mediated by JAK2. Autophosphorylated JAK2 may transphopshorylate JAK1 bound to IFNGR1 chain. Tyrosine 1033 in the activation loop of the JAK1 kinase domain may be the target for transphosphorylation (phosphorylation site mentioned here is based on sequence similarity with all the other JAK kinases).</Comment>
+    <BiopaxRef>lit_873845</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="716.0" Y="174.0" GraphId="e_28_0"/>
+      <Point X="745.0" Y="174.0" GraphId="e_28_1"/>
+      <Point X="777.0" Y="174.0" GraphId="e_28_2"/>
+      <Anchor Position="0.0" GraphId="e_28_a_i"/>
+      <Anchor Position="0.47540983606557374" GraphId="e_28_a_p"/>
+      <Anchor Position="1.0" GraphId="e_28_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="688.0" Y="174.0" GraphId="e_28_i0_0" GraphRef="n24_REACTOME_873811" RelX="1.0517241379310345" RelY="0.0"/>
+      <Point X="716.0" Y="174.0" GraphId="e_28_i0_1" GraphRef="e_28_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="688.0" Y="211.0" GraphId="e_28_i1_0" GraphRef="n29_REACTOME_113592" RelX="0.46511627906976744" RelY="-1.1724137931034482"/>
+      <Point X="716.0" Y="174.0" GraphId="e_28_i1_1" GraphRef="e_28_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="810.0" Y="174.0" GraphId="e_28_o0_0" ArrowHead="Arrow" GraphRef="n30_REACTOME_873820" RelX="-1.0517241379310345" RelY="0.0"/>
+      <Point X="777.0" Y="174.0" GraphId="e_28_o0_1" GraphRef="e_28_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="798.0" Y="212.0" GraphId="e_28_o1_0" ArrowHead="Arrow" GraphRef="n31_REACTOME_29370" RelX="-0.37209302325581395" RelY="-1.1724137931034482"/>
+      <Point X="777.0" Y="174.0" GraphId="e_28_o1_1" GraphRef="e_28_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="626.0" Y="147.0" GraphId="e_28_c__0_0" GraphRef="n24_REACTOME_873811" RelX="-0.017241379310344827" RelY="-1.1020408163265305"/>
+      <Point X="626.0" Y="125.0" GraphId="e_28_c__0_1"/>
+      <Point X="744.0" Y="125.0" GraphId="e_28_c__0_2"/>
+      <Point X="745.0" Y="174.0" GraphId="e_28_c__0_3" GraphRef="e_28_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="63.0" Y="259.0" GraphId="e_28_i__0_0" GraphRef="n159_REACTOME_873821" RelX="0.0" RelY="-1.1020408163265305"/>
+      <Point X="63.0" Y="96.0" GraphId="e_28_i__0_1"/>
+      <Point X="695.0" Y="96.0" GraphId="e_28_i__0_2"/>
+      <Point X="745.0" Y="174.0" GraphId="e_28_i__0_3" GraphRef="e_28_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="744.0" Y="254.0" GraphId="e_28_i__1_0" GraphRef="n165_REACTOME_197938" RelX="0.0" RelY="-1.2380952380952381"/>
+      <Point X="745.0" Y="174.0" GraphId="e_28_i__1_1" GraphRef="e_28_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_873924">
+    <Comment Source="WikiPathways-description">The phosphorylated active JAK1 kinase inturn phosphorylates tyrosine residue 440 on each of the IFNGR1 chains to form two adjacent docking sites for the latent STAT1 SH2 domains.</Comment>
+    <BiopaxRef>lit_873912</BiopaxRef>
+    <BiopaxRef>lit_873900</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="966.0" Y="172.0" GraphId="e_32_0"/>
+      <Point X="1000.0" Y="172.0" GraphId="e_32_1"/>
+      <Point X="1032.0" Y="172.0" GraphId="e_32_2"/>
+      <Anchor Position="0.0" GraphId="e_32_a_i"/>
+      <Anchor Position="0.5151515151515151" GraphId="e_32_a_p"/>
+      <Anchor Position="1.0" GraphId="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="932.0" Y="172.0" GraphId="e_32_i0_0" GraphRef="n30_REACTOME_873820" RelX="1.0517241379310345" RelY="-0.08163265306122448"/>
+      <Point X="966.0" Y="172.0" GraphId="e_32_i0_1" GraphRef="e_32_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="945.0" Y="221.0" GraphId="e_32_i1_0" GraphRef="n33_REACTOME_113592" RelX="0.23255813953488372" RelY="-1.1724137931034482"/>
+      <Point X="966.0" Y="172.0" GraphId="e_32_i1_1" GraphRef="e_32_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1048.0" Y="221.0" GraphId="e_32_o0_0" ArrowHead="Arrow" GraphRef="n34_REACTOME_29370" RelX="-0.23255813953488372" RelY="-1.1724137931034482"/>
+      <Point X="1032.0" Y="172.0" GraphId="e_32_o0_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1074.0" Y="172.0" GraphId="e_32_o1_0" ArrowHead="Arrow" GraphRef="n35_REACTOME_873814" RelX="-1.0517241379310345" RelY="-0.08163265306122448"/>
+      <Point X="1032.0" Y="172.0" GraphId="e_32_o1_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="871.0" Y="147.0" GraphId="e_32_c__0_0" GraphRef="n30_REACTOME_873820" RelX="0.0" RelY="-1.1020408163265305"/>
+      <Point X="871.0" Y="125.0" GraphId="e_32_c__0_1"/>
+      <Point X="999.0" Y="125.0" GraphId="e_32_c__0_2"/>
+      <Point X="1000.0" Y="172.0" GraphId="e_32_c__0_3" GraphRef="e_32_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_873921">
+    <Comment Source="WikiPathways-description">The phosphorylated tyrosine residue 440 in the 440YDKPH444 motif on IFNGR1 chain serves as a docking site and recruits STAT1, an SH2 domain-containing transcription factor to the functional receptor unit.</Comment>
+    <BiopaxRef>lit_507782</BiopaxRef>
+    <BiopaxRef>lit_873881</BiopaxRef>
+    <BiopaxRef>lit_933486</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1257.0" Y="173.0" GraphId="e_37_0"/>
+      <Point X="1257.0" Y="247.0" GraphId="e_37_1"/>
+      <Point X="1257.0" Y="317.0" GraphId="e_37_2" GraphRef="n39_REACTOME_873828" RelX="-0.016" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_37_a_i"/>
+      <Anchor Position="0.5138888888888888" GraphId="e_37_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1195.0" Y="221.0" GraphId="e_37_i0_0" GraphRef="n38_REACTOME_380745" RelX="0.23529411764705882" RelY="-1.2380952380952381"/>
+      <Point X="1257.0" Y="173.0" GraphId="e_37_i0_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1196.0" Y="173.0" GraphId="e_37_i1_0" GraphRef="n35_REACTOME_873814" RelX="1.0517241379310345" RelY="-0.04081632653061224"/>
+      <Point X="1257.0" Y="173.0" GraphId="e_37_i1_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_873922">
+    <Comment Source="WikiPathways-description">STAT1 pair recruited to the receptor complex is phosphorylated near the C-terminus at residue Y701, probably by JAK2. This phosphorylation enables the STAT1 homodimer formation which is further phosphorylated on residue S727.</Comment>
+    <BiopaxRef>lit_873892</BiopaxRef>
+    <BiopaxRef>lit_873904</BiopaxRef>
+    <BiopaxRef>lit_873845</BiopaxRef>
+    <BiopaxRef>lit_933486</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1258.0" Y="390.0" GraphId="e_40_0"/>
+      <Point X="1258.0" Y="420.0" GraphId="e_40_1"/>
+      <Point X="1258.0" Y="451.0" GraphId="e_40_2"/>
+      <Anchor Position="0.0" GraphId="e_40_a_i"/>
+      <Anchor Position="0.4918032786885246" GraphId="e_40_a_p"/>
+      <Anchor Position="1.0" GraphId="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1258.0" Y="358.0" GraphId="e_40_i0_0" GraphRef="n39_REACTOME_873828" RelX="0.0" RelY="1.2"/>
+      <Point X="1258.0" Y="390.0" GraphId="e_40_i0_1" GraphRef="e_40_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1220.0" Y="384.0" GraphId="e_40_i1_0" GraphRef="n41_REACTOME_113592" RelX="1.1627906976744187" RelY="0.20689655172413793"/>
+      <Point X="1258.0" Y="390.0" GraphId="e_40_i1_1" GraphRef="e_40_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1223.0" Y="468.0" GraphId="e_40_o0_0" ArrowHead="Arrow" GraphRef="n42_REACTOME_29370" RelX="1.1627906976744187" RelY="-0.7586206896551724"/>
+      <Point X="1258.0" Y="451.0" GraphId="e_40_o0_1" GraphRef="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1258.0" Y="600.0" GraphId="e_40_o1_0" ArrowHead="Arrow" GraphRef="n43_REACTOME_873817" RelX="0.0" RelY="-1.1020408163265305"/>
+      <Point X="1258.0" Y="451.0" GraphId="e_40_o1_1" GraphRef="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1324.0" Y="337.0" GraphId="e_40_c__0_0" GraphRef="n39_REACTOME_873828" RelX="1.056" RelY="0.0"/>
+      <Point X="1347.0" Y="337.0" GraphId="e_40_c__0_1"/>
+      <Point X="1347.0" Y="420.0" GraphId="e_40_c__0_2"/>
+      <Point X="1258.0" Y="420.0" GraphId="e_40_c__0_3" GraphRef="e_40_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_REACTOME_873927">
+    <Comment Source="WikiPathways-description">The phosphorylated STAT1 on IFNGR1 chains homodimerize through reciprocal SH2-phosphotyrosine interactions to form p-STAT1 homodimer called gamma-activated-factor (GAF). This phosphorylated STAT1 homodimer disassociates from the receptor complex and translocates to the nucleus.</Comment>
+    <BiopaxRef>lit_873866</BiopaxRef>
+    <BiopaxRef>lit_873888</BiopaxRef>
+    <BiopaxRef>lit_933495</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="964.0" Y="599.0" GraphId="e_44_0" GraphRef="n212_REACTOME_909556" RelX="-0.1" RelY="-1.1020408163265305"/>
+      <Point X="956.0" Y="564.0" GraphId="e_44_1"/>
+      <Point X="946.0" Y="531.0" GraphId="e_44_2"/>
+      <Anchor Position="0.5100928921094081" GraphId="e_44_a_p"/>
+      <Anchor Position="1.0" GraphId="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="860.0" Y="449.0" GraphId="e_44_o0_0" ArrowHead="Arrow" GraphRef="n45_REACTOME_873827" RelX="0.2833333333333333" RelY="1.2"/>
+      <Point X="946.0" Y="531.0" GraphId="e_44_o0_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1122.0" Y="202.0" GraphId="e_44_o1_0" ArrowHead="Arrow" GraphRef="n35_REACTOME_873814" RelX="-0.22413793103448276" RelY="1.1428571428571428"/>
+      <Point X="946.0" Y="531.0" GraphId="e_44_o1_1" GraphRef="e_44_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_REACTOME_873917">
+    <Comment Source="WikiPathways-description">Released GAF complex translocates to the nucleus and binds to the gamma-activated sequence (GAS) element present in the promoters of IFNG-regulated genes and induces the transcription of IFNG-responsive genes.</Comment>
+    <BiopaxRef>lit_873866</BiopaxRef>
+    <BiopaxRef>lit_873910</BiopaxRef>
+    <BiopaxRef>lit_933495</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="780.0" Y="428.0" GraphId="e_47_0" GraphRef="n45_REACTOME_873827" RelX="-1.05" RelY="0.0"/>
+      <Point X="758.0" Y="428.0" GraphId="e_47_1"/>
+      <Point X="732.0" Y="428.0" GraphId="e_47_2" GraphRef="n48_REACTOME_873824" RelX="1.05" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4583333333333333" GraphId="e_47_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_162_REACTOME_877269">
+    <Comment Source="WikiPathways-description">SOCS-1 and SOCS-3 coprecipitates with JAK kinases upon IFNG stimulation and are able to inhibit the JAK-STAT pathway, although with different affinity and kinetics. SOCS1 and SOCS3 binds to phosphorylated JAK1/2 and prevent the tyrosine kinase activity of JAKs through their kinase inhibitory region (KIR), thereby inhibiting downstream IFNG signaling. SOCS1 may also prevent IFNG signaling by targeting the signaling machinery to ubiquitin-proteasomal degradation pathway.</Comment>
+    <BiopaxRef>lit_877270</BiopaxRef>
+    <BiopaxRef>lit_877309</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="234.0" Y="285.0" GraphId="e_162_0"/>
+      <Point X="187.0" Y="285.0" GraphId="e_162_1"/>
+      <Point X="129.0" Y="285.0" GraphId="e_162_2" GraphRef="n159_REACTOME_873821" RelX="1.056" RelY="-0.04081632653061224" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_162_a_i"/>
+      <Anchor Position="0.44761904761904764" GraphId="e_162_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_162_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="258.0" Y="255.0" GraphId="e_162_i0_0" GraphRef="n163_REACTOME_877267" RelX="-0.2857142857142857" RelY="1.2"/>
+      <Point X="234.0" Y="285.0" GraphId="e_162_i0_1" GraphRef="e_162_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_162_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="609.0" Y="202.0" GraphId="e_162_i1_0" GraphRef="n24_REACTOME_873811" RelX="-0.3103448275862069" RelY="1.1428571428571428"/>
+      <Point X="547.0" Y="285.0" GraphId="e_162_i1_1"/>
+      <Point X="234.0" Y="285.0" GraphId="e_162_i1_2" GraphRef="e_162_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_REACTOME_877308">
+    <Comment Source="WikiPathways-description">Protein tyrosine phosphatases (PTPs) SHP1 and SHP2 down regulate the IFNG signaling by dephosphorylating the tyrosine residues critical to the activation of JAK kinases. PTP1B interacts directly with JAK2 but not JAK1 and dephosphorylate the tyrosine Y1007 on JAK2.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="637.0" Y="289.0" GraphId="e_164_0"/>
+      <Point X="481.0" Y="289.0" GraphId="e_164_1"/>
+      <Point X="408.0" Y="289.0" GraphId="e_164_2"/>
+      <Anchor Position="0.0" GraphId="e_164_a_i"/>
+      <Anchor Position="0.6812227074235808" GraphId="e_164_a_p"/>
+      <Anchor Position="1.0" GraphId="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="691.0" Y="311.0" GraphId="e_164_i0_0" GraphRef="n225_REACTOME_29356" RelX="-1.1162790697674418" RelY="-0.6206896551724138"/>
+      <Point X="637.0" Y="289.0" GraphId="e_164_i0_1" GraphRef="e_164_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="861.0" Y="202.0" GraphId="e_164_i1_0" GraphRef="n30_REACTOME_873820" RelX="-0.1724137931034483" RelY="1.1428571428571428"/>
+      <Point X="825.0" Y="289.0" GraphId="e_164_i1_1"/>
+      <Point X="637.0" Y="289.0" GraphId="e_164_i1_2" GraphRef="e_164_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="375.0" Y="195.0" GraphId="e_164_o0_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_873829" RelX="0.07751937984496124" RelY="1.2"/>
+      <Point X="408.0" Y="289.0" GraphId="e_164_o0_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="329.0" Y="317.0" GraphId="e_164_o1_0" ArrowHead="Arrow" GraphRef="n226_REACTOME_29372" RelX="0.578125" RelY="-1.1724137931034482"/>
+      <Point X="408.0" Y="289.0" GraphId="e_164_o1_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="481.0" Y="324.0" GraphId="e_164_c__0_0" GraphRef="n227_REACTOME_997298" RelX="0.0" RelY="-1.1428571428571428"/>
+      <Point X="481.0" Y="289.0" GraphId="e_164_c__0_1" GraphRef="e_164_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_198_REACTOME_877281">
+    <Comment Source="WikiPathways-description">PIAS1 protein interacts directly with phoshorylated STAT1 dimers and inhibit the transcriptional activity of STAT1 by blocking the DNA-binding domain of STAT1. It has also been suggested that PIAS proteins might regulate transcription by promoting small ubiquitin-related modifier (SUMO1) conjugation of STAT1. The significance of STAT1 sumoylation in regulating STAT1 activity is controversial and needs to be clarified.</Comment>
+    <BiopaxRef>lit_208336</BiopaxRef>
+    <BiopaxRef>lit_877303</BiopaxRef>
+    <BiopaxRef>lit_877311</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="669.0" Y="609.0" GraphId="e_198_0"/>
+      <Point X="642.0" Y="609.0" GraphId="e_198_1"/>
+      <Point X="618.0" Y="609.0" GraphId="e_198_2" GraphRef="n201_REACTOME_877297" RelX="1.05" RelY="-0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_198_a_i"/>
+      <Anchor Position="0.5294117647058824" GraphId="e_198_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_198_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="692.0" Y="623.0" GraphId="e_198_i0_0" GraphRef="n199_REACTOME_877307" RelX="-0.6666666666666666" RelY="-1.2380952380952381"/>
+      <Point X="669.0" Y="609.0" GraphId="e_198_i0_1" GraphRef="e_198_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_198_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="669.0" Y="449.0" GraphId="e_198_i1_0" GraphRef="n48_REACTOME_873824" RelX="0.0" RelY="1.2"/>
+      <Point X="669.0" Y="609.0" GraphId="e_198_i1_1" GraphRef="e_198_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_198_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="691.0" Y="596.0" GraphId="e_198_i2_0" GraphRef="n200_REACTOME_877304" RelX="-0.5263157894736842" RelY="1.3333333333333333"/>
+      <Point X="669.0" Y="609.0" GraphId="e_198_i2_1" GraphRef="e_198_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_REACTOME_909552">
+    <Comment Source="WikiPathways-description">Kinases like Protein kinase C delta (PKC-delta) and Calcium/calmodulin-dependent protein kinase II (CaMK II ) can phosphorylate STAT1 at serine 727 (S727). This phosphorylation is not required for STAT1 homodimer formation, nuclear translocation and DNA binding. However, it is essential for the full transcriptional activation of STAT1.</Comment>
+    <BiopaxRef>lit_909560</BiopaxRef>
+    <BiopaxRef>lit_909553</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1157.0" Y="626.0" GraphId="e_213_0"/>
+      <Point X="1119.0" Y="626.0" GraphId="e_213_1"/>
+      <Point X="1072.0" Y="626.0" GraphId="e_213_2"/>
+      <Anchor Position="0.0" GraphId="e_213_a_i"/>
+      <Anchor Position="0.4470588235294118" GraphId="e_213_a_p"/>
+      <Anchor Position="1.0" GraphId="e_213_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1182.0" Y="572.0" GraphId="e_213_i0_0" GraphRef="n214_REACTOME_113592" RelX="-0.32558139534883723" RelY="1.2413793103448276"/>
+      <Point X="1157.0" Y="626.0" GraphId="e_213_i0_1" GraphRef="e_213_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1195.0" Y="626.0" GraphId="e_213_i1_0" GraphRef="n43_REACTOME_873817" RelX="-1.05" RelY="-0.04081632653061224"/>
+      <Point X="1157.0" Y="626.0" GraphId="e_213_i1_1" GraphRef="e_213_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1033.0" Y="626.0" GraphId="e_213_o0_0" ArrowHead="Arrow" GraphRef="n212_REACTOME_909556" RelX="1.05" RelY="0.0"/>
+      <Point X="1072.0" Y="626.0" GraphId="e_213_o0_1" GraphRef="e_213_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1047.0" Y="574.0" GraphId="e_213_o1_0" ArrowHead="Arrow" GraphRef="n215_REACTOME_29370" RelX="0.27906976744186046" RelY="1.2413793103448276"/>
+      <Point X="1072.0" Y="626.0" GraphId="e_213_o1_1" GraphRef="e_213_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1119.0" Y="530.0" GraphId="e_213_c__0_0" GraphRef="n216_REACTOME_909568" RelX="0.0" RelY="1.2"/>
+      <Point X="1119.0" Y="626.0" GraphId="e_213_c__0_1" GraphRef="e_213_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_REACTOME_997326">
+    <Comment Source="WikiPathways-description">The nuclear isoform of T cell protein tyrosine phosphatase (TC-PTP) referred as TC45 (or TC-PTPa) dephosphorylates p-STAT1 dimer in the nucleus. It can also dephosphorylate p-JAK1/3 in IFNG stimulated cells.</Comment>
+    <BiopaxRef>lit_997325</BiopaxRef>
+    <BiopaxRef>lit_997315</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="542.0" Y="514.0" GraphId="e_228_0"/>
+      <Point X="489.0" Y="514.0" GraphId="e_228_1"/>
+      <Point X="429.0" Y="514.0" GraphId="e_228_2"/>
+      <Anchor Position="0.0" GraphId="e_228_a_i"/>
+      <Anchor Position="0.4690265486725664" GraphId="e_228_a_p"/>
+      <Anchor Position="1.0" GraphId="e_228_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="564.0" Y="528.0" GraphId="e_228_i0_0" GraphRef="n236_REACTOME_113518" RelX="-0.9767441860465116" RelY="-1.1724137931034482"/>
+      <Point X="542.0" Y="514.0" GraphId="e_228_i0_1" GraphRef="e_228_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="643.0" Y="449.0" GraphId="e_228_i1_0" GraphRef="n48_REACTOME_873824" RelX="-0.43333333333333335" RelY="1.2"/>
+      <Point X="542.0" Y="514.0" GraphId="e_228_i1_1" GraphRef="e_228_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="395.0" Y="498.0" GraphId="e_228_o0_0" ArrowHead="Arrow" GraphRef="n230_REACTOME_997294" RelX="0.6415094339622641" RelY="1.3333333333333333"/>
+      <Point X="429.0" Y="514.0" GraphId="e_228_o0_1" GraphRef="e_228_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="402.0" Y="540.0" GraphId="e_228_o1_0" ArrowHead="Arrow" GraphRef="n245_REACTOME_113550" RelX="0.203125" RelY="-1.1724137931034482"/>
+      <Point X="429.0" Y="514.0" GraphId="e_228_o1_1" GraphRef="e_228_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_228_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="489.0" Y="550.0" GraphId="e_228_c__0_0" GraphRef="n232_REACTOME_997295" RelX="0.0" RelY="-1.2380952380952381"/>
+      <Point X="489.0" Y="514.0" GraphId="e_228_c__0_1" GraphRef="e_228_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_254_REACTOME_1031713">
+    <Comment Source="WikiPathways-description">GAF transcription factor translocated into nucleus binds to defined DNA sequence called GAS (gamma activated sequence) elements in the promoters of IFN-gamma responsive elements and initiate transcription.</Comment>
+    <BiopaxRef>lit_1031682</BiopaxRef>
+    <BiopaxRef>lit_1031685</BiopaxRef>
+    <BiopaxRef>lit_1031676</BiopaxRef>
+    <BiopaxRef>lit_1031647</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="426.0" Y="427.0" GraphId="e_254_0"/>
+      <Point X="396.0" Y="427.0" GraphId="e_254_1"/>
+      <Point X="353.0" Y="427.0" GraphId="e_254_2" GraphRef="n256_REACTOME_1031710" RelX="1.0654205607476634" RelY="-0.04081632653061224" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_254_a_i"/>
+      <Anchor Position="0.410958904109589" GraphId="e_254_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_254_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="449.0" GraphId="e_254_i0_0" GraphRef="n48_REACTOME_873824" RelX="-0.6833333333333333" RelY="1.2"/>
+      <Point X="576.0" Y="468.0" GraphId="e_254_i0_1"/>
+      <Point X="460.0" Y="468.0" GraphId="e_254_i0_2"/>
+      <Point X="426.0" Y="427.0" GraphId="e_254_i0_3" GraphRef="e_254_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_254_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="470.0" Y="427.0" GraphId="e_254_i1_0" GraphRef="n255_REACTOME_1031708" RelX="-1.04" RelY="-0.04081632653061224"/>
+      <Point X="426.0" Y="427.0" GraphId="e_254_i1_1" GraphRef="e_254_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_REACTOME_1031716">
+    <Comment Source="WikiPathways-description">IFN-gamma stimulates gene expression of about 200 genes which include the primary response genes like IRFs, Fc-gamma receptor (FCGR), GBPs (guanylate-binding proteins) and also  major histocompatibility complex (MHC) class I and class II molecules, proteins involved in antigen presentation, antiviral proteins like PKR, OAS proteins etc. A wonderful list of most of the IFN-gamma inducible proteins with corresponding literature are mentioned in the review article and the supplementary document by Boehm et al 1997.</Comment>
+    <BiopaxRef>lit_1031686</BiopaxRef>
+    <BiopaxRef>lit_1031678</BiopaxRef>
+    <BiopaxRef>lit_1031680</BiopaxRef>
+    <BiopaxRef>lit_1031658</BiopaxRef>
+    <BiopaxRef>lit_1031657</BiopaxRef>
+    <BiopaxRef>lit_1031647</BiopaxRef>
+    <BiopaxRef>lit_1031674</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="284.0" Y="471.0" GraphId="e_257_0"/>
+      <Point X="284.0" Y="508.0" GraphId="e_257_1"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_2"/>
+      <Anchor Position="0.42045454545454547" GraphId="e_257_a_p"/>
+      <Anchor Position="1.0" GraphId="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="66.0" Y="783.0" GraphId="e_257_o0_0" ArrowHead="Arrow" GraphRef="n262_REACTOME_419376" RelX="0.20408163265306123" RelY="-1.2380952380952381"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o0_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="514.0" Y="854.0" GraphId="e_257_o1_0" ArrowHead="Arrow" GraphRef="n265_REACTOME_1015696" RelX="-0.1836734693877551" RelY="-1.2380952380952381"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o1_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="692.0" Y="829.0" GraphId="e_257_o2_0" ArrowHead="Arrow" GraphRef="n261_REACTOME_983117" RelX="-0.7254901960784313" RelY="-1.1020408163265305"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o2_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="385.0" Y="800.0" GraphId="e_257_o3_0" ArrowHead="Arrow" GraphRef="n263_REACTOME_1031707" RelX="-0.12403100775193798" RelY="-1.1428571428571428"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o3_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="178.0" Y="624.0" GraphId="e_257_o4_0" ArrowHead="Arrow" GraphRef="n264_REACTOME_1031706" RelX="0.8205128205128205" RelY="-1.2380952380952381"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o4_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="254.0" Y="826.0" GraphId="e_257_o5_0" ArrowHead="Arrow" GraphRef="n268_REACTOME_1015695" RelX="0.03225806451612903" RelY="-1.2380952380952381"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o5_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o6">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="76.0" Y="844.0" GraphId="e_257_o6_0" ArrowHead="Arrow" GraphRef="n266_REACTOME_1031690" RelX="0.3469387755102041" RelY="-1.1020408163265305"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o6_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o7">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="237.0" Y="559.0" GraphId="e_257_o7_0" ArrowHead="Arrow" GraphRef="n259_REACTOME_1031702" RelX="1.0654205607476634" RelY="-0.05714285714285714"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o7_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o8">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="641.0" Y="916.0" GraphId="e_257_o8_0" ArrowHead="Arrow" GraphRef="n270_REACTOME_1031704" RelX="-0.624" RelY="-1.0649350649350648"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o8_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o9">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="76.0" Y="445.0" GraphId="e_257_o9_0" ArrowHead="Arrow" GraphRef="n289_REACTOME_203467" RelX="0.8780487804878049" RelY="1.3333333333333333"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o9_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o10">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="87.0" Y="638.0" GraphId="e_257_o10_0" ArrowHead="Arrow" GraphRef="n260_REACTOME_1031694" RelX="1.1363636363636365" RelY="-0.8571428571428571"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o10_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o11">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="687.0" Y="768.0" GraphId="e_257_o11_0" ArrowHead="Arrow" GraphRef="n267_REACTOME_983063" RelX="-0.6355140186915887" RelY="-1.1428571428571428"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o11_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o12">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="323.0" Y="866.0" GraphId="e_257_o12_0" ArrowHead="Arrow" GraphRef="n258_REACTOME_1031695" RelX="-0.11428571428571428" RelY="-1.2380952380952381"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o12_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_o13">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="233.0" Y="684.0" GraphId="e_257_o13_0" ArrowHead="Arrow" GraphRef="n269_REACTOME_1031705" RelX="0.1509433962264151" RelY="-1.2380952380952381"/>
+      <Point X="284.0" Y="559.0" GraphId="e_257_o13_1" GraphRef="e_257_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_257_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="240.0" Y="425.0" GraphId="e_257_a__0_0" GraphRef="n256_REACTOME_1031710" RelX="-1.0467289719626167" RelY="-0.12244897959183673"/>
+      <Point X="216.0" Y="425.0" GraphId="e_257_a__0_1"/>
+      <Point X="216.0" Y="507.0" GraphId="e_257_a__0_2"/>
+      <Point X="284.0" Y="508.0" GraphId="e_257_a__0_3" GraphRef="e_257_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_208" GroupRef="group_comp_208" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="420.0" CenterY="593.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_211" GroupRef="group_comp_211" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="806.5" CenterY="329.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_279" GroupRef="group_comp_279" TextLabel="endoplasmic reticulum lumen">
+    <Graphics Color="000000" CenterX="767.5" CenterY="817.5" Width="189.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_288" GroupRef="group_comp_288" TextLabel="lysosomal lumen">
+    <Graphics Color="000000" CenterX="693.5" CenterY="1008.5" Width="115.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_208" GroupRef="group_comp_208">
+    <Graphics Color="000000" CenterX="441.5" CenterY="557.5" Width="667.0" Height="379.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_211" GroupRef="group_comp_211">
+    <Graphics Color="000000" CenterX="656.5" CenterY="626.0" Width="1211.0" Height="914.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_279" GroupRef="group_comp_279">
+    <Graphics Color="000000" CenterX="755.0" CenterY="826.5" Width="236.0" Height="141.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_288" GroupRef="group_comp_288">
+    <Graphics Color="000000" CenterX="691.0" CenterY="967.5" Width="192.0" Height="127.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873893" rdf:id="lit_873893">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18929502</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IFNgamma signaling-does it mean JAK-STAT?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gough, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levy, DE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnstone, RW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clarke, CJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 19:383-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873880" rdf:id="lit_873880">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9462485</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The interferon gamma (IFN-gamma) receptor: a paradigm for the multichain cytokine receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pestka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kotenko, SV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muthukumaran, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Izotova, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cook, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garotta, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 8:189-206</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873861" rdf:id="lit_873861">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9143700</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The IFN gamma receptor: a paradigm for cytokine receptor signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bach, EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aguet, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreiber, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Immunol 15:563-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873858" rdf:id="lit_873858">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14525967</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferon-gamma: an overview of signals, mechanisms and functions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schroder, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hertzog, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ravasi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hume, DA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Leukoc Biol 75:163-89</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873816" rdf:id="lit_873816">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1902591</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Three-dimensional structure of recombinant human interferon-gamma</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ealick, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cook, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vijay-Kumar, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carson, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagabhushan, TL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trotta, PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bugg, CE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 252:698-702</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873818" rdf:id="lit_873818">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16467876</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Preassembly and ligand-induced restructuring of the chains of the IFN-gamma receptor complex: the roles of Jak kinases, Stat1 and the receptor chains</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krause, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lavnikova, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xie, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mei, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mirochnitchenko, OV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jia, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hochstrasser, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pestka, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Res 16:55-69</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873815" rdf:id="lit_873815">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12438563</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seeing the light: preassembly and ligand-induced changes of the interferon gamma receptor complex in cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krause, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mei, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xie, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jia, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bopp, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hochstrasser, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pestka, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Proteomics 1:805-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031657" rdf:id="lit_1031657">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8530158</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcriptional regulation of the human intercellular adhesion molecule-1 gene: a short overview</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stratowa, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Audette, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunobiology 193:293-304</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031658" rdf:id="lit_1031658">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7530745</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine-induced expression of vascular cell adhesion molecule-1 (VCAM-1) by astrocytes and astrocytoma cell lines</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosenman, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shrikant, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dubb, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benveniste, EN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ransohoff, RM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Immunol 154:1888-99</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873873" rdf:id="lit_873873">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1396683</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stoichiometry of interaction between interferon gamma and its receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fountoulakis, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zulauf, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lustig, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garotta, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 208:781-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873872" rdf:id="lit_873872">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10986460</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Observation of an unexpected third receptor molecule in the crystal structure of human interferon-gamma receptor complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thiel, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">le Du, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walter, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Arcy, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chene, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fountoulakis, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garotta, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Winkler, FK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ealick, SE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure 8:927-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873901" rdf:id="lit_873901">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7617032</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of a complex between interferon-gamma and its soluble high-affinity receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walter, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Windsor, WT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagabhushan, TL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lundell, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lunn, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zauodny, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Narula, SK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 376:230-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873874" rdf:id="lit_873874">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7673114</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction between the components of the interferon gamma receptor complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kotenko, SV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Izotova, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pollack, BP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mariano, TM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Donnelly, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muthukumaran, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cook, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garotta, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Silvennoinen, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ihle, JN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:20915-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873864" rdf:id="lit_873864">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8550631</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of an interferon-gamma receptor alpha chain sequence required for JAK-1 binding</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaplan, DH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greenlund, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanner, JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shaw, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreiber, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:9-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873876" rdf:id="lit_873876">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7615558</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Jak kinases differentially associate with the alpha and beta (accessory factor) chains of the interferon gamma receptor to form a functional receptor unit capable of activating STAT transcription factors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakatsume, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Igarashi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Winestock, KD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garotta, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Larner, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Finbloom, DS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:17528-34</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873856" rdf:id="lit_873856">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9111318</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of Jak2 catalytic activity requires phosphorylation of Y1007 in the kinase activation loop</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feng, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Witthuhn, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuda, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kohlhuber, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kerr, IM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ihle, JN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 17:2497-501</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873836" rdf:id="lit_873836">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20304997</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tyrosines 868, 966, and 972 in the kinase domain of JAK2 are autophosphorylated and required for maximal JAK2 kinase activity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Argetsinger, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stuckey, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robertson, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koleva, RI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cline, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marto, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Myers MG, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carter-Su, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Endocrinol 24:1062-76</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873860" rdf:id="lit_873860">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15143187</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Autophosphorylation of JAK2 on tyrosines 221 and 570 regulates its activity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Argetsinger, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kouadio, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Steen, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stensballe, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jensen, ON</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carter-Su, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 24:4955-67</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873895" rdf:id="lit_873895">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15530433</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Determination of the transphosphorylation sites of Jak2 kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuda, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feng, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Witthuhn, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sekine, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ihle, JN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 325:586-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873845" rdf:id="lit_873845">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8631301</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinase-negative mutants of JAK1 can sustain interferon-gamma-inducible gene expression but not an antiviral state</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Briscoe, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rogers, NC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Witthuhn, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watling, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harpur, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilks, AF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stark, GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ihle, JN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kerr, IM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 15:799-809</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873912" rdf:id="lit_873912">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16237089</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signaling through a mutant IFN-gamma receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Costa-Pereira, AP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hermanns, HM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Is'harc, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, TM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watling, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arulampalam, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newman, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heinrich, PC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kerr, IM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Immunol 175:5958-65</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873900" rdf:id="lit_873900">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7514165</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferon-gamma induces tyrosine phosphorylation of interferon-gamma receptor and regulated association of protein tyrosine kinases, Jak1 and Jak2, with its receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Igarashi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garotta, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ozmen, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ziemiecki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilks, AF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harpur, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Larner, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Finbloom, DS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 269:14333-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_507782" rdf:id="lit_507782">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7796299</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stat recruitment by tyrosine-phosphorylated cytokine receptors: an ordered reversible affinity-driven process</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greenlund, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morales, MO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Viviano, BL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yan, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krolewski, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreiber, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immunity 2:677-87</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873881" rdf:id="lit_873881">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8156998</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ligand-induced IFN gamma receptor tyrosine phosphorylation couples the receptor to its signal transduction system (p91)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greenlund, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Farrar, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Viviano, BL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schreiber, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 13:1591-600</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_933486" rdf:id="lit_933486">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12040185</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A road map for those who don't know JAK-STAT</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aaronson, DS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horvath, CM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 296:1653-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873892" rdf:id="lit_873892">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7690989</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A single phosphotyrosine residue of Stat91 required for gene activation by interferon-gamma</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shuai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stark, GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kerr, IM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell JE, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 261:1744-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873904" rdf:id="lit_873904">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7657660</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation and activation of the DNA binding activity of purified Stat1 by the Janus protein-tyrosine kinases and the epidermal growth factor receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quelle, FW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thierfelder, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Witthuhn, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tang, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cohen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ihle, JN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:20775-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873866" rdf:id="lit_873866">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7510216</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferon activation of the transcription factor Stat91 involves dimerization through SH2-phosphotyrosyl peptide interactions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shuai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horvath, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, LH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qureshi, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cowburn, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell JE, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 76:821-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873888" rdf:id="lit_873888">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18591661</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tyrosine phosphorylation regulates the partitioning of STAT1 between different dimer conformations</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wenta, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strauss, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meyer, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vinkemeier, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 105:9238-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_933495" rdf:id="lit_933495">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12915721</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The ins and outs of STAT1 nuclear transport</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McBride, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reich, NC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sci STKE 2003:RE13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_873910" rdf:id="lit_873910">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10982844</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of STAT1 nuclear export by Jak1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mowen, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 20:7273-81</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_877270" rdf:id="lit_877270">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10421843</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine-inducible SH2 protein-3 (CIS3/SOCS3) inhibits Janus tyrosine kinase by binding through the N-terminal kinase inhibitory region as well as SH2 domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sasaki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yasukawa, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamizono, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Syoda, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinjyo, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sasaki, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnston, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshimura, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Cells 4:339-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_877309" rdf:id="lit_877309">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10064597</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The JAK-binding protein JAB inhibits Janus tyrosine kinase activity through binding in the activation loop</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yasukawa, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Misawa, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakamoto, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Masuhara, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sasaki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wakioka, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohtsuka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Imaizumi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuda, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ihle, JN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshimura, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 18:1309-20</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_208336" rdf:id="lit_208336">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10805787</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Distinct roles of the NH2- and COOH-terminal domains of the protein inhibitor of activated signal transducer and activator of transcription (STAT) 1 (PIAS1) in cytokine-induced PIAS1-Stat1 interaction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liao, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shuai, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 97:5267-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_877303" rdf:id="lit_877303">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18031232</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PIAS proteins as regulators of small ubiquitin-related modifier (SUMO) modifications and transcription</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Palvimo, JJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Soc Trans 35:1405-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_877311" rdf:id="lit_877311">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12855578</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PIAS proteins promote SUMO-1 conjugation to STAT1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ungureanu, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vanhatupa, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kotaja, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aittomaki, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JÃ¤nne, OA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Palvimo, JJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Silvennoinen, O</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 102:3311-3</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_909560" rdf:id="lit_909560">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15322115</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protein kinase Cdelta regulates apoptosis via activation of STAT1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DeVries, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kalkofen, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matassa, AA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reyland, ME</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:45603-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_909553" rdf:id="lit_909553">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11972023</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Requirement of Ca2+ and CaMKII for Stat1 Ser-727 phosphorylation in response to IFN-gamma</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nair, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DaFonseca, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tjernberg, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell JE, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chait, BT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, JJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 99:5971-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_997325" rdf:id="lit_997325">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12138178</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a nuclear Stat1 protein tyrosine phosphatase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ten Hoeve, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de Jesus Ibarra-Sanchez, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tremblay, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shuai, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 22:5662-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_997315" rdf:id="lit_997315">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11909529</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The T cell protein tyrosine phosphatase is a negative regulator of janus family kinases 1 and 3</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Simoncic, PD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee-Loy, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barber, DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tremblay, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McGlade, CJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 12:446-53</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031682" rdf:id="lit_1031682">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1898761</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Overlapping elements in the guanylate-binding protein gene promoter mediate transcriptional induction by alpha and gamma interferons</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lew, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Decker, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strehlow, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell, JE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 11:182-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031685" rdf:id="lit_1031685">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1901265</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytoplasmic activation of GAF, an IFN-gamma-regulated DNA-binding factor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Decker, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lew, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mirkovitch, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell JE, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 10:927-32</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031676" rdf:id="lit_1031676">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1281555</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of transcription by IFN-gamma: tyrosine phosphorylation of a 91-kD DNA binding protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shuai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schindler, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prezioso, VR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell JE, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 258:1808-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031647" rdf:id="lit_1031647">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9143706</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cellular responses to interferon-gamma</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boehm, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klamp, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Groot, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Howard, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Immunol 15:749-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031686" rdf:id="lit_1031686">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1508672</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcriptional induction of IFN-gamma-responsive genes is modulated by DNA surrounding the interferon stimulation response element</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strehlow, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Decker, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 20:3865-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031678" rdf:id="lit_1031678">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18362138</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Induction of guanylate binding protein 5 by gamma interferon increases susceptibility to Salmonella enterica serovar Typhimurium-induced pyroptosis in RAW 264.7 cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rupper, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cardelli, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infect Immun 76:2304-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031680" rdf:id="lit_1031680">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8483949</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interferon gamma-induced transcription of the high-affinity Fc receptor for IgG requires assembly of a complex that includes the 91-kDa subunit of transcription factor ISGF3</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pearse, RN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feinman, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shuai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell JE, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ravetch, JV</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 90:4314-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1031674" rdf:id="lit_1031674">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8176225</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IFN-gamma up-regulates platelet-activating factor receptor gene expression in human monocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ouellet, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MÃ¼ller, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rola-Pleszczynski, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Immunol 152:5092-9</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>immune response pathway</bp:TERM><bp:ID>PW:0000023</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

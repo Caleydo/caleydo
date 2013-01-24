@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Nucleotide GPCRs" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP80&amp;amp;oldid=20847 WP80(r20847)] with a 84% conversion rate.</Comment>
+  <Graphics BoardWidth="8576.15" BoardHeight="7108.75" WindowWidth="11346.0" WindowHeight="9420.0"/>
+  <DataNode TextLabel="Adora1" Type="GeneProduct" BackpageHead="Adora1" GraphId="b82" GroupRef="d9620">
+    <Graphics Color="000000" CenterX="1400.0" CenterY="2550.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11539"/>
+  </DataNode>
+  <DataNode TextLabel="Adora2a" Type="GeneProduct" BackpageHead="Adora2a" GraphId="a58" GroupRef="d9620">
+    <Graphics Color="000000" CenterX="1400.0" CenterY="2850.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11540"/>
+  </DataNode>
+  <DataNode TextLabel="Adora2b" Type="GeneProduct" BackpageHead="Adora2b" GraphId="fd5" GroupRef="d9620">
+    <Graphics Color="000000" CenterX="1400.0" CenterY="3150.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11541"/>
+  </DataNode>
+  <DataNode TextLabel="Adora3" Type="GeneProduct" BackpageHead="Adora3" GraphId="afd" GroupRef="d9620">
+    <Graphics Color="000000" CenterX="1400.0" CenterY="3450.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11542"/>
+  </DataNode>
+  <DataNode TextLabel="P2ry1" Type="GeneProduct" BackpageHead="P2ry1" GraphId="fa1" GroupRef="dc35e">
+    <Graphics Color="000000" CenterX="4300.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18441"/>
+  </DataNode>
+  <DataNode TextLabel="P2ry2" Type="GeneProduct" BackpageHead="P2ry2" GraphId="f37" GroupRef="dc35e">
+    <Graphics Color="000000" CenterX="4300.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18442"/>
+  </DataNode>
+  <DataNode TextLabel="P2ry5" Type="GeneProduct" BackpageHead="P2ry5" GraphId="a25" GroupRef="dc35e">
+    <Graphics Color="000000" CenterX="4300.0" CenterY="3400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67168"/>
+  </DataNode>
+  <DataNode TextLabel="P2ry6" Type="GeneProduct" BackpageHead="P2ry6" GraphId="e37" GroupRef="dc35e">
+    <Graphics Color="000000" CenterX="4300.0" CenterY="3700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="233571"/>
+  </DataNode>
+  <DataNode TextLabel="Ltb4r1" Type="GeneProduct" BackpageHead="Ltb4r1" GraphId="b6a" GroupRef="dc35e">
+    <Graphics Color="000000" CenterX="4300.0" CenterY="4000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16995"/>
+  </DataNode>
+  <DataNode TextLabel="Lpar4" Type="GeneProduct" BackpageHead="Lpar4" GraphId="fd4" GroupRef="dc35e">
+    <Graphics Color="000000" CenterX="4300.0" CenterY="4300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="78134"/>
+  </DataNode>
+  <DataNode TextLabel="P2ry4" Type="GeneProduct" BackpageHead="P2ry4" GraphId="e4c" GroupRef="dc35e">
+    <Graphics Color="000000" CenterX="4300.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="57385"/>
+  </DataNode>
+  <DataNode TextLabel="Adenosine" Type="Metabolite" GraphId="c4d">
+    <Graphics Color="0000ff" CenterX="1400.0" CenterY="1800.0" Width="1310.0" Height="285.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00050"/>
+  </DataNode>
+  <DataNode TextLabel="Adenine" Type="Metabolite" GraphId="efa">
+    <Graphics Color="0000ff" CenterX="4300.0" CenterY="1785.0" Width="1025.0" Height="285.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00034"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="b9cf0">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="ff8000">
+      <Point x="900.0" y="3450.0" GraphRef="afd" relX="-1.0" relY="0.0"/>
+      <Point x="1505.0" y="6320.0" GraphRef="e07" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a7858">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="0000ff">
+      <Point x="1900.0" y="2850.0" GraphRef="a58" relX="1.0" relY="0.0"/>
+      <Point x="3925.625" y="6177.5" GraphRef="bea" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f0e1c">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="ff8000">
+      <Point x="3850.0" y="2800.0" GraphRef="f37" relX="-1.0" relY="0.0"/>
+      <Point x="2716.25" y="6177.5" GraphRef="e07" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b2435">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="00ff00">
+      <Point x="4750.0" y="2500.0" GraphRef="fa1" relX="1.0" relY="0.0"/>
+      <Point x="6750.0" y="6177.5" GraphRef="f62" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f4563">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="00ff00">
+      <Point x="4750.0" y="2800.0" GraphRef="f37" relX="1.0" relY="0.0"/>
+      <Point x="6750.0" y="6177.5" GraphRef="f62" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b9515">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="00ff00">
+      <Point x="4750.0" y="3100.0" GraphRef="e4c" relX="1.0" relY="0.0"/>
+      <Point x="6750.0" y="6177.5" GraphRef="f62" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e4296">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="00ff00">
+      <Point x="4750.0" y="3700.0" GraphRef="e37" relX="1.0" relY="0.0"/>
+      <Point x="6750.0" y="6177.5" GraphRef="f62" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fef64">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="0000ff">
+      <Point x="1900.0" y="3450.0" GraphRef="afd" relX="1.0" relY="0.0"/>
+      <Point x="3925.625" y="6177.5" GraphRef="bea" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="faa16">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="ff8000">
+      <Point x="900.0" y="2550.0" GraphRef="b82" relX="-1.0" relY="0.0"/>
+      <Point x="495.0" y="4435.0"/>
+      <Point x="1505.0" y="6320.0" GraphRef="e07" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4300.0" y="1927.5" GraphRef="efa" relX="0.0" relY="1.0"/>
+      <Point x="4300.0" y="2230.0" GraphRef="a8c74" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1400.0" y="1942.5" GraphRef="c4d" relX="0.0" relY="1.0"/>
+      <Point x="1400.0" y="2280.0" GraphRef="d592f" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Gi/Go Pathway" GraphId="e07">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="2312.5" CenterY="6320.0" Width="1615.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gs Pathway" GraphId="bea">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4236.25" CenterY="6320.0" Width="1242.5" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Gq/G11 Pathway" GraphId="f62">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="6750.0" CenterY="6320.0" Width="1970.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="d9620" GraphId="d592f"/>
+  <Group GroupId="dc35e" GraphId="a8c74"/>
+  <InfoBox CenterX="120.0" CenterY="876.5"/>
+  <Legend CenterX="7796.5" CenterY="2375.0"/>
+</Pathway>

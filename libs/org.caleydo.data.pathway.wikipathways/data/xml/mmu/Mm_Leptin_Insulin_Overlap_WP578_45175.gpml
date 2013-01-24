@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Leptin Insulin Overlap" Organism="Mus musculus">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">Overlap of cellular insulin and leptin signaling</Comment>
+  <Graphics BoardWidth="1020.3466819221967" BoardHeight="559.2482837528603"/>
+  <DataNode TextLabel="Insr" GraphId="cd19e" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Insulin receptor"/>
+    <Graphics CenterX="393.0" CenterY="103.48333333333333" Width="28.0" Height="99.03333333333333" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16337"/>
+  </DataNode>
+  <DataNode TextLabel="Lepr" GraphId="b257d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Lepr"/>
+    <Graphics CenterX="545.5" CenterY="105.48333333333333" Width="31.0" Height="97.03333333333333" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16847"/>
+  </DataNode>
+  <DataNode TextLabel="Irs1" GraphId="f0520" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IRS1"/>
+    <Graphics CenterX="350.5" CenterY="125.0" Width="57.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16367"/>
+  </DataNode>
+  <DataNode TextLabel="Irs3" GraphId="f4c5b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IRS3"/>
+    <Graphics CenterX="350.5" CenterY="165.0" Width="57.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16369"/>
+  </DataNode>
+  <DataNode TextLabel="Irs4" GraphId="f98d4" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IRS4"/>
+    <Graphics CenterX="350.5" CenterY="185.0" Width="57.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16370"/>
+  </DataNode>
+  <DataNode TextLabel="Jak2" GraphId="d9e12" Type="GeneProduct" GroupRef="b00c7">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK2"/>
+    <Graphics CenterX="588.0" CenterY="143.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16452"/>
+  </DataNode>
+  <DataNode TextLabel="Stat3" GraphId="bb089" Type="GeneProduct" GroupRef="b00c7">
+    <Graphics CenterX="588.0" CenterY="162.0" Width="54.0" Height="22.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="20848"/>
+  </DataNode>
+  <DataNode TextLabel="PIP2" GraphId="ebdc1" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PIP2"/>
+    <Graphics CenterX="226.0" CenterY="121.0" Width="32.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB06811"/>
+  </DataNode>
+  <DataNode TextLabel="PIP3" GraphId="f8c1e" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PIP3"/>
+    <Graphics CenterX="158.5" CenterY="119.0" Width="29.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEBI" ID="16618"/>
+  </DataNode>
+  <DataNode TextLabel="Akt1/PKB" GraphId="c0662" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Akt/PKB"/>
+    <Graphics CenterX="37.0" CenterY="203.0" Width="56.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="11651"/>
+  </DataNode>
+  <DataNode TextLabel="Insulin" GraphId="d6a2b" Type="GeneProduct">
+    <Graphics CenterX="393.0" CenterY="44.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16333"/>
+  </DataNode>
+  <DataNode TextLabel="Leptin" GraphId="e7e2a" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Leptin"/>
+    <Graphics CenterX="543.0" CenterY="46.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="SwissProt" ID="P41160"/>
+  </DataNode>
+  <DataNode TextLabel="P110" GraphId="f3b79" Type="GeneProduct">
+    <Graphics CenterX="263.0" CenterY="241.5" Width="36.0" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000020573"/>
+  </DataNode>
+  <DataNode TextLabel="P85" GraphId="bf599" Type="GeneProduct">
+    <Graphics CenterX="263.0" CenterY="261.0" Width="36.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028698"/>
+  </DataNode>
+  <DataNode TextLabel="P110" GraphId="c949b" Type="GeneProduct">
+    <Graphics CenterX="239.0" CenterY="144.0" Width="36.0" Height="22.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000020573"/>
+  </DataNode>
+  <DataNode TextLabel="PDK1" GraphId="af6df" Type="GeneProduct">
+    <Graphics CenterX="73.5" CenterY="119.0" Width="47.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="18607"/>
+  </DataNode>
+  <DataNode TextLabel="PKC" GraphId="e3534" Type="GeneProduct">
+    <Graphics CenterX="106.75" CenterY="204.0" Width="40.5" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000040479 "/>
+  </DataNode>
+  <DataNode TextLabel="Jak2" GraphId="a74bd" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK2"/>
+    <Graphics CenterX="502.0" CenterY="143.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16452"/>
+  </DataNode>
+  <DataNode TextLabel="Socs1" GraphId="d491b" Type="GeneProduct" GroupRef="b1cd7">
+    <Graphics CenterX="731.0" CenterY="133.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12703"/>
+  </DataNode>
+  <DataNode TextLabel="Socs2" GraphId="c0927" Type="GeneProduct" GroupRef="b1cd7">
+    <Graphics CenterX="731.0" CenterY="153.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="216233"/>
+  </DataNode>
+  <DataNode TextLabel="Socs3" GraphId="b319c" Type="GeneProduct" GroupRef="b1cd7">
+    <Graphics CenterX="731.0" CenterY="172.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12702"/>
+  </DataNode>
+  <DataNode TextLabel="Stat3" GraphId="f4fea" Type="GeneProduct" GroupRef="cf7a0">
+    <Graphics CenterX="597.0" CenterY="328.0" Width="54.0" Height="22.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="20848"/>
+  </DataNode>
+  <DataNode TextLabel="Stat3" GraphId="e762b" Type="GeneProduct" GroupRef="cf7a0">
+    <Graphics CenterX="544.0" CenterY="328.0" Width="54.0" Height="22.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="20848"/>
+  </DataNode>
+  <DataNode TextLabel="Irs2" GraphId="f4561" Type="GeneProduct">
+    <Graphics CenterX="350.5" CenterY="145.0" Width="57.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="384783"/>
+  </DataNode>
+  <DataNode TextLabel="Jak2" GraphId="f4db3" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK2"/>
+    <Graphics CenterX="465.0" CenterY="209.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="16452"/>
+  </DataNode>
+  <Line GraphId="efb08">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="293.0" Y="174.99999999999994" GraphRef="a8fb6" RelX="0.0" RelY="1.0"/>
+      <Point X="312.5" Y="218.96666666666664" GraphRef="dcff2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d2086">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="264.0" Y="219.96666666666664" GraphRef="cc48f" RelX="0.0" RelY="-1.0"/>
+      <Point X="239.0" Y="155.0" GraphRef="c949b" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d2bc6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="210.0" Y="121.0" GraphRef="ebdc1" RelX="-1.0" RelY="0.0"/>
+      <Point X="173.0" Y="119.0" GraphRef="f8c1e" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c74ad">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="144.0" Y="119.0" GraphRef="f8c1e" RelX="-1.0" RelY="0.0"/>
+      <Point X="97.0" Y="119.0" GraphRef="af6df" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6451">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="61.75" Y="129.0" GraphRef="af6df" RelX="-0.5" RelY="1.0"/>
+      <Point X="37.0" Y="193.0" GraphRef="c0662" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="adcf7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="85.25" Y="129.0" GraphRef="af6df" RelX="0.5" RelY="1.0"/>
+      <Point X="106.75" Y="194.0" GraphRef="e3534" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2dda">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0026">
+      <Point X="333.0" Y="338.0"/>
+      <Point X="735.0" Y="340.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f5f60">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0026">
+      <Point X="334.0" Y="353.0"/>
+      <Point X="736.0" Y="355.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fc362">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="431.0" Y="235.9833333333333" GraphRef="f98e8" RelX="-1.0" RelY="0.0"/>
+      <Point X="332.0" Y="233.9833333333333" GraphRef="dcff2" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b40f4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="502.0" Y="153.0" GraphRef="a74bd" RelX="0.0" RelY="1.0"/>
+      <Point X="465.0" Y="199.0" GraphRef="f4db3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fb38c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="588.0" Y="181.0" GraphRef="c1fbc" RelX="0.0" RelY="1.0"/>
+      <Point X="570.5" Y="309.0" GraphRef="cb1d2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bcc85">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="683.0" Y="152.5" GraphRef="ce781" RelX="-1.0" RelY="0.0"/>
+      <Point X="623.0" Y="153.0" GraphRef="c1fbc" RelX="1.0" RelY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="PI3K" GraphId="e494c">
+    <Graphics CenterX="280.0" CenterY="290.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="13" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="IRS" GraphId="ae4a2">
+    <Graphics CenterX="292.0" CenterY="157.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="13" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="IRS" GraphId="e5c90">
+    <Graphics CenterX="312.0" CenterY="231.5" Width="80.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="13" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="DNA" GraphId="f5e48">
+    <Graphics CenterX="736.0" CenterY="370.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="13" Valign="Middle" Color="fc0303"/>
+  </Label>
+  <Label TextLabel="IRS" GraphId="f1cef">
+    <Graphics CenterX="450.0" CenterY="233.5" Width="80.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="13" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="cc48f">
+    <Graphics CenterX="264.0" CenterY="250.98333333333332" Width="62.0" Height="62.03333333333333" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f8d3f">
+    <Graphics CenterX="317.0" CenterY="156.0" Width="71.88766913268552" Height="4.490325897920081" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="4.71238898038469"/>
+  </Shape>
+  <Shape GraphId="dcff2">
+    <Graphics CenterX="312.5" CenterY="233.98333333333332" Width="39.0" Height="30.033333333333335" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="a8fb6">
+    <Graphics CenterX="293.0" CenterY="159.98333333333332" Width="36.0" Height="30.033333333333335" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f98e8">
+    <Graphics CenterX="450.5" CenterY="235.98333333333332" Width="39.0" Height="30.033333333333335" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="befda">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell"/>
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="409.80963553833715" CenterY="239.43783370971366" Width="813.7637393555167" Height="314.010221877237" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="b00c7" GraphId="c1fbc">
+    <BiopaxRef>fea</BiopaxRef>
+  </Group>
+  <Group GroupId="ec8ca" GraphId="ece44">
+    <BiopaxRef>fea</BiopaxRef>
+  </Group>
+  <Group GroupId="b1cd7" GraphId="ce781"/>
+  <Group GroupId="cf7a0" GraphId="cb1d2"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>insulin signaling pathway</bp:TERM>
+      
+      
+      <bp:ID>PW:0000143</bp:ID>
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="fea">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10799542</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of downstream signals by the long form of the leptin receptor.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Banks AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bates SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Myers MG Jr</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b99">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10521603</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10521603</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Discrete expression of insulin receptor substrate-4 mRNA in adult rat brain.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brain Res Mol Brain Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Numan S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Russell DS</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>leptin system pathway</bp:TERM><bp:ID>PW:0000363</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

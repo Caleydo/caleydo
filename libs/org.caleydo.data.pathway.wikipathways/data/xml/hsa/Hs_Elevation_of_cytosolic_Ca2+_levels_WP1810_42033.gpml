@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Elevation of cytosolic Ca2+ levels" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n5_REACTOME_139827" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="599.5" CenterY="394.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_74016" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="464.5" CenterY="362.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_139839" TextLabel="IP3 receptor bound &#10;to IP3 and Ca++&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="533.5" CenterY="439.0" Width="125.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4346"/>
+  </DataNode>
+  <DataNode GraphId="n129_REACTOME_74112" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="194.5" CenterY="302.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n130_REACTOME_139848" TextLabel="P2X1 purinoreceptor &#10;bound to ATP&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">P2X1 protein readily forms stable trimers and hexamers, suggesting that the intact receptor is a multimer of three or six subunits in heterologous expression systems. However,assembly in native cells may be influenced significantly by associated proteins that are not present in heterologous expression systems.</Comment>
+    <Graphics Color="000000" CenterX="252.5" CenterY="417.0" Width="121.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3044"/>
+  </DataNode>
+  <DataNode GraphId="n132_REACTOME_426219" TextLabel="Cations&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="196.0" CenterY="213.5" Width="56.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_24030"/>
+  </DataNode>
+  <DataNode GraphId="n133_REACTOME_426221" TextLabel="Cations&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="379.0" CenterY="212.5" Width="56.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_24868"/>
+  </DataNode>
+  <DataNode GraphId="n134_REACTOME_426179" TextLabel="DAG-activated &#10;TRPC3/6/7&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="313.0" CenterY="133.0" Width="90.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24061"/>
+  </DataNode>
+  <DataNode GraphId="n136_REACTOME_434675" TextLabel="Stromal &#10;interaction &#10;molecule 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="521.5" CenterY="255.5" Width="85.0" Height="51.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13586"/>
+  </DataNode>
+  <DataNode GraphId="n137_REACTOME_434696" TextLabel="Orai1 &#10;dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="576.0" CenterY="127.0" Width="68.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24301"/>
+  </DataNode>
+  <DataNode GraphId="n138_REACTOME_434679" TextLabel="CRAC channel&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="464.0" CenterY="124.0" Width="84.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24443"/>
+  </DataNode>
+  <Line GraphId="e_4_REACTOME_139854">
+    <Comment Source="WikiPathways-description">The IP3 receptor (IP3R) is an intracellular calcium release channel that mobilizes Ca2+ from internal stores in the ER to the cytoplasm. Though its activity is stimulated by IP3, the principal activator of the IP3R is Ca2+. This process of calcium-induced calcium release is central to the mechanism of Ca2+ signalling. The effect of cytosolic Ca2+ on IP3R is complex: it can be both stimulatory and inhibitory and can the effect varies between IP3R isoforms. In general, the IP3Rs have a bell-shaped Ca2+ dependence when treated with low concentrations of IP3; low concentrations of Ca2+ (100â300 nM) are stimulatory but above 300 nM, Ca2+ becomes inhibitory and switches the channel off. The stimulatory effect of IP3 is to relieve Ca2+ inhibition of the channel, enabling Ca2+ activation sites to gate it. &lt;br&gt;Functionally the IP3 receptor is believed to be tetrameric, with results indicating that the tetramer is composed of 2 pairs of protein isoforms.</Comment>
+    <BiopaxRef>lit_140089</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="568.0" Y="388.0" GraphId="e_4_0" GraphRef="n5_REACTOME_139827" RelX="-1.087719298245614" RelY="-0.3870967741935484"/>
+      <Point X="542.0" Y="383.0" GraphId="e_4_1"/>
+      <Point X="496.0" Y="369.0" GraphId="e_4_2" GraphRef="n6_REACTOME_74016" RelX="1.1228070175438596" RelY="0.45161290322580644" ArrowHead="Arrow"/>
+      <Anchor Position="0.3551035849942494" GraphId="e_4_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="536.0" Y="417.0" GraphId="e_4_c__0_0" GraphRef="n7_REACTOME_139839" RelX="0.048" RelY="-1.1578947368421053"/>
+      <Point X="542.0" Y="383.0" GraphId="e_4_c__0_1" GraphRef="e_4_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_REACTOME_139855">
+    <Comment Source="WikiPathways-description">The P2X1 receptor is a rapidly-desensitized ATP-gated cation channel with relatively high calcium permeability. It has highest expression in smooth muscle and platelets.  P2X1 receptor activation cannot induce platelet aggregation but does contribute to aggregation seen in response to collagen (Oury et al. 2001; Hechler et al. 2003). The role of P2X1 is more significant under flow conditions characterized by high shear stress (Hechler et al. 2003; Oury et al. 2004). P2X1 knockout mice havereduced incidence of thrombosis of mesenteric arterioles triggered by laser-induced vessel wall injury and are resistant to the acute systemic thromboembolism induced by infusion of a mixture of collagen and adrenaline (Hechler et al. 2003). Conversely, increased systemic thrombosis has been reported in mice overexpressing the human P2X1 receptor (Oury et al. 2003).  P2X1 binding to ATP mediates synaptic transmission between neurons and from neurons to smooth muscle, controlling sympathetic vasoconstriction in small arteries, arterioles and vas deferens.</Comment>
+    <BiopaxRef>lit_140059</BiopaxRef>
+    <BiopaxRef>lit_427210</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="226.0" Y="308.0" GraphId="e_128_0" GraphRef="n129_REACTOME_74112" RelX="1.1228070175438596" RelY="0.3870967741935484"/>
+      <Point X="309.0" Y="328.0" GraphId="e_128_1"/>
+      <Point X="433.0" Y="355.0" GraphId="e_128_2" GraphRef="n6_REACTOME_74016" RelX="-1.087719298245614" RelY="-0.45161290322580644" ArrowHead="Arrow"/>
+      <Anchor Position="0.4021819824789144" GraphId="e_128_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="264.0" Y="395.0" GraphId="e_128_c__0_0" GraphRef="n130_REACTOME_139848" RelX="0.19834710743801653" RelY="-1.1578947368421053"/>
+      <Point X="309.0" Y="328.0" GraphId="e_128_c__0_1" GraphRef="e_128_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_REACTOME_426223">
+    <Comment Source="WikiPathways-description">TRP channels are non-selectively permeable to cations, allowing enty into the cell via concentration gradients. All mammalian TRPCs require PLC for activation.</Comment>
+    <BiopaxRef>lit_426225</BiopaxRef>
+    <BiopaxRef>lit_426211</BiopaxRef>
+    <BiopaxRef>lit_426195</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="227.0" Y="213.0" GraphId="e_131_0" GraphRef="n132_REACTOME_426219" RelX="1.1071428571428572" RelY="0.0"/>
+      <Point X="315.0" Y="213.0" GraphId="e_131_1"/>
+      <Point X="348.0" Y="212.0" GraphId="e_131_2" GraphRef="n133_REACTOME_426221" RelX="-1.1071428571428572" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.7271816911057146" GraphId="e_131_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="313.0" Y="155.0" GraphId="e_131_c__0_0" GraphRef="n134_REACTOME_426179" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="315.0" Y="213.0" GraphId="e_131_c__0_1" GraphRef="e_131_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_REACTOME_434700">
+    <Comment Source="WikiPathways-description">Sustained calcium signalling in lymphocytes and platelets requires the uptake of extracellular calcium when intracellular stores are depleted. The process whereby intracellular calcium depletion stimulates calcium uptake is often referred to as Store-operated calcium entry (SOCE). Store depletion is sensed by stromal interaction molecule 1 (STIM1), which then translocates to the plasma membrane and associates with 2 dimers of Orai1 to form a calcium-release activated calcium (CRAC) channel.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="520.0" Y="186.0" GraphId="e_135_0"/>
+      <Point X="506.0" Y="174.0" GraphId="e_135_1"/>
+      <Point X="479.0" Y="145.0" GraphId="e_135_2" GraphRef="n138_REACTOME_434679" RelX="0.35714285714285715" RelY="1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_135_a_i"/>
+      <Anchor Position="0.31757412870269364" GraphId="e_135_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="520.0" Y="227.0" GraphId="e_135_i0_0" GraphRef="n136_REACTOME_434675" RelX="-0.023529411764705882" RelY="-1.0980392156862746"/>
+      <Point X="520.0" Y="186.0" GraphId="e_135_i0_1" GraphRef="e_135_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="558.0" Y="148.0" GraphId="e_135_i1_0" GraphRef="n137_REACTOME_434696" RelX="-0.5294117647058824" RelY="1.1666666666666667"/>
+      <Point X="520.0" Y="186.0" GraphId="e_135_i1_1" GraphRef="e_135_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_139_REACTOME_434798">
+    <Comment Source="WikiPathways-description">Activation of Calcium-release-activated (CRAC) channels allows influx of calcium. The Orai component of CRAC is responsible for the selectivity of the channel, while the Stim component is responsible for activation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="226.0" Y="301.0" GraphId="e_139_0" GraphRef="n129_REACTOME_74112" RelX="1.1228070175438596" RelY="-0.06451612903225806"/>
+      <Point X="463.0" Y="298.0" GraphId="e_139_1"/>
+      <Point X="463.0" Y="344.0" GraphId="e_139_2" GraphRef="n6_REACTOME_74016" RelX="-0.03508771929824561" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Anchor Position="0.8374667348093443" GraphId="e_139_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_139_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="463.0" Y="145.0" GraphId="e_139_c__0_0" GraphRef="n138_REACTOME_434679" RelX="-0.023809523809523808" RelY="1.1666666666666667"/>
+      <Point X="461.0" Y="224.0" GraphId="e_139_c__0_1"/>
+      <Point X="463.0" Y="298.0" GraphId="e_139_c__0_2" GraphRef="e_139_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="652.5" CenterY="160.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_2" GroupRef="group_comp_2" TextLabel="endoplasmic reticulum lumen">
+    <Graphics Color="000000" CenterX="598.0" CenterY="228.5" Width="154.0" Height="47.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_3" GroupRef="group_comp_3" TextLabel="platelet dense tubular network lumen">
+    <Graphics Color="000000" CenterX="572.5" CenterY="360.5" Width="115.0" Height="61.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="465.5" CenterY="301.5" Width="451.0" Height="351.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics Color="000000" CenterX="596.0" CenterY="244.0" Width="154.0" Height="94.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics Color="000000" CenterX="587.0" CenterY="381.5" Width="146.0" Height="125.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140089" rdf:id="lit_140089">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1693919</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receptor-activated single channels in intact human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mahaut-Smith, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sage, SO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rink, TJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 265:10479-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140059" rdf:id="lit_140059">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2457808</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calcium channels in thrombin-activated human platelet membrane</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zschauer, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van, Breemen C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Buhler, FR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nelson, MT</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 334:703-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427210" rdf:id="lit_427210">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9565569</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P2X1 purinoceptor in human platelets. Molecular cloning and functional characterization after heterologous expression</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okahara, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kambayashi, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:11544-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426225" rdf:id="lit_426225">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8646775</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">trp, a novel mammalian gene family essential for agonist-activated capacitative Ca2+ entry</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiang, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peyton, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boulay, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hurst, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stefani, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Birnbaumer, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 85:661-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426211" rdf:id="lit_426211">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9930701</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Direct activation of human TRPC6 and TRPC3 channels by diacylglycerol</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hofmann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obukhov, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schaefer, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harteneck, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gudermann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schultz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 397:259-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426195" rdf:id="lit_426195">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11805119</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and functional expression of human short TRP7, a candidate protein for store-operated Ca2+ influx</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Riccio, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mattei, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kelsell, RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Medhurst, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calver, AR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Randall, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benham, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pangalos, MN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:12302-9</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

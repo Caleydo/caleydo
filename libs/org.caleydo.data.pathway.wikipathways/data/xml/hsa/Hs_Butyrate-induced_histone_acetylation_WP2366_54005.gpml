@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Butyrate-induced histone acetylation" Author="Egon Willighagen" Organism="Homo sapiens">
+  <BiopaxRef>e96</BiopaxRef>
+  <Graphics BoardWidth="873.0" BoardHeight="602.0" />
+  <DataNode TextLabel="Butyrate" GraphId="f3fcc" Type="Metabolite">
+    <Graphics CenterX="322.0" CenterY="27.0" Width="80.0" Height="20.0" ZOrder="32768" FillColor="00cc33" FontSize="10" Valign="Middle" />
+    <Xref Database="InChI" ID="InChI=1S/C4H8O2/c1-2-3-4(5)6/h2-3H2,1H3,(H,5,6)/p-1" />
+  </DataNode>
+  <DataNode TextLabel="Butyrate" GraphId="d424d" Type="Metabolite">
+    <Graphics CenterX="323.0" CenterY="192.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="InChI" ID="InChI=1S/C4H8O2/c1-2-3-4(5)6/h2-3H2,1H3,(H,5,6)/p-1" />
+  </DataNode>
+  <DataNode TextLabel="Butyrate" GraphId="aeb78" Type="Metabolite">
+    <Graphics CenterX="323.0" CenterY="106.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="InChI" ID="InChI=1S/C4H8O2/c1-2-3-4(5)6/h2-3H2,1H3,(H,5,6)/p-1" />
+  </DataNode>
+  <DataNode TextLabel="Citrate" GraphId="fe8cf" Type="Metabolite">
+    <Graphics CenterX="396.0" CenterY="316.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="InChI" ID="InChI=1S/C6H8O7/c7-3(8)1-6(13,5(11)12)2-4(9)10/h13H,1-2H2,(H,7,8)(H,9,10)(H,11,12)/p-3" />
+  </DataNode>
+  <DataNode TextLabel="Citrate" GraphId="da500" Type="Metabolite">
+    <Graphics CenterX="549.0" CenterY="316.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="InChI" ID="InChI=1S/C6H8O7/c7-3(8)1-6(13,5(11)12)2-4(9)10/h13H,1-2H2,(H,7,8)(H,9,10)(H,11,12)/p-3" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl CoA" GraphId="d58d7" Type="Metabolite">
+    <Graphics CenterX="324.0" CenterY="250.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="InChI" ID="InChI=1S/C23H38N7O17P3S/c1-12(31)51-7-6-25-14(32)4-5-26-21(35)18(34)23(2,3)9-44-50(41,42)47-49(39,40)43-8-13-17(46-48(36,37)38)16(33)22(45-13)30-11-29-15-19(24)27-10-28-20(15)30/h10-11,13,16-18,22,33-34H,4-9H2,1-3H3,(H,25,32)(H,26,35)(H,39,40)(H,41,42)(H2,24,27,28)(H2,36,37,38)/t13-,16-,17-,18+,22-/m1/s1" />
+  </DataNode>
+  <DataNode TextLabel="Glucose" GraphId="bd0fe" Type="Metabolite">
+    <Graphics CenterX="550.0" CenterY="31.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="InChI" ID="InChI=1S/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1" />
+  </DataNode>
+  <DataNode TextLabel="Acetyl CoA" GraphId="e3721" Type="Metabolite">
+    <Graphics CenterX="707.0" CenterY="316.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="InChI" ID="InChI=1S/C23H38N7O17P3S/c1-12(31)51-7-6-25-14(32)4-5-26-21(35)18(34)23(2,3)9-44-50(41,42)47-49(39,40)43-8-13-17(46-48(36,37)38)16(33)22(45-13)30-11-29-15-19(24)27-10-28-20(15)30/h10-11,13,16-18,22,33-34H,4-9H2,1-3H3,(H,25,32)(H,26,35)(H,39,40)(H,41,42)(H2,24,27,28)(H2,36,37,38)/t13-,16-,17-,18+,22-/m1/s1" />
+  </DataNode>
+  <DataNode TextLabel="Lipid&#xA;biosynthesis" GraphId="d6834">
+    <Graphics CenterX="708.0" CenterY="167.5" Width="80.0" Height="33.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="AKT" GraphId="c395e" Type="Metabolite">
+    <Graphics CenterX="551.0" CenterY="119.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="ACL" GraphId="b336d" Type="Metabolite">
+    <Graphics CenterX="550.0" CenterY="251.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="TCA&#xA;cycle" GraphId="ac06e" Type="Pathway">
+    <Graphics CenterX="314.0" CenterY="299.0" Width="80.0" Height="34.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Acetylated Histone" GraphId="dae0d" Type="Complex">
+    <Graphics CenterX="705.5" CenterY="463.0" Width="111.0" Height="20.0" ZOrder="32768" FillColor="00cc33" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="HDACs" GraphId="c4bec">
+    <Graphics CenterX="515.0" CenterY="502.0" Width="54.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Beta oxidation" GraphId="c1a17">
+    <Graphics CenterX="251.0" CenterY="221.0" Width="86.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <Line GraphId="ida4a53531">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="323.0" Y="202.0" GraphRef="d424d" RelX="0.0" RelY="1.0" />
+      <Point X="324.0" Y="240.0" GraphRef="d58d7" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb33be4fb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="589.0" Y="316.0" GraphRef="da500" RelX="1.0" RelY="0.0" />
+      <Point X="667.0" Y="316.0" GraphRef="e3721" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id831c4ab3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="707.0" Y="306.0" GraphRef="e3721" RelX="0.0" RelY="-1.0" />
+      <Point X="708.0" Y="184.0" GraphRef="d6834" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idcd2be9d8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="324.0" Y="260.0" GraphRef="d58d7" RelX="0.0" RelY="1.0" />
+      <Point X="396.0" Y="306.0" GraphRef="fe8cf" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id2d0a4b1d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="707.0" Y="326.0" GraphRef="e3721" RelX="0.0" RelY="1.0" />
+      <Point X="705.5" Y="453.0" GraphRef="dae0d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id5457525d">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="283.0" Y="106.0" GraphRef="aeb78" RelX="-1.0" RelY="0.0" />
+      <Point X="157.0" Y="284.5" />
+      <Point X="650.0" Y="463.0" GraphRef="dae0d" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="322.0" Y="37.0" GraphRef="f3fcc" RelX="0.0" RelY="1.0" />
+      <Point X="323.0" Y="96.0" GraphRef="aeb78" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="323.0" Y="116.0" />
+      <Point X="323.0" Y="182.0" GraphRef="d424d" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="436.0" Y="316.0" GraphRef="fe8cf" RelX="1.0" RelY="0.0" ArrowHead="mim-conversion" />
+      <Point X="509.0" Y="316.0" GraphRef="da500" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="550.0" Y="41.0" GraphRef="bd0fe" RelX="0.0" RelY="1.0" />
+      <Point X="551.0" Y="109.0" GraphRef="c395e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="551.0" Y="129.0" GraphRef="c395e" RelX="0.0" RelY="1.0" />
+      <Point X="550.0" Y="241.0" GraphRef="b336d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="542.0" Y="502.0" GraphRef="c4bec" RelX="1.0" RelY="0.0" />
+      <Point X="588.0" Y="502.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="438.0" Y="502.0" />
+      <Point X="488.0" Y="502.0" GraphRef="c4bec" RelX="-1.0" RelY="0.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Shape GraphId="f3fff">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="489.25" CenterY="316.0" Width="707.5" Height="512.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a0647">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="707.5" CenterY="453.0" Width="197.0" Height="194.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a225d">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Mitochondria" />
+    <Graphics CenterX="329.25" CenterY="272.75" Width="317.5" Height="256.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Mitochondria" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e96">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">23063526</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Warburg Effect Dictates the Mechanism of Butyrate-Mediated Histone Acetylation and Cell Proliferation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2012</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Donohoe DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Collins LB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wali A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bigler R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bultman SJ</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

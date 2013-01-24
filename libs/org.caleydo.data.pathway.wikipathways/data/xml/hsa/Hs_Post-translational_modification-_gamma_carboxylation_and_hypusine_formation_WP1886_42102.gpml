@@ -1,0 +1,1702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Post-translational modification: gamma carboxylation and hypusine formation" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="D'Eustachio, P" Maintainer="D'Eustachio, P" Email="deustp01@nyumc.org">
+  <Comment Source="WikiPathways-description">After translation, many newly formed proteins undergo further covalent modifications that alter their functional properties and that are essentially irreversible under physiological conditions in the body. These modifications include the vitamin K-dependent attachment of carboxyl groups to glutamate residues and the conversion of lysine residues to hypusine.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n5_REACTOME_159765" TextLabel="pro-factor IX, &#10;uncarboxylated&#10;" Type="Protein">
+    <BiopaxRef>lit_140887</BiopaxRef>
+    <BiopaxRef>lit_140890</BiopaxRef>
+    <Graphics Color="000000" CenterX="252.5" CenterY="150.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00740"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_159853" TextLabel="vitamin K &#10;hydroquinone&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="420.5" CenterY="207.0" Width="95.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28433"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="345.5" CenterY="303.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_159835" TextLabel="vitamin K epoxide&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="697.0" CenterY="209.0" Width="120.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28371"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_159866" TextLabel="pro-factor IX&#10;" Type="Protein">
+    <BiopaxRef>lit_140887</BiopaxRef>
+    <BiopaxRef>lit_140890</BiopaxRef>
+    <Graphics Color="000000" CenterX="765.5" CenterY="149.0" Width="83.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00740"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_113519" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="695.0" CenterY="88.0" Width="42.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_159860" TextLabel="vitamin K-dependent &#10;gamma-carboxylase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="129.5" CenterY="415.0" Width="125.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P38435"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_159848" TextLabel="pro-factor VII, &#10;uncarboxylated&#10;" Type="Protein">
+    <BiopaxRef>lit_140716</BiopaxRef>
+    <BiopaxRef>lit_140725</BiopaxRef>
+    <Graphics Color="000000" CenterX="249.5" CenterY="278.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P08709"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_159722" TextLabel="pro-factor VII&#10;" Type="Protein">
+    <BiopaxRef>lit_140716</BiopaxRef>
+    <BiopaxRef>lit_140725</BiopaxRef>
+    <Graphics Color="000000" CenterX="761.0" CenterY="277.0" Width="86.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P08709"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_113519" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="750.0" CenterY="341.0" Width="42.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_159754" TextLabel="pro-factor X, &#10;uncarboxylated&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="263.5" CenterY="410.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4182"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_159734" TextLabel="pro-factor X&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="798.0" CenterY="405.0" Width="80.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5090"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_113534" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="318.5" CenterY="207.0" Width="59.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="325.5" CenterY="111.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="327.5" CenterY="367.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_159853" TextLabel="vitamin K &#10;hydroquinone&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="424.5" CenterY="484.0" Width="95.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28433"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_159835" TextLabel="vitamin K epoxide&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="719.0" CenterY="480.0" Width="120.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28371"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_159739" TextLabel="pro-prothrombin &#10;(factor II), &#10;uncarboxylated&#10;" Type="Protein">
+    <BiopaxRef>lit_140675</BiopaxRef>
+    <BiopaxRef>lit_140590</BiopaxRef>
+    <BiopaxRef>lit_140595</BiopaxRef>
+    <Graphics Color="000000" CenterX="277.5" CenterY="558.0" Width="111.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00734"/>
+  </DataNode>
+  <DataNode GraphId="n32_REACTOME_159800" TextLabel="pro-prothrombin &#10;(factor II)&#10;" Type="Protein">
+    <BiopaxRef>lit_140675</BiopaxRef>
+    <BiopaxRef>lit_140590</BiopaxRef>
+    <BiopaxRef>lit_140595</BiopaxRef>
+    <Graphics Color="000000" CenterX="768.5" CenterY="554.0" Width="111.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00734"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_113519" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="732.0" CenterY="633.0" Width="42.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="325.5" CenterY="610.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_113534" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="326.5" CenterY="475.0" Width="59.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_159852" TextLabel="pro-protein C, &#10;uncarboxylated&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="229.5" CenterY="706.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3534"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_159772" TextLabel="pro-protein C&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="765.0" CenterY="707.0" Width="88.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5288"/>
+  </DataNode>
+  <DataNode GraphId="n44_REACTOME_159835" TextLabel="vitamin K epoxide&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="721.0" CenterY="780.0" Width="120.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28371"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_159853" TextLabel="vitamin K &#10;hydroquinone&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="255.5" CenterY="771.0" Width="95.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28433"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="339.5" CenterY="669.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_113534" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="362.5" CenterY="766.0" Width="59.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_159758" TextLabel="pro-protein S, &#10;uncarboxylated&#10;" Type="Protein">
+    <BiopaxRef>lit_141005</BiopaxRef>
+    <Graphics Color="000000" CenterX="264.5" CenterY="824.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P07225"/>
+  </DataNode>
+  <DataNode GraphId="n53_REACTOME_159770" TextLabel="pro-protein S&#10;" Type="Protein">
+    <BiopaxRef>lit_141005</BiopaxRef>
+    <Graphics Color="000000" CenterX="752.0" CenterY="823.0" Width="86.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P07225"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_113519" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="711.0" CenterY="901.0" Width="42.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_163816" TextLabel="pro-protein Z, &#10;uncarboxylated&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="287.5" CenterY="983.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22891"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_163838" TextLabel="pro-protein Z&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="748.5" CenterY="992.0" Width="87.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22891"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_159835" TextLabel="vitamin K epoxide&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="713.0" CenterY="1050.0" Width="120.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28371"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_159853" TextLabel="vitamin K &#10;hydroquinone&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="270.5" CenterY="1048.0" Width="95.0" Height="44.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28433"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="334.5" CenterY="1144.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n69_REACTOME_113534" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="363.5" CenterY="1049.0" Width="59.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n71_REACTOME_163812" TextLabel="pro-GAS6, &#10;uncarboxylated&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="249.5" CenterY="1110.0" Width="97.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14393"/>
+  </DataNode>
+  <DataNode GraphId="n72_REACTOME_163795" TextLabel="pro-GAS6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="753.0" CenterY="1113.0" Width="66.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14393"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_113519" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="723.0" CenterY="1164.0" Width="42.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_159726" TextLabel="pro-factor IX&#10;" Type="Protein">
+    <BiopaxRef>lit_140887</BiopaxRef>
+    <BiopaxRef>lit_140890</BiopaxRef>
+    <Graphics Color="000000" CenterX="1015.5" CenterY="145.0" Width="91.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00740"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_159767" TextLabel="pro-factor VII&#10;" Type="Protein">
+    <BiopaxRef>lit_140716</BiopaxRef>
+    <BiopaxRef>lit_140725</BiopaxRef>
+    <Graphics Color="000000" CenterX="1017.5" CenterY="268.0" Width="91.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P08709"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_159744" TextLabel="pro-factor X&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1015.0" CenterY="404.0" Width="80.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5343"/>
+  </DataNode>
+  <DataNode GraphId="n84_REACTOME_159841" TextLabel="pro-prothrombin &#10;(factor II)&#10;" Type="Protein">
+    <BiopaxRef>lit_140675</BiopaxRef>
+    <BiopaxRef>lit_140590</BiopaxRef>
+    <BiopaxRef>lit_140595</BiopaxRef>
+    <Graphics Color="000000" CenterX="1002.5" CenterY="500.5" Width="111.0" Height="45.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00734"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_159731" TextLabel="pro-protein C&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1004.0" CenterY="734.0" Width="88.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5866"/>
+  </DataNode>
+  <DataNode GraphId="n88_REACTOME_159850" TextLabel="pro-protein S&#10;" Type="Protein">
+    <BiopaxRef>lit_141005</BiopaxRef>
+    <Graphics Color="000000" CenterX="1001.0" CenterY="829.5" Width="100.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P07225"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_163827" TextLabel="pro-protein Z&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1001.0" CenterY="998.0" Width="104.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22891"/>
+  </DataNode>
+  <DataNode GraphId="n92_REACTOME_163805" TextLabel="pro-GAS6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="995.0" CenterY="1115.0" Width="80.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14393"/>
+  </DataNode>
+  <DataNode GraphId="n95_REACTOME_159735" TextLabel="factor IX propeptide&#10;" Type="Protein">
+    <BiopaxRef>lit_140887</BiopaxRef>
+    <BiopaxRef>lit_140890</BiopaxRef>
+    <Graphics Color="000000" CenterX="1562.5" CenterY="302.0" Width="125.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00740"/>
+  </DataNode>
+  <DataNode GraphId="n96_REACTOME_159822" TextLabel="factor IX&#10;" Type="Protein">
+    <BiopaxRef>lit_140887</BiopaxRef>
+    <BiopaxRef>lit_140890</BiopaxRef>
+    <Graphics Color="000000" CenterX="1526.0" CenterY="354.5" Width="112.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00740"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_157049" TextLabel="furin&#10;" Type="Protein">
+    <BiopaxRef>lit_159838</BiopaxRef>
+    <Graphics Color="000000" CenterX="1341.0" CenterY="608.0" Width="34.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P09958"/>
+  </DataNode>
+  <DataNode GraphId="n99_REACTOME_159847" TextLabel="factor VII propeptide&#10;" Type="Protein">
+    <BiopaxRef>lit_140716</BiopaxRef>
+    <BiopaxRef>lit_140725</BiopaxRef>
+    <Graphics Color="000000" CenterX="1337.0" CenterY="317.0" Width="128.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P08709"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_159808" TextLabel="factor VII&#10;" Type="Protein">
+    <BiopaxRef>lit_140716</BiopaxRef>
+    <BiopaxRef>lit_140725</BiopaxRef>
+    <Graphics Color="000000" CenterX="1325.5" CenterY="431.5" Width="91.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P08709"/>
+  </DataNode>
+  <DataNode GraphId="n102_REACTOME_159824" TextLabel="factor X light chain &#10;propeptide&#10;" Type="Protein">
+    <BiopaxRef>lit_140632</BiopaxRef>
+    <BiopaxRef>lit_140636</BiopaxRef>
+    <Graphics Color="000000" CenterX="1198.5" CenterY="447.0" Width="119.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00742"/>
+  </DataNode>
+  <DataNode GraphId="n103_REACTOME_159785" TextLabel="factor X&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1098.5" CenterY="400.0" Width="53.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3453"/>
+  </DataNode>
+  <DataNode GraphId="n106_REACTOME_159759" TextLabel="prothrombin (factor &#10;II) propeptide&#10;" Type="Protein">
+    <BiopaxRef>lit_140675</BiopaxRef>
+    <BiopaxRef>lit_140590</BiopaxRef>
+    <BiopaxRef>lit_140595</BiopaxRef>
+    <Graphics Color="000000" CenterX="1019.5" CenterY="604.0" Width="125.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00734"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_159845" TextLabel="prothrombin (factor &#10;II)&#10;" Type="Protein">
+    <BiopaxRef>lit_140675</BiopaxRef>
+    <BiopaxRef>lit_140590</BiopaxRef>
+    <BiopaxRef>lit_140595</BiopaxRef>
+    <Graphics Color="000000" CenterX="1174.5" CenterY="625.0" Width="125.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00734"/>
+  </DataNode>
+  <DataNode GraphId="n109_REACTOME_159830" TextLabel="protein C&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1149.5" CenterY="676.0" Width="61.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5618"/>
+  </DataNode>
+  <DataNode GraphId="n110_REACTOME_159779" TextLabel="protein C light chain &#10;propeptide&#10;" Type="Protein">
+    <BiopaxRef>lit_141016</BiopaxRef>
+    <BiopaxRef>lit_141018</BiopaxRef>
+    <BiopaxRef>lit_140890</BiopaxRef>
+    <Graphics Color="000000" CenterX="1012.5" CenterY="676.0" Width="127.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P04070"/>
+  </DataNode>
+  <DataNode GraphId="n112_REACTOME_159792" TextLabel="protein S propeptide&#10;" Type="Protein">
+    <BiopaxRef>lit_141005</BiopaxRef>
+    <Graphics Color="000000" CenterX="1080.0" CenterY="909.0" Width="128.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P07225"/>
+  </DataNode>
+  <DataNode GraphId="n113_REACTOME_159865" TextLabel="protein S&#10;" Type="Protein">
+    <BiopaxRef>lit_141005</BiopaxRef>
+    <Graphics Color="000000" CenterX="1199.0" CenterY="880.5" Width="72.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P07225"/>
+  </DataNode>
+  <DataNode GraphId="n115_REACTOME_163834" TextLabel="protein Z propeptide&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1334.5" CenterY="893.0" Width="129.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22891"/>
+  </DataNode>
+  <DataNode GraphId="n116_REACTOME_163813" TextLabel="protein Z&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1344.5" CenterY="978.0" Width="75.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22891"/>
+  </DataNode>
+  <DataNode GraphId="n118_REACTOME_163840" TextLabel="GAS6 propeptide&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1506.0" CenterY="894.0" Width="108.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14393"/>
+  </DataNode>
+  <DataNode GraphId="n119_REACTOME_163844" TextLabel="GAS6&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1568.0" CenterY="1003.5" Width="62.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14393"/>
+  </DataNode>
+  <DataNode GraphId="n129_REACTOME_159746" TextLabel="VKORC1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="570.5" CenterY="1266.5" Width="57.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BQB6"/>
+  </DataNode>
+  <DataNode GraphId="n131_REACTOME_159853" TextLabel="vitamin K &#10;hydroquinone&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="471.0" CenterY="1219.0" Width="108.0" Height="40.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28433"/>
+  </DataNode>
+  <DataNode GraphId="n133_REACTOME_159835" TextLabel="vitamin K epoxide&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="688.0" CenterY="1219.0" Width="120.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28371"/>
+  </DataNode>
+  <DataNode GraphId="n137_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="332.5" CenterY="869.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n139_REACTOME_159751" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="341.5" CenterY="937.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n141_REACTOME_204635" TextLabel="Spermidine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1070.0" CenterY="1212.0" Width="84.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16610"/>
+  </DataNode>
+  <DataNode GraphId="n142_REACTOME_29360" TextLabel="NAD+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1059.5" CenterY="1308.5" Width="47.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15846"/>
+  </DataNode>
+  <DataNode GraphId="n143_REACTOME_204659" TextLabel="EIF5A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1036.0" CenterY="1262.0" Width="42.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_12783"/>
+  </DataNode>
+  <DataNode GraphId="n144_REACTOME_73473" TextLabel="NADH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1225.5" CenterY="1323.5" Width="43.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16908"/>
+  </DataNode>
+  <DataNode GraphId="n145_REACTOME_70106" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1272.0" CenterY="1299.0" Width="30.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n146_REACTOME_204628" TextLabel="1,3-&#10;diaminopropane&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1230.5" CenterY="1210.5" Width="115.0" Height="41.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15725"/>
+  </DataNode>
+  <DataNode GraphId="n147_REACTOME_204642" TextLabel="EIF5A(Dhp)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1282.5" CenterY="1262.5" Width="85.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_12917"/>
+  </DataNode>
+  <DataNode GraphId="n148_REACTOME_204644" TextLabel="deoxyhypusine &#10;synthase &#10;tetramer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1147.0" CenterY="1327.0" Width="90.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_13167"/>
+  </DataNode>
+  <DataNode GraphId="n150_REACTOME_29368" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1337.0" CenterY="1226.0" Width="50.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n151_REACTOME_204658" TextLabel="EIF5A(Hyp)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1474.0" CenterY="1262.5" Width="88.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_12952"/>
+  </DataNode>
+  <DataNode GraphId="n152_REACTOME_204627" TextLabel="DOHH:&#10;Fe++&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1386.0" CenterY="1313.0" Width="62.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_12867"/>
+  </DataNode>
+  <DataNode GraphId="n154_REACTOME_156540" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="628.5" CenterY="1177.5" Width="33.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <Line GraphId="e_4_REACTOME_159803">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 12 molecules of 'Oxygen', 12 molecules of 'vitamin K hydroquinone', 12 molecules of 'CO2', and 1 molecule of 'pro-factor IX, uncarboxylated' are present. At the end of this reaction, 12 molecules of 'H2O', 12 molecules of 'vitamin K epoxide', and 1 molecule of 'pro-factor IX' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'endoplasmic reticulum membrane' and  is mediated by the 'gamma-glutamyl carboxylase activity' of 'vitamin K-dependent gamma-carboxylase'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_159755</BiopaxRef>
+    <BiopaxRef>lit_159753</BiopaxRef>
+    <BiopaxRef>lit_159750</BiopaxRef>
+    <BiopaxRef>lit_159725</BiopaxRef>
+    <BiopaxRef>lit_163831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="443.0" Y="149.0" GraphId="e_4_0"/>
+      <Point X="565.0" Y="149.0" GraphId="e_4_1"/>
+      <Point X="636.0" Y="148.0" GraphId="e_4_2"/>
+      <Anchor Position="0.0" GraphId="e_4_a_i"/>
+      <Anchor Position="0.6321012891358011" GraphId="e_4_a_p"/>
+      <Anchor Position="1.0" GraphId="e_4_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="304.0" Y="149.0" GraphId="e_4_i0_0" GraphRef="n5_REACTOME_159765" RelX="1.0721649484536082" RelY="-0.05555555555555555"/>
+      <Point X="443.0" Y="149.0" GraphId="e_4_i0_1" GraphRef="e_4_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="428.0" Y="182.0" GraphId="e_4_i1_0" GraphRef="n7_REACTOME_159853" RelX="0.16842105263157894" RelY="-1.1363636363636365"/>
+      <Point X="443.0" Y="149.0" GraphId="e_4_i1_1" GraphRef="e_4_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="351.0" Y="193.0" GraphId="e_4_i2_0" GraphRef="n21_REACTOME_113534" RelX="1.11864406779661" RelY="-0.9333333333333333"/>
+      <Point X="443.0" Y="149.0" GraphId="e_4_i2_1" GraphRef="e_4_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="349.0" Y="117.0" GraphId="e_4_i3_0" GraphRef="n25_REACTOME_159751" RelX="1.170731707317073" RelY="0.4"/>
+      <Point X="443.0" Y="149.0" GraphId="e_4_i3_1" GraphRef="e_4_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="682.0" Y="191.0" GraphId="e_4_o0_0" ArrowHead="Arrow" GraphRef="n9_REACTOME_159835" RelX="-0.25" RelY="-1.2"/>
+      <Point X="636.0" Y="148.0" GraphId="e_4_o0_1" GraphRef="e_4_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="721.0" Y="148.0" GraphId="e_4_o1_0" ArrowHead="Arrow" GraphRef="n10_REACTOME_159866" RelX="-1.0602409638554218" RelY="-0.09090909090909091"/>
+      <Point X="636.0" Y="148.0" GraphId="e_4_o1_1" GraphRef="e_4_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="680.0" Y="106.0" GraphId="e_4_o2_0" ArrowHead="Arrow" GraphRef="n11_REACTOME_113519" RelX="-0.7142857142857143" RelY="1.2"/>
+      <Point X="636.0" Y="148.0" GraphId="e_4_o2_1" GraphRef="e_4_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="131.0" Y="387.0" GraphId="e_4_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.032" RelY="-1.12"/>
+      <Point X="164.0" Y="84.0" GraphId="e_4_c__0_1"/>
+      <Point X="563.0" Y="83.0" GraphId="e_4_c__0_2"/>
+      <Point X="565.0" Y="149.0" GraphId="e_4_c__0_3" GraphRef="e_4_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_159761">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 10 molecules of 'Oxygen', 10 molecules of 'vitamin K hydroquinone', 10 molecules of 'CO2', and 1 molecule of 'pro-factor VII, uncarboxylated' are present. At the end of this reaction, 1 molecule of 'pro-factor VII', 10 molecules of 'H2O', and 10 molecules of 'vitamin K epoxide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'endoplasmic reticulum membrane' and  is mediated by the 'gamma-glutamyl carboxylase activity' of 'vitamin K-dependent gamma-carboxylase'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_159755</BiopaxRef>
+    <BiopaxRef>lit_159753</BiopaxRef>
+    <BiopaxRef>lit_159750</BiopaxRef>
+    <BiopaxRef>lit_163831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="446.0" Y="274.0" GraphId="e_13_0"/>
+      <Point X="567.0" Y="274.0" GraphId="e_13_1"/>
+      <Point X="645.0" Y="274.0" GraphId="e_13_2"/>
+      <Anchor Position="0.0" GraphId="e_13_a_i"/>
+      <Anchor Position="0.6080402010050251" GraphId="e_13_a_p"/>
+      <Anchor Position="1.0" GraphId="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="301.0" Y="277.0" GraphId="e_13_i0_0" GraphRef="n14_REACTOME_159848" RelX="1.0721649484536082" RelY="-0.05555555555555555"/>
+      <Point X="446.0" Y="274.0" GraphId="e_13_i0_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="428.0" Y="232.0" GraphId="e_13_i1_0" GraphRef="n7_REACTOME_159853" RelX="0.16842105263157894" RelY="1.1363636363636365"/>
+      <Point X="446.0" Y="274.0" GraphId="e_13_i1_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="297.0" GraphId="e_13_i2_0" GraphRef="n8_REACTOME_159751" RelX="1.170731707317073" RelY="-0.4"/>
+      <Point X="446.0" Y="274.0" GraphId="e_13_i2_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="346.0" Y="225.0" GraphId="e_13_i3_0" GraphRef="n21_REACTOME_113534" RelX="0.9491525423728814" RelY="1.2"/>
+      <Point X="446.0" Y="274.0" GraphId="e_13_i3_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="715.0" Y="275.0" GraphId="e_13_o0_0" ArrowHead="Arrow" GraphRef="n15_REACTOME_159722" RelX="-1.069767441860465" RelY="-0.18181818181818182"/>
+      <Point X="645.0" Y="274.0" GraphId="e_13_o0_1" GraphRef="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="685.0" Y="227.0" GraphId="e_13_o1_0" ArrowHead="Arrow" GraphRef="n9_REACTOME_159835" RelX="-0.2" RelY="1.2"/>
+      <Point X="645.0" Y="274.0" GraphId="e_13_o1_1" GraphRef="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="726.0" Y="327.0" GraphId="e_13_o2_0" ArrowHead="Arrow" GraphRef="n16_REACTOME_113519" RelX="-1.1428571428571428" RelY="-0.9333333333333333"/>
+      <Point X="645.0" Y="274.0" GraphId="e_13_o2_1" GraphRef="e_13_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="158.0" Y="387.0" GraphId="e_13_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.464" RelY="-1.12"/>
+      <Point X="228.0" Y="330.0" GraphId="e_13_c__0_1"/>
+      <Point X="566.0" Y="331.0" GraphId="e_13_c__0_2"/>
+      <Point X="567.0" Y="274.0" GraphId="e_13_c__0_3" GraphRef="e_13_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_159819">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 11 molecules of 'Oxygen', 1 molecule of 'pro-factor X, uncarboxylated', 11 molecules of 'vitamin K hydroquinone', and 11 molecules of 'CO2' are present. At the end of this reaction, 1 molecule of 'pro-factor X', 11 molecules of 'H2O', and 11 molecules of 'vitamin K epoxide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'endoplasmic reticulum membrane' and  is mediated by the 'gamma-glutamyl carboxylase activity' of 'vitamin K-dependent gamma-carboxylase'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_159755</BiopaxRef>
+    <BiopaxRef>lit_159753</BiopaxRef>
+    <BiopaxRef>lit_159750</BiopaxRef>
+    <BiopaxRef>lit_163831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="395.0" Y="407.0" GraphId="e_17_0"/>
+      <Point X="570.0" Y="407.0" GraphId="e_17_1"/>
+      <Point X="674.0" Y="406.0" GraphId="e_17_2"/>
+      <Anchor Position="0.0" GraphId="e_17_a_i"/>
+      <Anchor Position="0.6272293352833224" GraphId="e_17_a_p"/>
+      <Anchor Position="1.0" GraphId="e_17_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="315.0" Y="408.0" GraphId="e_17_i0_0" GraphRef="n18_REACTOME_159754" RelX="1.0721649484536082" RelY="-0.1111111111111111"/>
+      <Point X="395.0" Y="407.0" GraphId="e_17_i0_1" GraphRef="e_17_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="351.0" Y="379.0" GraphId="e_17_i1_0" GraphRef="n27_REACTOME_159751" RelX="1.170731707317073" RelY="0.8"/>
+      <Point X="395.0" Y="407.0" GraphId="e_17_i1_1" GraphRef="e_17_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="415.0" Y="459.0" GraphId="e_17_i2_0" GraphRef="n28_REACTOME_159853" RelX="-0.18947368421052632" RelY="-1.1363636363636365"/>
+      <Point X="395.0" Y="407.0" GraphId="e_17_i2_1" GraphRef="e_17_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="341.0" Y="457.0" GraphId="e_17_i3_0" GraphRef="n35_REACTOME_113534" RelX="0.5084745762711864" RelY="-1.2"/>
+      <Point X="395.0" Y="407.0" GraphId="e_17_i3_1" GraphRef="e_17_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="755.0" Y="405.0" GraphId="e_17_o0_0" ArrowHead="Arrow" GraphRef="n19_REACTOME_159734" RelX="-1.075" RelY="0.0"/>
+      <Point X="674.0" Y="406.0" GraphId="e_17_o0_1" GraphRef="e_17_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="709.0" Y="462.0" GraphId="e_17_o1_0" ArrowHead="Arrow" GraphRef="n29_REACTOME_159835" RelX="-0.16666666666666666" RelY="-1.2"/>
+      <Point X="674.0" Y="406.0" GraphId="e_17_o1_1" GraphRef="e_17_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="732.0" Y="359.0" GraphId="e_17_o2_0" ArrowHead="Arrow" GraphRef="n16_REACTOME_113519" RelX="-0.8571428571428571" RelY="1.2"/>
+      <Point X="674.0" Y="406.0" GraphId="e_17_o2_1" GraphRef="e_17_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="163.0" Y="387.0" GraphId="e_17_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.544" RelY="-1.12"/>
+      <Point X="231.0" Y="342.0" GraphId="e_17_c__0_1"/>
+      <Point X="569.0" Y="342.0" GraphId="e_17_c__0_2"/>
+      <Point X="570.0" Y="407.0" GraphId="e_17_c__0_3" GraphRef="e_17_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_159826">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 10 molecules of 'Oxygen', 10 molecules of 'vitamin K hydroquinone', 10 molecules of 'CO2', and 1 molecule of 'pro-prothrombin (factor II), uncarboxylated' are present. At the end of this reaction, 1 molecule of 'pro-prothrombin (factor II)', 10 molecules of 'H2O', and 10 molecules of 'vitamin K epoxide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'endoplasmic reticulum membrane' and  is mediated by the 'gamma-glutamyl carboxylase activity' of 'vitamin K-dependent gamma-carboxylase'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_159755</BiopaxRef>
+    <BiopaxRef>lit_159753</BiopaxRef>
+    <BiopaxRef>lit_159750</BiopaxRef>
+    <BiopaxRef>lit_163831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="411.0" Y="556.0" GraphId="e_30_0"/>
+      <Point X="574.0" Y="557.0" GraphId="e_30_1"/>
+      <Point X="656.0" Y="556.0" GraphId="e_30_2"/>
+      <Anchor Position="0.0" GraphId="e_30_a_i"/>
+      <Anchor Position="0.6652937558293216" GraphId="e_30_a_p"/>
+      <Anchor Position="1.0" GraphId="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="336.0" Y="557.0" GraphId="e_30_i0_0" GraphRef="n31_REACTOME_159739" RelX="1.063063063063063" RelY="-0.04"/>
+      <Point X="411.0" Y="556.0" GraphId="e_30_i0_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="349.0" Y="597.0" GraphId="e_30_i1_0" GraphRef="n34_REACTOME_159751" RelX="1.170731707317073" RelY="-0.8666666666666667"/>
+      <Point X="411.0" Y="556.0" GraphId="e_30_i1_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="341.0" Y="493.0" GraphId="e_30_i2_0" GraphRef="n35_REACTOME_113534" RelX="0.5084745762711864" RelY="1.2"/>
+      <Point X="411.0" Y="556.0" GraphId="e_30_i2_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="420.0" Y="509.0" GraphId="e_30_i3_0" GraphRef="n28_REACTOME_159853" RelX="-0.08421052631578947" RelY="1.1363636363636365"/>
+      <Point X="411.0" Y="556.0" GraphId="e_30_i3_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="710.0" Y="554.0" GraphId="e_30_o0_0" ArrowHead="Arrow" GraphRef="n32_REACTOME_159800" RelX="-1.045045045045045" RelY="0.0"/>
+      <Point X="656.0" Y="556.0" GraphId="e_30_o0_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="717.0" Y="615.0" GraphId="e_30_o1_0" ArrowHead="Arrow" GraphRef="n33_REACTOME_113519" RelX="-0.7142857142857143" RelY="-1.2"/>
+      <Point X="656.0" Y="556.0" GraphId="e_30_o1_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="706.0" Y="498.0" GraphId="e_30_o2_0" ArrowHead="Arrow" GraphRef="n29_REACTOME_159835" RelX="-0.21666666666666667" RelY="1.2"/>
+      <Point X="656.0" Y="556.0" GraphId="e_30_o2_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="135.0" Y="443.0" GraphId="e_30_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.096" RelY="1.12"/>
+      <Point X="188.0" Y="634.0" GraphId="e_30_c__0_1"/>
+      <Point X="575.0" Y="634.0" GraphId="e_30_c__0_2"/>
+      <Point X="574.0" Y="557.0" GraphId="e_30_c__0_3" GraphRef="e_30_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_159795">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 8 molecules of 'Oxygen', 8 molecules of 'vitamin K hydroquinone', 8 molecules of 'CO2', and 1 molecule of 'pro-protein C, uncarboxylated' are present. At the end of this reaction, 8 molecules of 'H2O', 8 molecules of 'vitamin K epoxide', and 1 molecule of 'pro-protein C' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'endoplasmic reticulum membrane' and  is mediated by the 'gamma-glutamyl carboxylase activity' of 'vitamin K-dependent gamma-carboxylase'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_159755</BiopaxRef>
+    <BiopaxRef>lit_159753</BiopaxRef>
+    <BiopaxRef>lit_159750</BiopaxRef>
+    <BiopaxRef>lit_163831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="427.0" Y="705.0" GraphId="e_37_0"/>
+      <Point X="576.0" Y="706.0" GraphId="e_37_1"/>
+      <Point X="649.0" Y="707.0" GraphId="e_37_2"/>
+      <Anchor Position="0.0" GraphId="e_37_a_i"/>
+      <Anchor Position="0.6711554358262173" GraphId="e_37_a_p"/>
+      <Anchor Position="1.0" GraphId="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="281.0" Y="705.0" GraphId="e_37_i0_0" GraphRef="n38_REACTOME_159852" RelX="1.0721649484536082" RelY="-0.05555555555555555"/>
+      <Point X="427.0" Y="705.0" GraphId="e_37_i0_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="306.0" Y="752.0" GraphId="e_37_i1_0" GraphRef="n45_REACTOME_159853" RelX="1.0736842105263158" RelY="-0.8636363636363636"/>
+      <Point X="427.0" Y="705.0" GraphId="e_37_i1_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="377.0" Y="748.0" GraphId="e_37_i2_0" GraphRef="n49_REACTOME_113534" RelX="0.5084745762711864" RelY="-1.2"/>
+      <Point X="427.0" Y="705.0" GraphId="e_37_i2_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="363.0" Y="677.0" GraphId="e_37_i3_0" GraphRef="n48_REACTOME_159751" RelX="1.170731707317073" RelY="0.5333333333333333"/>
+      <Point X="427.0" Y="705.0" GraphId="e_37_i3_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="718.0" Y="707.0" GraphId="e_37_o0_0" ArrowHead="Arrow" GraphRef="n39_REACTOME_159772" RelX="-1.0681818181818181" RelY="0.0"/>
+      <Point X="649.0" Y="707.0" GraphId="e_37_o0_1" GraphRef="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="706.0" Y="762.0" GraphId="e_37_o1_0" ArrowHead="Arrow" GraphRef="n44_REACTOME_159835" RelX="-0.25" RelY="-1.2"/>
+      <Point X="649.0" Y="707.0" GraphId="e_37_o1_1" GraphRef="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="715.0" Y="651.0" GraphId="e_37_o2_0" ArrowHead="Arrow" GraphRef="n33_REACTOME_113519" RelX="-0.8095238095238095" RelY="1.2"/>
+      <Point X="649.0" Y="707.0" GraphId="e_37_o2_1" GraphRef="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="134.0" Y="443.0" GraphId="e_37_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.08" RelY="1.12"/>
+      <Point X="180.0" Y="642.0" GraphId="e_37_c__0_1"/>
+      <Point X="575.0" Y="642.0" GraphId="e_37_c__0_2"/>
+      <Point X="576.0" Y="706.0" GraphId="e_37_c__0_3" GraphRef="e_37_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_REACTOME_159752">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 11 molecules of 'Oxygen', 11 molecules of 'vitamin K hydroquinone', 11 molecules of 'CO2', and 1 molecule of 'pro-protein S, uncarboxylated' are present. At the end of this reaction, 1 molecule of 'pro-protein S', 11 molecules of 'H2O', and 11 molecules of 'vitamin K epoxide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'endoplasmic reticulum membrane' and  is mediated by the 'gamma-glutamyl carboxylase activity' of 'vitamin K-dependent gamma-carboxylase'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_159755</BiopaxRef>
+    <BiopaxRef>lit_159753</BiopaxRef>
+    <BiopaxRef>lit_159750</BiopaxRef>
+    <BiopaxRef>lit_163831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="488.0" Y="822.0" GraphId="e_51_0"/>
+      <Point X="576.0" Y="821.0" GraphId="e_51_1"/>
+      <Point X="619.0" Y="822.0" GraphId="e_51_2"/>
+      <Anchor Position="0.0" GraphId="e_51_a_i"/>
+      <Anchor Position="0.6717103487955326" GraphId="e_51_a_p"/>
+      <Anchor Position="1.0" GraphId="e_51_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="316.0" Y="823.0" GraphId="e_51_i0_0" GraphRef="n52_REACTOME_159758" RelX="1.0721649484536082" RelY="-0.05555555555555555"/>
+      <Point X="488.0" Y="822.0" GraphId="e_51_i0_1" GraphRef="e_51_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="306.0" Y="781.0" GraphId="e_51_i1_0" GraphRef="n45_REACTOME_159853" RelX="1.0736842105263158" RelY="0.45454545454545453"/>
+      <Point X="488.0" Y="822.0" GraphId="e_51_i1_1" GraphRef="e_51_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="395.0" Y="779.0" GraphId="e_51_i2_0" GraphRef="n49_REACTOME_113534" RelX="1.11864406779661" RelY="0.8666666666666667"/>
+      <Point X="488.0" Y="822.0" GraphId="e_51_i2_1" GraphRef="e_51_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="356.0" Y="862.0" GraphId="e_51_i3_0" GraphRef="n137_REACTOME_159751" RelX="1.170731707317073" RelY="-0.4666666666666667"/>
+      <Point X="488.0" Y="822.0" GraphId="e_51_i3_1" GraphRef="e_51_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="706.0" Y="822.0" GraphId="e_51_o0_0" ArrowHead="Arrow" GraphRef="n53_REACTOME_159770" RelX="-1.069767441860465" RelY="-0.09090909090909091"/>
+      <Point X="619.0" Y="822.0" GraphId="e_51_o0_1" GraphRef="e_51_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="693.0" Y="883.0" GraphId="e_51_o1_0" ArrowHead="Arrow" GraphRef="n54_REACTOME_113519" RelX="-0.8571428571428571" RelY="-1.2"/>
+      <Point X="619.0" Y="822.0" GraphId="e_51_o1_1" GraphRef="e_51_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="684.0" Y="798.0" GraphId="e_51_o2_0" ArrowHead="Arrow" GraphRef="n44_REACTOME_159835" RelX="-0.6166666666666667" RelY="1.2"/>
+      <Point X="619.0" Y="822.0" GraphId="e_51_o2_1" GraphRef="e_51_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_51_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="132.0" Y="443.0" GraphId="e_51_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.048" RelY="1.12"/>
+      <Point X="205.0" Y="907.0" GraphId="e_51_c__0_1"/>
+      <Point X="576.0" Y="904.0" GraphId="e_51_c__0_2"/>
+      <Point X="576.0" Y="821.0" GraphId="e_51_c__0_3" GraphRef="e_51_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_REACTOME_163820">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-protein Z, uncarboxylated', 13 molecules of 'Oxygen', 13 molecules of 'vitamin K hydroquinone', and 13 molecules of 'CO2' are present. At the end of this reaction, 1 molecule of 'pro-protein Z', 13 molecules of 'H2O', and 13 molecules of 'vitamin K epoxide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'endoplasmic reticulum membrane' and  is mediated by the 'gamma-glutamyl carboxylase activity' of 'vitamin K-dependent gamma-carboxylase'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_159750</BiopaxRef>
+    <BiopaxRef>lit_159755</BiopaxRef>
+    <BiopaxRef>lit_159753</BiopaxRef>
+    <BiopaxRef>lit_163831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="388.0" Y="986.0" GraphId="e_57_0"/>
+      <Point X="575.0" Y="985.0" GraphId="e_57_1"/>
+      <Point X="641.0" Y="983.0" GraphId="e_57_2"/>
+      <Anchor Position="0.0" GraphId="e_57_a_i"/>
+      <Anchor Position="0.7390446939984466" GraphId="e_57_a_p"/>
+      <Anchor Position="1.0" GraphId="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="339.0" Y="984.0" GraphId="e_57_i0_0" GraphRef="n58_REACTOME_163816" RelX="1.0721649484536082" RelY="0.05555555555555555"/>
+      <Point X="388.0" Y="986.0" GraphId="e_57_i0_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="311.0" Y="1023.0" GraphId="e_57_i1_0" GraphRef="n65_REACTOME_159853" RelX="0.8631578947368421" RelY="-1.1363636363636365"/>
+      <Point X="388.0" Y="986.0" GraphId="e_57_i1_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="368.0" Y="1031.0" GraphId="e_57_i2_0" GraphRef="n69_REACTOME_113534" RelX="0.1694915254237288" RelY="-1.2"/>
+      <Point X="388.0" Y="986.0" GraphId="e_57_i2_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="355.0" Y="955.0" GraphId="e_57_i3_0" GraphRef="n139_REACTOME_159751" RelX="0.6829268292682927" RelY="1.2"/>
+      <Point X="388.0" Y="986.0" GraphId="e_57_i3_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="702.0" Y="988.0" GraphId="e_57_o0_0" ArrowHead="Arrow" GraphRef="n60_REACTOME_163838" RelX="-1.0574712643678161" RelY="-0.36363636363636365"/>
+      <Point X="641.0" Y="983.0" GraphId="e_57_o0_1" GraphRef="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="698.0" Y="919.0" GraphId="e_57_o1_0" ArrowHead="Arrow" GraphRef="n54_REACTOME_113519" RelX="-0.6190476190476191" RelY="1.2"/>
+      <Point X="641.0" Y="983.0" GraphId="e_57_o1_1" GraphRef="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="696.0" Y="1032.0" GraphId="e_57_o2_0" ArrowHead="Arrow" GraphRef="n63_REACTOME_159835" RelX="-0.2833333333333333" RelY="-1.2"/>
+      <Point X="641.0" Y="983.0" GraphId="e_57_o2_1" GraphRef="e_57_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="132.0" Y="443.0" GraphId="e_57_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.048" RelY="1.12"/>
+      <Point X="195.0" Y="913.0" GraphId="e_57_c__0_1"/>
+      <Point X="573.0" Y="912.0" GraphId="e_57_c__0_2"/>
+      <Point X="575.0" Y="985.0" GraphId="e_57_c__0_3" GraphRef="e_57_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_REACTOME_163810">
+    <Comment Source="WikiPathways-description">The details of the gamma-carboxylation of GAS6 have not been determined directly, but are inferred from those worked out for protein S (Manfioletti et al. 1993).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="391.0" Y="1112.0" GraphId="e_70_0"/>
+      <Point X="575.0" Y="1112.0" GraphId="e_70_1"/>
+      <Point X="656.0" Y="1113.0" GraphId="e_70_2"/>
+      <Anchor Position="0.0" GraphId="e_70_a_i"/>
+      <Anchor Position="0.694323449871991" GraphId="e_70_a_p"/>
+      <Anchor Position="1.0" GraphId="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="311.0" Y="1073.0" GraphId="e_70_i0_0" GraphRef="n65_REACTOME_159853" RelX="0.8631578947368421" RelY="1.1363636363636365"/>
+      <Point X="391.0" Y="1112.0" GraphId="e_70_i0_1" GraphRef="e_70_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="358.0" Y="1132.0" GraphId="e_70_i1_0" GraphRef="n67_REACTOME_159751" RelX="1.170731707317073" RelY="-0.8"/>
+      <Point X="391.0" Y="1112.0" GraphId="e_70_i1_1" GraphRef="e_70_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="301.0" Y="1110.0" GraphId="e_70_i2_0" GraphRef="n71_REACTOME_163812" RelX="1.0721649484536082" RelY="0.0"/>
+      <Point X="391.0" Y="1112.0" GraphId="e_70_i2_1" GraphRef="e_70_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="1067.0" GraphId="e_70_i3_0" GraphRef="n69_REACTOME_113534" RelX="0.2033898305084746" RelY="1.2"/>
+      <Point X="391.0" Y="1112.0" GraphId="e_70_i3_1" GraphRef="e_70_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="717.0" Y="1113.0" GraphId="e_70_o0_0" ArrowHead="Arrow" GraphRef="n72_REACTOME_163795" RelX="-1.0909090909090908" RelY="0.0"/>
+      <Point X="656.0" Y="1113.0" GraphId="e_70_o0_1" GraphRef="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="703.0" Y="1146.0" GraphId="e_70_o1_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_113519" RelX="-0.9523809523809523" RelY="-1.2"/>
+      <Point X="656.0" Y="1113.0" GraphId="e_70_o1_1" GraphRef="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="699.0" Y="1068.0" GraphId="e_70_o2_0" ArrowHead="Arrow" GraphRef="n63_REACTOME_159835" RelX="-0.23333333333333334" RelY="1.2"/>
+      <Point X="656.0" Y="1113.0" GraphId="e_70_o2_1" GraphRef="e_70_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_70_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="130.0" Y="443.0" GraphId="e_70_c__0_0" GraphRef="n12_REACTOME_159860" RelX="0.016" RelY="1.12"/>
+      <Point X="179.0" Y="1176.0" GraphId="e_70_c__0_1"/>
+      <Point X="574.0" Y="1175.0" GraphId="e_70_c__0_2"/>
+      <Point X="575.0" Y="1112.0" GraphId="e_70_c__0_3" GraphRef="e_70_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_77_REACTOME_159836">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-factor IX' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="810.0" Y="148.0" GraphId="e_77_0" GraphRef="n10_REACTOME_159866" RelX="1.0843373493975903" RelY="-0.09090909090909091"/>
+      <Point X="889.0" Y="148.0" GraphId="e_77_1"/>
+      <Point X="967.0" Y="146.0" GraphId="e_77_2" GraphRef="n78_REACTOME_159726" RelX="-1.054945054945055" RelY="0.06666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.5031025608532914" GraphId="e_77_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_REACTOME_159783">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-factor VII' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="807.0" Y="276.0" GraphId="e_79_0" GraphRef="n15_REACTOME_159722" RelX="1.069767441860465" RelY="-0.09090909090909091"/>
+      <Point X="891.0" Y="275.0" GraphId="e_79_1"/>
+      <Point X="969.0" Y="270.0" GraphId="e_79_2" GraphRef="n80_REACTOME_159767" RelX="-1.054945054945055" RelY="0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.5180243036605865" GraphId="e_79_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_81_REACTOME_159757">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-factor X' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="841.0" Y="404.0" GraphId="e_81_0" GraphRef="n19_REACTOME_159734" RelX="1.075" RelY="-0.09090909090909091"/>
+      <Point X="890.0" Y="404.0" GraphId="e_81_1"/>
+      <Point X="972.0" Y="404.0" GraphId="e_81_2" GraphRef="n82_REACTOME_159744" RelX="-1.075" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.37404580152671757" GraphId="e_81_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_REACTOME_159843">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-prothrombin (factor II)' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="811.0" Y="533.0" GraphId="e_83_0" GraphRef="n32_REACTOME_159800" RelX="0.7747747747747747" RelY="-1.1666666666666667"/>
+      <Point X="895.0" Y="501.0" GraphId="e_83_1"/>
+      <Point X="944.0" Y="500.0" GraphId="e_83_2" GraphRef="n84_REACTOME_159841" RelX="-1.045045045045045" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6471522846062321" GraphId="e_83_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_REACTOME_159762">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-protein C' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="812.0" Y="715.0" GraphId="e_85_0" GraphRef="n39_REACTOME_159772" RelX="1.0681818181818181" RelY="0.7272727272727273"/>
+      <Point X="888.0" Y="730.0" GraphId="e_85_1"/>
+      <Point X="957.0" Y="732.0" GraphId="e_85_2" GraphRef="n86_REACTOME_159731" RelX="-1.0681818181818181" RelY="-0.18181818181818182" ArrowHead="Arrow"/>
+      <Anchor Position="0.5287966701457733" GraphId="e_85_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_REACTOME_159729">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-protein S' is translocated from endoplasmic reticulum membrane to Golgi membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="798.0" Y="824.0" GraphId="e_87_0" GraphRef="n53_REACTOME_159770" RelX="1.069767441860465" RelY="0.09090909090909091"/>
+      <Point X="885.0" Y="829.0" GraphId="e_87_1"/>
+      <Point X="948.0" Y="829.0" GraphId="e_87_2" GraphRef="n88_REACTOME_159850" RelX="-1.06" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5804015828643713" GraphId="e_87_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_89_REACTOME_163825">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-protein Z' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="795.0" Y="992.0" GraphId="e_89_0" GraphRef="n60_REACTOME_163838" RelX="1.0804597701149425" RelY="0.0"/>
+      <Point X="894.0" Y="994.0" GraphId="e_89_1"/>
+      <Point X="946.0" Y="996.0" GraphId="e_89_2" GraphRef="n90_REACTOME_163827" RelX="-1.0576923076923077" RelY="-0.15384615384615385" ArrowHead="Arrow"/>
+      <Anchor Position="0.6555083190501106" GraphId="e_89_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_REACTOME_163809">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'pro-GAS6' is translocated from endoplasmic reticulum lumen to Golgi lumen.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'ER to Golgi transport vesicle'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="789.0" Y="1113.0" GraphId="e_91_0" GraphRef="n72_REACTOME_163795" RelX="1.0909090909090908" RelY="0.0"/>
+      <Point X="895.0" Y="1114.0" GraphId="e_91_1"/>
+      <Point X="952.0" Y="1114.0" GraphId="e_91_2" GraphRef="n92_REACTOME_163805" RelX="-1.075" RelY="-0.0625" ArrowHead="Arrow"/>
+      <Anchor Position="0.6503168675585245" GraphId="e_91_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_REACTOME_159796">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-factor IX' is present. At the end of this reaction, 1 molecule of 'factor IX', and 1 molecule of 'factor IX propeptide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi membrane' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1058.0" Y="163.0" GraphId="e_94_0" GraphRef="n78_REACTOME_159726" RelX="0.945054945054945" RelY="1.2"/>
+      <Point X="1455.0" Y="296.0" GraphId="e_94_1"/>
+      <Point X="1476.0" Y="304.0" GraphId="e_94_2"/>
+      <Anchor Position="0.9490608975085355" GraphId="e_94_a_p"/>
+      <Anchor Position="1.0" GraphId="e_94_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1497.0" Y="303.0" GraphId="e_94_o0_0" ArrowHead="Arrow" GraphRef="n95_REACTOME_159735" RelX="-1.04" RelY="0.09090909090909091"/>
+      <Point X="1476.0" Y="304.0" GraphId="e_94_o0_1" GraphRef="e_94_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1510.0" Y="336.0" GraphId="e_94_o1_0" ArrowHead="Arrow" GraphRef="n96_REACTOME_159822" RelX="-0.2857142857142857" RelY="-1.1612903225806452"/>
+      <Point X="1476.0" Y="304.0" GraphId="e_94_o1_1" GraphRef="e_94_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1345.0" Y="594.0" GraphId="e_94_c__0_0" GraphRef="n97_REACTOME_157049" RelX="0.23529411764705882" RelY="-1.2727272727272727"/>
+      <Point X="1455.0" Y="296.0" GraphId="e_94_c__0_1" GraphRef="e_94_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_REACTOME_159868">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-factor VII' is present. At the end of this reaction, 1 molecule of 'factor VII', and 1 molecule of 'factor VII propeptide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi membrane' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1066.0" Y="283.0" GraphId="e_98_0" GraphRef="n80_REACTOME_159767" RelX="1.0769230769230769" RelY="0.8333333333333334"/>
+      <Point X="1233.0" Y="340.0" GraphId="e_98_1"/>
+      <Point X="1283.0" Y="356.0" GraphId="e_98_2"/>
+      <Anchor Position="0.7707099474382375" GraphId="e_98_a_p"/>
+      <Anchor Position="1.0" GraphId="e_98_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1321.0" Y="331.0" GraphId="e_98_o0_0" ArrowHead="Arrow" GraphRef="n99_REACTOME_159847" RelX="-0.25" RelY="1.2727272727272727"/>
+      <Point X="1283.0" Y="356.0" GraphId="e_98_o0_1" GraphRef="e_98_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1316.0" Y="413.0" GraphId="e_98_o1_0" ArrowHead="Arrow" GraphRef="n100_REACTOME_159808" RelX="-0.1978021978021978" RelY="-1.1612903225806452"/>
+      <Point X="1283.0" Y="356.0" GraphId="e_98_o1_1" GraphRef="e_98_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1336.0" Y="594.0" GraphId="e_98_c__0_0" GraphRef="n97_REACTOME_157049" RelX="-0.29411764705882354" RelY="-1.2727272727272727"/>
+      <Point X="1233.0" Y="340.0" GraphId="e_98_c__0_1" GraphRef="e_98_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_REACTOME_159733">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-factor X' is present. At the end of this reaction, 1 molecule of 'factor X light chain propeptide', and 1 molecule of 'factor X' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi membrane' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1027.0" Y="418.0" GraphId="e_101_0" GraphRef="n82_REACTOME_159744" RelX="0.3" RelY="1.2727272727272727"/>
+      <Point X="1098.0" Y="475.0" GraphId="e_101_1"/>
+      <Point X="1133.0" Y="472.0" GraphId="e_101_2"/>
+      <Anchor Position="0.7215964806434191" GraphId="e_101_a_p"/>
+      <Anchor Position="1.0" GraphId="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1151.0" Y="468.0" GraphId="e_101_o0_0" ArrowHead="Arrow" GraphRef="n102_REACTOME_159824" RelX="-0.7899159663865546" RelY="1.1666666666666667"/>
+      <Point X="1133.0" Y="472.0" GraphId="e_101_o0_1" GraphRef="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1103.0" Y="414.0" GraphId="e_101_o1_0" ArrowHead="Arrow" GraphRef="n103_REACTOME_159785" RelX="0.18867924528301888" RelY="1.2727272727272727"/>
+      <Point X="1133.0" Y="472.0" GraphId="e_101_o1_1" GraphRef="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1321.0" Y="598.0" GraphId="e_101_c__0_0" GraphRef="n97_REACTOME_157049" RelX="-1.1764705882352942" RelY="-0.9090909090909091"/>
+      <Point X="1098.0" Y="475.0" GraphId="e_101_c__0_1" GraphRef="e_101_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_REACTOME_159728">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-prothrombin (factor II)' is present. At the end of this reaction, 1 molecule of 'prothrombin (factor II) propeptide', and 1 molecule of 'prothrombin (factor II)' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi membrane' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1061.0" Y="513.0" GraphId="e_105_0" GraphRef="n84_REACTOME_159841" RelX="1.063063063063063" RelY="0.5777777777777777"/>
+      <Point X="1120.0" Y="529.0" GraphId="e_105_1"/>
+      <Point X="1120.0" Y="573.0" GraphId="e_105_2"/>
+      <Anchor Position="0.5814745686053777" GraphId="e_105_a_p"/>
+      <Anchor Position="1.0" GraphId="e_105_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1077.0" Y="583.0" GraphId="e_105_o0_0" ArrowHead="Arrow" GraphRef="n106_REACTOME_159759" RelX="0.928" RelY="-1.1666666666666667"/>
+      <Point X="1120.0" Y="573.0" GraphId="e_105_o0_1" GraphRef="e_105_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1155.0" Y="604.0" GraphId="e_105_o1_0" ArrowHead="Arrow" GraphRef="n107_REACTOME_159845" RelX="-0.304" RelY="-1.1666666666666667"/>
+      <Point X="1120.0" Y="573.0" GraphId="e_105_o1_1" GraphRef="e_105_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1321.0" Y="601.0" GraphId="e_105_c__0_0" GraphRef="n97_REACTOME_157049" RelX="-1.1764705882352942" RelY="-0.6363636363636364"/>
+      <Point X="1120.0" Y="529.0" GraphId="e_105_c__0_1" GraphRef="e_105_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_REACTOME_159771">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-protein C' is present. At the end of this reaction, 1 molecule of 'protein C', and 1 molecule of 'protein C light chain propeptide' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi lumen' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1051.0" Y="735.0" GraphId="e_108_0" GraphRef="n86_REACTOME_159731" RelX="1.0681818181818181" RelY="0.09090909090909091"/>
+      <Point X="1126.0" Y="737.0" GraphId="e_108_1"/>
+      <Point X="1127.0" Y="701.0" GraphId="e_108_2"/>
+      <Anchor Position="0.6756690523009005" GraphId="e_108_a_p"/>
+      <Anchor Position="1.0" GraphId="e_108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1139.0" Y="690.0" GraphId="e_108_o0_0" ArrowHead="Arrow" GraphRef="n109_REACTOME_159830" RelX="-0.32786885245901637" RelY="1.2727272727272727"/>
+      <Point X="1127.0" Y="701.0" GraphId="e_108_o0_1" GraphRef="e_108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1079.0" Y="689.0" GraphId="e_108_o1_0" ArrowHead="Arrow" GraphRef="n110_REACTOME_159779" RelX="1.0551181102362204" RelY="0.7222222222222222"/>
+      <Point X="1127.0" Y="701.0" GraphId="e_108_o1_1" GraphRef="e_108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_108_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1321.0" Y="618.0" GraphId="e_108_c__0_0" GraphRef="n97_REACTOME_157049" RelX="-1.1764705882352942" RelY="0.9090909090909091"/>
+      <Point X="1126.0" Y="737.0" GraphId="e_108_c__0_1" GraphRef="e_108_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_111_REACTOME_159773">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-protein S' is present. At the end of this reaction, 1 molecule of 'protein S propeptide', and 1 molecule of 'protein S' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi lumen' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1054.0" Y="829.0" GraphId="e_111_0" GraphRef="n88_REACTOME_159850" RelX="1.06" RelY="0.0"/>
+      <Point X="1138.0" Y="829.0" GraphId="e_111_1"/>
+      <Point X="1138.0" Y="861.0" GraphId="e_111_2"/>
+      <Anchor Position="0.7241379310344828" GraphId="e_111_a_p"/>
+      <Anchor Position="1.0" GraphId="e_111_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_111_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1093.0" Y="895.0" GraphId="e_111_o0_0" ArrowHead="Arrow" GraphRef="n112_REACTOME_159792" RelX="0.203125" RelY="-1.2727272727272727"/>
+      <Point X="1138.0" Y="861.0" GraphId="e_111_o0_1" GraphRef="e_111_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_111_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1160.0" Y="868.0" GraphId="e_111_o1_0" ArrowHead="Arrow" GraphRef="n113_REACTOME_159865" RelX="-1.0833333333333333" RelY="-0.7741935483870968"/>
+      <Point X="1138.0" Y="861.0" GraphId="e_111_o1_1" GraphRef="e_111_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_111_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1330.0" Y="622.0" GraphId="e_111_c__0_0" GraphRef="n97_REACTOME_157049" RelX="-0.6470588235294118" RelY="1.2727272727272727"/>
+      <Point X="1138.0" Y="829.0" GraphId="e_111_c__0_1" GraphRef="e_111_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_114_REACTOME_163798">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'pro-protein Z' is present. At the end of this reaction, 1 molecule of 'protein Z propeptide', and 1 molecule of 'protein Z' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'Golgi lumen' and  is mediated by the 'furin activity' of 'furin'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1056.0" Y="990.0" GraphId="e_114_0" GraphRef="n90_REACTOME_163827" RelX="1.0576923076923077" RelY="-0.6153846153846154"/>
+      <Point X="1231.0" Y="967.0" GraphId="e_114_1"/>
+      <Point X="1272.0" Y="957.0" GraphId="e_114_2"/>
+      <Anchor Position="0.8070389880877036" GraphId="e_114_a_p"/>
+      <Anchor Position="1.0" GraphId="e_114_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_114_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1323.0" Y="907.0" GraphId="e_114_o0_0" ArrowHead="Arrow" GraphRef="n115_REACTOME_163834" RelX="-0.17054263565891473" RelY="1.2727272727272727"/>
+      <Point X="1272.0" Y="957.0" GraphId="e_114_o0_1" GraphRef="e_114_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_114_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1304.0" Y="967.0" GraphId="e_114_o1_0" ArrowHead="Arrow" GraphRef="n116_REACTOME_163813" RelX="-1.0666666666666667" RelY="-0.6111111111111112"/>
+      <Point X="1272.0" Y="957.0" GraphId="e_114_o1_1" GraphRef="e_114_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_114_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1337.0" Y="622.0" GraphId="e_114_c__0_0" GraphRef="n97_REACTOME_157049" RelX="-0.23529411764705882" RelY="1.2727272727272727"/>
+      <Point X="1231.0" Y="967.0" GraphId="e_114_c__0_1" GraphRef="e_114_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_REACTOME_163843">
+    <Comment Source="WikiPathways-description">The details of the gamma-carboxylation of GAS6 have not been determined directly, but are inferred from those worked out for protein S (Manfioletti et al. 1993).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1038.0" Y="1104.0" GraphId="e_117_0" GraphRef="n92_REACTOME_163805" RelX="1.075" RelY="-0.6875"/>
+      <Point X="1458.0" Y="992.0" GraphId="e_117_1"/>
+      <Point X="1485.0" Y="982.0" GraphId="e_117_2"/>
+      <Anchor Position="0.9378764394858783" GraphId="e_117_a_p"/>
+      <Anchor Position="1.0" GraphId="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1503.0" Y="908.0" GraphId="e_117_o0_0" ArrowHead="Arrow" GraphRef="n118_REACTOME_163840" RelX="-0.05555555555555555" RelY="1.2727272727272727"/>
+      <Point X="1485.0" Y="982.0" GraphId="e_117_o0_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1534.0" Y="995.0" GraphId="e_117_o1_0" ArrowHead="Arrow" GraphRef="n119_REACTOME_163844" RelX="-1.096774193548387" RelY="-0.48484848484848486"/>
+      <Point X="1485.0" Y="982.0" GraphId="e_117_o1_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1344.0" Y="622.0" GraphId="e_117_c__0_0" GraphRef="n97_REACTOME_157049" RelX="0.17647058823529413" RelY="1.2727272727272727"/>
+      <Point X="1458.0" Y="992.0" GraphId="e_117_c__0_1" GraphRef="e_117_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_REACTOME_159790">
+    <Comment Source="WikiPathways-description">The regeneration of reduced vitamin K (vitamin K hydroquinone) from vitamin K epoxide is catalyzed by vitamin K epoxide reductase (VKORC1) (Sadler 2004). This enzyme is the target of the anticoagulant drug warfarin. Two important features of this reaction remain unclear. First, dithiothreitol functions efficiently as a reductant in vitro (Wallin and Martin 1985), but the in vivo reductant remains unknown. Second, while people homozygous for mutations in VKORC1 protein lack epoxide reductase activity (Rost et al. 2004) and cultured insect cells transfected with the cloned human VKORC1 gene express vitamin K epoxide reductase activity (Li et al. 2004), the possibility that the active form of the enzyme is a complex with other proteins cannot be formally excluded.</Comment>
+    <BiopaxRef>lit_159784</BiopaxRef>
+    <BiopaxRef>lit_159831</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="598.0" Y="1219.0" GraphId="e_128_0"/>
+      <Point X="572.0" Y="1219.0" GraphId="e_128_1"/>
+      <Point X="528.0" Y="1219.0" GraphId="e_128_2" GraphRef="n131_REACTOME_159853" RelX="1.0555555555555556" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_128_a_i"/>
+      <Anchor Position="0.37142857142857144" GraphId="e_128_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="616.0" Y="1196.0" GraphId="e_128_i0_0" GraphRef="n154_REACTOME_156540" RelX="-0.7272727272727273" RelY="1.2258064516129032"/>
+      <Point X="598.0" Y="1219.0" GraphId="e_128_i0_1" GraphRef="e_128_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="625.0" Y="1219.0" GraphId="e_128_i1_0" GraphRef="n133_REACTOME_159835" RelX="-1.05" RelY="0.0"/>
+      <Point X="598.0" Y="1219.0" GraphId="e_128_i1_1" GraphRef="e_128_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="570.0" Y="1252.0" GraphId="e_128_c__0_0" GraphRef="n129_REACTOME_159746" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="572.0" Y="1219.0" GraphId="e_128_c__0_1" GraphRef="e_128_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_REACTOME_204647">
+    <Comment Source="WikiPathways-description">Cytosolic deoxyhypusine synthase catalyzes the reaction of EIF5A protein, spermidine, and NAD+ to convert lysine-50 of EIF5A to deoxyhypusine, generating 1,3-diaminopropane and NADH + H+ in the process (Park 2006). Although the reaction is reversible, the reverse reaction is probably minimized under physiological conditions by the rapid, irreversible conversion of EIF5A(Dhp) to EIF5A(Hyp).</Comment>
+    <BiopaxRef>lit_204631</BiopaxRef>
+    <BiopaxRef>lit_204632</BiopaxRef>
+    <BiopaxRef>lit_204752</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1111.0" Y="1275.0" GraphId="e_140_0"/>
+      <Point X="1138.0" Y="1275.0" GraphId="e_140_1"/>
+      <Point X="1191.0" Y="1275.0" GraphId="e_140_2"/>
+      <Anchor Position="0.0" GraphId="e_140_a_i"/>
+      <Anchor Position="0.3375" GraphId="e_140_a_p"/>
+      <Anchor Position="1.0" GraphId="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1081.0" Y="1233.0" GraphId="e_140_i0_0" GraphRef="n141_REACTOME_204635" RelX="0.2619047619047619" RelY="1.1666666666666667"/>
+      <Point X="1111.0" Y="1275.0" GraphId="e_140_i0_1" GraphRef="e_140_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1083.0" Y="1290.0" GraphId="e_140_i1_0" GraphRef="n142_REACTOME_29360" RelX="1.0212765957446808" RelY="-1.1612903225806452"/>
+      <Point X="1111.0" Y="1275.0" GraphId="e_140_i1_1" GraphRef="e_140_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1060.0" Y="1265.0" GraphId="e_140_i2_0" GraphRef="n143_REACTOME_204659" RelX="1.1428571428571428" RelY="0.25"/>
+      <Point X="1111.0" Y="1275.0" GraphId="e_140_i2_1" GraphRef="e_140_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1215.0" Y="1307.0" GraphId="e_140_o0_0" ArrowHead="Arrow" GraphRef="n144_REACTOME_73473" RelX="-0.46511627906976744" RelY="-1.1851851851851851"/>
+      <Point X="1191.0" Y="1275.0" GraphId="e_140_o0_1" GraphRef="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1254.0" Y="1294.0" GraphId="e_140_o1_0" ArrowHead="Arrow" GraphRef="n145_REACTOME_70106" RelX="-1.2" RelY="-0.38461538461538464"/>
+      <Point X="1191.0" Y="1275.0" GraphId="e_140_o1_1" GraphRef="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1217.0" Y="1234.0" GraphId="e_140_o2_0" ArrowHead="Arrow" GraphRef="n146_REACTOME_204628" RelX="-0.22608695652173913" RelY="1.170731707317073"/>
+      <Point X="1191.0" Y="1275.0" GraphId="e_140_o2_1" GraphRef="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1237.0" Y="1268.0" GraphId="e_140_o3_0" ArrowHead="Arrow" GraphRef="n147_REACTOME_204642" RelX="-1.0588235294117647" RelY="0.5217391304347826"/>
+      <Point X="1191.0" Y="1275.0" GraphId="e_140_o3_1" GraphRef="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1142.0" Y="1298.0" GraphId="e_140_c__0_0" GraphRef="n148_REACTOME_204644" RelX="-0.1111111111111111" RelY="-1.1153846153846154"/>
+      <Point X="1138.0" Y="1275.0" GraphId="e_140_c__0_1" GraphRef="e_140_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_REACTOME_204662">
+    <Comment Source="WikiPathways-description">Cytosolic deoxyhypusine hydroxylase catalyzes the irreversible conversion of peptidyl-deoxyhypusine to peptidyl-hypusine. The only known substrate for this enzyme is the modified lysine at residue 50 of eIF5A (Kang et al. 2007; Kim et al. 2006).</Comment>
+    <BiopaxRef>lit_204666</BiopaxRef>
+    <BiopaxRef>lit_204643</BiopaxRef>
+    <BiopaxRef>lit_204752</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1348.0" Y="1262.0" GraphId="e_149_0"/>
+      <Point X="1384.0" Y="1262.0" GraphId="e_149_1"/>
+      <Point X="1427.0" Y="1262.0" GraphId="e_149_2" GraphRef="n151_REACTOME_204658" RelX="-1.0681818181818181" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_149_a_i"/>
+      <Anchor Position="0.45569620253164556" GraphId="e_149_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1328.0" Y="1262.0" GraphId="e_149_i0_0" GraphRef="n147_REACTOME_204642" RelX="1.0823529411764705" RelY="0.0"/>
+      <Point X="1348.0" Y="1262.0" GraphId="e_149_i0_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1341.0" Y="1244.0" GraphId="e_149_i1_0" GraphRef="n150_REACTOME_29368" RelX="0.16" RelY="1.2"/>
+      <Point X="1348.0" Y="1262.0" GraphId="e_149_i1_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1385.0" Y="1291.0" GraphId="e_149_c__0_0" GraphRef="n152_REACTOME_204627" RelX="-0.03225806451612903" RelY="-1.1578947368421053"/>
+      <Point X="1384.0" Y="1262.0" GraphId="e_149_c__0_1" GraphRef="e_149_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_REACTOME_204617">
+    <Comment Source="WikiPathways-description">The reaction of EIF5A, spermidine, and NAD+ to form EIF5A(Dhp), 1,3-diaminopropane, and NADH + H+ is reversible in vitro. Under physiological conditions, the reverse reaction is probably minimized by the rapid, irreversible conversion of FIF5A(Dhp) to EIF5A(Hyp).</Comment>
+    <BiopaxRef>lit_204610</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1184.0" Y="1249.0" GraphId="e_153_0"/>
+      <Point X="1158.0" Y="1250.0" GraphId="e_153_1"/>
+      <Point X="1118.0" Y="1250.0" GraphId="e_153_2"/>
+      <Anchor Position="0.0" GraphId="e_153_a_i"/>
+      <Anchor Position="0.39411586836469664" GraphId="e_153_a_p"/>
+      <Anchor Position="1.0" GraphId="e_153_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1254.0" Y="1290.0" GraphId="e_153_i0_0" GraphRef="n145_REACTOME_70106" RelX="-1.2" RelY="-0.6923076923076923"/>
+      <Point X="1184.0" Y="1249.0" GraphId="e_153_i0_1" GraphRef="e_153_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1205.0" Y="1234.0" GraphId="e_153_i1_0" GraphRef="n146_REACTOME_204628" RelX="-0.43478260869565216" RelY="1.170731707317073"/>
+      <Point X="1184.0" Y="1249.0" GraphId="e_153_i1_1" GraphRef="e_153_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1217.0" Y="1307.0" GraphId="e_153_i2_0" GraphRef="n144_REACTOME_73473" RelX="-0.37209302325581395" RelY="-1.1851851851851851"/>
+      <Point X="1184.0" Y="1249.0" GraphId="e_153_i2_1" GraphRef="e_153_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1237.0" Y="1256.0" GraphId="e_153_i3_0" GraphRef="n147_REACTOME_204642" RelX="-1.0588235294117647" RelY="-0.5217391304347826"/>
+      <Point X="1184.0" Y="1249.0" GraphId="e_153_i3_1" GraphRef="e_153_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1074.0" Y="1290.0" GraphId="e_153_o0_0" ArrowHead="Arrow" GraphRef="n142_REACTOME_29360" RelX="0.6382978723404256" RelY="-1.1612903225806452"/>
+      <Point X="1118.0" Y="1250.0" GraphId="e_153_o0_1" GraphRef="e_153_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1092.0" Y="1233.0" GraphId="e_153_o1_0" ArrowHead="Arrow" GraphRef="n141_REACTOME_204635" RelX="0.5238095238095238" RelY="1.1666666666666667"/>
+      <Point X="1118.0" Y="1250.0" GraphId="e_153_o1_1" GraphRef="e_153_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1060.0" Y="1258.0" GraphId="e_153_o2_0" ArrowHead="Arrow" GraphRef="n143_REACTOME_204659" RelX="1.1428571428571428" RelY="-0.3333333333333333"/>
+      <Point X="1118.0" Y="1250.0" GraphId="e_153_o2_1" GraphRef="e_153_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1150.0" Y="1298.0" GraphId="e_153_c__0_0" GraphRef="n148_REACTOME_204644" RelX="0.06666666666666667" RelY="-1.1153846153846154"/>
+      <Point X="1158.0" Y="1250.0" GraphId="e_153_c__0_1" GraphRef="e_153_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="60.5" CenterY="1358.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_2" GroupRef="group_comp_2" TextLabel="Golgi lumen">
+    <Graphics Color="000000" CenterX="1578.0" CenterY="1087.5" Width="88.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_3" GroupRef="group_comp_3" TextLabel="endoplasmic reticulum lumen">
+    <Graphics Color="000000" CenterX="220.5" CenterY="1232.5" Width="189.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="852.0" CenterY="705.0" Width="1696.0" Height="1382.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics Color="000000" CenterX="1287.5" CenterY="608.0" Width="755.0" Height="1106.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics Color="000000" CenterX="485.0" CenterY="663.0" Width="760.0" Height="1222.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140887" rdf:id="lit_140887">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2994716</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1985</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleotide sequence of the gene for human factor IX (antihemophilic factor B)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshitake, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schach, BG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foster, DC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurachi, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 24:3736-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140890" rdf:id="lit_140890">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6688526</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1983</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The occurrence of beta-hydroxyaspartic acid in the vitamin K-dependent blood coagulation zymogens</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McMullen, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujikawa, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kisiel, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 115:8-14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140716" rdf:id="lit_140716">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3486420</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1986</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of a cDNA coding for human factor VII</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hagen, FS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gray, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Hara, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grant, FJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saari, GC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Woodbury, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, CE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insley, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kisiel, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurachi, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 83:2412-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140725" rdf:id="lit_140725">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3264725</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amino acid sequence and posttranslational modifications of human factor VIIa from plasma and transfected baby hamster kidney cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thim, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bjoern, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christensen, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nicolaisen, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lund-Hansen, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pedersen, AH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hedner, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 27:7785-93</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140675" rdf:id="lit_140675">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">266717</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1977</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amino acid sequence of human prothrombin fragments 1 and 2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walz, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hewett-Emmett, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seegers, WH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 74:1969-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140590" rdf:id="lit_140590">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">873923</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1977</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Primary structure of human prethrombin 2 and alpha-thrombin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butkowski, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elion, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Downing, MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, KG</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 252:4942-57</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140595" rdf:id="lit_140595">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2825773</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1987</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleotide sequence of the gene for human prothrombin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Degen, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 26:6165-77</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141005" rdf:id="lit_141005">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">420821</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1979</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of protein S, a gamma-carboxyglutamic acid containing protein from bovine and human plasma</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DiScipio, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 18:899-904</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159838" rdf:id="lit_159838">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1629222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of human furin precursor processing endoprotease occurs by an intramolecular autoproteolytic cleavage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leduc, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molloy, SS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thorne, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 267:14304-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140632" rdf:id="lit_140632">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">836809</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1977</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A comparison of human prothrombin, factor IX (Christmas factor), factor X (Stuart factor), and protein S</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DiScipio, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hermodson, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yates, SG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 16:698-706</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140636" rdf:id="lit_140636">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6871167</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1983</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Complete amino acid sequence of the light chain of human blood coagulation factor X: evidence for identification of residue 63 as beta-hydroxyaspartic acid</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McMullen, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujikawa, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kisiel, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sasagawa, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Howald, WN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kwa, EY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinstein, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 22:2875-84</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141016" rdf:id="lit_141016">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2405901</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endoproteolytic processing of the dibasic cleavage site in the human protein C precursor in transfected mammalian cells: effects of sequence alterations on efficiency of cleavage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foster, DC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sprecher, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holly, RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gambee, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walker, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumar, AA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 29:347-54</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141018" rdf:id="lit_141018">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6589623</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1984</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of a cDNA coding for human protein C</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foster, DC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 81:4766-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159755" rdf:id="lit_159755">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10917896</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The vitamin K-dependent carboxylase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berkner, KL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Nutr 130:1877-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159753" rdf:id="lit_159753">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10068650</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vitamin K-dependent biosynthesis of gamma-carboxyglutamic acid</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furie, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bouchard, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furie, BC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 93:1798-808</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159750" rdf:id="lit_159750">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11513608</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tethered processivity of the vitamin K-dependent carboxylase: factor IX is efficiently modified in a mechanism which distinguishes Gla's from Glu's and which accounts for comprehensive carboxylation in vivo</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stenina, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pudota, BN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McNally, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hommema, EL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berkner, KL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 40:10301-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159725" rdf:id="lit_159725">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2738071</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Factor IX San Dimas. Substitution of glutamine for Arg-4 in the propeptide leads to incomplete gamma-carboxylation and altered phospholipid binding properties.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ware, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diuguid, DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liebman, HA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rabiet, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kasper, CK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furie, BC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furie, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stafford, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 264:11401-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_163831" rdf:id="lit_163831">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8530480</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Processive post-translational modification. Vitamin K-dependent carboxylation of a peptide substrate.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morris, DP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stevens, RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wright, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stafford, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:30491-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159784" rdf:id="lit_159784">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14765195</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of the gene for vitamin K epoxide reductase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, CY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jin, DY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lin, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khvorova, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stafford, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 427:541-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159831" rdf:id="lit_159831">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14765194</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutations in VKORC1 cause warfarin resistance and multiple coagulation factor deficiency type 2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rost, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fregin, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ivaskevicius, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conzelmann, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hortnagel, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pelz, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lappegard, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seifried, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scharrer, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tuddenham, EG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muller, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strom, TM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oldenburg, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 427:537-41</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_204631" rdf:id="lit_204631">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7673224</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and expression of human deoxyhypusine synthase cDNA. Structure-function studies with the recombinant enzyme and mutant proteins.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Joe, YA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolff, EC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:22386-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_204632" rdf:id="lit_204632">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9188485</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Enzyme-substrate intermediate formation at lysine 329 of human deoxyhypusine synthase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolff, EC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Folk, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:15865-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_204752" rdf:id="lit_204752">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14622290</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification and characterization of eukaryotic initiation factor 5A-2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clement, PM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henderson, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jenkins, ZA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smit-McBride, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolff, EC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hershey, JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johansson, HE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 270:4254-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_204666" rdf:id="lit_204666">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16533814</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deoxyhypusine hydroxylase is a Fe(II)-dependent, HEAT-repeat enzyme. Identification of amino acid residues critical for Fe(II) binding and catalysis [corrected].</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, YS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kang, KR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolff, EC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bell, JK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McPhie, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:13217-25</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_204643" rdf:id="lit_204643">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17213197</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Specificity of the deoxyhypusine hydroxylase-eukaryotic translation initiation factor (eIF5A) interaction: identification of amino acid residues of the enzyme required for binding of its substrate, deoxyhypusine-containing eIF5A</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kang, KR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, YS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolff, EC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 282:8300-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_204610" rdf:id="lit_204610">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16452303</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The post-translational synthesis of a polyamine-derived amino acid, hypusine, in the eukaryotic translation initiation factor 5A (eIF5A)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem (Tokyo) 139:161-9</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

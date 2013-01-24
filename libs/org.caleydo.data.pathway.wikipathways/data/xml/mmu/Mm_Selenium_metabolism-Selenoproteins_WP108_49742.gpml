@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Selenium metabolism/Selenoproteins" Organism="Mus musculus">
+  <Comment Source="GenMAPP notes"></Comment>
+  <Comment Source="GenMAPP remarks"></Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="1396.6666666666667" BoardHeight="1378.0" />
+  <DataNode TextLabel="Sephs1" GraphId="e9d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenophosphate synthetase 1" />
+    <Graphics CenterX="606.6666666666666" CenterY="446.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="109079" />
+  </DataNode>
+  <DataNode TextLabel="Sephs2" GraphId="c9b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenophosphate synthetase 2" />
+    <Graphics CenterX="606.6666666666666" CenterY="466.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20768" />
+  </DataNode>
+  <DataNode TextLabel="Sp1" GraphId="e71" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Trans-acting transcription factor 1" />
+    <Graphics CenterX="1193.3333333333333" CenterY="930.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20683" />
+  </DataNode>
+  <DataNode TextLabel="Sp3" GraphId="b76" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Trans-acting transcription factor 3" />
+    <Graphics CenterX="1193.3333333333333" CenterY="950.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20687" />
+  </DataNode>
+  <DataNode TextLabel="Pou2f1" GraphId="c68" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="POU domain, class 2, transcription factor 1" />
+    <Graphics CenterX="1193.3333333333333" CenterY="970.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="18986" />
+  </DataNode>
+  <DataNode TextLabel="Crem" GraphId="ed3" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="cAMP responsive element modulator" />
+    <Graphics CenterX="1193.3333333333333" CenterY="1070.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="12916" />
+  </DataNode>
+  <DataNode TextLabel="SBP2" GraphId="d57" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SECIS binding protein 2" />
+    <Graphics CenterX="1053.3333333333333" CenterY="690.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="75420" />
+  </DataNode>
+  <DataNode TextLabel="eEFSec" GraphId="ffe" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sec-specific elongation factor" />
+    <Graphics CenterX="1053.3333333333333" CenterY="710.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="65967" />
+  </DataNode>
+  <DataNode TextLabel="Sars" GraphId="e30" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Seryl-aminoacyl-tRNA synthetase" />
+    <Graphics CenterX="376.6666666666667" CenterY="603.3333333333334" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20226" />
+  </DataNode>
+  <DataNode TextLabel="Sars2" GraphId="c87" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Seryl-aminoacyl-tRNA synthetase 2" />
+    <Graphics CenterX="376.6666666666667" CenterY="623.3333333333334" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="71984" />
+  </DataNode>
+  <DataNode TextLabel="Pstk" GraphId="b21" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Phosphoseryl-tRNA kinase" />
+    <Graphics CenterX="623.3333333333334" CenterY="616.6666666666666" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="214580" />
+  </DataNode>
+  <DataNode TextLabel="UGA" GraphId="ac2" Type="GeneProduct">
+    <Graphics CenterX="443.3333333333333" CenterY="913.3333333333334" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Rpl30" GraphId="bd4" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Ribosomal protein L30" />
+    <Graphics CenterX="466.6666666666667" CenterY="856.6666666666666" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="19946" />
+  </DataNode>
+  <DataNode TextLabel="eEFSec" GraphId="bf3" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Sec-specific elongation factor" />
+    <Graphics CenterX="466.6666666666667" CenterY="836.6666666666666" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="65967" />
+  </DataNode>
+  <DataNode TextLabel="SBP2" GraphId="c5f" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SECIS binding protein 2" />
+    <Graphics CenterX="466.6666666666667" CenterY="816.6666666666666" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="75420" />
+  </DataNode>
+  <DataNode TextLabel="GPX1" GraphId="ed9" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Glutathione peroxidase 1" />
+    <Graphics CenterX="116.66666666666667" CenterY="1113.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="14775" />
+  </DataNode>
+  <DataNode TextLabel="GPX2" GraphId="f81" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Glutathione peroxidase 2" />
+    <Graphics CenterX="116.66666666666667" CenterY="1133.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="14776" />
+  </DataNode>
+  <DataNode TextLabel="GPX4" GraphId="bff" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Glutathione peroxidase 4" />
+    <Graphics CenterX="116.66666666666667" CenterY="1173.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="625249" />
+  </DataNode>
+  <DataNode TextLabel="DIO1" GraphId="b69" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Deiodinase, iodothyronine, type I" />
+    <Graphics CenterX="326.6666666666667" CenterY="1116.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="13370" />
+  </DataNode>
+  <DataNode TextLabel="SEPP1" GraphId="d8e" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein P, plasma, 1" />
+    <Graphics CenterX="540.0" CenterY="1116.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20363" />
+  </DataNode>
+  <DataNode TextLabel="TXNRD1" GraphId="e54" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Thioredoxin reductase 1" />
+    <Graphics CenterX="216.66666666666666" CenterY="1113.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="50493" />
+  </DataNode>
+  <DataNode TextLabel="SepW1" GraphId="f0a" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein W" />
+    <Graphics CenterX="116.66666666666667" CenterY="1250.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20364" />
+  </DataNode>
+  <DataNode TextLabel="Sephs2" GraphId="c72" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenophosphate synthetase 2" />
+    <Graphics CenterX="433.3333333333333" CenterY="1115.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20768" />
+  </DataNode>
+  <DataNode TextLabel="Sep15" GraphId="db9" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein" />
+    <Graphics CenterX="660.0" CenterY="1120.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="93684" />
+  </DataNode>
+  <DataNode TextLabel="DIO2" GraphId="dc1" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Deiodinase, iodothyronine, type II" />
+    <Graphics CenterX="326.6666666666667" CenterY="1136.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="13371" />
+  </DataNode>
+  <DataNode TextLabel="DIO3" GraphId="a65" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Deiodinase, iodothyronine type III" />
+    <Graphics CenterX="326.6666666666667" CenterY="1156.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="107585" />
+  </DataNode>
+  <DataNode TextLabel="GPX3" GraphId="bf5" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Glutathione peroxidase 3" />
+    <Graphics CenterX="116.66666666666667" CenterY="1153.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="14778" />
+  </DataNode>
+  <DataNode TextLabel="SelH" GraphId="dff" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein H" />
+    <Graphics CenterX="766.6666666666666" CenterY="1120.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="72657" />
+  </DataNode>
+  <DataNode TextLabel="SelI" GraphId="d4a" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein I" />
+    <Graphics CenterX="766.6666666666666" CenterY="1140.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="28042" />
+  </DataNode>
+  <DataNode TextLabel="SelK" GraphId="b3a" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein K" />
+    <Graphics CenterX="116.66666666666667" CenterY="1213.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="80795" />
+  </DataNode>
+  <DataNode TextLabel="SelM" GraphId="eda" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein M" />
+    <Graphics CenterX="660.0" CenterY="1156.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="114679" />
+  </DataNode>
+  <DataNode TextLabel="SEPN1" GraphId="ff8" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein N, 1" />
+    <Graphics CenterX="660.0" CenterY="1140.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="74777" />
+  </DataNode>
+  <DataNode TextLabel="SelO" GraphId="aec" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein O" />
+    <Graphics CenterX="766.6666666666666" CenterY="1156.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="223776" />
+  </DataNode>
+  <DataNode TextLabel="SepX1" GraphId="b56" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein X 1" />
+    <Graphics CenterX="116.66666666666667" CenterY="1233.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="27361" />
+  </DataNode>
+  <DataNode TextLabel="SelS" GraphId="a46" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein S" />
+    <Graphics CenterX="660.0" CenterY="1176.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="109815" />
+  </DataNode>
+  <DataNode TextLabel="SelT" GraphId="c5c" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein T" />
+    <Graphics CenterX="766.6666666666666" CenterY="1176.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="69227" />
+  </DataNode>
+  <DataNode TextLabel="TXNRD2" GraphId="f38" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Thioredoxin reductase 2" />
+    <Graphics CenterX="215.66666666666666" CenterY="1133.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="26462" />
+  </DataNode>
+  <DataNode TextLabel="TXNRD3" GraphId="eac" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Thioredoxin reductase 3" />
+    <Graphics CenterX="216.66666666666666" CenterY="1153.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="232223" />
+  </DataNode>
+  <DataNode TextLabel="SelV" GraphId="f12" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenoprotein V" />
+    <Graphics CenterX="766.6666666666666" CenterY="1196.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="280621" />
+  </DataNode>
+  <DataNode TextLabel="Secp43" GraphId="c65" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SecP43" />
+    <Graphics CenterX="1053.3333333333333" CenterY="670.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="71787" />
+  </DataNode>
+  <DataNode TextLabel="Sla" GraphId="e72" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SLA" />
+    <Graphics CenterX="913.3333333333334" CenterY="613.3333333333334" Width="95.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="211006" />
+  </DataNode>
+  <DataNode TextLabel="TXNRD1" GraphId="f31" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Thioredoxin reductase 1" />
+    <Graphics CenterX="820.0" CenterY="380.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="50493" />
+  </DataNode>
+  <DataNode TextLabel="TXNRD3" GraphId="b06" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Thioredoxin reductase 3" />
+    <Graphics CenterX="820.0" CenterY="420.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="232223" />
+  </DataNode>
+  <DataNode TextLabel="TXNRD2" GraphId="c0b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Thioredoxin reductase 2" />
+    <Graphics CenterX="820.0" CenterY="400.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="26462" />
+  </DataNode>
+  <DataNode TextLabel="Selenbp1" GraphId="ee4" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenbp1" />
+    <Graphics CenterX="986.6666666666666" CenterY="1216.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20341" />
+  </DataNode>
+  <DataNode TextLabel="Fabp1" GraphId="ced" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FABP1" />
+    <Graphics CenterX="986.6666666666666" CenterY="1256.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="14080" />
+  </DataNode>
+  <DataNode TextLabel="Selenbp1" GraphId="b31" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenbp1" />
+    <Graphics CenterX="986.6666666666666" CenterY="1236.6666666666667" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="20342" />
+  </DataNode>
+  <DataNode TextLabel="SBP2" GraphId="eec" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SECIS binding protein 2" />
+    <Graphics CenterX="1040.0" CenterY="906.6666666666666" Width="53.333333333333336" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="75420" />
+  </DataNode>
+  <DataNode TextLabel="Scly" GraphId="c01" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Selenocysteine lyase" />
+    <Graphics CenterX="110.0" CenterY="560.0" Width="76.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="50880" />
+  </DataNode>
+  <DataNode TextLabel="GPX6" GraphId="c8b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Glutathione peroxidase 6" />
+    <Graphics CenterX="116.66666666666667" CenterY="1193.3333333333333" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="75512" />
+  </DataNode>
+  <DataNode TextLabel="Cystathionine g-lyase" GraphId="abb" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Cystathionine g-lyase" />
+    <Graphics CenterX="425.6666666666667" CenterY="283.3333333333333" Width="143.64" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="RefSeq" ID="NM_145953" />
+  </DataNode>
+  <DataNode TextLabel="Nfe2l2" GraphId="f48" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Nuclear factor, erythroid derived 2" />
+    <Graphics CenterX="1193.3333333333333" CenterY="910.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="18024" />
+  </DataNode>
+  <DataNode TextLabel="Jun" GraphId="fc5" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Jun oncogene" />
+    <Graphics CenterX="1193.3333333333333" CenterY="990.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="16476" />
+  </DataNode>
+  <DataNode TextLabel="Fos" GraphId="d48" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FBJ osteosarcoma oncogene (Fos)" />
+    <Graphics CenterX="1193.3333333333333" CenterY="1010.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="14281" />
+  </DataNode>
+  <DataNode TextLabel="p105" GraphId="fd0" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="p105 (nfkb)" />
+    <Graphics CenterX="1193.3333333333333" CenterY="1030.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="18033" />
+  </DataNode>
+  <DataNode TextLabel="p65" GraphId="cec" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="p65 (nfkb)" />
+    <Graphics CenterX="1193.3333333333333" CenterY="1050.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="19697" />
+  </DataNode>
+  <Line GraphId="c842a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="300.0" Y="900.0" />
+      <Point X="280.0" Y="900.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d1308">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="270.0" Y="900.0" />
+      <Point X="110.0" Y="900.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e615f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="553.3333333333334" Y="900.0" />
+      <Point X="610.0" Y="900.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c1e29">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="610.0" Y="900.0" />
+      <Point X="610.0" Y="823.3333333333334" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c08d9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="610.0" Y="823.3333333333334" />
+      <Point X="493.3333333333333" Y="823.3333333333334" />
+    </Graphics>
+  </Line>
+  <Line GraphId="dc370">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="76.66666666666667" Y="1083.3333333333333" />
+      <Point X="800.0" Y="1083.3333333333333" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c0940">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="116.66666666666667" Y="1083.3333333333333" />
+      <Point X="116.66666666666667" Y="1110.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="befc1">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="216.66666666666666" Y="1083.3333333333333" />
+      <Point X="216.66666666666666" Y="1110.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="feb23">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="326.6666666666667" Y="1080.0" />
+      <Point X="326.6666666666667" Y="1106.6666666666667" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f82b8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="430.0" Y="1083.3333333333333" />
+      <Point X="430.0" Y="1106.6666666666667" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f7cd6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="543.3333333333334" Y="1083.3333333333333" />
+      <Point X="543.3333333333334" Y="1110.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cf588">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="660.0" Y="1083.3333333333333" />
+      <Point X="660.0" Y="1110.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bd42c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="766.6666666666666" Y="1083.3333333333333" />
+      <Point X="766.6666666666666" Y="1110.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="dee5a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="436.6666666666667" Y="926.6666666666666" />
+      <Point X="436.6666666666667" Y="986.6666666666666" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cbfa8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="316.6666666666667" Y="613.3333333333334" />
+      <Point X="443.3333333333333" Y="613.3333333333334" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d49d6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="573.3333333333334" Y="616.6666666666666" />
+      <Point X="683.3333333333334" Y="616.6666666666666" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bea3c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="863.3333333333334" Y="616.6666666666666" />
+      <Point X="983.3333333333334" Y="616.6666666666666" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b14d7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="680.0" Y="533.3333333333334" />
+      <Point X="916.6666666666666" Y="533.3333333333334" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e079f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="916.6666666666666" Y="533.3333333333334" />
+      <Point X="916.6666666666666" Y="613.3333333333334" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f39ee">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="123.33333333333333" Y="216.66666666666666" />
+      <Point X="1366.6666666666667" Y="216.66666666666666" />
+    </Graphics>
+  </Line>
+  <Line GraphId="db797">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="330.0" Y="206.66666666666666" />
+      <Point X="330.0" Y="260.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e411c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="946.6666666666666" Y="210.0" />
+      <Point X="946.6666666666666" Y="263.3333333333333" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bda62">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="350.0" Y="283.3333333333333" />
+      <Point X="523.3333333333334" Y="283.3333333333333" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e634d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="596.6666666666666" Y="300.0" />
+      <Point X="596.6666666666666" Y="376.6666666666667" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fe64e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="613.3333333333334" Y="376.6666666666667" />
+      <Point X="613.3333333333334" Y="300.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f5c1f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="943.3333333333334" Y="306.6666666666667" />
+      <Point X="943.3333333333334" Y="400.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b51e3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="943.3333333333334" Y="400.0" />
+      <Point X="643.3333333333334" Y="400.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ec247">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="106.66666666666667" Y="343.3333333333333" />
+      <Point X="110.0" Y="900.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e9e56">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="110.0" Y="343.3333333333333" />
+      <Point X="276.6666666666667" Y="343.3333333333333" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c93f8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="290.0" Y="240.0" />
+      <Point X="316.6666666666667" Y="263.3333333333333" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c99da">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="583.3333333333334" Y="400.0" />
+      <Point X="346.6666666666667" Y="400.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="dcc29">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="600.0" Y="93.33333333333333" />
+      <Point X="403.3333333333333" Y="123.33333333333333" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="da20b">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="696.6666666666666" Y="93.33333333333333" />
+      <Point X="876.6666666666666" Y="123.33333333333333" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f2ba6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="603.3333333333334" Y="410.0" />
+      <Point X="600.0" Y="513.3333333333334" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c38de">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="993.3333333333334" Y="903.3333333333334" />
+      <Point X="540.0" Y="856.6666666666666" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b2d11">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="200.0" Y="576.6666666666666" />
+      <Point X="1153.3333333333333" Y="576.6666666666666" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b5413">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="196.66666666666666" Y="580.0" />
+      <Point X="196.66666666666666" Y="760.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ddcfe">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="196.66666666666666" Y="760.0" />
+      <Point X="1150.0" Y="760.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="cca53">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1156.6666666666667" Y="583.3333333333334" />
+      <Point X="1153.3333333333333" Y="760.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f2b59">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1046.6666666666667" Y="623.3333333333334" />
+      <Point X="1046.6666666666667" Y="866.6666666666666" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="MethylSelenol MeSeH" GraphId="da5">
+    <Graphics CenterX="600.0" CenterY="283.3333333333333" Width="134.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="H2Se" GraphId="ae4">
+    <Graphics CenterX="603.3333333333334" CenterY="400.0" Width="37.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenophosphate" GraphId="b3d">
+    <Graphics CenterX="603.3333333333334" CenterY="536.6666666666666" Width="105.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Phosphoseryl-tRNA[ser](sec)" GraphId="dcc">
+    <Graphics CenterX="776.6666666666666" CenterY="613.3333333333334" Width="174.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Seryl-tRNA[ser](sec)" GraphId="fc7">
+    <Graphics CenterX="510.0" CenterY="613.3333333333334" Width="125.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Sec tRNA[ser]sec" GraphId="bad">
+    <Graphics CenterX="260.0" CenterY="610.0" Width="110.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenocysteyl-tRNA sec" GraphId="efe">
+    <Graphics CenterX="1056.6666666666667" CenterY="613.3333333333334" Width="147.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="ORGANIC Se" GraphId="c38">
+    <Graphics CenterX="340.0" CenterY="130.0" Width="101.33333333333333" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Diet" GraphId="e81">
+    <Graphics CenterX="646.6666666666666" CenterY="86.66666666666667" Width="34.333333333333336" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="INORGANIC Se" GraphId="d00">
+    <Graphics CenterX="950.0" CenterY="130.0" Width="115.33333333333333" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenite" GraphId="a6d">
+    <Graphics CenterX="946.6666666666666" CenterY="166.66666666666666" Width="52.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="methyl transferase" GraphId="a8c">
+    <Graphics CenterX="676.6666666666666" CenterY="336.6666666666667" Width="112.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="demethylation" GraphId="cff">
+    <Graphics CenterX="543.3333333333334" CenterY="336.6666666666667" Width="86.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="coding region" GraphId="eb1">
+    <Graphics CenterX="353.3333333333333" CenterY="900.0" Width="82.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="AUG" GraphId="edd">
+    <Graphics CenterX="310.0" CenterY="886.6666666666666" Width="33.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="STOP" GraphId="e48">
+    <Graphics CenterX="540.0" CenterY="900.0" Width="29.333333333333332" Height="12.0" ZOrder="28672" FillColor="ffffff" FontSize="7" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Transcription Factors" GraphId="ec7">
+    <Graphics CenterX="1190.0" CenterY="886.6666666666666" Width="152.33333333333334" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="nucleus" GraphId="af0">
+    <Graphics CenterX="1226.6666666666667" CenterY="816.6666666666666" Width="57.333333333333336" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Antioxidant" GraphId="fd5">
+    <Graphics CenterX="123.33333333333333" CenterY="1050.0" Width="70.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Redox" GraphId="f25">
+    <Graphics CenterX="220.0" CenterY="1050.0" Width="42.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Thyroid hormone" GraphId="a77">
+    <Graphics CenterX="333.3333333333333" CenterY="1050.0" Width="101.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="enzymes" GraphId="f73">
+    <Graphics CenterX="120.0" CenterY="1070.0" Width="58.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="signalling" GraphId="ec3">
+    <Graphics CenterX="220.0" CenterY="1070.0" Width="59.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="metabolism" GraphId="c74">
+    <Graphics CenterX="333.3333333333333" CenterY="1070.0" Width="72.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Sec" GraphId="d6b">
+    <Graphics CenterX="430.0" CenterY="1050.0" Width="28.333333333333332" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="synthesis" GraphId="da7">
+    <Graphics CenterX="430.0" CenterY="1070.0" Width="61.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Se transport" GraphId="b6d">
+    <Graphics CenterX="546.6666666666666" CenterY="1050.0" Width="76.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="and storage" GraphId="fbf">
+    <Graphics CenterX="546.6666666666666" CenterY="1070.0" Width="73.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Protein folding" GraphId="a76">
+    <Graphics CenterX="663.3333333333334" CenterY="1050.0" Width="87.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Unkown" GraphId="e12">
+    <Graphics CenterX="763.3333333333334" CenterY="1050.0" Width="51.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="function" GraphId="fe7">
+    <Graphics CenterX="766.6666666666666" CenterY="1070.0" Width="50.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenoproteins" GraphId="e2f">
+    <Graphics CenterX="440.0" CenterY="996.6666666666666" Width="114.33333333333333" Height="18.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeMet" GraphId="d20">
+    <Graphics CenterX="333.3333333333333" CenterY="166.66666666666666" Width="43.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Se = Selenium, SeMet = SelenoMethionine," GraphId="c9f">
+    <Graphics CenterX="206.66666666666666" CenterY="1340.0" Width="260.3333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeC" GraphId="cb8">
+    <Graphics CenterX="330.0" CenterY="190.0" Width="30.333333333333332" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenate" GraphId="a07">
+    <Graphics CenterX="950.0" CenterY="186.66666666666666" Width="56.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeMet" GraphId="c7e">
+    <Graphics CenterX="330.0" CenterY="280.0" Width="43.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeC" GraphId="def">
+    <Graphics CenterX="330.0" CenterY="400.0" Width="30.333333333333332" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenite" GraphId="ff0">
+    <Graphics CenterX="946.6666666666666" CenterY="273.3333333333333" Width="52.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenate" GraphId="fb3">
+    <Graphics CenterX="946.6666666666666" CenterY="293.3333333333333" Width="56.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="GSH" GraphId="dd4">
+    <Graphics CenterX="963.3333333333334" CenterY="346.6666666666667" Width="33.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Body proteins" GraphId="c23">
+    <Graphics CenterX="246.66666666666666" CenterY="240.0" Width="85.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="TrX" GraphId="e01">
+    <Graphics CenterX="960.0" CenterY="366.6666666666667" Width="23.333333333333332" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeC Biosynthesis" GraphId="dca">
+    <Graphics CenterX="1276.6666666666667" CenterY="673.3333333333334" Width="109.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Selenium binding proteins" GraphId="aed">
+    <Graphics CenterX="983.3333333333334" CenterY="1186.6666666666667" Width="191.33333333333334" Height="18.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeC" GraphId="ac8">
+    <Graphics CenterX="423.3333333333333" CenterY="880.0" Width="30.333333333333332" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeC" GraphId="e06">
+    <Graphics CenterX="1050.0" CenterY="930.0" Width="32.333333333333336" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="11" Valign="Middle" />
+  </Label>
+  <Label TextLabel="SeC = Selenocysteine, H2Se = Selenide," GraphId="acc">
+    <Graphics CenterX="450.0" CenterY="1340.0" Width="245.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="GSH = Gluthatione, Trx = Thioredoxin" GraphId="ba5">
+    <Graphics CenterX="666.6666666666666" CenterY="1340.0" Width="223.33333333333334" Height="16.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Shape GraphId="f1d">
+    <Graphics CenterX="426.6666666666667" CenterY="900.0" Width="255.0" Height="16.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="b63">
+    <Graphics CenterX="436.6666666666667" CenterY="1153.3333333333333" Width="774.6426666666666" Height="257.6938" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="dce">
+    <Graphics CenterX="423.3333333333333" CenterY="880.0" Width="47.14045333333333" Height="26.666666666666668" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="c9e">
+    <Graphics CenterX="973.3333333333334" CenterY="1000.0" Width="6.666666666666667" Height="126.80633333333334" ZOrder="16384" FillColor="0f0f0f" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="feb">
+    <Graphics CenterX="1166.6666666666667" CenterY="833.3333333333334" Width="193.42586666666665" Height="6.666666666666667" ZOrder="16384" FillColor="0f0f0f" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="f4a">
+    <Graphics CenterX="973.3333333333334" CenterY="853.3333333333334" Width="6.666666666666667" Height="46.666666666666664" ZOrder="16384" FillColor="0f0f0f" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="d3b">
+    <Graphics CenterX="1003.3333333333334" CenterY="833.3333333333334" Width="53.333333333333336" Height="6.666666666666667" ZOrder="16384" FillColor="0f0f0f" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a5e">
+    <Graphics CenterX="1050.0" CenterY="930.0" Width="46.666666666666664" Height="26.666666666666668" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="d28">
+    <Graphics CenterX="983.3333333333334" CenterY="1226.6666666666667" Width="231.98593333333335" Height="109.27813333333333" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="a96">
+    <Graphics CenterX="300.0" CenterY="343.3333333333333" Width="138.98306666666667" Height="8.666666666666666" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="4.71238898038469" />
+  </Shape>
+  <Shape GraphId="f7f">
+    <Graphics CenterX="1196.6666666666667" CenterY="673.3333333333334" Width="150.06666666666666" Height="8.666666666666666" ZOrder="16384" FillColor="000000" FontSize="10" Valign="Middle" ShapeType="Brace" Rotation="1.5707963267948966" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Legend CenterX="0.0" CenterY="113.4" />
+</Pathway>

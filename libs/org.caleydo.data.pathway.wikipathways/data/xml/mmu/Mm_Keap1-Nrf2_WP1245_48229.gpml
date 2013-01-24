@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Keap1-Nrf2" Organism="Mus musculus" License="CC BY 2.0" Last-Modified="5/16/2012">
+  <Comment Source="WikiPathways-description">Based on [http://www.nature.com/nrc/journal/v3/n10/fig_tab/nrc1189_F4.html Surh, 2003, figure 4].</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP3&amp;amp;oldid=29720 WP3(r29720)] with a 94% conversion rate.</Comment>
+  <BiopaxRef>dba</BiopaxRef>
+  <Graphics BoardWidth="14586.0" BoardHeight="11517.0" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="Nqo1" Type="GeneProduct" BackpageHead="Nqo1" GraphId="f553c" GroupRef="b8fb5">
+    <Graphics Color="000000" CenterX="9840.0" CenterY="8070.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18104"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3ca" Type="GeneProduct" BackpageHead="Pik3ca" GraphId="dea4c">
+    <Graphics Color="000000" CenterX="1620.0" CenterY="1035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18706"/>
+  </DataNode>
+  <DataNode TextLabel="Aimp2" Type="GeneProduct" BackpageHead="Aimp2" GraphId="b06bd">
+    <Graphics Color="000000" CenterX="3300.0" CenterY="1035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="231872"/>
+  </DataNode>
+  <DataNode TextLabel="Nfe2l2" Type="GeneProduct" BackpageHead="Nfe2l2" GraphId="b68db" GroupRef="d6759">
+    <Graphics Color="000000" CenterX="5490.0" CenterY="7380.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18024"/>
+  </DataNode>
+  <DataNode TextLabel="Keap1" Type="GeneProduct" BackpageHead="Keap1" GraphId="fdb18" GroupRef="cf595">
+    <Graphics Color="000000" CenterX="9270.0" CenterY="2880.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50868"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk8" Type="GeneProduct" BackpageHead="Mapk8" GraphId="a859f">
+    <Graphics Color="000000" CenterX="6510.0" CenterY="1035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26419"/>
+  </DataNode>
+  <DataNode TextLabel="Nfe2l2" Type="GeneProduct" BackpageHead="Nfe2l2" GraphId="d3b16" GroupRef="d9c0e">
+    <Graphics Color="000000" CenterX="5475.0" CenterY="3240.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18024"/>
+  </DataNode>
+  <DataNode TextLabel="Gsta2" Type="GeneProduct" GraphId="dfa5a" GroupRef="b8fb5">
+    <Graphics Color="000000" CenterX="9840.0" CenterY="7770.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14858"/>
+  </DataNode>
+  <DataNode TextLabel="6-HITC" Type="Metabolite" GraphId="b366d">
+    <Comment>Full name: 6-(Methylsulfinyl)hexylisothiocyanate, or Japanese horseradish wasabi</Comment>
+    <Graphics Color="0000ff" CenterX="6915.0" CenterY="4365.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Keap1" Type="GeneProduct" BackpageHead="Keap1" GraphId="be345">
+    <Graphics Color="000000" CenterX="7395.0" CenterY="2820.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50868"/>
+  </DataNode>
+  <DataNode TextLabel="Prkca" Type="GeneProduct" BackpageHead="Prkca" GraphId="a62fe">
+    <Graphics Color="000000" CenterX="4905.0" CenterY="1035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18750"/>
+  </DataNode>
+  <DataNode TextLabel="Nfe2l2" Type="GeneProduct" BackpageHead="Nfe2l2" GraphId="fbb3a" GroupRef="cf595">
+    <Graphics Color="000000" CenterX="9270.0" CenterY="3180.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18024"/>
+  </DataNode>
+  <DataNode TextLabel="Gclc" Type="GeneProduct" BackpageHead="Gclc" GraphId="cecad" GroupRef="b8fb5">
+    <Graphics Color="000000" CenterX="9840.0" CenterY="8370.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14629"/>
+  </DataNode>
+  <DataNode TextLabel="Cebpb" Type="GeneProduct" BackpageHead="Cebpb" GraphId="c9ebb">
+    <Graphics Color="000000" CenterX="1620.0" CenterY="4260.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12608"/>
+  </DataNode>
+  <DataNode TextLabel="Curcumin" Type="Metabolite" GraphId="ff3f4">
+    <Graphics Color="0000ff" CenterX="10980.0" CenterY="1830.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB02269"/>
+  </DataNode>
+  <DataNode TextLabel="Sulforaphane" Type="Metabolite" GraphId="b03a0">
+    <Graphics Color="0000ff" CenterX="11505.0" CenterY="3240.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB05792"/>
+  </DataNode>
+  <DataNode TextLabel="Caffeic acid phenethyl ester" Type="Metabolite" GraphId="d739f">
+    <Graphics Color="0000ff" CenterX="12067.5" CenterY="2820.0" Width="2385.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Gclm" Type="GeneProduct" BackpageHead="Gclm" GraphId="f5ed1" GroupRef="b8fb5">
+    <Graphics Color="000000" CenterX="9840.0" CenterY="8670.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14630"/>
+  </DataNode>
+  <DataNode TextLabel="Hmox1" Type="GeneProduct" BackpageHead="Hmox1" GraphId="d4c77" GroupRef="b8fb5">
+    <Graphics Color="000000" CenterX="9840.0" CenterY="8970.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15368"/>
+  </DataNode>
+  <DataNode TextLabel="Cebpb" Type="GeneProduct" BackpageHead="Cebpb" GraphId="b3620">
+    <Graphics Color="000000" CenterX="3255.0" CenterY="7485.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12608"/>
+  </DataNode>
+  <DataNode TextLabel="Maf" Type="GeneProduct" BackpageHead="Maf" GraphId="d79c3" GroupRef="d6759">
+    <Graphics Color="000000" CenterX="6690.0" CenterY="7380.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17132"/>
+  </DataNode>
+  <DataNode TextLabel="Ephb2" Type="GeneProduct" BackpageHead="Ephb2" GraphId="dbe12">
+    <Graphics Color="000000" CenterX="8085.0" CenterY="1035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13844"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="f0473">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6315.0" y="4365.0" GraphRef="b366d" relX="-1.0" relY="0.0"/>
+      <Point x="5478.808993393045" y="4365.102308619558" GraphRef="f1d61" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e1c56" GroupRef="ec9a3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2220.0" y="7635.0"/>
+      <Point x="10890.0" y="7635.000000000001"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="bd859">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1620.0" y="4410.0" GraphRef="c9ebb" relX="0.0" relY="1.0"/>
+      <Point x="3255.0" y="7335.0" GraphRef="b3620" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bff9c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1620.0" y="1185.0" GraphRef="dea4c" relX="0.0" relY="1.0"/>
+      <Point x="1620.0" y="4110.0" GraphRef="c9ebb" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f19c4">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="cccccc">
+      <Point x="7410.0" y="7245.0" GraphRef="e3879" relX="1.0" relY="0.0"/>
+      <Point x="9240.0" y="8370.0" GraphRef="cecad" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="bcfe7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5475.0" y="3390.0" GraphRef="d3b16" relX="0.0" relY="1.0"/>
+      <Point x="5490.0" y="7230.0" GraphRef="b68db" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.25393289286967663" Shape="None" GraphId="f1d61"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d3ea2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3300.0" y="1185.0" GraphRef="b06bd" relX="0.0" relY="1.0"/>
+      <Point x="5175.0" y="3090.0" GraphRef="d3b16" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ff20b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10875.0" y="2820.0" GraphRef="d739f" relX="-1.0" relY="0.0"/>
+      <Point x="9990.0" y="2820.0" GraphRef="d7839" relX="1.0" relY="-0.5" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b7518">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1620.0" y="1185.0" GraphRef="dea4c" relX="0.0" relY="1.0"/>
+      <Point x="4875.0" y="3240.0" GraphRef="d3b16" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fbcd9" GroupRef="ec9a3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8175.0" y="7665.0"/>
+      <Point x="8175.0" y="7125.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cf48f">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="cccccc">
+      <Point x="7410.0" y="7245.0" GraphRef="e3879" relX="1.0" relY="0.0"/>
+      <Point x="9240.0" y="8670.0" GraphRef="f5ed1" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f3c7e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8085.0" y="1185.0" GraphRef="dbe12" relX="0.0" relY="1.0"/>
+      <Point x="5775.0" y="3090.0" GraphRef="d3b16" relX="0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cf751">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="cccccc">
+      <Point x="7410.0" y="7245.0" GraphRef="e3879" relX="1.0" relY="0.0"/>
+      <Point x="9240.0" y="7770.0" GraphRef="dfa5a" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="c1cbf">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8550.0" y="3030.0" GraphRef="d7839" relX="-1.0" relY="0.0"/>
+      <Point x="7995.0" y="2820.0" GraphRef="be345" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb4a3">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="cccccc">
+      <Point x="7410.0" y="7245.0" GraphRef="e3879" relX="1.0" relY="0.0"/>
+      <Point x="9240.0" y="8070.0" GraphRef="f553c" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b8a8f">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="cccccc">
+      <Point x="7410.0" y="7245.0" GraphRef="e3879" relX="1.0" relY="0.0"/>
+      <Point x="9240.0" y="8970.0" GraphRef="d4c77" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c8e6f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6510.0" y="1185.0" GraphRef="a859f" relX="0.0" relY="1.0"/>
+      <Point x="5475.0" y="3090.0" GraphRef="d3b16" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b2be9">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4905.0" y="1185.0" GraphRef="a62fe" relX="0.0" relY="1.0"/>
+      <Point x="5475.0" y="3090.0" GraphRef="d3b16" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c1c18" GroupRef="ec9a3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8175.0" y="7140.0"/>
+      <Point x="8940.0" y="7140.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="dc948">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10905.0" y="3240.0" GraphRef="b03a0" relX="-1.0" relY="0.0"/>
+      <Point x="9990.0" y="3240.0" GraphRef="d7839" relX="1.0" relY="0.5" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2864">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="10380.0" y="1830.0" GraphRef="ff3f4" relX="-1.0" relY="0.0"/>
+      <Point x="9630.0" y="2610.0" GraphRef="d7839" relX="0.5" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="c4827">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8550.0" y="3030.0" GraphRef="d7839" relX="-1.0" relY="0.0"/>
+      <Point x="6075.0" y="3240.0" GraphRef="d3b16" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="ARE" GraphId="dcb34" GroupRef="ec9a3">
+    <Graphics FontSize="150" Color="000000" CenterX="5445.0" CenterY="7755.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="S-P" Outline="RoundedRectangle" GraphId="bf455" GroupRef="d9c0e">
+    <Graphics FontSize="150" Color="000000" CenterX="5100.0" CenterY="3480.0" Width="390.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="T-P" Outline="RoundedRectangle" GraphId="f433f" GroupRef="d9c0e">
+    <Graphics FontSize="150" Color="000000" CenterX="5790.0" CenterY="3480.0" Width="390.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="caf0a">
+    <Graphics FontName="Dialog" FontWeight="Bold" FontStyle="Italic" FontSize="150" Color="000000" CenterX="6555.0" CenterY="5280.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="CCAAT/XRE" GraphId="f13bb" GroupRef="ec9a3">
+    <Graphics FontSize="150" Color="000000" CenterX="3255.0" CenterY="7755.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="S-P" Outline="RoundedRectangle" GraphId="b2d27" GroupRef="d6759">
+    <Graphics FontSize="150" Color="000000" CenterX="5115.0" CenterY="7110.0" Width="390.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="T-P" Outline="RoundedRectangle" GraphId="dd206" GroupRef="d6759">
+    <Graphics FontSize="150" Color="000000" CenterX="5805.0" CenterY="7110.0" Width="390.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Phase II enzymes" GraphId="edfb9" GroupRef="b8fb5">
+    <Graphics FontSize="150" Color="000000" CenterX="9870.0" CenterY="7440.0" Width="1740.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Oval" Style="Solid" GraphId="df31a">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="6487.25" CenterY="7837.25" Width="12045.5" Height="5265.5" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="cf595" GraphId="d7839" Style="Complex"/>
+  <Group GroupId="d6759" GraphId="e3879" Style="Complex"/>
+  <Group GroupId="ec9a3" GraphId="c7147" Style="Group"/>
+  <Group GroupId="d9c0e" GraphId="c3ec0" Style="Group"/>
+  <Group GroupId="b8fb5" GraphId="b7936" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="dba">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14570043</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer chemoprevention with dietary phytochemicals.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Cancer</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Surh YJ</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

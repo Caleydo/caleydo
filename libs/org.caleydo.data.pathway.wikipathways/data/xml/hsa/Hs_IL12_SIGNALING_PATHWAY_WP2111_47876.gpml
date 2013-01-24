@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="IL12 SIGNALING PATHWAY" Version="0.1" Author="Shamith Samarajiwa" Email="shamith.samarajiwa@cancer.org" Organism="Homo sapiens"><Comment Source="WikiPathways-description">IL-12 is an interleukin involved in the differentiation of naive T cells into Th0 cells, which will develop into either Th1 cells or Th2 cells. It is known as a T cell-stimulating factor and is also involved in the production of interferon-gamma (IFN-γ) and tumor necrosis factor-alpha (TNF-α) from T and natural killer (NK) cells, and reduces IL-4 mediated suppression of IFN-γ</Comment>
+  <Graphics BoardWidth="1164.0" BoardHeight="871.5"/>
+  <DataNode TextLabel="IL12RB1" GraphId="e080b" Type="GeneProduct">
+    <Graphics CenterX="618.0" CenterY="114.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3594"/>
+  </DataNode>
+  <DataNode TextLabel="IL12RB2" GraphId="f828f" Type="GeneProduct">
+    <Graphics CenterX="712.0" CenterY="115.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3595"/>
+  </DataNode>
+  <DataNode TextLabel="TYK2" GraphId="c600f" Type="GeneProduct">
+    <Graphics CenterX="564.0" CenterY="157.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7297"/>
+  </DataNode>
+  <DataNode TextLabel="JAK2" GraphId="b7abf" Type="GeneProduct">
+    <Graphics CenterX="668.0" CenterY="157.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3717"/>
+  </DataNode>
+  <DataNode TextLabel="STAT4" GraphId="d03f8" Type="GeneProduct">
+    <Graphics CenterX="586.0" CenterY="566.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6775"/>
+  </DataNode>
+  <DataNode TextLabel="STAT3" GraphId="f7a74" Type="GeneProduct">
+    <Graphics CenterX="374.0" CenterY="587.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5A" GraphId="eedf8" Type="GeneProduct">
+    <Graphics CenterX="631.0" CenterY="646.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6776"/>
+  </DataNode>
+  <DataNode TextLabel="PIAS2" GraphId="b2e8a" Type="GeneProduct">
+    <Graphics CenterX="795.0" CenterY="648.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9063"/>
+  </DataNode>
+  <DataNode TextLabel="SOCS3" GraphId="a4ed9" Type="GeneProduct">
+    <Graphics CenterX="841.0" CenterY="604.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9021"/>
+  </DataNode>
+  <DataNode TextLabel="JUN" GraphId="bbc8b" Type="GeneProduct">
+    <Graphics CenterX="503.0" CenterY="747.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3725"/>
+  </DataNode>
+  <DataNode TextLabel="IL12A" GraphId="ca371" Type="GeneProduct">
+    <Graphics CenterX="735.0" CenterY="46.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3592"/>
+  </DataNode>
+  <DataNode TextLabel="mkk6" GraphId="c7ea2" Type="Protein">
+    <Graphics CenterX="299.0" CenterY="335.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="p38" GraphId="b95b3" Type="Protein">
+    <Graphics CenterX="462.0" CenterY="358.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Shape GraphId="c5502">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell"/>
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="576.75" CenterY="478.0" Width="1114.5" Height="726.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="bdb14">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus"/>
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="573.75" CenterY="648.25" Width="708.5" Height="331.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+</Pathway>

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Processing of Capped Intronless Pre-mRNA" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Marzluff, WF" Maintainer="Joshi-Tope, G">
+  <Comment Source="WikiPathways-description">Co-transcriptional pre-mRNA splicing is not obligatory. Pre-mRNA splicing begins co-transcriptionally and often continues post-transcriptionally. Human genes contain an average of nine introns per gene, which cannot serve as splicing substrates until both 5' and 3' ends of each intron are synthesized. Thus the time that it takes for pol II to synthesize each intron defines a minimal time and distance along the gene in which splicing factors can be recruited. The time that it takes for pol II to reach the end of the gene defines the maximal time in which splicing could occur co-transcriptionally. Thus, the kinetics of transcription can affect the kinetics of splicing.&lt;br&gt;
+There are two classes of intronless pre-mRNAs (mRNAs expressed from genes that lack introns). The first class encodes the replication dependent histone mRNAs.  These mRNAs have unique 3' ends that do not have a polyA tail.  The replication dependent histone mRNAs in all metazoans, as well as Chlamydomonas and Volvox fall into this class. &lt;p&gt;The second class of mRNAs end in polyA tails, which are formed by a  mechanism similar to that which poly-adenylate pre-mRNAs containing introns. In the intronless genes there is a different method of replacing the 3' splice site that activates polyadenylation.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n4_REACTOME_110758" TextLabel="Capped Intronless &#10;Histone pre-mRNA:&#10;CBC complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="148.0" CenterY="219.0" Width="122.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3840"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_64547" TextLabel="Histone RNA &#10;hairpin-binding &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="166.0" CenterY="312.0" Width="102.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q14493"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_110759" TextLabel="Capped Intronless &#10;Histone pre-mRNA:&#10;CBP80:CBP20:SLBP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="383.0" CenterY="218.0" Width="122.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3458"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_110765" TextLabel="U7 snRNP:ZFP100 &#10;Complex&#10;" Type="Complex">
+    <BiopaxRef>lit_111680</BiopaxRef>
+    <Graphics Color="000000" CenterX="543.5" CenterY="183.0" Width="117.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5001"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_110766" TextLabel="Capped Intronless &#10;Histone pre-mRNA:&#10;CBP80:CBP20:SLBP:&#10;ZFP100 Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="498.0" CenterY="348.0" Width="122.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3667"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_111682" TextLabel="Mature Intronless &#10;transcript derived &#10;Histone mRNA:SLBP:&#10;CBP80:CBP20&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="743.5" CenterY="345.0" Width="125.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3802"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_112045" TextLabel="Capped Intronless &#10;Histone pre-mRNA:&#10;CBC:ZFP100 &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="675.0" CenterY="100.0" Width="122.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5338"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_156959" TextLabel="Mature intronless &#10;transcript derived &#10;Histone pre-mRNA:&#10;CBC complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="934.0" CenterY="244.0" Width="122.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5592"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_112159" TextLabel="capped intronless &#10;pre-mRNA:CBC &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="240.5" CenterY="604.0" Width="115.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3948"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_71995" TextLabel="CPSF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="226.5" CenterY="691.0" Width="35.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4530"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_112160" TextLabel="CPSF:capped &#10;intronless pre-&#10;mRNA:CBC complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="499.0" CenterY="650.0" Width="124.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3837"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_72006" TextLabel="CstF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="571.0" CenterY="585.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3503"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_112161" TextLabel="CstF:CPSF:capped &#10;intronless pre-&#10;mRNA:CBC complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="752.0" CenterY="651.0" Width="124.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3025"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_72020" TextLabel="CF II&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="960.0" CenterY="574.0" Width="32.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3772"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="840.5" CenterY="695.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_72015" TextLabel="CF I&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="921.5" CenterY="708.0" Width="29.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4896"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_72008" TextLabel="PABPN1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="879.0" CenterY="575.0" Width="54.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q86U42"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_71997" TextLabel="Poly(A) polymerase &#10;alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1043.0" CenterY="607.0" Width="122.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P51003"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_112162" TextLabel="intronless pre-mRNA &#10;cleavage complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1212.0" CenterY="650.0" Width="134.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3895"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_112167" TextLabel="Mature intronless &#10;derived mRNA &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="797.5" CenterY="475.0" Width="111.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4047"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_112165" TextLabel="downstream &#10;intronless mRNA &#10;fragment&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="911.5" CenterY="841.0" Width="107.0" Height="50.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_3064"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_112164" TextLabel="upstream mRNA &#10;fragment:CPSF:PAP:&#10;PABPN1 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="777.5" CenterY="809.0" Width="121.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3436"/>
+  </DataNode>
+  <Line GraphId="e_3_REACTOME_77584">
+    <Comment Source="WikiPathways-description">The 32 kDa stem-loop binding protein (SLBP), also termed hairpin binding protein (HBP) is likely the first protein that binds to the histone pre-mRNA as it is being transcribed.</Comment>
+    <BiopaxRef>lit_111683</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="250.0" Y="214.0" GraphId="e_3_0"/>
+      <Point X="279.0" Y="215.0" GraphId="e_3_1"/>
+      <Point X="319.0" Y="216.0" GraphId="e_3_2" GraphRef="n6_REACTOME_110759" RelX="-1.0491803278688525" RelY="-0.08" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_3_a_i"/>
+      <Anchor Position="0.42035850998732627" GraphId="e_3_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_3_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="212.0" Y="216.0" GraphId="e_3_i0_0" GraphRef="n4_REACTOME_110758" RelX="1.0491803278688525" RelY="-0.12"/>
+      <Point X="250.0" Y="214.0" GraphId="e_3_i0_1" GraphRef="e_3_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_3_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="187.0" Y="284.0" GraphId="e_3_i1_0" GraphRef="n5_REACTOME_64547" RelX="0.4117647058823529" RelY="-1.12"/>
+      <Point X="250.0" Y="214.0" GraphId="e_3_i1_1" GraphRef="e_3_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_REACTOME_77585">
+    <Comment Source="WikiPathways-description">The U7 snRNP.  This particle contains the U7 snRNA, the smallest of the snRNAs which varies from 57-70 nts long depending on the species. The 5Ã¢â¬â¢ end of U7 snRNA binds to a sequence 3Ã¢â¬â¢ of the stemloop, termed the histone downstream element (HDE). There are a number of proteins found in the U7 snRNP.  There are 7 Sm proteins, as are present in the spliceosomal snRNP. Five of these proteins are the same as ones found in the spliceosomal snRNPs and there are 2, Lsm10 and Lsm11 that are unique to U7 snRNP. A third protein joins the U7 snRNP, ZFP100, a large zinc finger protein. ZFP100 interacts with SLBP bound to the histone pre-mRNA and with Lsm11 and likely plays a critical role in recruiting U7 snRNP to the histone pre-mRNA.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="495.0" Y="238.0" GraphId="e_7_0"/>
+      <Point X="493.0" Y="273.0" GraphId="e_7_1"/>
+      <Point X="495.0" Y="313.0" GraphId="e_7_2" GraphRef="n9_REACTOME_110766" RelX="-0.04918032786885246" RelY="-1.09375" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_7_a_i"/>
+      <Anchor Position="0.4667616322239121" GraphId="e_7_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="527.0" Y="204.0" GraphId="e_7_i0_0" GraphRef="n8_REACTOME_110765" RelX="-0.27350427350427353" RelY="1.1666666666666667"/>
+      <Point X="495.0" Y="238.0" GraphId="e_7_i0_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_7_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="447.0" Y="228.0" GraphId="e_7_i1_0" GraphRef="n6_REACTOME_110759" RelX="1.0491803278688525" RelY="0.4"/>
+      <Point X="495.0" Y="238.0" GraphId="e_7_i1_1" GraphRef="e_7_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_REACTOME_77586">
+    <Comment Source="WikiPathways-description">Processing is initiated once the SLBP (bound to the stem loop) and the U7 snRNP (bound to the HDE) are both loaded onto the pre-mRNA. The pre-mRNA HDE makes base-pairing contacts with the 5Ã¢â¬Â² end of U7 snRNA. Binding of the U7 snRNP to the pre-mRNA is stabilized by interactions between a U7 snRNP protein, hZFP100 and SLBP. It should be noted that there must be other trans-acting factors, including the factor that catalyzes the cleavage reaction, which have yet to be defined. The cleavage occurs in the presence of EDTA as does the cleavage reaction in polyadenylation, it is likely that this reaction is catalyzed by a protein. There may well be additional proteins associated with the U7 snRNP, and since in some conditions in vitro processing occurs in the absence of SLBP, it is possible that all the other factors required for processing are associated with the active form of the U7 snRNP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="562.0" Y="346.0" GraphId="e_10_0" GraphRef="n9_REACTOME_110766" RelX="1.0491803278688525" RelY="-0.0625"/>
+      <Point X="601.0" Y="346.0" GraphId="e_10_1"/>
+      <Point X="645.0" Y="348.0" GraphId="e_10_2"/>
+      <Anchor Position="0.4696224643258443" GraphId="e_10_a_p"/>
+      <Anchor Position="1.0" GraphId="e_10_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="678.0" Y="346.0" GraphId="e_10_o0_0" ArrowHead="Arrow" GraphRef="n11_REACTOME_111682" RelX="-1.04" RelY="0.03125"/>
+      <Point X="645.0" Y="348.0" GraphId="e_10_o0_1" GraphRef="e_10_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="554.0" Y="204.0" GraphId="e_10_o1_0" ArrowHead="Arrow" GraphRef="n8_REACTOME_110765" RelX="0.18803418803418803" RelY="1.1666666666666667"/>
+      <Point X="645.0" Y="348.0" GraphId="e_10_o1_1" GraphRef="e_10_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_REACTOME_111438">
+    <Comment Source="WikiPathways-description">The U7 snRNP.  This particle contains the U7 snRNA, the smallest of the snRNAs which varies from 57-70 nts long depending on the species. The 5Ã¢â¬â¢ end of U7 snRNA binds to a sequence 3Ã¢â¬â¢ of the stemloop, termed the histone downstream element (HDE). There are a number of proteins found in the U7 snRNP.  There are 7 Sm proteins, as are present in the spliceosomal snRNP. Five of these proteins are the same as ones found in the spliceosomal snRNPs and there are 2, Lsm10 and Lsm11 that are unique to U7 snRNP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="438.0" Y="99.0" GraphId="e_12_0"/>
+      <Point X="521.0" Y="98.0" GraphId="e_12_1"/>
+      <Point X="611.0" Y="99.0" GraphId="e_12_2" GraphRef="n13_REACTOME_112045" RelX="-1.0491803278688525" RelY="-0.03125" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_12_a_i"/>
+      <Anchor Position="0.4797714940925582" GraphId="e_12_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="208.0" Y="191.0" GraphId="e_12_i0_0" GraphRef="n4_REACTOME_110758" RelX="0.9836065573770492" RelY="-1.12"/>
+      <Point X="438.0" Y="99.0" GraphId="e_12_i0_1" GraphRef="e_12_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_12_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="520.0" Y="162.0" GraphId="e_12_i1_0" GraphRef="n8_REACTOME_110765" RelX="-0.39316239316239315" RelY="-1.1666666666666667"/>
+      <Point X="438.0" Y="99.0" GraphId="e_12_i1_1" GraphRef="e_12_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_111437">
+    <Comment Source="WikiPathways-description">Processing is initiated once the U7 snRNP is loaded onto the pre-mRNA. The pre-mRNA HDE makes base-pairing contacts with the 5Ã¢â¬Â² end of U7 snRNA. Binding of the U7 snRNP to the pre-mRNA is stabilized by interactions between a U7 snRNP protein, hZFP100 and other trans-acting factors, including the factor that catalyzes the cleavage reaction, which have yet to be defined. The cleavage occurs in the presence of EDTA as does the cleavage reaction in polyadenylation, it is likely that this reaction is catalyzed by a protein. There may well be additional proteins associated with the U7 snRNP, since the in vitro processing occurs in the absence of SLBP, it is possible that all the other factors required for processing are associated with the active form of the U7 snRNP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="739.0" Y="99.0" GraphId="e_14_0" GraphRef="n13_REACTOME_112045" RelX="1.0491803278688525" RelY="-0.03125"/>
+      <Point X="838.0" Y="99.0" GraphId="e_14_1"/>
+      <Point X="838.0" Y="161.0" GraphId="e_14_2"/>
+      <Anchor Position="0.6149068322981367" GraphId="e_14_a_p"/>
+      <Anchor Position="1.0" GraphId="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="896.0" Y="209.0" GraphId="e_14_o0_0" ArrowHead="Arrow" GraphRef="n15_REACTOME_156959" RelX="-0.6229508196721312" RelY="-1.09375"/>
+      <Point X="838.0" Y="161.0" GraphId="e_14_o0_1" GraphRef="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="605.0" Y="178.0" GraphId="e_14_o1_0" ArrowHead="Arrow" GraphRef="n8_REACTOME_110765" RelX="1.0598290598290598" RelY="-0.2777777777777778"/>
+      <Point X="838.0" Y="161.0" GraphId="e_14_o1_1" GraphRef="e_14_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_77589">
+    <Comment Source="WikiPathways-description">Poly(A) polymerase has no specificity for any particular RNA sequence, as well as a very low affinity for the RNA. Under physiological conditions, the activity of poly(A) polymerase depends on two auxiliary factors, both of which bind to specific RNA sequences and recruit the poly(A) polymerase by a direct contact. One of these proteins is the heterotetrameric CPSF, which binds the AAUAAA sequence and is also essential for 3' cleavage.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="342.0" Y="656.0" GraphId="e_16_0"/>
+      <Point X="389.0" Y="654.0" GraphId="e_16_1"/>
+      <Point X="434.0" Y="652.0" GraphId="e_16_2" GraphRef="n19_REACTOME_112160" RelX="-1.0483870967741935" RelY="0.08" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_16_a_i"/>
+      <Anchor Position="0.5108490469436123" GraphId="e_16_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="289.0" Y="632.0" GraphId="e_16_i0_0" GraphRef="n17_REACTOME_112159" RelX="0.8521739130434782" RelY="1.12"/>
+      <Point X="342.0" Y="656.0" GraphId="e_16_i0_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="247.0" Y="685.0" GraphId="e_16_i1_0" GraphRef="n18_REACTOME_71995" RelX="1.2" RelY="-0.5454545454545454"/>
+      <Point X="342.0" Y="656.0" GraphId="e_16_i1_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_REACTOME_77590">
+    <Comment Source="WikiPathways-description">Endonucleolytic cleavage separates the pre-mRNA into an upstream fragment destined to become the mature mRNA and a downstream fragment that is rapidly degraded. Polyadenylation and cleavage occur concurrently, with complexes co-assembling, cleavage depends on two signals in the RNA, a highly conserved hexanucleotide, AAUAAA, 10 to 30 nucleotides upstream of the cleavage site, and a poorly conserved GU- or U-rich downstream element. Additional sequences, often upstream of AAUAAA, can enhance the efficiency of the reaction. Cleavage occurs most often after a CA dinucleotide. A single gene can have more than one 3' processing site.&lt;p&gt; Cleavage is preceded by the assembly of a large processing complex, the composition of which is poorly defined. ATP, but not its hydrolysis, is required for assembly. Cleavage depends on a number of protein factor. CPSF, a heterotetramer, binds specifically to the AAUAAA sequence. The heterotrimer CstF binds the GU- or U-rich downstream element.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="622.0" Y="647.0" GraphId="e_20_0"/>
+      <Point X="652.0" Y="647.0" GraphId="e_20_1"/>
+      <Point X="687.0" Y="648.0" GraphId="e_20_2" GraphRef="n22_REACTOME_112161" RelX="-1.0483870967741935" RelY="-0.12" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_20_a_i"/>
+      <Anchor Position="0.46143706748679686" GraphId="e_20_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="564.0" Y="648.0" GraphId="e_20_i0_0" GraphRef="n19_REACTOME_112160" RelX="1.0483870967741935" RelY="-0.08"/>
+      <Point X="622.0" Y="647.0" GraphId="e_20_i0_1" GraphRef="e_20_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_20_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="580.0" Y="599.0" GraphId="e_20_i1_0" GraphRef="n21_REACTOME_72006" RelX="0.5625" RelY="1.2727272727272727"/>
+      <Point X="622.0" Y="647.0" GraphId="e_20_i1_1" GraphRef="e_20_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_77591">
+    <Comment Source="WikiPathways-description">CF I, which appears to be composed of two subunits, one of several related larger polypeptides and a common smaller one, also binds RNA, but with unknown specificity. RNA recognition by these proteins is cooperative. Cleavage also requires CF II, composed of at least two subunits, and poly(A) polymerase, the enzyme synthesizing the poly(A) tail in the second step of the reaction.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="881.0" Y="647.0" GraphId="e_23_0"/>
+      <Point X="1057.0" Y="647.0" GraphId="e_23_1"/>
+      <Point X="1142.0" Y="648.0" GraphId="e_23_2" GraphRef="n29_REACTOME_112162" RelX="-1.044776119402985" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_23_a_i"/>
+      <Anchor Position="0.6743143049138189" GraphId="e_23_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="948.0" Y="588.0" GraphId="e_23_i0_0" GraphRef="n24_REACTOME_72020" RelX="-0.75" RelY="1.2727272727272727"/>
+      <Point X="881.0" Y="647.0" GraphId="e_23_i0_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="817.0" Y="649.0" GraphId="e_23_i1_0" GraphRef="n22_REACTOME_112161" RelX="1.0483870967741935" RelY="-0.08"/>
+      <Point X="881.0" Y="647.0" GraphId="e_23_i1_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="852.0" Y="677.0" GraphId="e_23_i2_0" GraphRef="n25_REACTOME_29358" RelX="0.6153846153846154" RelY="-1.2"/>
+      <Point X="881.0" Y="647.0" GraphId="e_23_i2_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="913.0" Y="694.0" GraphId="e_23_i3_0" GraphRef="n26_REACTOME_72015" RelX="-0.5517241379310345" RelY="-1.2727272727272727"/>
+      <Point X="881.0" Y="647.0" GraphId="e_23_i3_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="879.0" Y="589.0" GraphId="e_23_i4_0" GraphRef="n27_REACTOME_72008" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="881.0" Y="647.0" GraphId="e_23_i4_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="979.0" Y="622.0" GraphId="e_23_i5_0" GraphRef="n28_REACTOME_71997" RelX="-1.0491803278688525" RelY="0.8333333333333334"/>
+      <Point X="881.0" Y="647.0" GraphId="e_23_i5_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_77593">
+    <Comment Source="WikiPathways-description">The nuclear poly(A) binding protein (PABPN1), which binds the growing poly(A) tails once it has reached a length of about ten nucleotides. Stimulation of poly(A) polymerase by both CPSF and PABPN1 is synergistic and results in processive elongation of the RNA (the polymerase adds AMP residues without dissociating from the RNA). The processive reaction is terminated when the tail has reached a length of about 250 nucleotides.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1188.0" Y="629.0" GraphId="e_30_0" GraphRef="n29_REACTOME_112162" RelX="-0.3582089552238806" RelY="-1.1666666666666667"/>
+      <Point X="1073.0" Y="543.0" GraphId="e_30_1"/>
+      <Point X="927.0" Y="520.0" GraphId="e_30_2"/>
+      <Anchor Position="0.4927927381854098" GraphId="e_30_a_p"/>
+      <Anchor Position="1.0" GraphId="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="953.0" Y="560.0" GraphId="e_30_o0_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_72020" RelX="-0.4375" RelY="-1.2727272727272727"/>
+      <Point X="927.0" Y="520.0" GraphId="e_30_o0_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="590.0" Y="575.0" GraphId="e_30_o1_0" ArrowHead="Arrow" GraphRef="n21_REACTOME_72006" RelX="1.1875" RelY="-0.9090909090909091"/>
+      <Point X="628.0" Y="550.0" GraphId="e_30_o1_1"/>
+      <Point X="927.0" Y="520.0" GraphId="e_30_o1_2" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="856.0" Y="494.0" GraphId="e_30_o2_0" ArrowHead="Arrow" GraphRef="n31_REACTOME_112167" RelX="1.063063063063063" RelY="0.76"/>
+      <Point X="927.0" Y="520.0" GraphId="e_30_o2_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="921.0" Y="694.0" GraphId="e_30_o3_0" ArrowHead="Arrow" GraphRef="n26_REACTOME_72015" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="927.0" Y="520.0" GraphId="e_30_o3_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="888.0" Y="561.0" GraphId="e_30_o4_0" ArrowHead="Arrow" GraphRef="n27_REACTOME_72008" RelX="0.3333333333333333" RelY="-1.2727272727272727"/>
+      <Point X="927.0" Y="520.0" GraphId="e_30_o4_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1019.0" Y="586.0" GraphId="e_30_o5_0" ArrowHead="Arrow" GraphRef="n28_REACTOME_71997" RelX="-0.39344262295081966" RelY="-1.1666666666666667"/>
+      <Point X="927.0" Y="520.0" GraphId="e_30_o5_1" GraphRef="e_30_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_77592">
+    <Comment Source="WikiPathways-description">The polypeptide catalyzing the hydrolysis of the phosphodiester bond remains to be identified. Cleavage produces a 3'-OH on the upstream fragment and a 5'-phosphate on the downstream fragment. At some unknown point after cleavage, the downstream fragment, CstF, CF I and CF II are thought to be released, whereas CPSF and poly(A) polymerase remain to carry out polyadenylation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1177.0" Y="671.0" GraphId="e_32_0" GraphRef="n29_REACTOME_112162" RelX="-0.5223880597014925" RelY="1.1666666666666667"/>
+      <Point X="1078.0" Y="719.0" GraphId="e_32_1"/>
+      <Point X="963.0" Y="768.0" GraphId="e_32_2"/>
+      <Anchor Position="0.4681285712944216" GraphId="e_32_a_p"/>
+      <Anchor Position="1.0" GraphId="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="960.0" Y="588.0" GraphId="e_32_o0_0" ArrowHead="Arrow" GraphRef="n24_REACTOME_72020" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="963.0" Y="768.0" GraphId="e_32_o0_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="576.0" Y="599.0" GraphId="e_32_o1_0" ArrowHead="Arrow" GraphRef="n21_REACTOME_72006" RelX="0.3125" RelY="1.2727272727272727"/>
+      <Point X="619.0" Y="687.0" GraphId="e_32_o1_1"/>
+      <Point X="963.0" Y="768.0" GraphId="e_32_o1_2" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="928.0" Y="813.0" GraphId="e_32_o2_0" ArrowHead="Arrow" GraphRef="n33_REACTOME_112165" RelX="0.3177570093457944" RelY="-1.12"/>
+      <Point X="963.0" Y="768.0" GraphId="e_32_o2_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="841.0" Y="795.0" GraphId="e_32_o3_0" ArrowHead="Arrow" GraphRef="n34_REACTOME_112164" RelX="1.0578512396694215" RelY="-0.56"/>
+      <Point X="963.0" Y="768.0" GraphId="e_32_o3_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="928.0" Y="722.0" GraphId="e_32_o4_0" ArrowHead="Arrow" GraphRef="n26_REACTOME_72015" RelX="0.4827586206896552" RelY="1.2727272727272727"/>
+      <Point X="963.0" Y="768.0" GraphId="e_32_o4_1" GraphRef="e_32_a_o"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="48.5" CenterY="938.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_2" GroupRef="group_comp_2" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="89.0" CenterY="893.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="676.5" CenterY="481.5" Width="1345.0" Height="955.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics Color="000000" CenterX="668.5" CenterY="472.5" Width="1281.0" Height="883.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111680" rdf:id="lit_111680">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11782445</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A novel zinc finger protein is associated with U7 snRNP and interacts with the stem-loop binding protein in the histone pre-mRNP to stimulate 3'-end processing</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dominski, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Erkmann, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanchez, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marzluff, WF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 16:58-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_111683" rdf:id="lit_111683">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9049306</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The gene for histone RNA hairpin binding protein is located on human chromosome 4 and encodes a novel type of RNA binding protein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schaller, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eglite, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SchÃ¼mperli, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MÃ¼ller, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 16:769-78</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

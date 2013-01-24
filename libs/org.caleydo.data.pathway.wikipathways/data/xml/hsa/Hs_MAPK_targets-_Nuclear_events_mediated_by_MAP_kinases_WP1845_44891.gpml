@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="MAPK targets/ Nuclear events mediated by MAP kinases" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Shamovsky, V" Maintainer="Shamovsky, V">
+  <Comment Source="WikiPathways-description">MAPKs are protein kinases that, once activated, phosphorylate their specific cytosolic or nuclear substrates at serine and/or threonine residues. Such phosphorylation events can either positively or negatively regulate substrate, and thus entire signaling cascade activity.  &lt;p&gt;The major cytosolic target of activated ERKs are RSKs (90 kDa Ribosomal protein S6 Kinase). Active RSKs translocates to the nucleus and phosphorylates such factors as c-Fos(on Ser362), SRF (Serum Response Factor) at Ser103, and CREB (Cyclic AMP Response Element-Binding protein) at Ser133. In the nucleus activated ERKs phosphorylate many other targets such as MSKs (Mitogen- and Stress-activated protein kinases), MNK (MAP interacting kinase) and Elk1 (on Serine383 and Serine389). ERK can directly phosphorylate CREB and  also AP-1 components c-Jun and c-Fos.  Another important target of ERK is NF-KappaB. Recent studies reveals that nuclear pore proteins are direct substrates for ERK (Kosako H et al, 2009). Other ERK nuclear targets include c-Myc, HSF1 (Heat-Shock Factor-1), STAT1/3 (Signal Transducer and Activator of Transcription-1/3), and many more transcription factors.&lt;/p&gt;&lt;p&gt;Activated p38 MAPK is able to phosphorylate a variety of substrates, including transcription factors STAT1, p53, ATF2 (Activating transcription factor 2), MEF2 (Myocyte enhancer factor-2), protein kinases MSK1, MNK, MAPKAPK2/3, death/survival molecules (Bcl2, caspases), and cell cycle control factors (cyclin D1).&lt;/p&gt;&lt;p&gt;JNK, once activated, phosphorylates a range of nuclear substrates, including transcription factors Jun, ATF, Elk1, p53, STAT1/3 and many other factors. JNK has also been shown to directly phosphorylate many nuclear hormone receptors. For example, peroxisome proliferator-activated receptor 1 (PPAR-1) and retinoic acid receptors RXR and RAR are substrates for JNK.  Other JNK targets are heterogeneous nuclear ribonucleoprotein K (hnRNP-K) and the Pol I-specific transcription factor TIF-IA, which regulates ribosome synthesis. Other adaptor and scaffold proteins have also been characterized as nonnuclear substrates of JNK.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_442954</BiopaxRef>
+  <BiopaxRef>lit_500551</BiopaxRef>
+  <BiopaxRef>lit_500549</BiopaxRef>
+  <DataNode GraphId="n35_REACTOME_198710" TextLabel="ELK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="58.0" CenterY="103.5" Width="40.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13391"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="70.0" CenterY="190.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_198666" TextLabel="Phospho-&#10;ELK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="200.5" CenterY="96.5" Width="63.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13225"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="203.5" CenterY="185.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_198701" TextLabel="Phospho-ERK &#10;dimer&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="136.5" CenterY="42.0" Width="113.0" Height="30.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_12827"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_198657" TextLabel="MSK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="70.0" CenterY="283.0" Width="42.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O75582"/>
+  </DataNode>
+  <DataNode GraphId="n43_REACTOME_198683" TextLabel="Phospho-MSK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="198.0" CenterY="280.5" Width="104.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O75582"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="57.0" CenterY="357.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="205.5" CenterY="357.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_198703" TextLabel="Phospho-MAP kinase &#10;p38 alpha/beta&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="124.0" CenterY="411.5" Width="124.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_12925"/>
+  </DataNode>
+  <DataNode GraphId="n56_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="421.0" CenterY="254.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n57_REACTOME_199858" TextLabel="Ribosomal protein S6 &#10;kinase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="418.5" CenterY="162.0" Width="123.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13229"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_199849" TextLabel="Phospho-&#10;Ribosomal protein &#10;S6 kinase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="565.5" CenterY="159.0" Width="115.0" Height="46.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_12696"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="573.5" CenterY="248.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_199878" TextLabel="Phospho-&#10;ERK1/2/5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="494.0" CenterY="63.0" Width="108.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13301"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_199911" TextLabel="MEF2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="421.5" CenterY="325.5" Width="45.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13049"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_199933" TextLabel="Phospho-MEF2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="579.0" CenterY="330.0" Width="88.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_12996"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_198738" TextLabel="Phospho-ERK5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="495.5" CenterY="382.0" Width="89.0" Height="34.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13164"/>
+  </DataNode>
+  <DataNode GraphId="n72_REACTOME_113518" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="593.5" CenterY="74.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_199955" TextLabel="ERK1/2/5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="777.5" CenterY="84.5" Width="65.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_13316"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_113550" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="877.0" CenterY="70.5" Width="102.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n75_REACTOME_165970" TextLabel="PP2A-ABdeltaC &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="685.0" CenterY="87.0" Width="94.0" Height="42.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2369"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_203792" TextLabel="ERK-specific DUSP&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="741.5" CenterY="211.5" Width="119.0" Height="27.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_12976"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_52777" TextLabel="CREB&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="640.0" CenterY="371.0" Width="46.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16220"/>
+  </DataNode>
+  <DataNode GraphId="n98_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="666.0" CenterY="460.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n99_REACTOME_111910" TextLabel="phospho-CREB&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="877.0" CenterY="371.0" Width="90.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P16220"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="856.5" CenterY="458.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_199900" TextLabel="Cyclic-AMP-&#10;dependent &#10;transcription factor &#10;ATF-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="682.5" CenterY="581.0" Width="113.0" Height="68.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18846"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_199897" TextLabel="Phospho-Cyclic-&#10;AMP-dependent &#10;transcription factor &#10;ATF-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="845.0" CenterY="581.0" Width="124.0" Height="68.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P18846"/>
+  </DataNode>
+  <DataNode GraphId="n120_REACTOME_199936" TextLabel="Phospho-MAP &#10;kinase-activated &#10;protein kinase 2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="746.5" CenterY="272.5" Width="125.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P49137"/>
+  </DataNode>
+  <DataNode GraphId="n126_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="119.0" CenterY="773.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n127_REACTOME_450336" TextLabel="ATF-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="105.5" CenterY="683.5" Width="41.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P15336"/>
+  </DataNode>
+  <DataNode GraphId="n128_REACTOME_450243" TextLabel="ATF-2-P&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="281.5" CenterY="684.5" Width="57.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P15336"/>
+  </DataNode>
+  <DataNode GraphId="n129_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="270.5" CenterY="770.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n130_REACTOME_450307" TextLabel="Activated MAPK &#10;kinases ERK1/2, JNK, &#10;p38&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="190.5" CenterY="620.5" Width="133.0" Height="51.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_21930"/>
+  </DataNode>
+  <DataNode GraphId="n142_REACTOME_450237" TextLabel="c-Jun-P&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="330.0" CenterY="878.5" Width="58.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P05412"/>
+  </DataNode>
+  <DataNode GraphId="n143_REACTOME_450262" TextLabel="Activated Protein 1 &#10;(AP-1) heterodimer &#10;cJUN/ATF2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="454.0" CenterY="736.5" Width="124.0" Height="67.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21429"/>
+  </DataNode>
+  <DataNode GraphId="n147_REACTOME_450283" TextLabel="c-FOS -P&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="599.0" CenterY="777.5" Width="84.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P01100"/>
+  </DataNode>
+  <DataNode GraphId="n148_REACTOME_450327" TextLabel="Activated Protein 1 (AP-1) &#10;heterodimer cJUN/cFOS&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="746.0" CenterY="877.5" Width="154.0" Height="55.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21707"/>
+  </DataNode>
+  <DataNode GraphId="n152_REACTOME_450250" TextLabel="c-Jun&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="75.0" CenterY="881.5" Width="44.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P05412"/>
+  </DataNode>
+  <DataNode GraphId="n155_REACTOME_450253" TextLabel="Phosphorylated JNKs: &#10;MAPK8, MAPK9, MAPK10&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="194.5" CenterY="881.0" Width="153.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22035"/>
+  </DataNode>
+  <DataNode GraphId="n157_REACTOME_29358" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="744.0" CenterY="681.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n158_REACTOME_450216" TextLabel="c-FOS&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="747.0" CenterY="777.5" Width="42.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P01100"/>
+  </DataNode>
+  <DataNode GraphId="n159_REACTOME_113582" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="588.5" CenterY="680.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <Line GraphId="e_34_REACTOME_198731">
+    <Comment Source="WikiPathways-description">Following translocation to the nucleus, ERK1/2 directly phosphorylates key effectors, including the ubiquitous transcription factors ELK1 (Ets like protein 1). At least five residues in the C terminal domain of ELK1 are phosphorylated upon growth factor stimulation. ELK1 can form a ternary complex with the serum response factor (SRF) and consensus sequences, such as serum response elements (SRE), on DNA, thus stimulating transcription of a set of immediate early genes like c fos.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="111.0" Y="144.0" GraphId="e_34_0"/>
+      <Point X="146.0" Y="144.0" GraphId="e_34_1"/>
+      <Point X="164.0" Y="144.0" GraphId="e_34_2"/>
+      <Anchor Position="0.0" GraphId="e_34_a_i"/>
+      <Anchor Position="0.660377358490566" GraphId="e_34_a_p"/>
+      <Anchor Position="1.0" GraphId="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="74.0" Y="119.0" GraphId="e_34_i0_0" GraphRef="n35_REACTOME_198710" RelX="0.8" RelY="1.28"/>
+      <Point X="111.0" Y="144.0" GraphId="e_34_i0_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="83.0" Y="172.0" GraphId="e_34_i1_0" GraphRef="n36_REACTOME_29358" RelX="0.6842105263157895" RelY="-1.1612903225806452"/>
+      <Point X="111.0" Y="144.0" GraphId="e_34_i1_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="187.0" Y="116.0" GraphId="e_34_o0_0" ArrowHead="Arrow" GraphRef="n37_REACTOME_198666" RelX="-0.4126984126984127" RelY="1.2121212121212122"/>
+      <Point X="164.0" Y="144.0" GraphId="e_34_o0_1" GraphRef="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="188.0" Y="167.0" GraphId="e_34_o1_0" ArrowHead="Arrow" GraphRef="n38_REACTOME_113582" RelX="-0.7692307692307693" RelY="-1.1612903225806452"/>
+      <Point X="164.0" Y="144.0" GraphId="e_34_o1_1" GraphRef="e_34_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="137.0" Y="60.0" GraphId="e_34_c__0_0" GraphRef="n39_REACTOME_198701" RelX="0.017699115044247787" RelY="1.2"/>
+      <Point X="146.0" Y="144.0" GraphId="e_34_c__0_1" GraphRef="e_34_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_198756">
+    <Comment Source="WikiPathways-description">MSK1 (Ribosomal protein S6 kinase alpha-5) is a serine/threonine kinase that is localised in the nucleus. It contains two protein kinase domains in a single polypeptide. It can be activated 5-fold by ERK1/2 through phosphorylation at four key residues.</Comment>
+    <BiopaxRef>lit_199367</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="90.0" Y="236.0" GraphId="e_40_0"/>
+      <Point X="141.0" Y="236.0" GraphId="e_40_1"/>
+      <Point X="192.0" Y="236.0" GraphId="e_40_2"/>
+      <Anchor Position="0.0" GraphId="e_40_a_i"/>
+      <Anchor Position="0.5" GraphId="e_40_a_p"/>
+      <Anchor Position="1.0" GraphId="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="75.0" Y="268.0" GraphId="e_40_i0_0" GraphRef="n42_REACTOME_198657" RelX="0.23809523809523808" RelY="-1.25"/>
+      <Point X="90.0" Y="236.0" GraphId="e_40_i0_1" GraphRef="e_40_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="76.0" Y="209.0" GraphId="e_40_i1_0" GraphRef="n36_REACTOME_29358" RelX="0.3157894736842105" RelY="1.2258064516129032"/>
+      <Point X="90.0" Y="236.0" GraphId="e_40_i1_1" GraphRef="e_40_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="196.0" Y="263.0" GraphId="e_40_o0_0" ArrowHead="Arrow" GraphRef="n43_REACTOME_198683" RelX="-0.038461538461538464" RelY="-1.1724137931034482"/>
+      <Point X="192.0" Y="236.0" GraphId="e_40_o0_1" GraphRef="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="199.0" Y="204.0" GraphId="e_40_o1_0" ArrowHead="Arrow" GraphRef="n38_REACTOME_113582" RelX="-0.20512820512820512" RelY="1.2258064516129032"/>
+      <Point X="192.0" Y="236.0" GraphId="e_40_o1_1" GraphRef="e_40_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="133.0" Y="60.0" GraphId="e_40_c__0_0" GraphRef="n39_REACTOME_198701" RelX="-0.05309734513274336" RelY="1.2"/>
+      <Point X="124.0" Y="126.0" GraphId="e_40_c__0_1"/>
+      <Point X="141.0" Y="236.0" GraphId="e_40_c__0_2" GraphRef="e_40_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_REACTOME_198669">
+    <Comment Source="WikiPathways-description">MSK1 (Ribosomal protein S6 kinase alpha-5) is a serine/threonine kinase that is localised in the nucleus. It contains two protein kinase domains in a single polypeptide. It can be activated 5-fold by p38MAPK through phosphorylation at four key residues.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_199367</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="85.0" Y="315.0" GraphId="e_45_0"/>
+      <Point X="122.0" Y="315.0" GraphId="e_45_1"/>
+      <Point X="156.0" Y="315.0" GraphId="e_45_2"/>
+      <Anchor Position="0.0" GraphId="e_45_a_i"/>
+      <Anchor Position="0.5211267605633803" GraphId="e_45_a_p"/>
+      <Anchor Position="1.0" GraphId="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="67.0" Y="339.0" GraphId="e_45_i0_0" GraphRef="n46_REACTOME_29358" RelX="0.5263157894736842" RelY="-1.1612903225806452"/>
+      <Point X="85.0" Y="315.0" GraphId="e_45_i0_1" GraphRef="e_45_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="75.0" Y="298.0" GraphId="e_45_i1_0" GraphRef="n42_REACTOME_198657" RelX="0.23809523809523808" RelY="1.25"/>
+      <Point X="85.0" Y="315.0" GraphId="e_45_i1_1" GraphRef="e_45_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="180.0" Y="298.0" GraphId="e_45_o0_0" ArrowHead="Arrow" GraphRef="n43_REACTOME_198683" RelX="-0.34615384615384615" RelY="1.2413793103448276"/>
+      <Point X="156.0" Y="315.0" GraphId="e_45_o0_1" GraphRef="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="186.0" Y="339.0" GraphId="e_45_o1_0" ArrowHead="Arrow" GraphRef="n47_REACTOME_113582" RelX="-0.9743589743589743" RelY="-1.1612903225806452"/>
+      <Point X="156.0" Y="315.0" GraphId="e_45_o1_1" GraphRef="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="123.0" Y="384.0" GraphId="e_45_c__0_0" GraphRef="n48_REACTOME_198703" RelX="-0.016129032258064516" RelY="-1.1020408163265305"/>
+      <Point X="122.0" Y="315.0" GraphId="e_45_c__0_1" GraphRef="e_45_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_REACTOME_198746">
+    <Comment Source="WikiPathways-description">The p90 ribosomal S6 kinases (RSK1-4) comprise a family of serine/threonine kinases that lie at the terminus of the ERK pathway. RSK family members are unusual among serine/threonine kinases in that they contain two distinct kinase domains, both of which are catalytically functional . The C-terminal kinase domain is believed to be involved in autophosphorylation, a critical step in RSK activation, whereas the N-terminal kinase domain, which is homologous to members of the AGC superfamily of kinases, is responsible for the phosphorylation of all known exogenous substrates of RSK.&lt;br&gt;RSKs can be activated by the ERKs (ERK1, 2, 5) in the cytoplasm as well as in the nucleus,  they both have cytoplasmic and nuclear substrates, and  they are able to move from nucleus to cytoplasm. Efficient RSK activation by ERKs requires its interaction through a docking site located near the RSK C terminus. The mechanism of RSK activation has been studied mainly with regard to ERK1 and ERK2. RSK activation leads to the phosphorylation of four essential residues Ser239, Ser381, Ser398,  and Thr590, and two additional sites, Thr377 and Ser749 (the amino acid numbering refers to RSK1). ERK is thought to play at least two roles in RSK1 activation. First, activated ERK phosphorylates RSK1 on Thr590, and possibly on Thr377 and Ser381, and second, ERK brings RSK1 into close proximity to membrane-associated kinases that may phosphorylate RSK1 on Ser381 and Ser398.&lt;br&gt;Moreover, RSKs and ERK1/2 form a complex that transiently dissociates upon growth factor signalling. Complex dissociation requires phosphorylation of RSK1 serine 749, a growth factor regulated phosphorylation site located near the ERK docking site. Serine 749 is phosphorylated by the N-terminal kinase domain of RSK1 itself. ERK1/2 docking to RSK2 and RSK3 is also regulated in a similar way. The length of RSK activation following growth factor stimulation depends on the duration  of the RSK/ERK complex, which, in turn, differs among the different RSK isoforms. RSK1 and RSK2 readily dissociate from ERK1/2 following growth factor stimulation stimulation, but RSK3 remains associated with active ERK1/2 longer, and  also remains active longer than RSK1 and RSK2. &lt;br&gt;</Comment>
+    <BiopaxRef>lit_199940</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="455.0" Y="209.0" GraphId="e_55_0"/>
+      <Point X="491.0" Y="209.0" GraphId="e_55_1"/>
+      <Point X="521.0" Y="209.0" GraphId="e_55_2"/>
+      <Anchor Position="0.0" GraphId="e_55_a_i"/>
+      <Anchor Position="0.5454545454545454" GraphId="e_55_a_p"/>
+      <Anchor Position="1.0" GraphId="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="432.0" Y="236.0" GraphId="e_55_i0_0" GraphRef="n56_REACTOME_29358" RelX="0.5789473684210527" RelY="-1.1612903225806452"/>
+      <Point X="455.0" Y="209.0" GraphId="e_55_i0_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="432.0" Y="184.0" GraphId="e_55_i1_0" GraphRef="n57_REACTOME_199858" RelX="0.22764227642276422" RelY="1.1578947368421053"/>
+      <Point X="455.0" Y="209.0" GraphId="e_55_i1_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="544.0" Y="185.0" GraphId="e_55_o0_0" ArrowHead="Arrow" GraphRef="n58_REACTOME_199849" RelX="-0.3652173913043478" RelY="1.1304347826086956"/>
+      <Point X="521.0" Y="209.0" GraphId="e_55_o0_1" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="551.0" Y="233.0" GraphId="e_55_o1_0" ArrowHead="Arrow" GraphRef="n59_REACTOME_113582" RelX="-1.1282051282051282" RelY="-0.967741935483871"/>
+      <Point X="521.0" Y="209.0" GraphId="e_55_o1_1" GraphRef="e_55_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="493.0" Y="82.0" GraphId="e_55_c__0_0" GraphRef="n60_REACTOME_199878" RelX="-0.018518518518518517" RelY="1.1875"/>
+      <Point X="491.0" Y="209.0" GraphId="e_55_c__0_1" GraphRef="e_55_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_REACTOME_199929">
+    <Comment Source="WikiPathways-description">The MEF2 (Myocyte-specific enhancer factor 2) proteins constitute a family of transcription factors: MEF2A, MEF2B, MEF2C, and MEF2D. MEF2A and MEF2C are known substrates of ERK5, and their transactivating activity can be stimulated by ERK5 via direct phosphorylation. MEF2A and MEF2C are expressed in developing and adult brain including cortex and cerebellum.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="453.0" Y="290.0" GraphId="e_63_0"/>
+      <Point X="493.0" Y="290.0" GraphId="e_63_1"/>
+      <Point X="533.0" Y="290.0" GraphId="e_63_2"/>
+      <Anchor Position="0.0" GraphId="e_63_a_i"/>
+      <Anchor Position="0.5" GraphId="e_63_a_p"/>
+      <Anchor Position="1.0" GraphId="e_63_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="431.0" Y="311.0" GraphId="e_63_i0_0" GraphRef="n65_REACTOME_199911" RelX="0.4444444444444444" RelY="-1.2173913043478262"/>
+      <Point X="453.0" Y="290.0" GraphId="e_63_i0_1" GraphRef="e_63_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="434.0" Y="273.0" GraphId="e_63_i1_0" GraphRef="n56_REACTOME_29358" RelX="0.6842105263157895" RelY="1.2258064516129032"/>
+      <Point X="453.0" Y="290.0" GraphId="e_63_i1_1" GraphRef="e_63_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="560.0" Y="311.0" GraphId="e_63_o0_0" ArrowHead="Arrow" GraphRef="n66_REACTOME_199933" RelX="-0.4318181818181818" RelY="-1.1875"/>
+      <Point X="533.0" Y="290.0" GraphId="e_63_o0_1" GraphRef="e_63_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="558.0" Y="267.0" GraphId="e_63_o1_0" ArrowHead="Arrow" GraphRef="n59_REACTOME_113582" RelX="-0.7692307692307693" RelY="1.2258064516129032"/>
+      <Point X="533.0" Y="290.0" GraphId="e_63_o1_1" GraphRef="e_63_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="494.0" Y="362.0" GraphId="e_63_c__0_0" GraphRef="n68_REACTOME_198738" RelX="-0.02247191011235955" RelY="-1.1764705882352942"/>
+      <Point X="493.0" Y="290.0" GraphId="e_63_c__0_1" GraphRef="e_63_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_REACTOME_199959">
+    <Comment Source="WikiPathways-description">ERKs are inactivated by the protein phosphatase 2A (PP2A).   The PP2A holoenzyme is a heterotrimer that consists of a core dimer, composed of a scaffold (A) and a catalytic (C) subunit that associates with a variety of regulatory (B) subunits. The B subunits have been divided into gene families named B (or PR55), B0 (or B56 or PR61) and B00 (or PR72). Each family comprises several members. B56 family members of PP2A in particular, increase ERK dephosphorylation, without affecting its activation by MEK.&lt;br&gt;Induction of PP2A is involved in the extracellular signal-regulated kinase (ERK) signalling pathway, in which it provides a feedback control, as well as in a broad range of other cellular processes, including transcriptional regulation and control of the cell cycle.This diversity of functions is conferred by a diversity of regulatory subunits, the combination of which can give rise to over 50 different forms of PP2A. For example, five distinct mammalian genes encode members of the B56 family, called B56a, b, g, d and e, generating at least eight isoforms. Whether a specific holoenzyme dephosphorylates ERK and whether this activity is controlled during mitogenic stimulation is unknown.</Comment>
+    <BiopaxRef>lit_199957</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="650.0" Y="40.0" GraphId="e_71_0"/>
+      <Point X="681.0" Y="40.0" GraphId="e_71_1"/>
+      <Point X="720.0" Y="40.0" GraphId="e_71_2"/>
+      <Anchor Position="0.0" GraphId="e_71_a_i"/>
+      <Anchor Position="0.44285714285714284" GraphId="e_71_a_p"/>
+      <Anchor Position="1.0" GraphId="e_71_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="616.0" Y="62.0" GraphId="e_71_i0_0" GraphRef="n72_REACTOME_113518" RelX="1.1794871794871795" RelY="-0.7741935483870968"/>
+      <Point X="650.0" Y="40.0" GraphId="e_71_i0_1" GraphRef="e_71_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="551.0" Y="55.0" GraphId="e_71_i1_0" GraphRef="n60_REACTOME_199878" RelX="1.0555555555555556" RelY="-0.5"/>
+      <Point X="650.0" Y="40.0" GraphId="e_71_i1_1" GraphRef="e_71_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="762.0" Y="70.0" GraphId="e_71_o0_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_199955" RelX="-0.46153846153846156" RelY="-1.2173913043478262"/>
+      <Point X="720.0" Y="40.0" GraphId="e_71_o0_1" GraphRef="e_71_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="823.0" Y="60.0" GraphId="e_71_o1_0" ArrowHead="Arrow" GraphRef="n74_REACTOME_113550" RelX="-1.0588235294117647" RelY="-0.6451612903225806"/>
+      <Point X="720.0" Y="40.0" GraphId="e_71_o1_1" GraphRef="e_71_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="683.0" Y="63.0" GraphId="e_71_c__0_0" GraphRef="n75_REACTOME_165970" RelX="-0.0425531914893617" RelY="-1.1428571428571428"/>
+      <Point X="681.0" Y="40.0" GraphId="e_71_c__0_1" GraphRef="e_71_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_203797">
+    <Comment Source="WikiPathways-description">Over 10 dual specificity phosphatases (DUSPs) active an MAP kinases are known. Among them, some possess good ERK docking sites and so are more specific for the ERKS  (DUSP 3, 4, 6, 7), others are more specific for p38MAPK (DUSP1 and 10), while others do not seem to discriminate. It is noteworthy that transcription of DUSP genes is induced by growth factor signaling itself, so that these phosphatases provide feedback attenuation of signaling.  Moreover, differential activation of DUSPs by different stimuli is thought to contribute to pathway specificity.</Comment>
+    <BiopaxRef>lit_202675</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="710.0" Y="174.0" GraphId="e_88_0"/>
+      <Point X="743.0" Y="174.0" GraphId="e_88_1"/>
+      <Point X="769.0" Y="174.0" GraphId="e_88_2"/>
+      <Anchor Position="0.0" GraphId="e_88_a_i"/>
+      <Anchor Position="0.559322033898305" GraphId="e_88_a_p"/>
+      <Anchor Position="1.0" GraphId="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="525.0" Y="82.0" GraphId="e_88_i0_0" GraphRef="n60_REACTOME_199878" RelX="0.5740740740740741" RelY="1.1875"/>
+      <Point X="710.0" Y="174.0" GraphId="e_88_i0_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="611.0" Y="93.0" GraphId="e_88_i1_0" GraphRef="n72_REACTOME_113518" RelX="0.9230769230769231" RelY="1.2258064516129032"/>
+      <Point X="710.0" Y="174.0" GraphId="e_88_i1_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="775.0" Y="99.0" GraphId="e_88_o0_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_199955" RelX="-0.06153846153846154" RelY="1.3043478260869565"/>
+      <Point X="769.0" Y="174.0" GraphId="e_88_o0_1" GraphRef="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="860.0" Y="89.0" GraphId="e_88_o1_0" ArrowHead="Arrow" GraphRef="n74_REACTOME_113550" RelX="-0.3333333333333333" RelY="1.2258064516129032"/>
+      <Point X="769.0" Y="174.0" GraphId="e_88_o1_1" GraphRef="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="741.0" Y="195.0" GraphId="e_88_c__0_0" GraphRef="n91_REACTOME_203792" RelX="0.0" RelY="-1.1851851851851851"/>
+      <Point X="743.0" Y="174.0" GraphId="e_88_c__0_1" GraphRef="e_88_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_REACTOME_199935">
+    <Comment Source="WikiPathways-description">MSK1 is required for the mitogen-induced phosphorylation of the transcription factor, cAMP response element-binding protein (CREB).</Comment>
+    <BiopaxRef>lit_199367</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="721.0" Y="460.0" GraphId="e_96_0"/>
+      <Point X="749.0" Y="460.0" GraphId="e_96_1"/>
+      <Point X="776.0" Y="460.0" GraphId="e_96_2"/>
+      <Anchor Position="0.0" GraphId="e_96_a_i"/>
+      <Anchor Position="0.509090909090909" GraphId="e_96_a_p"/>
+      <Anchor Position="1.0" GraphId="e_96_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="650.0" Y="385.0" GraphId="e_96_i0_0" GraphRef="n97_REACTOME_52777" RelX="0.43478260869565216" RelY="1.2727272727272727"/>
+      <Point X="721.0" Y="460.0" GraphId="e_96_i0_1" GraphRef="e_96_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="688.0" Y="460.0" GraphId="e_96_i1_0" GraphRef="n98_REACTOME_29358" RelX="1.1578947368421053" RelY="0.0"/>
+      <Point X="721.0" Y="460.0" GraphId="e_96_i1_1" GraphRef="e_96_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="859.0" Y="389.0" GraphId="e_96_o0_0" ArrowHead="Arrow" GraphRef="n99_REACTOME_111910" RelX="-0.4" RelY="1.2"/>
+      <Point X="776.0" Y="460.0" GraphId="e_96_o0_1" GraphRef="e_96_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="834.0" Y="458.0" GraphId="e_96_o1_0" ArrowHead="Arrow" GraphRef="n100_REACTOME_113582" RelX="-1.1282051282051282" RelY="0.0"/>
+      <Point X="776.0" Y="460.0" GraphId="e_96_o1_1" GraphRef="e_96_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="218.0" Y="298.0" GraphId="e_96_c__0_0" GraphRef="n43_REACTOME_198683" RelX="0.38461538461538464" RelY="1.2413793103448276"/>
+      <Point X="488.0" Y="488.0" GraphId="e_96_c__0_1"/>
+      <Point X="748.0" Y="488.0" GraphId="e_96_c__0_2"/>
+      <Point X="749.0" Y="460.0" GraphId="e_96_c__0_3" GraphRef="e_96_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_REACTOME_199910">
+    <Comment Source="WikiPathways-description">Cyclic-AMP-dependent transcription factor 1 (ATF1) can be phosphorylated at Serine 63 by MSK1, thus activating it.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="717.0" Y="527.0" GraphId="e_105_0"/>
+      <Point X="748.0" Y="526.0" GraphId="e_105_1"/>
+      <Point X="790.0" Y="526.0" GraphId="e_105_2"/>
+      <Anchor Position="0.0" GraphId="e_105_a_i"/>
+      <Anchor Position="0.42478459254208123" GraphId="e_105_a_p"/>
+      <Anchor Position="1.0" GraphId="e_105_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="704.0" Y="544.0" GraphId="e_105_i0_0" GraphRef="n107_REACTOME_199900" RelX="0.3893805309734513" RelY="-1.088235294117647"/>
+      <Point X="717.0" Y="527.0" GraphId="e_105_i0_1" GraphRef="e_105_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="677.0" Y="479.0" GraphId="e_105_i1_0" GraphRef="n98_REACTOME_29358" RelX="0.5789473684210527" RelY="1.2258064516129032"/>
+      <Point X="717.0" Y="527.0" GraphId="e_105_i1_1" GraphRef="e_105_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="811.0" Y="544.0" GraphId="e_105_o0_0" ArrowHead="Arrow" GraphRef="n108_REACTOME_199897" RelX="-0.5483870967741935" RelY="-1.088235294117647"/>
+      <Point X="790.0" Y="526.0" GraphId="e_105_o0_1" GraphRef="e_105_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="840.0" Y="477.0" GraphId="e_105_o1_0" ArrowHead="Arrow" GraphRef="n100_REACTOME_113582" RelX="-0.8205128205128205" RelY="1.2258064516129032"/>
+      <Point X="790.0" Y="526.0" GraphId="e_105_o1_1" GraphRef="e_105_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_105_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="216.0" Y="298.0" GraphId="e_105_c__0_0" GraphRef="n43_REACTOME_198683" RelX="0.34615384615384615" RelY="1.2413793103448276"/>
+      <Point X="484.0" Y="501.0" GraphId="e_105_c__0_1"/>
+      <Point X="748.0" Y="500.0" GraphId="e_105_c__0_2"/>
+      <Point X="748.0" Y="526.0" GraphId="e_105_c__0_3" GraphRef="e_105_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_REACTOME_199895">
+    <Comment Source="WikiPathways-description">CREB is phosphorylated at Serine 133 by RSK1/2/3.</Comment>
+    <BiopaxRef>lit_199893</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="720.0" Y="399.0" GraphId="e_112_0"/>
+      <Point X="752.0" Y="400.0" GraphId="e_112_1"/>
+      <Point X="789.0" Y="399.0" GraphId="e_112_2"/>
+      <Anchor Position="0.0" GraphId="e_112_a_i"/>
+      <Anchor Position="0.46379869123552825" GraphId="e_112_a_p"/>
+      <Anchor Position="1.0" GraphId="e_112_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="666.0" Y="379.0" GraphId="e_112_i0_0" GraphRef="n97_REACTOME_52777" RelX="1.1304347826086956" RelY="0.7272727272727273"/>
+      <Point X="720.0" Y="399.0" GraphId="e_112_i0_1" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="679.0" Y="442.0" GraphId="e_112_i1_0" GraphRef="n98_REACTOME_29358" RelX="0.6842105263157895" RelY="-1.1612903225806452"/>
+      <Point X="720.0" Y="399.0" GraphId="e_112_i1_1" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="829.0" Y="385.0" GraphId="e_112_o0_0" ArrowHead="Arrow" GraphRef="n99_REACTOME_111910" RelX="-1.0666666666666667" RelY="0.9333333333333333"/>
+      <Point X="789.0" Y="399.0" GraphId="e_112_o0_1" GraphRef="e_112_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="838.0" Y="440.0" GraphId="e_112_o1_0" ArrowHead="Arrow" GraphRef="n100_REACTOME_113582" RelX="-0.9230769230769231" RelY="-1.1612903225806452"/>
+      <Point X="789.0" Y="399.0" GraphId="e_112_o1_1" GraphRef="e_112_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="582.0" Y="185.0" GraphId="e_112_c__0_0" GraphRef="n58_REACTOME_199849" RelX="0.2956521739130435" RelY="1.1304347826086956"/>
+      <Point X="752.0" Y="400.0" GraphId="e_112_c__0_1" GraphRef="e_112_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_REACTOME_199917">
+    <Comment Source="WikiPathways-description">p38 MAPK activation leads to CREB Serine 133 phosphorylation through the activation of MAPKAP kinase 2 or the closely related MAPKAP kinase 3.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="715.0" Y="333.0" GraphId="e_117_0"/>
+      <Point X="749.0" Y="332.0" GraphId="e_117_1"/>
+      <Point X="779.0" Y="333.0" GraphId="e_117_2"/>
+      <Anchor Position="0.0" GraphId="e_117_a_i"/>
+      <Anchor Position="0.5312193928696474" GraphId="e_117_a_p"/>
+      <Anchor Position="1.0" GraphId="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="661.0" Y="357.0" GraphId="e_117_i0_0" GraphRef="n97_REACTOME_52777" RelX="0.9130434782608695" RelY="-1.2727272727272727"/>
+      <Point X="715.0" Y="333.0" GraphId="e_117_i0_1" GraphRef="e_117_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="671.0" Y="442.0" GraphId="e_117_i1_0" GraphRef="n98_REACTOME_29358" RelX="0.2631578947368421" RelY="-1.1612903225806452"/>
+      <Point X="715.0" Y="333.0" GraphId="e_117_i1_1" GraphRef="e_117_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="838.0" Y="353.0" GraphId="e_117_o0_0" ArrowHead="Arrow" GraphRef="n99_REACTOME_111910" RelX="-0.8666666666666667" RelY="-1.2"/>
+      <Point X="779.0" Y="333.0" GraphId="e_117_o0_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="846.0" Y="440.0" GraphId="e_117_o1_0" ArrowHead="Arrow" GraphRef="n100_REACTOME_113582" RelX="-0.5128205128205128" RelY="-1.1612903225806452"/>
+      <Point X="779.0" Y="333.0" GraphId="e_117_o1_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="747.0" Y="302.0" GraphId="e_117_c__0_0" GraphRef="n120_REACTOME_199936" RelX="0.016" RelY="1.1320754716981132"/>
+      <Point X="749.0" Y="332.0" GraphId="e_117_c__0_1" GraphRef="e_117_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_REACTOME_168053">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'ATP', and 1 molecule of 'ATF-2' are present. At the end of this reaction, 1 molecule of 'ADP', and 1 molecule of 'ATF-2-P' are present.&lt;br&gt;&lt;br&gt; This reaction is mediated by the 'protein kinase activity' of 'MAPK1-P'.&lt;br&gt;</Comment>
+    <Comment Source="WikiPathways-description">the RafâMEKâERK pathway induces phosphorylation of ATF2 Thr71, whereas subsequent ATF2 Thr69 phosphorylation requires the RalâRalGDSâSrcâp38 pathway. Cooperation between ERK and p38 was found to be essential for ATF2 activation by these mitogens; the activity of p38 and JNK/SAPK in growth factor-stimulated fibroblasts is insufficient to phosphorylate ATF2 Thr71 or Thr69 + 71 significantly by themselves, while ERK cannot dual phosphorylate ATF2 Thr69 + 71 efficiently.</Comment>
+    <BiopaxRef>lit_170002</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="149.0" Y="731.0" GraphId="e_125_0"/>
+      <Point X="192.0" Y="731.0" GraphId="e_125_1"/>
+      <Point X="236.0" Y="731.0" GraphId="e_125_2"/>
+      <Anchor Position="0.0" GraphId="e_125_a_i"/>
+      <Anchor Position="0.4942528735632184" GraphId="e_125_a_p"/>
+      <Anchor Position="1.0" GraphId="e_125_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="130.0" Y="755.0" GraphId="e_125_i0_0" GraphRef="n126_REACTOME_29358" RelX="0.5789473684210527" RelY="-1.1612903225806452"/>
+      <Point X="149.0" Y="731.0" GraphId="e_125_i0_1" GraphRef="e_125_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="115.0" Y="698.0" GraphId="e_125_i1_0" GraphRef="n127_REACTOME_450336" RelX="0.4878048780487805" RelY="1.3043478260869565"/>
+      <Point X="149.0" Y="731.0" GraphId="e_125_i1_1" GraphRef="e_125_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="268.0" Y="701.0" GraphId="e_125_o0_0" ArrowHead="Arrow" GraphRef="n128_REACTOME_450243" RelX="-0.45614035087719296" RelY="1.2592592592592593"/>
+      <Point X="236.0" Y="731.0" GraphId="e_125_o0_1" GraphRef="e_125_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="256.0" Y="752.0" GraphId="e_125_o1_0" ArrowHead="Arrow" GraphRef="n129_REACTOME_113582" RelX="-0.717948717948718" RelY="-1.1612903225806452"/>
+      <Point X="236.0" Y="731.0" GraphId="e_125_o1_1" GraphRef="e_125_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_125_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="190.0" Y="649.0" GraphId="e_125_c__0_0" GraphRef="n130_REACTOME_450307" RelX="0.0" RelY="1.1372549019607843"/>
+      <Point X="192.0" Y="731.0" GraphId="e_125_c__0_1" GraphRef="e_125_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_REACTOME_168440">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'c-Jun-P', and 1 molecule of 'ATF-2-P' are present. At the end of this reaction, 1 molecule of 'AP-1' is present.&lt;br&gt;&lt;br&gt; &lt;br&gt;</Comment>
+    <BiopaxRef>lit_169947</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="335.0" Y="733.0" GraphId="e_141_0"/>
+      <Point X="363.0" Y="734.0" GraphId="e_141_1"/>
+      <Point X="389.0" Y="734.0" GraphId="e_141_2" GraphRef="n143_REACTOME_450262" RelX="-1.0483870967741935" RelY="-0.05970149253731343" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_141_a_i"/>
+      <Anchor Position="0.5186776352445982" GraphId="e_141_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="295.0" Y="701.0" GraphId="e_141_i0_0" GraphRef="n128_REACTOME_450243" RelX="0.49122807017543857" RelY="1.2592592592592593"/>
+      <Point X="335.0" Y="733.0" GraphId="e_141_i0_1" GraphRef="e_141_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_141_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="330.0" Y="859.0" GraphId="e_141_i1_0" GraphRef="n142_REACTOME_450237" RelX="0.0" RelY="-1.1515151515151516"/>
+      <Point X="335.0" Y="733.0" GraphId="e_141_i1_1" GraphRef="e_141_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_146_REACTOME_450292">
+    <Comment Source="WikiPathways-description">The bZIP domains of Jun and Fos form an X-shaped -helical structure, which binds to the palindromic AP-1 site (TGAGTCA) (Glover and Harrison, 1995).</Comment>
+    <BiopaxRef>lit_169947</BiopaxRef>
+    <BiopaxRef>lit_208105</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="587.0" Y="875.0" GraphId="e_146_0"/>
+      <Point X="629.0" Y="875.0" GraphId="e_146_1"/>
+      <Point X="666.0" Y="875.0" GraphId="e_146_2" GraphRef="n148_REACTOME_450327" RelX="-1.0389610389610389" RelY="-0.07272727272727272" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_146_a_i"/>
+      <Anchor Position="0.5316455696202531" GraphId="e_146_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_146_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="596.0" Y="797.0" GraphId="e_146_i0_0" GraphRef="n147_REACTOME_450283" RelX="-0.07142857142857142" RelY="1.2121212121212122"/>
+      <Point X="587.0" Y="875.0" GraphId="e_146_i0_1" GraphRef="e_146_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_146_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="362.0" Y="877.0" GraphId="e_146_i1_0" GraphRef="n142_REACTOME_450237" RelX="1.103448275862069" RelY="-0.06060606060606061"/>
+      <Point X="587.0" Y="875.0" GraphId="e_146_i1_1" GraphRef="e_146_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_REACTOME_168136">
+    <Comment Source="WikiPathways-description">JNK (c-Jun N-terminal Kinase) phosphorylates several transcription factors including c-Jun after translocation to the nucleus.</Comment>
+    <BiopaxRef>lit_169974</BiopaxRef>
+    <BiopaxRef>lit_437979</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="149.0" Y="817.0" GraphId="e_151_0"/>
+      <Point X="193.0" Y="817.0" GraphId="e_151_1"/>
+      <Point X="234.0" Y="817.0" GraphId="e_151_2"/>
+      <Anchor Position="0.0" GraphId="e_151_a_i"/>
+      <Anchor Position="0.5176470588235295" GraphId="e_151_a_p"/>
+      <Anchor Position="1.0" GraphId="e_151_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="88.0" Y="867.0" GraphId="e_151_i0_0" GraphRef="n152_REACTOME_450250" RelX="0.5909090909090909" RelY="-1.2173913043478262"/>
+      <Point X="149.0" Y="817.0" GraphId="e_151_i0_1" GraphRef="e_151_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="129.0" Y="792.0" GraphId="e_151_i1_0" GraphRef="n126_REACTOME_29358" RelX="0.5263157894736842" RelY="1.2258064516129032"/>
+      <Point X="149.0" Y="817.0" GraphId="e_151_i1_1" GraphRef="e_151_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="304.0" Y="859.0" GraphId="e_151_o0_0" ArrowHead="Arrow" GraphRef="n142_REACTOME_450237" RelX="-0.896551724137931" RelY="-1.1515151515151516"/>
+      <Point X="234.0" Y="817.0" GraphId="e_151_o0_1" GraphRef="e_151_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="258.0" Y="789.0" GraphId="e_151_o1_0" ArrowHead="Arrow" GraphRef="n129_REACTOME_113582" RelX="-0.6153846153846154" RelY="1.2258064516129032"/>
+      <Point X="234.0" Y="817.0" GraphId="e_151_o1_1" GraphRef="e_151_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_151_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="193.0" Y="853.0" GraphId="e_151_c__0_0" GraphRef="n155_REACTOME_450253" RelX="-0.013071895424836602" RelY="-1.12"/>
+      <Point X="193.0" Y="817.0" GraphId="e_151_c__0_1" GraphRef="e_151_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_REACTOME_450325">
+    <Comment Source="WikiPathways-description">The Fos proteins(c-Fos, FosB, Fra1 and Fra2), which cannot homodimerize, form stable heterodimers with Jun proteins and thereby enhance their DNA binding activity. &lt;p&gt;On activation of the MAPK pathway, Ser-374 of Fos is phosphorylated by ERK1/2 and Ser-362 is phosphorylated by RSK1/2, the latter kinases being activated by ERK1/2. If stimulation of the MAPK pathway is sufficiently sustained, ERK1/2 can dock on an upstream FTYP amino acid motif, called the DEF domain (docking site for ERKs, FXFP), and phosphorylate Thr-331 and Thr-325.&lt;/p&gt;&lt;p&gt;Phosphorylation at specific sites enhances the transactivating potential of several AP-1 proteins, including Jun and Fos, without having any effect on their DNA binding activities. Thus, phosphorylation of Ser-362 and Ser-374 stabilizes c-Fos but has no demonstrated role in the control of transcriptional activity. On the contrary, phosphorylation of Thr-325 and Thr-331 enhances c-Fos transcriptional activity but has no demonstrated effect on protein turnover.</Comment>
+    <BiopaxRef>lit_450266</BiopaxRef>
+    <BiopaxRef>lit_450340</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="713.0" Y="728.0" GraphId="e_156_0"/>
+      <Point X="670.0" Y="728.0" GraphId="e_156_1"/>
+      <Point X="627.0" Y="728.0" GraphId="e_156_2"/>
+      <Anchor Position="0.0" GraphId="e_156_a_i"/>
+      <Anchor Position="0.5" GraphId="e_156_a_p"/>
+      <Anchor Position="1.0" GraphId="e_156_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="733.0" Y="700.0" GraphId="e_156_i0_0" GraphRef="n157_REACTOME_29358" RelX="-0.5789473684210527" RelY="1.2258064516129032"/>
+      <Point X="713.0" Y="728.0" GraphId="e_156_i0_1" GraphRef="e_156_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="739.0" Y="763.0" GraphId="e_156_i1_0" GraphRef="n158_REACTOME_450216" RelX="-0.38095238095238093" RelY="-1.2173913043478262"/>
+      <Point X="713.0" Y="728.0" GraphId="e_156_i1_1" GraphRef="e_156_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="608.0" Y="758.0" GraphId="e_156_o0_0" ArrowHead="Arrow" GraphRef="n147_REACTOME_450283" RelX="0.21428571428571427" RelY="-1.1515151515151516"/>
+      <Point X="627.0" Y="728.0" GraphId="e_156_o0_1" GraphRef="e_156_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="600.0" Y="699.0" GraphId="e_156_o1_0" ArrowHead="Arrow" GraphRef="n159_REACTOME_113582" RelX="0.6153846153846154" RelY="1.2258064516129032"/>
+      <Point X="627.0" Y="728.0" GraphId="e_156_o1_1" GraphRef="e_156_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_156_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="196.0" Y="42.0" GraphId="e_156_c__0_0" GraphRef="n39_REACTOME_198701" RelX="1.0619469026548674" RelY="0.0"/>
+      <Point X="247.0" Y="42.0" GraphId="e_156_c__0_1"/>
+      <Point X="485.0" Y="627.0" GraphId="e_156_c__0_2"/>
+      <Point X="669.0" Y="654.0" GraphId="e_156_c__0_3"/>
+      <Point X="670.0" Y="728.0" GraphId="e_156_c__0_4" GraphRef="e_156_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="872.0" CenterY="866.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="478.5" CenterY="468.5" Width="941.0" Height="921.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_442954" rdf:id="lit_442954">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12471242</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitogen-activated protein kinase pathways mediated by ERK, JNK, and p38 protein kinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, GL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lapadat, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 298:1911-2</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_500551" rdf:id="lit_500551">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17158707</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uses for JNK: the many and varied substrates of the c-Jun N-terminal kinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bogoyevitch, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobe, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Microbiol Mol Biol Rev 70:1061-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_500549" rdf:id="lit_500549">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16393692</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The extracellular signal-regulated kinase: multiple substrates regulate diverse cellular functions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoon, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seger, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Growth Factors 24:21-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_199367" rdf:id="lit_199367">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9687510</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitogen- and stress-activated protein kinase-1 (MSK1) is directly activated by MAPK and SAPK2/p38, and may mediate activation of CREB</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deak, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clifton, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lucocq, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alessi, DR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 17:4426-41</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_199940" rdf:id="lit_199940">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16626623</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The MAP kinase ERK5 binds to and phosphorylates p90 RSK</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ranganathan, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pearson, GW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chrestensen, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sturgill, TW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cobb, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arch Biochem Biophys 449:8-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_199957" rdf:id="lit_199957">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16456541</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">B56-containing PP2A dephosphorylate ERK and their activity is controlled by the early gene IEX-1 and ERK</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Letourneux, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rocher, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Porteu, F</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 25:727-38</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_202675" rdf:id="lit_202675">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17322878</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A module of negative feedback regulators defines growth factor signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amit, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Citri, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shay, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Katz, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tarcic, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Siwak, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lahad, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jacob-Hirsch, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amariglio, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vaisman, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Segal, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rechavi, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alon, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mills, GB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Domany, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yarden, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet 39:503-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_199893" rdf:id="lit_199893">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9770464</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rsk-2 activity is necessary for epidermal growth factor-induced phosphorylation of CREB protein and transcription of c-fos gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Cesare, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jacquot, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanauer, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sassone-Corsi, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 95:12202-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_170002" rdf:id="lit_170002">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10878576</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">p38 MAPK signalling cascades: ancient roles and new functions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin-Blanco, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bioessays 22:637-45</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_169947" rdf:id="lit_169947">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9030721</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulatory mechanisms involved in activator-protein-1 (AP-1)-mediated activation of glutathione-S-transferase gene expression by chemical agents</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ainbinder, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bergelson, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pinkus, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Daniel, V</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 243:49-57</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_208105" rdf:id="lit_208105">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7816143</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of the heterodimeric bZIP transcription factor c-Fos-c-Jun bound to DNA</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glover, JN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harrison, SC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 373:257-61</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_169974" rdf:id="lit_169974">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10871633</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">c-Jun inhibits transforming growth factor beta-mediated transcription by repressing Smad3 transcriptional activity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dennler, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prunier, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferrand, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gauthier, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Atfi, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:28858-65</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_437979" rdf:id="lit_437979">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18793328</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">c-Jun expression, activation and function in neural cell death, inflammation and repair</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raivich, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Neurochem 107:898-906</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450266" rdf:id="lit_450266">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7588633</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Mos/MAP kinase pathway stabilizes c-Fos by phosphorylation and augments its transforming activity in NIH 3T3 cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okazaki, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sagata, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 14:5048-59</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_450340" rdf:id="lit_450340">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12134156</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular interpretation of ERK signal duration by immediate early gene products</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murphy, LO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, RH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fingar, DC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blenis, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Cell Biol 4:556-64</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>MAPK signaling pathway</bp:TERM><bp:ID>PW:0000007</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Steroid Biosynthesis" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"></Comment>
+  <Comment Source="GenMAPP remarks"></Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="1228.9999999999998" BoardHeight="722.8333333333334" />
+  <DataNode TextLabel="HSD3B1" GraphId="f07" Type="GeneProduct" GroupRef="ee1bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="397.3333333333333" CenterY="184.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B2" GraphId="d38" Type="GeneProduct" GroupRef="ee1bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B2 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="397.3333333333333" CenterY="204.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3284" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="a4d" Type="GeneProduct" GroupRef="ee1bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="464.0" CenterY="184.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="ceb" Type="GeneProduct" GroupRef="ee1bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="464.0" CenterY="204.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="fb1" Type="GeneProduct" GroupRef="ee1bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="464.0" CenterY="224.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="d0d" Type="GeneProduct" GroupRef="ee1bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="397.3333333333333" CenterY="224.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="c4f" Type="GeneProduct" GroupRef="cc626">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="418.3333333333333" CenterY="411.33333333333326" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="fb9" Type="GeneProduct" GroupRef="e3493">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="396.3333333333333" CenterY="520.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="d86" Type="GeneProduct" GroupRef="cc626">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="418.3333333333333" CenterY="451.33333333333326" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="ef5" Type="GeneProduct" GroupRef="e3493">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="396.3333333333333" CenterY="560.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B2" GraphId="f52" Type="GeneProduct" GroupRef="cc626">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B2 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="418.3333333333333" CenterY="431.33333333333326" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3284" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B2" GraphId="bce" Type="GeneProduct" GroupRef="e3493">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B2 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="396.3333333333333" CenterY="540.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3284" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="e35" Type="GeneProduct" GroupRef="cc626">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="485.0" CenterY="411.33333333333326" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="c11" Type="GeneProduct" GroupRef="cc626">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="485.0" CenterY="431.33333333333326" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="a9d" Type="GeneProduct" GroupRef="cc626">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="485.0" CenterY="451.33333333333326" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="d18" Type="GeneProduct" GroupRef="e3493">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="463.0" CenterY="520.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="dcb" Type="GeneProduct" GroupRef="e3493">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="463.0" CenterY="540.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="c90" Type="GeneProduct" GroupRef="e3493">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="463.0" CenterY="560.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="CYP17A1" GraphId="d04" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP17A1 | cytochrome P450 family 17 subfamily..." />
+    <Graphics CenterX="323.6666666666667" CenterY="200.66666666666663" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1586" />
+  </DataNode>
+  <DataNode TextLabel="Hydroxyprogesterone aldolase" GraphId="f69" Type="GeneProduct">
+    <Graphics CenterX="367.33333333333337" CenterY="316.6666666666667" Width="155.33333333333331" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="EC Number" ID="4.1.2.30" />
+  </DataNode>
+  <DataNode TextLabel="CYP17A1" GraphId="c68" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP17A1 | cytochrome P450 family 17 subfamily..." />
+    <Graphics CenterX="707.6666666666669" CenterY="209.66666666666663" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1586" />
+  </DataNode>
+  <DataNode TextLabel="Hydroxyprogesterone aldolase" GraphId="b50" Type="GeneProduct">
+    <Graphics CenterX="767.6666666666666" CenterY="322.3333333333333" Width="166.66666666666674" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="EC Number" ID="4.1.2.30" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="e4d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="714.6666666666667" CenterY="426.66666666666674" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="F13B" GraphId="b9d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="F13B | coagulation factor XIII B polypeptide" />
+    <Graphics CenterX="589.3333333333333" CenterY="545.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="2165" />
+  </DataNode>
+  <DataNode TextLabel="Steroid-19-Hydroxylase" GraphId="a55" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Steroid-19-Hydroxylase" />
+    <Graphics CenterX="842.0" CenterY="407.3333333333333" Width="153.33333333333334" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000120054" />
+  </DataNode>
+  <DataNode TextLabel="HSD17B1" GraphId="d3c" Type="GeneProduct" GroupRef="f1f13">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD17B1 | hydroxysteroid (17-beta) dehydrogenas..." />
+    <Graphics CenterX="1075.6666666666663" CenterY="410.33333333333326" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3292" />
+  </DataNode>
+  <DataNode TextLabel="HSD17B2" GraphId="a5f" Type="GeneProduct" GroupRef="f1f13">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD17B2 | hydroxysteroid (17-beta) dehydrogenas..." />
+    <Graphics CenterX="1075.6666666666663" CenterY="430.33333333333326" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3294" />
+  </DataNode>
+  <DataNode TextLabel="HSD17B3" GraphId="dc0" Type="GeneProduct" GroupRef="f1f13">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD17B3 | hydroxysteroid (17-beta) dehydrogenas..." />
+    <Graphics CenterX="1075.6666666666663" CenterY="450.33333333333326" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3293" />
+  </DataNode>
+  <DataNode TextLabel="HSD17B4" GraphId="a47" Type="GeneProduct" GroupRef="f1f13">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD17B4 | hydroxysteroid (17-beta) dehydrogenas..." />
+    <Graphics CenterX="1165.6666666666663" CenterY="413.66666666666674" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3295" />
+  </DataNode>
+  <DataNode TextLabel="HSD17B7" GraphId="e69" Type="GeneProduct" GroupRef="f1f13">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD17B7 | hydroxysteroid (17-beta) dehydrogenas..." />
+    <Graphics CenterX="1165.6666666666663" CenterY="433.66666666666674" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="51478" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="e0d" Type="GeneProduct" GroupRef="c5376">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="393.3333333333333" CenterY="82.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B2" GraphId="d1c" Type="GeneProduct" GroupRef="c5376">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B2 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="393.3333333333333" CenterY="102.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3284" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="b6a" Type="GeneProduct" GroupRef="c5376">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="393.3333333333333" CenterY="122.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="b64" Type="GeneProduct" GroupRef="c5376">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="460.0" CenterY="82.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="ab1" Type="GeneProduct" GroupRef="c5376">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="460.0" CenterY="102.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="HSD3B1" GraphId="dad" Type="GeneProduct" GroupRef="c5376">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HSD3B1 | hydroxy-delta-5-steroid dehydrogenase..." />
+    <Graphics CenterX="460.0" CenterY="122.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="3283" />
+  </DataNode>
+  <DataNode TextLabel="Cholesterol" GraphId="fc9" Type="Metabolite">
+    <Graphics CenterX="260.3333333333333" CenterY="66.66666666666669" Width="93.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="57-88-5" />
+  </DataNode>
+  <DataNode TextLabel="Pregnenolone" GraphId="e7c" Type="Metabolite">
+    <Graphics CenterX="260.0" CenterY="159.66666666666669" Width="113.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="145-13-1" />
+  </DataNode>
+  <DataNode TextLabel="Progesterone" GraphId="a97" Type="Metabolite">
+    <Graphics CenterX="644.3333333333331" CenterY="159.66666666666669" Width="109.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="57-83-0" />
+  </DataNode>
+  <DataNode TextLabel="Androstenedione" GraphId="fe0" Type="Metabolite">
+    <Graphics CenterX="644.3333333333334" CenterY="376.3333333333333" Width="137.33333333333334" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="63-05-8" />
+  </DataNode>
+  <DataNode TextLabel="Testosterone" GraphId="c1f" Type="Metabolite">
+    <Graphics CenterX="644.3333333333331" CenterY="486.66666666666674" Width="106.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="58-22-0" />
+  </DataNode>
+  <DataNode TextLabel="Estrone" GraphId="e5c" Type="Metabolite">
+    <Graphics CenterX="990.0" CenterY="373.3333333333333" Width="65.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="53-16-7" />
+  </DataNode>
+  <DataNode TextLabel="Estradiol" GraphId="a8e" Type="Metabolite">
+    <Graphics CenterX="990.0000000000001" CenterY="486.0" Width="73.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="57-91-0" />
+  </DataNode>
+  <DataNode TextLabel="Androstenediol" GraphId="aa58a" Type="Metabolite">
+    <Graphics CenterX="259.0" CenterY="486.0" Width="108.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB05849" />
+  </DataNode>
+  <DataNode TextLabel="Hydroxyprogesterone aldolase" GraphId="a627a" Type="Metabolite">
+    <Graphics CenterX="259.0" CenterY="376.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="53-43-0" />
+  </DataNode>
+  <DataNode TextLabel="17-alpha-OH-Pregnenolone" GraphId="d5886" Type="Metabolite">
+    <Graphics CenterX="259.5" CenterY="258.0" Width="169.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00363" />
+  </DataNode>
+  <DataNode TextLabel="17-alpha-OH-Progesterone" GraphId="eba07" Type="Metabolite">
+    <Graphics CenterX="644.3333333333334" CenterY="258.0" Width="165.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00374" />
+  </DataNode>
+  <DataNode TextLabel="Dihydrotestosterone" GraphId="b37e5" Type="Metabolite">
+    <Graphics CenterX="644.0" CenterY="598.0" Width="124.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB02961" />
+  </DataNode>
+  <DataNode TextLabel="Mineralocortocoid Synthesis" GraphId="cec42" Type="Pathway">
+    <Graphics CenterX="922.5" CenterY="159.0" Width="179.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP237" />
+  </DataNode>
+  <DataNode TextLabel="Glucocortocoid Synthesis" GraphId="f787e" Type="Pathway">
+    <Graphics CenterX="926.5" CenterY="259.0" Width="179.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="WikiPathways" ID="WP237" />
+  </DataNode>
+  <DataNode TextLabel="Steroid-19-Hydroxylase" GraphId="abc1b" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Steroid-19-Hydroxylase" />
+    <Graphics CenterX="799.4789915966385" CenterY="524.4761904761903" Width="153.33333333333334" Height="20.0" ZOrder="32769" FontSize="10" Valign="Middle" />
+    <Xref Database="Ensembl Human" ID="ENSG00000120054" />
+  </DataNode>
+  <Line GraphId="a4f06">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="260.3333333333333" Y="76.16666666666669" GraphRef="fc9" RelX="0.0" RelY="1.0" />
+      <Point X="260.0" Y="150.16666666666669" GraphRef="e7c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="aae23">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="260.0" Y="169.16666666666669" GraphRef="e7c" RelX="0.0" RelY="1.0" />
+      <Point X="259.5" Y="248.0" GraphRef="d5886" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="a5ee4" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b3d37">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="259.5" Y="268.0" GraphRef="d5886" RelX="0.0" RelY="1.0" />
+      <Point X="259.0" Y="366.0" GraphRef="a627a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.48980919905250286" Shape="None" GraphId="ba321" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fc704">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="259.0" Y="386.0" GraphRef="a627a" RelX="0.0" RelY="1.0" />
+      <Point X="259.0" Y="476.0" GraphRef="aa58a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f744e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="316.6666666666667" Y="159.66666666666669" GraphRef="e7c" RelX="1.0" RelY="0.0" />
+      <Point X="589.6666666666665" Y="159.66666666666669" GraphRef="a97" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="e01f9" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b8f52">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="699.0" Y="159.66666666666669" GraphRef="a97" RelX="1.0" RelY="0.0" />
+      <Point X="833.0" Y="159.0" GraphRef="cec42" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="d6842">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="344.0" Y="258.0" GraphRef="d5886" RelX="1.0" RelY="0.0" />
+      <Point X="561.8333333333334" Y="258.0" GraphRef="eba07" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="a8418" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b77c2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="726.8333333333334" Y="258.0" GraphRef="eba07" RelX="1.0" RelY="0.0" />
+      <Point X="837.0" Y="259.0" GraphRef="f787e" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="bb139">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="644.3333333333334" Y="268.0" GraphRef="eba07" RelX="0.0" RelY="1.0" />
+      <Point X="644.3333333333335" Y="366.8333333333333" GraphRef="fe0" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5483304042179263" Shape="None" GraphId="ba20e" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f8a58">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="644.3333333333333" Y="169.16666666666669" GraphRef="a97" RelX="0.0" RelY="1.0" />
+      <Point X="644.3333333333334" Y="248.0" GraphRef="eba07" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5114822546972859" Shape="None" GraphId="e8a14" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f0ce4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="299.0" Y="376.0" GraphRef="a627a" RelX="1.0" RelY="0.0" />
+      <Point X="575.6666666666667" Y="376.3333333333333" GraphRef="fe0" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5312984013668145" Shape="None" GraphId="e81cd" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f2073">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="644.3333333333333" Y="477.16666666666674" GraphRef="c1f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Point X="644.3333333333335" Y="385.8333333333333" GraphRef="fe0" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5530035335689045" Shape="None" GraphId="aaa6d" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ffb15">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="313.0" Y="486.0" GraphRef="aa58a" RelX="1.0" RelY="0.0" />
+      <Point X="591.1666666666665" Y="486.66666666666674" GraphRef="c1f" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="ef08e" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c641d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="644.3333333333333" Y="496.16666666666674" GraphRef="c1f" RelX="0.0" RelY="1.0" />
+      <Point X="644.0" Y="588.0" GraphRef="b37e5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5367329244197477" Shape="None" GraphId="f5f4a" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fec22">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="713.0000000000002" Y="376.3333333333333" GraphRef="fe0" RelX="1.0" RelY="0.0" />
+      <Point X="957.3333333333333" Y="373.3333333333333" GraphRef="e5c" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5321975547574296" Shape="None" GraphId="c121e" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f1fce">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="697.5" Y="486.66666666666674" GraphRef="c1f" RelX="1.0" RelY="0.0" />
+      <Point X="953.3333333333335" Y="486.0" GraphRef="a8e" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4" Shape="None" GraphId="f26cf" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e1660">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="990.0" Y="382.8333333333333" GraphRef="e5c" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+      <Point X="990.0000000000001" Y="476.5" GraphRef="a8e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5035587188612101" Shape="None" GraphId="c1622" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb00e663e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="674.3333333333335" Y="209.66666666666663" GraphRef="c68" RelX="-1.0" RelY="0.0" />
+      <Point X="644.3333333333334" Y="209.48851774530272" GraphRef="e8a14" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id51330f20">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="684.3333333333333" Y="322.3333333333333" GraphRef="b50" RelX="-1.0" RelY="0.0" />
+      <Point X="644.3333333333335" Y="322.1933216168717" GraphRef="ba20e" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id33db230f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="290.33333333333337" Y="200.66666666666663" GraphRef="d04" RelX="-1.0" RelY="0.0" />
+      <Point X="259.8" Y="200.70000000000002" GraphRef="a5ee4" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3bc05b12">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="289.66666666666674" Y="316.6666666666667" GraphRef="f69" RelX="-1.0" RelY="0.0" />
+      <Point X="259.25509540047375" Y="316.0013015071453" GraphRef="ba321" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf9e079de">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="684.6666666666667" Y="426.66666666666674" GraphRef="e4d" RelX="-1.0" RelY="0.0" />
+      <Point X="644.3333333333334" Y="426.6590106007067" GraphRef="aaa6d" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id1342dce3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="799.4789915966385" Y="514.4761904761903" GraphRef="abc1b" RelX="0.0" RelY="-1.0" />
+      <Point X="799.8333333333334" Y="486.40000000000003" GraphRef="f26cf" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9b26dd4a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="619.3333333333333" Y="545.3333333333333" GraphRef="b9d" RelX="1.0" RelY="0.0" />
+      <Point X="644.1544223585267" Y="545.4566402258802" GraphRef="f5f4a" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id920fa45c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="1012.3333333333333" Y="430.33333333333326" GraphRef="af573" RelX="-1.0" RelY="0.0" />
+      <Point X="990.0000000000001" Y="430.0" GraphRef="c1622" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id5aa4f2d7">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="424.2666666666666" Y="486.2666666666667" GraphRef="ef08e" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+      <Point X="423.5" Y="502.33333333333326" GraphRef="c55ed" RelX="0.0" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida4b47c0d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="426.66666666666663" Y="140.0" GraphRef="b7840" RelX="0.0" RelY="1.0" />
+      <Point X="425.8666666666666" Y="159.66666666666669" GraphRef="e01f9" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf30caa85">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="430.66666666666663" Y="242.0" GraphRef="a81c8" RelX="0.0" RelY="1.0" />
+      <Point X="431.1333333333333" Y="258.0" GraphRef="a8418" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id346a22b5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="445.5" Y="393.33333333333326" GraphRef="bc942" RelX="0.0" RelY="-1.0" />
+      <Point X="445.99255771148535" Y="376.1770994671223" GraphRef="e81cd" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="842.0" Y="397.3333333333333" GraphRef="a55" RelX="0.0" RelY="-1.0" />
+      <Point X="843.033602545732" Y="374.736740669061" GraphRef="c121e" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="* 3-beta-OH-delta-steroid DH &amp; Steroid isomerase =" GraphId="f82">
+    <Graphics CenterX="830.0" CenterY="660.0" Width="390.3333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="** Estradiol-17-beta DH = DHB" GraphId="fde">
+    <Graphics CenterX="767.6666666666666" CenterY="683.3333333333334" Width="231.33333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="*" GraphId="cfe">
+    <Graphics CenterX="413.3333333333333" CenterY="240.0" Width="11.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="**" GraphId="d9d" GroupRef="f1f13">
+    <Graphics CenterX="1029.0" CenterY="413.66666666666674" Width="17.333333333333332" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="*" GraphId="c3b" GroupRef="cc626">
+    <Graphics CenterX="381.6666666666667" CenterY="411.33333333333326" Width="11.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="*" GraphId="eb8" GroupRef="e3493">
+    <Graphics CenterX="359.6666666666667" CenterY="523.6666666666667" Width="11.333333333333334" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" />
+  </Label>
+  <Group GroupId="c5376" GraphId="b7840" />
+  <Group GroupId="ee1bf" GraphId="a81c8" />
+  <Group GroupId="cc626" GraphId="bc942" />
+  <Group GroupId="e3493" GraphId="c55ed" />
+  <Group GroupId="f1f13" GraphId="af573" />
+  <InfoBox CenterX="24.9" CenterY="540.6666666666666" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>steroid hormone biosynthetic pathway</bp:TERM>
+      <bp:ID>PW:0000040</bp:ID>
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+    </bp:openControlledVocabulary>
+  </Biopax>
+</Pathway>

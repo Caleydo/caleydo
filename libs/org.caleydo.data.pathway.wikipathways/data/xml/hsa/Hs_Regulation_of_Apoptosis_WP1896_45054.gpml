@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Regulation of Apoptosis" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Jakobi, R" Maintainer="Matthews, L" Email="lisa.matthews@cshl.edu">
+  <Comment Source="WikiPathways-description">A regulated balance between cell survival and apoptosis is essential for normal&#13;
+development and homeostasis of multicellular organisms  (see Matsuzawa, 2001).  Defects in control of this balance may contribute  to autoimmune disease, neurodegeneration and cancer.  Protein ubiquitination and degradation is one of the major mechanisms that regulate apoptotic cell death (reviewed in Yang and Yu 2003).</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n67_REACTOME_113595" TextLabel="ubiquitin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="563.0" CenterY="530.5" Width="60.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_3316"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_211654" TextLabel="phospho-PAK-2p34 &#10;(Thr 402)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="628.5" CenterY="467.0" Width="127.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13177"/>
+  </DataNode>
+  <DataNode GraphId="n69_REACTOME_213047" TextLabel="ubiquitinated PAK-&#10;2p34&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="737.0" CenterY="565.0" Width="118.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_14454"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_69593" TextLabel="Ubiquitin ligase&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="561.5" CenterY="606.5" Width="103.0" Height="25.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_4282"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_211768" TextLabel="polyubiquitinated &#10;PAK-2p34&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="475.5" CenterY="479.0" Width="125.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_13958"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_68819" TextLabel="26S &#10;proteasome&#10;" Type="Complex">
+    <BiopaxRef>lit_68820</BiopaxRef>
+    <Graphics Color="000000" CenterX="390.0" CenterY="529.5" Width="88.0" Height="37.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2353"/>
+  </DataNode>
+  <DataNode GraphId="n76_REACTOME_195125" TextLabel="Graf-2/ &#10;Arhgap10&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="591.5" CenterY="362.0" Width="103.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="A1A4S6"/>
+  </DataNode>
+  <DataNode GraphId="n77_REACTOME_211701" TextLabel="PAK-2p34:&#10;RHG10 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="776.5" CenterY="363.5" Width="93.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_14362"/>
+  </DataNode>
+  <DataNode GraphId="n79_REACTOME_211729" TextLabel="perinuclear PAK-&#10;2p34:RHG10 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="973.5" CenterY="363.0" Width="109.0" Height="48.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_14389"/>
+  </DataNode>
+  <DataNode GraphId="n138_REACTOME_197560" TextLabel="DCC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="474.0" CenterY="54.5" Width="38.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P43146"/>
+  </DataNode>
+  <DataNode GraphId="n139_REACTOME_373627" TextLabel="DCC's fragment with &#10;the ADD domain&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="706.0" CenterY="53.0" Width="128.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P43146"/>
+  </DataNode>
+  <DataNode GraphId="n140_REACTOME_373629" TextLabel="DCC's inhibitory C-&#10;terminal domain&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="656.0" CenterY="103.0" Width="120.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P43146"/>
+  </DataNode>
+  <DataNode GraphId="n141_REACTOME_351835" TextLabel="unidentified caspase&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="537.0" CenterY="147.5" Width="128.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_14138"/>
+  </DataNode>
+  <DataNode GraphId="n143_REACTOME_373630" TextLabel="DCC-interacting &#10;protein 13-alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="802.0" CenterY="104.0" Width="108.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UKG1"/>
+  </DataNode>
+  <DataNode GraphId="n144_REACTOME_373668" TextLabel="DCC:DIP13alpha&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="948.0" CenterY="54.0" Width="104.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23064"/>
+  </DataNode>
+  <DataNode GraphId="n150_REACTOME_141640" TextLabel="Cleaved Caspase-9&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="975.0" CenterY="105.0" Width="122.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5782"/>
+  </DataNode>
+  <DataNode GraphId="n151_REACTOME_373664" TextLabel="DCC:DIP13alpha:&#10;Caspase-9&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1166.0" CenterY="53.0" Width="108.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22628"/>
+  </DataNode>
+  <DataNode GraphId="n153_REACTOME_57021" TextLabel="Caspase-3 &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1069.0" CenterY="158.0" Width="76.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P42574"/>
+  </DataNode>
+  <DataNode GraphId="n154_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1081.5" CenterY="203.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n155_REACTOME_141647" TextLabel="active caspase-3&#10;" Type="Complex">
+    <BiopaxRef>lit_141645</BiopaxRef>
+    <Graphics Color="000000" CenterX="1247.5" CenterY="147.0" Width="107.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2467"/>
+  </DataNode>
+  <DataNode GraphId="n156_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1254.0" CenterY="204.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n161_REACTOME_197559" TextLabel="UNC5B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="423.0" CenterY="54.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8IZJ1"/>
+  </DataNode>
+  <DataNode GraphId="n162_REACTOME_418801" TextLabel="UNC5B fragment &#10;with death domain&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="257.5" CenterY="130.0" Width="115.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8IZJ1"/>
+  </DataNode>
+  <DataNode GraphId="n163_REACTOME_418785" TextLabel="Protease/caspase &#10;cleaved UNC5B &#10;fragment bound to &#10;PM&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="201.0" CenterY="54.0" Width="120.0" Height="64.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8IZJ1"/>
+  </DataNode>
+  <DataNode GraphId="n168_REACTOME_418812" TextLabel="DAPKs&#10;" Type="Protein">
+    <BiopaxRef>lit_418745</BiopaxRef>
+    <Graphics Color="000000" CenterX="281.0" CenterY="230.0" Width="46.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22954"/>
+  </DataNode>
+  <DataNode GraphId="n169_REACTOME_418842" TextLabel="Unc5B with death &#10;domain:DAPK&#10;" Type="Complex">
+    <BiopaxRef>lit_418745</BiopaxRef>
+    <Graphics Color="000000" CenterX="458.0" CenterY="193.0" Width="112.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23335"/>
+  </DataNode>
+  <DataNode GraphId="n171_REACTOME_197679" TextLabel="UNC5A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="71.5" CenterY="332.0" Width="49.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q6ZN44"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_418780" TextLabel="Protease/caspase &#10;cleaved UNC5A &#10;fragment bound to &#10;PM&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="70.0" CenterY="130.0" Width="120.0" Height="64.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q6ZN44"/>
+  </DataNode>
+  <DataNode GraphId="n173_REACTOME_418784" TextLabel="UNC5A fragment &#10;with death domain&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="192.5" CenterY="191.0" Width="115.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q6ZN44"/>
+  </DataNode>
+  <DataNode GraphId="n178_REACTOME_196002" TextLabel="NRAGE&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="171.5" CenterY="333.0" Width="49.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y5V3"/>
+  </DataNode>
+  <DataNode GraphId="n179_REACTOME_374596" TextLabel="UNC5A:NRAGE&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="364.0" CenterY="294.0" Width="94.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23063"/>
+  </DataNode>
+  <Line GraphId="e_66_REACTOME_211734">
+    <Comment Source="WikiPathways-description">PAK-2p34 is ubiquitinated prior to degradation (Jakobi et al., 2003). Here, ubiquitination of PAK-2p34 is described as occurring in the cytosol. However, to date it is  not known whether this occurs in the nucleus or in the cytoplasm. Evidence for this reaction comes from experiments using  both human and rabbit proteins.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="530.0" GraphId="e_66_0"/>
+      <Point X="628.0" Y="563.0" GraphId="e_66_1"/>
+      <Point X="675.0" Y="563.0" GraphId="e_66_2" GraphRef="n69_REACTOME_213047" RelX="-1.0508474576271187" RelY="-0.10526315789473684" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_66_a_i"/>
+      <Anchor Position="0.4125" GraphId="e_66_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="596.0" Y="530.0" GraphId="e_66_i0_0" GraphRef="n67_REACTOME_113595" RelX="1.1" RelY="0.0"/>
+      <Point X="628.0" Y="530.0" GraphId="e_66_i0_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="489.0" GraphId="e_66_i1_0" GraphRef="n68_REACTOME_211654" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="628.0" Y="530.0" GraphId="e_66_i1_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="580.0" Y="591.0" GraphId="e_66_c__0_0" GraphRef="n70_REACTOME_69593" RelX="0.36893203883495146" RelY="-1.2"/>
+      <Point X="628.0" Y="563.0" GraphId="e_66_c__0_1" GraphRef="e_66_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_REACTOME_211715">
+    <Comment Source="WikiPathways-description">Proteolytically activated PAK-2p34, but not full-length PAK-2, is degraded rapidly by the proteasome (Jakobi et al., 2003).  Here, degradation of PAK-2p34 is described as occurring in the cytosol. However, to date it is not known whether this occurs in the nucleus or in the cytoplasm.</Comment>
+    <BiopaxRef>lit_211655</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="474.0" Y="501.0" GraphId="e_72_0" GraphRef="n73_REACTOME_211768" RelX="-0.016" RelY="1.1578947368421053"/>
+      <Point X="474.0" Y="530.0" GraphId="e_72_1"/>
+      <Point X="530.0" Y="530.0" GraphId="e_72_2" GraphRef="n67_REACTOME_113595" RelX="-1.1" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3411764705882353" GraphId="e_72_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="437.0" Y="529.0" GraphId="e_72_c__0_0" GraphRef="n74_REACTOME_68819" RelX="1.0681818181818181" RelY="0.0"/>
+      <Point X="474.0" Y="530.0" GraphId="e_72_c__0_1" GraphRef="e_72_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_REACTOME_211716">
+    <Comment Source="WikiPathways-description">Murine PS-GAP interacts specifically with caspase-activated PAK-2p34, but not active or inactive full-length PAK-2, through a region between the GAP and SH3 domains (Koeppel et al.,2004). Evidence for this reaction comes from experiments using both mouse and rabbit proteins.</Comment>
+    <BiopaxRef>lit_211685</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="415.0" GraphId="e_75_0"/>
+      <Point X="678.0" Y="363.0" GraphId="e_75_1"/>
+      <Point X="727.0" Y="363.0" GraphId="e_75_2" GraphRef="n77_REACTOME_211701" RelX="-1.053763440860215" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_75_a_i"/>
+      <Anchor Position="0.5955051715352119" GraphId="e_75_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="603.0" Y="383.0" GraphId="e_75_i0_0" GraphRef="n76_REACTOME_195125" RelX="0.23300970873786409" RelY="1.1666666666666667"/>
+      <Point X="628.0" Y="415.0" GraphId="e_75_i0_1" GraphRef="e_75_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="445.0" GraphId="e_75_i1_0" GraphRef="n68_REACTOME_211654" RelX="0.0" RelY="-1.1578947368421053"/>
+      <Point X="628.0" Y="415.0" GraphId="e_75_i1_1" GraphRef="e_75_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_REACTOME_211731">
+    <Comment Source="WikiPathways-description">Following caspase mediated cleavage, PAK-2p34 translocates to the nucleus (Jakobi et al., 2003). The interaction with PS-GAP changes the localization of PAK-2p34 from the nucleus to the perinuclear region (Koeppel et al.,2004).</Comment>
+    <BiopaxRef>lit_211685</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="826.0" Y="362.0" GraphId="e_78_0" GraphRef="n77_REACTOME_211701" RelX="1.075268817204301" RelY="-0.03773584905660377"/>
+      <Point X="876.0" Y="362.0" GraphId="e_78_1"/>
+      <Point X="916.0" Y="362.0" GraphId="e_78_2" GraphRef="n79_REACTOME_211729" RelX="-1.0458715596330275" RelY="-0.041666666666666664" ArrowHead="Arrow"/>
+      <Anchor Position="0.5555555555555556" GraphId="e_78_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_REACTOME_373705">
+    <Comment Source="WikiPathways-description">DCC exerts its pro-apoptotic effect when netrin ligand is absent. When unbound to its ligand, DCC is cleaved roughly in the middle of its intracellular domain (aspartic acid residue 1290) by an unknown active caspase. The cleavage releases DCC's inhibitory C-terminal domain and exposes the addiction/dependence domain (ADD), which is sufficient for cell death induction.</Comment>
+    <BiopaxRef>lit_421682</BiopaxRef>
+    <BiopaxRef>lit_373540</BiopaxRef>
+    <BiopaxRef>lit_373464</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="496.0" Y="53.0" GraphId="e_137_0" GraphRef="n138_REACTOME_197560" RelX="1.1578947368421053" RelY="-0.08695652173913043"/>
+      <Point X="537.0" Y="53.0" GraphId="e_137_1"/>
+      <Point X="575.0" Y="53.0" GraphId="e_137_2"/>
+      <Anchor Position="0.5189873417721519" GraphId="e_137_a_p"/>
+      <Anchor Position="1.0" GraphId="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="639.0" Y="53.0" GraphId="e_137_o0_0" ArrowHead="Arrow" GraphRef="n139_REACTOME_373627" RelX="-1.046875" RelY="0.0"/>
+      <Point X="575.0" Y="53.0" GraphId="e_137_o0_1" GraphRef="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="625.0" Y="81.0" GraphId="e_137_o1_0" ArrowHead="Arrow" GraphRef="n140_REACTOME_373629" RelX="-0.5166666666666667" RelY="-1.1578947368421053"/>
+      <Point X="575.0" Y="53.0" GraphId="e_137_o1_1" GraphRef="e_137_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_137_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="537.0" Y="133.0" GraphId="e_137_c__0_0" GraphRef="n141_REACTOME_351835" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="537.0" Y="53.0" GraphId="e_137_c__0_1" GraphRef="e_137_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_REACTOME_373717">
+    <Comment Source="WikiPathways-description">The ADD domain of DCC binds DCC-interacting 13alpha (DIP13alpha), which serves as an adaptor mediating the DCC apoptotic signal. The DIP13alpha protein has a pleckstrin homology domain and a phosphotyrosine binding domain. It interacts with the ADD region on the DCC cytoplasmic domain that is available after the caspase cleavage. This interaction is required for the induction of apoptosis.</Comment>
+    <BiopaxRef>lit_421682</BiopaxRef>
+    <BiopaxRef>lit_373545</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="817.0" Y="53.0" GraphId="e_142_0"/>
+      <Point X="850.0" Y="53.0" GraphId="e_142_1"/>
+      <Point X="893.0" Y="53.0" GraphId="e_142_2" GraphRef="n144_REACTOME_373668" RelX="-1.0576923076923077" RelY="-0.09090909090909091" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_142_a_i"/>
+      <Anchor Position="0.4342105263157895" GraphId="e_142_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="773.0" Y="53.0" GraphId="e_142_i0_0" GraphRef="n139_REACTOME_373627" RelX="1.046875" RelY="0.0"/>
+      <Point X="817.0" Y="53.0" GraphId="e_142_i0_1" GraphRef="e_142_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="807.0" Y="83.0" GraphId="e_142_i1_0" GraphRef="n143_REACTOME_373630" RelX="0.09259259259259259" RelY="-1.1666666666666667"/>
+      <Point X="817.0" Y="53.0" GraphId="e_142_i1_1" GraphRef="e_142_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_REACTOME_373700">
+    <Comment Source="WikiPathways-description">The ADD domain of DCC complexed with DIP13alpha interacts with the initiator caspase-9, leading to caspase activation and caspase-dependent cell death. DIP13alpha appears to function as a required adaptor to mediate DCC-caspase-9 interaction.</Comment>
+    <BiopaxRef>lit_421682</BiopaxRef>
+    <BiopaxRef>lit_373545</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1030.0" Y="53.0" GraphId="e_149_0"/>
+      <Point X="1066.0" Y="53.0" GraphId="e_149_1"/>
+      <Point X="1109.0" Y="53.0" GraphId="e_149_2" GraphRef="n151_REACTOME_373664" RelX="-1.0555555555555556" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_149_a_i"/>
+      <Anchor Position="0.45569620253164556" GraphId="e_149_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1003.0" Y="53.0" GraphId="e_149_i0_0" GraphRef="n144_REACTOME_373668" RelX="1.0576923076923077" RelY="-0.09090909090909091"/>
+      <Point X="1030.0" Y="53.0" GraphId="e_149_i0_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="986.0" Y="91.0" GraphId="e_149_i1_0" GraphRef="n150_REACTOME_141640" RelX="0.18032786885245902" RelY="-1.2727272727272727"/>
+      <Point X="1030.0" Y="53.0" GraphId="e_149_i1_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_REACTOME_418845">
+    <Comment Source="WikiPathways-description">The DCC-caspase activating complex activates caspase-3 through caspase-9.</Comment>
+    <BiopaxRef>lit_373545</BiopaxRef>
+    <BiopaxRef>lit_418749</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1144.0" Y="173.0" GraphId="e_152_0"/>
+      <Point X="1166.0" Y="173.0" GraphId="e_152_1"/>
+      <Point X="1189.0" Y="173.0" GraphId="e_152_2"/>
+      <Anchor Position="0.0" GraphId="e_152_a_i"/>
+      <Anchor Position="0.4888888888888889" GraphId="e_152_a_p"/>
+      <Anchor Position="1.0" GraphId="e_152_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1110.0" Y="165.0" GraphId="e_152_i0_0" GraphRef="n153_REACTOME_57021" RelX="1.0789473684210527" RelY="0.3888888888888889"/>
+      <Point X="1144.0" Y="173.0" GraphId="e_152_i0_1" GraphRef="e_152_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1104.0" Y="193.0" GraphId="e_152_i1_0" GraphRef="n154_REACTOME_113592" RelX="1.1794871794871795" RelY="-0.6666666666666666"/>
+      <Point X="1144.0" Y="173.0" GraphId="e_152_i1_1" GraphRef="e_152_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1222.0" Y="161.0" GraphId="e_152_o0_0" ArrowHead="Arrow" GraphRef="n155_REACTOME_141647" RelX="-0.4672897196261682" RelY="1.2727272727272727"/>
+      <Point X="1189.0" Y="173.0" GraphId="e_152_o0_1" GraphRef="e_152_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1231.0" Y="194.0" GraphId="e_152_o1_0" ArrowHead="Arrow" GraphRef="n156_REACTOME_29370" RelX="-1.15" RelY="-0.6666666666666666"/>
+      <Point X="1189.0" Y="173.0" GraphId="e_152_o1_1" GraphRef="e_152_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_152_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1166.0" Y="74.0" GraphId="e_152_c__0_0" GraphRef="n151_REACTOME_373664" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="1166.0" Y="173.0" GraphId="e_152_c__0_1" GraphRef="e_152_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_160_REACTOME_418852">
+    <Comment Source="WikiPathways-description">The UNC5H family of netrin-1 receptors also contain death domains in their intracellular regions and function as dependence receptors. The cleavage site sequence DITD(S) found in UNC5H2 appears to be a classic caspase DXXD site and is conserved in UNC5H1 and UNC5H3 (DVAD(S) and DIID(S), respectively).&lt;br&gt;UNC5H2, like DCC, is cleaved at Asp412 by caspase or an unknown protease, but in contrast to DCC this results in the release of the death domain from the C-terminal region.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="396.0" Y="54.0" GraphId="e_160_0" GraphRef="n161_REACTOME_197559" RelX="-1.125" RelY="0.0"/>
+      <Point X="355.0" Y="54.0" GraphId="e_160_1"/>
+      <Point X="306.0" Y="54.0" GraphId="e_160_2"/>
+      <Anchor Position="0.45555555555555555" GraphId="e_160_a_p"/>
+      <Anchor Position="1.0" GraphId="e_160_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_160_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="268.0" Y="109.0" GraphId="e_160_o0_0" ArrowHead="Arrow" GraphRef="n162_REACTOME_418801" RelX="0.19130434782608696" RelY="-1.1666666666666667"/>
+      <Point X="306.0" Y="54.0" GraphId="e_160_o0_1" GraphRef="e_160_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_160_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="264.0" Y="54.0" GraphId="e_160_o1_0" ArrowHead="Arrow" GraphRef="n163_REACTOME_418785" RelX="1.05" RelY="0.0"/>
+      <Point X="306.0" Y="54.0" GraphId="e_160_o1_1" GraphRef="e_160_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_160_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="470.0" Y="147.0" GraphId="e_160_c__0_0" GraphRef="n141_REACTOME_351835" RelX="-1.046875" RelY="0.0"/>
+      <Point X="355.0" Y="147.0" GraphId="e_160_c__0_1"/>
+      <Point X="355.0" Y="54.0" GraphId="e_160_c__0_2" GraphRef="e_160_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_REACTOME_418849">
+    <Comment Source="WikiPathways-description">The released fragment of Unc5B with death domain interacts with a death domain containing serine/threonine kinase protein, death associated protein kinase (DAPK). DAPK mediates UNC5H2 induced cell death through a wide spectrum of apoptotic signals via its serine threonine kinase activity.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="333.0" Y="192.0" GraphId="e_167_0"/>
+      <Point X="364.0" Y="192.0" GraphId="e_167_1"/>
+      <Point X="399.0" Y="192.0" GraphId="e_167_2" GraphRef="n169_REACTOME_418842" RelX="-1.0535714285714286" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_167_a_i"/>
+      <Anchor Position="0.4696969696969697" GraphId="e_167_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="296.0" Y="216.0" GraphId="e_167_i0_0" GraphRef="n168_REACTOME_418812" RelX="0.6521739130434783" RelY="-1.2727272727272727"/>
+      <Point X="333.0" Y="192.0" GraphId="e_167_i0_1" GraphRef="e_167_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_167_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="279.0" Y="151.0" GraphId="e_167_i1_0" GraphRef="n162_REACTOME_418801" RelX="0.3826086956521739" RelY="1.1666666666666667"/>
+      <Point X="333.0" Y="192.0" GraphId="e_167_i1_1" GraphRef="e_167_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_REACTOME_418846">
+    <Comment Source="WikiPathways-description">The UNC5H netrin1 receptors also contain death domains in their intracellular regions and function as dependence receptors. The cleavage site sequence DITD(S) found in UNC5H2 appears to be a classic caspase DXXD site and is conserved in UNC5H1 and UNC5H3 (DVAD(S) and DIID(S), respectively).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="70.0" Y="318.0" GraphId="e_170_0" GraphRef="n171_REACTOME_197679" RelX="-0.04081632653061224" RelY="-1.2727272727272727"/>
+      <Point X="70.0" Y="262.0" GraphId="e_170_1"/>
+      <Point X="70.0" Y="219.0" GraphId="e_170_2"/>
+      <Anchor Position="0.5656565656565656" GraphId="e_170_a_p"/>
+      <Anchor Position="1.0" GraphId="e_170_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="70.0" Y="165.0" GraphId="e_170_o0_0" ArrowHead="Arrow" GraphRef="n172_REACTOME_418780" RelX="0.0" RelY="1.09375"/>
+      <Point X="70.0" Y="219.0" GraphId="e_170_o0_1" GraphRef="e_170_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="132.0" Y="204.0" GraphId="e_170_o1_0" ArrowHead="Arrow" GraphRef="n173_REACTOME_418784" RelX="-1.0434782608695652" RelY="0.7222222222222222"/>
+      <Point X="70.0" Y="219.0" GraphId="e_170_o1_1" GraphRef="e_170_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="537.0" Y="162.0" GraphId="e_170_c__0_0" GraphRef="n141_REACTOME_351835" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="537.0" Y="261.0" GraphId="e_170_c__0_1"/>
+      <Point X="70.0" Y="262.0" GraphId="e_170_c__0_2" GraphRef="e_170_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_REACTOME_374699">
+    <Comment Source="WikiPathways-description">The neurotrophin receptor-interacting melanoma-associated antigen (MAGE) homologue, NRAGE, known to be a regulator of apoptosis, has been identified as a specific binding partner of UNC5H1. NRAGE utilizes two mechanisms to induce UNC5H1mediated apoptosis in cells: first, through the degradation of the caspase inhibitor X-chromosome-linked inhibitor of apoptosis protein (XIAP), and second, through the activation of the proapoptotic c-JUN N-terminal kinase (JNK) signaling pathway.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="192.0" Y="293.0" GraphId="e_177_0"/>
+      <Point X="254.0" Y="293.0" GraphId="e_177_1"/>
+      <Point X="314.0" Y="293.0" GraphId="e_177_2" GraphRef="n179_REACTOME_374596" RelX="-1.0638297872340425" RelY="-0.09090909090909091" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_177_a_i"/>
+      <Anchor Position="0.5081967213114754" GraphId="e_177_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="192.0" Y="212.0" GraphId="e_177_i0_0" GraphRef="n173_REACTOME_418784" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="192.0" Y="293.0" GraphId="e_177_i0_1" GraphRef="e_177_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_177_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="176.0" Y="319.0" GraphId="e_177_i1_0" GraphRef="n178_REACTOME_196002" RelX="0.20408163265306123" RelY="-1.2727272727272727"/>
+      <Point X="192.0" Y="293.0" GraphId="e_177_i1_1" GraphRef="e_177_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_183" GroupRef="group_comp_183" TextLabel="endosome membrane">
+    <Graphics Color="000000" CenterX="805.5" CenterY="150.5" Width="147.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_187" GroupRef="group_comp_187" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="449.5" CenterY="379.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_183" GroupRef="group_comp_183">
+    <Graphics Color="000000" CenterX="805.5" CenterY="151.0" Width="157.0" Height="100.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_187" GroupRef="group_comp_187">
+    <Graphics Color="000000" CenterX="701.0" CenterY="352.0" Width="1280.0" Height="608.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_68820" rdf:id="lit_68820">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10872471</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The 26S proteasome: a molecular machine designed for controlled proteolysis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Voges, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zwickl, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumeister, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 68:1015-68</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141645" rdf:id="lit_141645">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11931755</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms of caspase activation and inhibition during apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shi, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 9:459-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418745" rdf:id="lit_418745">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16756490</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The death-associated protein kinases: structure, function, and beyond</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bialik, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kimchi, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 75:189-210</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_211655" rdf:id="lit_211655">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12853446</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Caspase-activated PAK-2 is regulated by subcellular targeting and proteasomal degradation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jakobi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCarthy, CC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koeppel, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stringer, DK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:38675-85</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_211685" rdf:id="lit_211685">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15471851</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification and characterization of PS-GAP as a novel regulator of caspase-activated PAK-2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koeppel, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McCarthy, CC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moertl, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jakobi, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:53653-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421682" rdf:id="lit_421682">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11248093</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The dependence receptor DCC (deleted in colorectal cancer) defines an alternative mechanism for caspase activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Forcet, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ye, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Granger, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Corset, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shin, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bredesen, DE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mehlen, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 98:3416-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373540" rdf:id="lit_373540">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15310786</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of the dependence receptor DCC in colorectal cancer pathogenesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mehlen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fearon, ER</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Oncol 22:3420-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373464" rdf:id="lit_373464">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16158190</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Netrin-1: when a neuronal guidance cue turns out to be a regulator of tumorigenesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mehlen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furne, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Mol Life Sci 62:2599-616</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_373545" rdf:id="lit_373545">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12011067</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mediation of the DCC apoptotic signal by DIP13 alpha</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yao, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morgan, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thorburn, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Finley RL, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, YQ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:26281-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418749" rdf:id="lit_418749">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15573119</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Netrin-1 and its receptors in tumorigenesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arakawa, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Cancer 4:978-87</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>apoptotic cell death pathway</bp:TERM><bp:ID>PW:0000009</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

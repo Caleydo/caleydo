@@ -1,0 +1,1798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Signaling by FGFR" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="de Bono, B" Maintainer="de Bono, B, D'Eustachio, P" Email="bdb@ebi.ac.uk, deustp01@nyumc.org">
+  <Comment Source="WikiPathways-description">The 22 members of the fibroblast growth factor (FGF) family of growth factors mediate their cellular responses by binding to and activating the different isoforms encoded by the four receptor tyrosine kinases (RTKs) designated FGFR1, FGFR2, FGFR3 and FGFR4. These receptors are key regulators of several developmental processes in which cell fate and differentiation to various tissue lineages are determined. Unlike other growth factors, FGFs act in concert with heparin or heparan sulfate proteoglycan (HSPG) to activate FGFRs and to induce the pleiotropic responses that lead to the variety of cellular responses induced by this large family of growth factors. An alternative, FGF-independent, source of FGFR activation originates from the interaction with cell adhesion molecules, typically in the context of interactions on neural cell membranes and is crucial for neuronal survival and development.
+
+Upon ligand binding, receptor dimers are formed and their intrinsic tyrosine kinase is activated causing phosphorylation of multiple tyrosine residues on the receptors. These then serve as docking sites for the recruitment of SH2 (src homology-2) or PTB (phosphotyrosine binding) domains of adaptors, docking proteins or signaling enzymes. Signaling complexes are assembled and recruited to the active receptors resulting in a cascade of phosphorylation events.
+
+This leads to stimulation of intracellular signaling pathways that control cell proliferation, cell differentiation, cell migration, cell survival and cell shape, depending on the cell type or stage of maturation.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_190609</BiopaxRef>
+  <BiopaxRef>lit_190604</BiopaxRef>
+  <BiopaxRef>lit_190607</BiopaxRef>
+  <BiopaxRef>lit_190605</BiopaxRef>
+  <BiopaxRef>lit_190251</BiopaxRef>
+  <BiopaxRef>lit_191444</BiopaxRef>
+  <DataNode GraphId="n468_REACTOME_189963" TextLabel="FGFR 1b &#10;binding FGFs&#10;" Type="Protein">
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics Color="000000" CenterX="51.0" CenterY="124.5" Width="94.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_9541"/>
+  </DataNode>
+  <DataNode GraphId="n469_REACTOME_190228" TextLabel="FGFR1b &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="45.5" CenterY="173.0" Width="81.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9721"/>
+  </DataNode>
+  <DataNode GraphId="n470_REACTOME_190915" TextLabel="Heparan Sulphate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="96.5" CenterY="82.0" Width="103.0" Height="28.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="35721"/>
+  </DataNode>
+  <DataNode GraphId="n471_REACTOME_190226" TextLabel="FGFR1b &#10;homodimer &#10;bound to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="256.5" CenterY="173.0" Width="95.0" Height="54.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9772"/>
+  </DataNode>
+  <DataNode GraphId="n472_REACTOME_190315" TextLabel="HSPG&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="186.5" CenterY="64.0" Width="49.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P34741"/>
+  </DataNode>
+  <DataNode GraphId="n473_REACTOME_191566" TextLabel="Activated FGFR &#10;complexed with &#10;phosphorylated FRS2, &#10;GRB2  and CBL&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="185.0" CenterY="286.0" Width="130.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9900"/>
+  </DataNode>
+  <DataNode GraphId="n475_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="288.0" CenterY="238.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n476_REACTOME_190430" TextLabel="Activated FGFR1b &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="457.5" CenterY="170.5" Width="119.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9538"/>
+  </DataNode>
+  <DataNode GraphId="n477_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="438.5" CenterY="238.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n481_REACTOME_189953" TextLabel="FGFR 1c &#10;binding FGFs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="577.0" CenterY="119.5" Width="82.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_9777"/>
+  </DataNode>
+  <DataNode GraphId="n482_REACTOME_190222" TextLabel="FGFR1c &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="569.0" CenterY="173.0" Width="86.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9800"/>
+  </DataNode>
+  <DataNode GraphId="n483_REACTOME_190233" TextLabel="FGFR1c &#10;homodimer &#10;bound to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="746.5" CenterY="175.0" Width="89.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9629"/>
+  </DataNode>
+  <DataNode GraphId="n488_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="774.0" CenterY="229.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n489_REACTOME_190425" TextLabel="Activated FGFR1c &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="947.5" CenterY="173.5" Width="119.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9810"/>
+  </DataNode>
+  <DataNode GraphId="n490_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="926.5" CenterY="226.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n495_REACTOME_190208" TextLabel="Klotho bound to &#10;FGF23&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1063.0" CenterY="176.0" Width="94.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9620"/>
+  </DataNode>
+  <DataNode GraphId="n496_REACTOME_190218" TextLabel="FGF23 bound to &#10;Klotho and FGFR1c&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1274.5" CenterY="174.0" Width="109.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9730"/>
+  </DataNode>
+  <DataNode GraphId="n498_REACTOME_190315" TextLabel="HSPG&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1182.0" CenterY="67.5" Width="46.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P34741"/>
+  </DataNode>
+  <DataNode GraphId="n500_REACTOME_190915" TextLabel="Heparan &#10;Sulphate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1091.0" CenterY="95.0" Width="102.0" Height="32.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="35721"/>
+  </DataNode>
+  <DataNode GraphId="n823_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1315.0" CenterY="239.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n824_REACTOME_500333" TextLabel="Activated FGFR1c &#10;bound to FGF23:&#10;Klotho&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1462.5" CenterY="173.5" Width="109.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21886"/>
+  </DataNode>
+  <DataNode GraphId="n825_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1429.5" CenterY="235.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n828_REACTOME_192610" TextLabel="FGFR2b &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1591.5" CenterY="176.5" Width="97.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9701"/>
+  </DataNode>
+  <DataNode GraphId="n829_REACTOME_189967" TextLabel="FGFR 2b &#10;binding FGFs&#10;" Type="Protein">
+    <BiopaxRef>lit_191444</BiopaxRef>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics Color="000000" CenterX="1613.5" CenterY="121.5" Width="87.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_9755"/>
+  </DataNode>
+  <DataNode GraphId="n830_REACTOME_192615" TextLabel="FGFR2b &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1800.0" CenterY="176.0" Width="112.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9654"/>
+  </DataNode>
+  <DataNode GraphId="n837_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1836.0" CenterY="242.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n838_REACTOME_192606" TextLabel="Activated FGFR2b &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2000.5" CenterY="174.5" Width="119.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9543"/>
+  </DataNode>
+  <DataNode GraphId="n839_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1951.5" CenterY="243.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n842_REACTOME_192605" TextLabel="FGFR2c &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2113.0" CenterY="173.5" Width="82.0" Height="37.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9846"/>
+  </DataNode>
+  <DataNode GraphId="n843_REACTOME_189957" TextLabel="FGFR 2c binding &#10;FGFs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2122.0" CenterY="129.5" Width="94.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_9904"/>
+  </DataNode>
+  <DataNode GraphId="n844_REACTOME_192594" TextLabel="FGFR2c &#10;homodimer &#10;bound to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2358.0" CenterY="174.0" Width="104.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9689"/>
+  </DataNode>
+  <DataNode GraphId="n848_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2379.0" CenterY="245.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n849_REACTOME_192616" TextLabel="Activated FGFR2c &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2531.5" CenterY="176.5" Width="119.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9576"/>
+  </DataNode>
+  <DataNode GraphId="n850_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2495.5" CenterY="244.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n883_REACTOME_189964" TextLabel="FGFR 3b binding &#10;FGFs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2664.5" CenterY="123.0" Width="97.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_9651"/>
+  </DataNode>
+  <DataNode GraphId="n884_REACTOME_190221" TextLabel="FGFR3b &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2653.0" CenterY="180.5" Width="90.0" Height="33.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9649"/>
+  </DataNode>
+  <DataNode GraphId="n885_REACTOME_190232" TextLabel="FGFR3b &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2896.0" CenterY="177.0" Width="114.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9670"/>
+  </DataNode>
+  <DataNode GraphId="n887_REACTOME_190315" TextLabel="HSPG&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2263.5" CenterY="64.0" Width="47.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P34741"/>
+  </DataNode>
+  <DataNode GraphId="n889_REACTOME_190915" TextLabel="Heparan &#10;Sulphate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2198.5" CenterY="90.5" Width="71.0" Height="33.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="35721"/>
+  </DataNode>
+  <DataNode GraphId="n894_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2926.0" CenterY="247.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n895_REACTOME_190380" TextLabel="Activated FGFR3b &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3085.5" CenterY="176.5" Width="119.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9635"/>
+  </DataNode>
+  <DataNode GraphId="n896_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="3062.5" CenterY="245.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n899_REACTOME_190235" TextLabel="FGFR3c &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3210.5" CenterY="178.0" Width="99.0" Height="34.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9631"/>
+  </DataNode>
+  <DataNode GraphId="n900_REACTOME_189955" TextLabel="FGFR 3c binding &#10;FGFs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="3226.5" CenterY="134.0" Width="95.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_9844"/>
+  </DataNode>
+  <DataNode GraphId="n901_REACTOME_190234" TextLabel="FGFR3c homodimer &#10;bound to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3419.5" CenterY="171.0" Width="115.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9621"/>
+  </DataNode>
+  <DataNode GraphId="n903_REACTOME_190315" TextLabel="HSPG&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="3340.5" CenterY="64.5" Width="47.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P34741"/>
+  </DataNode>
+  <DataNode GraphId="n905_REACTOME_190915" TextLabel="Heparan &#10;Sulphate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="3281.0" CenterY="93.5" Width="66.0" Height="33.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="35721"/>
+  </DataNode>
+  <DataNode GraphId="n908_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="3456.0" CenterY="259.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n909_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="3561.5" CenterY="257.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n910_REACTOME_190389" TextLabel="Activated FGFR3c &#10;homodimer bound &#10;to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3594.5" CenterY="176.5" Width="119.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9623"/>
+  </DataNode>
+  <DataNode GraphId="n913_REACTOME_190224" TextLabel="FGFR4 &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3727.5" CenterY="179.0" Width="79.0" Height="32.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9674"/>
+  </DataNode>
+  <DataNode GraphId="n914_REACTOME_189959" TextLabel="FGFR4 binding &#10;FGFs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="3734.0" CenterY="123.0" Width="110.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_9577"/>
+  </DataNode>
+  <DataNode GraphId="n915_REACTOME_190223" TextLabel="FGFR4 homodimer &#10;bound to FGF&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3935.5" CenterY="171.0" Width="107.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9679"/>
+  </DataNode>
+  <DataNode GraphId="n920_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="3963.0" CenterY="258.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n921_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="4085.5" CenterY="257.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n922_REACTOME_190328" TextLabel="Activated FGFR4 &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="4090.0" CenterY="174.0" Width="102.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9792"/>
+  </DataNode>
+  <DataNode GraphId="n1102_REACTOME_190352" TextLabel="Activated FGFR&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="52.0" CenterY="562.5" Width="92.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_9678"/>
+  </DataNode>
+  <DataNode GraphId="n1103_REACTOME_190356" TextLabel="Activated FGFR &#10;complexed with &#10;FRS2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="134.0" CenterY="672.0" Width="100.0" Height="54.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21822"/>
+  </DataNode>
+  <DataNode GraphId="n1105_REACTOME_190350" TextLabel="Activated FGFR:p-&#10;FRS2-alpha&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="444.0" CenterY="653.0" Width="106.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21467"/>
+  </DataNode>
+  <DataNode GraphId="n1106_REACTOME_162563" TextLabel="SHP2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="512.5" CenterY="561.5" Width="43.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q06124"/>
+  </DataNode>
+  <DataNode GraphId="n1107_REACTOME_190359" TextLabel="Activated FGFR:p-&#10;FRS2-alpa:SHP2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="639.0" CenterY="649.0" Width="106.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21508"/>
+  </DataNode>
+  <DataNode GraphId="n1110_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="386.5" CenterY="570.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n1518_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="700.0" CenterY="577.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n1519_REACTOME_190361" TextLabel="Activated FGFR:&#10;p-FRS2-alpha:&#10;p-SHP2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="850.5" CenterY="659.5" Width="97.0" Height="59.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21961"/>
+  </DataNode>
+  <DataNode GraphId="n1520_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="795.5" CenterY="575.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n1523_REACTOME_74686" TextLabel="GRB2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="866.0" CenterY="568.5" Width="44.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P62993-1"/>
+  </DataNode>
+  <DataNode GraphId="n1524_REACTOME_179795" TextLabel="GAB1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="930.0" CenterY="564.5" Width="40.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13480"/>
+  </DataNode>
+  <DataNode GraphId="n1525_REACTOME_190399" TextLabel="GRB2 and GAB1 &#10;bound to activated &#10;FGFR and FRS2-&#10;alpha&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1035.0" CenterY="680.0" Width="120.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21915"/>
+  </DataNode>
+  <DataNode GraphId="n1533_REACTOME_179838" TextLabel="Phosphatidylinositol-&#10;3,4,5-trisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1510.0" CenterY="651.0" Width="124.0" Height="46.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16618"/>
+  </DataNode>
+  <DataNode GraphId="n1534_REACTOME_167682" TextLabel="Phospholipase C &#10;gamma 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1360.0" CenterY="654.0" Width="100.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P19174"/>
+  </DataNode>
+  <DataNode GraphId="n1535_REACTOME_190895" TextLabel="Activated FGFR bound &#10;to PLC gamma&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1654.0" CenterY="652.0" Width="132.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21704"/>
+  </DataNode>
+  <DataNode GraphId="n1539_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1674.0" CenterY="576.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n1540_REACTOME_190902" TextLabel="Activated FGFR bound &#10;to activated PLC &#10;gamma&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1840.0" CenterY="657.5" Width="132.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22036"/>
+  </DataNode>
+  <DataNode GraphId="n1541_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1820.5" CenterY="573.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n1545_REACTOME_167679" TextLabel="Phospho-&#10;Phospholipase C &#10;gamma 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2027.0" CenterY="655.5" Width="100.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P19174"/>
+  </DataNode>
+  <DataNode GraphId="n1549_REACTOME_74680" TextLabel="SHC1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2140.0" CenterY="566.0" Width="44.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29353"/>
+  </DataNode>
+  <DataNode GraphId="n1550_REACTOME_190392" TextLabel="Complex of Activated &#10;FGFR with SHC&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2268.5" CenterY="653.0" Width="125.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21780"/>
+  </DataNode>
+  <DataNode GraphId="n1561_REACTOME_74693" TextLabel="PI3K&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1002.5" CenterY="569.5" Width="37.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4240"/>
+  </DataNode>
+  <DataNode GraphId="n1562_REACTOME_190928" TextLabel="Activated FGFR bound &#10;to PI3K&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1179.0" CenterY="649.0" Width="132.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21751"/>
+  </DataNode>
+  <DataNode GraphId="n1564_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1264.0" CenterY="329.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n1565_REACTOME_36267" TextLabel="Phosphatidyl-&#10;myo-inositol 4,5-&#10;bisphosphate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1176.0" CenterY="374.5" Width="106.0" Height="53.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="18348"/>
+  </DataNode>
+  <DataNode GraphId="n1566_REACTOME_38117" TextLabel="Phosphatidylinositol&#10;-3,4,5-&#10;trisphosphate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1472.0" CenterY="374.0" Width="116.0" Height="38.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="16618"/>
+  </DataNode>
+  <DataNode GraphId="n1567_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1390.5" CenterY="326.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n1568_REACTOME_188019" TextLabel="Activated PI3K&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1318.5" CenterY="432.5" Width="85.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_9165"/>
+  </DataNode>
+  <DataNode GraphId="n1569_REACTOME_191476" TextLabel="FRS2&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="47.5" CenterY="653.5" Width="41.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_21929"/>
+  </DataNode>
+  <DataNode GraphId="n1570_REACTOME_532229" TextLabel="Activated FGFR1, 3&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2141.0" CenterY="649.5" Width="112.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_22016"/>
+  </DataNode>
+  <DataNode GraphId="n1571_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2203.0" CenterY="524.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n1572_REACTOME_180276" TextLabel="Phospho-SHC &#10;transforming &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2364.0" CenterY="511.5" Width="114.0" Height="47.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29353"/>
+  </DataNode>
+  <DataNode GraphId="n1574_REACTOME_65043" TextLabel="SRC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2411.0" CenterY="594.5" Width="36.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12931-1"/>
+  </DataNode>
+  <DataNode GraphId="n1575_REACTOME_532245" TextLabel="Activated FGFR1&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="2426.5" CenterY="649.5" Width="99.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_21860"/>
+  </DataNode>
+  <DataNode GraphId="n1576_REACTOME_109797" TextLabel="GRB2:SOS1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2506.5" CenterY="538.5" Width="91.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4435"/>
+  </DataNode>
+  <DataNode GraphId="n1577_REACTOME_532252" TextLabel="FGFR1:GRB2:SOS1:p-&#10;SHC:SRC&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2566.0" CenterY="647.0" Width="128.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21545"/>
+  </DataNode>
+  <DataNode GraphId="n1581_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2340.5" CenterY="605.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n2083_REACTOME_532643" TextLabel="Activated FGFR &#10;complexed with &#10;FRS2-alpha&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="263.5" CenterY="658.5" Width="129.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21820"/>
+  </DataNode>
+  <DataNode GraphId="n2085_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="264.0" CenterY="571.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <Line GraphId="e_467_REACTOME_190245">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate (Mohammadi et al. 2005). NCAM and other members of the CAM protein family directly or indirectly modulate this interaction in a variety of neural tissues. The details of this interaction in vivo have not been definitively established at the molecular level, but are thought to play a central role in the regulation of the development of these tissues (Williams et al. 1994; Kiselyov et al. 2003, 2005; Christensen et al. 2006).</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="155.0" Y="173.0" GraphId="e_467_0"/>
+      <Point X="184.0" Y="173.0" GraphId="e_467_1"/>
+      <Point X="206.0" Y="173.0" GraphId="e_467_2" GraphRef="n471_REACTOME_190226" RelX="-1.0526315789473684" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_467_a_i"/>
+      <Anchor Position="0.5686274509803921" GraphId="e_467_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_467_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="83.0" Y="143.0" GraphId="e_467_i0_0" GraphRef="n468_REACTOME_189963" RelX="0.6808510638297872" RelY="1.2258064516129032"/>
+      <Point X="155.0" Y="173.0" GraphId="e_467_i0_1" GraphRef="e_467_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_467_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="89.0" Y="173.0" GraphId="e_467_i1_0" GraphRef="n469_REACTOME_190228" RelX="1.0864197530864197" RelY="0.0"/>
+      <Point X="155.0" Y="173.0" GraphId="e_467_i1_1" GraphRef="e_467_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_467_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="105.0" Y="99.0" GraphId="e_467_i2_0" GraphRef="n470_REACTOME_190915" RelX="0.17475728155339806" RelY="1.2142857142857142"/>
+      <Point X="155.0" Y="173.0" GraphId="e_467_i2_1" GraphRef="e_467_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_467_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="184.0" Y="249.0" GraphId="e_467_i__0_0" GraphRef="n473_REACTOME_191566" RelX="-0.015384615384615385" RelY="-1.088235294117647"/>
+      <Point X="184.0" Y="173.0" GraphId="e_467_i__0_1" GraphRef="e_467_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_467_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="185.0" Y="78.0" GraphId="e_467_a__0_0" GraphRef="n472_REACTOME_190315" RelX="-0.04081632653061224" RelY="1.2727272727272727"/>
+      <Point X="184.0" Y="173.0" GraphId="e_467_a__0_1" GraphRef="e_467_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_474_REACTOME_190427">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of activated FGF receptor 1 catalyzes multiple phosphorylation events (Mohammadi et al. 1997), creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators.</Comment>
+    <BiopaxRef>lit_190942</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="333.0" Y="208.0" GraphId="e_474_0"/>
+      <Point X="357.0" Y="207.0" GraphId="e_474_1"/>
+      <Point X="383.0" Y="208.0" GraphId="e_474_2"/>
+      <Anchor Position="0.0" GraphId="e_474_a_i"/>
+      <Anchor Position="0.4800319999180804" GraphId="e_474_a_p"/>
+      <Anchor Position="1.0" GraphId="e_474_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_474_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="307.0" Y="194.0" GraphId="e_474_i0_0" GraphRef="n471_REACTOME_190226" RelX="1.0736842105263158" RelY="0.7777777777777778"/>
+      <Point X="333.0" Y="208.0" GraphId="e_474_i0_1" GraphRef="e_474_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_474_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="310.0" Y="225.0" GraphId="e_474_i1_0" GraphRef="n475_REACTOME_113592" RelX="1.1578947368421053" RelY="-0.8387096774193549"/>
+      <Point X="333.0" Y="208.0" GraphId="e_474_i1_1" GraphRef="e_474_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_474_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="405.0" Y="200.0" GraphId="e_474_o0_0" ArrowHead="Arrow" GraphRef="n476_REACTOME_190430" RelX="-0.8739495798319328" RelY="1.1320754716981132"/>
+      <Point X="383.0" Y="208.0" GraphId="e_474_o0_1" GraphRef="e_474_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_474_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="416.0" Y="227.0" GraphId="e_474_o1_0" ArrowHead="Arrow" GraphRef="n477_REACTOME_29370" RelX="-1.1282051282051282" RelY="-0.7096774193548387"/>
+      <Point X="383.0" Y="208.0" GraphId="e_474_o1_1" GraphRef="e_474_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_474_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="307.0" Y="172.0" GraphId="e_474_c__0_0" GraphRef="n471_REACTOME_190226" RelX="1.0736842105263158" RelY="-0.037037037037037035"/>
+      <Point X="355.0" Y="171.0" GraphId="e_474_c__0_1"/>
+      <Point X="357.0" Y="207.0" GraphId="e_474_c__0_2" GraphRef="e_474_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_480_REACTOME_190256">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate.</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="651.0" Y="176.0" GraphId="e_480_0"/>
+      <Point X="673.0" Y="177.0" GraphId="e_480_1"/>
+      <Point X="699.0" Y="176.0" GraphId="e_480_2" GraphRef="n483_REACTOME_190233" RelX="-1.0561797752808988" RelY="0.038461538461538464" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_480_a_i"/>
+      <Anchor Position="0.45840604914320787" GraphId="e_480_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_480_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="598.0" Y="139.0" GraphId="e_480_i0_0" GraphRef="n481_REACTOME_189953" RelX="0.5121951219512195" RelY="1.2121212121212122"/>
+      <Point X="651.0" Y="176.0" GraphId="e_480_i0_1" GraphRef="e_480_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_480_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="615.0" Y="174.0" GraphId="e_480_i1_0" GraphRef="n482_REACTOME_190222" RelX="1.069767441860465" RelY="0.05555555555555555"/>
+      <Point X="651.0" Y="176.0" GraphId="e_480_i1_1" GraphRef="e_480_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_480_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="151.0" Y="81.0" GraphId="e_480_i2_0" GraphRef="n470_REACTOME_190915" RelX="1.0679611650485437" RelY="-0.07142857142857142"/>
+      <Point X="615.0" Y="78.0" GraphId="e_480_i2_1"/>
+      <Point X="651.0" Y="176.0" GraphId="e_480_i2_2" GraphRef="e_480_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_480_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="283.0" GraphId="e_480_i__0_0" GraphRef="n473_REACTOME_191566" RelX="1.0461538461538462" RelY="-0.08823529411764706"/>
+      <Point X="672.0" Y="266.0" GraphId="e_480_i__0_1"/>
+      <Point X="673.0" Y="177.0" GraphId="e_480_i__0_2" GraphRef="e_480_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_480_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="214.0" Y="63.0" GraphId="e_480_a__0_0" GraphRef="n472_REACTOME_190315" RelX="1.1428571428571428" RelY="-0.09090909090909091"/>
+      <Point X="635.0" Y="62.0" GraphId="e_480_a__0_1"/>
+      <Point X="673.0" Y="177.0" GraphId="e_480_a__0_2" GraphRef="e_480_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_487_REACTOME_190429">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of activated FGF receptor 1 catalyzes multiple phosphorylation events (Mohammadi et al. 1997), creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators.</Comment>
+    <BiopaxRef>lit_201396</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="825.0" Y="199.0" GraphId="e_487_0"/>
+      <Point X="849.0" Y="199.0" GraphId="e_487_1"/>
+      <Point X="872.0" Y="199.0" GraphId="e_487_2"/>
+      <Anchor Position="0.0" GraphId="e_487_a_i"/>
+      <Anchor Position="0.5106382978723404" GraphId="e_487_a_p"/>
+      <Anchor Position="1.0" GraphId="e_487_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_487_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="796.0" Y="217.0" GraphId="e_487_i0_0" GraphRef="n488_REACTOME_113592" RelX="1.1578947368421053" RelY="-0.7741935483870968"/>
+      <Point X="825.0" Y="199.0" GraphId="e_487_i0_1" GraphRef="e_487_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_487_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="794.0" Y="188.0" GraphId="e_487_i1_0" GraphRef="n483_REACTOME_190233" RelX="1.0786516853932584" RelY="0.5"/>
+      <Point X="825.0" Y="199.0" GraphId="e_487_i1_1" GraphRef="e_487_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_487_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="885.0" Y="193.0" GraphId="e_487_o0_0" ArrowHead="Arrow" GraphRef="n489_REACTOME_190425" RelX="-1.0420168067226891" RelY="0.7547169811320755"/>
+      <Point X="872.0" Y="199.0" GraphId="e_487_o0_1" GraphRef="e_487_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_487_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="904.0" Y="216.0" GraphId="e_487_o1_0" ArrowHead="Arrow" GraphRef="n490_REACTOME_29370" RelX="-1.1282051282051282" RelY="-0.6451612903225806"/>
+      <Point X="872.0" Y="199.0" GraphId="e_487_o1_1" GraphRef="e_487_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_487_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="794.0" Y="173.0" GraphId="e_487_c__0_0" GraphRef="n483_REACTOME_190233" RelX="1.0786516853932584" RelY="-0.07692307692307693"/>
+      <Point X="847.0" Y="172.0" GraphId="e_487_c__0_1"/>
+      <Point X="849.0" Y="199.0" GraphId="e_487_c__0_2" GraphRef="e_487_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_494_REACTOME_190268">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate.</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <BiopaxRef>lit_190266</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1149.0" Y="176.0" GraphId="e_494_0"/>
+      <Point X="1181.0" Y="176.0" GraphId="e_494_1"/>
+      <Point X="1217.0" Y="175.0" GraphId="e_494_2" GraphRef="n496_REACTOME_190218" RelX="-1.0458715596330275" RelY="0.038461538461538464" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_494_a_i"/>
+      <Anchor Position="0.470492156570047" GraphId="e_494_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_494_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1113.0" Y="176.0" GraphId="e_494_i0_0" GraphRef="n495_REACTOME_190208" RelX="1.0638297872340425" RelY="0.0"/>
+      <Point X="1149.0" Y="176.0" GraphId="e_494_i0_1" GraphRef="e_494_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_494_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="573.0" Y="194.0" GraphId="e_494_i1_0" GraphRef="n482_REACTOME_190222" RelX="0.09302325581395349" RelY="1.1666666666666667"/>
+      <Point X="589.0" Y="261.0" GraphId="e_494_i1_1"/>
+      <Point X="1098.0" Y="250.0" GraphId="e_494_i1_2"/>
+      <Point X="1149.0" Y="176.0" GraphId="e_494_i1_3" GraphRef="e_494_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_494_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1102.0" Y="114.0" GraphId="e_494_i2_0" GraphRef="n500_REACTOME_190915" RelX="0.21568627450980393" RelY="1.1875"/>
+      <Point X="1149.0" Y="176.0" GraphId="e_494_i2_1" GraphRef="e_494_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_494_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="284.0" GraphId="e_494_i__0_0" GraphRef="n473_REACTOME_191566" RelX="1.0461538461538462" RelY="-0.058823529411764705"/>
+      <Point X="1181.0" Y="260.0" GraphId="e_494_i__0_1"/>
+      <Point X="1181.0" Y="176.0" GraphId="e_494_i__0_2" GraphRef="e_494_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_494_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1181.0" Y="82.0" GraphId="e_494_a__0_0" GraphRef="n498_REACTOME_190315" RelX="-0.043478260869565216" RelY="1.3043478260869565"/>
+      <Point X="1181.0" Y="176.0" GraphId="e_494_a__0_1" GraphRef="e_494_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_822_REACTOME_191062">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of activated FGF receptor 1 catalyzes multiple phosphorylation events (Mohammadi et al. 1997), creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators.</Comment>
+    <BiopaxRef>lit_190266</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1353.0" Y="202.0" GraphId="e_822_0"/>
+      <Point X="1371.0" Y="201.0" GraphId="e_822_1"/>
+      <Point X="1389.0" Y="202.0" GraphId="e_822_2"/>
+      <Anchor Position="0.0" GraphId="e_822_a_i"/>
+      <Anchor Position="0.5" GraphId="e_822_a_p"/>
+      <Anchor Position="1.0" GraphId="e_822_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_822_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1330.0" Y="221.0" GraphId="e_822_i0_0" GraphRef="n823_REACTOME_113592" RelX="0.7894736842105263" RelY="-1.1612903225806452"/>
+      <Point X="1353.0" Y="202.0" GraphId="e_822_i0_1" GraphRef="e_822_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_822_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1332.0" Y="193.0" GraphId="e_822_i1_0" GraphRef="n496_REACTOME_190218" RelX="1.0642201834862386" RelY="0.7307692307692307"/>
+      <Point X="1353.0" Y="202.0" GraphId="e_822_i1_1" GraphRef="e_822_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_822_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1405.0" Y="194.0" GraphId="e_822_o0_0" ArrowHead="Arrow" GraphRef="n824_REACTOME_500333" RelX="-1.0458715596330275" RelY="0.7924528301886793"/>
+      <Point X="1389.0" Y="202.0" GraphId="e_822_o0_1" GraphRef="e_822_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_822_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1410.0" Y="217.0" GraphId="e_822_o1_0" ArrowHead="Arrow" GraphRef="n825_REACTOME_29370" RelX="-0.9743589743589743" RelY="-1.1612903225806452"/>
+      <Point X="1389.0" Y="202.0" GraphId="e_822_o1_1" GraphRef="e_822_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_822_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1332.0" Y="174.0" GraphId="e_822_c__0_0" GraphRef="n496_REACTOME_190218" RelX="1.0642201834862386" RelY="0.0"/>
+      <Point X="1371.0" Y="174.0" GraphId="e_822_c__0_1"/>
+      <Point X="1371.0" Y="201.0" GraphId="e_822_c__0_2" GraphRef="e_822_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_827_REACTOME_190260">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor 2b in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate. Two isoforms of FGFR2b generated by alternative splicing and differing only by the presence ("long") or absence ("short") of two amino acid residues at positions 428-429 are equally active in ligand binding and dimerization but differ in their abilities to interact with downstream targets.</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1690.0" Y="176.0" GraphId="e_827_0"/>
+      <Point X="1723.0" Y="177.0" GraphId="e_827_1"/>
+      <Point X="1741.0" Y="176.0" GraphId="e_827_2" GraphRef="n830_REACTOME_192615" RelX="-1.0535714285714286" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_827_a_i"/>
+      <Anchor Position="0.6468117051004978" GraphId="e_827_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_827_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1643.0" Y="176.0" GraphId="e_827_i0_0" GraphRef="n828_REACTOME_192610" RelX="1.0721649484536082" RelY="0.0"/>
+      <Point X="1690.0" Y="176.0" GraphId="e_827_i0_1" GraphRef="e_827_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_827_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1638.0" Y="143.0" GraphId="e_827_i1_0" GraphRef="n829_REACTOME_189967" RelX="0.5747126436781609" RelY="1.1891891891891893"/>
+      <Point X="1690.0" Y="176.0" GraphId="e_827_i1_1" GraphRef="e_827_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_827_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1145.0" Y="94.0" GraphId="e_827_i2_0" GraphRef="n500_REACTOME_190915" RelX="1.0588235294117647" RelY="-0.0625"/>
+      <Point X="1661.0" Y="90.0" GraphId="e_827_i2_1"/>
+      <Point X="1690.0" Y="176.0" GraphId="e_827_i2_2" GraphRef="e_827_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_827_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="284.0" GraphId="e_827_i__0_0" GraphRef="n473_REACTOME_191566" RelX="1.0461538461538462" RelY="-0.058823529411764705"/>
+      <Point X="1723.0" Y="261.0" GraphId="e_827_i__0_1"/>
+      <Point X="1723.0" Y="177.0" GraphId="e_827_i__0_2" GraphRef="e_827_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_827_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1208.0" Y="66.0" GraphId="e_827_a__0_0" GraphRef="n498_REACTOME_190315" RelX="1.1304347826086956" RelY="-0.08695652173913043"/>
+      <Point X="1686.0" Y="65.0" GraphId="e_827_a__0_1"/>
+      <Point X="1723.0" Y="177.0" GraphId="e_827_a__0_2" GraphRef="e_827_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_836_REACTOME_190408">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of the activated FGFR2b receptor leads to multiple phosphorylation events, creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators. Two isoforms of FGFR2c generated by alternative splicing and differing only by the presence ("long") or absence ("short") of two amino acid residues at positions 428-429 are equally active in autophosphorylation, but differ in their abilities to interact with downstream targets.</Comment>
+    <BiopaxRef>lit_190962</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1871.0" Y="197.0" GraphId="e_836_0"/>
+      <Point X="1895.0" Y="198.0" GraphId="e_836_1"/>
+      <Point X="1917.0" Y="197.0" GraphId="e_836_2"/>
+      <Anchor Position="0.0" GraphId="e_836_a_i"/>
+      <Anchor Position="0.5216980358171049" GraphId="e_836_a_p"/>
+      <Anchor Position="1.0" GraphId="e_836_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_836_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1859.0" Y="192.0" GraphId="e_836_i0_0" GraphRef="n830_REACTOME_192615" RelX="1.0535714285714286" RelY="0.64"/>
+      <Point X="1871.0" Y="197.0" GraphId="e_836_i0_1" GraphRef="e_836_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_836_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1848.0" Y="224.0" GraphId="e_836_i1_0" GraphRef="n837_REACTOME_113592" RelX="0.631578947368421" RelY="-1.1612903225806452"/>
+      <Point X="1871.0" Y="197.0" GraphId="e_836_i1_1" GraphRef="e_836_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_836_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1938.0" Y="190.0" GraphId="e_836_o0_0" ArrowHead="Arrow" GraphRef="n838_REACTOME_192606" RelX="-1.0420168067226891" RelY="0.6037735849056604"/>
+      <Point X="1917.0" Y="197.0" GraphId="e_836_o0_1" GraphRef="e_836_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_836_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1939.0" Y="225.0" GraphId="e_836_o1_0" ArrowHead="Arrow" GraphRef="n839_REACTOME_29370" RelX="-0.6153846153846154" RelY="-1.1612903225806452"/>
+      <Point X="1917.0" Y="197.0" GraphId="e_836_o1_1" GraphRef="e_836_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_836_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1859.0" Y="173.0" GraphId="e_836_c__0_0" GraphRef="n830_REACTOME_192615" RelX="1.0535714285714286" RelY="-0.12"/>
+      <Point X="1894.0" Y="172.0" GraphId="e_836_c__0_1"/>
+      <Point X="1895.0" Y="198.0" GraphId="e_836_c__0_2" GraphRef="e_836_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_841_REACTOME_190258">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor 2c in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate. Two isoforms of FGFR2c generated by alternative splicing and differing only by the presence ("long") or absence ("short") of two amino acid residues at positions 428-429 are equally active in ligand binding and dimerization but differ in their abilities to interact with downstream targets.</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2226.0" Y="173.0" GraphId="e_841_0"/>
+      <Point X="2262.0" Y="173.0" GraphId="e_841_1"/>
+      <Point X="2303.0" Y="173.0" GraphId="e_841_2" GraphRef="n844_REACTOME_192594" RelX="-1.0576923076923077" RelY="-0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_841_a_i"/>
+      <Anchor Position="0.4675324675324675" GraphId="e_841_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_841_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2157.0" Y="173.0" GraphId="e_841_i0_0" GraphRef="n842_REACTOME_192605" RelX="1.0731707317073171" RelY="0.0"/>
+      <Point X="2226.0" Y="173.0" GraphId="e_841_i0_1" GraphRef="e_841_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_841_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2158.0" Y="148.0" GraphId="e_841_i1_0" GraphRef="n843_REACTOME_189957" RelX="0.7659574468085106" RelY="1.2258064516129032"/>
+      <Point X="2226.0" Y="173.0" GraphId="e_841_i1_1" GraphRef="e_841_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_841_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2203.0" Y="110.0" GraphId="e_841_i2_0" GraphRef="n889_REACTOME_190915" RelX="0.14084507042253522" RelY="1.2121212121212122"/>
+      <Point X="2226.0" Y="173.0" GraphId="e_841_i2_1" GraphRef="e_841_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_841_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="285.0" GraphId="e_841_i__0_0" GraphRef="n473_REACTOME_191566" RelX="1.0461538461538462" RelY="-0.029411764705882353"/>
+      <Point X="2261.0" Y="263.0" GraphId="e_841_i__0_1"/>
+      <Point X="2262.0" Y="173.0" GraphId="e_841_i__0_2" GraphRef="e_841_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_841_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2262.0" Y="78.0" GraphId="e_841_a__0_0" GraphRef="n887_REACTOME_190315" RelX="-0.0425531914893617" RelY="1.2727272727272727"/>
+      <Point X="2262.0" Y="173.0" GraphId="e_841_a__0_1" GraphRef="e_841_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_847_REACTOME_190413">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of the activated FGFR2c receptor leads to multiple phosphorylation events, creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators. Two isoforms of FGFR2c generated by alternative splicing and differing only by the presence ("long") or absence ("short") of two amino acid residues at positions 428-429 are equally active in autophosphorylation, but differ in their abilities to interact with downstream targets.</Comment>
+    <BiopaxRef>lit_201402</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2418.0" Y="201.0" GraphId="e_847_0"/>
+      <Point X="2437.0" Y="201.0" GraphId="e_847_1"/>
+      <Point X="2458.0" Y="201.0" GraphId="e_847_2"/>
+      <Anchor Position="0.0" GraphId="e_847_a_i"/>
+      <Anchor Position="0.475" GraphId="e_847_a_p"/>
+      <Anchor Position="1.0" GraphId="e_847_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_847_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2392.0" Y="227.0" GraphId="e_847_i0_0" GraphRef="n848_REACTOME_113592" RelX="0.6842105263157895" RelY="-1.1612903225806452"/>
+      <Point X="2418.0" Y="201.0" GraphId="e_847_i0_1" GraphRef="e_847_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_847_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2413.0" Y="197.0" GraphId="e_847_i1_0" GraphRef="n844_REACTOME_192594" RelX="1.0576923076923077" RelY="0.92"/>
+      <Point X="2418.0" Y="201.0" GraphId="e_847_i1_1" GraphRef="e_847_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_847_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2469.0" Y="196.0" GraphId="e_847_o0_0" ArrowHead="Arrow" GraphRef="n849_REACTOME_192616" RelX="-1.0420168067226891" RelY="0.7547169811320755"/>
+      <Point X="2458.0" Y="201.0" GraphId="e_847_o0_1" GraphRef="e_847_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_847_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2481.0" Y="226.0" GraphId="e_847_o1_0" ArrowHead="Arrow" GraphRef="n850_REACTOME_29370" RelX="-0.717948717948718" RelY="-1.1612903225806452"/>
+      <Point X="2458.0" Y="201.0" GraphId="e_847_o1_1" GraphRef="e_847_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_847_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2413.0" Y="175.0" GraphId="e_847_c__0_0" GraphRef="n844_REACTOME_192594" RelX="1.0576923076923077" RelY="0.04"/>
+      <Point X="2435.0" Y="176.0" GraphId="e_847_c__0_1"/>
+      <Point X="2437.0" Y="201.0" GraphId="e_847_c__0_2" GraphRef="e_847_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_882_REACTOME_190263">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate.</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2777.0" Y="178.0" GraphId="e_882_0"/>
+      <Point X="2803.0" Y="178.0" GraphId="e_882_1"/>
+      <Point X="2836.0" Y="177.0" GraphId="e_882_2" GraphRef="n885_REACTOME_190232" RelX="-1.0526315789473684" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_882_a_i"/>
+      <Anchor Position="0.4405648526555489" GraphId="e_882_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_882_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2694.0" Y="141.0" GraphId="e_882_i0_0" GraphRef="n883_REACTOME_189964" RelX="0.6185567010309279" RelY="1.2"/>
+      <Point X="2777.0" Y="178.0" GraphId="e_882_i0_1" GraphRef="e_882_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_882_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2701.0" Y="179.0" GraphId="e_882_i1_0" GraphRef="n884_REACTOME_190221" RelX="1.0666666666666667" RelY="-0.06060606060606061"/>
+      <Point X="2777.0" Y="178.0" GraphId="e_882_i1_1" GraphRef="e_882_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_882_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2237.0" Y="89.0" GraphId="e_882_i2_0" GraphRef="n889_REACTOME_190915" RelX="1.0985915492957747" RelY="-0.06060606060606061"/>
+      <Point X="2717.0" Y="88.0" GraphId="e_882_i2_1"/>
+      <Point X="2777.0" Y="178.0" GraphId="e_882_i2_2" GraphRef="e_882_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_882_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="285.0" GraphId="e_882_i__0_0" GraphRef="n473_REACTOME_191566" RelX="1.0461538461538462" RelY="-0.029411764705882353"/>
+      <Point X="2802.0" Y="274.0" GraphId="e_882_i__0_1"/>
+      <Point X="2803.0" Y="178.0" GraphId="e_882_i__0_2" GraphRef="e_882_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_882_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2290.0" Y="64.0" GraphId="e_882_a__0_0" GraphRef="n887_REACTOME_190315" RelX="1.148936170212766" RelY="0.0"/>
+      <Point X="2730.0" Y="64.0" GraphId="e_882_a__0_1"/>
+      <Point X="2803.0" Y="178.0" GraphId="e_882_a__0_2" GraphRef="e_882_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_893_REACTOME_190385">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of activated FGF receptor 1 catalyzes multiple phosphorylation events (Mohammadi et al. 1997), creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators.</Comment>
+    <BiopaxRef>lit_190962</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2970.0" Y="211.0" GraphId="e_893_0"/>
+      <Point X="2988.0" Y="210.0" GraphId="e_893_1"/>
+      <Point X="3006.0" Y="211.0" GraphId="e_893_2"/>
+      <Anchor Position="0.0" GraphId="e_893_a_i"/>
+      <Anchor Position="0.5" GraphId="e_893_a_p"/>
+      <Anchor Position="1.0" GraphId="e_893_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_893_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2944.0" Y="229.0" GraphId="e_893_i0_0" GraphRef="n894_REACTOME_113592" RelX="0.9473684210526315" RelY="-1.1612903225806452"/>
+      <Point X="2970.0" Y="211.0" GraphId="e_893_i0_1" GraphRef="e_893_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_893_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2950.0" Y="205.0" GraphId="e_893_i1_0" GraphRef="n885_REACTOME_190232" RelX="0.9473684210526315" RelY="1.12"/>
+      <Point X="2970.0" Y="211.0" GraphId="e_893_i1_1" GraphRef="e_893_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_893_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3023.0" Y="202.0" GraphId="e_893_o0_0" ArrowHead="Arrow" GraphRef="n895_REACTOME_190380" RelX="-1.0420168067226891" RelY="0.9811320754716981"/>
+      <Point X="3006.0" Y="211.0" GraphId="e_893_o0_1" GraphRef="e_893_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_893_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3040.0" Y="233.0" GraphId="e_893_o1_0" ArrowHead="Arrow" GraphRef="n896_REACTOME_29370" RelX="-1.1282051282051282" RelY="-0.7741935483870968"/>
+      <Point X="3006.0" Y="211.0" GraphId="e_893_o1_1" GraphRef="e_893_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_893_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2956.0" Y="178.0" GraphId="e_893_c__0_0" GraphRef="n885_REACTOME_190232" RelX="1.0526315789473684" RelY="0.04"/>
+      <Point X="2985.0" Y="180.0" GraphId="e_893_c__0_1"/>
+      <Point X="2988.0" Y="210.0" GraphId="e_893_c__0_2" GraphRef="e_893_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_898_REACTOME_190261">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate.</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3313.0" Y="177.0" GraphId="e_898_0"/>
+      <Point X="3337.0" Y="176.0" GraphId="e_898_1"/>
+      <Point X="3359.0" Y="174.0" GraphId="e_898_2" GraphRef="n901_REACTOME_190234" RelX="-1.0434782608695652" RelY="0.11538461538461539" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_898_a_i"/>
+      <Anchor Position="0.5209286222002072" GraphId="e_898_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_898_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3263.0" Y="177.0" GraphId="e_898_i0_0" GraphRef="n899_REACTOME_190235" RelX="1.0707070707070707" RelY="-0.058823529411764705"/>
+      <Point X="3313.0" Y="177.0" GraphId="e_898_i0_1" GraphRef="e_898_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_898_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3258.0" Y="153.0" GraphId="e_898_i1_0" GraphRef="n900_REACTOME_189955" RelX="0.6736842105263158" RelY="1.1875"/>
+      <Point X="3313.0" Y="177.0" GraphId="e_898_i1_1" GraphRef="e_898_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_898_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3287.0" Y="113.0" GraphId="e_898_i2_0" GraphRef="n905_REACTOME_190915" RelX="0.18181818181818182" RelY="1.2121212121212122"/>
+      <Point X="3313.0" Y="177.0" GraphId="e_898_i2_1" GraphRef="e_898_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_898_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="285.0" GraphId="e_898_i__0_0" GraphRef="n473_REACTOME_191566" RelX="1.0461538461538462" RelY="-0.029411764705882353"/>
+      <Point X="3337.0" Y="283.0" GraphId="e_898_i__0_1"/>
+      <Point X="3337.0" Y="176.0" GraphId="e_898_i__0_2" GraphRef="e_898_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_898_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3339.0" Y="79.0" GraphId="e_898_a__0_0" GraphRef="n903_REACTOME_190315" RelX="-0.0425531914893617" RelY="1.3043478260869565"/>
+      <Point X="3337.0" Y="176.0" GraphId="e_898_a__0_1" GraphRef="e_898_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_907_REACTOME_190388">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of activated FGF receptor 3 catalyzes multiple phosphorylation events, creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3490.0" Y="212.0" GraphId="e_907_0"/>
+      <Point X="3505.0" Y="211.0" GraphId="e_907_1"/>
+      <Point X="3524.0" Y="212.0" GraphId="e_907_2"/>
+      <Anchor Position="0.0" GraphId="e_907_a_i"/>
+      <Anchor Position="0.44138213720745284" GraphId="e_907_a_p"/>
+      <Anchor Position="1.0" GraphId="e_907_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_907_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3467.0" Y="241.0" GraphId="e_907_i0_0" GraphRef="n908_REACTOME_113592" RelX="0.5789473684210527" RelY="-1.1612903225806452"/>
+      <Point X="3490.0" Y="212.0" GraphId="e_907_i0_1" GraphRef="e_907_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_907_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3464.0" Y="200.0" GraphId="e_907_i1_0" GraphRef="n901_REACTOME_190234" RelX="0.782608695652174" RelY="1.1153846153846154"/>
+      <Point X="3490.0" Y="212.0" GraphId="e_907_i1_1" GraphRef="e_907_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_907_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3548.0" Y="239.0" GraphId="e_907_o0_0" ArrowHead="Arrow" GraphRef="n909_REACTOME_29370" RelX="-0.6666666666666666" RelY="-1.1612903225806452"/>
+      <Point X="3524.0" Y="212.0" GraphId="e_907_o0_1" GraphRef="e_907_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_907_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3542.0" Y="206.0" GraphId="e_907_o1_0" ArrowHead="Arrow" GraphRef="n910_REACTOME_190389" RelX="-0.8739495798319328" RelY="1.1320754716981132"/>
+      <Point X="3524.0" Y="212.0" GraphId="e_907_o1_1" GraphRef="e_907_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_907_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="3480.0" Y="176.0" GraphId="e_907_c__0_0" GraphRef="n901_REACTOME_190234" RelX="1.0608695652173914" RelY="0.19230769230769232"/>
+      <Point X="3505.0" Y="179.0" GraphId="e_907_c__0_1"/>
+      <Point X="3505.0" Y="211.0" GraphId="e_907_c__0_2" GraphRef="e_907_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_912_REACTOME_190265">
+    <Comment Source="WikiPathways-description">In this reaction, FGF receptor in the plasma membrane binds an associating extracellular ligand, a requisite step for subsequent activation. The resulting complex consists of dimerized receptor, two ligand molecules, and heparan sulfate.</Comment>
+    <BiopaxRef>lit_190251</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3829.0" Y="178.0" GraphId="e_912_0"/>
+      <Point X="3854.0" Y="178.0" GraphId="e_912_1"/>
+      <Point X="3879.0" Y="175.0" GraphId="e_912_2" GraphRef="n915_REACTOME_190223" RelX="-1.0467289719626167" RelY="0.15384615384615385" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_912_a_i"/>
+      <Anchor Position="0.4982128445231753" GraphId="e_912_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_912_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3770.0" Y="178.0" GraphId="e_912_i0_0" GraphRef="n913_REACTOME_190224" RelX="1.0886075949367089" RelY="-0.0625"/>
+      <Point X="3829.0" Y="178.0" GraphId="e_912_i0_1" GraphRef="e_912_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_912_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3761.0" Y="142.0" GraphId="e_912_i1_0" GraphRef="n914_REACTOME_189959" RelX="0.4909090909090909" RelY="1.1875"/>
+      <Point X="3829.0" Y="178.0" GraphId="e_912_i1_1" GraphRef="e_912_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_912_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3317.0" Y="92.0" GraphId="e_912_i2_0" GraphRef="n905_REACTOME_190915" RelX="1.0909090909090908" RelY="-0.06060606060606061"/>
+      <Point X="3798.0" Y="92.0" GraphId="e_912_i2_1"/>
+      <Point X="3829.0" Y="178.0" GraphId="e_912_i2_2" GraphRef="e_912_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_912_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="286.0" GraphId="e_912_i__0_0" GraphRef="n473_REACTOME_191566" RelX="1.0461538461538462" RelY="0.0"/>
+      <Point X="3854.0" Y="292.0" GraphId="e_912_i__0_1"/>
+      <Point X="3854.0" Y="178.0" GraphId="e_912_i__0_2" GraphRef="e_912_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_912_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3367.0" Y="64.0" GraphId="e_912_a__0_0" GraphRef="n903_REACTOME_190315" RelX="1.148936170212766" RelY="0.0"/>
+      <Point X="3817.0" Y="64.0" GraphId="e_912_a__0_1"/>
+      <Point X="3854.0" Y="178.0" GraphId="e_912_a__0_2" GraphRef="e_912_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_919_REACTOME_190326">
+    <Comment Source="WikiPathways-description">The intrinsic protein tyrosine kinase activity of activated FGF receptor 1 catalyzes multiple phosphorylation events (Mohammadi et al. 1997), creating a number of binding sites on its cytoplasmic tail for membrane bound docking proteins to gather intracellular signaling mediators.</Comment>
+    <BiopaxRef>lit_190962</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4003.0" Y="214.0" GraphId="e_919_0"/>
+      <Point X="4023.0" Y="214.0" GraphId="e_919_1"/>
+      <Point X="4048.0" Y="214.0" GraphId="e_919_2"/>
+      <Anchor Position="0.0" GraphId="e_919_a_i"/>
+      <Anchor Position="0.4444444444444444" GraphId="e_919_a_p"/>
+      <Anchor Position="1.0" GraphId="e_919_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_919_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3977.0" Y="240.0" GraphId="e_919_i0_0" GraphRef="n920_REACTOME_113592" RelX="0.7368421052631579" RelY="-1.1612903225806452"/>
+      <Point X="4003.0" Y="214.0" GraphId="e_919_i0_1" GraphRef="e_919_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_919_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3976.0" Y="200.0" GraphId="e_919_i1_0" GraphRef="n915_REACTOME_190223" RelX="0.7663551401869159" RelY="1.1153846153846154"/>
+      <Point X="4003.0" Y="214.0" GraphId="e_919_i1_1" GraphRef="e_919_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_919_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4071.0" Y="239.0" GraphId="e_919_o0_0" ArrowHead="Arrow" GraphRef="n921_REACTOME_29370" RelX="-0.717948717948718" RelY="-1.1612903225806452"/>
+      <Point X="4048.0" Y="214.0" GraphId="e_919_o0_1" GraphRef="e_919_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_919_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4070.0" Y="196.0" GraphId="e_919_o1_0" ArrowHead="Arrow" GraphRef="n922_REACTOME_190328" RelX="-0.39215686274509803" RelY="1.1578947368421053"/>
+      <Point X="4048.0" Y="214.0" GraphId="e_919_o1_1" GraphRef="e_919_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_919_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="3992.0" Y="175.0" GraphId="e_919_c__0_0" GraphRef="n915_REACTOME_190223" RelX="1.0654205607476634" RelY="0.15384615384615385"/>
+      <Point X="4022.0" Y="178.0" GraphId="e_919_c__0_1"/>
+      <Point X="4023.0" Y="214.0" GraphId="e_919_c__0_2" GraphRef="e_919_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1100_REACTOME_190351">
+    <Comment Source="WikiPathways-description">Membrane-bound FRS2 interacts with FGFR as a first step to phosphorylation of this docking protein. The juxtamembrane binding site of  FRS2 does not contain tyrosine (Xu et al. 1998) so binding may be independent of receptor activation and/or constitutive (Schuller et al. 2008).</Comment>
+    <BiopaxRef>lit_182133</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="70.0" Y="605.0" GraphId="e_1100_0"/>
+      <Point X="105.0" Y="606.0" GraphId="e_1100_1"/>
+      <Point X="122.0" Y="642.0" GraphId="e_1100_2" GraphRef="n1103_REACTOME_190356" RelX="-0.24" RelY="-1.1111111111111112" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1100_a_i"/>
+      <Anchor Position="0.46794059690059575" GraphId="e_1100_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1100_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="56.0" Y="577.0" GraphId="e_1100_i0_0" GraphRef="n1102_REACTOME_190352" RelX="0.08695652173913043" RelY="1.3043478260869565"/>
+      <Point X="70.0" Y="605.0" GraphId="e_1100_i0_1" GraphRef="e_1100_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1100_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="52.0" Y="639.0" GraphId="e_1100_i1_0" GraphRef="n1569_REACTOME_191476" RelX="0.24390243902439024" RelY="-1.2173913043478262"/>
+      <Point X="70.0" Y="605.0" GraphId="e_1100_i1_1" GraphRef="e_1100_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1104_REACTOME_190358">
+    <Comment Source="WikiPathways-description">SHP2 possesses two tandemly arranged SH2 domains in its N-terminal region and a phosphatase domain in its C-terminal domain. It also possesses a stretch of proline-rich sequences and tyrosine phosphorylation sites in its extreme C-terminal region. Both SH2 domains and the phosphatase domain have been shown to be absolutely essential for the biological activity of SHP2.</Comment>
+    <BiopaxRef>lit_191514</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="533.0" Y="606.0" GraphId="e_1104_0"/>
+      <Point X="563.0" Y="617.0" GraphId="e_1104_1"/>
+      <Point X="593.0" Y="627.0" GraphId="e_1104_2" GraphRef="n1107_REACTOME_190359" RelX="-0.8679245283018868" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1104_a_i"/>
+      <Anchor Position="0.5025977940223698" GraphId="e_1104_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1104_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="479.0" Y="631.0" GraphId="e_1104_i0_0" GraphRef="n1105_REACTOME_190350" RelX="0.660377358490566" RelY="-1.1578947368421053"/>
+      <Point X="533.0" Y="606.0" GraphId="e_1104_i0_1" GraphRef="e_1104_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1104_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="517.0" Y="576.0" GraphId="e_1104_i1_0" GraphRef="n1106_REACTOME_162563" RelX="0.23255813953488372" RelY="1.3043478260869565"/>
+      <Point X="533.0" Y="606.0" GraphId="e_1104_i1_1" GraphRef="e_1104_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1108_REACTOME_190353">
+    <Comment Source="WikiPathways-description">Activated FRS2-alpha contains four binding sites for the adaptor protein Grb2 and two binding sites for the protein tyrosine phosphatase Shp2. The activation of FRS2 is catalyzed by tyrosine phosphorylation by the protein kinase domain of the activated FGFR. Different FGFR isoforms may generate different phosphorylation patterns on FRS2-alpha leading to alternate downstream signaling (Wang 2002).</Comment>
+    <BiopaxRef>lit_532232</BiopaxRef>
+    <BiopaxRef>lit_189823</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="308.0" Y="608.0" GraphId="e_1108_0"/>
+      <Point X="331.0" Y="607.0" GraphId="e_1108_1"/>
+      <Point X="353.0" Y="608.0" GraphId="e_1108_2"/>
+      <Anchor Position="0.0" GraphId="e_1108_a_i"/>
+      <Anchor Position="0.5110891957258947" GraphId="e_1108_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1108_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="286.0" Y="629.0" GraphId="e_1108_i0_0" GraphRef="n2083_REACTOME_532643" RelX="0.35658914728682173" RelY="-1.0943396226415094"/>
+      <Point X="308.0" Y="608.0" GraphId="e_1108_i0_1" GraphRef="e_1108_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1108_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="286.0" Y="586.0" GraphId="e_1108_i1_0" GraphRef="n2085_REACTOME_113592" RelX="1.1578947368421053" RelY="0.967741935483871"/>
+      <Point X="308.0" Y="608.0" GraphId="e_1108_i1_1" GraphRef="e_1108_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1108_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="405.0" Y="631.0" GraphId="e_1108_o0_0" ArrowHead="Arrow" GraphRef="n1105_REACTOME_190350" RelX="-0.7358490566037735" RelY="-1.1578947368421053"/>
+      <Point X="353.0" Y="608.0" GraphId="e_1108_o0_1" GraphRef="e_1108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1108_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="372.0" Y="589.0" GraphId="e_1108_o1_0" ArrowHead="Arrow" GraphRef="n1110_REACTOME_29370" RelX="-0.717948717948718" RelY="1.2258064516129032"/>
+      <Point X="353.0" Y="608.0" GraphId="e_1108_o1_1" GraphRef="e_1108_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1108_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="331.0" Y="647.0" GraphId="e_1108_c__0_0" GraphRef="n2083_REACTOME_532643" RelX="1.054263565891473" RelY="-0.41509433962264153"/>
+      <Point X="332.0" Y="647.0" GraphId="e_1108_c__0_1"/>
+      <Point X="331.0" Y="607.0" GraphId="e_1108_c__0_2" GraphRef="e_1108_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1517_REACTOME_190362">
+    <Comment Source="WikiPathways-description">The role of SHP2 phosphorylation in FGFR signaling is as yet to be established.</Comment>
+    <BiopaxRef>lit_191514</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="719.0" Y="624.0" GraphId="e_1517_0"/>
+      <Point X="742.0" Y="623.0" GraphId="e_1517_1"/>
+      <Point X="766.0" Y="624.0" GraphId="e_1517_2"/>
+      <Anchor Position="0.0" GraphId="e_1517_a_i"/>
+      <Anchor Position="0.4893809395402735" GraphId="e_1517_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1517_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1517_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="706.0" Y="596.0" GraphId="e_1517_i0_0" GraphRef="n1518_REACTOME_113592" RelX="0.3157894736842105" RelY="1.2258064516129032"/>
+      <Point X="719.0" Y="624.0" GraphId="e_1517_i0_1" GraphRef="e_1517_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1517_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="695.0" Y="632.0" GraphId="e_1517_i1_0" GraphRef="n1107_REACTOME_190359" RelX="1.0566037735849056" RelY="-0.8947368421052632"/>
+      <Point X="719.0" Y="624.0" GraphId="e_1517_i1_1" GraphRef="e_1517_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1517_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="799.0" Y="638.0" GraphId="e_1517_o0_0" ArrowHead="Arrow" GraphRef="n1519_REACTOME_190361" RelX="-1.0515463917525774" RelY="-0.711864406779661"/>
+      <Point X="766.0" Y="624.0" GraphId="e_1517_o0_1" GraphRef="e_1517_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1517_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="785.0" Y="594.0" GraphId="e_1517_o1_0" ArrowHead="Arrow" GraphRef="n1520_REACTOME_29370" RelX="-0.5128205128205128" RelY="1.2258064516129032"/>
+      <Point X="766.0" Y="624.0" GraphId="e_1517_o1_1" GraphRef="e_1517_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1517_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="695.0" Y="654.0" GraphId="e_1517_c__0_0" GraphRef="n1107_REACTOME_190359" RelX="1.0566037735849056" RelY="0.2631578947368421"/>
+      <Point X="740.0" Y="659.0" GraphId="e_1517_c__0_1"/>
+      <Point X="742.0" Y="623.0" GraphId="e_1517_c__0_2" GraphRef="e_1517_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1522_REACTOME_190401">
+    <Comment Source="WikiPathways-description">Tyrosine-phosphorylated FRS2 functions as a site for coordinated assembly of a multiprotein complex that includes the docking proteins Grb2 and  Gab1 and the effector proteins that are recruited by them.
+
+The binding of Grb2 to FRS2-alpha reuqires the following phospho-tyrosine site on the latter, namely: Y196, Y306, Y349, and Y392. The remaining two phospho-tyrosine sites are involved in the binding of SOS to FRS2-alpha.</Comment>
+    <BiopaxRef>lit_191526</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="941.0" Y="600.0" GraphId="e_1522_0"/>
+      <Point X="953.0" Y="617.0" GraphId="e_1522_1"/>
+      <Point X="990.0" Y="643.0" GraphId="e_1522_2" GraphRef="n1525_REACTOME_190399" RelX="-0.75" RelY="-1.088235294117647" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1522_a_i"/>
+      <Anchor Position="0.31513779491073945" GraphId="e_1522_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1522_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="933.0" Y="579.0" GraphId="e_1522_i0_0" GraphRef="n1524_REACTOME_179795" RelX="0.15" RelY="1.3043478260869565"/>
+      <Point X="941.0" Y="600.0" GraphId="e_1522_i0_1" GraphRef="e_1522_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1522_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="891.0" Y="577.0" GraphId="e_1522_i1_0" GraphRef="n1523_REACTOME_74686" RelX="1.1363636363636365" RelY="0.72"/>
+      <Point X="941.0" Y="600.0" GraphId="e_1522_i1_1" GraphRef="e_1522_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1522_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="895.0" Y="627.0" GraphId="e_1522_i2_0" GraphRef="n1519_REACTOME_190361" RelX="0.9278350515463918" RelY="-1.0847457627118644"/>
+      <Point X="941.0" Y="600.0" GraphId="e_1522_i2_1" GraphRef="e_1522_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1532_REACTOME_190896">
+    <Comment Source="WikiPathways-description">In the case of FGFR1, autophosphorylation on Tyr766 in the carboxy terminal tail has been shown to create a specific-binding site for this enzymeÃ¢â¬â¢s SH2 domain. A mutant FGFR1 in which Y766 is replaced by phenylalanine is unable to activate PI hydrolysis and Ca2+ release in response to FGF stimulation.&#13;
+&#13;
+Membrane recruitment of PLC-gamma is also aided by binding of the Pleckstrin homology (PH) domain of this enzyme to Phosphatidyl-Inositol (3,4,5) P3 molecules that are generated in response to PI-3 kinase stimulation.</Comment>
+    <BiopaxRef>lit_191028</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1546.0" Y="604.0" GraphId="e_1532_0"/>
+      <Point X="1578.0" Y="605.0" GraphId="e_1532_1"/>
+      <Point X="1623.0" Y="630.0" GraphId="e_1532_2" GraphRef="n1535_REACTOME_190895" RelX="-0.4696969696969697" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1532_a_i"/>
+      <Anchor Position="0.3834492137753544" GraphId="e_1532_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1532_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1527.0" Y="625.0" GraphId="e_1532_i0_0" GraphRef="n1533_REACTOME_179838" RelX="0.27419354838709675" RelY="-1.1304347826086956"/>
+      <Point X="1546.0" Y="604.0" GraphId="e_1532_i0_1" GraphRef="e_1532_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1532_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1413.0" Y="640.0" GraphId="e_1532_i1_0" GraphRef="n1534_REACTOME_167682" RelX="1.06" RelY="-0.7368421052631579"/>
+      <Point X="1546.0" Y="604.0" GraphId="e_1532_i1_1" GraphRef="e_1532_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1532_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="101.0" Y="557.0" GraphId="e_1532_i2_0" GraphRef="n1102_REACTOME_190352" RelX="1.065217391304348" RelY="-0.43478260869565216"/>
+      <Point X="418.0" Y="525.0" GraphId="e_1532_i2_1"/>
+      <Point X="1428.0" Y="527.0" GraphId="e_1532_i2_2"/>
+      <Point X="1546.0" Y="604.0" GraphId="e_1532_i2_3" GraphRef="e_1532_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1538_REACTOME_190898">
+    <Comment Source="WikiPathways-description">Three tyrosine residues have been identified as sites of receptor tyrosine kinase phosphorylation and mutagenesis indicates that the phosphorylation at Tyr 783 is essential for IP3 formation, phosphorylation of Tyr 771 is dispensable, and phosphorylation of Tyr 1254 is necessary to achieve maximal IP3 formation.</Comment>
+    <BiopaxRef>lit_189824</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1708.0" Y="614.0" GraphId="e_1538_0"/>
+      <Point X="1746.0" Y="614.0" GraphId="e_1538_1"/>
+      <Point X="1783.0" Y="614.0" GraphId="e_1538_2"/>
+      <Anchor Position="0.0" GraphId="e_1538_a_i"/>
+      <Anchor Position="0.5066666666666667" GraphId="e_1538_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1538_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1538_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1687.0" Y="595.0" GraphId="e_1538_i0_0" GraphRef="n1539_REACTOME_113592" RelX="0.6842105263157895" RelY="1.2258064516129032"/>
+      <Point X="1708.0" Y="614.0" GraphId="e_1538_i0_1" GraphRef="e_1538_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1538_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1681.0" Y="630.0" GraphId="e_1538_i1_0" GraphRef="n1535_REACTOME_190895" RelX="0.4090909090909091" RelY="-1.1578947368421053"/>
+      <Point X="1708.0" Y="614.0" GraphId="e_1538_i1_1" GraphRef="e_1538_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1538_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1804.0" Y="628.0" GraphId="e_1538_o0_0" ArrowHead="Arrow" GraphRef="n1540_REACTOME_190902" RelX="-0.5454545454545454" RelY="-1.0943396226415094"/>
+      <Point X="1783.0" Y="614.0" GraphId="e_1538_o0_1" GraphRef="e_1538_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1538_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1806.0" Y="592.0" GraphId="e_1538_o1_0" ArrowHead="Arrow" GraphRef="n1541_REACTOME_29370" RelX="-0.717948717948718" RelY="1.2258064516129032"/>
+      <Point X="1783.0" Y="614.0" GraphId="e_1538_o1_1" GraphRef="e_1538_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1538_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1723.0" Y="652.0" GraphId="e_1538_c__0_0" GraphRef="n1535_REACTOME_190895" RelX="1.0454545454545454" RelY="0.0"/>
+      <Point X="1745.0" Y="652.0" GraphId="e_1538_c__0_1"/>
+      <Point X="1746.0" Y="614.0" GraphId="e_1538_c__0_2" GraphRef="e_1538_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1544_REACTOME_190905">
+    <Comment Source="WikiPathways-description">Dissociation from the activated receptor quickly follows phosphorylation of PLC-gamma.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1909.0" Y="654.0" GraphId="e_1544_0" GraphRef="n1540_REACTOME_190902" RelX="1.0454545454545454" RelY="-0.11320754716981132"/>
+      <Point X="1929.0" Y="653.0" GraphId="e_1544_1"/>
+      <Point X="1950.0" Y="652.0" GraphId="e_1544_2"/>
+      <Anchor Position="0.48783384504343597" GraphId="e_1544_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1544_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1544_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1974.0" Y="653.0" GraphId="e_1544_o0_0" ArrowHead="Arrow" GraphRef="n1545_REACTOME_167679" RelX="-1.06" RelY="-0.07547169811320754"/>
+      <Point X="1950.0" Y="652.0" GraphId="e_1544_o0_1" GraphRef="e_1544_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1544_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="101.0" Y="555.0" GraphId="e_1544_o1_0" ArrowHead="Arrow" GraphRef="n1102_REACTOME_190352" RelX="1.065217391304348" RelY="-0.6086956521739131"/>
+      <Point X="416.0" Y="511.0" GraphId="e_1544_o1_1"/>
+      <Point X="1864.0" Y="514.0" GraphId="e_1544_o1_2"/>
+      <Point X="1950.0" Y="652.0" GraphId="e_1544_o1_3" GraphRef="e_1544_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1548_REACTOME_190391">
+    <Comment Source="WikiPathways-description">SHC can bind to FGFR (Kanai et al. 1997; Curto et al. 1998).</Comment>
+    <BiopaxRef>lit_191526</BiopaxRef>
+    <BiopaxRef>lit_191036</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2162.0" Y="601.0" GraphId="e_1548_0"/>
+      <Point X="2188.0" Y="611.0" GraphId="e_1548_1"/>
+      <Point X="2231.0" Y="631.0" GraphId="e_1548_2" GraphRef="n1550_REACTOME_190392" RelX="-0.592" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1548_a_i"/>
+      <Anchor Position="0.3700402334636409" GraphId="e_1548_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1548_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2146.0" Y="635.0" GraphId="e_1548_i0_0" GraphRef="n1570_REACTOME_532229" RelX="0.08928571428571429" RelY="-1.2173913043478262"/>
+      <Point X="2162.0" Y="601.0" GraphId="e_1548_i0_1" GraphRef="e_1548_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1548_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2146.0" Y="580.0" GraphId="e_1548_i1_0" GraphRef="n1549_REACTOME_74680" RelX="0.2727272727272727" RelY="1.2727272727272727"/>
+      <Point X="2162.0" Y="601.0" GraphId="e_1548_i1_1" GraphRef="e_1548_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1552_REACTOME_190395">
+    <Comment Source="WikiPathways-description">Shc is phosphorylated following FGFR activation (Wang et al. 1994; Klint et al. 1995), but this may be an indirect event mediated by Src (Schuller et al. 2008).</Comment>
+    <BiopaxRef>lit_532255</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2246.0" Y="567.0" GraphId="e_1552_0"/>
+      <Point X="2267.0" Y="567.0" GraphId="e_1552_1"/>
+      <Point X="2288.0" Y="567.0" GraphId="e_1552_2"/>
+      <Anchor Position="0.0" GraphId="e_1552_a_i"/>
+      <Anchor Position="0.5" GraphId="e_1552_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1552_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1552_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2218.0" Y="543.0" GraphId="e_1552_i0_0" GraphRef="n1571_REACTOME_113592" RelX="0.7894736842105263" RelY="1.2258064516129032"/>
+      <Point X="2246.0" Y="567.0" GraphId="e_1552_i0_1" GraphRef="e_1552_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1552_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2165.0" Y="566.0" GraphId="e_1552_i1_0" GraphRef="n1549_REACTOME_74680" RelX="1.1363636363636365" RelY="0.0"/>
+      <Point X="2246.0" Y="567.0" GraphId="e_1552_i1_1" GraphRef="e_1552_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1552_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2332.0" Y="538.0" GraphId="e_1552_o0_0" ArrowHead="Arrow" GraphRef="n1572_REACTOME_180276" RelX="-0.5614035087719298" RelY="1.148936170212766"/>
+      <Point X="2288.0" Y="567.0" GraphId="e_1552_o0_1" GraphRef="e_1552_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1552_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2318.0" Y="590.0" GraphId="e_1552_o1_0" ArrowHead="Arrow" GraphRef="n1581_REACTOME_29370" RelX="-1.1282051282051282" RelY="-0.967741935483871"/>
+      <Point X="2288.0" Y="567.0" GraphId="e_1552_o1_1" GraphRef="e_1552_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1552_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2267.0" Y="631.0" GraphId="e_1552_c__0_0" GraphRef="n1550_REACTOME_190392" RelX="-0.016" RelY="-1.1578947368421053"/>
+      <Point X="2267.0" Y="567.0" GraphId="e_1552_c__0_1" GraphRef="e_1552_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1557_REACTOME_190402">
+    <Comment Source="WikiPathways-description">Phosphorylated Shc links FGFR to Grb2 (Klint et al. 1995) leading to the formation of a signaling complex including Shc, Grb2 and Sos. Transformation of NIH 3T3 cells with v-Src produced a strong constitutive association of FGFR1 with Shc, Grb2 and Sos (Curto et al. 1998) suggesting Src involvement. Recruitment of Grb2-Sos links FGFR to the Ras pathway.</Comment>
+    <BiopaxRef>lit_532244</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2465.0" Y="591.0" GraphId="e_1557_0"/>
+      <Point X="2497.0" Y="600.0" GraphId="e_1557_1"/>
+      <Point X="2538.0" Y="625.0" GraphId="e_1557_2" GraphRef="n1577_REACTOME_532252" RelX="-0.4375" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1557_a_i"/>
+      <Anchor Position="0.4090643756622049" GraphId="e_1557_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1557_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2432.0" Y="593.0" GraphId="e_1557_i0_0" GraphRef="n1574_REACTOME_65043" RelX="1.1666666666666667" RelY="-0.09523809523809523"/>
+      <Point X="2465.0" Y="591.0" GraphId="e_1557_i0_1" GraphRef="e_1557_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1557_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2393.0" Y="538.0" GraphId="e_1557_i1_0" GraphRef="n1572_REACTOME_180276" RelX="0.5087719298245614" RelY="1.148936170212766"/>
+      <Point X="2465.0" Y="591.0" GraphId="e_1557_i1_1" GraphRef="e_1557_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1557_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2433.0" Y="635.0" GraphId="e_1557_i2_0" GraphRef="n1575_REACTOME_532245" RelX="0.1414141414141414" RelY="-1.2173913043478262"/>
+      <Point X="2465.0" Y="591.0" GraphId="e_1557_i2_1" GraphRef="e_1557_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1557_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2497.0" Y="553.0" GraphId="e_1557_i3_0" GraphRef="n1576_REACTOME_109797" RelX="-0.1978021978021978" RelY="1.3043478260869565"/>
+      <Point X="2465.0" Y="591.0" GraphId="e_1557_i3_1" GraphRef="e_1557_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1560_REACTOME_190929">
+    <Comment Source="WikiPathways-description">Gab1 binds constitutively to the C-terminal SH3 domain of Grb2 and its assembly in complex with Grb2/FRS2 enables tyrosine phosphorylation of Gab1, which is followed by recruitment of a complement of SH2 domain containing signaling proteins including PI-3 kinase. FGF-induced recruitment of PI-3 kinase by Gab1 results in activation of the Akt dependent anti-apoptotic pathway.</Comment>
+    <BiopaxRef>lit_191045</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1035.0" Y="596.0" GraphId="e_1560_0"/>
+      <Point X="1070.0" Y="595.0" GraphId="e_1560_1"/>
+      <Point X="1140.0" Y="627.0" GraphId="e_1560_2" GraphRef="n1562_REACTOME_190928" RelX="-0.5909090909090909" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1560_a_i"/>
+      <Anchor Position="0.31267831172027344" GraphId="e_1560_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1560_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1035.0" Y="643.0" GraphId="e_1560_i0_0" GraphRef="n1525_REACTOME_190399" RelX="0.0" RelY="-1.088235294117647"/>
+      <Point X="1035.0" Y="596.0" GraphId="e_1560_i0_1" GraphRef="e_1560_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1560_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1016.0" Y="584.0" GraphId="e_1560_i1_0" GraphRef="n1561_REACTOME_74693" RelX="0.7567567567567568" RelY="1.3043478260869565"/>
+      <Point X="1035.0" Y="596.0" GraphId="e_1560_i1_1" GraphRef="e_1560_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1563_REACTOME_109699">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Phosphatidyl-myo-inositol 4,5-bisphosphate', and 1 molecule of 'ATP' are present. At the end of this reaction, 1 molecule of 'Phosphatidylinositol-3,4,5-trisphosphate', and 1 molecule of 'ADP' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cell' and  is mediated by the 'kinase activity' of 'phospho-IRS:PI3K'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_202402</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1299.0" Y="376.0" GraphId="e_1563_0"/>
+      <Point X="1319.0" Y="377.0" GraphId="e_1563_1"/>
+      <Point X="1343.0" Y="376.0" GraphId="e_1563_2"/>
+      <Anchor Position="0.0" GraphId="e_1563_a_i"/>
+      <Anchor Position="0.45463995300619914" GraphId="e_1563_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1563_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1563_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1275.0" Y="348.0" GraphId="e_1563_i0_0" GraphRef="n1564_REACTOME_113592" RelX="0.5789473684210527" RelY="1.2258064516129032"/>
+      <Point X="1299.0" Y="376.0" GraphId="e_1563_i0_1" GraphRef="e_1563_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1563_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1232.0" Y="374.0" GraphId="e_1563_i1_0" GraphRef="n1565_REACTOME_36267" RelX="1.0566037735849056" RelY="0.0"/>
+      <Point X="1299.0" Y="376.0" GraphId="e_1563_i1_1" GraphRef="e_1563_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1563_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1411.0" Y="374.0" GraphId="e_1563_o0_0" ArrowHead="Arrow" GraphRef="n1566_REACTOME_38117" RelX="-1.0517241379310345" RelY="0.0"/>
+      <Point X="1343.0" Y="376.0" GraphId="e_1563_o0_1" GraphRef="e_1563_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1563_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1375.0" Y="345.0" GraphId="e_1563_o1_0" ArrowHead="Arrow" GraphRef="n1567_REACTOME_29370" RelX="-0.7692307692307693" RelY="1.2258064516129032"/>
+      <Point X="1343.0" Y="376.0" GraphId="e_1563_o1_1" GraphRef="e_1563_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1563_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1318.0" Y="418.0" GraphId="e_1563_c__0_0" GraphRef="n1568_REACTOME_188019" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="1319.0" Y="377.0" GraphId="e_1563_c__0_1" GraphRef="e_1563_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_918" GroupRef="group_comp_918" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="50.5" CenterY="312.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_918" GroupRef="group_comp_918">
+    <Graphics Color="000000" CenterX="2070.0" CenterY="414.5" Width="4124.0" Height="487.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190609" rdf:id="lit_190609">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15863030</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cellular signaling by fibroblast growth factor receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eswarakumar, VP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lax, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 16:139-49</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190604" rdf:id="lit_190604">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15567848</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Common and distinct elements in cellular signaling via EGF and FGF receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 306:1506-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190607" rdf:id="lit_190607">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12080084</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FGF signaling pathways in endochondral and intramembranous bone development and human genetic disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ornitz, DM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marie, PJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 16:1446-65</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190605" rdf:id="lit_190605">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15863038</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms underlying differential responses to FGF signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dailey, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ambrosetti, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mansukhani, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Basilico, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 16:233-47</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190251" rdf:id="lit_190251">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16597617</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receptor specificity of the fibroblast growth factor family. The complete mammalian FGF family.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ibrahimi, OA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olsen, SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Umemori, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohammadi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ornitz, DM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:15694-700</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_191444" rdf:id="lit_191444">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7917292</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of the FGF receptor underlies neurite outgrowth stimulated by L1, N-CAM, and N-cadherin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, EJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furness, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walsh, FS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Doherty, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neuron 13:583-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190942" rdf:id="lit_190942">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8622701</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of six novel autophosphorylation sites on fibroblast growth factor receptor 1 and elucidation of their importance in receptor activation and signal transduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohammadi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dikic, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sorokin, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burgess, WH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jaye, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 16:977-89</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_201396" rdf:id="lit_201396">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9139660</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structures of the tyrosine kinase domain of fibroblast growth factor receptor in complex with inhibitors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohammadi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McMahon, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tang, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirth, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yeh, BK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hubbard, SR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 276:955-60</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190266" rdf:id="lit_190266">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17086194</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klotho converts canonical FGF receptor into a specific receptor for FGF23</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujita, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukumoto, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hasegawa, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iijima, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okawa, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimada, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Urakawa, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamazaki, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yameshita, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_190962" rdf:id="lit_190962">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11294897</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of tyrosine residues in constitutively activated fibroblast growth factor receptor 3 involved in mitogenesis, Stat activation, and phosphatidylinositol 3-kinase activation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, KC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robertson, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Donoghue, DJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 12:931-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_201402" rdf:id="lit_201402">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1697263</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and expression of two distinct high-affinity receptors cross-reacting with acidic and basic fibroblast growth factors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dionne, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crumley, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bellot, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaplow, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Searfoss, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruta, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burgess, WH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jaye, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 9:2685-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_182133" rdf:id="lit_182133">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10629055</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FRS2 proteins recruit intracellular signaling pathways by binding to diverse targets on fibroblast growth factor and nerve growth factor receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ong, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guy, GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hadari, YR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Laks, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gotoh, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lax, I</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 20:979-89</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_191514" rdf:id="lit_191514">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14534538</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The phosphotyrosine phosphatase SHP2 is a critical mediator of transformation induced by the oncogenic fibroblast growth factor receptor 3</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agazie, YM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Movilla, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ischenko, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hayman, MJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 22:6909-18</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_532232" rdf:id="lit_532232">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8780727</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suc1-associated neurotrophic factor target (SNT) protein is a major FGF-stimulated tyrosine phosphorylated 90-kDa protein which binds to the SH2 domain of GRB2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ong, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goh, KC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lim, YP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Low, BC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klint, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tan, YH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guy, GR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 225:1021-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_189823" rdf:id="lit_189823">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9182757</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A lipid-anchored Grb2-binding protein that links FGF-receptor activation to the Ras/MAPK signaling pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kouhara, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hadari, YR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spivak-Kroizman, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schilling, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bar-Sagi, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lax, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 89:693-702</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_191526" rdf:id="lit_191526">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9045692</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signal transduction pathway of human fibroblast growth factor receptor 3. Identification of a novel 66-kDa phosphoprotein.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kanai, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goke, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsunekawa, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Podolsky, DK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:6621-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_191028" rdf:id="lit_191028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10652257</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tyrosine 766 in the fibroblast growth factor receptor-1 is required for FGF-stimulation of phospholipase C, phospholipase D, phospholipase A(2), phosphoinositide 3-kinase and cytoskeletal reorganisation in porcine aortic endothelial cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cross, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hodgkin, MN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberts, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Landgren, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wakelam, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 113:643-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_189824" rdf:id="lit_189824">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10579907</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phospholipase C-gamma as a signal-transducing element</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carpenter, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ji, Q</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Exp Cell Res 253:15-24</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_191036" rdf:id="lit_191036">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9480847</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Novel recruitment of Shc, Grb2, and Sos by fibroblast growth factor receptor-1 in v-Src-transformed cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curto, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frankel, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carrero, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foster, DA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 243:555-60</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_532255" rdf:id="lit_532255">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8264585</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fibroblast growth factor receptors have different signaling and mitogenic potentials</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, JK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gao, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldfarb, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 14:181-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_532244" rdf:id="lit_532244">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7559490</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shc and a novel 89-kDa component couple to the Grb2-Sos complex in fibroblast growth factor-2-stimulated cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klint, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kanda, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Claesson-Welsh, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:23337-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_191045" rdf:id="lit_191045">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11353842</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stimulation of phosphatidylinositol 3-kinase by fibroblast growth factor receptors is mediated by coordinated recruitment of multiple docking proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ong, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hadari, YR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gotoh, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guy, GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schlessinger, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lax, I</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 98:6074-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_202402" rdf:id="lit_202402">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12660731</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of PI3K in immune cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koyasu, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Immunol 4:313-9</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>FGF signaling pathway</bp:TERM><bp:ID>PW:0000328</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

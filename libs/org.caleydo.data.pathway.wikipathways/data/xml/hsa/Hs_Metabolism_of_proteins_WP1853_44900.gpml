@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Metabolism of proteins" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Matthews, L" Maintainer="Matthews, L" Email="lisa.matthews@cshl.edu" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">Protein metabolism comprises the pathways of translation, post-translational modification and protein folding.</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0"/>
+  <DataNode TextLabel="Translation&#10;" GraphId="n1_REACTOME_72766" Type="Pathway">
+    <Comment Source="WikiPathways-description">Protein synthesis is accomplished through the process of translation of an mRNA sequence into a polypeptide chain. This process can be divided into three distinct stages:  initiation, elongation and termination. During the initiation phase, the two subunits of the ribosome are brought together to the translation start site on the mRNA where the polypeptide chain is to begin. Extension of the polypeptide chain occurs when a specific aminoacyl-tRNA, as determined by the template mRNA, binds an elongating ribosome. The protein chain is released from the ribosome when any one of three stop codons in the relevant reading frame on the mRNA is reached. Individual reactions at each one of these stages are catalyzed by a number of initiation, elongation and release factors, respectively.</Comment>
+    <Graphics CenterX="355.5" CenterY="319.5" Width="97.0" Height="59.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_1014"/>
+  </DataNode>
+  <DataNode TextLabel="Protein folding&#10;" GraphId="n2_REACTOME_391251" Type="Pathway">
+    <Comment Source="WikiPathways-description">Due to the crowded envirnoment within the cell, many proteins must interact with molecular chaperones to attain their native conformation  (reviewed in Young  et al., 2004).  Chaperones recognize and associate with  proteins in their non-native state and facilitate their folding by stabilizing the conformation of productive folding intermediates. Chaperones that take part broadly in de novo protein folding, such as the Hsp70s and the chaperonins, facilitate the folding process through cycles of substrate binding and release regulated by their  ATPase activity (see Young  et al., 2004; Spiess et al., 2004; Bigotti and Clarke, 2008).</Comment>
+    <Graphics CenterX="485.5" CenterY="318.5" Width="109.0" Height="61.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_16952"/>
+  </DataNode>
+  <DataNode TextLabel="Post-translational &#10;protein modification&#10;" GraphId="n3_REACTOME_597592" Type="Pathway">
+    <Comment Source="WikiPathways-description">After translation, many newly formed proteins undergo further covalent modifications that alter their functional properties and that are essentially irreversible under physiological conditions in the body. These modifications include the internal peptide bond cleavages that activate proenzymes, the attachment of oligosaccharide moieties to membrane-bound and secreted proteins, the attachment of lipid or glycolipid moieties that serve to anchor proteins to cellular membranes, and the vitamin K-dependent attachment of carboxyl groups to glutamate residues.</Comment>
+    <Graphics CenterX="629.5" CenterY="317.0" Width="125.0" Height="62.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle"/>
+    <Xref Database="Reactome" ID="REACT_22161"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+<Biopax><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>protein degradation pathway</bp:TERM><bp:ID>PW:0000325</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax></Pathway>

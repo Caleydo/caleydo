@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Eukaryotic Translation Elongation" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Gopinathrao, G">
+  <Comment Source="WikiPathways-description">The translation elongation cycle adds one amino acid at a time to a growing polypeptide according to the sequence of codons found in the mRNA. The next available codon on the mRNA is exposed in the aminoacyl-tRNA (aa-tRNA) binding site (A site) on the 30S subunit.&lt;br&gt;A: Ternary complexes of aa -tRNA:eEF1A:GTP enter the ribosome and  enable the anticodon of the tRNA to make a codon/anticodon interaction with the A-site codon of the mRNA. B: Upon cognate recognition, the eEF1A:GTP is brought into the GTPase activating center of the ribosome, GTP is hydrolyzed and eEF1A:GDP leaves the ribosome. C: The peptidyl transferase center of ribosome catalyses the formation of a peptide bond between the incoming amino acid and the peptide found in the peptidyl-tRNA binding site (P site). D: In the pre-translocation state of the ribosome, the eEF2:GTP enters the ribosome, physically translocating the peptidyl-tRNA out of the A site to P site and leaves the ribosome eEF2:GDP. This action of eEF2:GTP accounts for the precise movement of the mRNA by 3 nucleotides.Consequently, deacylated tRNA is shifted to the E site.  A ribosome associated ATPase activity is proposed to stimulate the release of deacylated tRNA from the E site subsequent to translocation (Elskaya et al., 1991). In this post-translocation state, the ribosome is now ready to receive a new ternary complex.&lt;br&gt;This process is illustrated below with: an amino acyl-tRNA with an amino acid, a peptidyl-tRNA with a growing peptide, a deacylated tRNA with an -OH, and a ribosome with A,P and E sites to accommodate these three forms of tRNA.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_159703</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_156905" TextLabel="eEF1A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="106.0" CenterY="91.0" Width="44.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P68104"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="111.0" CenterY="168.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_156921" TextLabel="eEF1A:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="343.0" CenterY="135.0" Width="72.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3513"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_37001" TextLabel="Aminoacyl-tRNA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="346.0" CenterY="75.0" Width="110.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_4792"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_156911" TextLabel="eEF1A:GTP:&#10;aminoacyl-tRNA &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="581.5" CenterY="135.0" Width="105.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3062"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_72505" TextLabel="80S:Met-tRNAi:&#10;mRNA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="628.0" CenterY="74.0" Width="98.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4537"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_156903" TextLabel="80S:aminoacyl tRNA:&#10;mRNA:eEF1A:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="823.0" CenterY="137.0" Width="128.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5558"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1073.5" CenterY="92.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_156929" TextLabel="eEF1A:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1119.5" CenterY="146.0" Width="73.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5872"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_72506" TextLabel="80S:Met-tRNAi:&#10;mRNA:aminoacyl-&#10;tRNA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1019.0" CenterY="199.0" Width="112.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3365"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_72500" TextLabel="80S ribosome&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="924.0" CenterY="263.0" Width="88.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4330"/>
+  </DataNode>
+  <DataNode GraphId="n17_REACTOME_156927" TextLabel="Elongation complex &#10;with growing peptide &#10;chain&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="773.5" CenterY="326.0" Width="133.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5024"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_156916" TextLabel="eEF2:GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="487.0" CenterY="237.0" Width="64.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2807"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_141952" TextLabel="80S Ribosome:mRNA:&#10;peptidyl-tRNA with &#10;elongating peptide&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="388.5" CenterY="528.0" Width="131.0" Height="64.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4835"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_156922" TextLabel="eEF2:GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="655.5" CenterY="422.0" Width="65.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5865"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="438.5" CenterY="311.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_156920" TextLabel="eEF1B complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="250.0" CenterY="366.0" Width="96.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3047"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_156917" TextLabel="eEF1B:GDP &#10;exchange complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="196.0" CenterY="229.0" Width="116.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3385"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_156901" TextLabel="eEF2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="348.0" CenterY="202.0" Width="36.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P13639"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="330.0" CenterY="267.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n89_REACTOME_156925" TextLabel="eEF1B gamma&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="367.0" CenterY="363.0" Width="90.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P26641"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_156914" TextLabel="eEF1B beta&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="384.5" CenterY="400.0" Width="73.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P29692"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_156926" TextLabel="eEF1B alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="391.5" CenterY="436.0" Width="79.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P24534"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_156909">
+    <Comment Source="WikiPathways-description">The cycle of elongation starts with an empty ribosomal A-site and the peptidyl-tRNA in the P-site. eEF1A is activated by GTP binding and allows for the subsequent binding of aminoacyl-tRNA (aa-tRNA).This process is illustrated below with a GTP molecule in white and eEF1A protein in yellow.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="163.0" Y="135.0" GraphId="e_1_0"/>
+      <Point X="233.0" Y="135.0" GraphId="e_1_1"/>
+      <Point X="304.0" Y="135.0" GraphId="e_1_2" GraphRef="n4_REACTOME_156921" RelX="-1.0833333333333333" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.49645390070921985" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="120.0" Y="105.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_156905" RelX="0.6363636363636364" RelY="1.2727272727272727"/>
+      <Point X="163.0" Y="135.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="134.0" Y="155.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_29438" RelX="1.15" RelY="-0.8666666666666667"/>
+      <Point X="163.0" Y="135.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="131.0" Y="90.0" GraphId="e_1_c__0_0" GraphRef="n2_REACTOME_156905" RelX="1.1363636363636365" RelY="-0.09090909090909091"/>
+      <Point X="233.0" Y="90.0" GraphId="e_1_c__0_1"/>
+      <Point X="233.0" Y="135.0" GraphId="e_1_c__0_2" GraphRef="e_1_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_REACTOME_156908">
+    <Comment Source="WikiPathways-description">The binding of eEF1A:GTP to  aminoacyl tRNA (aa-tRNA) results in the formation of a ternary complex (eEF1A:GTP:aa-tRNA). Human eEF1A and rabbit eEF1A are 100% identical, and prokaryotic homologue of eEF1A (EF-Tu) shows 59% identity in the GTP-binding domain.This process is illustrated below with: a GTP molecule in white and eEF1A protein in yellow.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="443.0" Y="136.0" GraphId="e_5_0"/>
+      <Point X="485.0" Y="135.0" GraphId="e_5_1"/>
+      <Point X="526.0" Y="135.0" GraphId="e_5_2" GraphRef="n7_REACTOME_156911" RelX="-1.0476190476190477" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_5_a_i"/>
+      <Anchor Position="0.5060949275809479" GraphId="e_5_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="382.0" Y="135.0" GraphId="e_5_i0_0" GraphRef="n4_REACTOME_156921" RelX="1.0833333333333333" RelY="0.0"/>
+      <Point X="443.0" Y="136.0" GraphId="e_5_i0_1" GraphRef="e_5_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="93.0" GraphId="e_5_i1_0" GraphRef="n6_REACTOME_37001" RelX="0.41818181818181815" RelY="1.2"/>
+      <Point X="443.0" Y="136.0" GraphId="e_5_i1_1" GraphRef="e_5_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_REACTOME_156907">
+    <Comment Source="WikiPathways-description">Once the correct codon-anticodon match occurs between the mRNA and aa-tRNA, the decoding event triggers GTP hydrolysis on eEF1A. The resulting conformational change releases the aa-tRNA to the A-site, and GDP bound form eEF1A is released from the ribosome.&lt;br&gt;Insight into the mechanics of this system has been obtained from earlier works with rabbit reticulocytes and the E.coli system.&lt;br&gt;This process is illustrated below with: an amino acyl-tRNA with an amino acid, a peptidyl-tRNA with a growing peptide and a ribosome with A,P and E sites to accommodate these two forms of tRNA.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="679.0" Y="136.0" GraphId="e_8_0"/>
+      <Point X="722.0" Y="136.0" GraphId="e_8_1"/>
+      <Point X="756.0" Y="136.0" GraphId="e_8_2" GraphRef="n10_REACTOME_156903" RelX="-1.046875" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_8_a_i"/>
+      <Anchor Position="0.5584415584415584" GraphId="e_8_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="637.0" Y="135.0" GraphId="e_8_i0_0" GraphRef="n7_REACTOME_156911" RelX="1.0666666666666667" RelY="0.0"/>
+      <Point X="679.0" Y="136.0" GraphId="e_8_i0_1" GraphRef="e_8_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="642.0" Y="95.0" GraphId="e_8_i1_0" GraphRef="n9_REACTOME_72505" RelX="0.2857142857142857" RelY="1.1666666666666667"/>
+      <Point X="679.0" Y="136.0" GraphId="e_8_i1_1" GraphRef="e_8_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_REACTOME_156923">
+    <Comment Source="WikiPathways-description">Once the correct codon-anticodon match occurs between the mRNA and aa-tRNA, the decoding event triggers GTP hydrolysis on eEF1A. The resulting conformational change releases the aa-tRNA to the A-site, and GDP bound form of eEF1A is released from the ribosome.&lt;br&gt;This process is illustrated below with: an amino acyl-tRNA with an amino acid,a peptidyl-tRNA with a growing peptide and a  ribosome with A,P and E sites to accommodate these two forms of tRNA.</Comment>
+    <BiopaxRef>lit_159611</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="890.0" Y="135.0" GraphId="e_11_0" GraphRef="n10_REACTOME_156903" RelX="1.046875" RelY="-0.1111111111111111"/>
+      <Point X="927.0" Y="135.0" GraphId="e_11_1"/>
+      <Point X="961.0" Y="135.0" GraphId="e_11_2"/>
+      <Anchor Position="0.5211267605633803" GraphId="e_11_a_p"/>
+      <Anchor Position="1.0" GraphId="e_11_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1033.0" Y="110.0" GraphId="e_11_o0_0" ArrowHead="Arrow" GraphRef="n12_REACTOME_29372" RelX="-0.7339449541284404" RelY="1.2"/>
+      <Point X="961.0" Y="135.0" GraphId="e_11_o0_1" GraphRef="e_11_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1080.0" Y="143.0" GraphId="e_11_o1_0" ArrowHead="Arrow" GraphRef="n13_REACTOME_156929" RelX="-1.0684931506849316" RelY="-0.2727272727272727"/>
+      <Point X="961.0" Y="135.0" GraphId="e_11_o1_1" GraphRef="e_11_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="996.0" Y="171.0" GraphId="e_11_o2_0" ArrowHead="Arrow" GraphRef="n14_REACTOME_72506" RelX="-0.4107142857142857" RelY="-1.12"/>
+      <Point X="961.0" Y="135.0" GraphId="e_11_o2_1" GraphRef="e_11_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_11_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="924.0" Y="249.0" GraphId="e_11_c__0_0" GraphRef="n15_REACTOME_72500" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="927.0" Y="135.0" GraphId="e_11_c__0_1" GraphRef="e_11_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_156912">
+    <Comment Source="WikiPathways-description">The A- and P-sites of the ribosome positions the aa-tRNA and peptidyl-tRNA such that a nucleophilic attack can occur between the amine group of the A-site aa-tRNA and the carbonyl group of the growing peptide chain on the P-site tRNA, resulting in the formation of a peptide bond.  The carboxyl end of the peptide chain is uncoupled from the tRNA molecule in the P-site and forms a new peptide bond with the amino acid that is in the A-site.&lt;br&gt;This process is illustrated below with: a peptidyl-tRNA with a growing peptide,a deacylated tRNA with an -OH and a ribosome with A,P and E sites to accommodate these three forms of tRNA.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1018.0" Y="227.0" GraphId="e_16_0" GraphRef="n14_REACTOME_72506" RelX="-0.017857142857142856" RelY="1.12"/>
+      <Point X="1017.0" Y="325.0" GraphId="e_16_1"/>
+      <Point X="925.0" Y="325.0" GraphId="e_16_2"/>
+      <Point X="843.0" Y="325.0" GraphId="e_16_3" GraphRef="n17_REACTOME_156927" RelX="1.0526315789473684" RelY="-0.04" ArrowHead="Arrow"/>
+      <Anchor Position="0.6985350663469141" GraphId="e_16_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="924.0" Y="277.0" GraphId="e_16_c__0_0" GraphRef="n15_REACTOME_72500" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="925.0" Y="325.0" GraphId="e_16_c__0_1" GraphRef="e_16_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_REACTOME_156915">
+    <Comment Source="WikiPathways-description">Following peptide bond formation, GTP-bound eEF2 catalyzes the translocation of the deacylated tRNA in the P-site and the peptidyl-tRNA in the A-site (the pre-translocation state) into the E- and P- sites (the post-translocation state), respectively. Thus, the mRNA advances by three bases to expose the next codon in the A-site. After translocation, GDP-bound eEF2 leaves the ribosome to allow another round of elongation. eEF2 is reactivated by the release of GDP and binds GTP for subsequent rounds. &lt;br&gt;This process is illustrated below with a peptidyl-tRNA with a growing peptide, a deacylated tRNA with an -OH and a ribosome with A,P and E sites to accommodate these three forms of tRNA is also shown.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="577.0" Y="325.0" GraphId="e_18_0"/>
+      <Point X="578.0" Y="356.0" GraphId="e_18_1"/>
+      <Point X="578.0" Y="385.0" GraphId="e_18_2"/>
+      <Anchor Position="0.0" GraphId="e_18_a_i"/>
+      <Anchor Position="0.5167965262999363" GraphId="e_18_a_p"/>
+      <Anchor Position="1.0" GraphId="e_18_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="580.0" Y="163.0" GraphId="e_18_i0_0" GraphRef="n7_REACTOME_156911" RelX="-0.01904761904761905" RelY="1.12"/>
+      <Point X="577.0" Y="325.0" GraphId="e_18_i0_1" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="704.0" Y="325.0" GraphId="e_18_i1_0" GraphRef="n17_REACTOME_156927" RelX="-1.037593984962406" RelY="-0.04"/>
+      <Point X="577.0" Y="325.0" GraphId="e_18_i1_1" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="498.0" Y="251.0" GraphId="e_18_i2_0" GraphRef="n19_REACTOME_156916" RelX="0.34375" RelY="1.2727272727272727"/>
+      <Point X="577.0" Y="325.0" GraphId="e_18_i2_1" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="430.0" Y="493.0" GraphId="e_18_o0_0" ArrowHead="Arrow" GraphRef="n20_REACTOME_141952" RelX="0.6412213740458015" RelY="-1.09375"/>
+      <Point X="578.0" Y="385.0" GraphId="e_18_o0_1" GraphRef="e_18_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="632.0" Y="408.0" GraphId="e_18_o1_0" ArrowHead="Arrow" GraphRef="n21_REACTOME_156922" RelX="-0.7076923076923077" RelY="-1.2727272727272727"/>
+      <Point X="578.0" Y="385.0" GraphId="e_18_o1_1" GraphRef="e_18_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="466.0" Y="329.0" GraphId="e_18_o2_0" ArrowHead="Arrow" GraphRef="n22_REACTOME_29372" RelX="0.5137614678899083" RelY="1.2"/>
+      <Point X="578.0" Y="385.0" GraphId="e_18_o2_1" GraphRef="e_18_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1118.0" Y="160.0" GraphId="e_18_o3_0" ArrowHead="Arrow" GraphRef="n13_REACTOME_156929" RelX="-0.0273972602739726" RelY="1.2727272727272727"/>
+      <Point X="1118.0" Y="386.0" GraphId="e_18_o3_1"/>
+      <Point X="578.0" Y="385.0" GraphId="e_18_o3_2" GraphRef="e_18_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_156913">
+    <Comment Source="WikiPathways-description">The eEF1B complex binds to eEF1A and regulates its activity by catalyzing the release of GDP. Subsequently, GTP is able to bind eEF1A allowing the formation of the ternary complex (eEF1A-GTP-aa-tRNA).In metazoans eEF1 protein family is composed of four subunits:  eEF1A and eEF1B alpha, beta, and  gamma (formerly EF-1alpha, EF-1beta, EF-1delta, and EF-1gamma, respectively).   Both eEF1B alpha and eEF1B beta function as nucleotide exchange proteins.  eEF1B gamma associates with eEF1B alpha and stimulates its exchange activity.&lt;br&gt;This process is illustrated below with a GTP molecule in white and eEF1A protein in yellow.The three subunits of eEF1B are also shown.</Comment>
+    <BiopaxRef>lit_159624</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="111.0" Y="454.0" GraphId="e_23_0"/>
+      <Point X="204.0" Y="330.0" GraphId="e_23_1"/>
+      <Point X="247.0" Y="277.0" GraphId="e_23_2"/>
+      <Anchor Position="0.0" GraphId="e_23_a_i"/>
+      <Anchor Position="0.6942903377360478" GraphId="e_23_a_p"/>
+      <Anchor Position="1.0" GraphId="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1135.0" Y="157.0" GraphId="e_23_i0_0" GraphRef="n13_REACTOME_156929" RelX="0.4383561643835616" RelY="1.0"/>
+      <Point X="1140.0" Y="160.0" GraphId="e_23_i0_1"/>
+      <Point X="1141.0" Y="454.0" GraphId="e_23_i0_2"/>
+      <Point X="111.0" Y="454.0" GraphId="e_23_i0_3" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="111.0" Y="186.0" GraphId="e_23_i1_0" GraphRef="n3_REACTOME_29438" RelX="0.0" RelY="1.2"/>
+      <Point X="111.0" Y="454.0" GraphId="e_23_i1_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="232.0" Y="380.0" GraphId="e_23_i2_0" GraphRef="n24_REACTOME_156920" RelX="-0.375" RelY="1.2727272727272727"/>
+      <Point X="111.0" Y="454.0" GraphId="e_23_i2_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="335.0" Y="149.0" GraphId="e_23_o0_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_156921" RelX="-0.2222222222222222" RelY="1.2727272727272727"/>
+      <Point X="247.0" Y="277.0" GraphId="e_23_o0_1" GraphRef="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="215.0" Y="250.0" GraphId="e_23_o1_0" ArrowHead="Arrow" GraphRef="n25_REACTOME_156917" RelX="0.3275862068965517" RelY="1.1666666666666667"/>
+      <Point X="247.0" Y="277.0" GraphId="e_23_o1_1" GraphRef="e_23_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="235.0" Y="352.0" GraphId="e_23_c__0_0" GraphRef="n24_REACTOME_156920" RelX="-0.3125" RelY="-1.2727272727272727"/>
+      <Point X="204.0" Y="330.0" GraphId="e_23_c__0_1" GraphRef="e_23_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_REACTOME_156930">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'eEF2', and 1 molecule of 'GTP' are present. At the end of this reaction, 1 molecule of 'eEF2:GTP' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="389.0" Y="234.0" GraphId="e_84_0"/>
+      <Point X="423.0" Y="234.0" GraphId="e_84_1"/>
+      <Point X="452.0" Y="235.0" GraphId="e_84_2" GraphRef="n19_REACTOME_156916" RelX="-1.09375" RelY="-0.18181818181818182" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_84_a_i"/>
+      <Anchor Position="0.5395349275758288" GraphId="e_84_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="362.0" Y="216.0" GraphId="e_84_i0_0" GraphRef="n85_REACTOME_156901" RelX="0.7777777777777778" RelY="1.2727272727272727"/>
+      <Point X="389.0" Y="234.0" GraphId="e_84_i0_1" GraphRef="e_84_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_84_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="353.0" Y="255.0" GraphId="e_84_i1_0" GraphRef="n87_REACTOME_29438" RelX="1.15" RelY="-0.8"/>
+      <Point X="389.0" Y="234.0" GraphId="e_84_i1_1" GraphRef="e_84_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_156910">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'eEF1B alpha', 1 molecule of 'eEF1B gamma', and 1 molecule of 'eEF1B beta' are present. At the end of this reaction, 1 molecule of 'eEF1B complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="280.0" Y="407.0" GraphId="e_88_0"/>
+      <Point X="247.0" Y="407.0" GraphId="e_88_1"/>
+      <Point X="249.0" Y="380.0" GraphId="e_88_2" GraphRef="n24_REACTOME_156920" RelX="-0.020833333333333332" RelY="1.2727272727272727" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_88_a_i"/>
+      <Anchor Position="0.5493227515029823" GraphId="e_88_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="345.0" Y="377.0" GraphId="e_88_i0_0" GraphRef="n89_REACTOME_156925" RelX="-0.4888888888888889" RelY="1.2727272727272727"/>
+      <Point X="280.0" Y="407.0" GraphId="e_88_i0_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="345.0" Y="402.0" GraphId="e_88_i1_0" GraphRef="n90_REACTOME_156914" RelX="-1.0684931506849316" RelY="0.18181818181818182"/>
+      <Point X="280.0" Y="407.0" GraphId="e_88_i1_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="349.0" Y="425.0" GraphId="e_88_i2_0" GraphRef="n91_REACTOME_156926" RelX="-1.0632911392405062" RelY="-1.0"/>
+      <Point X="280.0" Y="407.0" GraphId="e_88_i2_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_29" GroupRef="group_comp_29" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="89.5" CenterY="552.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_29" GroupRef="group_comp_29">
+    <Graphics Color="000000" CenterX="620.0" CenterY="298.0" Width="1158.0" Height="574.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159703" rdf:id="lit_159703">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15189156</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The molecular mechanics of eukaryotic translation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kapp, LD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lorsch, JR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 73:657-704</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159611" rdf:id="lit_159611">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6568109</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1984</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biological characterization of various forms of elongation factor 1 from rabbit reticulocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carvalho, MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carvalho, JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrick, WC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arch Biochem Biophys 234:603-11</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_159624" rdf:id="lit_159624">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10368288</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The solution structure of the guanine nucleotide exchange domain of human elongation factor 1beta reveals a striking resemblance to that of EF-Ts from Escherichia coli</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perez, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Siegal, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kriek, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hard, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dijk, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Canters, GW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moller, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure Fold Des 7:217-26</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>translation elongation pathway</bp:TERM><bp:ID>PW:0000581</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

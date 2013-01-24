@@ -57,7 +57,7 @@ public final class PathwayDatabase {
 		this.imageMapPath = imageMapPath.replace(
 				GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
-		if (type == EPathwayDatabaseType.KEGG) {
+		if (type == EPathwayDatabaseType.KEGG || type == EPathwayDatabaseType.WIKIPATHWAYS) {
 			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
 
 			if (eOrganism == Organism.HOMO_SAPIENS) {

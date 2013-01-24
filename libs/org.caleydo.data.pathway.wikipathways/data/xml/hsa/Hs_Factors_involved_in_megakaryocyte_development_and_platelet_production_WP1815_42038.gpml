@@ -1,0 +1,1572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Factors involved in megakaryocyte development and platelet production" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Akkerman, JW" Maintainer="Jupe, S" Email="sjupe@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Megakaryocytes (MKs) give rise to circulating platelets (thrombocytes) through terminal differentiation of MKs which  release cytoplasmic fragments as circulating platelets. As MKs mature they undergo endoreduplication (polyploidisation) and expansion of cytoplasmic mass to cell sizes larger than 50-100 microns, and ploidy ranges up to 128 N. As MK's mature, the polyploid nucleus becomes horseshoe-shaped, the cytoplasm expands, and platelet organelles and the demarcation membrane system are amplified. Proplatelet projections form which give rise to de novo circulating platelets (Deutsch &amp; Tomer 2006).  &lt;br&gt;The processes of megakaryocytopoiesis and platelet production occur within a complex microenvironment where chemokines, cytokines and adhesive interactions play major roles (Avecilla et al. 2004).  Megakaryocytopoiesis is regulated at several levels including proliferation, differentiation and platelet release (Kaushansky 2003). Thrombopoietin (TPO/c-Mpl ligand) is the most potent cytokine stimulating proliferation and maturation of MK progenitors (Kaushansky 2005) but many other growth factors are involved. MK development is controlled by the action of multiple Transcriptin Factors, many MK-specific genes are co-regulated by GATA and friend of GATA (FOG), RUNX1 and ETS proteins. Nuclear factor erythroid 2 (NF-E2) which has an MK-erythroid specific 45-kDa subunit controls terminal MK maturation, proplatelet formation and platelet release (Schulze &amp; Shivdasani 2004). NF-E2 deficient mice have profound thrombocytopenia (Shiraga et al. 1999). c-myb functions with p300 as a negative regulator of thrombopoiesis (Metcalf et al. 2005). During MK maturation, internal membrane systems, granules and organelles are assembled. Cytoplasmic fragmentation requires changes in the MK cytoskeleton and formation of organelles and channels. Individual organelles migrate from the cell body to the proplatelet ends, with approximately 30 percent of organelles/granules in motion at any given time (Richardson et al. 2005).</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_1013931</BiopaxRef>
+  <BiopaxRef>lit_1013930</BiopaxRef>
+  <BiopaxRef>lit_1027318</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_983271" TextLabel="RAD51B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="417.0" CenterY="149.5" Width="58.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O15315"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_217039" TextLabel="RAD51C&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="415.0" CenterY="98.0" Width="60.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43502"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_983240" TextLabel="RAD51B:&#10;RAD51C&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="574.5" CenterY="120.0" Width="85.0" Height="34.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26032"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_29868" TextLabel="Single-stranded DNA&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="479.0" CenterY="218.0" Width="130.0" Height="28.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="9160"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_983270" TextLabel="RAD51B:RAD51C:&#10;Single-stranded DNA&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="693.0" CenterY="174.0" Width="124.0" Height="54.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25469"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_111922" TextLabel="PKA tetramer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="856.0" CenterY="1483.5" Width="86.0" Height="21.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5749"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_992722" TextLabel="Dual-specific &#10;AKAPs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="864.0" CenterY="1563.5" Width="80.0" Height="51.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25713"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_992693" TextLabel="Dual-specific AKAPs:&#10;PKA tetramer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1024.5" CenterY="1518.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25534"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_992720" TextLabel="Mitofusins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="509.0" CenterY="1040.5" Width="68.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26095"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_992739" TextLabel="Mitofusin complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="693.0" CenterY="1041.5" Width="112.0" Height="21.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25928"/>
+  </DataNode>
+  <DataNode GraphId="n19_REACTOME_992697" TextLabel="MYB&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="145.5" CenterY="93.5" Width="39.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P10242"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_351657" TextLabel="SIN3A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="141.5" CenterY="178.0" Width="49.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96ST3"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_69488" TextLabel="p53 protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="120.5" CenterY="137.0" Width="83.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P04637"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_992748" TextLabel="p53:MYB:SIN3A&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="280.5" CenterY="135.0" Width="91.0" Height="32.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26185"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_994028" TextLabel="Promotor region of &#10;interferon alpha&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="133.0" CenterY="394.5" Width="118.0" Height="35.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_26381"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_1008217" TextLabel="Promotor region of &#10;interferon beta&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="136.0" CenterY="321.5" Width="118.0" Height="35.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_25836"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_983456" TextLabel="Interferon regulatory &#10;factor 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="181.5" CenterY="261.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P10914"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_1008247" TextLabel="IRF1:Promotors of &#10;IFN alpha, IFN beta&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="393.0" CenterY="303.0" Width="114.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26239"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_909690" TextLabel="IFN alpha/beta &#10;(IFNA/B)&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="491.0" CenterY="373.5" Width="94.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26595"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_994031" TextLabel="Interferon regulatory &#10;factor 2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="194.5" CenterY="459.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P14316"/>
+  </DataNode>
+  <DataNode GraphId="n34_REACTOME_994093" TextLabel="Heterochromatin &#10;protein 1 homolog &#10;alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="166.0" CenterY="554.5" Width="112.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P45973"/>
+  </DataNode>
+  <DataNode GraphId="n35_REACTOME_427391" TextLabel="Histone H3 &#10;methylated at &#10;lysine-9&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="164.5" CenterY="616.5" Width="91.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25651"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_994100" TextLabel="HP1alpha:Histone H3 &#10;methylated at K9&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="391.5" CenterY="573.5" Width="127.0" Height="51.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_27026"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="518.5" CenterY="1436.5" Width="37.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_994149" TextLabel="1D-myo-inositol &#10;3,4,5,6-&#10;tetrakisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="553.0" CenterY="1302.5" Width="136.0" Height="69.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15844"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="781.5" CenterY="1431.5" Width="39.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_994141" TextLabel="1D-myo-Inositol &#10;1,3,4,5,6-&#10;pentakisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="738.5" CenterY="1298.0" Width="139.0" Height="74.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16322"/>
+  </DataNode>
+  <DataNode GraphId="n42_REACTOME_994132" TextLabel="Inositol-&#10;tetrakisphosphate 1-&#10;kinase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="644.5" CenterY="1433.5" Width="127.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13572"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_994123" TextLabel="1D-myo-inositol 1,3,4-&#10;trisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="568.0" CenterY="1564.0" Width="144.0" Height="56.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18228"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_994174" TextLabel="1D-myo-inositol &#10;1,3,4,5/6-&#10;tetrakisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="730.0" CenterY="1565.5" Width="128.0" Height="75.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_26666"/>
+  </DataNode>
+  <DataNode GraphId="n53_REACTOME_994131" TextLabel="Leucine-rich repeat-&#10;containing protein &#10;16A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="250.0" CenterY="1457.5" Width="126.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q5VZK9"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_879384" TextLabel="F-actin capping &#10;protein&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="239.5" CenterY="1532.5" Width="99.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26977"/>
+  </DataNode>
+  <DataNode GraphId="n55_REACTOME_994154" TextLabel="LRRC16A:F-actin &#10;capping protein&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="412.0" CenterY="1500.5" Width="106.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26939"/>
+  </DataNode>
+  <DataNode GraphId="n57_REACTOME_994160" TextLabel="f-actin&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="234.0" CenterY="1586.5" Width="48.0" Height="21.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_25435"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_994173" TextLabel="F-actin capping &#10;protein:f-actin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="414.5" CenterY="1566.5" Width="99.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26552"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_996761" TextLabel="REST:REST DNA &#10;binding sites&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="309.0" CenterY="641.5" Width="94.0" Height="51.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25691"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_996752" TextLabel="BHC complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="307.5" CenterY="705.5" Width="91.0" Height="27.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26743"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_996764" TextLabel="BHC complex:REST:&#10;REST DNA binding &#10;sites&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="484.0" CenterY="678.5" Width="116.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25596"/>
+  </DataNode>
+  <DataNode GraphId="n76_REACTOME_996770" TextLabel="GATA proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="144.5" CenterY="817.0" Width="109.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26707"/>
+  </DataNode>
+  <DataNode GraphId="n77_REACTOME_996742" TextLabel="ZFPM1, ZFPM2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="143.5" CenterY="763.5" Width="103.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25560"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_996751" TextLabel="ZFPM proteins:GATA &#10;proteins&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="315.0" CenterY="789.5" Width="126.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25675"/>
+  </DataNode>
+  <DataNode GraphId="n84_REACTOME_997256" TextLabel="Histone H3 mono or &#10;di-methylated at K9&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="150.5" CenterY="945.5" Width="133.0" Height="41.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_27055"/>
+  </DataNode>
+  <DataNode GraphId="n85_REACTOME_997233" TextLabel="Histone H3 mono- or &#10;unmethylated at K9&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="341.5" CenterY="945.0" Width="137.0" Height="42.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_27021"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_997258" TextLabel="Jumonji domain-&#10;containing protein 1C&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="242.5" CenterY="879.5" Width="135.0" Height="41.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15652"/>
+  </DataNode>
+  <DataNode GraphId="n88_REACTOME_997248" TextLabel="p(Y813)-&#10;JAK2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="840.5" CenterY="1168.0" Width="65.0" Height="34.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60674"/>
+  </DataNode>
+  <DataNode GraphId="n89_REACTOME_997265" TextLabel="SH2B family&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="842.0" CenterY="1216.5" Width="76.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26906"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_997243" TextLabel="SH2B family:p(Y813)-&#10;JAK2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1005.0" CenterY="1180.5" Width="126.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26825"/>
+  </DataNode>
+  <DataNode GraphId="n92_REACTOME_113573" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="506.5" CenterY="1135.5" Width="37.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n93_REACTOME_159448" TextLabel="AMP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="510.0" CenterY="1176.5" Width="40.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode GraphId="n94_REACTOME_113581" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="652.5" CenterY="1131.5" Width="39.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n95_REACTOME_113525" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="654.5" CenterY="1175.5" Width="39.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n96_REACTOME_1008241" TextLabel="Adenylate kinase 3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="577.0" CenterY="1096.5" Width="126.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UIJ7"/>
+  </DataNode>
+  <DataNode GraphId="n98_REACTOME_1008221" TextLabel="Transcription factor &#10;NF-E2 45 kDa &#10;subunit&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="684.5" CenterY="589.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q16621"/>
+  </DataNode>
+  <DataNode GraphId="n99_REACTOME_1008234" TextLabel="Small Maf family &#10;members&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="683.0" CenterY="526.5" Width="108.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25969"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_1008229" TextLabel="NF-E2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="874.5" CenterY="545.5" Width="57.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26613"/>
+  </DataNode>
+  <DataNode GraphId="n102_REACTOME_1008228" TextLabel="Promotor region of &#10;beta-globin&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="967.0" CenterY="590.5" Width="118.0" Height="35.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_25634"/>
+  </DataNode>
+  <DataNode GraphId="n103_REACTOME_1008206" TextLabel="NF-E2:Promoter &#10;region of beta-globin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="901.0" CenterY="708.5" Width="126.0" Height="51.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_27022"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_1008218" TextLabel="Hemoglobin subunit &#10;delta&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="651.5" CenterY="766.5" Width="123.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P02042"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_1008196" TextLabel="Hemoglobin subunit &#10;beta&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="697.5" CenterY="825.5" Width="123.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P68871"/>
+  </DataNode>
+  <DataNode GraphId="n109_REACTOME_1008254" TextLabel="Hemoglobin subunit &#10;gamma-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="782.5" CenterY="874.5" Width="123.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P69892"/>
+  </DataNode>
+  <DataNode GraphId="n110_REACTOME_1008211" TextLabel="Hemoglobin subunit &#10;gamma-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="857.5" CenterY="824.5" Width="123.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P69891"/>
+  </DataNode>
+  <DataNode GraphId="n111_REACTOME_1008215" TextLabel="Hemoglobin subunit &#10;epsilon&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="909.5" CenterY="773.5" Width="123.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P02100"/>
+  </DataNode>
+  <DataNode GraphId="n171_REACTOME_1011595" TextLabel="C-terminal EH &#10;domain containing &#10;proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="178.0" CenterY="1098.5" Width="114.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26767"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_188000" TextLabel="Rabenosyn-5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="177.5" CenterY="1191.5" Width="93.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9H1K0"/>
+  </DataNode>
+  <DataNode GraphId="n173_REACTOME_1011577" TextLabel="C-terminal EH &#10;domain containing &#10;proteins:Rabenosyn-&#10;5&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="346.0" CenterY="1143.5" Width="124.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26657"/>
+  </DataNode>
+  <DataNode GraphId="n176_REACTOME_452257" TextLabel="Ras-related protein &#10;Rab-5A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="136.5" CenterY="1257.5" Width="121.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P20339"/>
+  </DataNode>
+  <DataNode GraphId="n177_REACTOME_1011607" TextLabel="Vacuolar protein &#10;sorting-associated &#10;protein 45&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="179.5" CenterY="1324.5" Width="119.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NRW7"/>
+  </DataNode>
+  <DataNode GraphId="n178_REACTOME_1011605" TextLabel="Rabenosyn-5:&#10;VPS-45&#10;" Type="Complex">
+    <BiopaxRef>lit_1011612</BiopaxRef>
+    <Graphics Color="000000" CenterX="350.0" CenterY="1253.5" Width="94.0" Height="37.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26968"/>
+  </DataNode>
+  <DataNode GraphId="n180_REACTOME_1012978" TextLabel="DOCK-&#10;GEFs&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="824.5" CenterY="1051.5" Width="65.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26129"/>
+  </DataNode>
+  <DataNode GraphId="n181_REACTOME_1012988" TextLabel="RAC1, &#10;CDC42&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="828.5" CenterY="1099.0" Width="59.0" Height="34.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25943"/>
+  </DataNode>
+  <DataNode GraphId="n182_REACTOME_1012969" TextLabel="DOCK-GEFs:RAC1, &#10;CDC42&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1002.0" CenterY="1070.5" Width="116.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25414"/>
+  </DataNode>
+  <DataNode GraphId="n184_REACTOME_180064" TextLabel="CDK5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="631.5" CenterY="416.5" Width="47.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q00535"/>
+  </DataNode>
+  <DataNode GraphId="n185_REACTOME_375987" TextLabel="ABL1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="641.0" CenterY="457.5" Width="48.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P00519"/>
+  </DataNode>
+  <DataNode GraphId="n186_REACTOME_1013880" TextLabel="CABLES&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="636.5" CenterY="370.5" Width="51.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26006"/>
+  </DataNode>
+  <DataNode GraphId="n187_REACTOME_1013836" TextLabel="CDK5:CABLES:ABL&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="849.5" CenterY="413.5" Width="117.0" Height="27.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26864"/>
+  </DataNode>
+  <DataNode GraphId="n189_REACTOME_69253" TextLabel="Wee1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="641.0" CenterY="251.5" Width="48.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30291"/>
+  </DataNode>
+  <DataNode GraphId="n190_REACTOME_1013870" TextLabel="CABLES1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="630.0" CenterY="336.5" Width="58.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8TDN4"/>
+  </DataNode>
+  <DataNode GraphId="n191_REACTOME_68365" TextLabel="Cdk2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="611.5" CenterY="293.0" Width="45.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P24941"/>
+  </DataNode>
+  <DataNode GraphId="n192_REACTOME_1013858" TextLabel="CDK2:CABLES1:Wee-&#10;1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="856.0" CenterY="297.5" Width="126.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25979"/>
+  </DataNode>
+  <DataNode GraphId="n193_REACTOME_1018386" TextLabel="IRF2:promoters of &#10;INF alpha, INF beta&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="390.5" CenterY="427.5" Width="119.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26555"/>
+  </DataNode>
+  <DataNode GraphId="n916_REACTOME_879442" TextLabel="F-actin capping &#10;protein alpha subunit&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="112.0" CenterY="1489.5" Width="126.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25420"/>
+  </DataNode>
+  <DataNode GraphId="n917_REACTOME_879409" TextLabel="F-actin-capping &#10;protein subunit beta&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="106.5" CenterY="1561.5" Width="123.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P47756"/>
+  </DataNode>
+  <DataNode GraphId="n918_REACTOME_983189" TextLabel="Kinesins&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Kinesins are a superfamily of  microtubule-based motor proteins that have diverse functions in transport of vesicles, organelles and chromosomes, and regulate microtubule dynamics. There are 14 families of kinesins, all reprsented in humans. A standardized nomenclature was published in 2004 (Lawrence et al.).</Comment>
+    <BiopaxRef>lit_983210</BiopaxRef>
+    <BiopaxRef>lit_983215</BiopaxRef>
+    <BiopaxRef>lit_984627</BiopaxRef>
+    <BiopaxRef>lit_984747</BiopaxRef>
+    <BiopaxRef>lit_984638</BiopaxRef>
+    <Graphics Color="000000" CenterX="1002.0" CenterY="1337.5" Width="118.0" Height="65.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_25201"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_983285">
+    <Comment Source="WikiPathways-description">The Rad51-like proteins Rad51B and Rad51C form a highly stable complex. This complex assists Rad51 in the early stages of homologous recombination.</Comment>
+    <BiopaxRef>lit_983243</BiopaxRef>
+    <BiopaxRef>lit_983260</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="483.0" Y="120.0" GraphId="e_1_0"/>
+      <Point X="501.0" Y="120.0" GraphId="e_1_1"/>
+      <Point X="529.0" Y="120.0" GraphId="e_1_2" GraphRef="n4_REACTOME_983240" RelX="-1.0588235294117647" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1_a_i"/>
+      <Anchor Position="0.391304347826087" GraphId="e_1_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="440.0" Y="136.0" GraphId="e_1_i0_0" GraphRef="n2_REACTOME_983271" RelX="0.7931034482758621" RelY="-1.2380952380952381"/>
+      <Point X="483.0" Y="120.0" GraphId="e_1_i0_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="448.0" Y="107.0" GraphId="e_1_i1_0" GraphRef="n3_REACTOME_217039" RelX="1.1" RelY="0.9"/>
+      <Point X="483.0" Y="120.0" GraphId="e_1_i1_1" GraphRef="e_1_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_REACTOME_983218">
+    <Comment Source="WikiPathways-description">The complex of Rad51B and Rad51C binds single-stranded DNA and hydrolyses ATP (Sigurdsson et al. 2001). Rad51B and Rad51C are both required for recombination and DNA double-strand break repair in vivo. The complex cannot substitute for RPA but enhances Rad51/RPA mediated repair. The proposed mechanism for this is that Rad51b:Rad51C partially overcomes the suppressive effect of RPA on Rad51-catalyzed DNA pairing and strand exchange; RPA is an important accessory factor for Rad51-mediated homologous DNA pairing and strand exchange, but it can also compete with Rad51 for binding sites on the ssDNA template, which, when allowed to occur, suppresses pairing and strand exchange efficiency markedly (Sung et al. 2000).</Comment>
+    <BiopaxRef>lit_83616</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="573.0" Y="173.0" GraphId="e_6_0"/>
+      <Point X="602.0" Y="173.0" GraphId="e_6_1"/>
+      <Point X="628.0" Y="173.0" GraphId="e_6_2" GraphRef="n8_REACTOME_983270" RelX="-1.0483870967741935" RelY="-0.037037037037037035" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_6_a_i"/>
+      <Anchor Position="0.5272727272727272" GraphId="e_6_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="508.0" Y="201.0" GraphId="e_6_i0_0" GraphRef="n7_REACTOME_29868" RelX="0.4461538461538462" RelY="-1.2142857142857142"/>
+      <Point X="573.0" Y="173.0" GraphId="e_6_i0_1" GraphRef="e_6_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_6_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="573.0" Y="140.0" GraphId="e_6_i1_0" GraphRef="n4_REACTOME_983240" RelX="-0.023529411764705882" RelY="1.1764705882352942"/>
+      <Point X="573.0" Y="173.0" GraphId="e_6_i1_1" GraphRef="e_6_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_992708">
+    <Comment Source="WikiPathways-description">Protein kinase A (PKA) refers to a family of multimeric enzyme complexes whose activity is dependent on the level of cyclic AMP (cAMP), hence PKA is also known as cAMP-dependent protein kinase (EC 2.7.11.11). PKA has several functions in the cell, including regulation of glycogen, sugar, and lipid metabolism. 
+PKA is a holoenzyme complex consisting of two regulatory and two catalytic subunits. When cAMP levela are low the holoenzyme remains intact and is inactive. When the concentration of cAMP rises (e.g. as a result of adenylate cyclase activation by G protein-coupled receptors coupled to Gs, or inhibition of phosphodiesterases that degrade cAMP) cAMP binds to two binding sites on the regulatory subunits, leading to the release and activation of the catalytic subunits. The regulatory subunits of PKA are also important for localizing the kinase inside the cell. A-kinase anchor proteins (AKAPs) bind to the regulatory subunits and to cytoskeletal structures or membranes, anchoring the enzyme complex to a particular subcellular compartment. Dual-specificity A kinase-anchoring proteins (AKAP1/D-AKAP1) and (AKAP10/D-AKAP2)  interact with the type I and type II regulatory subunits of PKA (Huang et al. 1997). AKAP10 additionally has two regulator of G-protein signaling (RGS) domains, giving it the potential to coordinate a signaling complex that links cAMP signaling with G-protein-coupled receptor (GPCR) signaling (Burns-Hamuro et al. 2004).</Comment>
+    <BiopaxRef>lit_992737</BiopaxRef>
+    <BiopaxRef>lit_992686</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="895.0" Y="1517.0" GraphId="e_9_0"/>
+      <Point X="928.0" Y="1518.0" GraphId="e_9_1"/>
+      <Point X="957.0" Y="1518.0" GraphId="e_9_2" GraphRef="n12_REACTOME_992693" RelX="-1.0387596899224807" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_9_a_i"/>
+      <Anchor Position="0.5323723168083843" GraphId="e_9_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="868.0" Y="1497.0" GraphId="e_9_i0_0" GraphRef="n10_REACTOME_111922" RelX="0.27906976744186046" RelY="1.3333333333333333"/>
+      <Point X="895.0" Y="1517.0" GraphId="e_9_i0_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="881.0" Y="1535.0" GraphId="e_9_i1_0" GraphRef="n11_REACTOME_992722" RelX="0.425" RelY="-1.0980392156862746"/>
+      <Point X="895.0" Y="1517.0" GraphId="e_9_i1_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_992703">
+    <Comment Source="WikiPathways-description">Mitochondria frequently fuse and divide (Bereiter-Hahn &amp; Voth 1994); these processes affect morphology and are important for normal mitochondrial functions such as respiration, development and apoptosis. Mitofusins (MFNs) are mitochondrial GTPases that mediate mitochondrial outer membrane fusion. Mammals have two mitofusins; Mfn1-null or Mfn2-null mouse embryonic fibroblast cells show predominantly fragmented mitochondria and have greatly reduced mitochondrial fusion in vivo (Chen et al. 2003, 2005). 
+MFNs acts in trans to bring mitochondria into close proximity prior to fusion (Koshiba et al. 2004). They also tether the endoplasmic reticulum (ER) to mitochondria, cross-linking MFNs expressed on the mitochondrial outer membrane and ER membrane (de Brito &amp; Scorrano 2008).</Comment>
+    <BiopaxRef>lit_992705</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="546.0" Y="1040.0" GraphId="e_14_0" GraphRef="n15_REACTOME_992720" RelX="1.088235294117647" RelY="0.0"/>
+      <Point X="603.0" Y="1041.0" GraphId="e_14_1"/>
+      <Point X="634.0" Y="1041.0" GraphId="e_14_2" GraphRef="n16_REACTOME_992739" RelX="-1.0535714285714286" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6477623814313395" GraphId="e_14_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_REACTOME_992696">
+    <Comment Source="WikiPathways-description">The DNA-binding domain of c-Myb binds the co-repressor protein SIN3A (Nomura et al. 2004). The tumor repressor p53 also binds MYB directly (Tanikawa et al. 2004), promoting formation of a trimeric SIN3A:c-Myb:p53 complex. This does not affect the ability of c-Myb to bind to DNA, but may represent the mechanism that allows p53 to to regulate specific Myb target genes. &lt;br&gt;c-Myb (gene symbol MYB) is highly conserved in all vertebrates and some invertebrate species (Lipsick 1996). It plays an important role in the control of proliferation and differentiation of hematopoietic progenitor cells (Duprey &amp; Boettiger 1985); Down-regulation of c-Myb is believed to be critical for the commitment of cells to terminal differentiation (Oh &amp; Reddy, 1999). c-Myb interacts with many other transcription factors including CBP, several CCAAT binding protein (c/EBP) family members, and Ets family proteins such as Ets-2 (Oh &amp; Reddy, 1999). &lt;br&gt;Loss of c-Myb function results in embryonic lethality due to failure of fetal hepatic hematopoiesis (Mucenski et al. 1991).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="184.0" Y="135.0" GraphId="e_18_0"/>
+      <Point X="208.0" Y="135.0" GraphId="e_18_1"/>
+      <Point X="232.0" Y="135.0" GraphId="e_18_2" GraphRef="n22_REACTOME_992748" RelX="-1.054945054945055" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_18_a_i"/>
+      <Anchor Position="0.5" GraphId="e_18_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="154.0" Y="107.0" GraphId="e_18_i0_0" GraphRef="n19_REACTOME_992697" RelX="0.46153846153846156" RelY="1.3333333333333333"/>
+      <Point X="184.0" Y="135.0" GraphId="e_18_i0_1" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="151.0" Y="165.0" GraphId="e_18_i1_0" GraphRef="n20_REACTOME_351657" RelX="0.40816326530612246" RelY="-1.3"/>
+      <Point X="184.0" Y="135.0" GraphId="e_18_i1_1" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="165.0" Y="135.0" GraphId="e_18_i2_0" GraphRef="n21_REACTOME_69488" RelX="1.0843373493975903" RelY="-0.16666666666666666"/>
+      <Point X="184.0" Y="135.0" GraphId="e_18_i2_1" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_994020">
+    <Comment Source="WikiPathways-description">Interferon regulatory factor-1 (IRF-1) is a positive transcription factor for genes involved in immune response, cell growth regulation and apoptosis in mammalian cells. Many agents such as viruses, interferon (IFN), double-stranded RNA (dsRNA), and proinflammatory cytokines induce IRF-1 transcription. IRF-1 transcriptionally activates many IRF-1-regulated genes during normal physiological and pathological conditions, including  interferon-beta and alpha  (Escalante et al. 1998, Harada et al. 1990), iNOS, COX-2, VCAM-1, IL-12, IL-15, CIITA, Caspase-1 and Caspase-7 (Upreti &amp; Rath 2005).</Comment>
+    <BiopaxRef>lit_994025</BiopaxRef>
+    <BiopaxRef>lit_994023</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="269.0" Y="347.0" GraphId="e_23_0"/>
+      <Point X="297.0" Y="339.0" GraphId="e_23_1"/>
+      <Point X="333.0" Y="324.0" GraphId="e_23_2" GraphRef="n27_REACTOME_1008247" RelX="-1.0526315789473684" RelY="0.8076923076923077" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_23_a_i"/>
+      <Anchor Position="0.4274846102938497" GraphId="e_23_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="183.0" Y="374.0" GraphId="e_23_i0_0" GraphRef="n24_REACTOME_994028" RelX="0.847457627118644" RelY="-1.1428571428571428"/>
+      <Point X="269.0" Y="347.0" GraphId="e_23_i0_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="198.0" Y="332.0" GraphId="e_23_i1_0" GraphRef="n25_REACTOME_1008217" RelX="1.0508474576271187" RelY="0.6285714285714286"/>
+      <Point X="269.0" Y="347.0" GraphId="e_23_i1_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="198.0" Y="282.0" GraphId="e_23_i2_0" GraphRef="n26_REACTOME_983456" RelX="0.26356589147286824" RelY="1.2"/>
+      <Point X="269.0" Y="347.0" GraphId="e_23_i2_1" GraphRef="e_23_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_REACTOME_994034">
+    <Comment Source="WikiPathways-description">The Interferon alpha and beta genes are transcribed and translated yielding IFNA and IFNB which are secreted. This process is positively regulated by Interferon Regulatory Factor 1 and negatively regulated by Interferon Regulatory Factor 2, which compete for binding to the same regulatory element (Harada et al. 1989).</Comment>
+    <BiopaxRef>lit_994024</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="369.0" Y="374.0" GraphId="e_28_0"/>
+      <Point X="390.0" Y="374.0" GraphId="e_28_1"/>
+      <Point X="441.0" Y="373.0" GraphId="e_28_2" GraphRef="n29_REACTOME_909690" RelX="-1.0638297872340425" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.291626960929188" GraphId="e_28_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="390.0" Y="407.0" GraphId="e_28_i__0_0" GraphRef="n193_REACTOME_1018386" RelX="0.0" RelY="-1.1428571428571428"/>
+      <Point X="390.0" Y="374.0" GraphId="e_28_i__0_1" GraphRef="e_28_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="391.0" Y="332.0" GraphId="e_28_a__0_0" GraphRef="n27_REACTOME_1008247" RelX="-0.03508771929824561" RelY="1.1153846153846154"/>
+      <Point X="390.0" Y="374.0" GraphId="e_28_a__0_1" GraphRef="e_28_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_994038">
+    <Comment Source="WikiPathways-description">Interferon regulatory factor 2 (IRF-2) represses the action of IRF-1 on type I interferon genes (Harada et al, 1989, 1990; Palombella &amp; Maniatis, 1992) by competing with IRF-1 for binding at the PRDI site.</Comment>
+    <BiopaxRef>lit_994026</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="270.0" Y="376.0" GraphId="e_30_0"/>
+      <Point X="299.0" Y="389.0" GraphId="e_30_1"/>
+      <Point X="348.0" Y="407.0" GraphId="e_30_2" GraphRef="n193_REACTOME_1018386" RelX="-0.7058823529411765" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_30_a_i"/>
+      <Anchor Position="0.3784202081609295" GraphId="e_30_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="195.0" Y="386.0" GraphId="e_30_i0_0" GraphRef="n24_REACTOME_994028" RelX="1.0508474576271187" RelY="-0.45714285714285713"/>
+      <Point X="270.0" Y="376.0" GraphId="e_30_i0_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="178.0" Y="342.0" GraphId="e_30_i1_0" GraphRef="n25_REACTOME_1008217" RelX="0.711864406779661" RelY="1.2"/>
+      <Point X="270.0" Y="376.0" GraphId="e_30_i1_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="210.0" Y="439.0" GraphId="e_30_i2_0" GraphRef="n31_REACTOME_994031" RelX="0.24806201550387597" RelY="-1.1428571428571428"/>
+      <Point X="270.0" Y="376.0" GraphId="e_30_i2_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_994106">
+    <Comment Source="WikiPathways-description">Chromobox (CBX) genes encode members of the Heterochromatin Protein (HP) family. HP1 was discovered in Drosophila as a dominant suppressor of position-effect variegation and a major component of heterochromatin. The HP1 family is evolutionarily conserved, with members in fungi, plants and animals. Most animal species have several HP1 isoforms; humans have HP alpha, beta and gamme encoded by the genes CBX5, CBX1 and CBX3 respectively. &lt;br&gt;The HP1 amino-terminal chromodomain binds methylated lysine-9 of histone H3, causing transcriptional repression (Lachner et al. 2001). A crystal structure of human HP1 alpha in complex with H3K9(me)3 peptide is available (Amaya et al. 2008). The highly-conserved carboxy-terminal chromoshadow domain enables dimerization and also serves as a docking site for proteins involved in a wide variety of nuclear functions, from transcription to nuclear architecture.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_212040</BiopaxRef>
+    <BiopaxRef>lit_994105</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="266.0" Y="581.0" GraphId="e_33_0"/>
+      <Point X="296.0" Y="579.0" GraphId="e_33_1"/>
+      <Point X="325.0" Y="577.0" GraphId="e_33_2" GraphRef="n36_REACTOME_994100" RelX="-1.0393700787401574" RelY="0.1568627450980392" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_33_a_i"/>
+      <Anchor Position="0.5084357910758682" GraphId="e_33_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="225.0" Y="569.0" GraphId="e_33_i0_0" GraphRef="n34_REACTOME_994093" RelX="1.0535714285714286" RelY="0.6122448979591837"/>
+      <Point X="266.0" Y="581.0" GraphId="e_33_i0_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="213.0" Y="600.0" GraphId="e_33_i1_0" GraphRef="n35_REACTOME_427391" RelX="1.0769230769230769" RelY="-0.6530612244897959"/>
+      <Point X="266.0" Y="581.0" GraphId="e_33_i1_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_REACTOME_994137">
+    <Comment Source="WikiPathways-description">Inositol-tetrakisphosphate 1-kinase (ITPK1) can phosphorylate inositol polyphosphates Ins(3,4,5,6)P4 at position 1 to form Ins(1,3,4,5,6)P5. This reaction is thought to have regulatory importance, since Ins(3,4,5,6)P4 is an inhibitor of plasma membrane Ca2+-activated Cl- channels.</Comment>
+    <BiopaxRef>lit_994177</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="617.0" Y="1354.0" GraphId="e_37_0"/>
+      <Point X="642.0" Y="1355.0" GraphId="e_37_1"/>
+      <Point X="669.0" Y="1354.0" GraphId="e_37_2"/>
+      <Anchor Position="0.0" GraphId="e_37_a_i"/>
+      <Anchor Position="0.480797678590456" GraphId="e_37_a_p"/>
+      <Anchor Position="1.0" GraphId="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="535.0" Y="1419.0" GraphId="e_37_i0_0" GraphRef="n38_REACTOME_113592" RelX="0.918918918918919" RelY="-1.1724137931034482"/>
+      <Point X="617.0" Y="1354.0" GraphId="e_37_i0_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="595.0" Y="1340.0" GraphId="e_37_i1_0" GraphRef="n39_REACTOME_994149" RelX="0.6176470588235294" RelY="1.1014492753623188"/>
+      <Point X="617.0" Y="1354.0" GraphId="e_37_i1_1" GraphRef="e_37_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="759.0" Y="1417.0" GraphId="e_37_o0_0" ArrowHead="Arrow" GraphRef="n40_REACTOME_29370" RelX="-1.1282051282051282" RelY="-0.9655172413793104"/>
+      <Point X="669.0" Y="1354.0" GraphId="e_37_o0_1" GraphRef="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="692.0" Y="1338.0" GraphId="e_37_o1_0" ArrowHead="Arrow" GraphRef="n41_REACTOME_994141" RelX="-0.6618705035971223" RelY="1.0810810810810811"/>
+      <Point X="669.0" Y="1354.0" GraphId="e_37_o1_1" GraphRef="e_37_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_37_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="643.0" Y="1406.0" GraphId="e_37_c__0_0" GraphRef="n42_REACTOME_994132" RelX="-0.015748031496062992" RelY="-1.1020408163265305"/>
+      <Point X="642.0" Y="1355.0" GraphId="e_37_c__0_1" GraphRef="e_37_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_REACTOME_994140">
+    <Comment Source="WikiPathways-description">Inositol-tetrakisphosphate 1-kinase (ITPK1) phosphorylates Ins(1,3,4)P3 on O-5 and O-6 to form Ins(1,3,4,5)P4 and Ins(1,3,4,6)P4, an essential molecule in the hexakisphosphate (InsP6) pathway.</Comment>
+    <BiopaxRef>lit_994172</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="620.0" Y="1508.0" GraphId="e_45_0"/>
+      <Point X="647.0" Y="1506.0" GraphId="e_45_1"/>
+      <Point X="679.0" Y="1506.0" GraphId="e_45_2"/>
+      <Anchor Position="0.0" GraphId="e_45_a_i"/>
+      <Anchor Position="0.4583062808370328" GraphId="e_45_a_p"/>
+      <Anchor Position="1.0" GraphId="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="594.0" Y="1533.0" GraphId="e_45_i0_0" GraphRef="n47_REACTOME_994123" RelX="0.3611111111111111" RelY="-1.1071428571428572"/>
+      <Point X="620.0" Y="1508.0" GraphId="e_45_i0_1" GraphRef="e_45_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="540.0" Y="1449.0" GraphId="e_45_i1_0" GraphRef="n38_REACTOME_113592" RelX="1.1891891891891893" RelY="0.896551724137931"/>
+      <Point X="620.0" Y="1508.0" GraphId="e_45_i1_1" GraphRef="e_45_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="697.0" Y="1525.0" GraphId="e_45_o0_0" ArrowHead="Arrow" GraphRef="n49_REACTOME_994174" RelX="-0.515625" RelY="-1.0666666666666667"/>
+      <Point X="679.0" Y="1506.0" GraphId="e_45_o0_1" GraphRef="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="759.0" Y="1445.0" GraphId="e_45_o1_0" ArrowHead="Arrow" GraphRef="n40_REACTOME_29370" RelX="-1.1282051282051282" RelY="0.9655172413793104"/>
+      <Point X="679.0" Y="1506.0" GraphId="e_45_o1_1" GraphRef="e_45_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_45_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="645.0" Y="1461.0" GraphId="e_45_c__0_0" GraphRef="n42_REACTOME_994132" RelX="0.015748031496062992" RelY="1.1428571428571428"/>
+      <Point X="647.0" Y="1506.0" GraphId="e_45_c__0_1" GraphRef="e_45_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_REACTOME_994148">
+    <Comment Source="WikiPathways-description">Leucine rich repeat-containing protein 16A (CARMIL homolog) binds F-actin capping protein (CP) with high affinity, significantly decreasing the affinity of CP for actin barbed ends. Actin polymerization  occurs at the barbed end; proteins like CP that cap the barbed end inhibit elongation. Inhibition of CP therefore enhances the rate of  barbed-end actin polymerization.
+
+In cells, GFP-LRRC16A was seen to be concentrated in lamellipodia and increased the fraction of cells with large lamellipodia. Decreasing LRRC16A  levels with siRNA lowered F-actin levels, decreased lamellipodia protrusion and slowed cell migration.</Comment>
+    <BiopaxRef>lit_994153</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="300.0" Y="1503.0" GraphId="e_52_0"/>
+      <Point X="321.0" Y="1502.0" GraphId="e_52_1"/>
+      <Point X="356.0" Y="1501.0" GraphId="e_52_2" GraphRef="n55_REACTOME_994154" RelX="-1.0566037735849056" RelY="0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_52_a_i"/>
+      <Anchor Position="0.37516982159642" GraphId="e_52_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="276.0" Y="1485.0" GraphId="e_52_i0_0" GraphRef="n53_REACTOME_994131" RelX="0.4126984126984127" RelY="1.1428571428571428"/>
+      <Point X="300.0" Y="1503.0" GraphId="e_52_i0_1" GraphRef="e_52_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="275.0" Y="1512.0" GraphId="e_52_i1_0" GraphRef="n54_REACTOME_879384" RelX="0.7272727272727273" RelY="-1.1428571428571428"/>
+      <Point X="300.0" Y="1503.0" GraphId="e_52_i1_1" GraphRef="e_52_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_REACTOME_994169">
+    <Comment Source="WikiPathways-description">Actin capping protein (CP) was named for its ability to bind the barbed ends of actin filaments. CP inhibits the addition and loss of actin subunits at the barbed end and is important for the dynamics of actin filament assembly, and therefore important for the control of cell shape and movement. CP was called beta-actinin when first characterized and purified from muscle (Maruyama 1966). Actin polymerization is controlled by a large cellular excess of capping proteins which bind to the barbed end of actin filaments preventing elongation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="310.0" Y="1565.0" GraphId="e_56_0"/>
+      <Point X="335.0" Y="1565.0" GraphId="e_56_1"/>
+      <Point X="362.0" Y="1565.0" GraphId="e_56_2" GraphRef="n58_REACTOME_994173" RelX="-1.0505050505050506" RelY="-0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_56_a_i"/>
+      <Anchor Position="0.4807692307692308" GraphId="e_56_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="276.0" Y="1553.0" GraphId="e_56_i0_0" GraphRef="n54_REACTOME_879384" RelX="0.7474747474747475" RelY="1.2"/>
+      <Point X="310.0" Y="1565.0" GraphId="e_56_i0_1" GraphRef="e_56_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="261.0" Y="1579.0" GraphId="e_56_i1_0" GraphRef="n57_REACTOME_994160" RelX="1.125" RelY="-0.6666666666666666"/>
+      <Point X="310.0" Y="1565.0" GraphId="e_56_i1_1" GraphRef="e_56_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_REACTOME_996727">
+    <Comment Source="WikiPathways-description">The BHC (BRAF-HDAC) complex is involved in the repression of neuronal-specific genes during development. It is recruited by RE1-silencing transcription factor (REST) to mediate the repression of REST-responsive genes. The BHC complex includes histone deacetylases (HDACs) 1 and 2, and the histone demethylase KDM1A (also knowns as BHC110, LSD1 or AOF2). KDM1A demethylates both Lys-4 (H3K4me) and Lys-9 (H3K9me) of histone H3, acting as a coactivator or a corepressor, depending on the context. Corepressor for element-1-silencing transcription factor (CoREST) is an essential component of the BHC complex, enhancing the association with nucleosomes (Lee et al. 2005). &lt;br&gt; &lt;br&gt;REST is a modular transcriptional regulator that recruits CoREST and other regulatory cofactors to activate or repress transcription through dynamic epigenetic mechanisms (Ballas &amp; Mandel 2005).</Comment>
+    <BiopaxRef>lit_996762</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="377.0" Y="679.0" GraphId="e_59_0"/>
+      <Point X="396.0" Y="678.0" GraphId="e_59_1"/>
+      <Point X="423.0" Y="678.0" GraphId="e_59_2" GraphRef="n62_REACTOME_996764" RelX="-1.0517241379310345" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_59_a_i"/>
+      <Anchor Position="0.41337884180352064" GraphId="e_59_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="354.0" Y="670.0" GraphId="e_59_i0_0" GraphRef="n60_REACTOME_996761" RelX="0.9574468085106383" RelY="1.1372549019607843"/>
+      <Point X="377.0" Y="679.0" GraphId="e_59_i0_1" GraphRef="e_59_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="343.0" Y="689.0" GraphId="e_59_i1_0" GraphRef="n61_REACTOME_996752" RelX="0.7912087912087912" RelY="-1.1851851851851851"/>
+      <Point X="377.0" Y="679.0" GraphId="e_59_i1_1" GraphRef="e_59_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_REACTOME_996755">
+    <Comment Source="WikiPathways-description">The Friend of GATA (FOG) family of proteins are a highly-conserved family of large multitype zinc finger cofactors that bind to the amino zinc finger of GATA transcription factors, modulating their activity. GATA proteins are named for the DNA consensus sequence they recognize, (T/A)GATA(A/G). FOG/GATA protein interactions are essential for the development of many tissues. All six GATA family members are capable of interacting with both FOG-1 and FOG-2 (Tsang et al. 1997, Tevosian et al. 1999). Mutations that disrupt binding of GATA-1 to FOG-1 are associated with a syndrome of severe X-linked macrothrombocytopenia (Cantor &amp; Orkin 2005) and in some cases dyserythropoietic anemia (Nichols et al. 2000). In addition to binding GAG proteins, FOGs interact with complexes containing the co-repressor C-terminal binding protein (CtBP) that are thought to coordinate histone modifications leading to a transcriptionally repressed state (Shi et al. 2003).</Comment>
+    <BiopaxRef>lit_996729</BiopaxRef>
+    <BiopaxRef>lit_996773</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="201.0" Y="789.0" GraphId="e_75_0"/>
+      <Point X="224.0" Y="789.0" GraphId="e_75_1"/>
+      <Point X="249.0" Y="789.0" GraphId="e_75_2" GraphRef="n78_REACTOME_996751" RelX="-1.0476190476190477" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_75_a_i"/>
+      <Anchor Position="0.4791666666666667" GraphId="e_75_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="170.0" Y="801.0" GraphId="e_75_i0_0" GraphRef="n76_REACTOME_996770" RelX="0.47706422018348627" RelY="-1.2307692307692308"/>
+      <Point X="201.0" Y="789.0" GraphId="e_75_i0_1" GraphRef="e_75_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="166.0" Y="777.0" GraphId="e_75_i1_0" GraphRef="n77_REACTOME_996742" RelX="0.44660194174757284" RelY="1.3333333333333333"/>
+      <Point X="201.0" Y="789.0" GraphId="e_75_i1_1" GraphRef="e_75_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_REACTOME_997263">
+    <Comment Source="WikiPathways-description">JMJD1C specifically demethylates histone H3K9 mono- and di-methylation, thereby mediating transcriptional activation.</Comment>
+    <BiopaxRef>lit_997245</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="220.0" Y="945.0" GraphId="e_83_0" GraphRef="n84_REACTOME_997256" RelX="1.0526315789473684" RelY="0.0"/>
+      <Point X="243.0" Y="946.0" GraphId="e_83_1"/>
+      <Point X="270.0" Y="945.0" GraphId="e_83_2" GraphRef="n85_REACTOME_997233" RelX="-1.0364963503649636" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.46006430801679726" GraphId="e_83_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="242.0" Y="903.0" GraphId="e_83_c__0_0" GraphRef="n86_REACTOME_997258" RelX="0.0" RelY="1.170731707317073"/>
+      <Point X="243.0" Y="946.0" GraphId="e_83_c__0_1" GraphRef="e_83_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_REACTOME_997237">
+    <Comment Source="WikiPathways-description">The SH2B family has 3 members sharing a common domain structure, including a dimerization domain, a pleckstrin homology (PH) region, and a SH2 domain. The SH2 domain binds phosphotyrosines of various signal-transducing proteins such as c-Kit, MPL, EpoR. All are able to bind JAK2 phosphorylated at Tyr-813 (Bersenev et al. 2008, Kurzer et al. 2004, 2006), inhibiting JAK2 proliferative signaling (Gery et al. 2009).</Comment>
+    <BiopaxRef>lit_997246</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="894.0" Y="1179.0" GraphId="e_87_0"/>
+      <Point X="917.0" Y="1178.0" GraphId="e_87_1"/>
+      <Point X="939.0" Y="1178.0" GraphId="e_87_2" GraphRef="n90_REACTOME_997243" RelX="-1.0476190476190477" RelY="-0.11428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_87_a_i"/>
+      <Anchor Position="0.5113470638752418" GraphId="e_87_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="876.0" Y="1174.0" GraphId="e_87_i0_0" GraphRef="n88_REACTOME_997248" RelX="1.1076923076923078" RelY="0.35294117647058826"/>
+      <Point X="894.0" Y="1179.0" GraphId="e_87_i0_1" GraphRef="e_87_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="856.0" Y="1203.0" GraphId="e_87_i1_0" GraphRef="n89_REACTOME_997265" RelX="0.3684210526315789" RelY="-1.2380952380952381"/>
+      <Point X="894.0" Y="1179.0" GraphId="e_87_i1_1" GraphRef="e_87_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_REACTOME_1008248">
+    <Comment Source="WikiPathways-description">GTP-AMP phosphotransferase, also called Adenylate kinase 3 catalyzes phosphate transfer from GTP to AMP (EC 2.7.4.10). A crystal structure is available (Choe et al. 2005).</Comment>
+    <BiopaxRef>lit_1008255</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="557.0" Y="1153.0" GraphId="e_91_0"/>
+      <Point X="578.0" Y="1154.0" GraphId="e_91_1"/>
+      <Point X="597.0" Y="1153.0" GraphId="e_91_2"/>
+      <Anchor Position="0.0" GraphId="e_91_a_i"/>
+      <Anchor Position="0.5249375003906201" GraphId="e_91_a_p"/>
+      <Anchor Position="1.0" GraphId="e_91_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="528.0" Y="1141.0" GraphId="e_91_i0_0" GraphRef="n92_REACTOME_113573" RelX="1.1891891891891893" RelY="0.41379310344827586"/>
+      <Point X="557.0" Y="1153.0" GraphId="e_91_i0_1" GraphRef="e_91_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="533.0" Y="1166.0" GraphId="e_91_i1_0" GraphRef="n93_REACTOME_159448" RelX="1.15" RelY="-0.6896551724137931"/>
+      <Point X="557.0" Y="1153.0" GraphId="e_91_i1_1" GraphRef="e_91_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="630.0" Y="1138.0" GraphId="e_91_o0_0" ArrowHead="Arrow" GraphRef="n94_REACTOME_113581" RelX="-1.1282051282051282" RelY="0.4827586206896552"/>
+      <Point X="597.0" Y="1153.0" GraphId="e_91_o0_1" GraphRef="e_91_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="632.0" Y="1167.0" GraphId="e_91_o1_0" ArrowHead="Arrow" GraphRef="n95_REACTOME_113525" RelX="-1.1282051282051282" RelY="-0.5517241379310345"/>
+      <Point X="597.0" Y="1153.0" GraphId="e_91_o1_1" GraphRef="e_91_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="577.0" Y="1110.0" GraphId="e_91_c__0_0" GraphRef="n96_REACTOME_1008241" RelX="0.0" RelY="1.3333333333333333"/>
+      <Point X="578.0" Y="1154.0" GraphId="e_91_c__0_1" GraphRef="e_91_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_REACTOME_1008240">
+    <Comment Source="WikiPathways-description">NF-E2 is a heterodimer consisting of a hematopoietic-specific subunit NFE2-p45, a member of the cap and collar (CNC) family, and a more widely expressed small subunit which can be any of the three small members of the Maf protein family MafF, MafG OR MafK (Motohashi et al. 1997). MafG and MafK are the predominant small Maf molecules in erythroid cells and megakaryocytes (Shavit et al. 1998). 
+NF-E2 binds to an extended AP-1-like element, TGCTGA(G/C)TCA, which is found in the locus control regions (LCRs) of the alpha- and beta-globin genes and in the promoters of several heme biosynthetic enzyme genes (see Motohashi et al. 1997). NF-E2 binding sites in the DNase I hypersensitive site 2 (HS2) of the beta-globin LCR are essential for its enhancer activity (Ney et al. 1990, Talbot &amp; Grosveld 1991). 
+NFE2-p45 null mice have a mild defect in globin gene expression, suggesting that other members of the CNC protein family can substitute for function in vivo (Shivdasani &amp; Orkin 1995).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="781.0" Y="545.0" GraphId="e_97_0"/>
+      <Point X="808.0" Y="545.0" GraphId="e_97_1"/>
+      <Point X="843.0" Y="545.0" GraphId="e_97_2" GraphRef="n100_REACTOME_1008229" RelX="-1.087719298245614" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_97_a_i"/>
+      <Anchor Position="0.43548387096774194" GraphId="e_97_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="722.0" Y="569.0" GraphId="e_97_i0_0" GraphRef="n98_REACTOME_1008221" RelX="0.5891472868217055" RelY="-1.1428571428571428"/>
+      <Point X="781.0" Y="545.0" GraphId="e_97_i0_1" GraphRef="e_97_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_97_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="740.0" Y="536.0" GraphId="e_97_i1_0" GraphRef="n99_REACTOME_1008234" RelX="1.0555555555555556" RelY="0.5714285714285714"/>
+      <Point X="781.0" Y="545.0" GraphId="e_97_i1_1" GraphRef="e_97_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_REACTOME_1008200">
+    <Comment Source="WikiPathways-description">The human beta-globin locus control region (LCR) controls expression of the beta-globin gene family. It consists of four erythroid-cell-specific DNase I hypersensitive sites, HS1-4. DNAse I HS sites are thought to represent nucleosome-free regions of DNA which are available to trans-acting factors.  NF-E2 binds two tandem AP1-like sites in HS2 which form the core of its enhancer activity. Interaction of NF-E2 with HS2 allows a second erythroid factor, GATA-1, to bind its nearby sites.</Comment>
+    <BiopaxRef>lit_1008227</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="899.0" Y="629.0" GraphId="e_101_0"/>
+      <Point X="898.0" Y="652.0" GraphId="e_101_1"/>
+      <Point X="899.0" Y="680.0" GraphId="e_101_2" GraphRef="n103_REACTOME_1008206" RelX="-0.031746031746031744" RelY="-1.0980392156862746" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_101_a_i"/>
+      <Anchor Position="0.45105639040715273" GraphId="e_101_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="936.0" Y="611.0" GraphId="e_101_i0_0" GraphRef="n102_REACTOME_1008228" RelX="-0.5254237288135594" RelY="1.2"/>
+      <Point X="899.0" Y="629.0" GraphId="e_101_i0_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="877.0" Y="560.0" GraphId="e_101_i1_0" GraphRef="n100_REACTOME_1008229" RelX="0.10526315789473684" RelY="1.3043478260869565"/>
+      <Point X="899.0" Y="629.0" GraphId="e_101_i1_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_REACTOME_1008220">
+    <Comment Source="WikiPathways-description">The human beta-globin locus consists of five genes encoding the beta globin gene but also delta, gamma-A, gamma-G and epsilon globin. All of these genes are controlled by the beta globin locus control region.</Comment>
+    <BiopaxRef>lit_1008237</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="780.0" Y="692.0" GraphId="e_106_0"/>
+      <Point X="780.0" Y="713.0" GraphId="e_106_1"/>
+      <Point X="780.0" Y="737.0" GraphId="e_106_2"/>
+      <Anchor Position="0.4666666666666667" GraphId="e_106_a_p"/>
+      <Anchor Position="1.0" GraphId="e_106_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="716.0" Y="752.0" GraphId="e_106_o0_0" ArrowHead="Arrow" GraphRef="n107_REACTOME_1008218" RelX="1.056910569105691" RelY="-0.8"/>
+      <Point X="780.0" Y="737.0" GraphId="e_106_o0_1" GraphRef="e_106_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="713.0" Y="805.0" GraphId="e_106_o1_0" ArrowHead="Arrow" GraphRef="n108_REACTOME_1008196" RelX="0.2601626016260163" RelY="-1.1428571428571428"/>
+      <Point X="780.0" Y="737.0" GraphId="e_106_o1_1" GraphRef="e_106_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="781.0" Y="854.0" GraphId="e_106_o2_0" ArrowHead="Arrow" GraphRef="n109_REACTOME_1008254" RelX="-0.016260162601626018" RelY="-1.1428571428571428"/>
+      <Point X="780.0" Y="737.0" GraphId="e_106_o2_1" GraphRef="e_106_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="841.0" Y="804.0" GraphId="e_106_o3_0" ArrowHead="Arrow" GraphRef="n110_REACTOME_1008211" RelX="-0.2601626016260163" RelY="-1.1428571428571428"/>
+      <Point X="780.0" Y="737.0" GraphId="e_106_o3_1" GraphRef="e_106_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="846.0" Y="753.0" GraphId="e_106_o4_0" ArrowHead="Arrow" GraphRef="n111_REACTOME_1008215" RelX="-1.024390243902439" RelY="-1.1428571428571428"/>
+      <Point X="780.0" Y="737.0" GraphId="e_106_o4_1" GraphRef="e_106_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_106_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="835.0" Y="710.0" GraphId="e_106_a__0_0" GraphRef="n103_REACTOME_1008206" RelX="-1.0476190476190477" RelY="0.0784313725490196"/>
+      <Point X="780.0" Y="713.0" GraphId="e_106_a__0_1" GraphRef="e_106_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_REACTOME_1011576">
+    <Comment Source="WikiPathways-description">The four human EH domain-containing proteins (EHD1-4) are a distinct highly-homologous subfamily of the Eps15-homology (EH) domain family. They are distinct from most other EH family members in having the EH-domain at the C-terminus (Naslavsky &amp; Caplan 2005). EH domains interact with other proteins; peptides containing Asp-Pro-Phe (NPF) motifs are major targets for EH-domain binding (Salcini et al. 1997).   
+
+EH domain family proteins have regulatory roles in endocytic membrane transport events (Naslavsky &amp; Caplan 2005); the EHD subfamily is believed to regulate endocytic recycling (George et al. 2007). All four human EHD proteins can rescue the vacuolated intestinal phenotype observed when the C. elegans orthologue rme-1 is mutated (George et al. 2007).
+Over 20  interaction partners have been reported for the C-terminal EHD proteins including clathirin, syndaptins and Arp2/3 (see Naslavsky &amp; Caplan 2005). EHD1-3 all interact with Rabenosyn-5 (Rab5), a Rab5 effector (Naslavsky et al. 2004).</Comment>
+    <BiopaxRef>lit_1011581</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="223.0" Y="1142.0" GraphId="e_170_0"/>
+      <Point X="250.0" Y="1142.0" GraphId="e_170_1"/>
+      <Point X="281.0" Y="1142.0" GraphId="e_170_2" GraphRef="n173_REACTOME_1011577" RelX="-1.0483870967741935" RelY="-0.031746031746031744" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_170_a_i"/>
+      <Anchor Position="0.46551724137931033" GraphId="e_170_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="203.0" Y="1126.0" GraphId="e_170_i0_0" GraphRef="n171_REACTOME_1011595" RelX="0.43859649122807015" RelY="1.1428571428571428"/>
+      <Point X="223.0" Y="1142.0" GraphId="e_170_i0_1" GraphRef="e_170_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="186.0" Y="1178.0" GraphId="e_170_i1_0" GraphRef="n172_REACTOME_188000" RelX="0.1935483870967742" RelY="-1.2380952380952381"/>
+      <Point X="223.0" Y="1142.0" GraphId="e_170_i1_1" GraphRef="e_170_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_175_REACTOME_1011600">
+    <Comment Source="WikiPathways-description">The small GTPase Rab5 regulates membrane traffic into and between early endosomes by specifically recruiting cytosolic effector proteins to their site of action on early endosomal membranes. Rab5 occupies a restricted membrane subdomain on endosomes that has distinct biochemical features when compared with neighboring subcompartments (Sonnichsen et al. 2000). Rab5 is believed to form this subdomain by recruiting the specific PI3 kinase VPS-45, causing localized production of PI-3-phosphate (PI-3P) (Christoforidis et al. 1999).  Rabenosyn-5 is a Rab5 effector, recruited in a phosphatidylinositol-3-kinase dependent fashion to early endosomes where it serves as a molecular link between VPS-45 and Rab5.</Comment>
+    <BiopaxRef>lit_1011612</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="236.0" Y="1253.0" GraphId="e_175_0"/>
+      <Point X="267.0" Y="1253.0" GraphId="e_175_1"/>
+      <Point X="300.0" Y="1253.0" GraphId="e_175_2" GraphRef="n178_REACTOME_1011605" RelX="-1.0638297872340425" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_175_a_i"/>
+      <Anchor Position="0.484375" GraphId="e_175_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_175_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="200.0" Y="1254.0" GraphId="e_175_i0_0" GraphRef="n176_REACTOME_452257" RelX="1.0578512396694215" RelY="-0.17142857142857143"/>
+      <Point X="236.0" Y="1253.0" GraphId="e_175_i0_1" GraphRef="e_175_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_175_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="186.0" Y="1205.0" GraphId="e_175_i1_0" GraphRef="n172_REACTOME_188000" RelX="0.1935483870967742" RelY="1.3333333333333333"/>
+      <Point X="236.0" Y="1253.0" GraphId="e_175_i1_1" GraphRef="e_175_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_175_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="198.0" Y="1297.0" GraphId="e_175_i2_0" GraphRef="n177_REACTOME_1011607" RelX="0.31932773109243695" RelY="-1.1020408163265305"/>
+      <Point X="236.0" Y="1253.0" GraphId="e_175_i2_1" GraphRef="e_175_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_REACTOME_1011598">
+    <Comment Source="WikiPathways-description">Members of the Dedicator of cytokinesis (DOCK) family, also known as the Dock180 superfamily, are Rho GTPase guanine nucleotide exchange factors (GEFs), modulating Rho GTPase activity (Cote &amp; Vuori 2002).&#13;All eleven human members share the presence of two evolutionarily conserved protein domains, termed DHR-1 and DHR-2 (Cote &amp; Vuori 2007).&#13;The DHR-2 domains of several DOCKs interact with the nucleotide-free forms of Rho GTPases, intermediates in the catalytic reaction leading to the exchange of GDP for GTP. DHR-2 domains have been shown necessary and sufficient to promote specific guanine nucleotide exchange on various Rho GTPases, both in vitro and in vivo. Inactivation of the DHR-2 domain in DOCK1 (Dock180) has been shown to block Rac activation, cell migration and phagocytosis (Brugnera et al. 2002, Grimsley et al. 2004,  Cote &amp; Vuori 2002).&#13;The DHR-1 domain of DOCK1 was shown to mediate a specific interaction with PIP2 and PIP3 signaling lipids in vitro and in cells (Cote et al. 2005). Mutations of the DOCK1 DHR-1 domain blocked Rac-dependent cell elongation and cell migration suggesting that the role of DHR-1 is to position DOCK1 at sites of PIP3 production by PI3-kinase, coupling this to Rac signaling (Cote &amp; Vuori 2007).</Comment>
+    <BiopaxRef>lit_372673</BiopaxRef>
+    <BiopaxRef>lit_1012993</BiopaxRef>
+    <BiopaxRef>lit_1012986</BiopaxRef>
+    <BiopaxRef>lit_1013000</BiopaxRef>
+    <BiopaxRef>lit_1012975</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="887.0" Y="1072.0" GraphId="e_179_0"/>
+      <Point X="915.0" Y="1072.0" GraphId="e_179_1"/>
+      <Point X="941.0" Y="1071.0" GraphId="e_179_2" GraphRef="n182_REACTOME_1012969" RelX="-1.0517241379310345" RelY="0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_179_a_i"/>
+      <Anchor Position="0.5183339948557898" GraphId="e_179_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="860.0" Y="1061.0" GraphId="e_179_i0_0" GraphRef="n180_REACTOME_1012978" RelX="1.1076923076923078" RelY="0.6896551724137931"/>
+      <Point X="887.0" Y="1072.0" GraphId="e_179_i0_1" GraphRef="e_179_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="861.0" Y="1085.0" GraphId="e_179_i1_0" GraphRef="n181_REACTOME_1012988" RelX="1.11864406779661" RelY="-0.8235294117647058"/>
+      <Point X="887.0" Y="1072.0" GraphId="e_179_i1_1" GraphRef="e_179_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_REACTOME_1013833">
+    <Comment Source="WikiPathways-description">CDK5 and ABL1 enzyme substrate 1 (Cables1) is a negative regulator of cell proliferation. Loss of Cables1 function can lead to uncontrolled growth in vivo, observed in many human cancers, such as colon, lung and gynecological malignancies including ovarian and endometrial cancers (Sakamoto et al. 2008). Cables1 is up-regulated by progesterone and down-regulated by estrogen (Zukerberg et al. 2004). Cables1 is predominantly located in the nucleus of proliferating cells (Zukerberg et al. 2000, Wu et al. 2001) but some fully differentiated cells such as mature neurons have a significant proportion in the cytoplasm. Cables1 interacts with  cyclin-dependent kinases (Cdk) 2, 3 and 5 (Wu et al. 2001, Matsuoka et al. 2000, Zukerberg et al. 2000). In neurons, Cables1 links Cdk5 and c-Abl, enhancing Cdk5 tyrosine-15 phosphorylation which results in increased Cdk5 activity, important in neurite outgrowth (Zukerberg et al. 2000). In proliferating cells, Cables1 links Cdk2 and Wee1, a dual specificity kinase. Phosphorylation of Cdk2 on tyrosine-15 by Wee-1 leads to decreased Cdk2 activity, Cables1 enhances this inhibitory phosphorylation (Wu et al. 2001). Cables1 has also been shown to interact with two regulators of apoptosis, p53 and p73. The physiological relevance of this interaction is not fully understood, but Cables1 augments p53-induced apoptosis in human osteosarcoma cells (Tsuji et al. 2002). Cables2 interacts with Cdk3, Cdk5 and c-Abl (Sato et al. 2002).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="735.0" Y="412.0" GraphId="e_183_0"/>
+      <Point X="762.0" Y="412.0" GraphId="e_183_1"/>
+      <Point X="788.0" Y="412.0" GraphId="e_183_2" GraphRef="n187_REACTOME_1013836" RelX="-1.0427350427350428" RelY="-0.07407407407407407" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_183_a_i"/>
+      <Anchor Position="0.5094339622641509" GraphId="e_183_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="658.0" Y="415.0" GraphId="e_183_i0_0" GraphRef="n184_REACTOME_180064" RelX="1.148936170212766" RelY="-0.08695652173913043"/>
+      <Point X="735.0" Y="412.0" GraphId="e_183_i0_1" GraphRef="e_183_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="662.0" Y="444.0" GraphId="e_183_i1_0" GraphRef="n185_REACTOME_375987" RelX="0.875" RelY="-1.2380952380952381"/>
+      <Point X="735.0" Y="412.0" GraphId="e_183_i1_1" GraphRef="e_183_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_183_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="660.0" Y="384.0" GraphId="e_183_i2_0" GraphRef="n186_REACTOME_1013880" RelX="0.9411764705882353" RelY="1.3333333333333333"/>
+      <Point X="735.0" Y="412.0" GraphId="e_183_i2_1" GraphRef="e_183_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_188_REACTOME_1013881">
+    <Comment Source="WikiPathways-description">CDK5 and ABL1 enzyme substrate 1 (Cables1) is a negative regulator of cell proliferation. Loss of Cables1 function can lead to uncontrolled growth in vivo, observed in many human cancers, such as colon, lung and gynecological malignancies including ovarian and endometrial cancers (Sakamoto et al. 2008). Cables1 is up-regulated by progesterone and down-regulated by estrogen (Zukerberg et al. 2004). Cables1 is predominantly located in the nucleus of proliferating cells (Zukerberg et al. 2000, Wu et al. 2001) but some fully differentiated cells such as mature neurons have a significant proportion in the cytoplasm. Cables1 interacts with  cyclin-dependent kinases (Cdk) 2, 3 and 5 (Wu et al. 2001, Matsuoka et al. 2000, Zukerberg et al. 2000).&#13; &#13; In proliferating cells, Cables1 links Cdk2 and Wee1, a dual specificity kinase. Phosphorylation of Cdk2 on tyrosine-15 by Wee-1 leads to decreased Cdk2 activity; Cables1 enhances this inhibitory phosphorylation (Wu et al. 2001). &#13; &#13; Cables1 has also been shown to interact with two regulators of apoptosis, p53 and p73. The physiological relevance of this interaction is not fully understood, but Cables1 augments p53-induced apoptosis in human osteosarcoma cells (Tsuji et al. 2002). Cables2 interacts with Cdk3, Cdk5 and c-Abl (Sato et al. 2002).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="731.0" Y="295.0" GraphId="e_188_0"/>
+      <Point X="763.0" Y="296.0" GraphId="e_188_1"/>
+      <Point X="790.0" Y="296.0" GraphId="e_188_2" GraphRef="n192_REACTOME_1013858" RelX="-1.0476190476190477" RelY="-0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_188_a_i"/>
+      <Anchor Position="0.5424940133329913" GraphId="e_188_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_188_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="662.0" Y="265.0" GraphId="e_188_i0_0" GraphRef="n189_REACTOME_69253" RelX="0.875" RelY="1.3333333333333333"/>
+      <Point X="731.0" Y="295.0" GraphId="e_188_i0_1" GraphRef="e_188_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_188_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="655.0" Y="323.0" GraphId="e_188_i1_0" GraphRef="n190_REACTOME_1013870" RelX="0.8620689655172413" RelY="-1.2380952380952381"/>
+      <Point X="731.0" Y="295.0" GraphId="e_188_i1_1" GraphRef="e_188_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_188_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="637.0" Y="293.0" GraphId="e_188_i2_0" GraphRef="n191_REACTOME_68365" RelX="1.1555555555555554" RelY="0.0"/>
+      <Point X="731.0" Y="295.0" GraphId="e_188_i2_1" GraphRef="e_188_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_915_REACTOME_879459">
+    <Comment Source="WikiPathways-description">F-actin-capping protein binds in a Ca2+-independent manner to the fast growing ends of actin filaments (barbed end) thereby blocking the exchange of subunits. Unlike other capping proteins (such as gelsolin and severin), they do not sever actin filaments.</Comment>
+    <BiopaxRef>lit_879416</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="122.0" Y="1529.0" GraphId="e_915_0"/>
+      <Point X="152.0" Y="1528.0" GraphId="e_915_1"/>
+      <Point X="187.0" Y="1529.0" GraphId="e_915_2" GraphRef="n54_REACTOME_879384" RelX="-1.0505050505050506" RelY="-0.17142857142857143" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_915_a_i"/>
+      <Anchor Position="0.46157505651547653" GraphId="e_915_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_915_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="116.0" Y="1510.0" GraphId="e_915_i0_0" GraphRef="n916_REACTOME_879442" RelX="0.06349206349206349" RelY="1.2"/>
+      <Point X="122.0" Y="1529.0" GraphId="e_915_i0_1" GraphRef="e_915_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_915_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="114.0" Y="1541.0" GraphId="e_915_i1_0" GraphRef="n917_REACTOME_879409" RelX="0.13008130081300814" RelY="-1.1428571428571428"/>
+      <Point X="122.0" Y="1529.0" GraphId="e_915_i1_1" GraphRef="e_915_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_5" GroupRef="group_comp_5" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="999.0" CenterY="979.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_13" GroupRef="group_comp_13" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="1056.5" CenterY="1593.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_17" GroupRef="group_comp_17" TextLabel="mitochondrial matrix">
+    <Graphics Color="000000" CenterX="683.5" CenterY="1205.5" Width="139.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_174" GroupRef="group_comp_174" TextLabel="endosome lumen">
+    <Graphics Color="000000" CenterX="372.5" CenterY="1376.5" Width="119.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_5" GroupRef="group_comp_5">
+    <Graphics Color="000000" CenterX="550.0" CenterY="527.5" Width="996.0" Height="943.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_13" GroupRef="group_comp_13">
+    <Graphics Color="000000" CenterX="564.5" CenterY="839.5" Width="1093.0" Height="1623.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_17" GroupRef="group_comp_17">
+    <Graphics Color="000000" CenterX="609.0" CenterY="1137.5" Width="306.0" Height="175.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_174" GroupRef="group_comp_174">
+    <Graphics Color="000000" CenterX="243.0" CenterY="1213.0" Width="384.0" Height="368.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1013931" rdf:id="lit_1013931">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16856888</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Megakaryocyte development and platelet production</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deutsch, VR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomer, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Br J Haematol 134:453-66</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1013930" rdf:id="lit_1013930">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17934486</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcriptional control of megakaryocyte development</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldfarb, AN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 26:6795-802</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1027318" rdf:id="lit_1027318">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17635743</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">From hematopoietic stem cells to platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bluteau, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Debili, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vainchenker, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost 5:318-27</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1011612" rdf:id="lit_1011612">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11062261</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rabenosyn-5, a novel Rab5 effector, is complexed with hVPS45 and recruited to endosomes through a FYVE finger domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christoforidis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uttenweiler-Joseph, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miaczynska, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dewitte, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilm, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoflack, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zerial, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 151:601-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_983210" rdf:id="lit_983210">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15479732</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A standardized kinesin nomenclature</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lawrence, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dawe, RK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christie, KR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cleveland, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dawson, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endow, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldstein, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodson, HV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirokawa, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Howard, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Malmberg, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McIntosh, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miki, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitchison, TJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okada, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reddy, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saxton, WM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schliwa, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scholey, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vale, RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walczak, CE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wordeman, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 167:19-22</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_983215" rdf:id="lit_983215">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20930137</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinesins at a glance</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endow, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kull, FJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 123:3420-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_984627" rdf:id="lit_984627">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18626067</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Intracellular transport and kinesin superfamily proteins, KIFs: structure, function, and dynamics</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirokawa, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noda, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiol Rev 88:1089-118</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_984747" rdf:id="lit_984747">
+      <bp:URL rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://www.cellbio.duke.edu/kinesin/</bp:URL>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinesin home page</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greene, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henikoff, S</bp:AUTHORS>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_984638" rdf:id="lit_984638">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19851335</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Traffic control: regulation of kinesin motors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verhey, KJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hammond, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 10:765-77</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_983243" rdf:id="lit_983243">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11744692</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RAD51C interacts with RAD51B and is central to a larger protein complex in vivo exclusive of RAD51</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miller, KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshikawa, DM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McConnell, IR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clark, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schild, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Albala, JS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:8406-11</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_983260" rdf:id="lit_983260">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12427746</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Complex formation by the human Rad51B and Rad51C DNA repair proteins and their activities in vitro</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lio, YC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mazin, AV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kowalczykowski, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, DJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:2469-78</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_83616" rdf:id="lit_83616">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11751636</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mediator function of the human Rad51B-Rad51C complex in Rad51/RPA-catalyzed DNA strand exchange.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sigurdsson, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Komen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bussen, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schild, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Albala, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sung, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 15:3308-18</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_992737" rdf:id="lit_992737">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9326583</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D-AKAP2, a novel protein kinase A anchoring protein with a putative RGS domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Durick, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiner, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chun, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taylor, SS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 94:11184-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_992686" rdf:id="lit_992686">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9065479</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a novel protein kinase A anchoring protein that binds both type I and type II regulatory subunits</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Durick, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiner, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chun, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taylor, SS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:8057-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_992705" rdf:id="lit_992705">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11950885</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Membrane topology and mitochondrial targeting of mitofusins, ubiquitous mammalian homologs of the transmembrane GTPase Fzo</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rojo, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Legros, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ChÃ¢teau, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LombÃ¨s, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 115:1663-74</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994025" rdf:id="lit_994025">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3409321</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulated expression of a gene encoding a nuclear factor, IRF-1, that specifically binds to IFN-beta gene regulatory elements</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyamoto, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujita, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kimura, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maruyama, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harada, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sudo, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyata, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taniguchi, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 54:903-13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994023" rdf:id="lit_994023">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9422515</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of IRF-1 with bound DNA reveals determinants of interferon regulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Escalante, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yie, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thanos, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aggarwal, AK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 391:103-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994024" rdf:id="lit_994024">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20627800</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of immune cell homeostasis by type I interferons</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mattei, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schiavoni, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tough, DF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytokine Growth Factor Rev 21:227-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994026" rdf:id="lit_994026">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1630448</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1992</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inducible processing of interferon regulatory factor-2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Palombella, VJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maniatis, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 12:3325-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_212040" rdf:id="lit_212040">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11242053</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Methylation of histone H3 lysine 9 creates a binding site for HP1 proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lachner, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Carroll, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rea, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechtler, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jenuwein, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 410:116-20</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994105" rdf:id="lit_994105">
+      <bp:URL rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://www.thesgc.org/structures/structure_description/3FDT/</bp:URL>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human chromobox homolog 5 (CBX5) in complex with H3K9(me)3 peptide</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amaya, MF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ravichandran, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loppnau, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kozieradzki, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Edwards, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arrowsmith, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weigelt, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bountra, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bochkarev, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Min, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ouyang, H</bp:AUTHORS>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994177" rdf:id="lit_994177">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8662638</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isolation of inositol 1,3,4-trisphosphate 5/6-kinase, cDNA cloning and expression of the recombinant enzyme</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilson, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Majerus, PW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 271:11904-10</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994172" rdf:id="lit_994172">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11042108</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Multitasking in signal transduction by a promiscuous human Ins(3,4,5,6)P(4) 1-kinase/Ins(1,3,4)P(3) 5/6-kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shears, SB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 351:551-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_994153" rdf:id="lit_994153">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16054028</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mammalian CARMIL inhibits actin filament capping by capping protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pring, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wear, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Svitkina, TM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zigmond, SH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Cell 9:209-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_996762" rdf:id="lit_996762">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12032298</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A core-BRAF35 complex containing histone deacetylase mediates repression of neuronal-specific genes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hakimi, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bochar, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chenoweth, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lane, WS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mandel, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shiekhattar, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 99:7420-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_996729" rdf:id="lit_996729">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9230307</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FOG, a multitype zinc finger protein, acts as a cofactor for transcription factor GATA-1 in erythroid and megakaryocytic differentiation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsang, AP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Visvader, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turner, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujiwara, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yu, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiss, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crossley, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Orkin, SH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 90:109-19</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_996773" rdf:id="lit_996773">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9927674</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FOG-2: A novel GATA-family cofactor related to multitype zinc-finger proteins Friend of GATA-1 and U-shaped</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tevosian, SG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deconinck, AE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cantor, AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rieff, HI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujiwara, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Corfas, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Orkin, SH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 96:950-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_997245" rdf:id="lit_997245">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20530532</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of mouse steroidogenesis by WHISTLE and JMJD1C through histone methylation balance</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, JY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Choe, NW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cho, IH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seol, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kook, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nam, KI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kook, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bhak, YY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seo, SB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 38:6389-403</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_997246" rdf:id="lit_997246">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19293402</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lnk inhibits myeloproliferative disorder-associated JAK2 mutant, JAK2V617F</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gery, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gueller, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xing, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tefferi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koeffler, HP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Leukoc Biol 85:957-65</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1008255" rdf:id="lit_1008255">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">218813</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1979</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial GTP-AMP phosphotransferase. 2. Kinetic and equilibrium dialysis studies</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomasselli, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noda, LH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 93:263-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1008227" rdf:id="lit_1008227">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8816476</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NF-E2 disrupts chromatin structure at human beta-globin locus control region hypersensitive site 2 in vitro</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Armstrong, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Emerson, BM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 16:5634-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1008237" rdf:id="lit_1008237">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11895428</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human beta-globin locus control region</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levings, PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bungert, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 269:1589-99</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1011581" rdf:id="lit_1011581">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15020713</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rabenosyn-5 and EHD1 interact and sequentially regulate protein recycling to the plasma membrane</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Naslavsky, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boehm, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Backlund PS, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Caplan, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 15:2410-22</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_372673" rdf:id="lit_372673">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12134158</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Unconventional Rac-GEF activity is mediated through the Dock180-ELMO complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brugnera, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haney, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grimsley, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lu, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Walk, SF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tosello-Trampont, AC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Macara, IG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Madhani, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fink, GR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ravichandran, KS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Cell Biol 4:574-82</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1012993" rdf:id="lit_1012993">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15247287</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The novel Cdc42 guanine nucleotide exchange factor, zizimin1, dimerizes via the Cdc42-binding CZH2 domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meller, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Irani-Tehrani, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ratnikov, BI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paschal, BM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schwartz, MA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:37470-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1012986" rdf:id="lit_1012986">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17027967</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dock4 is regulated by RhoG and promotes Rac-dependent cell migration</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hiramoto, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Negishi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Katoh, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Exp Cell Res 312:4205-16</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1013000" rdf:id="lit_1013000">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17196961</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dock6, a Dock-C subfamily guanine nucleotide exchanger, has the dual specificity for Rac1 and Cdc42 and regulates neurite outgrowth</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyamoto, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamauchi, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanbe, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanoue, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Exp Cell Res 313:791-804</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_1012975" rdf:id="lit_1012975">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15710388</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zizimin2: a novel, DOCK180-related Cdc42 guanine nucleotide exchange factor expressed predominantly in lymphocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishikimi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meller, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uekawa, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isobe, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schwartz, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maruyama, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 579:1039-46</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879416" rdf:id="lit_879416">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9331217</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vertebrates have conserved capping protein alpha isoforms with specific expression patterns</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korshunova, YO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cooper, JA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Motil Cytoskeleton 38:120-32</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

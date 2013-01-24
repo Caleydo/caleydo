@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="DDR" Author="alex" Organism="Homo sapiens">
+  <Graphics BoardWidth="40.0" BoardHeight="80.0" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

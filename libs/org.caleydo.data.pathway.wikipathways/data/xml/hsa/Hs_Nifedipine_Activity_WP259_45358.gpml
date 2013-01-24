@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Nifedipine Activity" Organism="Homo sapiens" License="CC BY 2.0"><Comment Source="WikiPathways-description">Nifedipine (brand names Adalat, Nifediac, Cordipin, Nifedical, and Procardia) is a dihydropyridine calcium channel blocker. Its main uses are as an antianginal (especially in Prinzmetal's angina) and antihypertensive, although a large number of other indications have recently been found for this agent, such as Raynaud's phenomenon, premature labor, and painful spasms of the esophagus in cancer and tetanus patients. It is also commonly used for the small subset of pulmonary hypertension patients whose symptoms respond to calcium channel blockers.
+Source: Wikipedia ([[wikipedia:Nifedipine]])</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="972.4" BoardHeight="530.2"/>
+  <DataNode TextLabel="MAP2K1" GraphId="b58">
+    <Graphics CenterX="394.9999959309896" CenterY="136.98333333333332" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5604"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK1" GraphId="e1c">
+    <Graphics CenterX="394.9999959309896" CenterY="85.98333333333333" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="PTK2B" GraphId="fa8">
+    <BiopaxRef>b28</BiopaxRef>
+    <Graphics CenterX="394.9999959309896" CenterY="185.98333333333332" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2185"/>
+  </DataNode>
+  <DataNode TextLabel="PCNA" GraphId="a06">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PCNA"/>
+    <Graphics CenterX="284.48333333333335" CenterY="199.98333333333332" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5111"/>
+  </DataNode>
+  <DataNode TextLabel="PKC" GraphId="da6">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PKC"/>
+    <Graphics CenterX="647.4833333333333" CenterY="259.98333333333335" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="50818"/>
+  </DataNode>
+  <DataNode TextLabel="VEGF" GraphId="ba7">
+    <Graphics CenterX="733.4833333333333" CenterY="258.98333333333335" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="SOD" GraphId="c20">
+    <Graphics CenterX="677.4833333333333" CenterY="308.98333333333335" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Cholesterol hydrolase" GraphId="ef5">
+    <Graphics CenterX="159.5" CenterY="198.98333333333332" Width="115.0" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Cholesterol esterase" GraphId="d24">
+    <Graphics CenterX="202.5" CenterY="142.98333333333332" Width="115.0" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CYP3A4" GraphId="ccb">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP3A4"/>
+    <Graphics CenterX="44.483333333333334" CenterY="455.98333333333335" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1576"/>
+  </DataNode>
+  <DataNode TextLabel="NADPH oxidase" GraphId="f24">
+    <Graphics CenterX="195.98333333333332" CenterY="357.98333333333335" Width="84.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CYP2C11" GraphId="da4">
+    <Graphics CenterX="44.483333333333334" CenterY="472.01666666666665" Width="51.03333333333333" Height="16.033333333333335" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Line GraphId="id4152553">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="394.9999959309896" Y="128.96666666666664" GraphRef="b58" RelX="0.0" RelY="-1.0"/>
+      <Point X="394.9999959309896" Y="94.0" GraphRef="e1c" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb04c912">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="394.9999959309896" Y="77.96666666666667" GraphRef="e1c" RelX="0.0" RelY="-1.0"/>
+      <Point X="395.0" Y="34.0" GraphRef="fed" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idcc100c6b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="394.5" Y="234.0" GraphRef="ac4" RelX="0.0" RelY="-1.0"/>
+      <Point X="394.9999959309896" Y="193.99999999999994" GraphRef="fa8" RelX="0.0" RelY="1.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id173af18f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="394.9999959309896" Y="177.96666666666664" GraphRef="fa8" RelX="0.0" RelY="-1.0"/>
+      <Point X="394.9999959309896" Y="144.99999999999994" GraphRef="b58" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfc9899a0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="348.0" Y="253.0"/>
+      <Point X="313.0" Y="213.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb7dfd54c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="440.0" Y="258.0"/>
+      <Point X="468.0" Y="258.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfd513471">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="592.0" Y="258.0"/>
+      <Point X="620.0" Y="258.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfeb17645">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="676.0" Y="258.0"/>
+      <Point X="704.0" Y="258.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7bc8eabf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="736.0" Y="271.0"/>
+      <Point X="759.0" Y="294.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="iddd6d0ec6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="722.0" Y="274.0"/>
+      <Point X="693.0" Y="295.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id91c1f3c3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="816.0" Y="324.0"/>
+      <Point X="816.0" Y="347.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id5bb82af8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="817.0" Y="366.0"/>
+      <Point X="817.0" Y="389.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7486facc">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="410.0" Y="266.0"/>
+      <Point X="580.0" Y="300.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id354af36f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="387.0" Y="273.0"/>
+      <Point X="387.0" Y="387.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3dbd2409">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="390.0" Y="409.0"/>
+      <Point X="390.0" Y="453.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idcf952638">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="345.0" Y="403.0"/>
+      <Point X="278.0" Y="450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id89c7582b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="351.0" Y="264.0"/>
+      <Point X="259.0" Y="264.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4c82266">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="348.0" Y="259.0"/>
+      <Point X="194.0" Y="212.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb80f9a90">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="166.0" Y="187.0"/>
+      <Point X="187.0" Y="154.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ided25293a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="129.0" Y="186.0"/>
+      <Point X="110.0" Y="151.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id52d7e9e5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="350.0" Y="267.0"/>
+      <Point X="258.0" Y="300.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id821d8898">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="407.0" Y="268.0"/>
+      <Point X="542.0" Y="348.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3365d372">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="398.0" Y="270.0"/>
+      <Point X="537.0" Y="377.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id452975c8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="137.0" Y="276.0"/>
+      <Point X="111.0" Y="318.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id346e1dc0">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="366.0" Y="267.0"/>
+      <Point X="243.0" Y="348.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id573a25a4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="378.0" Y="269.0"/>
+      <Point X="196.0" Y="429.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Nifedipine" GraphId="ac4">
+    <Graphics CenterX="394.5" CenterY="251.0" Width="93.0" Height="34.0" ZOrder="28672" FillColor="ffffff" FontSize="20" Valign="Middle" Color="008000"/>
+  </Label>
+  <Label TextLabel="phosphorylation" GraphId="cbe">
+    <Graphics CenterX="462.0" CenterY="82.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="phosphorylation" GraphId="c94">
+    <Graphics CenterX="464.0" CenterY="132.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="cell growth inhibition" GraphId="fed">
+    <Graphics CenterX="395.0" CenterY="23.0" Width="132.0" Height="22.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="phosphorylation" GraphId="d80">
+    <Graphics CenterX="467.0" CenterY="180.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="77" GraphId="c8b">
+    <Graphics CenterX="406.5" CenterY="224.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="77" GraphId="a64">
+    <Graphics CenterX="408.5" CenterY="108.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="77" GraphId="bb8">
+    <Graphics CenterX="410.5" CenterY="158.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="77" GraphId="e17">
+    <Graphics CenterX="342.5" CenterY="226.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="77" GraphId="da5">
+    <Graphics CenterX="406.5" CenterY="52.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Bradykinin II receptor" GraphId="bc9">
+    <Graphics CenterX="531.5" CenterY="257.0" Width="117.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="KDR/FIK1 receptor/channel" GraphId="c10">
+    <Graphics CenterX="812.5" CenterY="304.0" Width="139.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="NO" GraphId="eb5">
+    <Graphics CenterX="818.0" CenterY="352.0" Width="40.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Angiogenesis" GraphId="feb">
+    <Graphics CenterX="820.0" CenterY="396.0" Width="78.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="79" GraphId="f02">
+    <Graphics CenterX="455.5" CenterY="263.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="79" GraphId="e14">
+    <Graphics CenterX="604.5" CenterY="264.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="79" GraphId="a2d">
+    <Graphics CenterX="690.5" CenterY="264.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="79, 82, 84" GraphId="b2c">
+    <Graphics CenterX="684.5" CenterY="279.5" Width="47.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="79" GraphId="cf3">
+    <Graphics CenterX="759.5" CenterY="278.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="79" GraphId="e5e">
+    <Graphics CenterX="832.5" CenterY="331.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="79" GraphId="ac8">
+    <Graphics CenterX="834.5" CenterY="374.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="ROS" GraphId="d48">
+    <Graphics CenterX="603.0" CenterY="303.0" Width="40.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="81" GraphId="d05">
+    <Graphics CenterX="533.5" CenterY="300.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Antioxidative" GraphId="abc">
+    <Graphics CenterX="820.0" CenterY="406.0" Width="78.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Vasodilatation" GraphId="e52">
+    <Graphics CenterX="820.0" CenterY="416.0" Width="78.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Antithrombotic" GraphId="d3c">
+    <Graphics CenterX="820.0" CenterY="426.0" Width="78.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Antiprolerative" GraphId="be5">
+    <Graphics CenterX="820.0" CenterY="436.0" Width="78.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Antiartherosclerosis" GraphId="b71">
+    <Graphics CenterX="821.0" CenterY="446.0" Width="94.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Rapid degration by daylight" GraphId="b09">
+    <Graphics CenterX="385.5" CenterY="355.0" Width="151.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Nitrosonifedipine" GraphId="a98">
+    <Graphics CenterX="389.0" CenterY="400.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="008000"/>
+  </Label>
+  <Label TextLabel="83" GraphId="e27">
+    <Graphics CenterX="396.5" CenterY="299.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Lactam derivate" GraphId="eeb">
+    <Graphics CenterX="391.0" CenterY="459.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="008000"/>
+  </Label>
+  <Label TextLabel="83" GraphId="b93">
+    <Graphics CenterX="381.5" CenterY="424.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="in vivo" GraphId="f16">
+    <Graphics CenterX="409.0" CenterY="434.5" Width="38.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontStyle="Italic" FontSize="10" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="Fe uptake" GraphId="d35">
+    <Graphics CenterX="253.0" CenterY="455.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Zn uptake" GraphId="de9">
+    <Graphics CenterX="252.0" CenterY="472.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="83" GraphId="e22">
+    <Graphics CenterX="307.5" CenterY="415.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Ca-channel" GraphId="a8f">
+    <Graphics CenterX="190.5" CenterY="264.0" Width="117.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="79" GraphId="bef">
+    <Graphics CenterX="769.5" CenterY="395.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="81" GraphId="a8c">
+    <Graphics CenterX="769.5" CenterY="406.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="81" GraphId="a2a">
+    <Graphics CenterX="769.5" CenterY="417.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="81" GraphId="c0c">
+    <Graphics CenterX="769.5" CenterY="427.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="81, 88" GraphId="be7">
+    <Graphics CenterX="766.0" CenterY="435.5" Width="36.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="81" GraphId="c99">
+    <Graphics CenterX="769.5" CenterY="447.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Cholesterol" GraphId="fd5">
+    <Graphics CenterX="92.0" CenterY="140.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="86" GraphId="e2a">
+    <Graphics CenterX="275.5" CenterY="226.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="86" GraphId="ae1">
+    <Graphics CenterX="165.5" CenterY="171.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="86" GraphId="c8f">
+    <Graphics CenterX="112.5" CenterY="172.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Na balance" GraphId="aec">
+    <Graphics CenterX="226.0" CenterY="301.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Serum induced DNA synthesis" GraphId="be0">
+    <Graphics CenterX="624.0" CenterY="354.0" Width="156.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Delay G0/G1 --&gt; S-phase" GraphId="f34">
+    <Graphics CenterX="597.5" CenterY="382.0" Width="135.0" Height="18.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ca uptake" GraphId="d37">
+    <Graphics CenterX="111.0" CenterY="330.0" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="88" GraphId="b37">
+    <Graphics CenterX="519.5" CenterY="337.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="88" GraphId="b92">
+    <Graphics CenterX="504.5" CenterY="359.5" Width="29.0" Height="19.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="METABOLISM liver and small intestine" GraphId="bdd">
+    <Graphics CenterX="99.5" CenterY="437.0" Width="195.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="c4b">
+    <Graphics CenterX="530.9833333333333" CenterY="259.98333333333335" Width="122.03333333333333" Height="32.03333333333333" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e81">
+    <Graphics CenterX="811.9833333333333" CenterY="305.98333333333335" Width="144.03333333333333" Height="30.033333333333335" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f22">
+    <Graphics CenterX="190.98333333333332" CenterY="264.98333333333335" Width="122.03333333333333" Height="32.03333333333333" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="b28">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11139427</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nifedipine suppresses neointimal thickening by its inhibitory effect on vascular smooth muscle cell growth via a MEK-ERK pathway coupling with Pyk2.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Br J Pharmacol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirata A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Igarashi M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaguchi H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suwabe A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Daimon M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kato T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tominaga M</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>hypertension</bp:TERM><bp:ID>DOID:10763</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>heart disease</bp:TERM><bp:ID>DOID:114</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

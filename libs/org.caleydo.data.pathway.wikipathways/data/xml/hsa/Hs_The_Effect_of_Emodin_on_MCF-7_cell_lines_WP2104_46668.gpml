@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="The Effect of Emodin on MCF-7 cell lines" Author="Emilia" Organism="Homo sapiens">
+  <Graphics BoardWidth="714.0" BoardHeight="355.0" />
+  <DataNode TextLabel="ATF3" GraphId="b6a3f" Type="GeneProduct">
+    <Graphics CenterX="415.0" CenterY="198.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" ShapeType="Hexagon" />
+    <Xref Database="Entrez Gene" ID="467" />
+  </DataNode>
+  <Line GraphId="id2e7b6f38">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="464.0" Y="49.0" />
+      <Point X="473.0" Y="102.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id7912800f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="352.0" Y="122.0" />
+      <Point X="316.0" Y="183.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id584e3f72">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="460.0" Y="137.0" />
+      <Point X="415.0" Y="188.0" GraphRef="b6a3f" RelX="0.0" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id88bcef37">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="315.0" Y="209.0" />
+      <Point X="315.0" Y="231.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3e6b5baf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="449.0" Y="51.0" />
+      <Point X="383.0" Y="102.25" GraphRef="aac8b" RelX="1.0" RelY="-0.5" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida904c59b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="277.0" Y="40.0" />
+      <Point X="283.0" Y="79.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9daf6415">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="320.0" Y="27.0" />
+      <Point X="431.0" Y="32.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id2fbea675">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="305.0" Y="92.0" />
+      <Point X="284.0" Y="103.0" GraphRef="dc119" RelX="0.0" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4017de40">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="435.0" Y="208.0" GraphRef="b6a3f" RelX="0.5" RelY="1.0" />
+      <Point X="460.0" Y="222.0" GraphRef="baef1" RelX="0.0" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id9adc7c09">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="415.0" Y="208.0" GraphRef="b6a3f" RelX="0.0" RelY="1.0" />
+      <Point X="407.5" Y="228.0" GraphRef="a0e26" RelX="0.0" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idde8a3d28">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="395.0" Y="208.0" GraphRef="b6a3f" RelX="-0.5" RelY="1.0" />
+      <Point X="373.0" Y="222.0" GraphRef="bfa0c" RelX="0.5" RelY="-1.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8ab31ea1">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="361.0" Y="252.0" />
+      <Point X="361.0" Y="281.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id70423cec">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="387.0" Y="252.0" />
+      <Point X="359.0" Y="260.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide9bc5119">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="448.0" Y="244.0" />
+      <Point X="363.0" Y="269.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id950367b6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="308.0" Y="246.0" />
+      <Point X="361.0" Y="265.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idca84d3b4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="288.0" Y="131.0" />
+      <Point X="306.5" Y="189.625" GraphRef="c5b69" RelX="-1.0" RelY="-0.5" />
+    </Graphics>
+  </Line>
+  <Shape GraphId="eb323">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="289.0" CenterY="195.0" Width="512.0" Height="260.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="f3802">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Nucleus" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="373.0" CenterY="237.5" Width="244.0" Height="135.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="GDF15" GraphId="fc990">
+    <Graphics CenterX="457.5" CenterY="36.0" Width="51.0" Height="30.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="EMODİN" GraphId="a49a2">
+    <Graphics CenterX="292.5" CenterY="27.0" Width="59.0" Height="30.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="FAM129A" GraphId="edfaf">
+    <Graphics CenterX="478.0" CenterY="120.25" Width="62.0" Height="35.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="PHLDA1" GraphId="aac8b">
+    <Graphics CenterX="356.25" CenterY="108.5" Width="53.5" Height="25.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="ASNS" GraphId="c5b69">
+    <Graphics CenterX="326.25" CenterY="196.75" Width="39.5" Height="28.5" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Hexagon" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="DUSP1" GraphId="a8ebd">
+    <Graphics CenterX="295.5" CenterY="239.5" Width="45.0" Height="25.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Hexagon" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="CYP1A1" GraphId="dc119">
+    <Graphics CenterX="284.0" CenterY="118.0" Width="50.0" Height="30.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="ER" GraphId="d27db">
+    <Graphics CenterX="297.5" CenterY="75.0" Width="33.0" Height="40.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="DDIT3" GraphId="baef1">
+    <Graphics CenterX="460.0" CenterY="237.0" Width="40.0" Height="30.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Hexagon" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="NUPR1" GraphId="a0e26">
+    <Graphics CenterX="407.5" CenterY="241.0" Width="49.0" Height="26.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Hexagon" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="GADD45A" GraphId="bfa0c">
+    <Graphics CenterX="358.0" CenterY="237.0" Width="60.0" Height="30.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Hexagon" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Cell Proliferation" GraphId="e20bd">
+    <Graphics CenterX="390.25" CenterY="283.5" Width="89.5" Height="17.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

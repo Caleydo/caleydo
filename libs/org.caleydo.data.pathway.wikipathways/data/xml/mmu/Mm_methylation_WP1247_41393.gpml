@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="methylation" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP704&amp;amp;oldid=30265 WP704(r30265)] with a 100% conversion rate.</Comment>
+  <BiopaxRef>d0f</BiopaxRef>
+  <BiopaxRef>d67</BiopaxRef>
+  <Graphics BoardWidth="14470.5" BoardHeight="6798.0" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="Substrate" Type="Metabolite" GraphId="b851d">
+    <Graphics Color="339900" CenterX="4620.0" CenterY="4035.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="O-methylated substrate" Type="Metabolite" GraphId="bb08a">
+    <Graphics Color="0000ff" CenterX="12165.0" CenterY="1860.0" Width="1770.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="N-methylated substrate" Type="Metabolite" GraphId="a2f53">
+    <Graphics Color="339900" CenterX="12225.0" CenterY="4035.0" Width="1770.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="S-methylated substrate" Type="Metabolite" GraphId="b682b">
+    <Graphics Color="0000ff" CenterX="12270.0" CenterY="5895.0" Width="1770.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Comt1" Type="GeneProduct" BackpageHead="Comt1" GraphId="fed14">
+    <Graphics Color="ff3333" CenterX="8475.0" CenterY="1215.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000326"/>
+  </DataNode>
+  <DataNode TextLabel="Nnmt" Type="GeneProduct" BackpageHead="Nnmt" GraphId="e60eb" GroupRef="e66ac">
+    <Graphics Color="ff3333" CenterX="8505.0" CenterY="3420.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000032271"/>
+  </DataNode>
+  <DataNode TextLabel="Hnmt" Type="GeneProduct" BackpageHead="Hnmt" GraphId="df035" GroupRef="e66ac">
+    <Graphics Color="ff3333" CenterX="8505.0" CenterY="3120.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000026986"/>
+  </DataNode>
+  <DataNode TextLabel="S-Adenosylmethionine" Type="Metabolite" GraphId="c42b1">
+    <Graphics Color="0000ff" CenterX="6795.0" CenterY="3390.0" Width="1740.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01185"/>
+  </DataNode>
+  <DataNode TextLabel="S-Adenosylhomocysteine" Type="Metabolite" GraphId="f256f">
+    <Graphics Color="0000ff" CenterX="10320.0" CenterY="3405.0" Width="1890.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00939"/>
+  </DataNode>
+  <DataNode TextLabel="Inmt" Type="GeneProduct" BackpageHead="Inmt" GraphId="e11e3" GroupRef="e66ac">
+    <Graphics Color="ff3333" CenterX="8505.0" CenterY="2820.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000003477"/>
+  </DataNode>
+  <DataNode TextLabel="Pnmt" Type="GeneProduct" BackpageHead="Pnmt" GraphId="cd317" GroupRef="e66ac">
+    <Graphics Color="ff3333" CenterX="8505.0" CenterY="2520.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000038216"/>
+  </DataNode>
+  <DataNode TextLabel="Tpmt" Type="GeneProduct" BackpageHead="Tpmt" GraphId="c1cd9">
+    <Graphics Color="ff3333" CenterX="8490.0" CenterY="5325.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021376"/>
+  </DataNode>
+  <DataNode TextLabel="S-Adenosylhomocysteine" Type="Metabolite" GraphId="efa0c">
+    <Graphics Color="0000ff" CenterX="10290.0" CenterY="5400.0" Width="1890.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00939"/>
+  </DataNode>
+  <DataNode TextLabel="S-Adenosylmethionine" Type="Metabolite" GraphId="da24b">
+    <Graphics Color="0000ff" CenterX="6765.0" CenterY="5385.0" Width="1740.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01185"/>
+  </DataNode>
+  <DataNode TextLabel="S-Adenosylhomocysteine" Type="Metabolite" GraphId="b4f09">
+    <Graphics Color="0000ff" CenterX="10260.0" CenterY="1335.0" Width="1890.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00939"/>
+  </DataNode>
+  <DataNode TextLabel="S-Adenosylmethionine" Type="Metabolite" GraphId="ecc0e">
+    <Graphics Color="0000ff" CenterX="6735.0" CenterY="1320.0" Width="1740.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01185"/>
+  </DataNode>
+  <DataNode TextLabel="L-Methionine" Type="Metabolite" GraphId="e46f4">
+    <Graphics Color="0000ff" CenterX="1935.0" CenterY="3390.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00696"/>
+  </DataNode>
+  <DataNode TextLabel="ATP" Type="Metabolite" GraphId="ca713">
+    <Graphics Color="0000ff" CenterX="2505.0" CenterY="2655.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00538"/>
+  </DataNode>
+  <DataNode TextLabel="Mat1a" Type="GeneProduct" BackpageHead="Mat1a" GraphId="a630a" GroupRef="c2177">
+    <Graphics Color="000000" CenterX="3510.0" CenterY="1410.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000037798"/>
+  </DataNode>
+  <DataNode TextLabel="Mat2a" Type="GeneProduct" BackpageHead="Mat2a" GraphId="afc8a" GroupRef="c2177">
+    <Graphics Color="000000" CenterX="3510.0" CenterY="1710.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000053907"/>
+  </DataNode>
+  <DataNode TextLabel="Mat2b" Type="GeneProduct" BackpageHead="Mat2b" GraphId="d262e" GroupRef="c2177">
+    <Graphics Color="000000" CenterX="3510.0" CenterY="2010.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000042032"/>
+  </DataNode>
+  <DataNode TextLabel="Phosphate" Type="Metabolite" GraphId="b1bb4" GroupRef="f40a7">
+    <Graphics Color="0000ff" CenterX="4545.0" CenterY="2505.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01429"/>
+  </DataNode>
+  <DataNode TextLabel="Phosphate" Type="Metabolite" GraphId="e67ac" GroupRef="f40a7">
+    <Graphics Color="0000ff" CenterX="4545.0" CenterY="2805.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01429"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="b64f1">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="5220.0" y="4035.0" GraphRef="b851d" relX="1.0" relY="0.0"/>
+      <Point x="11280.0" y="1860.0" GraphRef="bb08a" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.6604013221812733" Shape="None" GraphId="e4816"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bf945">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5220.0" y="4035.0" GraphRef="b851d" relX="1.0" relY="0.0"/>
+      <Point x="11340.0" y="4035.0" GraphRef="a2f53" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5367647058823529" Shape="None" GraphId="de1cb"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e5936">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="5220.0" y="4035.0" GraphRef="b851d" relX="1.0" relY="0.0"/>
+      <Point x="11385.0" y="5895.0" GraphRef="b682b" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.639608892168619" Shape="None" GraphId="af265"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="adaf6">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="6795.0" y="3540.0" GraphRef="c42b1" relX="0.0" relY="1.0"/>
+      <Point x="8475.0" y="4050.0"/>
+      <Point x="10320.0" y="3555.0" GraphRef="f256f" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d0992">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8505.0" y="3690.0" GraphRef="d938f" relX="0.0" relY="1.0"/>
+      <Point x="8505.0" y="4035.0" GraphRef="de1cb" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c439a">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="6765.0" y="5535.0" GraphRef="da24b" relX="0.0" relY="1.0"/>
+      <Point x="8362.5" y="5910.0"/>
+      <Point x="10290.0" y="5550.0" GraphRef="efa0c" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bd427">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8490.0" y="5475.0" GraphRef="c1cd9" relX="0.0" relY="1.0"/>
+      <Point x="8492.861359653169" y="5895.0" GraphRef="af265" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="de091">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="6735.0" y="1470.0" GraphRef="ecc0e" relX="0.0" relY="1.0"/>
+      <Point x="8415.0" y="1875.0"/>
+      <Point x="10260.0" y="1485.0" GraphRef="b4f09" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="eaed1">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8475.0" y="1365.0" GraphRef="fed14" relX="0.0" relY="1.0"/>
+      <Point x="8483.404888162786" y="1860.0" GraphRef="e4816" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e9001">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2535.0" y="3390.0" GraphRef="e46f4" relX="1.0" relY="0.0"/>
+      <Point x="5925.0" y="3390.0" GraphRef="c42b1" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="edd31">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="2535.0" y="3390.0" GraphRef="e46f4" relX="1.0" relY="0.0"/>
+      <Point x="5355.0" y="2355.0"/>
+      <Point x="5865.0" y="1320.0" GraphRef="ecc0e" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.1827362135581313" Shape="None" GraphId="f8165"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d3d66">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="2535.0" y="3390.0" GraphRef="e46f4" relX="1.0" relY="0.0"/>
+      <Point x="5355.0" y="4387.5"/>
+      <Point x="5895.0" y="5385.0" GraphRef="da24b" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e414a">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="2505.0" y="2805.0" GraphRef="ca713" relX="0.0" relY="1.0"/>
+      <Point x="3472.5" y="3390.0"/>
+      <Point x="4545.0" y="2955.0" GraphRef="e67ac" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ba6a0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3510.0" y="2280.0" GraphRef="b0b51" relX="0.0" relY="1.0"/>
+      <Point x="3521.775553213909" y="3390.0" GraphRef="f8165" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="O-methylation" GraphId="a2fc4">
+    <Graphics FontSize="150" Color="000000" CenterX="8460.0" CenterY="1995.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="N-methylation" GraphId="ada68">
+    <Graphics FontSize="150" Color="000000" CenterX="8475.0" CenterY="4185.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="S-methylation" GraphId="f734f">
+    <Graphics FontSize="150" Color="000000" CenterX="8475.0" CenterY="6030.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="SAM synthesis (co-substrate)" GraphId="cc7ce">
+    <Graphics FontSize="150" Color="999999" CenterX="2317.5" CenterY="975.0" Width="2145.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Rectangle" Style="Solid" GraphId="d020e">
+    <Graphics FillColor="Transparent" Color="999999" CenterX="3270.0" CenterY="2287.5" Width="4020.0" Height="2835.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="e66ac" GraphId="d938f" Style="Complex"/>
+  <Group GroupId="c2177" GraphId="b0b51" Style="Complex"/>
+  <Group GroupId="f40a7" GraphId="a7847" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d67">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16807786</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pharmacogenomics: catechol O-methyltransferase to thiopurine S-methyltransferase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Mol Neurobiol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinshilboum RM</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d0f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19035562</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The biochemistry of drug metabolism--an introduction: part 4. reactions of conjugation and their enzymes.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chem Biodivers</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Testa B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kramer SD</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

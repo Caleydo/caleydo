@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Irinotecan Pathway" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Comment Source="WikiPathways-description">This pathway shows the biotransformation of the chemotherapy prodrug irinotecan to form the active metabolite SN-38, an inhibitor of DNA topoisomerase I. SN-38 is primarily metabolized to the inactive SN-38 glucuronide by UGT1A1, the isoform catalyzing bilirubin glucuronidation. Irinotecan is used in the treatment of metastatic colorectal cancer, small cell lung cancer and several other solid tumors. There is large interpatient variability in response to irinotecan, as well as severe side effects such as diarrhea and neutropenia, which might be explained in part by genetic variation in the metabolic enzymes and transporters depicted here. Well-known variants to effect this pathway are the promoter polymorphic repeat in UGT1A1 (UGT1A1*28) and the 1236C&amp;amp;gt;T polymorphism in ABCB1. While UGT1A1*28 genotype has been associated with toxicity, further evidence is needed to describe the roles of ABCB1 variants in toxicity.
+
+Source: [http://www.pharmgkb.org/search/pathway/irinotecan/liver.jsp PharmGkb]</Comment>
+  <Graphics BoardWidth="769.0504201680671" BoardHeight="905.6666666666666"/>
+  <DataNode TextLabel="CES2" GraphId="fb1" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES2 | carboxylesterase 2 (intestine liver)"/>
+    <Graphics CenterX="404.3333333333333" CenterY="359.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8824"/>
+  </DataNode>
+  <DataNode TextLabel="CES1" GraphId="b81" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES1 | carboxylesterase 1 (monocyte/macrophage ..."/>
+    <Graphics CenterX="395.6666666666667" CenterY="317.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1066"/>
+  </DataNode>
+  <DataNode TextLabel="Irinotecan" GraphId="ef2" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Irotecan"/>
+    <Graphics CenterX="116.66666666666667" CenterY="135.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEMBL compound" ID="CHEMBL481"/>
+  </DataNode>
+  <DataNode TextLabel="SN-38" GraphId="bfe" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SN-38"/>
+    <Graphics CenterX="445.10084033613447" CenterY="135.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEMBL compound" ID="CHEMBL837 "/>
+  </DataNode>
+  <DataNode TextLabel="CYP3A4" GraphId="cc6" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP3A4 | cytochrome P450 family 3 subfamily A..."/>
+    <Graphics CenterX="160.33333333333223" CenterY="299.42296918767477" Width="49.33333333333334" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1576"/>
+  </DataNode>
+  <DataNode TextLabel="CYP3A5" GraphId="ef5" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP3A5 | cytochrome P450 family 3 subfamily A..."/>
+    <Graphics CenterX="145.61624649859945" CenterY="331.5350140056022" Width="50.66666666666663" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1577"/>
+  </DataNode>
+  <DataNode TextLabel="M4" GraphId="ded" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="M4"/>
+    <Graphics CenterX="181.05042016806723" CenterY="229.7170868347339" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="APC" GraphId="cd3" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="APC"/>
+    <Graphics CenterX="284.0" CenterY="232.66666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Entrez Gene" ID="324"/>
+  </DataNode>
+  <DataNode TextLabel="NPC1" GraphId="a3f" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NPC"/>
+    <Graphics CenterX="370.0" CenterY="277.6666666666667" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="Entrez Gene" ID="4864"/>
+  </DataNode>
+  <DataNode TextLabel="CYP3A4" GraphId="b9a" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP3A4 | cytochrome P450 family 3 subfamily A..."/>
+    <Graphics CenterX="234.08123249299723" CenterY="303.9887955182071" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1576"/>
+  </DataNode>
+  <DataNode TextLabel="CYP3A5" GraphId="e19" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP3A5 | cytochrome P450 family 3 subfamily A..."/>
+    <Graphics CenterX="287.3641456582632" CenterY="341.32212885154064" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1577"/>
+  </DataNode>
+  <DataNode TextLabel="CYP3A4" GraphId="fe8" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CYP3A4 | cytochrome P450 family 3 subfamily A..."/>
+    <Graphics CenterX="224.28291316526614" CenterY="373.76750700280127" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1576"/>
+  </DataNode>
+  <DataNode TextLabel="CES1" GraphId="cf6" Type="GeneProduct" GroupRef="ca03f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES1 | carboxylesterase 1 (monocyte/macrophage ..."/>
+    <Graphics CenterX="281.0" CenterY="469.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1066"/>
+  </DataNode>
+  <DataNode TextLabel="CES2" GraphId="b6c" Type="GeneProduct" GroupRef="ca03f">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES2 | carboxylesterase 2 (intestine liver)"/>
+    <Graphics CenterX="281.0" CenterY="489.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8824"/>
+  </DataNode>
+  <DataNode TextLabel="SN-38G" GraphId="c2f" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SN-38"/>
+    <Graphics CenterX="580.0" CenterY="537.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0033ff"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A1" GraphId="d1d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UGT1A1 | UDP glycosyltransferase 1 family poly..."/>
+    <Graphics CenterX="524.747899159664" CenterY="468.9495798319328" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="54658"/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A9" GraphId="c92" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UGT1A9 | UDP glycosyltransferase 1 family poly..."/>
+    <Graphics CenterX="561.3837535014006" CenterY="505.0196078431373" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="54600"/>
+  </DataNode>
+  <DataNode TextLabel="ABCC1" GraphId="d30" Type="GeneProduct" GroupRef="b6f14">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ABCC1 | ATP-binding cassette sub-family C (CFT..."/>
+    <Graphics CenterX="118.43417366946755" CenterY="588.6162464985996" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4363"/>
+  </DataNode>
+  <DataNode TextLabel="ABCC2" GraphId="c7f" Type="GeneProduct" GroupRef="b6f14">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ABCC2 | ATP-binding cassette sub-family C (CFT..."/>
+    <Graphics CenterX="118.43417366946755" CenterY="608.6162464985996" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1244"/>
+  </DataNode>
+  <DataNode TextLabel="SN-38" GraphId="c3f" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SN-38"/>
+    <Graphics CenterX="356.6666666666667" CenterY="726.6666666666666" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEMBL compound" ID="CHEMBL837 "/>
+  </DataNode>
+  <DataNode TextLabel="CES1" GraphId="f50" Type="GeneProduct" GroupRef="b5ca3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES1 | carboxylesterase 1 (monocyte/macrophage ..."/>
+    <Graphics CenterX="246.0" CenterY="712.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1066"/>
+  </DataNode>
+  <DataNode TextLabel="CES2" GraphId="e81" Type="GeneProduct" GroupRef="b5ca3">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES2 | carboxylesterase 2 (intestine liver)"/>
+    <Graphics CenterX="246.0" CenterY="732.3333333333334" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8824"/>
+  </DataNode>
+  <DataNode TextLabel="ABCC1" GraphId="be5" Type="GeneProduct" GroupRef="fc56e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ABCC1 | ATP-binding cassette sub-family C (CFT..."/>
+    <Graphics CenterX="382.4341736694678" CenterY="576.4341736694673" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4363"/>
+  </DataNode>
+  <DataNode TextLabel="ABCC2" GraphId="d03" Type="GeneProduct" GroupRef="fc56e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ABCC2 | ATP-binding cassette sub-family C (CFT..."/>
+    <Graphics CenterX="382.4341736694678" CenterY="596.4341736694673" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1244"/>
+  </DataNode>
+  <DataNode TextLabel="ABCG2" GraphId="ec2" Type="GeneProduct" GroupRef="fc56e">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ABCG2 | ATP-binding cassette sub-family G (WHI..."/>
+    <Graphics CenterX="382.4341736694678" CenterY="616.4341736694673" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9429"/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A1" GraphId="cf7" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UGT1A1 | UDP glycosyltransferase 1 family poly..."/>
+    <Graphics CenterX="503.7408963585433" CenterY="726.487394957983" Width="49.240896358543296" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="54658"/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A10" GraphId="a56" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="UGT1A10 | UDP glycosyltransferase 1 family pol..."/>
+    <Graphics CenterX="433.5980392156863" CenterY="726.487394957983" Width="55.072829131652455" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="54575"/>
+  </DataNode>
+  <DataNode TextLabel="SN-38G" GraphId="a1e" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SN-38G"/>
+    <Graphics CenterX="580.3767507002802" CenterY="726.6666666666666" Width="47.3081232492997" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CES2" GraphId="bef" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES2 | carboxylesterase 2 (intestine liver)"/>
+    <Graphics CenterX="201.64705882352933" CenterY="135.66666666666674" Width="48.38655462184872" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8824"/>
+  </DataNode>
+  <DataNode TextLabel="CES1" GraphId="c65" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="CES1 | carboxylesterase 1 (monocyte/macrophage ..."/>
+    <Graphics CenterX="273.3109243697478" CenterY="135.66666666666674" Width="52.11764705882351" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1066"/>
+  </DataNode>
+  <DataNode TextLabel="BCHE" GraphId="bcf" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="BCHE | butyrylcholinesterase"/>
+    <Graphics CenterX="364.4327731092438" CenterY="135.66666666666674" Width="46.34453781512589" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="590"/>
+  </DataNode>
+  <DataNode TextLabel="ABCC2" GraphId="aa3" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ABCC2 | ATP-binding cassette sub-family C (CFT..."/>
+    <Graphics CenterX="581.1008403361344" CenterY="599.717086834733" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1244"/>
+  </DataNode>
+  <DataNode TextLabel="ABCC1" GraphId="c8f" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ABCC1 | ATP-binding cassette sub-family C (CFT..."/>
+    <Graphics CenterX="508.7002801120443" CenterY="193.3837535014005" Width="49.82633053221316" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4363"/>
+  </DataNode>
+  <DataNode TextLabel="SN-38" GraphId="e7a" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SN-38"/>
+    <Graphics CenterX="444.3333333333333" CenterY="414.3333333333333" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0033ff"/>
+    <Xref Database="ChEMBL compound" ID="CHEMBL837"/>
+  </DataNode>
+  <DataNode TextLabel="Irinotecan" GraphId="f808d" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Irotecan"/>
+    <Graphics CenterX="117.66666666666666" CenterY="410.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEMBL compound" ID="CHEMBL481"/>
+  </DataNode>
+  <DataNode TextLabel="Irinotecan" GraphId="b4030" Type="Metabolite">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="Irotecan"/>
+    <Graphics CenterX="118.66666666666666" CenterY="725.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="ChEMBL compound" ID="CHEMBL481 "/>
+  </DataNode>
+  <DataNode TextLabel="SLCO1B1" GraphId="f6030" Type="GeneProduct">
+    <Graphics CenterX="437.4579831932767" CenterY="191.17647058823508" Width="53.655462184873755" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10599"/>
+  </DataNode>
+  <Line GraphId="a5b4c">
+    <BiopaxRef>cb7</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="156.66666666666669" Y="135.0" GraphRef="ef2" RelX="1.0" RelY="0.0"/>
+      <Point X="415.10084033613447" Y="135.0" GraphRef="bfe" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.16776750330250992" Shape="None" GraphId="a16ee"/>
+      <Anchor Position="0.7384412153236459" Shape="None" GraphId="d72b0"/>
+      <Anchor Position="0.4610303830911493" Shape="None" GraphId="af065"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="febf4">
+    <BiopaxRef>aa1</BiopaxRef>
+    <BiopaxRef>a33</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="117.66666666666666" Y="400.0" GraphRef="f808d" RelX="0.0" RelY="-1.0"/>
+      <Point X="181.05042016806723" Y="239.7170868347339" GraphRef="ded" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6868320434873464" Shape="None" GraphId="ec38f"/>
+      <Anchor Position="0.4" Shape="None" GraphId="db253"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c1e2c">
+    <BiopaxRef>aa1</BiopaxRef>
+    <BiopaxRef>a33</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="137.66666666666666" Y="400.0" GraphRef="f808d" RelX="0.5" RelY="-1.0"/>
+      <Point X="284.0" Y="242.66666666666666" GraphRef="cd3" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6599166893885606" Shape="None" GraphId="dda8b"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c4e2c">
+    <BiopaxRef>aa1</BiopaxRef>
+    <BiopaxRef>a33</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="157.66666666666666" Y="410.0" GraphRef="f808d" RelX="1.0" RelY="0.0"/>
+      <Point X="355.0" Y="287.6666666666667" GraphRef="a3f" RelX="-0.5" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.29848913747825784" Shape="None" GraphId="d1429"/>
+      <Anchor Position="0.65848709116333" Shape="None" GraphId="d0080"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b414d">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="385.0" Y="287.6666666666667" GraphRef="a3f" RelX="0.5" RelY="1.0"/>
+      <Point X="429.3333333333333" Y="404.3333333333333" GraphRef="e7a" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.25269683818970845" Shape="None" GraphId="cecf1"/>
+      <Anchor Position="0.5952882827030379" Shape="None" GraphId="e06a9"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5fe6">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff8080">
+      <Point X="475.10084033613447" Y="135.0" GraphRef="bfe" RelX="1.0" RelY="0.0"/>
+      <Point X="568.0" Y="135.16666666666666" GraphRef="fad" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ea697">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="96.66666666666669" Y="145.0" GraphRef="ef2" RelX="-0.5" RelY="1.0"/>
+      <Point X="97.66666666666666" Y="400.0" GraphRef="f808d" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4540">
+    <BiopaxRef>ae6</BiopaxRef>
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="137.66666666666666" Y="420.0" GraphRef="f808d" RelX="0.5" RelY="1.0"/>
+      <Point X="283.5" Y="480.0"/>
+      <Point X="429.3333333333333" Y="424.3333333333333" GraphRef="e7a" RelX="-0.5" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5023319160624667" Shape="None" GraphId="fc826"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4c48">
+    <BiopaxRef>fd7</BiopaxRef>
+    <BiopaxRef>d54</BiopaxRef>
+    <BiopaxRef>cc6</BiopaxRef>
+    <BiopaxRef>d4c</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="474.3333333333333" Y="414.3333333333333" GraphRef="e7a" RelX="1.0" RelY="0.0"/>
+      <Point X="580.0" Y="527.3333333333334" GraphRef="c2f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.7374220374220374" Shape="None" GraphId="e9b7b"/>
+      <Anchor Position="0.5135135135135135" Shape="None" GraphId="ce2fe"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e9631">
+    <BiopaxRef>e81</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="117.66666666666666" Y="420.0" GraphRef="f808d" RelX="0.0" RelY="1.0"/>
+      <Point X="118.66666666666666" Y="715.0" GraphRef="b4030" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.633906342165943" Shape="None" GraphId="b89e3"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b709c">
+    <BiopaxRef>ae6</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="158.66666666666666" Y="725.0" GraphRef="b4030" RelX="1.0" RelY="0.0"/>
+      <Point X="326.6666666666667" Y="726.6666666666666" GraphRef="c3f" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="c708e"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6a1f">
+    <BiopaxRef>e72</BiopaxRef>
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="444.3333333333333" Y="424.3333333333333" GraphRef="e7a" RelX="0.0" RelY="1.0"/>
+      <Point X="408.0" Y="548.0"/>
+      <Point X="371.6666666666667" Y="716.6666666666666" GraphRef="c3f" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6476648895658796" Shape="None" GraphId="d686a"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5590">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="580.0" Y="547.3333333333334" GraphRef="c2f" RelX="0.0" RelY="1.0"/>
+      <Point X="580.3767507002801" Y="716.6666666666666" GraphRef="a1e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.322213305807367" Shape="None" GraphId="e5e80"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b2ae0">
+    <BiopaxRef>bc2</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="386.6666666666667" Y="726.6666666666666" GraphRef="c3f" RelX="1.0" RelY="0.0"/>
+      <Point X="556.7226890756303" Y="726.6666666666666" GraphRef="a1e" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6924643584521379" Shape="None" GraphId="d346c"/>
+      <Anchor Position="0.4" Shape="None" GraphId="dd9b6"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aac68">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="580.3767507002801" Y="736.6666666666666" GraphRef="a1e" RelX="0.0" RelY="1.0"/>
+      <Point X="476.02170868347343" Y="788.0"/>
+      <Point X="371.6666666666667" Y="736.6666666666666" GraphRef="c3f" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a87c6">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff8080">
+      <Point X="341.6666666666667" Y="736.6666666666666" GraphRef="c3f" RelX="-0.5" RelY="1.0"/>
+      <Point X="341.66666666666663" Y="859.6666666666666" GraphRef="d64" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6434">
+    <BiopaxRef>ac8</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="445.10084033613447" Y="145.0" GraphRef="bfe" RelX="0.0" RelY="1.0"/>
+      <Point X="444.3333333333333" Y="404.3333333333333" GraphRef="e7a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.17811358261629243" Shape="None" GraphId="b4fd1"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cd671">
+    <BiopaxRef>ecb</BiopaxRef>
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0" Color="0080ff">
+      <Point X="474.3333333333333" Y="414.3333333333333" GraphRef="e7a" RelX="1.0" RelY="0.0"/>
+      <Point X="589.0" Y="306.66666666666663"/>
+      <Point X="524.5504201680673" Y="199.0"/>
+      <Point X="460.10084033613447" Y="145.0" GraphRef="bfe" RelX="0.5" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.7844546624977009" Shape="None" GraphId="e34b2"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f3996">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="420.4341736694678" Y="596.4341736694673" GraphRef="a97ed" RelX="1.0" RelY="0.0"/>
+      <Point X="379.77139479522447" Y="605.9425590127825" GraphRef="d686a" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df6a5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="496.243697478991" Y="203.3837535014005" GraphRef="c8f" RelX="-0.5" RelY="1.0"/>
+      <Point X="518.718369972722" Y="198.7516081901973" GraphRef="e34b2" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b587f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="281.0" Y="451.0" GraphRef="afef5" RelX="0.0" RelY="-1.0"/>
+      <Point X="282.9950295959674" Y="479.9894390564305" GraphRef="fc826" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ee2f1">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="118.43417366946755" Y="626.6162464985996" GraphRef="ca8b0" RelX="0.0" RelY="1.0"/>
+      <Point X="118.3005730088326" Y="607.0023709389532" GraphRef="b89e3" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c3c0d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="581.1008403361344" Y="609.717086834733" GraphRef="aa3" RelX="0.0" RelY="1.0"/>
+      <Point X="580.1213940886025" Y="601.8947864500475" GraphRef="e5e80" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="caf06">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="494.74789915966403" Y="468.9495798319328" GraphRef="d1d" RelX="-1.0" RelY="0.0"/>
+      <Point X="528.5945945945946" Y="472.36036036036035" GraphRef="ce2fe" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c6a90">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="531.3837535014006" Y="505.01960784313724" GraphRef="c92" RelX="-1.0" RelY="0.0"/>
+      <Point X="552.2542619542619" Y="497.6620235620236" GraphRef="e9b7b" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ea9d0">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0099ff">
+      <Point X="503.7408963585433" Y="736.487394957983" GraphRef="cf7" RelX="0.0" RelY="1.0"/>
+      <Point X="504.4244011250121" Y="726.6666666666666" GraphRef="d346c" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b6a36">
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="0099ff">
+      <Point X="433.5980392156863" Y="716.487394957983" GraphRef="a56" RelX="0.0" RelY="-1.0"/>
+      <Point X="454.68907563025215" Y="726.6666666666666" GraphRef="dd9b6" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ab64b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="246.0" Y="694.3333333333334" GraphRef="ebd3a" RelX="0.0" RelY="-1.0"/>
+      <Point X="225.86666666666667" Y="725.6666666666666" GraphRef="c708e" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3177d278">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="201.64705882352933" Y="145.66666666666674" GraphRef="bef" RelX="0.0" RelY="1.0"/>
+      <Point X="200.02352275124053" Y="135.0" GraphRef="a16ee" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id488c1d3f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="364.4327731092437" Y="145.66666666666674" GraphRef="bcf" RelX="0.0" RelY="1.0"/>
+      <Point X="347.50511195231064" Y="135.0" GraphRef="d72b0" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id2d6737fb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="273.3109243697478" Y="145.66666666666674" GraphRef="c65" RelX="0.0" RelY="1.0"/>
+      <Point X="275.81267275734604" Y="135.0" GraphRef="af065" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id86d54c24">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="204.08123249299723" Y="303.9887955182071" GraphRef="b9a" RelX="-1.0" RelY="0.0"/>
+      <Point X="234.2344755471927" Y="296.1731075361998" GraphRef="dda8b" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id2ed87208">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="120.28291316526614" Y="331.5350140056022" GraphRef="ef5" RelX="-1.0" RelY="0.0"/>
+      <Point X="143.0201680672269" Y="335.8868347338936" GraphRef="db253" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id58ffe001">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="160.33333333333223" Y="309.42296918767477" GraphRef="cc6" RelX="0.0" RelY="1.0"/>
+      <Point X="161.20065960793187" Y="289.9125592145954" GraphRef="ec38f" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd90279b8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="287.3641456582632" Y="331.32212885154064" GraphRef="e19" RelX="0.0" RelY="-1.0"/>
+      <Point X="287.6081193228971" Y="329.4450791810193" GraphRef="d0080" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id791c7646">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="224.28291316526614" Y="363.76750700280127" GraphRef="fe8" RelX="0.0" RelY="-1.0"/>
+      <Point X="216.5685231290429" Y="373.4848288484931" GraphRef="d1429" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfd06a299">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="395.6666666666667" Y="307.0" GraphRef="b81" RelX="0.0" RelY="-1.0"/>
+      <Point X="396.2028931597437" Y="317.14796445546597" GraphRef="cecf1" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idae8e4255">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="404.3333333333333" Y="369.3333333333333" GraphRef="fb1" RelX="0.0" RelY="1.0"/>
+      <Point X="411.3911138665013" Y="357.11696631535443" GraphRef="e06a9" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3e0947ec">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="437.4579831932767" Y="181.17647058823508" GraphRef="f6030" RelX="0.0" RelY="-1.0"/>
+      <Point X="444.96413691418246" Y="191.19078909182517" GraphRef="b4fd1" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Neutropenia" GraphId="fad">
+    <Graphics CenterX="603.9166666666666" CenterY="135.16666666666666" Width="71.83333333333333" Height="16.333333333333332" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="Liver Cell" GraphId="ffe">
+    <Graphics CenterX="673.3333333333334" CenterY="221.58333333333334" Width="76.33333333333333" Height="21.166666666666686" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="999999"/>
+  </Label>
+  <Label TextLabel="Diarrhea" GraphId="d64">
+    <Graphics CenterX="341.6666666666667" CenterY="867.6666666666666" Width="65.33333333333333" Height="16.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle" Color="0000ff"/>
+  </Label>
+  <Label TextLabel="Intestine" GraphId="f0f">
+    <Graphics CenterX="661.3333333333334" CenterY="657.3333333333334" Width="70.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="999999"/>
+  </Label>
+  <Label TextLabel="Model human liver cell showing blood, bile and intestinal compartments, indicating tissue&#10;involvment of genes in the irinotecan pathway." GraphId="d2c">
+    <Graphics CenterX="443.0" CenterY="49.5" Width="438.0" Height="35.0" ZOrder="28672" FillColor="ffffff" FontStyle="Italic" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="b9d36">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="391.5504201680672" CenterY="396.0" Width="695.0" Height="410.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="f2732">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double"/>
+    <Graphics CenterX="390.0" CenterY="736.5" Width="662.0" Height="197.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="fc56e" GraphId="a97ed"/>
+  <Group GroupId="b6f14" GraphId="ca8b0"/>
+  <Group GroupId="ca03f" GraphId="afef5"/>
+  <Group GroupId="b5ca3" GraphId="ebd3a"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      
+      
+      
+      
+      <bp:TERM>cancer</bp:TERM>
+      
+      
+      
+      
+      
+      
+      <bp:ID>DOID:162</bp:ID>
+      
+      
+      
+      
+      
+      
+      <bp:Ontology>Disease</bp:Ontology>
+      
+      
+      
+    
+    
+    
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e81">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14646693 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haplotype analysis of ABCB1/MDR1 blocks in a Japanese population reveals genotype-dependent renal clearance of irinotecan.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pharmacogenetics</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sai K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaniwa N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Itoda M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hasegawa R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Komamura K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueno K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamakura S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitakaze M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shirao K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Minami H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohtsu A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshida T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saijo N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitamura Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kamatani N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ozawa S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sawada J</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="cc6">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12730278</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional characterization of human UDP-glucuronosyltransferase 1A9 variant, D256N, found in Japanese cancer patients.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Pharmacol Exp Ther</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jinno H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saeki M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka-Kagawa T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanioka N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sai K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaniwa N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ando M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shirao K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Minami H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohtsu A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshida T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saijo N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ozawa S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sawada J</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d54">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12181437</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Common human UGT1A polymorphisms and the altered metabolism of irinotecan active metabolite 7-ethyl-10-hydroxycamptothecin (SN-38).</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Pharmacol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gagné JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Montminy V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Belanger P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Journault K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gaucher G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guillemette C</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="bc2">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12893990</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">UGT pharmacogenomics: implications for cancer risk and cancer therapeutics.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pharmacogenetics</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Desai AA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Innocenti F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ratain MJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ac8">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15608127 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of organic anion transporter OATP1B1 (OATP-C) in hepatic uptake of irinotecan and its active metabolite, 7-ethyl-10-hydroxycamptothecin: in vitro evidence and effect of single nucleotide polymorphisms.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Drug Metab Dispos</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nozawa T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Minami H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sugiura S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsuji A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamai I</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d4c">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9466980</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetic predisposition to the metabolism of irinotecan (CPT-11). Role of uridine diphosphate glucuronosyltransferase isoform 1A1 in the glucuronidation of its active metabolite (SN-38) in human liver microsomes.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Clin Invest</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iyer L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">King CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Whitington PF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Green MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roy SK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tephly TR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coffman BL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ratain MJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a33">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11602529</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A new metabolite of irinotecan in which formation is mediated by human hepatic cytochrome P-450 3A4.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Drug Metab Dispos</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sai K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaniwa N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ozawa S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sawada JI</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="fd7">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11990381</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">UGT1A1*28 polymorphism as a determinant of irinotecan disposition and toxicity.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pharmacogenomics J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iyer L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Das S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Janisch L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wen M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ramírez J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karrison T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fleming GF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vokes EE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schilsky RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ratain MJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ecb">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10220571 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ATP-Dependent efflux of CPT-11 and SN-38 by the multidrug resistance protein (MRP) and its inhibition by PAK-104P.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Pharmacol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen ZS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furukawa T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sumizawa T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ono K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueda K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seto K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akiyama SI</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ae6">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12960109 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Irinotecan pathway genotype analysis to predict pharmacokinetics.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clin Cancer Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mathijssen RH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marsh S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karlsson MO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xie R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baker SD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verweij J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sparreboom A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McLeod HL</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="aa1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10815927</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Metabolism of irinotecan (CPT-11) by CYP3A4 and CYP3A5 in humans.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clin Cancer Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Santos A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zanetta S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cresteil T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deroussent A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pein F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raymond E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vernillet L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Risse ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boige V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gouyette A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vassal G</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="cb7">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10197614</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The anticancer prodrug CPT-11 is a potent inhibitor of acetylcholinesterase but is rapidly catalyzed to SN-38 by butyrylcholinesterase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morton CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wadkins RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Danks MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Potter PM</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="e72">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12810652 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Differential effects of the breast cancer resistance protein on the cellular accumulation and cytotoxicity of 9-aminocamptothecin and 9-nitrocamptothecin.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rajendra R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gounder MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saleem A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schellens JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ross DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bates SE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sinko P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rubin EH</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>neutropenia</bp:TERM><bp:ID>DOID:1227</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>diarrhea</bp:TERM><bp:ID>DOID:13250</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>hepatocyte</bp:TERM><bp:ID>CL:0000182</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>enterocyte</bp:TERM><bp:ID>CL:0000584</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

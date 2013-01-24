@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="mTOR pathways" Organism="Homo sapiens">
+  <Graphics BoardWidth="939.3333333333334" BoardHeight="477.9999999999998" />
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="775.9999999999994" Y="271.99999999999994" />
+      <Point X="734.666666666666" Y="307.9999999999999" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="681.6666666666662" Y="251.66666666666714" />
+      <Point X="681.6666666666662" Y="305.6666666666665" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="33ff00">
+      <Point X="639.6666666666663" Y="353.66666666666583" />
+      <Point X="597.6666666666664" Y="395.6666666666657" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff3300">
+      <Point X="705.6666666666658" Y="351.6666666666659" />
+      <Point X="741.666666666666" Y="396.6666666666657" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="553.6666666666665" Y="206.6666666666669" />
+      <Point X="644.6666666666662" Y="206.6666666666669" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="511.666666666666" Y="342.66666666666595" />
+      <Point X="642.6666666666663" Y="249.66666666666714" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="343.66666666666674" Y="347.66666666666595" />
+      <Point X="445.66666666666725" Y="347.66666666666595" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="274.666666666667" Y="205.33333333333346" />
+      <Point X="482.6666666666668" Y="205.6666666666669" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="107.99999999999935" Y="163.9999999999999" GraphRef="ca84a" RelX="-1.0" RelY="-0.5" />
+      <Point X="70.6666666666668" Y="217.99999999999932" />
+      <Point X="106.16666666666612" Y="271.99999999999875" GraphRef="d4f01" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="84.00000000000009" Y="260.0000000000001" />
+      <Point X="106.16666666666612" Y="271.99999999999875" GraphRef="d4f01" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="186.66666666666646" Y="173.3333333333335" />
+      <Point X="166.66666666666603" Y="163.9999999999999" GraphRef="ca84a" RelX="1.0" RelY="-0.5" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="747.9999999999992" Y="158.66666666666677" />
+      <Point X="747.9999999999992" Y="180.00000000000014" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="823.9999999999992" Y="158.66666666666677" />
+      <Point X="823.9999999999992" Y="180.00000000000014" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="33cc00">
+      <Point X="745.3333333333326" Y="208.00000000000014" />
+      <Point X="702.666666666666" Y="298.6666666666664" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="765.3333333333325" Y="190.66666666666666" />
+      <Point X="807.9999999999992" Y="190.66666666666666" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="710.666666666666" Y="234.6666666666668" />
+      <Point X="781.3333333333327" Y="197.33333333333337" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="801.3333333333326" Y="180.00000000000014" />
+      <Point X="761.3333333333298" Y="181.33333333333366" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="dcf26">
+    <Graphics ConnectorType="Curved" ZOrder="28673" LineThickness="1.0">
+      <Point X="170.66666666666669" Y="271.99999999999875" GraphRef="d4f01" RelX="1.0" RelY="0.0" />
+      <Point X="203.99999999999986" Y="217.99999999999932" />
+      <Point X="166.66666666666603" Y="163.9999999999999" GraphRef="ca84a" RelX="1.0" RelY="-0.5" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="PTEN" GraphId="a45eb">
+    <Graphics CenterX="46.666666666666714" CenterY="215.9999999999998" Width="88.00000000000006" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="16" Valign="Middle" Color="006666" />
+  </Label>
+  <Label TextLabel="+" GraphId="ea358">
+    <Graphics CenterX="614.6666666666663" CenterY="365.33333333333303" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="15" Valign="Middle" Color="00ff00" />
+  </Label>
+  <Label TextLabel="GTP" GraphId="bc349">
+    <Graphics CenterX="746.6666666666666" CenterY="188.00000000000014" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="13" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="SKT11&#xA;" GraphId="c14f1">
+    <Graphics CenterX="276.66666666666686" CenterY="349.99999999999915" Width="80.0" Height="20.0" ZOrder="28674" FillColor="ffffff" FontSize="16" Valign="Middle" Color="999999" />
+  </Label>
+  <Label TextLabel="P13K" GraphId="da514">
+    <Graphics CenterX="229.33333333333383" CenterY="216.00000000000017" Width="80.0" Height="20.0" ZOrder="28675" FillColor="ffffff" FontSize="16" Valign="Middle" Color="cc0099" />
+  </Label>
+  <Label TextLabel="-" GraphId="d828e">
+    <Graphics CenterX="729.9999999999952" CenterY="360.6666666666667" Width="17.33333333333337" Height="17.33333333333329" ZOrder="28676" FillColor="ffffff" FontWeight="Bold" FontSize="15" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="GDP&#xA;" GraphId="f0209">
+    <Graphics CenterX="826.0000000000006" CenterY="191.33333333333343" Width="80.0" Height="20.0" ZOrder="28678" FillColor="ffffff" FontSize="13" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Label TextLabel="+" GraphId="d8f5b">
+    <Graphics CenterX="722.0000000000015" CenterY="244.66666666666703" Width="80.0" Height="20.0" ZOrder="28679" FillColor="ffffff" FontWeight="Bold" FontSize="15" Valign="Middle" Color="00cc00" />
+  </Label>
+  <Label TextLabel="-" GraphId="e3964">
+    <Graphics CenterX="762.6666666666652" CenterY="213.00000000000003" Width="40.000000000000064" Height="16.6666666666669" ZOrder="28680" FillColor="ffffff" FontWeight="Bold" FontSize="15" Valign="Middle" Color="ff0000" />
+  </Label>
+  <Shape TextLabel="mTOR" GraphId="e86d7">
+    <Graphics CenterX="677.4166666666666" CenterY="322.91666666666663" Width="112.5" Height="33.5" ZOrder="16384" FontWeight="Bold" FontSize="18" Valign="Middle" ShapeType="Rectangle" Color="ff3300" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="TSC2" GraphId="a0336">
+    <Graphics CenterX="681.9999999999994" CenterY="236.16666666666822" Width="46.666666666666345" Height="28.9999999999998" ZOrder="16384" FontSize="14" Valign="Middle" ShapeType="Oval" Color="ff33cc" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="TSC1&#xA;" GraphId="cb601">
+    <Graphics CenterX="682.4166666666662" CenterY="208.00000000000006" Width="48.49999999999955" Height="29.33333333333322" ZOrder="16384" FontSize="14" Valign="Middle" ShapeType="Oval" Color="ff3399" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="AKT" GraphId="eb20b">
+    <Graphics CenterX="520.3333333333322" CenterY="210.75000000000006" Width="55.33333333333323" Height="37.1666666666668" ZOrder="16384" FontWeight="Bold" FontSize="16" Valign="Middle" ShapeType="Oval" Color="6633ff" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="AMPK&#xA;" GraphId="e6ce9">
+    <Graphics CenterX="479.16666666666737" CenterY="346.1666666666664" Width="49.00000000000023" Height="38.99999999999996" ZOrder="16384" FontSize="14" Valign="Middle" ShapeType="Oval" Color="ffcc00" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="PIP2" GraphId="d4f01">
+    <Graphics CenterX="138.4166666666664" CenterY="271.99999999999875" Width="64.50000000000057" Height="40.000000000000426" ZOrder="16384" FontWeight="Bold" FontSize="18" Valign="Middle" ShapeType="Rectangle" Color="0000cc" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Rapamycin" GraphId="b2c9d">
+    <Graphics CenterX="837.7499999999998" CenterY="250.00000000000003" Width="103.16666666666725" Height="38.66666666666657" ZOrder="16384" FontWeight="Bold" FontSize="16" Valign="Middle" ShapeType="Rectangle" Color="009999" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="S6K1&#xA;" GraphId="b5093">
+    <Graphics CenterX="592.6666666666727" CenterY="425.9999999999997" Width="62.66666666666663" Height="43.99999999999999" ZOrder="16384" FontWeight="Bold" FontSize="14" Valign="Middle" ShapeType="Hexagon" Color="990099" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="4EBP1" GraphId="bcd28">
+    <Graphics CenterX="743.7500000000061" CenterY="425.08333333333303" Width="59.16666666666663" Height="37.83333333333334" ZOrder="16384" FontWeight="Bold" FontSize="14" Valign="Middle" ShapeType="RoundedRectangle" Color="009999" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Rheb" GraphId="e743d">
+    <Graphics CenterX="748.666666666666" CenterY="139.74999999999972" Width="60.0000000000001" Height="35.16666666666668" ZOrder="16384" FontSize="16" Valign="Middle" ShapeType="RoundedRectangle" Color="00ccff" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="PIP3" GraphId="ca84a">
+    <Graphics CenterX="137.3333333333327" CenterY="173.33333333333317" Width="58.66666666666671" Height="37.3333333333332" ZOrder="16385" FontWeight="Bold" FontSize="18" Valign="Middle" ShapeType="Rectangle" Color="6600ff" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Rheb" GraphId="e8a2f">
+    <Graphics CenterX="827.0833333333337" CenterY="139.0833333333323" Width="56.49999999999999" Height="37.83333333333336" ZOrder="28677" FontSize="16" Valign="Middle" ShapeType="RoundedRectangle" Color="00ccff" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

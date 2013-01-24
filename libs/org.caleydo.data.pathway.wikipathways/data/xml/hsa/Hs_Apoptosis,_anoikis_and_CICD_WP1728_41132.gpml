@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Apoptosis, anoikis and CICD" Organism="Homo sapiens" License="CC BY 2.0">
+  <Graphics BoardWidth="707.9545594585142" BoardHeight="893.2"/>
+  <DataNode TextLabel="Bcl-2" GraphId="a1302" Type="Rna">
+    <Graphics CenterX="517.25" CenterY="11.75" Width="80.0" Height="20.0" ZOrder="32768" FontStyle="Italic" FontSize="11" Valign="Middle" ShapeType="None"/>
+    <Xref Database="RefSeq" ID=""/>
+  </DataNode>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="123.0" Y="4.0"/>
+      <Point X="109.0" Y="811.0"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="149.0" Y="5.0"/>
+      <Point X="134.0" Y="812.0"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="189.0" Y="205.0"/>
+      <Point X="231.5" Y="173.75" GraphRef="c3b8b" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="190.0" Y="216.0"/>
+      <Point X="225.5" Y="225.75" GraphRef="bd5cc" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="189.0" Y="226.0"/>
+      <Point X="235.0" Y="280.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="261.875" Y="237.0" GraphRef="bd5cc" RelX="0.5" RelY="1.0"/>
+      <Point X="292.5" Y="252.75" GraphRef="c116e" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="328.875" Y="264.0" GraphRef="c116e" RelX="0.5" RelY="1.0"/>
+      <Point X="355.625" Y="281.5" GraphRef="b06e6" RelX="-0.5" RelY="-1.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="293.0" Y="292.75" GraphRef="a80fa" RelX="1.0" RelY="0.0"/>
+      <Point X="343.5" Y="292.75" GraphRef="b06e6" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="274.0" Y="225.75" GraphRef="bd5cc" RelX="1.0" RelY="0.0"/>
+      <Point X="349.5" Y="224.75" GraphRef="e766c" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="351.0" Y="145.0"/>
+      <Point X="371.0" Y="146.5" GraphRef="f7bb7" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="280.0" Y="161.0"/>
+      <Point X="302.5" Y="153.75" GraphRef="f5ed4" RelX="-1.0" RelY="0.5" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="251.0" Y="184.0"/>
+      <Point X="249.75" Y="214.5" GraphRef="bd5cc" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="441.0" Y="19.0"/>
+      <Point X="583.0" Y="19.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bc860">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="441.0" Y="27.0"/>
+      <Point X="583.0" Y="27.0"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="460.0" Y="5.0"/>
+      <Point X="460.0" Y="22.0"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="460.0" Y="4.0"/>
+      <Point X="568.0" Y="4.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="400.0" Y="130.0"/>
+      <Point X="452.0" Y="33.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="509.0" Y="34.0"/>
+      <Point X="498.25" Y="157.5" GraphRef="a7dbb" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion"/>
+    </Graphics>
+  </Line>
+  <Shape TextLabel="ITGA" GraphId="ea401">
+    <Graphics CenterX="128.25" CenterY="173.5" Width="49.5" Height="17.0" ZOrder="16384" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="ITGB" GraphId="bf2ba">
+    <Graphics CenterX="128.25" CenterY="196.75" Width="49.5" Height="22.5" ZOrder="16384" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="FAK" GraphId="db32e">
+    <Graphics CenterX="168.5" CenterY="216.25" Width="43.0" Height="21.5" ZOrder="16384" FillColor="ffffff" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="PI3K" GraphId="bd5cc">
+    <Graphics CenterX="249.75" CenterY="225.75" Width="48.5" Height="22.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="p130Cas" GraphId="a80fa">
+    <Graphics CenterX="264.25" CenterY="292.75" Width="57.5" Height="22.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="Shc" GraphId="c3b8b">
+    <Graphics CenterX="255.75" CenterY="173.75" Width="48.5" Height="22.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="Akt" GraphId="e766c">
+    <Graphics CenterX="373.75" CenterY="224.75" Width="48.5" Height="22.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="JNK" GraphId="b06e6">
+    <Graphics CenterX="367.75" CenterY="292.75" Width="48.5" Height="22.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="RAC" GraphId="c116e">
+    <Graphics CenterX="316.75" CenterY="252.75" Width="48.5" Height="22.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="MEK1" GraphId="f5ed4">
+    <Graphics CenterX="326.75" CenterY="147.5" Width="48.5" Height="25.0" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="ERK 1/2" GraphId="f7bb7">
+    <Graphics CenterX="395.25" CenterY="146.5" Width="48.5" Height="25.0" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="Bcl-2" GraphId="a7dbb">
+    <Graphics CenterX="498.25" CenterY="169.75" Width="77.5" Height="24.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="BAX" GraphId="e2564">
+    <Graphics CenterX="480.25" CenterY="262.75" Width="77.5" Height="24.5" ZOrder="16384" FontWeight="Bold" FontSize="11" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="deaae">
+    <Graphics CenterX="503.96464579780263" CenterY="34.04972785416343" Width="279.26081651078385" Height="120.05430726367707" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Arc" Rotation="0.2852703952736925"/>
+  </Shape>
+  <Shape GraphId="f082b">
+    <Graphics CenterX="453.5" CenterY="22.0" Width="13.0" Height="10.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="P" GraphId="d549d">
+    <Graphics CenterX="191.75" CenterY="228.0" Width="12.5" Height="12.0" ZOrder="16386" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Vesicle" Color="000033" Rotation="0.0"/>
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+</Pathway>

@@ -1,0 +1,1571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Intrinsic Pathway for Apoptosis" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Matthews, L">
+  <Comment Source="WikiPathways-description">The intrinsic (Bcl-2 inhibitable or mitochondrial) pathway of apoptosis functions in response to various types of intracellular stress including growth factor withdrawal, DNA damage, unfolding stresses in the endoplasmic reticulum and death receptor stimulation. Following the reception of stress signals, proapoptotic BCL-2 family proteins are activated and subsequently interact with and inactivate antiapoptotic BCL-2 proteins. This interaction leads to the destabilization of the mitochondrial membrane and release of apoptotic factors.  These factors induce the caspase proteolytic cascade, chromatin condensation, and DNA fragmentation, ultimately leading to cell death. The key players in the Intrinsic pathway are the Bcl-2 family of proteins that are critical death regulators residing immediately upstream of mitochondria. The Bcl-2 family consists of both anti- and proapoptotic members that possess conserved alpha-helices with sequence conservation clustered in BCL-2 Homology (BH) domains. Proapoptotic members are organized as follows: &lt;p&gt; 1. "Multidomain" BAX family proteins such as BAX, BAK etc. that display sequence conservation in their BH1-3 regions. These proteins act downstream in mitochondrial disruption. &lt;p&gt; 2. "BH3-only" proteins such as BID,BAD, NOXA, PUMA,BIM, and BMF have only the short BH3 motif. These act upstream in the pathway, detecting developmental death cues or intracellular damage. Anti-apoptotic members like Bcl-2, Bcl-XL and their relatives exhibit homology in all segments BH1-4. One of the critical functions of BCL-2/BCL-XL proteins is to maintain the integrity of the mitochondrial outer membrane.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_140365</BiopaxRef>
+  <BiopaxRef>lit_140363</BiopaxRef>
+  <BiopaxRef>lit_140369</BiopaxRef>
+  <DataNode GraphId="n80_REACTOME_50825" TextLabel="BID&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="609.5" CenterY="1482.5" Width="31.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55957"/>
+  </DataNode>
+  <DataNode GraphId="n81_REACTOME_139953" TextLabel="tBID-p15&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="705.0" CenterY="1448.5" Width="58.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55957"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_139950" TextLabel="Caspase-8 dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="661.5" CenterY="1569.5" Width="103.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4185"/>
+  </DataNode>
+  <DataNode GraphId="n84_REACTOME_55915" TextLabel="Granzyme B&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="477.0" CenterY="1449.5" Width="104.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P10144"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_141373" TextLabel="tBID&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="771.0" CenterY="1761.5" Width="34.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55957"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_60306" TextLabel="NMT 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="822.0" CenterY="1405.5" Width="44.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P30419"/>
+  </DataNode>
+  <DataNode GraphId="n89_REACTOME_114266" TextLabel="tBID&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="996.0" CenterY="1760.5" Width="34.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55957"/>
+  </DataNode>
+  <DataNode GraphId="n121_REACTOME_50662" TextLabel="BAD &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="848.0" CenterY="1944.5" Width="64.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q92934"/>
+  </DataNode>
+  <DataNode GraphId="n122_REACTOME_139901" TextLabel="Phospho-BAD&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="595.5" CenterY="1988.5" Width="89.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q92934"/>
+  </DataNode>
+  <DataNode GraphId="n123_REACTOME_58252" TextLabel="AKT1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="594.5" CenterY="1885.0" Width="47.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P31749"/>
+  </DataNode>
+  <DataNode GraphId="n125_REACTOME_48888" TextLabel="14-3-3 protein &#10;beta/alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="716.5" CenterY="1993.5" Width="129.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P31946"/>
+  </DataNode>
+  <DataNode GraphId="n126_REACTOME_139904" TextLabel="143B:phospo-BAD &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="740.5" CenterY="2062.0" Width="113.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5737"/>
+  </DataNode>
+  <DataNode GraphId="n128_REACTOME_140202" TextLabel="Calcineurin B &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="849.0" CenterY="2131.5" Width="88.0" Height="43.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4613"/>
+  </DataNode>
+  <DataNode GraphId="n130_REACTOME_114242" TextLabel="BAD &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="977.0" CenterY="1942.0" Width="64.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q92934"/>
+  </DataNode>
+  <DataNode GraphId="n132_REACTOME_114339" TextLabel="tBID:BCL-&#10;2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1010.0" CenterY="1888.5" Width="58.0" Height="37.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5048"/>
+  </DataNode>
+  <DataNode GraphId="n133_REACTOME_114268" TextLabel="BAD:BCL-2&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1013.0" CenterY="1802.5" Width="64.0" Height="33.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3232"/>
+  </DataNode>
+  <DataNode GraphId="n135_REACTOME_140215" TextLabel="NOXA &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="832.5" CenterY="997.5" Width="75.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13794"/>
+  </DataNode>
+  <DataNode GraphId="n137_REACTOME_68653" TextLabel="DP-1:E2F1 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="741.5" CenterY="946.5" Width="115.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5400"/>
+  </DataNode>
+  <DataNode GraphId="n139_REACTOME_140218" TextLabel="NOXA &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="981.5" CenterY="996.0" Width="73.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13794"/>
+  </DataNode>
+  <DataNode GraphId="n141_REACTOME_140220" TextLabel="PUMA &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="829.5" CenterY="903.5" Width="73.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BXH1"/>
+  </DataNode>
+  <DataNode GraphId="n144_REACTOME_140222" TextLabel="PUMA &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="976.5" CenterY="902.5" Width="73.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BXH1"/>
+  </DataNode>
+  <DataNode GraphId="n202_REACTOME_140524" TextLabel="BIM sequestered &#10;to dynein (DLC1)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="157.5" CenterY="1238.0" Width="105.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3567"/>
+  </DataNode>
+  <DataNode GraphId="n203_REACTOME_140206" TextLabel="BIM&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="279.5" CenterY="1108.5" Width="31.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43521-1"/>
+  </DataNode>
+  <DataNode GraphId="n204_REACTOME_140526" TextLabel="phospho-dynein&#10;(DLC1) on &#10;microtubules&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="242.0" CenterY="1030.5" Width="124.0" Height="55.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2522"/>
+  </DataNode>
+  <DataNode GraphId="n205_REACTOME_59292" TextLabel="Mitogen-activated &#10;protein kinase 8&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="333.5" CenterY="1177.0" Width="129.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P45983"/>
+  </DataNode>
+  <DataNode GraphId="n292_REACTOME_140207" TextLabel="BIM&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="998.0" CenterY="1107.5" Width="36.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43521-1"/>
+  </DataNode>
+  <DataNode GraphId="n322_REACTOME_140528" TextLabel="BMF sequestered &#10;to dynein (DLC2)&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="189.5" CenterY="1315.0" Width="113.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3065"/>
+  </DataNode>
+  <DataNode GraphId="n323_REACTOME_140211" TextLabel="BMF&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="307.0" CenterY="1501.5" Width="32.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96LC9"/>
+  </DataNode>
+  <DataNode GraphId="n324_REACTOME_140530" TextLabel="phospho-dynein&#10;(DLC2) on &#10;microtubules&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="217.5" CenterY="1555.0" Width="121.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5554"/>
+  </DataNode>
+  <DataNode GraphId="n382_REACTOME_140212" TextLabel="BMF&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="991.0" CenterY="1160.5" Width="34.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96LC9"/>
+  </DataNode>
+  <DataNode GraphId="n1953_REACTOME_508157" TextLabel="Bcl-2 interacting BH-&#10;3 only proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1305.0" CenterY="762.0" Width="124.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21617"/>
+  </DataNode>
+  <DataNode GraphId="n1954_REACTOME_50757" TextLabel="Bcl-2 protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1234.5" CenterY="844.5" Width="77.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P10415"/>
+  </DataNode>
+  <DataNode GraphId="n1955_REACTOME_508158" TextLabel="Bcl2:BH3-only &#10;protein complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1393.0" CenterY="848.0" Width="122.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21874"/>
+  </DataNode>
+  <DataNode GraphId="n1958_REACTOME_508161" TextLabel="Bcl-XL interacting &#10;BH3-only proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1652.5" CenterY="765.0" Width="113.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_21650"/>
+  </DataNode>
+  <DataNode GraphId="n1959_REACTOME_508159" TextLabel="Bcl-XL:BH3-only &#10;protein complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1564.5" CenterY="851.0" Width="121.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21559"/>
+  </DataNode>
+  <DataNode GraphId="n2017_REACTOME_168850" TextLabel="tBID bound to inactive &#10;BAX&#10;" Type="Complex">
+    <BiopaxRef>lit_140395</BiopaxRef>
+    <Graphics Color="000000" CenterX="547.0" CenterY="1271.0" Width="126.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6691"/>
+  </DataNode>
+  <DataNode GraphId="n2018_REACTOME_139907" TextLabel="Activated BAX&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="802.0" CenterY="1316.5" Width="84.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q07812"/>
+  </DataNode>
+  <DataNode GraphId="n2020_REACTOME_139949" TextLabel="Activated BAX &#10;inserted into &#10;mitochondrial &#10;membrane&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="972.0" CenterY="1316.0" Width="88.0" Height="68.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q07812"/>
+  </DataNode>
+  <DataNode GraphId="n2022_REACTOME_114269" TextLabel="Activated BAX&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="987.5" CenterY="1196.5" Width="81.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2560"/>
+  </DataNode>
+  <DataNode GraphId="n2052_REACTOME_139916" TextLabel="Inactive Bax alpha &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="539.5" CenterY="1380.0" Width="113.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q07812"/>
+  </DataNode>
+  <DataNode GraphId="n2054_REACTOME_168847" TextLabel="tBID bound to inactive &#10;BAK&#10;" Type="Complex">
+    <BiopaxRef>lit_140395</BiopaxRef>
+    <Graphics Color="000000" CenterX="939.0" CenterY="1612.0" Width="126.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6608"/>
+  </DataNode>
+  <DataNode GraphId="n2055_REACTOME_50690" TextLabel="Activated BAK &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1038.0" CenterY="1696.5" Width="124.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q16611"/>
+  </DataNode>
+  <DataNode GraphId="n2085_REACTOME_114262" TextLabel="Active oligomeric &#10;BAK&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="948.0" CenterY="1515.5" Width="122.0" Height="33.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4956"/>
+  </DataNode>
+  <DataNode GraphId="n2143_REACTOME_139896" TextLabel="Inactive BAK &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="972.5" CenterY="1422.5" Width="105.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q16611"/>
+  </DataNode>
+  <DataNode GraphId="n2145_REACTOME_114244" TextLabel="Cytochrome c&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1964.0" CenterY="1170.5" Width="84.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P99999"/>
+  </DataNode>
+  <DataNode GraphId="n2146_REACTOME_53259" TextLabel="Cytochrome c&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2153.0" CenterY="1170.5" Width="84.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P99999"/>
+  </DataNode>
+  <DataNode GraphId="n2176_REACTOME_64637" TextLabel="Smac protein, &#10;mitochondrial &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1994.0" CenterY="935.0" Width="106.0" Height="56.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NR28"/>
+  </DataNode>
+  <DataNode GraphId="n2177_REACTOME_114298" TextLabel="SMAC&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2337.5" CenterY="937.5" Width="55.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NR28"/>
+  </DataNode>
+  <DataNode GraphId="n2179_REACTOME_50099" TextLabel="Apaf-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2230.5" CenterY="1126.5" Width="55.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14727"/>
+  </DataNode>
+  <DataNode GraphId="n2180_REACTOME_114253" TextLabel="Apaf-1:Cytochrome &#10;C&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2388.5" CenterY="1171.0" Width="115.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4880"/>
+  </DataNode>
+  <DataNode GraphId="n2182_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2345.5" CenterY="1107.5" Width="51.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n2183_REACTOME_57033" TextLabel="Caspase-9 &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2389.5" CenterY="1058.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55211"/>
+  </DataNode>
+  <DataNode GraphId="n2184_REACTOME_114255" TextLabel="Cytochrome C:Apaf-&#10;1:ATP:Procaspase-9&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2519.5" CenterY="1108.5" Width="127.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5647"/>
+  </DataNode>
+  <DataNode GraphId="n2186_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2571.5" CenterY="1206.5" Width="51.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n2187_REACTOME_114258" TextLabel="Apoptosome&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2728.5" CenterY="1199.5" Width="115.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3569"/>
+  </DataNode>
+  <DataNode GraphId="n2245_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2621.5" CenterY="1000.5" Width="51.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n2246_REACTOME_57021" TextLabel="Caspase-3 &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2662.5" CenterY="1042.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P42574"/>
+  </DataNode>
+  <DataNode GraphId="n2247_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2761.5" CenterY="1071.5" Width="51.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n2248_REACTOME_141647" TextLabel="active caspase-3&#10;" Type="Complex">
+    <BiopaxRef>lit_141645</BiopaxRef>
+    <Graphics Color="000000" CenterX="2834.0" CenterY="1040.0" Width="108.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2467"/>
+  </DataNode>
+  <DataNode GraphId="n2250_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2866.5" CenterY="1088.5" Width="51.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n2251_REACTOME_57029" TextLabel="Caspase-7 &#10;precursor&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2795.5" CenterY="1149.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55210"/>
+  </DataNode>
+  <DataNode GraphId="n2252_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2826.5" CenterY="1284.5" Width="51.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n2253_REACTOME_141643" TextLabel="active caspase-7&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2927.5" CenterY="1286.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3366"/>
+  </DataNode>
+  <DataNode GraphId="n2311_REACTOME_114304" TextLabel="XIAP:Caspase-3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2455.5" CenterY="985.0" Width="127.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2704"/>
+  </DataNode>
+  <DataNode GraphId="n2312_REACTOME_114305" TextLabel="SMAC:XIAP:&#10;Caspase-3&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2586.5" CenterY="936.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5281"/>
+  </DataNode>
+  <DataNode GraphId="n2314_REACTOME_114308" TextLabel="XIAP:Caspase-7&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2441.5" CenterY="904.0" Width="127.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2853"/>
+  </DataNode>
+  <DataNode GraphId="n2315_REACTOME_114353" TextLabel="SMAC:XIAP:&#10;Caspase-7&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2338.5" CenterY="819.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_3355"/>
+  </DataNode>
+  <DataNode GraphId="n2317_REACTOME_114317" TextLabel="XIAP:Caspase-9&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2246.5" CenterY="770.0" Width="127.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4334"/>
+  </DataNode>
+  <DataNode GraphId="n2318_REACTOME_114318" TextLabel="SMAC:XIAP:&#10;Caspase-9&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2105.5" CenterY="758.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4472"/>
+  </DataNode>
+  <DataNode GraphId="n2348_REACTOME_114391" TextLabel="SMAC:XIAP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2869.5" CenterY="896.5" Width="91.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5204"/>
+  </DataNode>
+  <DataNode GraphId="n2351_REACTOME_141640" TextLabel="Cleaved &#10;Caspase-9&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2915.5" CenterY="681.0" Width="103.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_5782"/>
+  </DataNode>
+  <DataNode GraphId="n2352_REACTOME_114236" TextLabel="Apoptosis regulator &#10;Bcl-X&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1748.0" CenterY="847.0" Width="116.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q07817"/>
+  </DataNode>
+  <Line GraphId="e_79_REACTOME_139898">
+    <Comment Source="WikiPathways-description">The caspase 8 -mediated cleavage of cytosolic, inactive p22 BID at internal Asp sites yields a major p15 and minor p13 and p11 fragments. After myristoylation, tBID translocates to mitochondria as an integral membrane protein.</Comment>
+    <BiopaxRef>lit_140419</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="1490.0" GraphId="e_79_0" GraphRef="n80_REACTOME_50825" RelX="1.2258064516129032" RelY="0.6956521739130435"/>
+      <Point X="660.0" Y="1510.0" GraphId="e_79_1"/>
+      <Point X="696.0" Y="1463.0" GraphId="e_79_2" GraphRef="n81_REACTOME_139953" RelX="-0.3103448275862069" RelY="1.3043478260869565" ArrowHead="Arrow"/>
+      <Anchor Position="0.3892750921350449" GraphId="e_79_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_79_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="660.0" Y="1549.0" GraphId="e_79_c__0_0" GraphRef="n82_REACTOME_139950" RelX="-0.019417475728155338" RelY="-1.1428571428571428"/>
+      <Point X="660.0" Y="1510.0" GraphId="e_79_c__0_1" GraphRef="e_79_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_REACTOME_139893">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'BID' is present. At the end of this reaction, 1 molecule of 'tBID-p15' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol' and  is mediated by the 'granzyme B activity' of 'Granzyme B'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_141103</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="595.0" Y="1468.0" GraphId="e_83_0" GraphRef="n80_REACTOME_50825" RelX="-0.9032258064516129" RelY="-1.2173913043478262"/>
+      <Point X="570.0" Y="1448.0" GraphId="e_83_1"/>
+      <Point X="673.0" Y="1448.0" GraphId="e_83_2" GraphRef="n81_REACTOME_139953" RelX="-1.103448275862069" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.23712531117257063" GraphId="e_83_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_83_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="532.0" Y="1448.0" GraphId="e_83_c__0_0" GraphRef="n84_REACTOME_55915" RelX="1.0576923076923077" RelY="-0.08695652173913043"/>
+      <Point X="570.0" Y="1448.0" GraphId="e_83_c__0_1" GraphRef="e_83_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_REACTOME_141367">
+    <Comment Source="WikiPathways-description">After proteolytic activation, tBID is myristoylated by NMT-1 at an exposed glycine. N-myristoylation may enable the activated tBID to associate with the lipid components of the mitochondrial membrane.</Comment>
+    <BiopaxRef>lit_141371</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="737.0" Y="1448.0" GraphId="e_85_0" GraphRef="n81_REACTOME_139953" RelX="1.103448275862069" RelY="0.0"/>
+      <Point X="770.0" Y="1448.0" GraphId="e_85_1"/>
+      <Point X="770.0" Y="1747.0" GraphId="e_85_2" GraphRef="n86_REACTOME_141373" RelX="-0.058823529411764705" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.09939759036144578" GraphId="e_85_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="808.0" Y="1420.0" GraphId="e_85_c__0_0" GraphRef="n87_REACTOME_60306" RelX="-0.6363636363636364" RelY="1.3043478260869565"/>
+      <Point X="770.0" Y="1448.0" GraphId="e_85_c__0_1" GraphRef="e_85_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_139920">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'tBID' is translocated from cytosol to mitochondrial outer membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="791.0" Y="1761.0" GraphId="e_88_0" GraphRef="n86_REACTOME_141373" RelX="1.1764705882352942" RelY="0.0"/>
+      <Point X="848.0" Y="1761.0" GraphId="e_88_1"/>
+      <Point X="976.0" Y="1760.0" GraphId="e_88_2" GraphRef="n89_REACTOME_114266" RelX="-1.1764705882352942" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.30810160268366615" GraphId="e_88_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_120_REACTOME_139903">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'BAD protein' is present. At the end of this reaction, 1 molecule of 'Phospho-BAD' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol' and  is mediated by the 'kinase activity' of 'AKT1'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_140428</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="813.0" Y="1943.0" GraphId="e_120_0" GraphRef="n121_REACTOME_50662" RelX="-1.09375" RelY="-0.08695652173913043"/>
+      <Point X="595.0" Y="1942.0" GraphId="e_120_1"/>
+      <Point X="595.0" Y="1974.0" GraphId="e_120_2" GraphRef="n122_REACTOME_139901" RelX="0.0" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.8720011742949759" GraphId="e_120_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_120_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="594.0" Y="1901.0" GraphId="e_120_c__0_0" GraphRef="n123_REACTOME_58252" RelX="0.0" RelY="1.2307692307692308"/>
+      <Point X="595.0" Y="1942.0" GraphId="e_120_c__0_1" GraphRef="e_120_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_REACTOME_139899">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of '143B protein', and 1 molecule of 'Phospho-BAD' are present. At the end of this reaction, 1 molecule of '143B:phospo-BAD complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_140433</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="594.0" Y="2062.0" GraphId="e_124_0"/>
+      <Point X="628.0" Y="2062.0" GraphId="e_124_1"/>
+      <Point X="681.0" Y="2062.0" GraphId="e_124_2" GraphRef="n126_REACTOME_139904" RelX="-1.0442477876106195" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_124_a_i"/>
+      <Anchor Position="0.39080459770114945" GraphId="e_124_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="692.0" Y="2010.0" GraphId="e_124_i0_0" GraphRef="n125_REACTOME_48888" RelX="-0.37209302325581395" RelY="1.2592592592592593"/>
+      <Point X="594.0" Y="2062.0" GraphId="e_124_i0_1" GraphRef="e_124_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="594.0" Y="2003.0" GraphId="e_124_i1_0" GraphRef="n122_REACTOME_139901" RelX="-0.02247191011235955" RelY="1.3043478260869565"/>
+      <Point X="594.0" Y="2062.0" GraphId="e_124_i1_1" GraphRef="e_124_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_127_REACTOME_139906">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of '143B:phospo-BAD complex' is present. At the end of this reaction, 1 molecule of 'BAD protein', and 1 molecule of '143B protein' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol' and  is mediated by the 'calcium-dependent protein serine/threonine phosphatase regulator activity' of 'Calcineurin B complex'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114467</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="800.0" Y="2062.0" GraphId="e_127_0" GraphRef="n126_REACTOME_139904" RelX="1.0619469026548674" RelY="0.0"/>
+      <Point X="848.0" Y="2062.0" GraphId="e_127_1"/>
+      <Point X="848.0" Y="1993.0" GraphId="e_127_2"/>
+      <Anchor Position="0.41025641025641024" GraphId="e_127_a_p"/>
+      <Anchor Position="1.0" GraphId="e_127_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_127_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="784.0" Y="1993.0" GraphId="e_127_o0_0" ArrowHead="Arrow" GraphRef="n125_REACTOME_48888" RelX="1.054263565891473" RelY="0.0"/>
+      <Point X="848.0" Y="1993.0" GraphId="e_127_o0_1" GraphRef="e_127_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_127_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="848.0" Y="1959.0" GraphId="e_127_o1_0" ArrowHead="Arrow" GraphRef="n121_REACTOME_50662" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="848.0" Y="1993.0" GraphId="e_127_o1_1" GraphRef="e_127_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_127_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="848.0" Y="2107.0" GraphId="e_127_c__0_0" GraphRef="n128_REACTOME_140202" RelX="-0.022727272727272728" RelY="-1.1162790697674418"/>
+      <Point X="848.0" Y="2062.0" GraphId="e_127_c__0_1" GraphRef="e_127_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_129_REACTOME_139905">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'BAD protein' is translocated from cytosol to mitochondrial outer membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="883.0" Y="1942.0" GraphId="e_129_0" GraphRef="n121_REACTOME_50662" RelX="1.09375" RelY="-0.17391304347826086"/>
+      <Point X="903.0" Y="1942.0" GraphId="e_129_1"/>
+      <Point X="942.0" Y="1942.0" GraphId="e_129_2" GraphRef="n130_REACTOME_114242" RelX="-1.09375" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3389830508474576" GraphId="e_129_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_REACTOME_139897">
+    <Comment Source="WikiPathways-description">Short peptides representing BAD and BIX were found to bind BCL-2 displacing BID-like BH3 domains that initiate mitochondrial dysfunction.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="946.0" Y="1887.0" GraphId="e_131_0"/>
+      <Point X="990.0" Y="1856.0" GraphId="e_131_1"/>
+      <Point X="925.0" Y="1802.0" GraphId="e_131_2"/>
+      <Anchor Position="0.0" GraphId="e_131_a_i"/>
+      <Anchor Position="0.38910198427796766" GraphId="e_131_a_p"/>
+      <Anchor Position="1.0" GraphId="e_131_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="969.0" Y="1925.0" GraphId="e_131_i0_0" GraphRef="n130_REACTOME_114242" RelX="-0.25" RelY="-1.2142857142857142"/>
+      <Point X="946.0" Y="1887.0" GraphId="e_131_i0_1" GraphRef="e_131_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="978.0" Y="1887.0" GraphId="e_131_i1_0" GraphRef="n132_REACTOME_114339" RelX="-1.103448275862069" RelY="-0.05405405405405406"/>
+      <Point X="946.0" Y="1887.0" GraphId="e_131_i1_1" GraphRef="e_131_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="976.0" Y="1770.0" GraphId="e_131_o0_0" ArrowHead="Arrow" GraphRef="n89_REACTOME_114266" RelX="-1.1764705882352942" RelY="0.8695652173913043"/>
+      <Point X="925.0" Y="1802.0" GraphId="e_131_o0_1" GraphRef="e_131_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_131_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="978.0" Y="1802.0" GraphId="e_131_o1_0" ArrowHead="Arrow" GraphRef="n133_REACTOME_114268" RelX="-1.09375" RelY="0.0"/>
+      <Point X="925.0" Y="1802.0" GraphId="e_131_o1_1" GraphRef="e_131_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_REACTOME_140214">
+    <Comment Source="WikiPathways-description">At the end of this reaction, 1 molecule of 'NOXA protein' is present. &lt;br&gt;&lt;br&gt;&lt;br&gt;</Comment>
+    <BiopaxRef>lit_140442</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="832.0" Y="1095.0" GraphId="e_134_0"/>
+      <Point X="832.0" Y="1049.0" GraphId="e_134_1"/>
+      <Point X="832.0" Y="1015.0" GraphId="e_134_2" GraphRef="n135_REACTOME_140215" RelX="0.0" RelY="1.2413793103448276" ArrowHead="Arrow"/>
+      <Anchor Position="0.575" GraphId="e_134_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_136_REACTOME_140217">
+    <Comment Source="WikiPathways-description">At the end of this reaction, 1 molecule of 'NOXA protein' is present. &lt;br&gt;&lt;br&gt;&lt;br&gt;</Comment>
+    <BiopaxRef>lit_141113</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="683.0" Y="997.0" GraphId="e_136_0"/>
+      <Point X="742.0" Y="997.0" GraphId="e_136_1"/>
+      <Point X="792.0" Y="997.0" GraphId="e_136_2" GraphRef="n135_REACTOME_140215" RelX="-1.0666666666666667" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5412844036697247" GraphId="e_136_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_136_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="741.0" Y="967.0" GraphId="e_136_a__0_0" GraphRef="n137_REACTOME_68653" RelX="0.0" RelY="1.2"/>
+      <Point X="742.0" Y="997.0" GraphId="e_136_a__0_1" GraphRef="e_136_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_138_REACTOME_140216">
+    <Comment Source="WikiPathways-description">It was observed that cytosolic Noxa underwent BH3 motif-dependent localization to mitochondria and interacted with anti-apoptotic Bcl-2 family members, resulting in the activation of caspase-9.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="873.0" Y="995.0" GraphId="e_138_0" GraphRef="n135_REACTOME_140215" RelX="1.0933333333333333" RelY="-0.13793103448275862"/>
+      <Point X="899.0" Y="995.0" GraphId="e_138_1"/>
+      <Point X="942.0" Y="995.0" GraphId="e_138_2" GraphRef="n139_REACTOME_140218" RelX="-1.0684931506849316" RelY="-0.07142857142857142" ArrowHead="Arrow"/>
+      <Anchor Position="0.37681159420289856" GraphId="e_138_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_REACTOME_139913">
+    <Comment Source="WikiPathways-description">At the end of this reaction, 1 molecule of 'PUMA protein' is present. &lt;br&gt;&lt;br&gt;&lt;br&gt;</Comment>
+    <BiopaxRef>lit_140450</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="828.0" Y="808.0" GraphId="e_140_0"/>
+      <Point X="827.0" Y="844.0" GraphId="e_140_1"/>
+      <Point X="828.0" Y="884.0" GraphId="e_140_2" GraphRef="n141_REACTOME_140220" RelX="-0.0273972602739726" RelY="-1.1515151515151516" ArrowHead="Arrow"/>
+      <Anchor Position="0.4737024726628744" GraphId="e_140_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_REACTOME_140221">
+    <Comment Source="WikiPathways-description">At the end of this reaction, 1 molecule of 'PUMA protein' is present. &lt;br&gt;&lt;br&gt;&lt;br&gt;</Comment>
+    <BiopaxRef>lit_141113</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="678.0" Y="900.0" GraphId="e_142_0"/>
+      <Point X="741.0" Y="900.0" GraphId="e_142_1"/>
+      <Point X="790.0" Y="901.0" GraphId="e_142_2" GraphRef="n141_REACTOME_140220" RelX="-1.0684931506849316" RelY="-0.12121212121212122" ArrowHead="Arrow"/>
+      <Anchor Position="0.5624487618248901" GraphId="e_142_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_142_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="741.0" Y="926.0" GraphId="e_142_a__0_0" GraphRef="n137_REACTOME_68653" RelX="0.0" RelY="-1.1428571428571428"/>
+      <Point X="741.0" Y="900.0" GraphId="e_142_a__0_1" GraphRef="e_142_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_143_REACTOME_139914">
+    <Comment Source="WikiPathways-description">It is thought that due to its p53 dependence for expression, PUMA could function as a mediator of p53-induced apoptosis. Newly synthesized PUMA protein translocates to mitochondria and binds to BCL-2 and Bcl-X(L) through a BH3 domain.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="869.0" Y="902.0" GraphId="e_143_0" GraphRef="n141_REACTOME_140220" RelX="1.095890410958904" RelY="-0.06060606060606061"/>
+      <Point X="896.0" Y="902.0" GraphId="e_143_1"/>
+      <Point X="937.0" Y="902.0" GraphId="e_143_2" GraphRef="n144_REACTOME_140222" RelX="-1.0684931506849316" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.39705882352941174" GraphId="e_143_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_201_REACTOME_139918">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'BIM sequestered to dynein (DLC1)' is present. At the end of this reaction, 1 molecule of 'BIM', and 1 molecule of 'phospho-dynein(DLC1) on microtubules' are present.&lt;br&gt;&lt;br&gt; This reaction takes place on the 'plasma membrane' and  is mediated by the 'kinase activity' of 'Mitogen-activated protein kinase 8 '.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_140440</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="171.0" Y="1216.0" GraphId="e_201_0" GraphRef="n202_REACTOME_140524" RelX="0.26666666666666666" RelY="-1.1578947368421053"/>
+      <Point X="204.0" Y="1177.0" GraphId="e_201_1"/>
+      <Point X="154.0" Y="1145.0" GraphId="e_201_2"/>
+      <Point X="202.0" Y="1107.0" GraphId="e_201_3"/>
+      <Anchor Position="0.29759105910896283" GraphId="e_201_a_p"/>
+      <Anchor Position="1.0" GraphId="e_201_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_201_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="261.0" Y="1107.0" GraphId="e_201_o0_0" ArrowHead="Arrow" GraphRef="n203_REACTOME_140206" RelX="-1.1612903225806452" RelY="-0.08695652173913043"/>
+      <Point X="202.0" Y="1107.0" GraphId="e_201_o0_1" GraphRef="e_201_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_201_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="227.0" Y="1061.0" GraphId="e_201_o1_0" ArrowHead="Arrow" GraphRef="n204_REACTOME_140526" RelX="-0.24193548387096775" RelY="1.1272727272727272"/>
+      <Point X="202.0" Y="1107.0" GraphId="e_201_o1_1" GraphRef="e_201_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_201_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="266.0" Y="1177.0" GraphId="e_201_c__0_0" GraphRef="n205_REACTOME_59292" RelX="-1.0387596899224807" RelY="0.0"/>
+      <Point X="204.0" Y="1177.0" GraphId="e_201_c__0_1" GraphRef="e_201_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_291_REACTOME_139919">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'BIM' is translocated from cytosol to mitochondrial outer membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="298.0" Y="1107.0" GraphId="e_291_0" GraphRef="n203_REACTOME_140206" RelX="1.2258064516129032" RelY="-0.08695652173913043"/>
+      <Point X="443.0" Y="1107.0" GraphId="e_291_1"/>
+      <Point X="977.0" Y="1107.0" GraphId="e_291_2" GraphRef="n292_REACTOME_140207" RelX="-1.1666666666666667" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.21354933726067746" GraphId="e_291_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_321_REACTOME_139908">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'BMF sequestered to dynein (DLC2)' is present. At the end of this reaction, 1 molecule of 'phospho-dynein(DLC2) on microtubules', and 1 molecule of 'BMF' are present.&lt;br&gt;&lt;br&gt; This reaction takes place on the 'plasma membrane' and  is mediated by the 'kinase activity' of 'Mitogen-activated protein kinase 8 '.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_140440</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="183.0" Y="1337.0" GraphId="e_321_0" GraphRef="n322_REACTOME_140528" RelX="-0.10619469026548672" RelY="1.1578947368421053"/>
+      <Point X="160.0" Y="1410.0" GraphId="e_321_1"/>
+      <Point X="202.0" Y="1426.0" GraphId="e_321_2"/>
+      <Point X="156.0" Y="1451.0" GraphId="e_321_3"/>
+      <Point X="203.0" Y="1467.0" GraphId="e_321_4"/>
+      <Anchor Position="0.5435792756019989" GraphId="e_321_a_p"/>
+      <Anchor Position="1.0" GraphId="e_321_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_321_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="288.0" Y="1495.0" GraphId="e_321_o0_0" ArrowHead="Arrow" GraphRef="n323_REACTOME_140211" RelX="-1.1875" RelY="-0.5217391304347826"/>
+      <Point X="203.0" Y="1467.0" GraphId="e_321_o0_1" GraphRef="e_321_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_321_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="211.0" Y="1518.0" GraphId="e_321_o1_0" ArrowHead="Arrow" GraphRef="n324_REACTOME_140530" RelX="-0.09917355371900827" RelY="-1.088235294117647"/>
+      <Point X="203.0" Y="1467.0" GraphId="e_321_o1_1" GraphRef="e_321_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_321_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="323.0" Y="1199.0" GraphId="e_321_c__0_0" GraphRef="n205_REACTOME_59292" RelX="-0.15503875968992248" RelY="1.1578947368421053"/>
+      <Point X="202.0" Y="1426.0" GraphId="e_321_c__0_1" GraphRef="e_321_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_381_REACTOME_139909">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'BMF' is translocated from cytosol to mitochondrial outer membrane.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="326.0" Y="1500.0" GraphId="e_381_0" GraphRef="n323_REACTOME_140211" RelX="1.1875" RelY="-0.08695652173913043"/>
+      <Point X="414.0" Y="1500.0" GraphId="e_381_1"/>
+      <Point X="414.0" Y="1161.0" GraphId="e_381_2"/>
+      <Point X="971.0" Y="1160.0" GraphId="e_381_3" GraphRef="n382_REACTOME_140212" RelX="-1.1764705882352942" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0894308127246531" GraphId="e_381_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1952_REACTOME_508163">
+    <Comment Source="WikiPathways-description">Bcl-2 interacts with tBid, BIM, PUMA, NOXA, BAD</Comment>
+    <BiopaxRef>lit_114451</BiopaxRef>
+    <BiopaxRef>lit_140464</BiopaxRef>
+    <BiopaxRef>lit_140450</BiopaxRef>
+    <BiopaxRef>lit_140387</BiopaxRef>
+    <BiopaxRef>lit_140457</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1305.0" Y="810.0" GraphId="e_1952_0"/>
+      <Point X="1305.0" Y="846.0" GraphId="e_1952_1"/>
+      <Point X="1328.0" Y="804.0" GraphId="e_1952_2"/>
+      <Point X="1364.0" Y="826.0" GraphId="e_1952_3" GraphRef="n1955_REACTOME_508158" RelX="-0.47540983606557374" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1952_a_i"/>
+      <Anchor Position="0.28554358097491167" GraphId="e_1952_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1952_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1305.0" Y="784.0" GraphId="e_1952_i0_0" GraphRef="n1953_REACTOME_508157" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="1305.0" Y="810.0" GraphId="e_1952_i0_1" GraphRef="e_1952_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1952_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1258.0" Y="830.0" GraphId="e_1952_i1_0" GraphRef="n1954_REACTOME_50757" RelX="0.6233766233766234" RelY="-1.2173913043478262"/>
+      <Point X="1305.0" Y="810.0" GraphId="e_1952_i1_1" GraphRef="e_1952_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1956_REACTOME_508162">
+    <Comment Source="WikiPathways-description">BH3-only proteins (tBid, BIM, PUMA, BAD, NOXA) associate with and inactivate anti-apoptotic protein Bcl-XL( Yi et al., 2003; Puthalakath et al., 1999;  Nakano and Vousden, 2001; Wang et al., 1999; Oda et al., 2000). The interactions of NOXA with Bcl-XL are inferred from experiments performed in mice (Oda et al., 2000).</Comment>
+    <BiopaxRef>lit_114451</BiopaxRef>
+    <BiopaxRef>lit_140464</BiopaxRef>
+    <BiopaxRef>lit_140450</BiopaxRef>
+    <BiopaxRef>lit_114467</BiopaxRef>
+    <BiopaxRef>lit_140387</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1652.0" Y="814.0" GraphId="e_1956_0"/>
+      <Point X="1652.0" Y="842.0" GraphId="e_1956_1"/>
+      <Point X="1600.0" Y="806.0" GraphId="e_1956_2"/>
+      <Point X="1579.0" Y="829.0" GraphId="e_1956_3" GraphRef="n1959_REACTOME_508159" RelX="0.24793388429752067" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_1956_a_i"/>
+      <Anchor Position="0.2287761576316866" GraphId="e_1956_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1956_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1735.0" Y="825.0" GraphId="e_1956_i0_0" GraphRef="n2352_REACTOME_114236" RelX="-0.22413793103448276" RelY="-1.1578947368421053"/>
+      <Point X="1715.0" Y="796.0" GraphId="e_1956_i0_1"/>
+      <Point X="1652.0" Y="814.0" GraphId="e_1956_i0_2" GraphRef="e_1956_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1956_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1652.0" Y="787.0" GraphId="e_1956_i1_0" GraphRef="n1958_REACTOME_508161" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="1652.0" Y="814.0" GraphId="e_1956_i1_1" GraphRef="e_1956_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2016_REACTOME_139917">
+    <Comment Source="WikiPathways-description">During certain types of apoptosis, activated tBID (p15) induces a change in conformation of Bax which leads to the unmasking of its NH2-terminal domain. This change in confirmation  usually results in the  release of cytochrome c from mitochondria.</Comment>
+    <BiopaxRef>lit_140451</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="613.0" Y="1271.0" GraphId="e_2016_0" GraphRef="n2017_REACTOME_168850" RelX="1.0476190476190477" RelY="0.0"/>
+      <Point X="706.0" Y="1271.0" GraphId="e_2016_1"/>
+      <Point X="706.0" Y="1315.0" GraphId="e_2016_2"/>
+      <Anchor Position="0.6788321167883211" GraphId="e_2016_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2016_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2016_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="757.0" Y="1315.0" GraphId="e_2016_o0_0" ArrowHead="Arrow" GraphRef="n2018_REACTOME_139907" RelX="-1.0714285714285714" RelY="-0.08695652173913043"/>
+      <Point X="706.0" Y="1315.0" GraphId="e_2016_o0_1" GraphRef="e_2016_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2016_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="705.0" Y="1434.0" GraphId="e_2016_o1_0" ArrowHead="Arrow" GraphRef="n81_REACTOME_139953" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="706.0" Y="1315.0" GraphId="e_2016_o1_1" GraphRef="e_2016_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2019_REACTOME_114264">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Activated BAX' is present. At the end of this reaction, 1 molecule of 'Activated BAX inserted into mitochondrial membrane' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114450</BiopaxRef>
+    <BiopaxRef>lit_114464</BiopaxRef>
+    <BiopaxRef>lit_114451</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="847.0" Y="1316.0" GraphId="e_2019_0" GraphRef="n2018_REACTOME_139907" RelX="1.0714285714285714" RelY="0.0"/>
+      <Point X="872.0" Y="1316.0" GraphId="e_2019_1"/>
+      <Point X="925.0" Y="1316.0" GraphId="e_2019_2" GraphRef="n2020_REACTOME_139949" RelX="-1.0681818181818181" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.32051282051282054" GraphId="e_2019_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2021_REACTOME_114275">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 2 molecules of 'Activated BAX inserted into mitochondrial membrane' is present. At the end of this reaction, 1 molecule of 'Activated BAX' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'mitochondrial envelope'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114450</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="955.0" Y="1279.0" GraphId="e_2021_0" GraphRef="n2020_REACTOME_139949" RelX="-0.38636363636363635" RelY="-1.088235294117647"/>
+      <Point X="935.0" Y="1238.0" GraphId="e_2021_1"/>
+      <Point X="989.0" Y="1238.0" GraphId="e_2021_2"/>
+      <Point X="919.0" Y="1214.0" GraphId="e_2021_3"/>
+      <Point X="944.0" Y="1206.0" GraphId="e_2021_4" GraphRef="n2022_REACTOME_114269" RelX="-1.0617283950617284" RelY="0.8695652173913043" ArrowHead="Arrow"/>
+      <Anchor Position="0.4984218724131009" GraphId="e_2021_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2051_REACTOME_168849">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'tBID-p15', and 1 molecule of 'Inactive Bax alpha protein' are present. At the end of this reaction, 1 molecule of 'tBID bound to inactive BAX' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="643.0" Y="1379.0" GraphId="e_2051_0"/>
+      <Point X="591.0" Y="1324.0" GraphId="e_2051_1"/>
+      <Point X="562.0" Y="1293.0" GraphId="e_2051_2" GraphRef="n2017_REACTOME_168850" RelX="0.23809523809523808" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2051_a_i"/>
+      <Anchor Position="0.6406811883803865" GraphId="e_2051_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2051_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="694.0" Y="1434.0" GraphId="e_2051_i0_0" GraphRef="n81_REACTOME_139953" RelX="-0.3793103448275862" RelY="-1.2173913043478262"/>
+      <Point X="643.0" Y="1379.0" GraphId="e_2051_i0_1" GraphRef="e_2051_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2051_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="599.0" Y="1379.0" GraphId="e_2051_i1_0" GraphRef="n2052_REACTOME_139916" RelX="1.0619469026548674" RelY="-0.05263157894736842"/>
+      <Point X="643.0" Y="1379.0" GraphId="e_2051_i1_1" GraphRef="e_2051_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2053_REACTOME_139895">
+    <Comment Source="WikiPathways-description">tBID binds to its mitochondrial partner BAK to release cytochrome c. It has been observed in mouse systems that the activated tBID results in an allosteric activation of BAK.  Activated BAX induces intramembranous oligomerization leading to a pore for cytochrome c efflux.</Comment>
+    <BiopaxRef>lit_140395</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="920.0" Y="1634.0" GraphId="e_2053_0" GraphRef="n2054_REACTOME_168847" RelX="-0.30158730158730157" RelY="1.1578947368421053"/>
+      <Point X="912.0" Y="1640.0" GraphId="e_2053_1"/>
+      <Point X="989.0" Y="1666.0" GraphId="e_2053_2"/>
+      <Point X="919.0" Y="1695.0" GraphId="e_2053_3"/>
+      <Anchor Position="0.5464012039110767" GraphId="e_2053_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2053_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2053_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="982.0" Y="1746.0" GraphId="e_2053_o0_0" ArrowHead="Arrow" GraphRef="n89_REACTOME_114266" RelX="-0.8235294117647058" RelY="-1.2173913043478262"/>
+      <Point X="919.0" Y="1695.0" GraphId="e_2053_o0_1" GraphRef="e_2053_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2053_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="973.0" Y="1695.0" GraphId="e_2053_o1_0" ArrowHead="Arrow" GraphRef="n2055_REACTOME_50690" RelX="-1.0483870967741935" RelY="-0.07407407407407407"/>
+      <Point X="919.0" Y="1695.0" GraphId="e_2053_o1_1" GraphRef="e_2053_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2084_REACTOME_114263">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 2 molecules of 'Activated BAK protein' is present. At the end of this reaction, 1 molecule of 'Active oligomeric BAK' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'mitochondrial outer membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_139821</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1038.0" Y="1680.0" GraphId="e_2084_0" GraphRef="n2055_REACTOME_50690" RelX="0.0" RelY="-1.1851851851851851"/>
+      <Point X="1038.0" Y="1604.0" GraphId="e_2084_1"/>
+      <Point X="983.0" Y="1561.0" GraphId="e_2084_2"/>
+      <Point X="1040.0" Y="1514.0" GraphId="e_2084_3"/>
+      <Point X="1012.0" Y="1514.0" GraphId="e_2084_4" GraphRef="n2085_REACTOME_114262" RelX="1.0491803278688525" RelY="-0.06060606060606061" ArrowHead="Arrow"/>
+      <Anchor Position="0.5886901963106913" GraphId="e_2084_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2142_REACTOME_168848">
+    <Comment Source="WikiPathways-description">tBID binds to its mitochondrial partner BAK to release cytochrome c. It has been observed in mouse systems that the activated tBID results in an allosteric activation of BAK.  Activated BAX induces intramembranous oligomerization leading to a pore for cytochrome c efflux.</Comment>
+    <BiopaxRef>lit_140395</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="806.0" Y="1489.0" GraphId="e_2142_0"/>
+      <Point X="986.0" Y="1467.0" GraphId="e_2142_1"/>
+      <Point X="828.0" Y="1508.0" GraphId="e_2142_2"/>
+      <Point X="918.0" Y="1590.0" GraphId="e_2142_3" GraphRef="n2054_REACTOME_168847" RelX="-0.3333333333333333" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2142_a_i"/>
+      <Anchor Position="0.38886820483660306" GraphId="e_2142_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2142_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="976.0" Y="1753.0" GraphId="e_2142_i0_0" GraphRef="n89_REACTOME_114266" RelX="-1.1764705882352942" RelY="-0.6086956521739131"/>
+      <Point X="806.0" Y="1688.0" GraphId="e_2142_i0_1"/>
+      <Point X="806.0" Y="1489.0" GraphId="e_2142_i0_2" GraphRef="e_2142_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2142_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="943.0" Y="1437.0" GraphId="e_2142_i1_0" GraphRef="n2143_REACTOME_139896" RelX="-0.5523809523809524" RelY="1.3043478260869565"/>
+      <Point X="806.0" Y="1489.0" GraphId="e_2142_i1_1" GraphRef="e_2142_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2144_REACTOME_114284">
+    <Comment Source="WikiPathways-description">In this reaction, 1 molecule of  'Cytochrome c' is translocated from mitochondrial intermembrane space to cytosol.&lt;br&gt;&lt;br&gt;This reaction takes place in the 'mitochondrial outer membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114466</BiopaxRef>
+    <BiopaxRef>lit_114473</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2009.0" Y="1170.0" GraphId="e_2144_0" GraphRef="n2145_REACTOME_114244" RelX="1.0714285714285714" RelY="0.0"/>
+      <Point X="2066.0" Y="1170.0" GraphId="e_2144_1"/>
+      <Point X="2108.0" Y="1170.0" GraphId="e_2144_2" GraphRef="n2146_REACTOME_53259" RelX="-1.0714285714285714" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5757575757575758" GraphId="e_2144_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2175_REACTOME_114307">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Smac protein, mitochondrial precursor' is present. At the end of this reaction, 1 molecule of 'SMAC' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'mitochondrial outer membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114466</BiopaxRef>
+    <BiopaxRef>lit_114473</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2050.0" Y="935.0" GraphId="e_2175_0" GraphRef="n2176_REACTOME_64637" RelX="1.0566037735849056" RelY="0.0"/>
+      <Point X="2242.0" Y="935.0" GraphId="e_2175_1"/>
+      <Point X="2307.0" Y="936.0" GraphId="e_2175_2" GraphRef="n2177_REACTOME_114298" RelX="-1.0909090909090908" RelY="-0.08695652173913043" ArrowHead="Arrow"/>
+      <Anchor Position="0.7470593530334161" GraphId="e_2175_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2178_REACTOME_114254">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Cytochrome c', and 1 molecule of 'Apaf-1' are present. At the end of this reaction, 1 molecule of 'Apaf-1:Cytochrome C' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_141213</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2229.0" Y="1171.0" GraphId="e_2178_0"/>
+      <Point X="2288.0" Y="1171.0" GraphId="e_2178_1"/>
+      <Point X="2328.0" Y="1171.0" GraphId="e_2178_2" GraphRef="n2180_REACTOME_114253" RelX="-1.0434782608695652" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2178_a_i"/>
+      <Anchor Position="0.5959595959595959" GraphId="e_2178_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2178_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2198.0" Y="1170.0" GraphId="e_2178_i0_0" GraphRef="n2146_REACTOME_53259" RelX="1.0714285714285714" RelY="0.0"/>
+      <Point X="2229.0" Y="1171.0" GraphId="e_2178_i0_1" GraphRef="e_2178_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2178_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2229.0" Y="1141.0" GraphId="e_2178_i1_0" GraphRef="n2179_REACTOME_50099" RelX="-0.03636363636363636" RelY="1.3043478260869565"/>
+      <Point X="2229.0" Y="1171.0" GraphId="e_2178_i1_1" GraphRef="e_2178_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2181_REACTOME_114256">
+    <Comment Source="WikiPathways-description">Apaf-1 and Caspase-9 form a complex in the presence of dATP and cytochrome c (Li et al.,1997).</Comment>
+    <BiopaxRef>lit_141214</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2388.0" Y="1107.0" GraphId="e_2181_0"/>
+      <Point X="2415.0" Y="1107.0" GraphId="e_2181_1"/>
+      <Point X="2453.0" Y="1107.0" GraphId="e_2181_2" GraphRef="n2184_REACTOME_114255" RelX="-1.0393700787401574" RelY="-0.03773584905660377" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2181_a_i"/>
+      <Anchor Position="0.4153846153846154" GraphId="e_2181_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2181_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2374.0" Y="1107.0" GraphId="e_2181_i0_0" GraphRef="n2182_REACTOME_113592" RelX="1.1372549019607843" RelY="0.0"/>
+      <Point X="2388.0" Y="1107.0" GraphId="e_2181_i0_1" GraphRef="e_2181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2181_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2388.0" Y="1080.0" GraphId="e_2181_i1_0" GraphRef="n2183_REACTOME_57033" RelX="-0.019417475728155338" RelY="1.1578947368421053"/>
+      <Point X="2388.0" Y="1107.0" GraphId="e_2181_i1_1" GraphRef="e_2181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2181_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2388.0" Y="1149.0" GraphId="e_2181_i2_0" GraphRef="n2180_REACTOME_114253" RelX="0.0" RelY="-1.1578947368421053"/>
+      <Point X="2388.0" Y="1107.0" GraphId="e_2181_i2_1" GraphRef="e_2181_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2185_REACTOME_114259">
+    <Comment Source="WikiPathways-description">Caspase-9 is activated in an ATP-dependent manner following association with Apaf-1 and cytochrome c (Li et al., 1997)</Comment>
+    <BiopaxRef>lit_141214</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2586.0" Y="1099.0" GraphId="e_2185_0" GraphRef="n2184_REACTOME_114255" RelX="1.0551181102362204" RelY="-0.33962264150943394"/>
+      <Point X="2628.0" Y="1106.0" GraphId="e_2185_1"/>
+      <Point X="2627.0" Y="1176.0" GraphId="e_2185_2"/>
+      <Anchor Position="0.37819228058839843" GraphId="e_2185_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2185_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2185_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2600.0" Y="1192.0" GraphId="e_2185_o0_0" ArrowHead="Arrow" GraphRef="n2186_REACTOME_29370" RelX="1.1372549019607843" RelY="-0.9032258064516129"/>
+      <Point X="2627.0" Y="1176.0" GraphId="e_2185_o0_1" GraphRef="e_2185_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2185_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2677.0" Y="1185.0" GraphId="e_2185_o1_0" ArrowHead="Arrow" GraphRef="n2187_REACTOME_114258" RelX="-0.8869565217391304" RelY="-1.2173913043478262"/>
+      <Point X="2627.0" Y="1176.0" GraphId="e_2185_o1_1" GraphRef="e_2185_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2185_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2586.0" Y="1106.0" GraphId="e_2185_c__0_0" GraphRef="n2184_REACTOME_114255" RelX="1.0551181102362204" RelY="-0.07547169811320754"/>
+      <Point X="2628.0" Y="1106.0" GraphId="e_2185_c__0_1" GraphRef="e_2185_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2244_REACTOME_114252">
+    <Comment Source="WikiPathways-description">Caspases-3 and -7 are directly cleaved downstream of caspase-9 in the cytochrome c/Apaf-1-inducible caspase cascade (Slee et al., 1999).</Comment>
+    <BiopaxRef>lit_141214</BiopaxRef>
+    <BiopaxRef>lit_141215</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2696.0" Y="1000.0" GraphId="e_2244_0"/>
+      <Point X="2727.0" Y="1000.0" GraphId="e_2244_1"/>
+      <Point X="2760.0" Y="1001.0" GraphId="e_2244_2"/>
+      <Anchor Position="0.0" GraphId="e_2244_a_i"/>
+      <Anchor Position="0.4842603813301475" GraphId="e_2244_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2244_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2244_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2650.0" Y="1000.0" GraphId="e_2244_i0_0" GraphRef="n2245_REACTOME_113592" RelX="1.1372549019607843" RelY="0.0"/>
+      <Point X="2696.0" Y="1000.0" GraphId="e_2244_i0_1" GraphRef="e_2244_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2244_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2677.0" Y="1020.0" GraphId="e_2244_i1_0" GraphRef="n2246_REACTOME_57021" RelX="0.2912621359223301" RelY="-1.1578947368421053"/>
+      <Point X="2696.0" Y="1000.0" GraphId="e_2244_i1_1" GraphRef="e_2244_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2244_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2760.0" Y="1053.0" GraphId="e_2244_o0_0" ArrowHead="Arrow" GraphRef="n2247_REACTOME_29370" RelX="-0.0392156862745098" RelY="-1.1612903225806452"/>
+      <Point X="2760.0" Y="1001.0" GraphId="e_2244_o0_1" GraphRef="e_2244_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2244_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2797.0" Y="1018.0" GraphId="e_2244_o1_0" ArrowHead="Arrow" GraphRef="n2248_REACTOME_141647" RelX="-0.6851851851851852" RelY="-1.1578947368421053"/>
+      <Point X="2760.0" Y="1001.0" GraphId="e_2244_o1_1" GraphRef="e_2244_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2244_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2727.0" Y="1185.0" GraphId="e_2244_c__0_0" GraphRef="n2187_REACTOME_114258" RelX="-0.017391304347826087" RelY="-1.2173913043478262"/>
+      <Point X="2727.0" Y="1000.0" GraphId="e_2244_c__0_1" GraphRef="e_2244_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2249_REACTOME_114261">
+    <Comment Source="WikiPathways-description">Caspases-3 and -7 are directly cleaved downstream of caspase-9 in the cytochrome c/Apaf-1-inducible caspase cascade (Slee et al., 1999).</Comment>
+    <BiopaxRef>lit_141216</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2865.0" Y="1172.0" GraphId="e_2249_0"/>
+      <Point X="2866.0" Y="1200.0" GraphId="e_2249_1"/>
+      <Point X="2865.0" Y="1243.0" GraphId="e_2249_2"/>
+      <Anchor Position="0.0" GraphId="e_2249_a_i"/>
+      <Anchor Position="0.39445385669429006" GraphId="e_2249_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2249_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2249_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2865.0" Y="1107.0" GraphId="e_2249_i0_0" GraphRef="n2250_REACTOME_113592" RelX="-0.0392156862745098" RelY="1.2258064516129032"/>
+      <Point X="2865.0" Y="1172.0" GraphId="e_2249_i0_1" GraphRef="e_2249_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2249_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2850.0" Y="1165.0" GraphId="e_2249_i1_0" GraphRef="n2251_REACTOME_57029" RelX="1.0679611650485437" RelY="0.8421052631578947"/>
+      <Point X="2865.0" Y="1172.0" GraphId="e_2249_i1_1" GraphRef="e_2249_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2249_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2840.0" Y="1266.0" GraphId="e_2249_o0_0" ArrowHead="Arrow" GraphRef="n2252_REACTOME_29370" RelX="0.5490196078431373" RelY="-1.1612903225806452"/>
+      <Point X="2865.0" Y="1243.0" GraphId="e_2249_o0_1" GraphRef="e_2249_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2249_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2899.0" Y="1264.0" GraphId="e_2249_o1_0" ArrowHead="Arrow" GraphRef="n2253_REACTOME_141643" RelX="-0.5436893203883495" RelY="-1.1578947368421053"/>
+      <Point X="2865.0" Y="1243.0" GraphId="e_2249_o1_1" GraphRef="e_2249_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2249_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2789.0" Y="1199.0" GraphId="e_2249_c__0_0" GraphRef="n2187_REACTOME_114258" RelX="1.0608695652173914" RelY="0.0"/>
+      <Point X="2866.0" Y="1200.0" GraphId="e_2249_c__0_1" GraphRef="e_2249_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2310_REACTOME_114306">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'SMAC', and 1 molecule of 'XIAP:Caspase-3' are present. At the end of this reaction, 1 molecule of 'SMAC:XIAP:Caspase-3' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114476</BiopaxRef>
+    <BiopaxRef>lit_114477</BiopaxRef>
+    <BiopaxRef>lit_114474</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2454.0" Y="936.0" GraphId="e_2310_0"/>
+      <Point X="2468.0" Y="936.0" GraphId="e_2310_1"/>
+      <Point X="2532.0" Y="936.0" GraphId="e_2310_2" GraphRef="n2312_REACTOME_114305" RelX="-1.0485436893203883" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2310_a_i"/>
+      <Anchor Position="0.1794871794871795" GraphId="e_2310_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2310_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2454.0" Y="963.0" GraphId="e_2310_i0_0" GraphRef="n2311_REACTOME_114304" RelX="-0.015748031496062992" RelY="-1.1578947368421053"/>
+      <Point X="2454.0" Y="936.0" GraphId="e_2310_i0_1" GraphRef="e_2310_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2310_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2368.0" Y="936.0" GraphId="e_2310_i1_0" GraphRef="n2177_REACTOME_114298" RelX="1.1272727272727272" RelY="-0.08695652173913043"/>
+      <Point X="2454.0" Y="936.0" GraphId="e_2310_i1_1" GraphRef="e_2310_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2313_REACTOME_114354">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'XIAP:Caspase-7', and 1 molecule of 'SMAC' are present. At the end of this reaction, 1 molecule of 'SMAC:XIAP:Caspase-7' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114476</BiopaxRef>
+    <BiopaxRef>lit_114477</BiopaxRef>
+    <BiopaxRef>lit_114474</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2336.0" Y="906.0" GraphId="e_2313_0"/>
+      <Point X="2335.0" Y="874.0" GraphId="e_2313_1"/>
+      <Point X="2336.0" Y="841.0" GraphId="e_2313_2" GraphRef="n2315_REACTOME_114353" RelX="-0.038834951456310676" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2313_a_i"/>
+      <Anchor Position="0.4923149697967851" GraphId="e_2313_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2313_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2375.0" Y="905.0" GraphId="e_2313_i0_0" GraphRef="n2314_REACTOME_114308" RelX="-1.0393700787401574" RelY="0.05263157894736842"/>
+      <Point X="2336.0" Y="906.0" GraphId="e_2313_i0_1" GraphRef="e_2313_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2313_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2336.0" Y="923.0" GraphId="e_2313_i1_0" GraphRef="n2177_REACTOME_114298" RelX="-0.03636363636363636" RelY="-1.2173913043478262"/>
+      <Point X="2336.0" Y="906.0" GraphId="e_2313_i1_1" GraphRef="e_2313_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2316_REACTOME_114361">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'SMAC', and 1 molecule of 'XIAP:Caspase-9' are present. At the end of this reaction, 1 molecule of 'SMAC:XIAP:Caspase-9' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114472</BiopaxRef>
+    <BiopaxRef>lit_114474</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2246.0" Y="864.0" GraphId="e_2316_0"/>
+      <Point X="2183.0" Y="818.0" GraphId="e_2316_1"/>
+      <Point X="2129.0" Y="780.0" GraphId="e_2316_2" GraphRef="n2318_REACTOME_114318" RelX="0.46601941747572817" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2316_a_i"/>
+      <Anchor Position="0.5415731317485724" GraphId="e_2316_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2316_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2322.0" Y="923.0" GraphId="e_2316_i0_0" GraphRef="n2177_REACTOME_114298" RelX="-0.5454545454545454" RelY="-1.2173913043478262"/>
+      <Point X="2246.0" Y="864.0" GraphId="e_2316_i0_1" GraphRef="e_2316_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2316_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2246.0" Y="792.0" GraphId="e_2316_i1_0" GraphRef="n2317_REACTOME_114317" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="2246.0" Y="864.0" GraphId="e_2316_i1_1" GraphRef="e_2316_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2347_REACTOME_114419">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'SMAC:XIAP:Caspase-3' is present. At the end of this reaction, 1 molecule of 'Active caspase-3', and 1 molecule of 'SMAC:XIAP' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2641.0" Y="935.0" GraphId="e_2347_0" GraphRef="n2312_REACTOME_114305" RelX="1.0679611650485437" RelY="-0.05263157894736842"/>
+      <Point X="2701.0" Y="935.0" GraphId="e_2347_1"/>
+      <Point X="2833.0" Y="935.0" GraphId="e_2347_2"/>
+      <Anchor Position="0.3125" GraphId="e_2347_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2347_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2347_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2833.0" Y="1018.0" GraphId="e_2347_o0_0" ArrowHead="Arrow" GraphRef="n2248_REACTOME_141647" RelX="-0.018518518518518517" RelY="-1.1578947368421053"/>
+      <Point X="2833.0" Y="935.0" GraphId="e_2347_o0_1" GraphRef="e_2347_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2347_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2858.0" Y="911.0" GraphId="e_2347_o1_0" ArrowHead="Arrow" GraphRef="n2348_REACTOME_114391" RelX="-0.24175824175824176" RelY="1.3043478260869565"/>
+      <Point X="2833.0" Y="935.0" GraphId="e_2347_o1_1" GraphRef="e_2347_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2349_REACTOME_114392">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'SMAC:XIAP:Caspase-7' is present. At the end of this reaction, 1 molecule of 'SMAC:XIAP', and 1 molecule of 'Active Caspase-7' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114476</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2393.0" Y="818.0" GraphId="e_2349_0" GraphRef="n2315_REACTOME_114353" RelX="1.0679611650485437" RelY="-0.05263157894736842"/>
+      <Point X="2529.0" Y="817.0" GraphId="e_2349_1"/>
+      <Point X="2927.0" Y="817.0" GraphId="e_2349_2"/>
+      <Anchor Position="0.2546867791855799" GraphId="e_2349_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2349_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2349_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2927.0" Y="1264.0" GraphId="e_2349_o0_0" ArrowHead="Arrow" GraphRef="n2253_REACTOME_141643" RelX="0.0" RelY="-1.1578947368421053"/>
+      <Point X="2927.0" Y="817.0" GraphId="e_2349_o0_1" GraphRef="e_2349_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2349_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2877.0" Y="882.0" GraphId="e_2349_o1_0" ArrowHead="Arrow" GraphRef="n2348_REACTOME_114391" RelX="0.17582417582417584" RelY="-1.2173913043478262"/>
+      <Point X="2927.0" Y="817.0" GraphId="e_2349_o1_1" GraphRef="e_2349_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2350_REACTOME_114440">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'SMAC:XIAP:Caspase-9' is present. At the end of this reaction, 1 molecule of 'Cleaved Caspase-9', and 1 molecule of 'SMAC:XIAP' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'cytosol'.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2105.0" Y="736.0" GraphId="e_2350_0" GraphRef="n2318_REACTOME_114318" RelX="0.0" RelY="-1.1578947368421053"/>
+      <Point X="2105.0" Y="715.0" GraphId="e_2350_1"/>
+      <Point X="2869.0" Y="715.0" GraphId="e_2350_2"/>
+      <Anchor Position="0.0267515923566879" GraphId="e_2350_a_p"/>
+      <Anchor Position="1.0" GraphId="e_2350_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2350_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2889.0" Y="703.0" GraphId="e_2350_o0_0" ArrowHead="Arrow" GraphRef="n2351_REACTOME_141640" RelX="-0.5048543689320388" RelY="1.1578947368421053"/>
+      <Point X="2869.0" Y="715.0" GraphId="e_2350_o0_1" GraphRef="e_2350_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2350_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2869.0" Y="882.0" GraphId="e_2350_o1_0" ArrowHead="Arrow" GraphRef="n2348_REACTOME_114391" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="2869.0" Y="715.0" GraphId="e_2350_o1_1" GraphRef="e_2350_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2353_REACTOME_114352">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Bcl-2 protein', and 1 molecule of 'tBID' are present. At the end of this reaction, 1 molecule of 'tBID:BCL-2' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'mitochondrial outer membrane'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_114451</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1106.0" Y="1782.0" GraphId="e_2353_0"/>
+      <Point X="1065.0" Y="1826.0" GraphId="e_2353_1"/>
+      <Point X="1026.0" Y="1867.0" GraphId="e_2353_2" GraphRef="n132_REACTOME_114339" RelX="0.5517241379310345" RelY="-1.135135135135135" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_2353_a_i"/>
+      <Anchor Position="0.5152289554553406" GraphId="e_2353_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2353_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1016.0" Y="1763.0" GraphId="e_2353_i0_0" GraphRef="n89_REACTOME_114266" RelX="1.1764705882352942" RelY="0.2608695652173913"/>
+      <Point X="1106.0" Y="1782.0" GraphId="e_2353_i0_1" GraphRef="e_2353_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_2353_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1207.0" Y="859.0" GraphId="e_2353_i1_0" GraphRef="n1954_REACTOME_50757" RelX="-0.7012987012987013" RelY="1.3043478260869565"/>
+      <Point X="1105.0" Y="900.0" GraphId="e_2353_i1_1"/>
+      <Point X="1106.0" Y="1782.0" GraphId="e_2353_i1_2" GraphRef="e_2353_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_90" GroupRef="group_comp_90" TextLabel="mitochondrial outer membrane">
+    <Graphics Color="000000" CenterX="1120.5" CenterY="2013.5" Width="199.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_91" GroupRef="group_comp_91" TextLabel="mitochondrial inner membrane">
+    <Graphics Color="000000" CenterX="1243.0" CenterY="1894.5" Width="198.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_262" GroupRef="group_comp_262" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="400.5" CenterY="2107.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_90" GroupRef="group_comp_90">
+    <Graphics Color="000000" CenterX="1527.5" CenterY="1487.0" Width="1083.0" Height="1284.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_91" GroupRef="group_comp_91">
+    <Graphics Color="000000" CenterX="1512.0" CenterY="1488.0" Width="762.0" Height="992.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_262" GroupRef="group_comp_262">
+    <Graphics Color="000000" CenterX="1706.0" CenterY="1359.0" Width="2926.0" Height="1592.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140365" rdf:id="lit_140365">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15077149</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toxic proteins released from mitochondria in cell death</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saelens, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Festjens, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vande Walle, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Gurp, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Loo, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vandenabeele, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 23:2861-74</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140363" rdf:id="lit_140363">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11711427</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The expanding role of mitochondria in apoptosis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 15:2922-33</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140369" rdf:id="lit_140369">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12042762</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IAP proteins: blocking the road to death's door</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salvesen, GS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Duckett, CS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 3:401-10</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140395" rdf:id="lit_140395">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10950869</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tBID, a membrane-targeted death ligand, oligomerizes BAK to release cytochrome c</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wei, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lindsten, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mootha, VK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiler, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gross, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ashiya, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thompson, CB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korsmeyer, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev 14:2060-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141645" rdf:id="lit_141645">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11931755</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms of caspase activation and inhibition during apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shi, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 9:459-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140419" rdf:id="lit_140419">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12804595</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Caspase 8-mediated cleavage of the pro-apoptotic BCL-2 family member BID in p53-dependent apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fischer, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coelho, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dufour, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bergerat, JP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gueulette, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bischoff, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 306:516-22</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141103" rdf:id="lit_141103">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11114298</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Granzyme B induces BID-mediated cytochrome c release and mitochondrial permeability transition</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alimonti, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shi, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baijal, PK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greenberg, AH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:6974-82</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141371" rdf:id="lit_141371">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11099414</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Posttranslational N-myristoylation of BID as a molecular switch for targeting mitochondria and apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zha, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiler, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oh, KJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wei, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korsmeyer, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 290:1761-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140428" rdf:id="lit_140428">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15183529</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Positive correlation between overexpression of phospho-BAD with phosphorylated Akt at serine 15183529</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khor, TO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gul, YA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ithnin, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Seow, HF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Lett 210:139-50</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140433" rdf:id="lit_140433">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12657644</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cleavage of 14-3-3 protein by caspase-3 facilitates bad interaction with Bcl-x(L) during apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Won, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, DY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">La, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meadows, GG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Joe, CO</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:19347-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114467" rdf:id="lit_114467">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10195903</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ca2+-induced apoptosis through calcineurin dephosphorylation of BAD</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, HG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pathan, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ethell, IM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Krajewski, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaguchi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shibasaki, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McKeon, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bobo, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Franke, TF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reed, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 284:339-43</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140442" rdf:id="lit_140442">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15126337</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Apoptotic signaling pathways induced by nitric oxide in human lymphoblastoid cells expressing wild-type or mutant p53</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, CQ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Robles, AI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanigan, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hofseth, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trudel, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harris, CC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wogan, GN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res 64:3022-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141113" rdf:id="lit_141113">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14684737</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Up-regulation of Bcl-2 homology 3 (BH3)-only proteins by E2F1 mediates apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hershko, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ginsberg, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:8627-34</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140450" rdf:id="lit_140450">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11463392</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PUMA, a novel proapoptotic gene, is induced by p53</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakano, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vousden, KH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 7:683-94</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140440" rdf:id="lit_140440">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12591950</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JNK phosphorylation of Bim-related members of the Bcl2 family induces Bax-dependent apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lei, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 100:2432-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114451" rdf:id="lit_114451">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12624108</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inhibition of Bid-induced apoptosis by Bcl-2. tBid insertion, Bax translocation, and Bax/Bak oligomerization suppressed</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yi, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yin, XM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dong, Z</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:16992-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140464" rdf:id="lit_140464">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10198631</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The proapoptotic activity of the Bcl-2 family member Bim is regulated by interaction with the dynein motor complex</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Puthalakath, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, DC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Reilly, LA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">King, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strasser, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 3:287-96</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140387" rdf:id="lit_140387">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10807576</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noxa, a BH3-only member of the Bcl-2 family and candidate mediator of p53-induced apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oda, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohki, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murasawa, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nemoto, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shibue, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamashita, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tokino, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taniguchi, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 288:1053-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140457" rdf:id="lit_140457">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7834748</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bad, a heterodimeric partner for Bcl-XL and Bcl-2, displaces Bax and promotes cell death</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zha, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jockel, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boise, LH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thompson, CB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Korsmeyer, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 80:285-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140451" rdf:id="lit_140451">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10629050</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bid induces the oligomerization and insertion of Bax into the outer mitochondrial membrane</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eskes, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Desagher, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antonsson, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martinou, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 20:929-35</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114450" rdf:id="lit_114450">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11136736</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bax is present as a high molecular weight oligomer/complex in the mitochondrial membrane of apoptotic cells.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antonsson, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Montessuit, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sanchez, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martinou, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:11615-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114464" rdf:id="lit_114464">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12176904</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spontaneous and drug-induced apoptosis is mediated by conformational changes of Bax and Bak in B-cell chronic lymphocytic leukemia.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bellosillo, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Villamor, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LÃ³pez-Guillermo, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MarcÃ©, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bosch, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Campo, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Montserrat, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colomer, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 100:1810-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_139821" rdf:id="lit_139821">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12721291</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BCL-2 selectively interacts with the BID-induced open conformer of BAK, inhibiting BAK auto-oligomerization</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruffolo, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shore, GC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:25039-45</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114466" rdf:id="lit_114466">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12941691</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial release of AIF and EndoG requires caspase activation downstream of Bax/Bak-mediated permeabilization.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arnoult, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gaume, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karbowski, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sharpe, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cecconi, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Youle, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 22:4385-99</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114473" rdf:id="lit_114473">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12660240</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Direct interaction between survivin and Smac/DIABLO is essential for the anti-apoptotic activity of survivin during taxol-induced apoptosis.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Song, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yao, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:23130-40</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141213" rdf:id="lit_141213">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9267021</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Apaf-1, a human protein homologous to C. elegans CED-4, participates in cytochrome c-dependent activation of caspase-3.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zou, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henzel, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lutschg, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 90:405-13</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141214" rdf:id="lit_141214">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9390557</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cytochrome c and dATP-dependent formation of Apaf-1/caspase-9 complex initiates an apoptotic protease cascade.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nijhawan, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Budihardjo, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Srinivasula, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alnemri, ES</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 91:479-89</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141215" rdf:id="lit_141215">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10206961</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An APAF-1.cytochrome c multimeric complex is a functional apoptosome that activates procaspase-9.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zou, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 274:11549-56</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_141216" rdf:id="lit_141216">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9922454</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ordering the cytochrome c-initiated caspase cascade: hierarchical activation of caspases-2, -3, -6, -7, -8, and -10 in a caspase-9-dependent manner</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slee, EA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harte, MT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kluck, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wolf, BB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Casiano, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newmeyer, DD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, HG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reed, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nicholson, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alnemri, ES</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Green, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martin, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 144:281-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114476" rdf:id="lit_114476">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11257231</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis of caspase inhibition by XIAP: differential roles of the linker versus the BIR domain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, YC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rich, RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Segal, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Myszka, DG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 104:781-90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114477" rdf:id="lit_114477">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9230442</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">X-linked IAP is a direct inhibitor of cell-death proteases.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deveraux, QL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salvesen, GS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reed, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 388:300-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114474" rdf:id="lit_114474">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14960576</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smac/DIABLO selectively reduces the levels of c-IAP1 and c-IAP2 but not that of XIAP and livin in HeLa cells.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yang, QH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Du, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:16963-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_114472" rdf:id="lit_114472">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11084335</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ML-IAP, a novel inhibitor of apoptosis that is preferentially expressed in human melanomas.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vucic, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stennicke, HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pisabarro, MT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salvesen, GS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dixit, VM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 10:1359-66</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>apoptotic cell death pathway</bp:TERM><bp:ID>PW:0000009</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

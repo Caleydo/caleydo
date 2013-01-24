@@ -1,0 +1,1903 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Sphingolipid Metabolism" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="D'Eustachio, P" Maintainer="D'Eustachio, P" Email="deustp01@nyumc.org" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">Sphingolipids are derivatives of long chain sphingoid bases such as sphingosine (trans-1,3-dihydroxy 2-amino-4-octadecene), an 18-carbon unsaturated amino alcohol which is the most abundant sphingoid base in mammals. Amide linkage of a fatty acid to sphingosine yields ceramides. Esterification of phosphocholine to ceramides yields sphingomyelin, and ceramide glycosylation yields glycosylceramides. Introduction of sialic acid residues yields gangliosides. These molecules appear to be essential components of cell membranes, and intermediates in the pathways of sphingolipid synthesis and breakdown modulate processes including apoptosis and T cell trafficking.&lt;p&gt;While sphingolipids are abundant in a wide variety of foodstuffs, these dietary molecules are mostly degraded by the intestinal flora and intestinal enzymes. The body primarily depends on de novo synthesis for its sphingolipid supply (Hannun and Obeid 2008; Merrill 2002). De novo synthesis proceeds in four steps: the condensation of palmitoyl-CoA and serine to form 3-ketosphinganine, the reduction of 3-ketosphinganine to sphinganine, the acylation of sphinganine with a long-chain fatty acyl CoA to form dihydroceramide, and the desaturation of dihydroceramide to form ceramide.&lt;p&gt;Other sphingolipids involved in signaling are derived from ceramide and its biosynthetic intermediates. These include sphinganine (dihydrosphingosine) 1-phosphate, phytoceramide, sphingosine, and sphingosine 1-phosphate.&lt;p&gt;Sphingomyelin is synthesized in a single step in the membrane of the Golgi apparatus from ceramides generated in the endoplasmic reticulum (ER) membrane and transferred to the Golgi by CERT (ceramide transfer protein), an isoform of COL4A3BP that is associated with the ER membrane as a complex with PPM1L (protein phosphatase 1-like) and VAPA or VAPB (VAMP-associated proteins A or B). Sphingomyelin synthesis appears to be regulated primarily at the level of this transport process through the reversible phosphorylation of CERT (Saito et al. 2008).&lt;br&gt;</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <BiopaxRef>lit_428160</BiopaxRef>
+  <BiopaxRef>lit_428144</BiopaxRef>
+  <BiopaxRef>lit_429720</BiopaxRef>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0"/>
+  <DataNode TextLabel="L-serine&#10;" GraphId="n5_REACTOME_200736" Type="Metabolite">
+    <Graphics CenterX="318.0" CenterY="89.5" Width="62.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17115"/>
+  </DataNode>
+  <DataNode TextLabel="palmitoyl-CoA&#10;" GraphId="n6_REACTOME_200993" Type="Metabolite">
+    <Graphics CenterX="384.5" CenterY="63.5" Width="99.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15525"/>
+  </DataNode>
+  <DataNode TextLabel="CO2&#10;" GraphId="n7_REACTOME_113528" Type="Metabolite">
+    <Graphics CenterX="332.0" CenterY="145.5" Width="42.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode TextLabel="3-ketosphinganine&#10;" GraphId="n8_REACTOME_428182" Type="Metabolite">
+    <Graphics CenterX="436.0" CenterY="194.0" Width="116.0" Height="28.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17862"/>
+  </DataNode>
+  <DataNode TextLabel="CoA-SH&#10;" GraphId="n9_REACTOME_76194" Type="Metabolite">
+    <Graphics CenterX="327.5" CenterY="180.0" Width="63.0" Height="28.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode TextLabel="SPTLC 2 or 3 &#10;complexes&#10;" GraphId="n10_REACTOME_428174" Type="Complex">
+    <Graphics CenterX="452.5" CenterY="141.0" Width="91.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_19691"/>
+  </DataNode>
+  <DataNode TextLabel="NADPH&#10;" GraphId="n18_REACTOME_29364" Type="Metabolite">
+    <Graphics CenterX="324.5" CenterY="229.5" Width="59.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16474"/>
+  </DataNode>
+  <DataNode TextLabel="H+&#10;" GraphId="n19_REACTOME_70106" Type="Metabolite">
+    <Graphics CenterX="338.0" CenterY="260.0" Width="32.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode TextLabel="NADP+&#10;" GraphId="n20_REACTOME_29366" Type="Metabolite">
+    <Graphics CenterX="320.5" CenterY="292.5" Width="57.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18009"/>
+  </DataNode>
+  <DataNode TextLabel="sphinganine&#10;" GraphId="n21_REACTOME_428163" Type="Metabolite">
+    <Graphics CenterX="435.0" CenterY="319.5" Width="92.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16566"/>
+  </DataNode>
+  <DataNode TextLabel="KDSR&#10;" GraphId="n22_REACTOME_428134" Type="Protein">
+    <Graphics CenterX="436.0" CenterY="257.0" Width="42.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q06136"/>
+  </DataNode>
+  <DataNode TextLabel="stearoyl-CoA&#10;" GraphId="n25_REACTOME_428139" Type="Metabolite">
+    <Graphics CenterX="328.5" CenterY="327.5" Width="89.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15541"/>
+  </DataNode>
+  <DataNode TextLabel="dihydroceramide&#10;" GraphId="n26_REACTOME_428126" Type="Metabolite">
+    <Graphics CenterX="448.0" CenterY="437.0" Width="102.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="31488"/>
+  </DataNode>
+  <DataNode TextLabel="LASS &#10;proteins&#10;" GraphId="n27_REACTOME_428153" Type="Protein">
+    <Graphics CenterX="444.0" CenterY="381.0" Width="66.0" Height="36.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20175"/>
+  </DataNode>
+  <DataNode TextLabel="CoA-SH&#10;" GraphId="n28_REACTOME_76194" Type="Metabolite">
+    <Graphics CenterX="327.5" CenterY="408.0" Width="63.0" Height="28.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode TextLabel="Oxygen&#10;" GraphId="n30_REACTOME_29368" Type="Metabolite">
+    <Graphics CenterX="310.0" CenterY="504.5" Width="56.0" Height="29.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode TextLabel="phytoceramide&#10;" GraphId="n32_REACTOME_428204" Type="Metabolite">
+    <Graphics CenterX="425.0" CenterY="564.5" Width="104.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="31998"/>
+  </DataNode>
+  <DataNode TextLabel="DEGS2&#10;" GraphId="n33_REACTOME_428233" Type="Protein">
+    <Graphics CenterX="432.0" CenterY="515.0" Width="54.0" Height="20.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q6QHC5"/>
+  </DataNode>
+  <DataNode TextLabel="NADP+&#10;" GraphId="n35_REACTOME_29366" Type="Metabolite">
+    <Graphics CenterX="326.5" CenterY="540.5" Width="57.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18009"/>
+  </DataNode>
+  <DataNode TextLabel="H+&#10;" GraphId="n36_REACTOME_70106" Type="Metabolite">
+    <Graphics CenterX="365.0" CenterY="462.0" Width="32.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode TextLabel="NADPH&#10;" GraphId="n37_REACTOME_29364" Type="Metabolite">
+    <Graphics CenterX="314.5" CenterY="474.5" Width="59.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16474"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n39_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="340.0" CenterY="570.0" Width="40.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="phytosphingosine&#10;" GraphId="n40_REACTOME_428237" Type="Metabolite">
+    <Graphics CenterX="404.0" CenterY="707.0" Width="114.0" Height="28.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="46961"/>
+  </DataNode>
+  <DataNode TextLabel="stearate&#10;" GraphId="n41_REACTOME_428198" Type="Metabolite">
+    <Graphics CenterX="333.0" CenterY="666.0" Width="64.0" Height="28.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="9254"/>
+  </DataNode>
+  <DataNode TextLabel="ACER3&#10;" GraphId="n42_REACTOME_428251" Type="Protein">
+    <Graphics CenterX="438.5" CenterY="638.0" Width="49.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NUN7"/>
+  </DataNode>
+  <DataNode TextLabel="NAD(P)H&#10;" GraphId="n44_REACTOME_428206" Type="Metabolite">
+    <Graphics CenterX="574.5" CenterY="427.5" Width="67.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_20158"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n45_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="591.0" CenterY="549.5" Width="42.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="ceramide&#10;" GraphId="n46_REACTOME_428256" Type="Metabolite">
+    <Graphics CenterX="524.0" CenterY="546.5" Width="72.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17761"/>
+  </DataNode>
+  <DataNode TextLabel="NAD(P)+&#10;" GraphId="n47_REACTOME_428218" Type="Metabolite">
+    <Graphics CenterX="631.0" CenterY="515.5" Width="66.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_20200"/>
+  </DataNode>
+  <DataNode TextLabel="DEGS1&#10;" GraphId="n48_REACTOME_428201" Type="Protein">
+    <Graphics CenterX="516.5" CenterY="483.5" Width="51.0" Height="21.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O15121"/>
+  </DataNode>
+  <DataNode TextLabel="H+&#10;" GraphId="n50_REACTOME_70106" Type="Metabolite">
+    <Graphics CenterX="629.0" CenterY="432.0" Width="32.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode TextLabel="Oxygen&#10;" GraphId="n51_REACTOME_29368" Type="Metabolite">
+    <Graphics CenterX="622.0" CenterY="467.5" Width="56.0" Height="29.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode TextLabel="sphingosine&#10;" GraphId="n54_REACTOME_428193" Type="Metabolite">
+    <Graphics CenterX="532.0" CenterY="667.5" Width="86.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16393"/>
+  </DataNode>
+  <DataNode TextLabel="ACER1&#10;" GraphId="n55_REACTOME_428221" Type="Protein">
+    <Graphics CenterX="522.0" CenterY="602.5" Width="50.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8TDN7"/>
+  </DataNode>
+  <DataNode TextLabel="stearate&#10;" GraphId="n56_REACTOME_428198" Type="Metabolite">
+    <Graphics CenterX="626.0" CenterY="631.0" Width="64.0" Height="28.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="9254"/>
+  </DataNode>
+  <DataNode TextLabel="ATP&#10;" GraphId="n59_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="591.5" CenterY="320.5" Width="43.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode TextLabel="sphinganine 1-&#10;phosphate&#10;" GraphId="n60_REACTOME_428275" Type="Metabolite">
+    <Graphics CenterX="640.5" CenterY="234.0" Width="109.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16893"/>
+  </DataNode>
+  <DataNode TextLabel="ADP&#10;" GraphId="n61_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="552.5" CenterY="233.0" Width="43.0" Height="24.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode TextLabel="SPHK&#10;" GraphId="n62_REACTOME_428276" Type="Protein">
+    <Graphics CenterX="676.0" CenterY="282.5" Width="48.0" Height="21.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20002"/>
+  </DataNode>
+  <DataNode TextLabel="ATP&#10;" GraphId="n64_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="576.0" CenterY="721.5" Width="42.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode TextLabel="ADP&#10;" GraphId="n65_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="645.0" CenterY="721.5" Width="42.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode TextLabel="Sphingosine-1-&#10;phosphate&#10;" GraphId="n66_REACTOME_428203" Type="Metabolite">
+    <Graphics CenterX="743.0" CenterY="655.5" Width="100.0" Height="39.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="37550"/>
+  </DataNode>
+  <DataNode TextLabel="phosphoethanola&#10;mine&#10;" GraphId="n69_REACTOME_428686" Type="Metabolite">
+    <Graphics CenterX="715.0" CenterY="137.5" Width="100.0" Height="41.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17553"/>
+  </DataNode>
+  <DataNode TextLabel="hexadecanal&#10;" GraphId="n70_REACTOME_428663" Type="Metabolite">
+    <Graphics CenterX="599.5" CenterY="135.0" Width="93.0" Height="26.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17600"/>
+  </DataNode>
+  <DataNode TextLabel="SGPL1&#10;" GraphId="n71_REACTOME_428661" Type="Protein">
+    <Graphics CenterX="535.5" CenterY="183.5" Width="49.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O95470"/>
+  </DataNode>
+  <DataNode TextLabel="hexadec-2-enal&#10;" GraphId="n74_REACTOME_428671" Type="Metabolite">
+    <Graphics CenterX="858.0" CenterY="131.5" Width="98.0" Height="29.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17585"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n76_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="828.0" CenterY="674.5" Width="42.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="sphingosine&#10;" GraphId="n77_REACTOME_428682" Type="Metabolite">
+    <Graphics CenterX="980.5" CenterY="669.5" Width="85.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16393"/>
+  </DataNode>
+  <DataNode TextLabel="Orthophosp&#10;hate&#10;" GraphId="n78_REACTOME_29372" Type="Metabolite">
+    <Graphics CenterX="896.5" CenterY="671.5" Width="69.0" Height="41.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode TextLabel="PPAP2&#10;" GraphId="n79_REACTOME_428110" Type="Protein">
+    <Graphics CenterX="1038.0" CenterY="610.5" Width="50.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19766"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n81_REACTOME_109276" Type="Metabolite">
+    <Graphics CenterX="1146.5" CenterY="499.5" Width="39.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="Sphingosine-1-&#10;phosphate&#10;" GraphId="n82_REACTOME_419305" Type="Metabolite">
+    <Graphics CenterX="1105.5" CenterY="537.5" Width="99.0" Height="41.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="37550"/>
+  </DataNode>
+  <DataNode TextLabel="Orthophosp&#10;hate&#10;" GraphId="n83_REACTOME_109277" Type="Metabolite">
+    <Graphics CenterX="1177.5" CenterY="419.5" Width="71.0" Height="33.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode TextLabel="sphingosine&#10;" GraphId="n84_REACTOME_428662" Type="Metabolite">
+    <Graphics CenterX="1105.0" CenterY="393.5" Width="80.0" Height="31.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16393"/>
+  </DataNode>
+  <DataNode TextLabel="PPAP2A&#10;" GraphId="n85_REACTOME_76106" Type="Protein">
+    <Graphics CenterX="1037.0" CenterY="464.5" Width="60.0" Height="21.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14494"/>
+  </DataNode>
+  <DataNode TextLabel="SGPP&#10;" GraphId="n90_REACTOME_428667" Type="Protein">
+    <Graphics CenterX="526.0" CenterY="781.0" Width="48.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20306"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n93_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="655.0" CenterY="839.5" Width="44.0" Height="21.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="sphinganine&#10;" GraphId="n94_REACTOME_428694" Type="Metabolite">
+    <Graphics CenterX="798.5" CenterY="811.0" Width="89.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16566"/>
+  </DataNode>
+  <DataNode TextLabel="Orthophosp&#10;hate&#10;" GraphId="n95_REACTOME_29372" Type="Metabolite">
+    <Graphics CenterX="750.0" CenterY="845.5" Width="70.0" Height="37.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode TextLabel="sphinganine 1-&#10;phosphate&#10;" GraphId="n97_REACTOME_428275" Type="Metabolite">
+    <Graphics CenterX="607.0" CenterY="811.0" Width="98.0" Height="30.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16893"/>
+  </DataNode>
+  <DataNode TextLabel="CERT:PPM1L:&#10;VAPA/B trimer&#10;" GraphId="n99_REACTOME_429672" Type="Complex">
+    <Graphics CenterX="505.0" CenterY="837.0" Width="94.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_19603"/>
+  </DataNode>
+  <DataNode TextLabel="ceramide:CERT:&#10;PPM1L:VAPA/B &#10;trimer&#10;" GraphId="n100_REACTOME_429705" Type="Complex">
+    <Graphics CenterX="387.5" CenterY="788.0" Width="101.0" Height="52.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20363"/>
+  </DataNode>
+  <DataNode TextLabel="ceramide&#10;" GraphId="n102_REACTOME_428270" Type="Metabolite">
+    <Graphics CenterX="284.0" CenterY="837.5" Width="70.0" Height="21.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17761"/>
+  </DataNode>
+  <DataNode TextLabel="OSBP&#10;" GraphId="n103_REACTOME_429725" Type="Protein">
+    <Graphics CenterX="387.0" CenterY="882.5" Width="44.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22059"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n105_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="165.0" CenterY="858.0" Width="42.0" Height="22.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="sphingosine&#10;" GraphId="n106_REACTOME_428248" Type="Metabolite">
+    <Graphics CenterX="201.0" CenterY="729.0" Width="86.0" Height="26.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16393"/>
+  </DataNode>
+  <DataNode TextLabel="ACER2&#10;" GraphId="n107_REACTOME_428239" Type="Protein">
+    <Graphics CenterX="287.0" CenterY="802.5" Width="50.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q5QJU3"/>
+  </DataNode>
+  <DataNode TextLabel="PPM1L:&#10;VAPA/B &#10;dimer&#10;" GraphId="n110_REACTOME_429703" Type="Complex">
+    <Graphics CenterX="504.0" CenterY="1164.5" Width="64.0" Height="51.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_19722"/>
+  </DataNode>
+  <DataNode TextLabel="CERT&#10;" GraphId="n111_REACTOME_429712" Type="Protein">
+    <Graphics CenterX="657.5" CenterY="890.5" Width="43.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y5P4-2"/>
+  </DataNode>
+  <DataNode TextLabel="ATP&#10;" GraphId="n113_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="729.0" CenterY="898.0" Width="40.0" Height="26.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode TextLabel="monophospho-&#10;CERT&#10;" GraphId="n114_REACTOME_429704" Type="Protein">
+    <Graphics CenterX="691.5" CenterY="1016.5" Width="95.0" Height="33.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y5P4-2"/>
+  </DataNode>
+  <DataNode TextLabel="ADP&#10;" GraphId="n115_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="734.5" CenterY="979.5" Width="45.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode TextLabel="Protein kinase C, mu &#10;type&#10;" GraphId="n116_REACTOME_58210" Type="Protein">
+    <Graphics CenterX="784.5" CenterY="943.0" Width="133.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15139"/>
+  </DataNode>
+  <DataNode TextLabel="ATP&#10;" GraphId="n118_REACTOME_113592" Type="Metabolite">
+    <Graphics CenterX="742.0" CenterY="1045.5" Width="40.0" Height="21.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode TextLabel="ADP&#10;" GraphId="n119_REACTOME_29370" Type="Metabolite">
+    <Graphics CenterX="742.0" CenterY="1105.5" Width="42.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode TextLabel="multiphospho-&#10;CERT&#10;" GraphId="n120_REACTOME_429695" Type="Protein">
+    <Graphics CenterX="692.0" CenterY="1149.5" Width="94.0" Height="37.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y5P4-2"/>
+  </DataNode>
+  <DataNode TextLabel="CSNK1G2&#10;" GraphId="n121_REACTOME_429696" Type="Protein">
+    <Graphics CenterX="755.0" CenterY="1074.0" Width="70.0" Height="18.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P78368"/>
+  </DataNode>
+  <DataNode TextLabel="multiphospho-&#10;CERT:PPM1L:&#10;VAPA/B trimer&#10;" GraphId="n123_REACTOME_429726" Type="Complex">
+    <Graphics CenterX="509.0" CenterY="1060.5" Width="94.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0"/>
+    <Xref Database="Reactome" ID="REACT_20055"/>
+  </DataNode>
+  <DataNode TextLabel="H2O&#10;" GraphId="n125_REACTOME_29356" Type="Metabolite">
+    <Graphics CenterX="596.0" CenterY="1042.5" Width="44.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode TextLabel="Orthophosp&#10;hate&#10;" GraphId="n126_REACTOME_29372" Type="Metabolite">
+    <Graphics CenterX="641.0" CenterY="963.0" Width="70.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode TextLabel="Phosphatidyl &#10;choline&#10;" GraphId="n129_REACTOME_429785" Type="Metabolite">
+    <Graphics CenterX="186.0" CenterY="898.0" Width="88.0" Height="34.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16110"/>
+  </DataNode>
+  <DataNode TextLabel="diacylglycerols&#10;" GraphId="n130_REACTOME_429773" Type="Metabolite">
+    <Graphics CenterX="179.0" CenterY="975.0" Width="96.0" Height="24.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18035"/>
+  </DataNode>
+  <DataNode TextLabel="sphingomyelins&#10;" GraphId="n131_REACTOME_429789" Type="Metabolite">
+    <Graphics CenterX="189.5" CenterY="1022.0" Width="107.0" Height="28.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17636"/>
+  </DataNode>
+  <DataNode TextLabel="SGMS1&#10;" GraphId="n132_REACTOME_429782" Type="Protein">
+    <Graphics CenterX="302.0" CenterY="940.0" Width="54.0" Height="20.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q86VZ5"/>
+  </DataNode>
+  <DataNode TextLabel="ceramide&#10;" GraphId="n135_REACTOME_429807" Type="Metabolite">
+    <Graphics CenterX="89.5" CenterY="679.5" Width="61.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17761"/>
+  </DataNode>
+  <DataNode TextLabel="Phosphatidyl &#10;choline&#10;" GraphId="n136_REACTOME_429802" Type="Metabolite">
+    <Graphics CenterX="89.0" CenterY="721.5" Width="92.0" Height="37.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16110"/>
+  </DataNode>
+  <DataNode TextLabel="sphingomyelins&#10;" GraphId="n137_REACTOME_429776" Type="Metabolite">
+    <Graphics CenterX="89.0" CenterY="609.5" Width="96.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17636"/>
+  </DataNode>
+  <DataNode TextLabel="diacylglycerols&#10;" GraphId="n138_REACTOME_112275" Type="Metabolite">
+    <Graphics CenterX="89.0" CenterY="571.5" Width="88.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18035"/>
+  </DataNode>
+  <DataNode TextLabel="SGMS2&#10;" GraphId="n139_REACTOME_429775" Type="Protein">
+    <Graphics CenterX="89.0" CenterY="640.5" Width="62.0" Height="21.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8NHU3"/>
+  </DataNode>
+  <Line GraphId="e_4_REACTOME_428127">
+    <Comment Source="WikiPathways-description">SPTLC (serine palmitoyltransferase) enzyme complexes associated with the endoplasmic reticulum membrane catalyze the reaction of palmitoyl-CoA and serine to form 3-ketosphinganine. SPTLC2 and SPTLC3 polypeptides exhibit enzyme activity when either is complexed with SPTLC1. SPTLC1 and 2 are abundant and widely expressed in human tissues, while SPTLC3 is expressed only in a smaller group of tissues and at variable levels. Results of studies in which siRNA was used to reduce levels of the three endogenous mRNAs differentially suggest that SPTLC2 and 3 both encode active serine palmitoyltransferases (Hornemann et al. 2006). Neither human nor mouse SPTLC1 has detectable enzyme activity, but the protein has an essential function, as mutations that disrupt it are associated with hereditary neuropathy (Dawkins et al. 2001). Studies of mouse and hamster proteins support the hypothesis that heterodimerization with SPTLC1 stabilizes SPTLC2 (or 3) and mediates its localization to the endoplasmic reticulum membrane (Hanada et al. 2000; Weiss and Stoffel 1997). Analyses of complexes extracted from human placenta, and of cultured human cells over-expressing various SPTLC constructs, suggest that these heterodimers may associate into larger complexes (Hanada et al. 2000; Weiss and Stoffel 1997; Hornemann et al. 2006, 2007).</Comment>
+    <BiopaxRef>lit_428173</BiopaxRef>
+    <BiopaxRef>lit_428170</BiopaxRef>
+    <BiopaxRef>lit_428150</BiopaxRef>
+    <BiopaxRef>lit_428136</BiopaxRef>
+    <BiopaxRef>lit_428124</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="385.0" Y="100.0"/>
+      <Point X="383.0" Y="143.0"/>
+      <Point X="384.0" Y="168.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_4_a_i"/>
+      <Anchor Position="0.6324182981785853" Shape="None" GraphId="e_4_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_4_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="352.0" Y="94.5" GraphRef="n5_REACTOME_200736" RelX="1.096774193548387" RelY="0.4"/>
+      <Point X="385.0" Y="100.0" GraphRef="e_4_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="384.5" Y="79.5" GraphRef="n6_REACTOME_200993" RelX="0.0" RelY="1.28"/>
+      <Point X="385.0" Y="100.0" GraphRef="e_4_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="356.0" Y="154.5" GraphRef="n7_REACTOME_113528" RelX="1.1428571428571428" RelY="0.782608695652174" ArrowHead="Arrow"/>
+      <Point X="384.0" Y="168.0" GraphRef="e_4_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="408.0" Y="177.0" GraphRef="n8_REACTOME_428182" RelX="-0.4827586206896552" RelY="-1.2142857142857142" ArrowHead="Arrow"/>
+      <Point X="384.0" Y="168.0" GraphRef="e_4_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="362.5" Y="173.0" GraphRef="n9_REACTOME_76194" RelX="1.1111111111111112" RelY="-0.5" ArrowHead="Arrow"/>
+      <Point X="384.0" Y="168.0" GraphRef="e_4_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_4_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="404.5" Y="142.0" GraphRef="n10_REACTOME_428174" RelX="-1.054945054945055" RelY="0.05263157894736842"/>
+      <Point X="383.0" Y="143.0" GraphRef="e_4_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_428123">
+    <Comment Source="WikiPathways-description">KDSR (3-ketodihydrosphingosine reductase) enzyme associated with the cytosolic face of the endoplasmic reticulum membrane catalyzes the reduction of 3-ketosphinganine by NADPH to form sphinganine (dihydrosphingosine) (Kihara and Igarashi 2004).</Comment>
+    <BiopaxRef>lit_428154</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="384.0" Y="235.0"/>
+      <Point X="384.0" Y="259.0"/>
+      <Point X="384.0" Y="281.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_17_a_i"/>
+      <Anchor Position="0.5217391304347826" Shape="None" GraphId="e_17_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_17_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="357.5" Y="231.5" GraphRef="n18_REACTOME_29364" RelX="1.11864406779661" RelY="0.17391304347826086"/>
+      <Point X="384.0" Y="235.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="357.0" Y="251.0" GraphRef="n19_REACTOME_70106" RelX="1.1875" RelY="-0.8181818181818182"/>
+      <Point X="384.0" Y="235.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="418.0" Y="211.0" GraphRef="n8_REACTOME_428182" RelX="-0.3103448275862069" RelY="1.2142857142857142"/>
+      <Point X="384.0" Y="235.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="352.5" Y="287.5" GraphRef="n20_REACTOME_29366" RelX="1.1228070175438596" RelY="-0.43478260869565216" ArrowHead="Arrow"/>
+      <Point X="384.0" Y="281.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="419.0" Y="305.5" GraphRef="n21_REACTOME_428163" RelX="-0.34782608695652173" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Point X="384.0" Y="281.0" GraphRef="e_17_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="412.0" Y="257.0" GraphRef="n22_REACTOME_428134" RelX="-1.1428571428571428" RelY="0.0"/>
+      <Point X="384.0" Y="259.0" GraphRef="e_17_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_REACTOME_428185">
+    <Comment Source="WikiPathways-description">LASS (âlongevity assurance homologâ, also known as ceramide synthase, CerS) enzymes associated with the endoplasmic reticulum membrane catalyze the reaction of sphinganine (dihydrosphingosine) and a long-chain fatty acyl CoA such as stearyl-CoA to form a dihydroceramide and CoASH (Pewzner-Jung et al. 2006). Six human LASS genes have been identified; they differ in the identities of the fatty acyl CoAs that they use most efficiently as substrates (Lahiri and Futerman 2005; Laviad et al. 2008).</Comment>
+    <BiopaxRef>lit_428188</BiopaxRef>
+    <BiopaxRef>lit_428148</BiopaxRef>
+    <BiopaxRef>lit_428130</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="383.0" Y="353.0"/>
+      <Point X="383.0" Y="381.0"/>
+      <Point X="383.0" Y="406.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_24_a_i"/>
+      <Anchor Position="0.5283018867924528" Shape="None" GraphId="e_24_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_24_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="417.0" Y="334.5" GraphRef="n21_REACTOME_428163" RelX="-0.391304347826087" RelY="1.3043478260869565"/>
+      <Point X="383.0" Y="353.0" GraphRef="e_24_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="360.5" Y="346.5" GraphRef="n25_REACTOME_428139" RelX="0.7191011235955056" RelY="1.2258064516129032"/>
+      <Point X="383.0" Y="353.0" GraphRef="e_24_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="416.0" Y="419.0" GraphRef="n26_REACTOME_428126" RelX="-0.6274509803921569" RelY="-1.2" ArrowHead="Arrow"/>
+      <Point X="383.0" Y="406.0" GraphRef="e_24_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="362.5" Y="406.0" GraphRef="n28_REACTOME_76194" RelX="1.1111111111111112" RelY="-0.14285714285714285" ArrowHead="Arrow"/>
+      <Point X="383.0" Y="406.0" GraphRef="e_24_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_24_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="408.0" Y="381.0" GraphRef="n27_REACTOME_428153" RelX="-1.0909090909090908" RelY="0.0"/>
+      <Point X="383.0" Y="381.0" GraphRef="e_24_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_REACTOME_428260">
+    <Comment Source="WikiPathways-description">DEGS2 (sphingolipid C4-hydroxylase 2 / âdegenerative spermatocyte homolog 2â) enzyme associated with the cytosolic face of the endoplasmic reticulum catalyzes the hydroxylation of dihydroceramide to form phytoceramide (Mizutani et al. 2004). Sequence similarity to the bifunctional mouse DEGS2 enzyme suggests that human DEGS2 protein might also catalyze the C4-dehydrogenation of dihydroceramide, but this hypothesis has not been tested experimentally.</Comment>
+    <BiopaxRef>lit_428255</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="381.0" Y="488.0"/>
+      <Point X="383.0" Y="514.0"/>
+      <Point X="383.0" Y="540.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_29_a_i"/>
+      <Anchor Position="0.5007374647311335" Shape="None" GraphId="e_29_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_29_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="341.0" Y="497.5" GraphRef="n30_REACTOME_29368" RelX="1.1071428571428572" RelY="-0.4827586206896552"/>
+      <Point X="381.0" Y="488.0" GraphRef="e_29_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="428.0" Y="455.0" GraphRef="n26_REACTOME_428126" RelX="-0.39215686274509803" RelY="1.2"/>
+      <Point X="381.0" Y="488.0" GraphRef="e_29_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="371.0" Y="476.0" GraphRef="n36_REACTOME_70106" RelX="0.375" RelY="1.2727272727272727"/>
+      <Point X="381.0" Y="488.0" GraphRef="e_29_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="347.5" Y="480.5" GraphRef="n37_REACTOME_29364" RelX="1.11864406779661" RelY="0.5217391304347826"/>
+      <Point X="381.0" Y="488.0" GraphRef="e_29_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="397.0" Y="546.5" GraphRef="n32_REACTOME_428204" RelX="-0.5384615384615384" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="383.0" Y="540.0" GraphRef="e_29_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="358.5" Y="540.5" GraphRef="n35_REACTOME_29366" RelX="1.1228070175438596" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="383.0" Y="540.0" GraphRef="e_29_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="355.0" Y="556.0" GraphRef="n39_REACTOME_29356" RelX="0.75" RelY="-1.2727272727272727" ArrowHead="Arrow"/>
+      <Point X="383.0" Y="540.0" GraphRef="e_29_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_29_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="402.0" Y="514.0" GraphRef="n33_REACTOME_428233" RelX="-1.1111111111111112" RelY="-0.1"/>
+      <Point X="383.0" Y="514.0" GraphRef="e_29_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_REACTOME_428262">
+    <Comment Source="WikiPathways-description">ACER3 (alkaline ceramidase 3) catalyzes the hydrolysis of phytoceramide to yield a free fatty acid (annotated here as stearate) and phytosphingosine. ACER3 mRNA is widely expressed in the body, although most abundant in placenta. Immunofluoresence studies of cultured cells over-expressing GFP-tagged protein suggest its localization to membranes of the endoplasmic reticulum (annotated here) and also the Golgi apparatus (Mao et al. 2001).</Comment>
+    <BiopaxRef>lit_428212</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="388.0" Y="624.0"/>
+      <Point X="389.0" Y="643.0"/>
+      <Point X="388.0" Y="662.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_38_a_i"/>
+      <Anchor Position="0.5" Shape="None" GraphId="e_38_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_38_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="349.0" Y="584.0" GraphRef="n39_REACTOME_29356" RelX="0.45" RelY="1.2727272727272727"/>
+      <Point X="388.0" Y="624.0" GraphRef="e_38_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="415.0" Y="583.5" GraphRef="n32_REACTOME_428204" RelX="-0.19230769230769232" RelY="1.2258064516129032"/>
+      <Point X="388.0" Y="624.0" GraphRef="e_38_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="399.0" Y="690.0" GraphRef="n40_REACTOME_428237" RelX="-0.08771929824561403" RelY="-1.2142857142857142" ArrowHead="Arrow"/>
+      <Point X="388.0" Y="662.0" GraphRef="e_38_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="368.0" Y="663.0" GraphRef="n41_REACTOME_428198" RelX="1.09375" RelY="-0.21428571428571427" ArrowHead="Arrow"/>
+      <Point X="388.0" Y="662.0" GraphRef="e_38_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="411.5" Y="640.0" GraphRef="n42_REACTOME_428251" RelX="-1.1020408163265305" RelY="0.18181818181818182"/>
+      <Point X="389.0" Y="643.0" GraphRef="e_38_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_REACTOME_428259">
+    <Comment Source="WikiPathways-description">DEGS1 (sphingolipid delta(4)-desaturase 1 / âdegenerative spermatocyte homolog 1â) enzyme associated with the cytosolic face of the endoplasmic reticulum catalyzes the desaturation of dihydroceramide to form ceramide (Cadena et al. 1997; Ternes et al. 2002). The stoichiometry and cofactor requirements of the reaction are inferred from those observed in studies of ceramide synthesis in vitro catalyzed by rat liver microsomes (Michel et al. 1997). DEGS1 may also catalyze the 4-hydroxylation of dihydroceramide to form 4-hydroxysphinganine, but with low efficiency.</Comment>
+    <BiopaxRef>lit_428272</BiopaxRef>
+    <BiopaxRef>lit_428213</BiopaxRef>
+    <BiopaxRef>lit_428242</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="572.0" Y="465.0"/>
+      <Point X="573.0" Y="488.0"/>
+      <Point X="574.0" Y="512.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_43_a_i"/>
+      <Anchor Position="0.4893809395402735" Shape="None" GraphId="e_43_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_43_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="573.5" Y="446.5" GraphRef="n44_REACTOME_428206" RelX="-0.029850746268656716" RelY="1.2258064516129032"/>
+      <Point X="572.0" Y="465.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="502.0" Y="448.0" GraphRef="n26_REACTOME_428126" RelX="1.0588235294117647" RelY="0.7333333333333333"/>
+      <Point X="572.0" Y="465.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="610.0" Y="441.0" GraphRef="n50_REACTOME_70106" RelX="-1.1875" RelY="0.8181818181818182"/>
+      <Point X="572.0" Y="465.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="591.0" Y="465.5" GraphRef="n51_REACTOME_29368" RelX="-1.1071428571428572" RelY="-0.13793103448275862"/>
+      <Point X="572.0" Y="465.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="584.0" Y="533.5" GraphRef="n45_REACTOME_29356" RelX="-0.3333333333333333" RelY="-1.1851851851851851" ArrowHead="Arrow"/>
+      <Point X="574.0" Y="512.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="543.0" Y="530.5" GraphRef="n46_REACTOME_428256" RelX="0.5277777777777778" RelY="-1.1851851851851851" ArrowHead="Arrow"/>
+      <Point X="574.0" Y="512.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="595.0" Y="513.5" GraphRef="n47_REACTOME_428218" RelX="-1.0909090909090908" RelY="-0.12903225806451613" ArrowHead="Arrow"/>
+      <Point X="574.0" Y="512.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="545.5" Y="485.5" GraphRef="n48_REACTOME_428201" RelX="1.1372549019607843" RelY="0.19047619047619047"/>
+      <Point X="573.0" Y="488.0" GraphRef="e_43_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_REACTOME_428231">
+    <Comment Source="WikiPathways-description">ACER1 (alkaline ceramidase 1), associated with the endoplasmic reticulum membrane, catalyzes the reversible hydrolysis of ceramide to yield a free fatty acid (annotated here as stearate) and sphingosine (Sun et al. 2008).</Comment>
+    <BiopaxRef>lit_428202</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="573.0" Y="579.0"/>
+      <Point X="573.0" Y="603.0"/>
+      <Point X="574.0" Y="630.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_52_a_i"/>
+      <Anchor Position="0.47041748138378053" Shape="None" GraphId="e_52_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_52_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="544.0" Y="563.5" GraphRef="n46_REACTOME_428256" RelX="0.5555555555555556" RelY="1.2592592592592593"/>
+      <Point X="573.0" Y="579.0" GraphRef="e_52_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="582.0" Y="566.5" GraphRef="n45_REACTOME_29356" RelX="-0.42857142857142855" RelY="1.2592592592592593"/>
+      <Point X="573.0" Y="579.0" GraphRef="e_52_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="547.0" Y="651.5" GraphRef="n54_REACTOME_428193" RelX="0.3488372093023256" RelY="-1.1851851851851851" ArrowHead="Arrow"/>
+      <Point X="574.0" Y="630.0" GraphRef="e_52_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="591.0" Y="630.0" GraphRef="n56_REACTOME_428198" RelX="-1.09375" RelY="-0.07142857142857142" ArrowHead="Arrow"/>
+      <Point X="574.0" Y="630.0" GraphRef="e_52_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_52_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="550.0" Y="602.5" GraphRef="n55_REACTOME_428221" RelX="1.12" RelY="0.0"/>
+      <Point X="573.0" Y="603.0" GraphRef="e_52_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_REACTOME_428214">
+    <Comment Source="WikiPathways-description">SPHK1 and 2 (sphingosine kinases 1 and 2) each catalyze the reaction of sphinganine (dihydrosphingosine) and ATP to form dihydrosphingosine 1-phosphate and ADP. Both enzymes are found in the cytosol (although they are also present in membrane-associated forms). Both enzymes also catalyze the phosphorylation of sphingosine (Liu et al. 2000; Nava et al. 2000; Pitson et al. 2000).</Comment>
+    <BiopaxRef>lit_428217</BiopaxRef>
+    <BiopaxRef>lit_428279</BiopaxRef>
+    <BiopaxRef>lit_428274</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="561.0" Y="300.0"/>
+      <Point X="561.0" Y="282.0"/>
+      <Point X="562.0" Y="265.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_58_a_i"/>
+      <Anchor Position="0.5138542768624935" Shape="None" GraphId="e_58_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="573.5" Y="306.5" GraphRef="n59_REACTOME_113592" RelX="-0.8372093023255814" RelY="-1.2173913043478262"/>
+      <Point X="561.0" Y="300.0" GraphRef="e_58_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="484.0" Y="312.5" GraphRef="n21_REACTOME_428163" RelX="1.065217391304348" RelY="-0.6086956521739131"/>
+      <Point X="561.0" Y="300.0" GraphRef="e_58_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="592.5" Y="256.0" GraphRef="n60_REACTOME_428275" RelX="-0.8807339449541285" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Point X="562.0" Y="265.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="555.5" Y="248.0" GraphRef="n61_REACTOME_29370" RelX="0.13953488372093023" RelY="1.25" ArrowHead="Arrow"/>
+      <Point X="562.0" Y="265.0" GraphRef="e_58_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="649.0" Y="282.5" GraphRef="n62_REACTOME_428276" RelX="-1.125" RelY="0.0"/>
+      <Point X="561.0" Y="282.0" GraphRef="e_58_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_REACTOME_428273">
+    <Comment Source="WikiPathways-description">SPHK1 and 2 (sphingosine kinases 1 and 2) catalyze the reaction of sphingosine and ATP to form sphingosine 1-phosphate and ADP. Both enzymes are found in the cytosol (although they are also present in membrane-associated forms). Both enzymes also catalyze the phosphorylation of sphinganine (dihydrosphingosine) (Liu et al. 2000; Nava et al. 2000; Pitson et al. 2000).</Comment>
+    <BiopaxRef>lit_428217</BiopaxRef>
+    <BiopaxRef>lit_428279</BiopaxRef>
+    <BiopaxRef>lit_428274</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="584.0" Y="690.0"/>
+      <Point X="608.0" Y="690.0"/>
+      <Point X="630.0" Y="690.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_63_a_i"/>
+      <Anchor Position="0.5217391304347826" Shape="None" GraphId="e_63_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_63_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="562.0" Y="684.5" GraphRef="n54_REACTOME_428193" RelX="0.6976744186046512" RelY="1.2592592592592593"/>
+      <Point X="584.0" Y="690.0" GraphRef="e_63_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="580.0" Y="703.5" GraphRef="n64_REACTOME_113592" RelX="0.19047619047619047" RelY="-1.1612903225806452"/>
+      <Point X="584.0" Y="690.0" GraphRef="e_63_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="637.0" Y="703.5" GraphRef="n65_REACTOME_29370" RelX="-0.38095238095238093" RelY="-1.1612903225806452" ArrowHead="Arrow"/>
+      <Point X="630.0" Y="690.0" GraphRef="e_63_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="690.0" Y="670.5" GraphRef="n66_REACTOME_428203" RelX="-1.06" RelY="0.7692307692307693" ArrowHead="Arrow"/>
+      <Point X="630.0" Y="690.0" GraphRef="e_63_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="676.0" Y="296.5" GraphRef="n62_REACTOME_428276" RelX="0.0" RelY="1.3333333333333333"/>
+      <Point X="677.0" Y="644.0"/>
+      <Point X="606.0" Y="662.0"/>
+      <Point X="608.0" Y="690.0" GraphRef="e_63_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_REACTOME_428681">
+    <Comment Source="WikiPathways-description">SGPL1 (sphingosine-1-phosphate lyase 1), associated with the endoplasmic reticulum membrane, catalyzes the cleavage of cytosolic sphinganine (dihydrosphingosine) 1-phosphate to form phosphoethanolamine and hexadecanal (Van Veldhoven et al. 2000; Fyrst and Saba 2008).</Comment>
+    <BiopaxRef>lit_428668</BiopaxRef>
+    <BiopaxRef>lit_428688</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="639.5" Y="212.0" GraphRef="n60_REACTOME_428275" RelX="-0.01834862385321101" RelY="-1.1578947368421053"/>
+      <Point X="637.0" Y="174.0"/>
+      <Point X="636.0" Y="160.0"/>
+      <Anchor Position="0.7305406676648151" Shape="None" GraphId="e_68_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_68_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="662.0" Y="151.5" GraphRef="n69_REACTOME_428686" RelX="-1.06" RelY="0.6829268292682927" ArrowHead="Arrow"/>
+      <Point X="636.0" Y="160.0" GraphRef="e_68_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="618.5" Y="151.0" GraphRef="n70_REACTOME_428663" RelX="0.40860215053763443" RelY="1.2307692307692308" ArrowHead="Arrow"/>
+      <Point X="636.0" Y="160.0" GraphRef="e_68_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="563.5" Y="180.5" GraphRef="n71_REACTOME_428661" RelX="1.1428571428571428" RelY="-0.24"/>
+      <Point X="637.0" Y="174.0" GraphRef="e_68_a_p" RelX="-5.227709325481555E-4" RelY="-0.007946118175340189"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_73_REACTOME_428676">
+    <Comment Source="WikiPathways-description">SGPL1 (sphingosine-1-phosphate lyase 1), associated with the endoplasmic reticulum membrane, catalyzes the cleavage of cytosolic sphingosine 1-phosphate to form phosphoethanolamine and hexadec-2-enal (Van Veldhoven et al. 2000; Fyrst and Saba 2008).</Comment>
+    <BiopaxRef>lit_428668</BiopaxRef>
+    <BiopaxRef>lit_428688</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="742.0" Y="633.5" GraphRef="n66_REACTOME_428203" RelX="-0.02" RelY="-1.1282051282051282"/>
+      <Point X="742.0" Y="206.0"/>
+      <Point X="740.0" Y="172.0"/>
+      <Anchor Position="0.9261292166071395" Shape="None" GraphId="e_73_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_73_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_73_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="729.0" Y="161.5" GraphRef="n69_REACTOME_428686" RelX="0.28" RelY="1.170731707317073" ArrowHead="Arrow"/>
+      <Point X="740.0" Y="172.0" GraphRef="e_73_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_73_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="816.0" Y="149.5" GraphRef="n74_REACTOME_428671" RelX="-0.8571428571428571" RelY="1.2413793103448276" ArrowHead="Arrow"/>
+      <Point X="740.0" Y="172.0" GraphRef="e_73_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_73_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="563.5" Y="185.5" GraphRef="n71_REACTOME_428661" RelX="1.1428571428571428" RelY="0.16"/>
+      <Point X="742.0" Y="206.0" GraphRef="e_73_a_p" RelX="0.0" RelY="-0.03693539169643145"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_REACTOME_428696">
+    <Comment Source="WikiPathways-description">PPAP2A, B, and C (phosphatidate phosphohydrolase type 2A, B, and C) enzymes associated with the plasma membrane catalyze the hydrolysis of cytosolic sphingosine 1-phosphate to form sphingosine and orthophosphate (Roberts et al 1998).</Comment>
+    <BiopaxRef>lit_200173</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="829.0" Y="634.0"/>
+      <Point X="856.0" Y="634.0"/>
+      <Point X="883.0" Y="634.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_75_a_i"/>
+      <Anchor Position="0.5" Shape="None" GraphId="e_75_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_75_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="828.0" Y="656.5" GraphRef="n76_REACTOME_29356" RelX="0.0" RelY="-1.1612903225806452"/>
+      <Point X="829.0" Y="634.0" GraphRef="e_75_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="796.0" Y="642.5" GraphRef="n66_REACTOME_428203" RelX="1.06" RelY="-0.6666666666666666"/>
+      <Point X="829.0" Y="634.0" GraphRef="e_75_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="942.5" Y="653.5" GraphRef="n77_REACTOME_428682" RelX="-0.8941176470588236" RelY="-1.1851851851851851" ArrowHead="Arrow"/>
+      <Point X="883.0" Y="634.0" GraphRef="e_75_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="888.5" Y="648.5" GraphRef="n78_REACTOME_29372" RelX="-0.2318840579710145" RelY="-1.1219512195121952" ArrowHead="Arrow"/>
+      <Point X="883.0" Y="634.0" GraphRef="e_75_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_75_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1010.0" Y="609.5" GraphRef="n79_REACTOME_428110" RelX="-1.12" RelY="-0.08695652173913043"/>
+      <Point X="857.0" Y="608.0"/>
+      <Point X="856.0" Y="634.0" GraphRef="e_75_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_REACTOME_428690">
+    <Comment Source="WikiPathways-description">PPAP2A (phosphatidate phosphohydrolase type 2A) enzyme associated with the plasma membrane catalyzes the hydrolysis of extracellular sphingosine 1-phosphate to form sphingosine and orthophosphate (Roberts et al 1998).</Comment>
+    <BiopaxRef>lit_200173</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1103.0" Y="488.0"/>
+      <Point X="1104.0" Y="463.0"/>
+      <Point X="1105.0" Y="431.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_80_a_i"/>
+      <Anchor Position="0.4386731483272561" Shape="None" GraphId="e_80_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_80_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1124.5" Y="494.5" GraphRef="n81_REACTOME_109276" RelX="-1.1282051282051282" RelY="-0.3225806451612903"/>
+      <Point X="1103.0" Y="488.0" GraphRef="e_80_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1104.5" Y="514.5" GraphRef="n82_REACTOME_419305" RelX="-0.020202020202020204" RelY="-1.1219512195121952"/>
+      <Point X="1103.0" Y="488.0" GraphRef="e_80_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1139.5" Y="424.5" GraphRef="n83_REACTOME_109277" RelX="-1.0704225352112675" RelY="0.30303030303030304" ArrowHead="Arrow"/>
+      <Point X="1105.0" Y="431.0" GraphRef="e_80_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1105.0" Y="412.5" GraphRef="n84_REACTOME_428662" RelX="0.0" RelY="1.2258064516129032" ArrowHead="Arrow"/>
+      <Point X="1105.0" Y="431.0" GraphRef="e_80_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1070.0" Y="463.5" GraphRef="n85_REACTOME_76106" RelX="1.1" RelY="-0.09523809523809523"/>
+      <Point X="1104.0" Y="463.0" GraphRef="e_80_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_REACTOME_428701">
+    <Comment Source="WikiPathways-description">SGPP1 and 2 (sphingosine-1-phosphate phosphatase 1 and 2) enzymes associated with the endoplasmic reticulum membrane catalyze the hydrolysis of cytosolic sphingosine 1-phosphate to form sphingosine and orthophosphate (Johnson et al. 2003; Ogawa et al. 2003).</Comment>
+    <BiopaxRef>lit_428659</BiopaxRef>
+    <BiopaxRef>lit_428678</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="774.0" Y="702.0"/>
+      <Point X="793.0" Y="721.0"/>
+      <Point X="893.0" Y="720.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_87_a_i"/>
+      <Anchor Position="0.2117836098112638" Shape="None" GraphId="e_87_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_87_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="755.0" Y="678.5" GraphRef="n66_REACTOME_428203" RelX="0.24" RelY="1.1794871794871795"/>
+      <Point X="774.0" Y="702.0" GraphRef="e_87_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="804.0" Y="684.5" GraphRef="n76_REACTOME_29356" RelX="-1.1428571428571428" RelY="0.6451612903225806"/>
+      <Point X="774.0" Y="702.0" GraphRef="e_87_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="956.5" Y="686.5" GraphRef="n77_REACTOME_428682" RelX="-0.5647058823529412" RelY="1.2592592592592593" ArrowHead="Arrow"/>
+      <Point X="893.0" Y="720.0" GraphRef="e_87_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="894.5" Y="695.5" GraphRef="n78_REACTOME_29372" RelX="-0.057971014492753624" RelY="1.170731707317073" ArrowHead="Arrow"/>
+      <Point X="893.0" Y="720.0" GraphRef="e_87_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="553.0" Y="778.0" GraphRef="n90_REACTOME_428667" RelX="1.125" RelY="-0.2727272727272727"/>
+      <Point X="793.0" Y="751.0"/>
+      <Point X="793.0" Y="721.0" GraphRef="e_87_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_REACTOME_428664">
+    <Comment Source="WikiPathways-description">SGPP1 and 2 (sphingosine-1-phosphate phosphatase 1 and 2) enzymes associated with the endoplasmic reticulum membrane catalyze the hydrolysis of cytosolic sphinganine 1-phosphate to form sphinganine (dihydrosphingosine) and orthophosphate (Johnson et al. 2003; Ogawa et al. 2003).</Comment>
+    <BiopaxRef>lit_428659</BiopaxRef>
+    <BiopaxRef>lit_428678</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="681.0" Y="810.0"/>
+      <Point X="702.0" Y="810.0"/>
+      <Point X="724.0" Y="811.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_92_a_i"/>
+      <Anchor Position="0.48811423764659206" Shape="None" GraphId="e_92_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_92_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="664.0" Y="826.5" GraphRef="n93_REACTOME_29356" RelX="0.4090909090909091" RelY="-1.2380952380952381"/>
+      <Point X="681.0" Y="810.0" GraphRef="e_92_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="659.0" Y="810.0" GraphRef="n97_REACTOME_428275" RelX="1.0612244897959184" RelY="-0.06666666666666667"/>
+      <Point X="681.0" Y="810.0" GraphRef="e_92_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="751.5" Y="811.0" GraphRef="n94_REACTOME_428694" RelX="-1.0561797752808988" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="724.0" Y="811.0" GraphRef="e_92_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="735.0" Y="824.5" GraphRef="n95_REACTOME_29372" RelX="-0.42857142857142855" RelY="-1.135135135135135" ArrowHead="Arrow"/>
+      <Point X="724.0" Y="811.0" GraphRef="e_92_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_92_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="553.0" Y="780.0" GraphRef="n90_REACTOME_428667" RelX="1.125" RelY="-0.09090909090909091"/>
+      <Point X="703.0" Y="779.0"/>
+      <Point X="702.0" Y="810.0" GraphRef="e_92_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_REACTOME_429699">
+    <Comment Source="WikiPathways-description">âCERTâ (ceramide transfer protein), an isoform of COL4A3BP, mediates the translocation of ceramides from the endoplasmic reticulum (ER) membrane to the membrane of the Golgi apparatus. Immunoprecipitation experiments suggest that âCERTâ is associated with the ER membrane as part of a complex with PPM1L (protein phosphatase 1-like) (Saito et al. 2008) and VAPA or VAPB (VAMP-associated proteins A or B) (Kawano et al. 2006). The carboxyterminal âSTARTâ domain of âCERTâ protein specifically binds ceramides (Hanada et al. 2003; Kudo et al. 2008).</Comment>
+    <BiopaxRef>lit_429720</BiopaxRef>
+    <BiopaxRef>lit_429692</BiopaxRef>
+    <BiopaxRef>lit_429686</BiopaxRef>
+    <BiopaxRef>lit_429707</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="478.0" Y="785.0"/>
+      <Point X="462.0" Y="785.0"/>
+      <Point X="441.5" Y="785.0" GraphRef="n100_REACTOME_429705" RelX="1.0693069306930694" RelY="-0.11538461538461539" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_98_a_i"/>
+      <Anchor Position="0.43243243243243246" Shape="None" GraphId="e_98_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="495.0" Y="815.0" GraphRef="n99_REACTOME_429672" RelX="-0.2127659574468085" RelY="-1.1578947368421053"/>
+      <Point X="478.0" Y="785.0" GraphRef="e_98_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_98_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="507.0" Y="563.5" GraphRef="n46_REACTOME_428256" RelX="-0.4722222222222222" RelY="1.2592592592592593"/>
+      <Point X="478.0" Y="583.0"/>
+      <Point X="479.0" Y="784.0"/>
+      <Point X="478.0" Y="785.0" GraphRef="e_98_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_REACTOME_429683">
+    <Comment Source="WikiPathways-description">âCERTâ (ceramide transfer protein), associated with the cytosolic face of the endoplasmic reticulum (ER) in a complex with VAPA or VAPB (VAMP-associated proteins A or B) (Kawano et al. 2006) and PPM1L (protein phosphatase 1-like) (Saito et al. 2008), can bridge the gap between the ER and the Golgi apparatus via its PH domain and transfer a molecule of ceramide extracted from the ER membrane to the Golgi (Hanada et al. 2003; Saito et al. 2008). âCERTâ-mediated ceramide transfer is positively regulated by OSBP (oxysterol binding protein), by an unknown mechanism (Perry and Ridgway 2006).</Comment>
+    <BiopaxRef>lit_429686</BiopaxRef>
+    <BiopaxRef>lit_429692</BiopaxRef>
+    <BiopaxRef>lit_429720</BiopaxRef>
+    <BiopaxRef>lit_429673</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="387.5" Y="817.0" GraphRef="n100_REACTOME_429705" RelX="0.0" RelY="1.1153846153846154"/>
+      <Point X="387.0" Y="840.0"/>
+      <Point X="388.0" Y="837.0"/>
+      <Anchor Position="0.8791283503200912" Shape="None" GraphId="e_101_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="455.0" Y="837.0" GraphRef="n99_REACTOME_429672" RelX="-1.0638297872340425" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="388.0" Y="837.0" GraphRef="e_101_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="322.0" Y="837.5" GraphRef="n102_REACTOME_428270" RelX="1.0857142857142856" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="388.0" Y="837.0" GraphRef="e_101_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_a__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="387.0" Y="868.5" GraphRef="n103_REACTOME_429725" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="387.0" Y="840.0" GraphRef="e_101_a_p" RelX="-1.4275617274961405E-5" RelY="6.566783940797905E-4" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_104_REACTOME_428205">
+    <Comment Source="WikiPathways-description">ACER2 (alkaline ceramidase 2), associated with the membrane of the Golgi apparatus, catalyzes the hydrolysis of ceramide to yield a free fatty acid (annotated here as stearate) and sphingosine. ACER2 mRNA is widely expressed in the body, although only at low levels except in placenta (Xu et al. 2006).</Comment>
+    <BiopaxRef>lit_428268</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="230.0" Y="839.0"/>
+      <Point X="231.0" Y="797.0"/>
+      <Point X="233.0" Y="764.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_104_a_i"/>
+      <Anchor Position="0.559618089846043" Shape="None" GraphId="e_104_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_104_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_104_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="189.0" Y="851.0" GraphRef="n105_REACTOME_29356" RelX="1.1428571428571428" RelY="-0.6363636363636364"/>
+      <Point X="230.0" Y="839.0" GraphRef="e_104_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_104_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="246.0" Y="838.5" GraphRef="n102_REACTOME_428270" RelX="-1.0857142857142856" RelY="0.09523809523809523"/>
+      <Point X="230.0" Y="839.0" GraphRef="e_104_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_104_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="318.0" Y="683.0" GraphRef="n41_REACTOME_428198" RelX="-0.46875" RelY="1.2142857142857142" ArrowHead="Arrow"/>
+      <Point X="233.0" Y="764.0" GraphRef="e_104_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_104_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="212.0" Y="745.0" GraphRef="n106_REACTOME_428248" RelX="0.2558139534883721" RelY="1.2307692307692308" ArrowHead="Arrow"/>
+      <Point X="233.0" Y="764.0" GraphRef="e_104_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_104_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="259.0" Y="799.5" GraphRef="n107_REACTOME_428239" RelX="-1.12" RelY="-0.2608695652173913"/>
+      <Point X="231.0" Y="797.0" GraphRef="e_104_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_109_REACTOME_429694">
+    <Comment Source="WikiPathways-description">âCERTâ (ceramide transfer protein) can dissociate from its complex in the endoplasmic reticulum membrane with VAPA or VAPB (VAMP-associated proteins A or B) and PPM1L (protein phosphatase 1-like) and is released into the cytosol (Kawano et al. 2006).</Comment>
+    <BiopaxRef>lit_429686</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="490.0" Y="859.0" GraphRef="n99_REACTOME_429672" RelX="-0.3191489361702128" RelY="1.1578947368421053"/>
+      <Point X="479.0" Y="872.0"/>
+      <Point X="454.0" Y="890.0"/>
+      <Anchor Position="0.35600093022492185" Shape="None" GraphId="e_109_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_109_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_109_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="487.0" Y="1136.5" GraphRef="n110_REACTOME_429703" RelX="-0.53125" RelY="-1.0980392156862746" ArrowHead="Arrow"/>
+      <Point X="454.0" Y="1088.0"/>
+      <Point X="454.0" Y="890.0" GraphRef="e_109_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_109_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="633.5" Y="890.5" GraphRef="n111_REACTOME_429712" RelX="-1.1162790697674418" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="454.0" Y="890.0" GraphRef="e_109_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_REACTOME_429698">
+    <Comment Source="WikiPathways-description">Cytosolic PRKD1 (protein kinase D1) catalyzes the phosphorylation of serine residue 132 of âCERTâ (ceramide transfer protein) (Fugmann et al. 2007).</Comment>
+    <BiopaxRef>lit_429685</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="689.0" Y="921.0"/>
+      <Point X="687.0" Y="942.0"/>
+      <Point X="688.0" Y="963.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_112_a_i"/>
+      <Anchor Position="0.5008455492050287" Shape="None" GraphId="e_112_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_112_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="706.0" Y="909.0" GraphRef="n113_REACTOME_113592" RelX="-1.15" RelY="0.8461538461538461"/>
+      <Point X="689.0" Y="921.0" GraphRef="e_112_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="668.5" Y="905.5" GraphRef="n111_REACTOME_429712" RelX="0.5116279069767442" RelY="1.3043478260869565"/>
+      <Point X="689.0" Y="921.0" GraphRef="e_112_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="690.5" Y="997.5" GraphRef="n114_REACTOME_429704" RelX="-0.021052631578947368" RelY="-1.1515151515151516" ArrowHead="Arrow"/>
+      <Point X="688.0" Y="963.0" GraphRef="e_112_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="709.5" Y="971.5" GraphRef="n115_REACTOME_29370" RelX="-1.1111111111111112" RelY="-0.6956521739130435" ArrowHead="Arrow"/>
+      <Point X="688.0" Y="963.0" GraphRef="e_112_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="715.5" Y="942.0" GraphRef="n116_REACTOME_58210" RelX="-1.037593984962406" RelY="-0.05263157894736842"/>
+      <Point X="687.0" Y="942.0" GraphRef="e_112_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_REACTOME_429714">
+    <Comment Source="WikiPathways-description">Cytosolic CSNK1G2 (casein kinase 1, gamma 2) catalyzes the phosphorylation of multiple serine and threonine residues of âCERTâ (ceramide transfer protein) already phosphorylated on serine-132 (Tomishige et al. 2009). This reaction has the effect of inhibiting ceramide transport from the endoplasmic reticulum to the Golgi apparatus as multiphospho-CERT is unable to bind ceramides or associate with the Golgi membrane.</Comment>
+    <BiopaxRef>lit_429709</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="690.0" Y="1055.0"/>
+      <Point X="692.0" Y="1075.0"/>
+      <Point X="692.0" Y="1096.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_117_a_i"/>
+      <Anchor Position="0.489048002353443" Shape="None" GraphId="e_117_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="690.5" Y="1036.5" GraphRef="n114_REACTOME_429704" RelX="-0.021052631578947368" RelY="1.2121212121212122"/>
+      <Point X="690.0" Y="1055.0" GraphRef="e_117_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="719.0" Y="1048.5" GraphRef="n118_REACTOME_113592" RelX="-1.15" RelY="0.2857142857142857"/>
+      <Point X="690.0" Y="1055.0" GraphRef="e_117_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="718.0" Y="1101.5" GraphRef="n119_REACTOME_29370" RelX="-1.1428571428571428" RelY="-0.2962962962962963" ArrowHead="Arrow"/>
+      <Point X="692.0" Y="1096.0" GraphRef="e_117_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="692.0" Y="1128.5" GraphRef="n120_REACTOME_429695" RelX="0.0" RelY="-1.135135135135135" ArrowHead="Arrow"/>
+      <Point X="692.0" Y="1096.0" GraphRef="e_117_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="717.0" Y="1074.0" GraphRef="n121_REACTOME_429696" RelX="-1.0857142857142856" RelY="0.0"/>
+      <Point X="692.0" Y="1075.0" GraphRef="e_117_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_REACTOME_429732">
+    <Comment Source="WikiPathways-description">Multiphospho-CERT retains its affinity for VAPA or VAPB (VAMP-associated proteins A or B) and PPM1L (protein phosphatase 1-like) in the endoplasmic reticulum membrane, and can associate with them to form a membrane-associated complex (Saito et al. 2008).</Comment>
+    <BiopaxRef>lit_429720</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="555.0" Y="1140.0"/>
+      <Point X="554.0" Y="1116.0"/>
+      <Point X="530.0" Y="1090.5" GraphRef="n123_REACTOME_429726" RelX="0.44680851063829785" RelY="1.1320754716981132" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_122_a_i"/>
+      <Anchor Position="0.4043607815345192" Shape="None" GraphId="e_122_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="539.0" Y="1148.5" GraphRef="n110_REACTOME_429703" RelX="1.09375" RelY="-0.6274509803921569"/>
+      <Point X="555.0" Y="1140.0" GraphRef="e_122_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_122_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="642.0" Y="1145.5" GraphRef="n120_REACTOME_429695" RelX="-1.0638297872340425" RelY="-0.21621621621621623"/>
+      <Point X="555.0" Y="1140.0" GraphRef="e_122_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_REACTOME_429730">
+    <Comment Source="WikiPathways-description">PPM1L (protein phosphatase 1-like) catalyzes the dephosphorylation of multiphospho-âCERTâ (ceramide transfer protein) that is complexed with it in the endoplasmic reticulum membrane (Saito et al. 2008).</Comment>
+    <BiopaxRef>lit_429720</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="532.0" Y="1005.0"/>
+      <Point X="505.0" Y="972.0"/>
+      <Point X="505.0" Y="924.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_124_a_i"/>
+      <Anchor Position="0.4704208603116727" Shape="None" GraphId="e_124_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_124_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="520.0" Y="1031.5" GraphRef="n123_REACTOME_429726" RelX="0.23404255319148937" RelY="-1.0943396226415094"/>
+      <Point X="532.0" Y="1005.0" GraphRef="e_124_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="574.0" Y="1027.5" GraphRef="n125_REACTOME_29356" RelX="-1.0" RelY="-1.2"/>
+      <Point X="532.0" Y="1005.0" GraphRef="e_124_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="505.0" Y="859.0" GraphRef="n99_REACTOME_429672" RelX="0.0" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Point X="505.0" Y="924.0" GraphRef="e_124_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="603.0" Y="952.0" GraphRef="n126_REACTOME_29372" RelX="-1.0857142857142856" RelY="-0.5789473684210527" ArrowHead="Arrow"/>
+      <Point X="505.0" Y="924.0" GraphRef="e_124_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="507.0" Y="1031.5" GraphRef="n123_REACTOME_429726" RelX="-0.0425531914893617" RelY="-1.0943396226415094"/>
+      <Point X="505.0" Y="972.0" GraphRef="e_124_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_REACTOME_429798">
+    <Comment Source="WikiPathways-description">SGMS1 (sphingomyelin synthase 1) associated with the membrane of the Golgi apparatus catalyzes the reversible reaction of phosphatidylcholine and ceramide to form sphingomyelin and diacylglycerol. Phosphatidylcholine was identified as the source of the phosphocholine moiety donated to ceramide in this reaction, in studies of the mouse enzyme in the 1970s (Diringer et al. 1972; Ullman and Radin 1974). SGMS1 is widely expressed in the body and studies of cultured cells indicate that this reaction provides the major source of cellular sphingomyelin (Yamaoka et al. 2004; Huitema et al. 2004; Tafesse et al. 2007).</Comment>
+    <BiopaxRef>lit_429792</BiopaxRef>
+    <BiopaxRef>lit_429778</BiopaxRef>
+    <BiopaxRef>lit_429797</BiopaxRef>
+    <BiopaxRef>lit_435217</BiopaxRef>
+    <BiopaxRef>lit_435213</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="249.0" Y="905.0"/>
+      <Point X="249.0" Y="945.0"/>
+      <Point X="248.0" Y="972.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_128_a_i"/>
+      <Anchor Position="0.5968500150706854" Shape="None" GraphId="e_128_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_128_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="233.0" Y="902.0" GraphRef="n129_REACTOME_429785" RelX="1.0681818181818181" RelY="0.23529411764705882"/>
+      <Point X="249.0" Y="905.0" GraphRef="e_128_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="278.0" Y="851.5" GraphRef="n102_REACTOME_428270" RelX="-0.17142857142857143" RelY="1.3333333333333333"/>
+      <Point X="249.0" Y="905.0" GraphRef="e_128_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="230.0" Y="972.0" GraphRef="n130_REACTOME_429773" RelX="1.0625" RelY="-0.25" ArrowHead="Arrow"/>
+      <Point X="248.0" Y="972.0" GraphRef="e_128_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="205.5" Y="1005.0" GraphRef="n131_REACTOME_429789" RelX="0.29906542056074764" RelY="-1.2142857142857142" ArrowHead="Arrow"/>
+      <Point X="248.0" Y="972.0" GraphRef="e_128_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_128_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="272.0" Y="942.0" GraphRef="n132_REACTOME_429782" RelX="-1.1111111111111112" RelY="0.2"/>
+      <Point X="249.0" Y="945.0" GraphRef="e_128_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_REACTOME_429786">
+    <Comment Source="WikiPathways-description">SGMS2 (sphingomyelin synthase 2) catalyzes the reversible reaction of phosphatidylcholine and ceramide to form sphingomyelin and diacylglycerol. Most SGMS2 actitiy is associated with the plasma membrane, although active enzyme is also present in the Golgi apparatus (Tafesse et al. 2007; Villani et al. 2008; Ding et al. 2008). Phosphatidylcholine was identified as the source of the phosphocholine moiety donated to ceramide in this reaction, in studies of the mouse enzyme in the 1970s (Diringer et al. 1972; Ullman and Radin 1974). Palmitoylation of at least two cysteine residues near the carboxy terminus of SGMS2 appears to be required for association of the protein with the plasma membrane (Tani and Kuge 2009). SGMS2 is widely expressed in the body and while studies of cultured cells indicate that this is a minor source of cellular sphingomyelin, blockage of SGMS2 activity inhibits cell growth (Huitema et al. 2004; Tafesse et al. 2007).</Comment>
+    <BiopaxRef>lit_429792</BiopaxRef>
+    <BiopaxRef>lit_429797</BiopaxRef>
+    <BiopaxRef>lit_429779</BiopaxRef>
+    <BiopaxRef>lit_435217</BiopaxRef>
+    <BiopaxRef>lit_435213</BiopaxRef>
+    <BiopaxRef>lit_435218</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="164.0" Y="678.0"/>
+      <Point X="163.0" Y="638.0"/>
+      <Point X="164.0" Y="613.0"/>
+      <Anchor Position="0.0" Shape="None" GraphId="e_134_a_i"/>
+      <Anchor Position="0.6152693525088027" Shape="None" GraphId="e_134_a_p"/>
+      <Anchor Position="1.0" Shape="None" GraphId="e_134_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="123.5" Y="678.5" GraphRef="n135_REACTOME_429807" RelX="1.1147540983606556" RelY="-0.08"/>
+      <Point X="164.0" Y="678.0" GraphRef="e_134_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="121.0" Y="700.5" GraphRef="n136_REACTOME_429802" RelX="0.6956521739130435" RelY="-1.135135135135135"/>
+      <Point X="164.0" Y="678.0" GraphRef="e_134_a_i" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="140.0" Y="611.5" GraphRef="n137_REACTOME_429776" RelX="1.0625" RelY="0.16" ArrowHead="Arrow"/>
+      <Point X="164.0" Y="613.0" GraphRef="e_134_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="111.0" Y="587.5" GraphRef="n138_REACTOME_112275" RelX="0.5" RelY="1.28" ArrowHead="Arrow"/>
+      <Point X="164.0" Y="613.0" GraphRef="e_134_a_o" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_134_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="123.0" Y="639.5" GraphRef="n139_REACTOME_429775" RelX="1.096774193548387" RelY="-0.09523809523809523"/>
+      <Point X="163.0" Y="638.0" GraphRef="e_134_a_p" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="cytosol" GraphId="comp_text_1" GroupRef="group_comp_1">
+    <Graphics CenterX="135.5" CenterY="1219.5" Width="59.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="endoplasmic reticulum membrane" GraphId="comp_text_2" GroupRef="group_comp_2">
+    <Graphics CenterX="470.5" CenterY="1213.5" Width="97.0" Height="61.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Golgi membrane" GraphId="comp_text_3" GroupRef="group_comp_3">
+    <Graphics CenterX="246.5" CenterY="1111.5" Width="83.0" Height="47.0" ZOrder="28672" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics CenterX="566.5" CenterY="648.5" Width="955.0" Height="1243.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics CenterX="471.5" CenterY="673.0" Width="97.0" Height="1156.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics CenterX="243.0" CenterY="936.0" Width="92.0" Height="410.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429792">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17449912</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Both sphingomyelin synthases SMS1 and SMS2 are required for sphingomyelin homeostasis and growth in human HeLa cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tafesse, FG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huitema, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hermansson, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Poel, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Dikkenberg, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uphoff, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Somerharju, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holthuis, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 282:17537-47</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428659">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12411432</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification and characterization of a novel human sphingosine-1-phosphate phosphohydrolase, hSPP2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ogawa, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kihara, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gokoh, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Igarashi, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:1268-72</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_435217">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">4339164</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1972</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evidence for a new biosynthetic pathway of sphingomyelin in SV 40 transformed mouse cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diringer, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marggraf, WD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koch, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anderer, FA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 47:1345-52</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428173">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17023427</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and initial characterization of a new subunit for mammalian serine-palmitoyltransferase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hornemann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Richard, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rutti, MF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wei, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">von Eckardstein, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:37275-81</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429686">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16895911</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Efficient trafficking of ceramide from the endoplasmic reticulum to the Golgi apparatus requires a VAMP-associated protein-interacting FFAT motif of CERT</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawano, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumagai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishijima, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanada, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:30279-88</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428154">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15328338</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FVT-1 is a mammalian 3-ketodihydrosphingosine reductase with an active site that faces the cytosolic side of the endoplasmic reticulum membrane</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kihara, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Igarashi, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:49243-50</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428160">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18216770</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Principles of bioactive lipid signalling: lessons from sphingolipids</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hannun, YA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obeid, LM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 9:139-50</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428130">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18165233</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of ceramide synthase 2: tissue distribution, substrate specificity, and inhibition by sphingosine 1-phosphate</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Laviad, EL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Albee, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pankova-Kholmyansky, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Epstein, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Park, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrill AH, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Futerman, AH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 283:5677-84</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428188">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16793762</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">When do Lasses (longevity assurance genes) become CerS (ceramide synthases)?: Insights into the regulation of ceramide synthesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pewzner-Jung, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ben-Dor, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Futerman, AH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:25001-5</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_200173">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9705349</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human type 2 phosphatidic acid phosphohydrolases. Substrate specificity of the type 2a, 2b, and 2c enzymes and cell surface activity of the 2a isoform.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberts, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sciorra, VA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morris, AJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 273:22059-67</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429709">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19005213</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Casein kinase I{gamma}2 down-regulates trafficking of ceramide in the synthesis of sphingomyelin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomishige, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumagai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kusuda, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishijima, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanada, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 20:348-57</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428150">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17331073</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Is the mammalian serine palmitoyltransferase a high-molecular-mass complex?</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hornemann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wei, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">von Eckardstein, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 405:157-64</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429673">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16571669</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oxysterol-binding protein and vesicle-associated membrane protein-associated protein are required for sterol-dependent activation of the ceramide transport protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perry, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ridgway, ND</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 17:2604-16</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428217">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10802064</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional characterization of human sphingosine kinase-1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nava, VE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lacana, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poulton, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sugiura, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kono, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Milstien, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kohama, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spiegel, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 473:81-4</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428274">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10751414</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular cloning and functional characterization of a novel mammalian sphingosine kinase type 2 isoform</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sugiura, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nava, VE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Edsall, LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kono, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Poulton, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Milstien, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kohama, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spiegel, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:19513-20</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_435213">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">4817756</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1974</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The enzymatic formation of sphingomyelin from ceramide and lecithin in mouse liver</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ullman, MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Radin, NS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 249:1506-12</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429685">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17591919</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of secretory transport by protein kinase D-mediated phosphorylation of the ceramide transfer protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fugmann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hausser, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schoffler, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmid, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pfizenmaier, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Olayioye, MA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 178:15-22</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428268">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16940153</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Golgi alkaline ceramidase regulates cell proliferation and survival by controlling levels of sphingosine and S1P</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jin, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hu, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bielawski, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Szulc, ZM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taha, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obeid, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mao, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FASEB J 20:1813-25</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428144">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12011104</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De novo sphingolipid biosynthesis: a necessary, but dangerous, pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrill AH, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:25843-6</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428202">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17713573</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Upregulation of the human alkaline ceramidase 1 and acid ceramidase mediates calcium-induced differentiation of epidermal keratinocytes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sun, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hu, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jin, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crellin, HA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bielawski, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Szulc, ZM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thiers, BH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obeid, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mao, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Invest Dermatol 128:389-97</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428272">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9312549</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of ceramide synthesis. A dihydroceramide desaturase introduces the 4,5-trans-double bond of sphingosine at the level of dihydroceramide</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michel, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Echten-Deckert, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rother, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sandhoff, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merrill AH, Jr</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:22432-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428213">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11937514</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification and characterization of a sphingolipid delta 4-desaturase family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ternes, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Franke, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zahringer, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sperling, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heinz, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:25512-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428212">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11356846</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and characterization of a novel human alkaline ceramidase. A mammalian enzyme that hydrolyzes phytoceramide</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mao, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Szulc, ZM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bielawska, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Galadari, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obeid, LM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:26577-88</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428688">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18558101</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sphingosine-1-phosphate lyase in development and disease: sphingolipid metabolism takes flight</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fyrst, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saba, JD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1781:448-58</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429707">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18184806</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis for specific lipid recognition by CERT responsible for nonvesicular trafficking of ceramide</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kudo, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumagai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomishige, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaji, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wakatsuki, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishijima, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanada, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kato, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 105:488-93</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428242">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9188692</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The product of the MLD gene is a member of the membrane fatty acid desaturase family: overexpression of MLD inhibits EGF receptor biosynthesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cadena, DL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurten, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gill, GN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 36:6960-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429779">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19233134</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sphingomyelin synthase 2 is palmitoylated at the COOH-terminal tail, which is involved in its localization in plasma membranes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tani, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kuge, O</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 381:328-32</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_435218">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17982138</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SMS overexpression and knockdown: impact on cellular sphingomyelin and diacylglycerol metabolism, and cell apoptosis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ding, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hailemariam, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mukherjee, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maxfield, FR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiang, XC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Lipid Res 49:376-85</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428255">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15063729</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of the human sphingolipid C4-hydroxylase, hDES2, and its up-regulation during keratinocyte differentiation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizutani, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kihara, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Igarashi, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 563:93-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428170">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9363775</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human and murine serine-palmitoyl-CoA transferase--cloning, expression and characterization of the key enzyme in sphingolipid synthesis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weiss, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stoffel, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 249:239-47</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429692">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14685229</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular machinery for non-vesicular trafficking of ceramide</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanada, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumagai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yasuda, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miura, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawano, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukasawa, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishijima, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 426:803-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429778">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14976195</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expression cloning of a human cDNA restoring sphingomyelin synthesis and cell growth in sphingomyelin synthase-defective lymphoid cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaoka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyaji, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kitano, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Umehara, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okazaki, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:18688-93</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428668">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11018465</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human sphingosine-1-phosphate lyase: cDNA cloning, functional expression studies and mapping to chromosome 10q22(1)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gijsbers, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vermeesch, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brys, V</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1487:128-34</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429720">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18165232</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protein phosphatase 2Cepsilon is an endoplasmic reticulum integral membrane protein that dephosphorylates the ceramide transport protein CERT to enhance its association with organelle membranes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saito, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsui, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawano, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kumagai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomishige, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanada, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Echigo, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamura, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 283:6584-93</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428124">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10722674</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification of the serine palmitoyltransferase complex responsible for sphingoid base synthesis by using affinity peptide chromatography techniques</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hanada, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hara, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishijima, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:8409-15</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428678">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12815058</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of human sphingosine-1-phosphate phosphatase 1 in the regulation of intra- and extracellular sphingosine-1-phosphate levels and cell viability</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, KR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, KY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Becker, KP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bielawski, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mao, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obeid, LM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:34541-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428148">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16100120</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LASS5 is a bona fide dihydroceramide synthase that selectively utilizes palmitoyl-CoA as acyl donor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lahiri, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Futerman, AH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:33735-8</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428279">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10947957</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human sphingosine kinase: purification, molecular cloning and characterization of the native and recombinant enzymes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pitson, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">D'Andrea, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vandeleur, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moretti, PA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xia, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gamble, JR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vadas, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wattenberg, BW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 350:429-41</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_428136">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11242114</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutations in SPTLC1, encoding serine palmitoyltransferase, long chain base subunit-1, cause hereditary sensory neuropathy type I</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dawkins, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hulme, DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brahmbhatt, SB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Auer-Grumbach, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nicholson, GA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet 27:309-12</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_429797">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14685263</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a family of animal sphingomyelin synthases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huitema, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Dikkenberg, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brouwers, JF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Holthuis, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 23:33-44</bp:SOURCE>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>sphingolipid metabolic pathway</bp:TERM><bp:ID>PW:0000197</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

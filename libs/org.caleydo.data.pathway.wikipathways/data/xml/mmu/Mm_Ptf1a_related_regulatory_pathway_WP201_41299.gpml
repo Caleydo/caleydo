@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Ptf1a related regulatory pathway" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">By summarizing published data together with our own results, this pathway shows a complicated relationships between transcriptional factors, miRNAs and some functional genes which are correlated together to generate a whole sight in early mouse development centered around Ptf1a, although there are some hypothetical relationships and the distinct development of dorsal and ventral pancreas in very early stage is neglected.</Comment>
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Graphics BoardWidth="12886.5" BoardHeight="13002.0"/>
+  <DataNode TextLabel="Pdx1" Type="GeneProduct" GraphId="ab186">
+    <Graphics Color="0000cc" CenterX="11175.0" CenterY="6570.0" Width="960.4999999999995" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029644"/>
+  </DataNode>
+  <DataNode TextLabel="Rbpj" Type="Metabolite" GraphId="d2c31">
+    <Graphics Color="0000cc" CenterX="1282.5" CenterY="3480.0" Width="960.4999999999995" Height="300.0" ZOrder="32770"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039191"/>
+  </DataNode>
+  <DataNode TextLabel="miR-495" Type="Rna" GraphId="f7c58">
+    <Graphics Color="0000cc" CenterX="7432.25" CenterY="1815.0" Width="960.5000000000005" Height="300.0" ZOrder="32774"/>
+    <Xref Database="miRBase" ID="MI0004639"/>
+  </DataNode>
+  <DataNode TextLabel="Nkx6-1" Type="GeneProduct" GraphId="df375">
+    <Graphics Color="0000cc" CenterX="3397.25" CenterY="7987.25" Width="960.4999999999995" Height="300.0" ZOrder="32776"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000035187"/>
+  </DataNode>
+  <DataNode TextLabel="Ctnnb1" Type="GeneProduct" GraphId="ae0b5">
+    <Graphics Color="0000cc" CenterX="2415.0" CenterY="1815.0" Width="960.4999999999998" Height="300.0" ZOrder="32778"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000006932"/>
+  </DataNode>
+  <DataNode TextLabel="Hes1" Type="GeneProduct" GraphId="f5efd">
+    <Graphics Color="0000cc" CenterX="11175.0" CenterY="1815.0" Width="960.4999999999995" Height="300.0" ZOrder="32782"/>
+    <Xref Database="MGI" ID="MGI:104853 "/>
+  </DataNode>
+  <DataNode TextLabel="Prox1" Type="GeneProduct" GraphId="ebb5b">
+    <Graphics Color="0000cc" CenterX="4417.249999999999" CenterY="7987.25" Width="960.4999999999995" Height="300.0" ZOrder="32784"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000010175"/>
+  </DataNode>
+  <DataNode TextLabel="Rbpj" Type="GeneProduct" GraphId="a9ec0">
+    <Graphics Color="0000cc" CenterX="9704.75" CenterY="3480.0" Width="960.4999999999995" Height="300.0" ZOrder="32786"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039191"/>
+  </DataNode>
+  <DataNode TextLabel="Notch1" Type="GeneProduct" GraphId="f722a">
+    <Graphics Color="0000cc" CenterX="9269.75" CenterY="1815.0" Width="960.4999999999995" Height="300.0" ZOrder="32792"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000026923"/>
+  </DataNode>
+  <DataNode TextLabel="Pdx1" Type="Protein" GraphId="bc304">
+    <Graphics Color="0000cc" CenterX="1282.5" CenterY="5550.0" Width="960.4999999999995" Height="300.0" ZOrder="32794"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029644"/>
+  </DataNode>
+  <DataNode TextLabel="Fgf10" Type="GeneProduct" GraphId="efb35">
+    <Graphics Color="0000cc" CenterX="3584.75" CenterY="1815.0" Width="960.5" Height="300.0" ZOrder="32798"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021732"/>
+  </DataNode>
+  <DataNode TextLabel="Kat2b" Type="GeneProduct" GraphId="d8015">
+    <Graphics Color="0000cc" CenterX="1282.5" CenterY="1815.0" Width="960.5" Height="300.0" ZOrder="32800"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000708"/>
+  </DataNode>
+  <DataNode TextLabel="miR-145" Type="Rna" GraphId="c4eae">
+    <Graphics Color="0000cc" CenterX="6149.75" CenterY="1815.0" Width="960.5000000000005" Height="300.0" ZOrder="32802"/>
+    <Xref Database="miRBase" ID="MI0000169"/>
+  </DataNode>
+  <DataNode TextLabel="Rbpjl" Type="GeneProduct" GraphId="ad08f">
+    <Graphics Color="0000cc" CenterX="9705.0" CenterY="5550.0" Width="960.4999999999995" Height="300.0" ZOrder="32806"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000017007"/>
+  </DataNode>
+  <DataNode TextLabel="miR-18a" Type="Rna" GraphId="ee0b7">
+    <Graphics Color="0000cc" CenterX="4852.25" CenterY="1815.0" Width="960.5000000000005" Height="300.0" ZOrder="32808"/>
+    <Xref Database="miRBase" ID="MI0000567"/>
+  </DataNode>
+  <DataNode TextLabel="Ptf1a" Type="GeneProduct" GraphId="ba07e">
+    <Graphics Color="0000cc" CenterX="5707.5" CenterY="4335.0" Width="2505.0" Height="840.0" ZOrder="32810"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000026735"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="aab03" GroupRef="e5cdc">
+    <Graphics ZOrder="-2" Color="00cc33">
+      <Point x="9480.0" y="8460.0" GraphRef="f360e" relX="0.0" relY="1.0"/>
+      <Point x="9495.0" y="9345.0" GraphRef="afefc" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ec44d">
+    <BiopaxRef>f3a</BiopaxRef>
+    <Graphics ZOrder="12288" Color="00cc33">
+      <Point x="4455.0" y="4335.0" GraphRef="ba07e" relX="-1.0" relY="0.0"/>
+      <Point x="2002.5" y="9345.0" GraphRef="e9d0f" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="aeed7">
+    <BiopaxRef>eda</BiopaxRef>
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="00cc33">
+      <Point x="10185.0" y="3480.0" GraphRef="a9ec0" relX="1.0" relY="0.0"/>
+      <Point x="11175.0" y="6420.0" GraphRef="ab186" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8ad9">
+    <Graphics ZOrder="12288" Color="00cc00">
+      <Point x="1800.0" y="10920.0"/>
+      <Point x="2880.0" y="10920.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f63a2">
+    <Graphics ZOrder="12288" Color="cc00cc">
+      <Point x="1800.0" y="11580.0"/>
+      <Point x="2880.0" y="11580.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cf67f">
+    <Graphics ZOrder="12288" Color="cc00cc">
+      <Point x="1800.0" y="11820.0"/>
+      <Point x="2880.0" y="11820.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c2cc3">
+    <Graphics ZOrder="12288" Color="cc0000">
+      <Point x="1800.0" y="11265.0"/>
+      <Point x="2880.0" y="11265.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c211f">
+    <Graphics ZOrder="12290" Color="00cc33">
+      <Point x="11175.0" y="6720.0" GraphRef="ab186" relX="0.0" relY="1.0"/>
+      <Point x="11175.0" y="9360.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="caa77">
+    <BiopaxRef>f3a</BiopaxRef>
+    <Graphics ZOrder="12292" Color="990099">
+      <Point x="6063.75" y="5250.0" GraphRef="b6fd0" relX="-0.5" relY="1.0"/>
+      <Point x="6071.25" y="9345.0" GraphRef="b7a4e" relX="0.5" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e6086">
+    <Graphics ZOrder="12294" Color="00cc33">
+      <Point x="9224.75" y="5550.0" GraphRef="ad08f" relX="-1.0" relY="0.0"/>
+      <Point x="8095.48617363664" y="5555.074267891698" GraphRef="f12cd" relX="0.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fa648">
+    <BiopaxRef>c4a</BiopaxRef>
+    <BiopaxRef>ad4</BiopaxRef>
+    <Graphics ZOrder="12296" Color="00cc33">
+      <Point x="1282.5" y="3630.0" GraphRef="d2c31" relX="0.0" relY="1.0"/>
+      <Point x="1282.5" y="5400.0" GraphRef="bc304" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.40540540540540543" Shape="None" GraphId="e4810"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e793a">
+    <BiopaxRef>e50</BiopaxRef>
+    <Graphics ZOrder="12298" Color="00cc00">
+      <Point x="4417.249999999998" y="8137.25" GraphRef="ebb5b" relX="0.0" relY="1.0"/>
+      <Point x="4413.75" y="9345.0" GraphRef="b7a4e" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e93fb">
+    <Graphics ZOrder="12300" Color="000000">
+      <Point x="5242.5" y="4770.0" GraphRef="a46f4" relX="0.0" relY="-1.0"/>
+      <Point x="5081.25" y="4755.0" GraphRef="ba07e" relX="-0.5" relY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a75b0">
+    <Graphics ZOrder="12302" Color="00cc33">
+      <Point x="6960.0" y="4335.0" GraphRef="ba07e" relX="1.0" relY="0.0"/>
+      <Point x="9704.848130841121" y="4324.7663551401865" GraphRef="c0737" relX="0.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d7b4a">
+    <BiopaxRef>f3a</BiopaxRef>
+    <Graphics ZOrder="12304" Color="990099">
+      <Point x="5242.5" y="5250.0" GraphRef="a46f4" relX="0.0" relY="1.0"/>
+      <Point x="5242.5" y="9345.0" GraphRef="b7a4e" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ae699">
+    <BiopaxRef>b7d</BiopaxRef>
+    <BiopaxRef>b01</BiopaxRef>
+    <Graphics ZOrder="12306" Color="00cc00">
+      <Point x="3397.25" y="8137.25" GraphRef="df375" relX="0.0" relY="1.0"/>
+      <Point x="4413.75" y="9345.0" GraphRef="b7a4e" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e3800">
+    <BiopaxRef>fcb</BiopaxRef>
+    <Graphics ZOrder="12312" Color="00cc33">
+      <Point x="9750.0" y="1815.0" GraphRef="f722a" relX="1.0" relY="0.0"/>
+      <Point x="10694.75" y="1815.0" GraphRef="f5efd" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b05c2">
+    <BiopaxRef>e18</BiopaxRef>
+    <Graphics ZOrder="12316" Color="00cc33">
+      <Point x="3584.75" y="1965.0" GraphRef="efb35" relX="0.0" relY="1.0"/>
+      <Point x="4455.0" y="4125.0" GraphRef="ba07e" relX="-1.0" relY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b65c5">
+    <BiopaxRef>f3a</BiopaxRef>
+    <Graphics ZOrder="12318" Color="990099">
+      <Point x="6401.25" y="5250.0" GraphRef="b6fd0" relX="0.5" relY="1.0"/>
+      <Point x="8385.0" y="9345.0" GraphRef="afefc" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a44a8">
+    <BiopaxRef>eda</BiopaxRef>
+    <Graphics ZOrder="12322" Color="00cc33">
+      <Point x="9704.75" y="3330.0" GraphRef="a9ec0" relX="0.0" relY="-1.0"/>
+      <Point x="11175.0" y="1965.0" GraphRef="f5efd" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="db539">
+    <BiopaxRef>fe4</BiopaxRef>
+    <Graphics ZOrder="12326" Color="00cc33">
+      <Point x="6960.0" y="4545.0" GraphRef="ba07e" relX="1.0" relY="0.5"/>
+      <Point x="9472.5" y="6780.0" GraphRef="b12d2" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4519347954772695" Shape="None" GraphId="f12cd"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c66a0">
+    <BiopaxRef>fe4</BiopaxRef>
+    <Graphics ZOrder="12330" Color="00cc33">
+      <Point x="9704.75" y="3630.0" GraphRef="a9ec0" relX="0.0" relY="1.0"/>
+      <Point x="9705.0" y="5400.0" GraphRef="ad08f" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.3925233644859813" Shape="None" GraphId="c0737"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d8274">
+    <Graphics ZOrder="12334" Color="00cc33">
+      <Point x="4455.0" y="4335.0" GraphRef="ba07e" relX="-1.0" relY="0.0"/>
+      <Point x="1282.5" y="4347.5675675675675" GraphRef="e4810" relX="0.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f50ed">
+    <BiopaxRef>ef2</BiopaxRef>
+    <Graphics ZOrder="12336" Color="00cc33">
+      <Point x="2415.0" y="1965.0" GraphRef="ae0b5" relX="0.0" relY="1.0"/>
+      <Point x="4455.0" y="4125.0" GraphRef="ba07e" relX="-1.0" relY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f930a">
+    <Graphics ZOrder="12340" Color="000000">
+      <Point x="6333.75" y="4755.0" GraphRef="ba07e" relX="0.5" relY="1.0"/>
+      <Point x="6232.5" y="4770.0" GraphRef="b6fd0" relX="0.0" relY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ab0f6">
+    <BiopaxRef>fd2</BiopaxRef>
+    <Graphics ZOrder="12342" Color="00cc33">
+      <Point x="1282.5" y="1965.0" GraphRef="d8015" relX="0.0" relY="1.0"/>
+      <Point x="4455.0" y="4125.0" GraphRef="ba07e" relX="-1.0" relY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c40f6">
+    <Graphics ZOrder="12344" Color="00cc33">
+      <Point x="1282.5" y="5700.0" GraphRef="bc304" relX="0.0" relY="1.0"/>
+      <Point x="1278.75" y="9345.0" GraphRef="e9d0f" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ba972">
+    <Comment>Our unpublished data</Comment>
+    <Graphics ZOrder="12346" Color="cc0033">
+      <Point x="4852.25" y="1965.0" GraphRef="ee0b7" relX="0.0" relY="1.0"/>
+      <Point x="5081.25" y="3915.0" GraphRef="ba07e" relX="-0.5" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ab619">
+    <BiopaxRef>f3a</BiopaxRef>
+    <Graphics ZOrder="12352" Color="990099">
+      <Point x="4455.0" y="4545.0" GraphRef="ba07e" relX="-1.0" relY="0.5"/>
+      <Point x="3397.25" y="7837.25" GraphRef="df375" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c2a6c">
+    <BiopaxRef>fcb</BiopaxRef>
+    <Graphics ZOrder="12354" Color="00cc33">
+      <Point x="10694.75" y="1815.0" GraphRef="f5efd" relX="-1.0" relY="0.0"/>
+      <Point x="6960.0" y="4125.0" GraphRef="ba07e" relX="1.0" relY="-0.5" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2857">
+    <Comment>Our unpublished data</Comment>
+    <Graphics ZOrder="12356" Color="cc0000">
+      <Point x="7432.25" y="1965.0" GraphRef="f7c58" relX="0.0" relY="1.0"/>
+      <Point x="6333.75" y="3915.0" GraphRef="ba07e" relX="0.5" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f6f0c">
+    <Comment>Our unpublished data</Comment>
+    <Graphics ZOrder="12358" Color="cc0033">
+      <Point x="6149.75" y="1965.0" GraphRef="c4eae" relX="0.0" relY="1.0"/>
+      <Point x="5707.5" y="3915.0" GraphRef="ba07e" relX="0.0" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="be5a8">
+    <BiopaxRef>f3a</BiopaxRef>
+    <Graphics ZOrder="12360" Color="990099">
+      <Point x="4455.0" y="4545.0" GraphRef="ba07e" relX="-1.0" relY="0.5"/>
+      <Point x="4417.249999999998" y="7837.25" GraphRef="ebb5b" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Trypsin" Outline="Rectangle" GraphId="a7e88" GroupRef="e5cdc">
+    <Graphics FontSize="150" Color="0000cc" CenterX="9480.0" CenterY="7410.0" Width="1530.0" Height="300.0" ZOrder="4"/>
+  </Label>
+  <Label TextLabel="Elastase" Outline="Rectangle" GraphId="d2897" GroupRef="e5cdc">
+    <Graphics FontSize="150" Color="0000cc" CenterX="9480.0" CenterY="7710.0" Width="1530.0" Height="300.0" ZOrder="6"/>
+  </Label>
+  <Label TextLabel="Chymotrypsinogen" Outline="Rectangle" GraphId="f360e" GroupRef="e5cdc">
+    <Graphics FontSize="150" Color="0000cc" CenterX="9480.0" CenterY="8310.0" Width="1530.0" Height="300.0" ZOrder="14"/>
+  </Label>
+  <Label TextLabel="Carboxypeptidase " Outline="Rectangle" GraphId="d6050" GroupRef="e5cdc">
+    <Graphics FontSize="150" Color="0000cc" CenterX="9480.0" CenterY="8010.0" Width="1530.0" Height="300.0" ZOrder="15"/>
+  </Label>
+  <Label TextLabel="Acinar-specific genes" GraphId="b12d2" GroupRef="e5cdc">
+    <Graphics FontSize="180" Color="0000cc" CenterX="9472.5" CenterY="7042.5" Width="1965.0" Height="525.0" ZOrder="12328"/>
+  </Label>
+  <Label TextLabel="Symbols:" GraphId="b834a">
+    <Graphics FontWeight="Bold" FontSize="200" Color="000000" CenterX="1020.0" CenterY="10875.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Documented interaction, positive" GraphId="a037b">
+    <Graphics FontSize="180" Color="009900" CenterX="4762.5" CenterY="10920.0" Width="2925.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Proved interaction from our study, negative" GraphId="fed05">
+    <Graphics FontSize="180" Color="cc0033" CenterX="5167.5" CenterY="11250.0" Width="3615.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Documented interaction, not in mouse" GraphId="f22ad">
+    <Graphics FontSize="180" Color="cc00cc" CenterX="4987.5" CenterY="11670.0" Width="3555.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Endocrine pancreas" Outline="RoundedRectangle" GraphId="b7a4e">
+    <Graphics FontWeight="Bold" FontSize="240" Color="990033" CenterX="5242.5" CenterY="9855.0" Width="3315.0" Height="1020.0" ZOrder="28674"/>
+  </Label>
+  <Label TextLabel="Pancreas specification" Outline="RoundedRectangle" GraphId="e9d0f">
+    <Graphics FontWeight="Bold" FontSize="240" Color="990033" CenterX="2002.5" CenterY="9855.0" Width="2895.0" Height="1020.0" ZOrder="28676"/>
+  </Label>
+  <Label TextLabel="Exocrine pancreas" Outline="RoundedRectangle" GraphId="afefc">
+    <Graphics FontWeight="Bold" FontSize="240" Color="990033" CenterX="9495.0" CenterY="9855.0" Width="4440.0" Height="1020.0" ZOrder="28678"/>
+  </Label>
+  <Label TextLabel="High &#10;level&#10;" Outline="RoundedRectangle" GraphId="b6fd0">
+    <Graphics FontSize="150" Color="cc0000" CenterX="6232.5" CenterY="5010.0" Width="675.0" Height="480.0" ZOrder="28680"/>
+  </Label>
+  <Label TextLabel="Low&#10;level&#10;" Outline="RoundedRectangle" GraphId="a46f4">
+    <Graphics FontSize="150" Color="00cc33" CenterX="5242.5" CenterY="5010.0" Width="675.0" Height="480.0" ZOrder="28682"/>
+  </Label>
+  <Group GroupId="e5cdc" GraphId="ce7b4" Style="Group">
+    <Comment>Acinar-specific genes</Comment>
+  </Group>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="fcb">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16201968</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interactions between hairy/enhancer of split-related proteins and the pancreatic  transcription factor Ptf1-p48 modulate function of the PTF1 transcriptional complex</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ghosh, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leach, S D</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="eda">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17849436</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rbp-j regulates expansion of pancreatic epithelial cells and their differentiation into exocrine cells during mouse development</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Dyn</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujikura, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hosoda, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawaguchi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noguchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iwakura, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Odori, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mori, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomita, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirata, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ebihara, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Masuzaki, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukuda, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furuyama, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanigaki, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yabe, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakao, K</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ef2">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17222338</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wnt/beta-catenin signaling is required for development of the exocrine pancreas</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BMC Dev Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wells, J M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Esni, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boivin, G P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aronow, B J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stuart, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Combs, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sklenka, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leach, S D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lowy, A M</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="f3a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18519637</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Graded levels of Ptf1a differentially regulate endocrine and exocrine fates in the developing pancreas</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dong, P D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Provost, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leach, S D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stainier, D Y</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b7d">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9603781</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rat endocrine pancreatic development in relation to two homeobox gene products (Pdx-1 and Nkx 6.1)</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Histochem Cytochem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oster A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jensen J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Serup P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Galante P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Madsen OD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Larsson LI</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="ad4">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17403901</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ptf1a binds to and activates area III, a highly conserved region of the Pdx1 promoter that mediates early pancreas-wide Pdx1 expression</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wiebe, P O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kormish, J D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roper, V T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujitani, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alston, N I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zaret, K S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wright, C V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stein, R W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gannon, M</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b01">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10938085</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcriptional and Translational Regulation of -Cell Differentiation Factor Nkx6.1</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watada H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mirmira RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leung J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">German MS</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="fe4">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17938243</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Early pancreatic development requires the vertebrate Suppressor of Hairless (RBPJ) in the PTF1 bHLH complex</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Dev</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Masui, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Long, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beres, T M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Magnuson, M A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MacDonald, R J</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="e50">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16122728</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prox1 activity controls pancreas morphogenesis and participates in the production of "secondary transition" pancreatic endocrine cells</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Developmental Biology</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Junfeng Wang</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gamze Kilic</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muge Aydin</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zoe Burke</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guillermo Oliver</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Beatriz Sosa-Pineda</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="e18">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16386727</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An endothelial-mesenchymal relay pathway regulates early phases of pancreas development</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jacquemin, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshitomi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kashima, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rousseau, G G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemaigre, F P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zaret, K S</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="c4a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17803961</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ptf1a and RBP-J cooperate in activating Pdx1 gene expression through binding to Area III</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyatsuka, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuoka, T A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shiraiwa, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamamoto, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kojima, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaneto, H</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="fd2">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18834332</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P/CAF modulates the activity of the transcription factor p48/PTF1a involved in pancreatic acinar differentiation</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rodolosse, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Campos, M L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rooman, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lichtenstein, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Real, F X</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

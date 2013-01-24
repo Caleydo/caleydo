@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Signal Transduction of S1P Receptor" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes">This MAPP is a representation of figure 2 from T. Hla, et al. 2001, Science, 294, pg. 1877</Comment>
+  <Comment Source="GenMAPP remarks">Right click here for reference.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="13684.0" BoardHeight="10417.0" WindowWidth="13410.0" WindowHeight="11448.0"/>
+  <DataNode TextLabel="Edg5" Type="GeneProduct" BackpageHead="Edg5 | endothelial differentiation sphingolip..." GraphId="f8d" GroupRef="efdbe">
+    <Graphics Color="000000" CenterX="11100.0" CenterY="2050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14739"/>
+  </DataNode>
+  <DataNode TextLabel="Edg3" Type="GeneProduct" BackpageHead="Edg3 | endothelial differentiation sphingolip..." GraphId="a7d" GroupRef="efdbe">
+    <Graphics Color="000000" CenterX="11100.0" CenterY="2350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13610"/>
+  </DataNode>
+  <DataNode TextLabel="Edg8" Type="GeneProduct" BackpageHead="Edg8 | endothelial differentiation sphingolip..." GraphId="e1a" GroupRef="efdbe">
+    <Graphics Color="000000" CenterX="11100.0" CenterY="2650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="94226"/>
+  </DataNode>
+  <DataNode TextLabel="Edg1" Type="GeneProduct" BackpageHead="Edg1 | endothelial differentiation sphingolipid..." GraphId="b21">
+    <Graphics Color="000000" CenterX="5965.0" CenterY="4675.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13609"/>
+  </DataNode>
+  <DataNode TextLabel="Plcb3" Type="GeneProduct" BackpageHead="Plcb3 | phospholipase C beta 3" GraphId="cac">
+    <Graphics Color="000000" CenterX="2305.0" CenterY="6735.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18797"/>
+  </DataNode>
+  <DataNode TextLabel="Akt1" Type="GeneProduct" BackpageHead="Akt1 | thymoma viral proto-oncogene 1" GraphId="e9f" GroupRef="c97d3">
+    <Graphics Color="000000" CenterX="7100.0" CenterY="6150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11651"/>
+  </DataNode>
+  <DataNode TextLabel="Akt2" Type="GeneProduct" BackpageHead="Akt2 | thymoma viral proto-oncogene 2" GraphId="cd1" GroupRef="c97d3">
+    <Graphics Color="000000" CenterX="7100.0" CenterY="6450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11652"/>
+  </DataNode>
+  <DataNode TextLabel="Akt3" Type="GeneProduct" BackpageHead="Akt3 | thymoma viral proto-oncogene 3" GraphId="e90" GroupRef="c97d3">
+    <Graphics Color="000000" CenterX="7100.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23797"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3c2g" Type="GeneProduct" BackpageHead="Pik3c2g | phosphatidylinositol 3-kinase C2 do..." GraphId="a47">
+    <Graphics Color="000000" CenterX="9300.0" CenterY="6250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18705"/>
+  </DataNode>
+  <DataNode TextLabel="Gnai1" Type="GeneProduct" BackpageHead="Gnai1 | guanine nucleotide binding protein al..." GraphId="b94" GroupRef="b78e7">
+    <Graphics Color="000000" CenterX="6000.0" CenterY="7550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14677"/>
+  </DataNode>
+  <DataNode TextLabel="Gnai2" Type="GeneProduct" BackpageHead="Gnai2 | guanine nucleotide binding protein al..." GraphId="e0e" GroupRef="b78e7">
+    <Graphics Color="000000" CenterX="6000.0" CenterY="7850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14678"/>
+  </DataNode>
+  <DataNode TextLabel="Gnai3" Type="GeneProduct" BackpageHead="Gnai3 | guanine nucleotide binding protein al..." GraphId="f49" GroupRef="b78e7">
+    <Graphics Color="000000" CenterX="6000.0" CenterY="8150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14679"/>
+  </DataNode>
+  <DataNode TextLabel="Racgap1" Type="GeneProduct" BackpageHead="Racgap1 | Rac GTPase-activating protein 1" GraphId="af1">
+    <Graphics Color="000000" CenterX="9030.0" CenterY="7165.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26934"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk3" Type="GeneProduct" BackpageHead="Mapk3 | mitogen activated protein kinase 3" GraphId="a21" GroupRef="aa089">
+    <Graphics Color="000000" CenterX="2050.0" CenterY="8000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26417"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk1" Type="GeneProduct" BackpageHead="Mapk1 | mitogen activated protein kinase 1" GraphId="ac1" GroupRef="aa089">
+    <Graphics Color="000000" CenterX="2050.0" CenterY="8300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26413"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk6" Type="GeneProduct" BackpageHead="Mapk6 | mitogen-activated protein kinase 6" GraphId="f46" GroupRef="aa089">
+    <Graphics Color="000000" CenterX="2050.0" CenterY="8600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50772"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk7" Type="GeneProduct" BackpageHead="Mapk7 | mitogen activated protein kinase 7" GraphId="c16" GroupRef="aa089">
+    <Graphics Color="000000" CenterX="2050.0" CenterY="8900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23939"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk12" Type="GeneProduct" BackpageHead="Mapk12 | mitogen-activated protein kinase 12" GraphId="e27" GroupRef="aa089">
+    <Graphics Color="000000" CenterX="2050.0" CenterY="9200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="29857"/>
+  </DataNode>
+  <DataNode TextLabel="Smpd2" Type="GeneProduct" BackpageHead="Smpd2 | sphingomyelin phosphodiesterase 2 neu..." GraphId="d9c" GroupRef="ec87f">
+    <Graphics Color="000000" CenterX="3650.0" CenterY="2550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20598"/>
+  </DataNode>
+  <DataNode TextLabel="Asah2" Type="GeneProduct" BackpageHead="Asah2 | N-acylsphingosine amidohydrolase 2" GraphId="d07" GroupRef="ec87f">
+    <Graphics Color="000000" CenterX="3650.0" CenterY="2250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="54447"/>
+  </DataNode>
+  <DataNode TextLabel="Sphk2" Type="GeneProduct" BackpageHead="Sphk2 | sphingosine kinase 2" GraphId="f47" GroupRef="ec87f">
+    <Graphics Color="000000" CenterX="3650.0" CenterY="1950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56632"/>
+  </DataNode>
+  <DataNode TextLabel="Sphk1" Type="GeneProduct" BackpageHead="Sphk1 | sphingosine kinase 1" GraphId="b69" GroupRef="ec87f">
+    <Graphics Color="000000" CenterX="3650.0" CenterY="1650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20698"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="c0ef7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4900.0" y="4850.0"/>
+      <Point x="4900.0" y="3450.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c7f38">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5400.0" y="4850.0"/>
+      <Point x="5400.0" y="3500.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bb4cf">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6550.0" y="4850.0"/>
+      <Point x="6600.0" y="3550.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fe69b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7100.0" y="4900.0"/>
+      <Point x="7100.0" y="3500.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d344d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7750.0" y="4950.0"/>
+      <Point x="7700.0" y="3500.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b5403">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8300.0" y="4850.0"/>
+      <Point x="8300.0" y="3500.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bb283">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4400.0" y="4800.0"/>
+      <Point x="4400.0" y="3450.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ab213">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3800.0" y="4750.0"/>
+      <Point x="3800.0" y="3500.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="edf11">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3200.0" y="4750.0"/>
+      <Point x="3300.0" y="3500.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d43a7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8300.0" y="4950.0"/>
+      <Point x="8300.0" y="6050.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4ff0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7700.0" y="4950.0"/>
+      <Point x="7700.0" y="6100.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e3a88">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7050.0" y="4850.0"/>
+      <Point x="7100.0" y="6050.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ed112">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6550.0" y="4750.0"/>
+      <Point x="6550.0" y="5950.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f0045">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5350.0" y="4700.0"/>
+      <Point x="5350.0" y="5950.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c16d9">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4850.0" y="4750.0"/>
+      <Point x="4900.0" y="6000.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a32f2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4350.0" y="4700.0"/>
+      <Point x="4350.0" y="6100.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c52a8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3750.0" y="4700.0"/>
+      <Point x="3800.0" y="6050.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cfc59">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3300.0" y="4700.0"/>
+      <Point x="3350.0" y="5950.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a8d75">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8850.0" y="4900.0"/>
+      <Point x="8800.0" y="3550.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bd721">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8850.0" y="4900.0"/>
+      <Point x="8850.0" y="6050.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d36bc">
+    <Graphics ZOrder="12288" Color="ff0000">
+      <Point x="5965.0" y="4525.0" GraphRef="b21" relX="0.0" relY="-1.0"/>
+      <Point x="5950.0" y="3150.0" ArrowHead="ReceptorSquare"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e64ae">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4220.0" y="2100.0" GraphRef="d1d82" relX="1.0" relY="0.0"/>
+      <Point x="5940.0" y="3000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4230">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5965.0" y="4825.0" GraphRef="b21" relX="0.0" relY="1.0"/>
+      <Point x="5950.0" y="7250.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ec2cd">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9500.0" y="4900.0"/>
+      <Point x="9450.0" y="3450.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d6333">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9450.0" y="4850.0"/>
+      <Point x="9450.0" y="6000.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d3f58">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2700.0" y="4750.0"/>
+      <Point x="2700.0" y="3500.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cbca4">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2700.0" y="4650.0"/>
+      <Point x="2750.0" y="5900.0" ArrowHead="LigandRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b44a0">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5430.0" y="7850.0" GraphRef="a863d" relX="-1.0" relY="0.0"/>
+      <Point x="2755.0" y="6735.0" GraphRef="cac" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e8888">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5430.0" y="7850.0" GraphRef="a863d" relX="-1.0" relY="0.0"/>
+      <Point x="2620.0" y="8600.0" GraphRef="ab97d" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fffc8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6570.0" y="7850.0" GraphRef="a863d" relX="1.0" relY="0.0"/>
+      <Point x="9300.0" y="6400.0" GraphRef="a47" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f7a1e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8850.0" y="6250.0" GraphRef="a47" relX="-1.0" relY="0.0"/>
+      <Point x="7670.0" y="6450.0" GraphRef="ebc98" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cea79">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="6530.0" y="6165.0" GraphRef="ebc98" relX="-1.0" relY="-0.5"/>
+      <Point x="6190.0" y="4825.0" GraphRef="b21" relX="0.5" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="ae786">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="6190.0" y="4825.0" GraphRef="b21" relX="0.5" relY="1.0"/>
+      <Point x="8580.0" y="7165.0" GraphRef="af1" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="GPCRs similar to S1P" GraphId="ddd" GroupRef="efdbe">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="11050.0" CenterY="1700.0" Width="2540.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="ec87f" GraphId="d1d82" Style="Complex"/>
+  <Group GroupId="efdbe" Style="Complex"/>
+  <Group GroupId="c97d3" GraphId="ebc98" Style="Complex"/>
+  <Group GroupId="b78e7" GraphId="a863d" Style="Complex"/>
+  <Group GroupId="aa089" GraphId="ab97d" Style="Complex"/>
+  <InfoBox CenterX="62.5" CenterY="78.0"/>
+  <Legend CenterX="9331.0" CenterY="7015.0"/>
+</Pathway>

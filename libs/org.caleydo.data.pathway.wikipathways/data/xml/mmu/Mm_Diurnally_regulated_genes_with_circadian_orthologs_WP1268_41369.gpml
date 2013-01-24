@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Diurnally regulated genes with circadian orthologs" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes">Time- and exercise-dependent gene regulation in human skeletal muscle&amp;amp;#xD;
+Alexander C Zambon, Erin L McDearmon, Nathan Salomonis, Karen M Vranizan, Kirsten L Johansen, Deborah Adey, Joseph S Takahashi, Morris Schambelan, Bruce R Conklin&amp;amp;#xD;
+Genome Biology 4(10): R61&amp;amp;#xD;
+http://genomebiology.com/2003/4/10/R61&amp;amp;#xD;
+Published 25 September 2003</Comment>
+  <Comment Source="GenMAPP remarks">Right click for references</Comment>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Comment Source="WikiPathways-description">Human genes regulated in the diurnal comparison with orthologues that display circadian regulation in mouse heart and liver (Panda 2002, Storch 2002), and SCN (Panda 2002). The 608 significantly regulated (P &amp;amp;lt; 0.05) hSkM genes identified in the diurnal comparison (0800 h and 2000 h) were subjected to an additional statistical filter of absolute fold change &amp;amp;gt; 20% (n = 239) and linked to mouse circadianly regulated orthologues. This pathway represents the resultant 44 putative hSkM circadianly regulated genes; L, promoter for the light-responsive element; E, E-box (Clock/Bmal1 promoter). Orthologue information is denoted to the left of the gene boxes: mHrts and mLvrs, mouse orthologue was circadianly regulated as described  (Storch 2002) in mouse heart or liver, respectively; mLvrp and mSCNp, mouse orthologue was diurnally regulated as described (Panda 2002) in mouse liver or SCN, respectively.</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP410&amp;amp;oldid=28213 WP410(r28213)] with a 91% conversion rate.</Comment>
+  <Graphics BoardWidth="15224.0" BoardHeight="10505.0" WindowWidth="14146.0" WindowHeight="11907.0"/>
+  <DataNode TextLabel="Myf6" Type="GeneProduct" BackpageHead="Myf6" GraphId="c38">
+    <Comment Source="GenMAPP remarks">102265 at</Comment>
+    <Graphics Color="000000" CenterX="2350.0" CenterY="7050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17878"/>
+  </DataNode>
+  <DataNode TextLabel="Klf9" Type="GeneProduct" BackpageHead="Klf9" GraphId="c59">
+    <Comment Source="GenMAPP remarks">93527 at</Comment>
+    <Graphics Color="000000" CenterX="2350.0" CenterY="7950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16601"/>
+  </DataNode>
+  <DataNode TextLabel="Herpud1" Type="GeneProduct" BackpageHead="Herpud1" GraphId="b07">
+    <Comment Source="GenMAPP remarks">95057 at</Comment>
+    <Graphics Color="000000" CenterX="9150.0" CenterY="1700.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="64209"/>
+  </DataNode>
+  <DataNode TextLabel="Sf3a3" Type="GeneProduct" BackpageHead="Sf3a3" GraphId="f24">
+    <Comment Source="GenMAPP remarks">96029 at</Comment>
+    <Graphics Color="000000" CenterX="5400.0" CenterY="8800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="75062"/>
+  </DataNode>
+  <DataNode TextLabel="Cbx3" Type="GeneProduct" BackpageHead="Cbx3" GraphId="f84">
+    <Comment Source="GenMAPP remarks">100405 at</Comment>
+    <Graphics Color="000000" CenterX="5400.0" CenterY="9100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12417"/>
+  </DataNode>
+  <DataNode TextLabel="Azin1" Type="GeneProduct" BackpageHead="Azin1" GraphId="fd2">
+    <Comment Source="GenMAPP remarks">101002 at</Comment>
+    <Graphics Color="000000" CenterX="9150.0" CenterY="2900.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="54375"/>
+  </DataNode>
+  <DataNode TextLabel="Psma4" Type="GeneProduct" BackpageHead="Psma4" GraphId="e89">
+    <Comment Source="GenMAPP remarks">97459 at</Comment>
+    <Graphics Color="000000" CenterX="9150.0" CenterY="2600.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26441"/>
+  </DataNode>
+  <DataNode TextLabel="Zfr" Type="GeneProduct" BackpageHead="Zfr" GraphId="a46">
+    <Comment Source="GenMAPP remarks">104050 at</Comment>
+    <Graphics Color="000000" CenterX="5400.0" CenterY="9400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22763"/>
+  </DataNode>
+  <DataNode TextLabel="Sumo1" Type="GeneProduct" GraphId="d78">
+    <Comment Source="GenMAPP remarks">101091 at</Comment>
+    <Graphics Color="000000" CenterX="9150.0" CenterY="3200.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22218"/>
+  </DataNode>
+  <DataNode TextLabel="Hist1h2bm" Type="GeneProduct" BackpageHead="Hist1h2bm" GraphId="f69">
+    <Comment Source="GenMAPP remarks">93833 s at</Comment>
+    <Graphics Color="000000" CenterX="5400.0" CenterY="8200.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="319186"/>
+  </DataNode>
+  <DataNode TextLabel="Pura" Type="GeneProduct" BackpageHead="Pura" GraphId="d9b">
+    <Comment Source="GenMAPP remarks">103501 at</Comment>
+    <Graphics Color="000000" CenterX="5400.0" CenterY="8500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19290"/>
+  </DataNode>
+  <DataNode TextLabel="Cry2" Type="GeneProduct" BackpageHead="Cry2" GraphId="c87" GroupRef="fd8e5">
+    <Graphics Color="000000" CenterX="6250.0" CenterY="3150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12953"/>
+  </DataNode>
+  <DataNode TextLabel="Per1" Type="GeneProduct" BackpageHead="Per1" GraphId="bea" GroupRef="fd8e5">
+    <Graphics Color="000000" CenterX="3850.0" CenterY="2600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18626"/>
+  </DataNode>
+  <DataNode TextLabel="Per2" Type="GeneProduct" BackpageHead="Per2" GraphId="f61" GroupRef="fd8e5">
+    <Graphics Color="000000" CenterX="3850.0" CenterY="3050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18627"/>
+  </DataNode>
+  <DataNode TextLabel="Cry1" Type="GeneProduct" BackpageHead="Cry1" GraphId="abb" GroupRef="fd8e5">
+    <Graphics Color="000000" CenterX="6200.0" CenterY="2700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12952"/>
+  </DataNode>
+  <DataNode TextLabel="Ppp1r3c" Type="GeneProduct" BackpageHead="Ppp1r3c" GraphId="ccd">
+    <Comment Source="GenMAPP remarks">93933 at</Comment>
+    <Graphics Color="000000" CenterX="9150.0" CenterY="3500.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="53412"/>
+  </DataNode>
+  <DataNode TextLabel="Cebpb" Type="GeneProduct" BackpageHead="Cebpb" GraphId="b04">
+    <Comment Source="GenMAPP remarks">92925 at</Comment>
+    <Graphics Color="000000" CenterX="2350.0" CenterY="7350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12608"/>
+  </DataNode>
+  <DataNode TextLabel="Ppp2cb" Type="GeneProduct" BackpageHead="Ppp2cb" GraphId="ade">
+    <Comment Source="GenMAPP remarks">101101 at</Comment>
+    <Graphics Color="000000" CenterX="9150.0" CenterY="2000.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19053"/>
+  </DataNode>
+  <DataNode TextLabel="Ncoa4" Type="GeneProduct" GraphId="d0f">
+    <Comment Source="GenMAPP remarks">97843 at</Comment>
+    <Graphics Color="000000" CenterX="2350.0" CenterY="8550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="27057"/>
+  </DataNode>
+  <DataNode TextLabel="Etv6" Type="GeneProduct" BackpageHead="Etv6" GraphId="fca">
+    <Comment Source="GenMAPP remarks">93866 s at</Comment>
+    <Graphics Color="000000" CenterX="2350.0" CenterY="8250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14011"/>
+  </DataNode>
+  <DataNode TextLabel="Erc2" Type="GeneProduct" BackpageHead="Erc2" GraphId="bc0">
+    <Comment Source="GenMAPP remarks">93829 at</Comment>
+    <Graphics Color="000000" CenterX="9150.0" CenterY="2300.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="238988"/>
+  </DataNode>
+  <DataNode TextLabel="H2-DMa" Type="GeneProduct" BackpageHead="H2-DMa" GraphId="ac3">
+    <Comment Source="GenMAPP remarks">162346 f at</Comment>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="4750.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14998"/>
+  </DataNode>
+  <DataNode TextLabel="Hspa8" Type="GeneProduct" BackpageHead="Hspa8" GraphId="b74">
+    <Comment Source="GenMAPP remarks">96564 at</Comment>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="5050.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15481"/>
+  </DataNode>
+  <DataNode TextLabel="Dnaja1" Type="GeneProduct" BackpageHead="Dnaja1" GraphId="f4f">
+    <Comment Source="GenMAPP remarks">97261 at</Comment>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="5350.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15502"/>
+  </DataNode>
+  <DataNode TextLabel="Ucp3" Type="GeneProduct" BackpageHead="Ucp3" GraphId="f6d">
+    <Comment Source="GenMAPP remarks">93392 at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="1750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22229"/>
+  </DataNode>
+  <DataNode TextLabel="Gstm5" Type="GeneProduct" BackpageHead="Gstm5" GraphId="cbb">
+    <Comment Source="GenMAPP remarks">97681 f at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="2050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14866"/>
+  </DataNode>
+  <DataNode TextLabel="Ugp2" Type="GeneProduct" BackpageHead="Ugp2" GraphId="eb2">
+    <Comment Source="GenMAPP remarks">94481 at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="2350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="216558"/>
+  </DataNode>
+  <DataNode TextLabel="Cldn5" Type="GeneProduct" BackpageHead="Cldn5" GraphId="ab6">
+    <Comment Source="GenMAPP remarks">104516 at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="3150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12741"/>
+  </DataNode>
+  <DataNode TextLabel="Pigf" Type="GeneProduct" BackpageHead="Pigf" GraphId="e5a">
+    <Comment Source="GenMAPP remarks">104725 at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="3450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18701"/>
+  </DataNode>
+  <DataNode TextLabel="Tubb3" Type="GeneProduct" BackpageHead="Tubb3" GraphId="bc6">
+    <Comment Source="GenMAPP remarks">94835 f at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="3750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22152"/>
+  </DataNode>
+  <DataNode TextLabel="Gfra1" Type="GeneProduct" BackpageHead="Gfra1" GraphId="aec">
+    <Comment Source="GenMAPP remarks">93872 at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="4600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14585"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k7ip2" Type="GeneProduct" BackpageHead="Map3k7ip2" GraphId="ebb">
+    <Comment Source="GenMAPP remarks">160309 at</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="4900.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="68652"/>
+  </DataNode>
+  <DataNode TextLabel="Sumo3" Type="GeneProduct" BackpageHead="Sumo3" GraphId="eb5">
+    <Comment Source="GenMAPP remarks">95424 at</Comment>
+    <Graphics Color="000000" CenterX="12400.0" CenterY="5950.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20610"/>
+  </DataNode>
+  <DataNode TextLabel="Gstp1" Type="GeneProduct" GraphId="c81">
+    <Comment Source="GenMAPP remarks">99583 at</Comment>
+    <Graphics Color="000000" CenterX="12400.0" CenterY="6250.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14870"/>
+  </DataNode>
+  <DataNode TextLabel="Nckap1" Type="GeneProduct" BackpageHead="Nckap1" GraphId="a5f">
+    <Comment Source="GenMAPP remarks">95508 at</Comment>
+    <Graphics Color="000000" CenterX="12400.0" CenterY="6550.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50884"/>
+  </DataNode>
+  <DataNode TextLabel="Vapa" Type="GeneProduct" BackpageHead="Vapa" GraphId="bcc">
+    <Comment Source="GenMAPP remarks">94889 at</Comment>
+    <Graphics Color="000000" CenterX="12400.0" CenterY="6850.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="30960"/>
+  </DataNode>
+  <DataNode TextLabel="Stbd1" Type="GeneProduct" BackpageHead="Stbd1" GraphId="ad0">
+    <Comment Source="GenMAPP remarks">104116 at</Comment>
+    <Graphics Color="000000" CenterX="12400.0" CenterY="7150.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="52331"/>
+  </DataNode>
+  <DataNode TextLabel="Dazap2" Type="GeneProduct" BackpageHead="Dazap2" GraphId="c1f">
+    <Comment Source="GenMAPP remarks">94454 at</Comment>
+    <Graphics Color="000000" CenterX="12400.0" CenterY="7450.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23994"/>
+  </DataNode>
+  <DataNode TextLabel="Idi1" Type="GeneProduct" BackpageHead="Idi1" GraphId="c3a">
+    <Comment Source="GenMAPP remarks">96269 at</Comment>
+    <Graphics Color="000000" CenterX="12400.0" CenterY="7750.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="319554"/>
+  </DataNode>
+  <DataNode TextLabel="Tob1" Type="GeneProduct" BackpageHead="Tob1" GraphId="bda">
+    <Comment Source="GenMAPP remarks">99532 at</Comment>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="6850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22057"/>
+  </DataNode>
+  <DataNode TextLabel="Rbpms" Type="GeneProduct" GraphId="d8a">
+    <Comment Source="GenMAPP remarks">103888 at</Comment>
+    <Graphics Color="000000" CenterX="5400.0" CenterY="7900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19663"/>
+  </DataNode>
+  <DataNode TextLabel="G0s2" Type="GeneProduct" BackpageHead="G0s2" GraphId="fc0">
+    <Comment Source="GenMAPP remarks">97531 at</Comment>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="7150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14373"/>
+  </DataNode>
+  <DataNode TextLabel="Arntl" Type="GeneProduct" BackpageHead="Arntl" GraphId="ea3" GroupRef="bb971">
+    <Graphics Color="000000" CenterX="3100.0" CenterY="4830.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11865"/>
+  </DataNode>
+  <DataNode TextLabel="Nr1d2" Type="GeneProduct" BackpageHead="Nr1d2" GraphId="e63">
+    <Comment Source="GenMAPP remarks">99076 at</Comment>
+    <Graphics Color="000000" CenterX="2350.0" CenterY="7650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="353187"/>
+  </DataNode>
+  <DataNode TextLabel="Clock" Type="GeneProduct" BackpageHead="Clock" GraphId="d39" GroupRef="bb971">
+    <Graphics Color="000000" CenterX="3100.0" CenterY="5130.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12753"/>
+  </DataNode>
+  <DataNode TextLabel="Btg1" Type="GeneProduct" BackpageHead="Btg1" GraphId="c9b">
+    <Comment Source="GenMAPP remarks">93104 at</Comment>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="6250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12226"/>
+  </DataNode>
+  <DataNode TextLabel="Eif4g2" Type="GeneProduct" BackpageHead="Eif4g2" GraphId="f3e">
+    <Comment Source="GenMAPP remarks">100535 at</Comment>
+    <Graphics Color="000000" CenterX="9200.0" CenterY="6550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13690"/>
+  </DataNode>
+  <DataNode TextLabel="Qk" Type="GeneProduct" BackpageHead="Qk" GraphId="bc1">
+    <Comment Source="GenMAPP remarks">95096 at (mouse)</Comment>
+    <Graphics Color="000000" CenterX="12450.0" CenterY="5200.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19317"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="a645d" GroupRef="cc35f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3750.0" y="5450.0"/>
+      <Point x="4400.0" y="5450.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f64bb" GroupRef="cc35f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3750.0" y="5450.0"/>
+      <Point x="3750.0" y="5550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ba529" GroupRef="bf263">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4100.0" y="6100.0"/>
+      <Point x="4850.0" y="6100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d0884" GroupRef="bf263">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4250.0" y="6100.0"/>
+      <Point x="4250.0" y="6000.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d9e1d" GroupRef="bf263">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4250.0" y="6000.0"/>
+      <Point x="4650.0" y="6000.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c86ff" GroupRef="cc35f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2250.0" y="5550.0"/>
+      <Point x="2550.0" y="5550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ddbd2" GroupRef="cc35f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3650.0" y="5550.0"/>
+      <Point x="4150.0" y="5550.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f0bc1" GroupRef="bf263">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3000.0" y="6100.0"/>
+      <Point x="2750.0" y="6100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="abb71" GroupRef="bf263">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2700.0" y="6100.0"/>
+      <Point x="3000.0" y="6100.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ff108" GroupRef="af116">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4050.0" y="6700.0"/>
+      <Point x="4800.0" y="6700.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b2302" GroupRef="af116">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4200.0" y="6700.0"/>
+      <Point x="4200.0" y="6600.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e5e48" GroupRef="af116">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4200.0" y="6600.0"/>
+      <Point x="4600.0" y="6600.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a6fbe" GroupRef="daea7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4100.0" y="7150.0"/>
+      <Point x="4850.0" y="7150.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f55d9" GroupRef="daea7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4250.0" y="7150.0"/>
+      <Point x="4250.0" y="7050.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="af143" GroupRef="daea7">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4250.0" y="7050.0"/>
+      <Point x="4650.0" y="7050.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b82d8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="900.0" y="3217.5" GraphRef="b28a1" relX="0.0" relY="0.8938053097345132"/>
+      <Point x="2815.0" y="4560.0" GraphRef="fc342" relX="-0.5" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d1742">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="5150.0" y="5907.5" GraphRef="f1f" relX="0.0" relY="-1.0"/>
+      <Point x="4300.0" y="3050.0" GraphRef="f61" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ffaa1">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="4750.0" y="5307.5" GraphRef="c89" relX="0.0" relY="-1.0"/>
+      <Point x="4300.0" y="2600.0" GraphRef="bea" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e6636">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="5150.0" y="2235.0" GraphRef="ff1" relX="0.0" relY="-1.0"/>
+      <Point x="2635.0" y="1410.0"/>
+      <Point x="120.0" y="2124.375"/>
+      <Point x="582.5" y="2838.75" GraphRef="b28a1" relX="-0.8758620689655172" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ba17c">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="5560.0" y="6650.0" GraphRef="cf9" relX="1.0" relY="0.0"/>
+      <Point x="7080.0" y="4675.0"/>
+      <Point x="6650.0" y="2700.0" GraphRef="abb" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2c8a">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="5610.0" y="7100.0" GraphRef="f0e" relX="1.0" relY="0.0"/>
+      <Point x="7215.0" y="5125.0"/>
+      <Point x="6700.0" y="3150.0" GraphRef="c87" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Per1" GraphId="c89">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4750.0" CenterY="5450.0" Width="605.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Per2" GraphId="f1f">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5150.0" CenterY="6050.0" Width="605.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="E-Box" GraphId="f65" GroupRef="cc35f">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="3150.0" CenterY="5550.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="LRE" GraphId="c84" GroupRef="cc35f">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="1850.0" CenterY="5550.0" Width="380.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="LRE" GraphId="cff" GroupRef="bf263">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="2300.0" CenterY="6100.0" Width="380.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Cry1" GraphId="cf9">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5250.0" CenterY="6650.0" Width="620.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Cry2" GraphId="f0e">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5300.0" CenterY="7100.0" Width="620.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Per" Outline="RoundedRectangle" GraphId="b3a" GroupRef="cd810">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="902.5" CenterY="2688.75" Width="475.0" Height="307.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Cry" Outline="RoundedRectangle" GraphId="c3c" GroupRef="cd810">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="900.0" CenterY="3000.0" Width="485.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Metabolism" GraphId="a25">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12500.0" CenterY="1350.0" Width="1385.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Chaperone" GraphId="aa0">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="9200.0" CenterY="4350.0" Width="1355.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Protein Modification" GraphId="b2b">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="9000.0" CenterY="1300.0" Width="2360.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Transcription" GraphId="b92">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="2300.0" CenterY="6700.0" Width="1610.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Cell Cycle" GraphId="f76">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="9350.0" CenterY="5850.0" Width="1220.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="DNA/RNA Binding" GraphId="b2a">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5240.0" CenterY="7480.0" Width="2150.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Other" GraphId="ae3">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12300.0" CenterY="5650.0" Width="710.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Structural/Cytoskeleton" GraphId="d6e">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12450.0" CenterY="2750.0" Width="2780.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Signaling" GraphId="d72">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="12400.0" CenterY="4200.0" Width="1160.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="d50">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="1450.0" CenterY="7050.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="fac">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="1500.0" CenterY="7950.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="b0b">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="1500.0" CenterY="8250.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mSCNp" GraphId="d8d">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="1450.0" CenterY="8550.0" Width="620.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs,p" GraphId="dc6">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="4450.0" CenterY="7850.0" Width="695.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp mSCNp" GraphId="b9e">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="4250.0" CenterY="8200.0" Width="1145.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="d29">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="4550.0" CenterY="9100.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mSCNp" GraphId="dd0">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="4500.0" CenterY="8500.0" Width="620.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="e3d">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="4550.0" CenterY="8800.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs" GraphId="e09">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="4550.0" CenterY="9400.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="ae7">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8300.0" CenterY="2000.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="b87">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8300.0" CenterY="2300.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="eec">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8300.0" CenterY="2600.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs" GraphId="b1e">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8250.0" CenterY="3200.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs" GraphId="aa4">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8250.0" CenterY="3500.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp" GraphId="a43">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8350.0" CenterY="5050.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp" GraphId="d04">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8350.0" CenterY="5350.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp" GraphId="f22">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8350.0" CenterY="6550.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mSCNp" GraphId="e66">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8350.0" CenterY="6850.0" Width="620.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs,p" GraphId="be0">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8300.0" CenterY="7150.0" Width="695.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs,p SCNp" GraphId="a05">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8050.0" CenterY="6250.0" Width="1145.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="c2c">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11600.0" CenterY="1750.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs" GraphId="b44">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11600.0" CenterY="2300.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mSCNp" GraphId="bba">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="3150.0" Width="620.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mSCNp" GraphId="b8e">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="3450.0" Width="620.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs,p" GraphId="e0c">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="3750.0" Width="695.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp mSCNp" GraphId="d60">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11300.0" CenterY="2000.0" Width="1145.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs" GraphId="a11">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="4600.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs" GraphId="fd6">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="4900.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="b0e">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="5200.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp" GraphId="cf6">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="5950.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mSCNp" GraphId="aad">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="6250.0" Width="620.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="bd0">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="6550.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts" GraphId="fc3">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="6850.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs,p" GraphId="f30">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11450.0" CenterY="7150.0" Width="695.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp" GraphId="a9d">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="7450.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp" GraphId="aca">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="11550.0" CenterY="7750.0" Width="560.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts Lvrsp" GraphId="a1d">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8100.0" CenterY="1650.0" Width="995.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts mLvrs" GraphId="d3f" GroupRef="fd8e5">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="2750.0" CenterY="2600.0" Width="1040.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrs,p" GraphId="a88" GroupRef="fd8e5">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="5350.0" CenterY="2700.0" Width="695.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts mLvrs, mSCNp" GraphId="ea7">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="1700.0" CenterY="4950.0" Width="1670.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="ef7">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="650.0" CenterY="5800.0" Width="1025.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts mLvrs,p  mSCN" GraphId="d6d" GroupRef="fd8e5">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="2450.0" CenterY="3050.0" Width="1715.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts mLvrs,p" GraphId="ad4">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8000.0" CenterY="2900.0" Width="1175.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts mLvrs" GraphId="dfe">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="8100.0" CenterY="4750.0" Width="1040.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts mLvrp" GraphId="f3c">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="1250.0" CenterY="7350.0" Width="1040.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts mLvrs,p mSCNp" GraphId="f5d">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="900.0" CenterY="7650.0" Width="1760.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="E-Box" GraphId="c93" GroupRef="bf263">
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="3550.0" CenterY="6100.0" Width="515.0" Height="180.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mHrts, mLvrs" GraphId="c0c7c" GroupRef="cc853">
+    <BiopaxRef>dee</BiopaxRef>
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="6095.0" CenterY="1157.5" Width="1040.0" Height="125.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="mLvrp, mSCNp" GraphId="f1b3f" GroupRef="cc853">
+    <BiopaxRef>d87</BiopaxRef>
+    <Graphics FontWeight="Bold" FontSize="120" Color="000000" CenterX="6140.0" CenterY="1495.0" Width="1145.0" Height="140.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Ortholog references:" GraphId="f1e05" GroupRef="cc853">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="6457.5" CenterY="750.0" Width="2025.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Arc" Style="Solid" GraphId="af4">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3500.0" CenterY="5700.0" Width="6900.0" Height="3450.0" ZOrder="16384" Rotation="3.141593"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="eaa" GroupRef="bf263">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3550.0" CenterY="6100.0" Width="1100.0" Height="316.2278" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="e21" GroupRef="cc35f">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="3100.0" CenterY="5550.0" Width="1100.0" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="c53" GroupRef="cc35f">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="1850.0" CenterY="5550.0" Width="800.0" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="ab9" GroupRef="bf263">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="2300.0" CenterY="6100.0" Width="800.0" Height="300.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Brace" Style="Solid" GraphId="ff1" GroupRef="fd8e5">
+    <Graphics FillColor="000000" Color="000000" CenterX="5150.0" CenterY="2300.0" Width="3700.0" Height="130.0" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="fb53a" GroupRef="cc853">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="6449.75" CenterY="1132.25" Width="1710.5" Height="1125.5" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="fd8e5" GraphId="d2a9c"/>
+  <Group GroupId="cd810" GraphId="b28a1"/>
+  <Group GroupId="bb971" GraphId="fc342"/>
+  <Group GroupId="cc853" GraphId="c372e" Style="Group"/>
+  <Group GroupId="cc35f" GraphId="e59ac" Style="Group"/>
+  <Group GroupId="bf263" GraphId="d41be" Style="Group"/>
+  <Group GroupId="af116" GraphId="a4d58" Style="Group"/>
+  <Group GroupId="daea7" GraphId="ab69b" Style="Group"/>
+  <InfoBox CenterX="60.0" CenterY="140.5"/>
+  <Legend CenterX="7775.0" CenterY="8325.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="dee">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11967526</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Extensive and divergent circadian gene expression in liver and heart.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Storch KF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lipan O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leykin I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Viswanathan N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis FC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wong WH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weitz CJ</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d87">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12015981</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coordinated transcription of key pathways in the mouse by the circadian clock.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Panda S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antoch MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miller BH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Su AI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schook AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Straume M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schultz PG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kay SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hogenesch JB</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

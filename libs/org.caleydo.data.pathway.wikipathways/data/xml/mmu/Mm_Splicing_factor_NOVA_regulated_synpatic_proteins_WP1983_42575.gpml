@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Splicing factor NOVA regulated synpatic proteins" Data-Source="Ule et al.  Nature 2006.  " Version="20110320" Author="Bahar Taneri" Organism="Mus musculus">
+  <Comment Source="WikiPathways-description">Synaptic Communication influenced by NOVA-splicing regulation</Comment>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <BiopaxRef>adb</BiopaxRef>
+  <BiopaxRef>ffd</BiopaxRef>
+  <Graphics BoardWidth="1279.6666666666642" BoardHeight="1372.8" />
+  <DataNode TextLabel="Cav2.2&#xA;" GraphId="d1ba0" Type="GeneProduct" GroupRef="dba10">
+    <Comment>Validated target - predicted by splicing microarray
+</Comment>
+    <Graphics CenterX="271.12901892926436" CenterY="776.6245293329515" Width="80.0" Height="20.0" ZOrder="32768" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000058" />
+  </DataNode>
+  <DataNode TextLabel="4.1G" GraphId="d493e" Type="GeneProduct" GroupRef="c9e8e">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="657.4697116942012" CenterY="767.8156516574882" Width="48.37490551776263" Height="20.0" ZOrder="32770" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="13822" />
+  </DataNode>
+  <DataNode TextLabel="NIK/Mapk4&#xA;" GraphId="c9da6" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="67.0" CenterY="1045.0" Width="80.0" Height="20.0" ZOrder="32772" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000024558" />
+  </DataNode>
+  <DataNode TextLabel="N-Cadherin" GraphId="a00d1" Type="GeneProduct" GroupRef="e644e">
+    <Graphics CenterX="317.6035579809414" CenterY="635.8252824002288" Width="199.0" Height="20.0" ZOrder="32774" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="12558" />
+  </DataNode>
+  <DataNode TextLabel="LAR&#xA;" GraphId="dd2eb" Type="GeneProduct" GroupRef="a4735">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="313.5" CenterY="536.75" Width="171.0" Height="20.0" ZOrder="32776" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="SKIP" GraphId="d3e65" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="105.0" CenterY="565.0" Width="80.0" Height="20.0" ZOrder="32778" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="66354" />
+  </DataNode>
+  <DataNode TextLabel="MAP4" GraphId="b0917" Type="Protein">
+    <Comment>Validated target - predicted by bioinformatics</Comment>
+    <Graphics CenterX="124.0" CenterY="869.0" Width="80.0" Height="20.0" ZOrder="32780" FillColor="Transparent" FontSize="10" Valign="Middle" Color="9900ff" />
+    <Xref Database="Uniprot/TrEMBL" ID="P27546" />
+  </DataNode>
+  <DataNode TextLabel="AGRIN" GraphId="f9841" Type="Protein">
+    <Comment>Validated target - predicted by splicing microarray
+</Comment>
+    <Graphics CenterX="383.0" CenterY="138.0" Width="86.0" Height="24.0" ZOrder="32782" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Uniprot/TrEMBL" ID="A2ASQ1" />
+  </DataNode>
+  <DataNode TextLabel="Calsyntenin" GraphId="e6ba2" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="497.0" CenterY="665.75" Width="100.0" Height="20.0" ZOrder="32784" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="65945" />
+  </DataNode>
+  <DataNode TextLabel="EphrinA5R" GraphId="aa89b" Type="GeneProduct" GroupRef="d2e54">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="470.6067394282451" CenterY="930.3106739428243" Width="149.0" Height="20.0" ZOrder="32786" FontSize="10" Valign="Middle" Color="ff6666" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="GIRK2" GraphId="b32d1" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="485.0" CenterY="395.0" Width="80.0" Height="20.0" ZOrder="32788" FontSize="10" Valign="Middle" Color="3333ff" />
+    <Xref Database="Entrez Gene" ID="16522" />
+  </DataNode>
+  <DataNode TextLabel="PIP2&#xA;" GraphId="ad095" Type="Metabolite">
+    <Graphics CenterX="492.5" CenterY="352.5" Width="33.0" Height="13.0" ZOrder="32792" FontSize="10" Valign="Middle" />
+    <Xref Database="HMDB" ID="HMDB10032" />
+  </DataNode>
+  <DataNode TextLabel="Clasp1" GraphId="dd25a" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="79.0" CenterY="915.0" Width="80.0" Height="20.0" ZOrder="32794" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000064302" />
+  </DataNode>
+  <DataNode TextLabel="Slo" GraphId="bd973" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="229.135956343053" CenterY="825.7280873138935" Width="80.0" Height="20.0" ZOrder="32796" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="16531" />
+  </DataNode>
+  <DataNode TextLabel="CASK&#xA;" GraphId="db93b" Type="GeneProduct" GroupRef="dba10">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="211.1290189292649" CenterY="766.3850150089569" Width="80.00000000000001" Height="19.99999999999994" ZOrder="32798" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031012" />
+  </DataNode>
+  <DataNode TextLabel="neurochondrin" GraphId="ab198" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="694.0" CenterY="388.0" Width="80.0" Height="20.0" ZOrder="32800" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="26562" />
+  </DataNode>
+  <DataNode TextLabel="GlyRa2" GraphId="ed159" Type="GeneProduct" GroupRef="d7dd2">
+    <Comment>Validated target</Comment>
+    <Graphics CenterX="542.0" CenterY="200.0" Width="80.0" Height="20.0" ZOrder="32802" FillColor="Transparent" FontSize="10" Valign="Middle" Color="66cc00" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="GABAARg2" GraphId="f4b3a" Type="GeneProduct" GroupRef="b5b4b">
+    <Comment>Validated target
+</Comment>
+    <Graphics CenterX="538.0" CenterY="258.0" Width="100.0" Height="20.0" ZOrder="32804" FillColor="Transparent" FontSize="10" Valign="Middle" Color="66cc00" />
+    <Xref Database="Entrez Gene" ID="14406" />
+  </DataNode>
+  <DataNode TextLabel="JNK2" GraphId="d2221" Type="GeneProduct">
+    <Comment>Validated target - predicted by CLIP</Comment>
+    <Graphics CenterX="65.0" CenterY="1002.0" Width="80.0" Height="20.0" ZOrder="32806" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff00ff" />
+    <Xref Database="Entrez Gene" ID="26420" />
+  </DataNode>
+  <DataNode TextLabel="PMCA1" GraphId="da9ba" Type="GeneProduct" GroupRef="ece36">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="270.47527268150344" CenterY="686.2386486182991" Width="80.00000000000001" Height="20.000000000000064" ZOrder="32808" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="67972" />
+  </DataNode>
+  <DataNode TextLabel="Syntaxin1" GraphId="c1258" Type="GeneProduct" GroupRef="e787b">
+    <Graphics CenterX="241.0" CenterY="383.0" Width="80.0" Height="20.0" ZOrder="32810" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Plcb4" GraphId="fb864" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="141.0" CenterY="154.0" Width="80.0" Height="18.0" ZOrder="32812" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039943" />
+  </DataNode>
+  <DataNode TextLabel="Rap1gap" GraphId="e0a1c" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="668.5915127955943" CenterY="663.5446496058747" Width="80.0" Height="20.0" ZOrder="32816" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="110351" />
+  </DataNode>
+  <DataNode TextLabel="Syntaxin 2" GraphId="cff16" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="212.0" CenterY="434.0" Width="80.0" Height="20.0" ZOrder="32818" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="13852" />
+  </DataNode>
+  <DataNode TextLabel="Camk2g" GraphId="bf4ee" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="650.0" CenterY="464.0" Width="80.0" Height="20.0" ZOrder="32820" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021820" />
+  </DataNode>
+  <DataNode TextLabel="a-catenin&#xA;" GraphId="aaf0e" Type="GeneProduct" GroupRef="e644e">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="189.0" CenterY="643.0" Width="80.0" Height="20.0" ZOrder="32822" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Igsf4a" GraphId="f4187" Type="GeneProduct" GroupRef="c8aa0">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="553.4406248362875" CenterY="875.5816452948353" Width="83.5" Height="26.5" ZOrder="32824" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="54725" />
+  </DataNode>
+  <DataNode TextLabel="Neogenin" GraphId="e4395" Type="GeneProduct">
+    <Comment>Validated target - predicted by CLIP</Comment>
+    <Graphics CenterX="179.0" CenterY="1104.0" Width="80.0" Height="20.0" ZOrder="32826" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff00ff" />
+    <Xref Database="Entrez Gene" ID="18007" />
+  </DataNode>
+  <DataNode TextLabel="nAChRa2" GraphId="a8f2f" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="532.0" CenterY="153.0" Width="80.0" Height="20.0" ZOrder="32828" FillColor="Transparent" FontSize="10" Valign="Middle" Color="0033ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Cav2.2" GraphId="c40fd" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="214.0" CenterY="188.0" Width="80.0" Height="20.0" ZOrder="32830" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000058" />
+  </DataNode>
+  <DataNode TextLabel="Cask" GraphId="a241b" Type="GeneProduct" GroupRef="e787b">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="174.0" CenterY="365.0" Width="80.0" Height="20.0" ZOrder="32834" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031012" />
+  </DataNode>
+  <DataNode TextLabel="Gephrin" GraphId="debf1" Type="GeneProduct" GroupRef="b5b4b">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="618.0" CenterY="246.0" Width="80.0" Height="20.0" ZOrder="32836" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="268566" />
+  </DataNode>
+  <DataNode TextLabel="CASK&#xA;" GraphId="f6d68" Type="Protein" GroupRef="ece36">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="199.371714700562" CenterY="692.8955763133624" Width="80.00000000000003" Height="20.000000000000064" ZOrder="32838" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Uniprot/TrEMBL" ID="P06796" />
+  </DataNode>
+  <DataNode TextLabel="Dab1" GraphId="eb63a" Type="GeneProduct" GroupRef="b1604">
+    <Comment>Validated target - predicted by bioinformatics</Comment>
+    <Graphics CenterX="161.0" CenterY="271.0" Width="80.0" Height="20.0" ZOrder="32840" FillColor="Transparent" FontSize="10" Valign="Middle" Color="9900ff" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028519" />
+  </DataNode>
+  <DataNode TextLabel="Aplp2" GraphId="ec517" Type="GeneProduct" GroupRef="b1604">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="225.5" CenterY="261.0" Width="71.0" Height="20.0" ZOrder="32842" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031996" />
+  </DataNode>
+  <DataNode TextLabel="Kcnq2" GraphId="ba43b" Type="GeneProduct" GroupRef="e88a6">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="249.0" CenterY="1052.0" Width="80.0" Height="20.0" ZOrder="32844" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000016346" />
+  </DataNode>
+  <DataNode TextLabel="Munc18" GraphId="f5e8b" Type="GeneProduct" GroupRef="e787b">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="112.0" CenterY="351.0" Width="80.0" Height="20.0" ZOrder="32846" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="20911" />
+  </DataNode>
+  <DataNode TextLabel="4.1R" GraphId="b630d" Type="GeneProduct" GroupRef="c9e8e">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="625.3715581470683" CenterY="749.0612244897959" Width="48.37490551776283" Height="20.0" ZOrder="32848" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="269587" />
+  </DataNode>
+  <DataNode TextLabel="4.1B" GraphId="beaea" Type="GeneProduct" GroupRef="c8aa0">
+    <Comment>Validated target - predicted by splicing microarray
+
+</Comment>
+    <Graphics CenterX="676.7021137766823" CenterY="860.1897594709512" Width="65.05129035741314" Height="20.0" ZOrder="32850" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="13823" />
+  </DataNode>
+  <DataNode TextLabel="Chl1" GraphId="e27ad" Type="GeneProduct" GroupRef="d9b60">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="315.75" CenterY="990.75" Width="196.5" Height="22.5" ZOrder="32852" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000030077" />
+  </DataNode>
+  <DataNode TextLabel="Netrin G1" GraphId="ba6f0" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="339.13616240146854" CenterY="1080.0" Width="80.0" Height="20.0" ZOrder="32854" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="80883" />
+  </DataNode>
+  <DataNode TextLabel="Rap1" GraphId="c6a39" Type="GeneProduct">
+    <Graphics CenterX="680.0" CenterY="710.0" Width="80.0" Height="20.0" ZOrder="32856" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="57321" />
+  </DataNode>
+  <DataNode TextLabel="EphrinA5" GraphId="edc77" Type="GeneProduct" GroupRef="d2e54">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="318.1079257099665" CenterY="930.0" Width="158.21585141993302" Height="20.0" ZOrder="32858" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="13640" />
+  </DataNode>
+  <DataNode TextLabel="NMDAR2B" GraphId="d9539" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="496.0" CenterY="691.0" Width="100.0" Height="20.0" ZOrder="32860" FillColor="Transparent" FontSize="10" Valign="Middle" Color="0033ff" />
+    <Xref Database="Entrez Gene" ID="14812" />
+  </DataNode>
+  <DataNode TextLabel="NMDAR1" GraphId="f122f" Type="GeneProduct" GroupRef="e0d21">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="525.566407515387" CenterY="725.0" Width="103.13281503077422" Height="20.0" ZOrder="32862" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="14810" />
+  </DataNode>
+  <DataNode TextLabel="Chl1" GraphId="a7e95" Type="GeneProduct" GroupRef="dea25">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="534.75" CenterY="989.75" Width="210.5" Height="22.5" ZOrder="32864" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000030077" />
+  </DataNode>
+  <DataNode TextLabel="N-Cadherin" GraphId="a6857" Type="GeneProduct" GroupRef="beca5">
+    <Graphics CenterX="549.5" CenterY="614.0" Width="225.0" Height="20.0" ZOrder="32866" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="12558" />
+  </DataNode>
+  <DataNode TextLabel="Ankyrin G" GraphId="b3775" Type="GeneProduct" GroupRef="dea25">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="671.0" CenterY="975.0" Width="78.0" Height="24.0" ZOrder="32868" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="11735" />
+  </DataNode>
+  <DataNode TextLabel="CASK&#xA;" GraphId="fcbf9" Type="GeneProduct" GroupRef="c8aa0">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="619.6728349315795" CenterY="869.3138553901282" Width="80.0" Height="20.0" ZOrder="32870" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031012" />
+  </DataNode>
+  <DataNode TextLabel="Dab1" GraphId="a7b26" Type="GeneProduct" GroupRef="e0d21">
+    <Comment>Validated target - predicted by bioinformatics</Comment>
+    <Graphics CenterX="548.7684375337442" CenterY="740.2723248029371" Width="32.35384947629826" Height="20.0" ZOrder="32872" FillColor="Transparent" FontSize="10" Valign="Middle" Color="9900ff" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028519" />
+  </DataNode>
+  <DataNode TextLabel="a-catenin&#xA;" GraphId="b7aca" Type="GeneProduct" GroupRef="beca5">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="696.0" CenterY="622.0" Width="80.0" Height="20.0" ZOrder="32874" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="LAR&#xA;" GraphId="b1f87" Type="GeneProduct" GroupRef="a4735">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="427.625" CenterY="565.75" Width="156.75" Height="20.0" ZOrder="32876" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="GluR6" GraphId="b648e" Type="GeneProduct" GroupRef="a2684">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="470.0" CenterY="478.0" Width="80.0" Height="20.0" ZOrder="32878" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="14806" />
+  </DataNode>
+  <DataNode TextLabel="Cask" GraphId="a3c42" Type="GeneProduct" GroupRef="a2684">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="540.0" CenterY="468.0" Width="80.0" Height="20.0" ZOrder="32880" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031012" />
+  </DataNode>
+  <DataNode TextLabel="PKCz" GraphId="d9629" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="643.6956889517834" CenterY="349.7573042287019" Width="80.0" Height="20.0" ZOrder="32882" FillColor="Transparent" FontSize="10" Valign="Middle" Color="3333ff" />
+    <Xref Database="Entrez Gene" ID="18762" />
+  </DataNode>
+  <DataNode TextLabel="GABAB2R" GraphId="a4e9e" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="463.0" CenterY="301.0" Width="80.0" Height="20.0" ZOrder="32884" FillColor="Transparent" FontSize="10" Valign="Middle" Color="3333ff" />
+    <Xref Database="Entrez Gene" ID="242425" />
+  </DataNode>
+  <DataNode TextLabel="nAChRa4" GraphId="d9f11" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="532.0" CenterY="122.0" Width="80.0" Height="20.0" ZOrder="32886" FillColor="Transparent" FontSize="10" Valign="Middle" Color="0066ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Plcb4" GraphId="e9171" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="77.0" CenterY="1136.0" Width="80.0" Height="18.0" ZOrder="32888" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039943" />
+  </DataNode>
+  <DataNode TextLabel="PIP2&#xA;" GraphId="f3406" Type="Metabolite">
+    <Graphics CenterX="110.5" CenterY="1098.5" Width="29.0" Height="13.0" ZOrder="32890" FontSize="10" Valign="Middle" />
+    <Xref Database="HMDB" ID="HMDB10032" />
+  </DataNode>
+  <DataNode TextLabel="Ankyrin G" GraphId="de9d2" Type="GeneProduct" GroupRef="e88a6">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="184.0" CenterY="1036.0" Width="78.0" Height="24.0" ZOrder="32892" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="11735" />
+  </DataNode>
+  <DataNode TextLabel="Ankyrin G" GraphId="e7176" Type="GeneProduct" GroupRef="d9b60">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="187.0" CenterY="975.0" Width="78.0" Height="24.0" ZOrder="32894" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="11735" />
+  </DataNode>
+  <DataNode TextLabel="JNK2" GraphId="dcd8b" Type="GeneProduct">
+    <Comment>Validated target - predicted by CLIP</Comment>
+    <Graphics CenterX="85.0" CenterY="230.0" Width="80.0" Height="20.0" ZOrder="32896" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff00ff" />
+    <Xref Database="Entrez Gene" ID="26420" />
+  </DataNode>
+  <DataNode TextLabel="4.1R" GraphId="b5ee6" Type="GeneProduct" GroupRef="ece36">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="146.4752726815035" CenterY="706.8631779512499" Width="80.00000000000003" Height="20.000000000000064" ZOrder="32898" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="269587" />
+  </DataNode>
+  <DataNode TextLabel="4.1R" GraphId="f73ff" Type="GeneProduct" GroupRef="dba10">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="150.12901892926484" CenterY="750.7604856760055" Width="80.00000000000001" Height="19.99999999999994" ZOrder="32900" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="269587" />
+  </DataNode>
+  <DataNode TextLabel="GluR6" GraphId="dbdc8" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="223.0" CenterY="469.0" Width="80.0" Height="20.0" ZOrder="32902" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="14806" />
+  </DataNode>
+  <DataNode TextLabel="Slo" GraphId="a90b3" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="241.0" CenterY="307.0" Width="80.0" Height="20.0" ZOrder="32904" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="16531" />
+  </DataNode>
+  <DataNode TextLabel="PKCz" GraphId="b6c02" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="84.0" CenterY="188.0" Width="80.0" Height="20.0" ZOrder="32906" FillColor="Transparent" FontSize="10" Valign="Middle" Color="0033ff" />
+    <Xref Database="Entrez Gene" ID="18762" />
+  </DataNode>
+  <DataNode TextLabel="GABAB2R" GraphId="e4b6e" Type="GeneProduct">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="164.0" CenterY="109.0" Width="80.0" Height="20.0" ZOrder="32908" FillColor="Transparent" FontSize="10" Valign="Middle" Color="0066ff" />
+    <Xref Database="Entrez Gene" ID="242425" />
+  </DataNode>
+  <DataNode TextLabel="Gephrin" GraphId="f550e" Type="GeneProduct" GroupRef="d7dd2">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="611.0" CenterY="193.0" Width="80.0" Height="20.0" ZOrder="32910" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="268566" />
+  </DataNode>
+  <DataNode TextLabel="Plcb4" GraphId="f6659" Type="GeneProduct">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="552.751948168668" CenterY="327.5" Width="59.50389633733607" Height="17.0" ZOrder="32914" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039943" />
+  </DataNode>
+  <DataNode TextLabel="4.1N" GraphId="f55c7" Type="GeneProduct" GroupRef="e2583">
+    <Comment>Validated target - predicted by bioinformatics</Comment>
+    <Graphics CenterX="600.8414858006698" CenterY="807.2955404383973" Width="61.595939963286256" Height="18.638375985314752" ZOrder="32918" FillColor="Transparent" FontSize="10" Valign="Middle" Color="9900ff" />
+    <Xref Database="Entrez Gene" ID="13821" />
+  </DataNode>
+  <DataNode TextLabel="Igsf4b" GraphId="cb609" Type="GeneProduct" GroupRef="e2583">
+    <Comment>Validated target - predicted by bioinformatics</Comment>
+    <Graphics CenterX="540.25" CenterY="816.75" Width="77.5" Height="20.5" ZOrder="32920" FillColor="Transparent" FontSize="10" Valign="Middle" Color="9900ff" />
+    <Xref Database="Entrez Gene" ID="94332" />
+  </DataNode>
+  <DataNode TextLabel="Integrin a2&#xA;" GraphId="c907e" Type="GeneProduct" GroupRef="e0d21">
+    <Comment>Validated target - predicted by bioinformatics</Comment>
+    <Graphics CenterX="506.74999999999926" CenterY="755.3357680762341" Width="108.5" Height="18.5" ZOrder="32923" FillColor="Transparent" FontSize="10" Valign="Middle" Color="9900ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="validated target" GraphId="b1b99">
+    <Comment>Validated target</Comment>
+    <Graphics CenterX="985.8333333333317" CenterY="117.66666666666612" Width="279.0" Height="20.0" ZOrder="32924" FillColor="Transparent" FontSize="10" Valign="Middle" Color="66cc00" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="CLIP predicted target" GraphId="a8b97">
+    <Comment>CLIP predicted target</Comment>
+    <Graphics CenterX="985.8333333333317" CenterY="148.66666666666623" Width="279.0" Height="20.0" ZOrder="32925" FillColor="Transparent" FontSize="10" Valign="Middle" Color="3333ff" />
+    <Xref Database="Entrez Gene" ID="" />
+  </DataNode>
+  <DataNode TextLabel="validated target - predicted by bioinformatics" GraphId="d53e6">
+    <Comment>Validated target - predicted by bioinformatics</Comment>
+    <Graphics CenterX="985.8333333333317" CenterY="181.6666666666666" Width="279.0" Height="20.0" ZOrder="32926" FillColor="Transparent" FontSize="10" Valign="Middle" Color="9900ff" />
+    <Xref Database="Entrez Gene" ID="" />
+  </DataNode>
+  <DataNode TextLabel="validated target - predicted by splicing microarray" GraphId="d26de">
+    <Comment>Validated target - predicted by splicing microarray</Comment>
+    <Graphics CenterX="985.8333333333317" CenterY="217.6666666666671" Width="279.0" Height="20.0" ZOrder="32927" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff6600" />
+    <Xref Database="Entrez Gene" ID="" />
+  </DataNode>
+  <DataNode TextLabel="validated target - predicted by CLIP" GraphId="dbdf1">
+    <Comment>Validated target - predicted by CLIP</Comment>
+    <Graphics CenterX="985.8333333333317" CenterY="253.66666666666748" Width="279.0" Height="20.0" ZOrder="32928" FillColor="Transparent" FontSize="10" Valign="Middle" Color="ff00ff" />
+    <Xref Database="Entrez Gene" ID="" />
+  </DataNode>
+  <Line GraphId="idc6058537">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="588.0" Y="473.0" GraphRef="e3a93" RelX="1.0" RelY="0.0" />
+      <Point X="610.0" Y="464.0" GraphRef="bf4ee" RelX="-1.0" RelY="0.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd847fc44">
+    <Graphics ZOrder="12290" LineThickness="1.0">
+      <Point X="121.0" Y="163.0" GraphRef="fb864" RelX="-0.5" RelY="1.0" />
+      <Point X="104.0" Y="178.0" GraphRef="b6c02" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ided7469df">
+    <Graphics ZOrder="12292" LineThickness="1.0">
+      <Point X="537.8759740843341" Y="336.0" GraphRef="f6659" RelX="-0.5" RelY="1.0" />
+      <Point X="500.75" Y="346.0" GraphRef="ad095" RelX="0.5" RelY="-1.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida025d4a3">
+    <Graphics ZOrder="12294" LineThickness="1.0">
+      <Point X="492.5" Y="359.0" GraphRef="ad095" RelX="0.0" RelY="1.0" />
+      <Point X="505.0" Y="385.0" GraphRef="b32d1" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfcee9c43">
+    <Graphics ZOrder="12296" LineThickness="1.0">
+      <Point X="67.0" Y="1035.0" GraphRef="c9da6" RelX="0.0" RelY="-1.0" />
+      <Point X="65.0" Y="1012.0" GraphRef="d2221" RelX="0.0" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idcb679b21">
+    <Graphics ZOrder="12298" LineThickness="1.0">
+      <Point X="84.0" Y="198.0" GraphRef="b6c02" RelX="0.0" RelY="1.0" />
+      <Point X="85.0" Y="220.0" GraphRef="dcd8b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idc2223a0f">
+    <Graphics ZOrder="12300" LineThickness="1.0">
+      <Point X="125.0" Y="230.0" GraphRef="dcd8b" RelX="1.0" RelY="0.0" />
+      <Point X="191.0" Y="243.0" GraphRef="e77cc" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id195a8b23">
+    <Graphics ZOrder="12302" LineThickness="1.0">
+      <Point X="483.0" Y="311.0" GraphRef="a4e9e" RelX="0.5" RelY="1.0" />
+      <Point X="523.0" Y="327.5" GraphRef="f6659" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4bdb89c5">
+    <Graphics ZOrder="12304" LineThickness="1.0">
+      <Point X="97.0" Y="1127.0" GraphRef="e9171" RelX="0.5" RelY="-1.0" />
+      <Point X="110.5" Y="1105.0" GraphRef="f3406" RelX="0.0" RelY="1.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idedbaaf37">
+    <Graphics ZOrder="12306" LineThickness="1.0">
+      <Point X="668.5915127955943" Y="673.5446496058747" GraphRef="e0a1c" RelX="0.0" RelY="1.0" />
+      <Point X="680.0" Y="700.0" GraphRef="c6a39" RelX="0.0" RelY="-1.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id47984a8e">
+    <Graphics ZOrder="12308" LineThickness="1.0">
+      <Point X="586.5" Y="596.0" GraphRef="bac4d" RelX="0.0" RelY="-1.0" />
+      <Point X="514.0" Y="567.5" GraphRef="d58fb" RelX="1.0" RelY="0.5" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3b3b15bf">
+    <Graphics ZOrder="12310" LineThickness="1.0">
+      <Point X="117.75" Y="1092.0" GraphRef="f3406" RelX="0.5" RelY="-1.0" />
+      <Point X="177.0" Y="1070.0" GraphRef="aeede" RelX="-0.5" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id43ddcbc8">
+    <Graphics ZOrder="12312" LineThickness="1.0">
+      <Point X="630.0" Y="454.0" GraphRef="bf4ee" RelX="-0.5" RelY="-1.0" />
+      <Point X="505.0" Y="405.0" GraphRef="b32d1" RelX="0.5" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4515b1dd">
+    <Graphics ZOrder="12314" LineThickness="1.0">
+      <Point X="166.0" Y="117.0" />
+      <Point X="141.0" Y="145.0" GraphRef="fb864" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf610f4e6">
+    <Graphics ZOrder="12316" LineThickness="1.0">
+      <Point X="426.0" Y="138.0" GraphRef="f9841" RelX="1.0" RelY="0.0" />
+      <Point X="492.0" Y="122.0" GraphRef="d9f11" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id47b8cbc5">
+    <Graphics ZOrder="12318" LineThickness="1.0">
+      <Point X="582.5038963373361" Y="327.5" GraphRef="f6659" RelX="1.0" RelY="0.0" />
+      <Point X="603.6956889517834" Y="349.7573042287019" GraphRef="d9629" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3ec4817">
+    <Graphics ZOrder="12320" LineThickness="1.0">
+      <Point X="176.5" Y="333.0" GraphRef="b2ff5" RelX="0.0" RelY="-1.0" />
+      <Point X="201.0" Y="307.0" GraphRef="a90b3" RelX="-1.0" RelY="0.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id619cdc0d">
+    <Graphics ZOrder="12322" LineThickness="1.0">
+      <Point X="694.0" Y="398.0" GraphRef="ab198" RelX="0.0" RelY="1.0" />
+      <Point X="650.0" Y="454.0" GraphRef="bf4ee" RelX="0.0" RelY="-1.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfea68f2f">
+    <Graphics ZOrder="12324" LineThickness="1.0">
+      <Point X="443.0" Y="311.0" GraphRef="a4e9e" RelX="-0.5" RelY="1.0" />
+      <Point X="465.0" Y="385.0" GraphRef="b32d1" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfaa643ec">
+    <Graphics ZOrder="12326" LineThickness="1.0">
+      <Point X="603.6956889517834" Y="349.7573042287019" GraphRef="d9629" RelX="-1.0" RelY="0.0" />
+      <Point X="525.0" Y="395.0" GraphRef="b32d1" RelX="1.0" RelY="0.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="iddb8edeb9">
+    <Graphics ZOrder="12328" LineThickness="1.0">
+      <Point X="125.0" Y="575.0" GraphRef="d3e65" RelX="0.5" RelY="1.0" />
+      <Point X="212.02588949523533" Y="617.8252824002288" GraphRef="a40d4" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idae41dfa5">
+    <Graphics ZOrder="12330" LineThickness="1.0">
+      <Point X="426.0" Y="138.0" GraphRef="f9841" RelX="1.0" RelY="0.0" />
+      <Point X="492.0" Y="153.0" GraphRef="a8f2f" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id25d17726">
+    <Graphics ZOrder="12334" LineThickness="1.0">
+      <Point X="665.25" Y="596.0" GraphRef="bac4d" RelX="0.5" RelY="-1.0" />
+      <Point X="546.5" Y="496.0" GraphRef="e3a93" RelX="0.5" RelY="1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id49ba6b4a">
+    <Graphics ZOrder="12336" LineThickness="1.0">
+      <Point X="124.0" Y="188.0" GraphRef="b6c02" RelX="1.0" RelY="0.0" />
+      <Point X="174.0" Y="188.0" GraphRef="c40fd" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="PIP2&#xA;" GraphId="ec3b3">
+    <Graphics CenterX="401.0" CenterY="30.0" Width="0.0" Height="0.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Legend" GraphId="dd48b">
+    <Graphics CenterX="889.333333333333" CenterY="85.6666666666665" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Post-synaptic neuron&#xA;" GraphId="f610b">
+    <Graphics CenterX="606.5" CenterY="1230.0" Width="179.0" Height="36.0" ZOrder="28676" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Label TextLabel="PIP2" GraphId="c1e6b">
+    <Graphics CenterX="341.0" CenterY="207.0" Width="0.0" Height="0.0" ZOrder="28678" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Pre-synaptic neuron&#xA;" GraphId="d321e">
+    <Graphics CenterX="123.5" CenterY="1227.0" Width="179.0" Height="36.0" ZOrder="32912" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" />
+  </Label>
+  <Shape GraphId="a9635">
+    <Graphics CenterX="611.793971121977" CenterY="619.6030972843903" Width="1097.4845828387859" Height="305.7488016047098" ZOrder="12332" FontSize="10" Valign="Middle" ShapeType="Arc" Rotation="1.5240959751164875" />
+  </Shape>
+  <Shape GraphId="a74d6">
+    <Graphics CenterX="82.22245555673652" CenterY="617.1103115484881" Width="1087.6798006988965" Height="344.9047965840864" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Arc" Rotation="4.692819777197208" />
+  </Shape>
+  <Shape GraphId="f69fc">
+    <Graphics CenterX="990.0833333333313" CenterY="179.0" Width="346.5" Height="240.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="e787b" GraphId="b2ff5" Style="Complex" />
+  <Group GroupId="ece36" Style="Complex" />
+  <Group GroupId="dba10" Style="Complex" />
+  <Group GroupId="c8aa0" Style="Complex" />
+  <Group GroupId="e88a6" GraphId="aeede" Style="Complex" />
+  <Group GroupId="e0d21" Style="Complex" />
+  <Group GroupId="b1604" GraphId="e77cc" Style="Complex" />
+  <Group GroupId="d7dd2" Style="Complex" />
+  <Group GroupId="a4735" GraphId="d58fb" Style="Complex" />
+  <Group GroupId="d2e54" Style="Complex" />
+  <Group GroupId="beca5" GraphId="bac4d" Style="Complex" />
+  <Group GroupId="b5b4b" Style="Complex" />
+  <Group GroupId="a2684" GraphId="e3a93" Style="Complex" />
+  <Group GroupId="e644e" GraphId="a40d4" Style="Complex" />
+  <Group GroupId="dea25" Style="Complex" />
+  <Group GroupId="c9e8e" Style="Complex" />
+  <Group GroupId="d9b60" Style="Complex" />
+  <Group GroupId="e2583" Style="Complex" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ffd">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16041372</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nova regulates brain-specific splicing to shape the synapse.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ule J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ule A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spencer J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hu JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cline M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clark T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fraser C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruggiu M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zeeberg BR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kane D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weinstein JN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blume J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Darnell RB</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="adb">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17065982</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An RNA map predicting Nova-dependent splicing regulation.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J. Ule</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">G. Stefani</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A. Mele</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">M. Ruggiu</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">X. Wang</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">B. Taneri</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">T. Gaasterland</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">B.J. Blencowe</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">R.B. Darnell</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

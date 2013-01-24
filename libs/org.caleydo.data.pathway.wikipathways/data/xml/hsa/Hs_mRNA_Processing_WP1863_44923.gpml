@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="mRNA Processing" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Carmichael, GG, Hammarskjold, ML, Hastings, M, Krainer, AR, Marzluff, WF, Wahle, E, Zhang, Z" Maintainer="Gillespie, ME, Gopinathrao, G, Joshi-Tope, G" Email="gillespm@cshl.org">
+  <Comment Source="WikiPathways-description">Processing of mRNA encompasses the capping of mRNA, processing of mRNAs with and without introns, and also modification of mRNA, as in mRNA editing.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n1_REACTOME_72086" TextLabel="mRNA Capping&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The 5'-ends of all eukaryotic pre-mRNAs studied thus far are converted to cap structures. The cap is thought to influence splicing of the first intron, and is bound by 'cap-binding' proteins, CBP80 and CBP20, in the nucleus. The cap is important for translation initiation, and it also interacts with the poly(A)terminus, via proteins, resulting in circularization of the mRNA to facilitate multiple rounds of translation. The cap is also important for mRNA stability, protecting it from 5' to 3' nucleases, and is required for mRNA export to the cytoplasm.&lt;BR&gt;The capping reaction usually occurs very rapidly on nascent transcripts; after the synthesis of only a few nucleotides by RNA polymerase II. The capping reaction involves the conversion of the 5'-end of the nascent transcript from a triphosphate to a diphosphate by a RNA 5'-triphosphatase, followed by the addition of a guanosine monophosphate by the mRNA guanylyltransferase, to form a 5'-5'-triphosphate linkage. This cap is then methylated by 2'-O-methyltransferases.&lt;P&gt;</Comment>
+    <BiopaxRef>lit_72087</BiopaxRef>
+    <BiopaxRef>lit_72192</BiopaxRef>
+    <BiopaxRef>lit_77480</BiopaxRef>
+    <BiopaxRef>lit_77481</BiopaxRef>
+    <Graphics Color="000000" CenterX="94.0" CenterY="86.0" Width="130.0" Height="76.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_1470"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_72203" TextLabel="Processing of Capped &#10;Intron-Containing Pre-&#10;mRNA&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Co-transcriptional pre-mRNA splicing is not obligatory. Pre-mRNA splicing begins co-transcriptionally and often continues post-transcriptionally. Human genes contain an average of nine introns per gene, which cannot serve as splicing substrates until both 5' and 3' ends of each intron are synthesized. Thus the time that it takes for pol II to synthesize each intron defines a minimal time and distance along the gene in which splicing factors can be recruited. The time that it takes for pol II to reach the end of the gene defines the maximal time in which splicing could occur co-transcriptionally. Thus, the kinetics of transcription can affect the kinetics of splicing.Any covalent change in a primary (nascent) mRNA transcript is mRNA Processing.  For successful gene expression, the primary mRNA transcript needs to be converted to a mature mRNA prior to its translation into polypeptide.  Eucaryotic mRNAs undergo a series of complex processing reactions; these begin on nascent transcripts as soon as a few ribonucleotides have been synthesized during transcription by RNA Polymerase II, through the export of the mature mRNA to the cytoplasm, and culminate with mRNA turnover in the cytoplasm.</Comment>
+    <Graphics Color="000000" CenterX="244.0" CenterY="85.5" Width="132.0" Height="79.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_125"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_75067" TextLabel="Processing of Capped &#10;Intronless Pre-mRNA&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Co-transcriptional pre-mRNA splicing is not obligatory. Pre-mRNA splicing begins co-transcriptionally and often continues post-transcriptionally. Human genes contain an average of nine introns per gene, which cannot serve as splicing substrates until both 5' and 3' ends of each intron are synthesized. Thus the time that it takes for pol II to synthesize each intron defines a minimal time and distance along the gene in which splicing factors can be recruited. The time that it takes for pol II to reach the end of the gene defines the maximal time in which splicing could occur co-transcriptionally. Thus, the kinetics of transcription can affect the kinetics of splicing.&lt;br&gt;
+There are two classes of intronless pre-mRNAs (mRNAs expressed from genes that lack introns). The first class encodes the replication dependent histone mRNAs.  These mRNAs have unique 3' ends that do not have a polyA tail.  The replication dependent histone mRNAs in all metazoans, as well as Chlamydomonas and Volvox fall into this class. &lt;p&gt;The second class of mRNAs end in polyA tails, which are formed by a  mechanism similar to that which poly-adenylate pre-mRNAs containing introns. In the intronless genes there is a different method of replacing the 3' splice site that activates polyadenylation.</Comment>
+    <Graphics Color="000000" CenterX="390.5" CenterY="87.0" Width="131.0" Height="76.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_1768"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_75072" TextLabel="mRNA Editing&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">After transcription, some RNA molecules are altered to contain bases not encoded in the genome. Most often this involves the editing or modification of one base to another, but in some organisms can involve the insertion or deletion of a base. Such editing events alter the coding properties of mRNA.&lt;BR&gt;RNA editing can be generally defined as the co- or post transcriptional modification of  the primary sequence of RNA from that encoded in the genome through nucleotide deletion, insertion, or base modification mechanisms.&lt;BR&gt;There are two pathways of RNA editing:  the substitution/conversion pathway and the insertion/deletion pathway. The  insertion/deletion editing occurs in protozoans like Trypanosoma, Leishmania; in slime molds like Physarum spp., and in some viral categories like paramyxoviruses, Ebola virus etc. To date, the substitution/conversion pathway has been observed in human along with other mammals, Drosophila, and some plants. The  RNA editing processes are known to create diversity in proteins involved in various pathways like lipid transport, metabolism etc. and may act as potential targets for therapeutic intervention (Smith et al., 1997).&lt;BR&gt;The reaction mechanisms of cytidine and adenosine deaminases is represented below.  In both these reactions, NH3 is presumed to be released:&lt;BR&gt;</Comment>
+    <BiopaxRef>lit_77045</BiopaxRef>
+    <BiopaxRef>lit_77028</BiopaxRef>
+    <Graphics Color="000000" CenterX="538.0" CenterY="87.0" Width="128.0" Height="72.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_1757"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72087" rdf:id="lit_72087">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3326038</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Messenger RNA capping enzymes from eukaryotic cells.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizumoto, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaziro, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prog Nucleic Acid Res Mol Biol 34:1-28</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_72192" rdf:id="lit_72192">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11909521</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrating mRNA processing with transcription.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proudfoot, NJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furger, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dye, MJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 108:501-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77480" rdf:id="lit_77480">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10395561</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coupling RNA polymerase II transcription with pre-mRNA processing.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bentley, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Opin Cell Biol 11:347-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77481" rdf:id="lit_77481">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11017188</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The ends of the affair: capping and polyadenylation.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shatkin, AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Manley, JL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Biol 7:838-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77045" rdf:id="lit_77045">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12139607</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RNA editing: complexity and complications.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stuart, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Panigrahi, AK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Microbiol 45:591-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_77028" rdf:id="lit_77028">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11092837</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functions and mechanisms of RNA editing.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gott, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Emeson, RB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Genet 34:499-531</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>transcription pathway</bp:TERM><bp:ID>PW:0000100</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

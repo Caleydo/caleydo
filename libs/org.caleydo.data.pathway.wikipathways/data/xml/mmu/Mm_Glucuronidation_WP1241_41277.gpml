@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Glucuronidation" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">Metabolism of xenobiotic compounds consists of phase I and a phase II biotransformation reactions, being compound modification and conjugation reactions respectively. In phase I biotransformation, the compound is modificated via oxidation, reduction, hydrolysis, or other minor reactions, to reveal a reactive group to which a conjugation molecule can react to. In phase II, a small conjugation molecule reacts with the phase I modified molecule, producing a much more water-soluble molecule that can be excreted more easily.
+Glucuronidation is a phase II biotransformation reaction in which glucuronide acts as a conjugation molecule and binds to a substrate via the catalysis of glucuronosyltransferases. First, in a series of reactions the cosubstrate uridine diphosphate glucuronic acid (UDPGA) is formed. The glucuronosyltransferases (UGTs) then catalyze the transfer of glucuronic acid from UDPGA to a substrate resulting in a glucuronidated substrate and leaving uridine 5'-diphosphate. UGTs are a very broad and divers group of enzymes and count as the most significant  group of conjugation enzymes in xenobiotic metabolism, qualitatively because glucuronic acid can be coupled to a large diversity of functional groups and quantitatively because of the large and divers number of substrates that are formed.</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP698&amp;amp;oldid=30281 WP698(r30281)] with a 51% conversion rate.</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <BiopaxRef>a14</BiopaxRef>
+  <Graphics BoardWidth="24568.5" BoardHeight="7128.0" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="Pgm3" Type="GeneProduct" BackpageHead="Pgm3" GraphId="b0426" GroupRef="a9a5a">
+    <Graphics Color="000000" CenterX="4815.0" CenterY="3765.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000056131"/>
+  </DataNode>
+  <DataNode TextLabel="Uridine triphosphate" Type="Metabolite" GraphId="e6ea3">
+    <Graphics Color="0000ff" CenterX="8047.5" CenterY="5760.0" Width="1725.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00285"/>
+  </DataNode>
+  <DataNode TextLabel="NADH" Type="Metabolite" GraphId="d3ce9" GroupRef="be060">
+    <Graphics Color="0000ff" CenterX="13770.0" CenterY="5355.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01487"/>
+  </DataNode>
+  <DataNode TextLabel="NAD" Type="Metabolite" GraphId="c9360" GroupRef="aee33">
+    <Graphics Color="0000ff" CenterX="12255.0" CenterY="5355.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00902"/>
+  </DataNode>
+  <DataNode TextLabel="Pgm1" Type="GeneProduct" BackpageHead="Pgm1" GraphId="b2d4e" GroupRef="a9a5a">
+    <Graphics Color="000000" CenterX="6015.0" CenterY="3465.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029171"/>
+  </DataNode>
+  <DataNode TextLabel="substrate-glucuronide" Type="Metabolite" GraphId="bd8c5">
+    <Graphics Color="339900" CenterX="18712.5" CenterY="3480.0" Width="1845.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Glucose 1-phosphate" Type="Metabolite" GraphId="e163e">
+    <Graphics Color="0000ff" CenterX="6892.5" CenterY="4695.0" Width="1755.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01586"/>
+  </DataNode>
+  <DataNode TextLabel="Pgm2" Type="GeneProduct" BackpageHead="Pgm2" GraphId="fcaec" GroupRef="a9a5a">
+    <Graphics Color="000000" CenterX="4815.0" CenterY="3465.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000025791"/>
+  </DataNode>
+  <DataNode TextLabel="UGT" Type="GeneProduct" GraphId="ab7f3">
+    <Graphics Color="ff0033" CenterX="16425.0" CenterY="2475.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Uridine diphosphate glucuronic acid" Type="Metabolite" GraphId="e3ca0">
+    <Graphics Color="0000ff" CenterX="15120.0" CenterY="4695.0" Width="2820.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00935"/>
+  </DataNode>
+  <DataNode TextLabel="PGM5" Type="GeneProduct" GraphId="b2ab0" GroupRef="a9a5a" BackpageHead="Pgm5">
+    <Graphics Color="000000" CenterX="6015.0" CenterY="3765.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="226041"/>
+  </DataNode>
+  <DataNode TextLabel="Uridine 5'-diphosphate" Type="Metabolite" GraphId="b59d0">
+    <Graphics Color="0000ff" CenterX="17700.0" CenterY="4710.0" Width="1650.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00295"/>
+  </DataNode>
+  <DataNode TextLabel="Water" Type="Metabolite" GraphId="ce760" GroupRef="aee33">
+    <Graphics Color="0000ff" CenterX="12255.0" CenterY="5655.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB02111"/>
+  </DataNode>
+  <DataNode TextLabel="Glucose 6-phosphate" Type="Metabolite" GraphId="a447b">
+    <Graphics Color="0000ff" CenterX="4102.5" CenterY="4695.0" Width="1635.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01401"/>
+  </DataNode>
+  <DataNode TextLabel="Adenosine 3',5'-diphosphate" Type="Metabolite" GraphId="a1606">
+    <Graphics Color="0000ff" CenterX="3832.5" CenterY="5385.0" Width="2205.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00061"/>
+  </DataNode>
+  <DataNode TextLabel="2H+" Type="Metabolite" GraphId="a2da4" GroupRef="be060">
+    <Graphics Color="0000ff" CenterX="13770.0" CenterY="5655.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01362"/>
+  </DataNode>
+  <DataNode TextLabel="Adenosine triphosphate" Type="Metabolite" GraphId="d080f">
+    <Graphics Color="0000ff" CenterX="1342.5" CenterY="5385.0" Width="1875.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00538"/>
+  </DataNode>
+  <DataNode TextLabel="D-Glucose" Type="Metabolite" GraphId="ea706">
+    <Graphics Color="0000ff" CenterX="1335.0" CenterY="4695.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00122"/>
+  </DataNode>
+  <DataNode TextLabel="Uridine diphosphate glucose" Type="Metabolite" GraphId="de94b">
+    <Graphics Color="0000ff" CenterX="11257.5" CenterY="4695.0" Width="2325.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB00286"/>
+  </DataNode>
+  <DataNode TextLabel="Ugdh" Type="GeneProduct" BackpageHead="Ugdh" GraphId="df17e">
+    <Graphics Color="000000" CenterX="12990.0" CenterY="3750.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029201"/>
+  </DataNode>
+  <DataNode TextLabel="Ugp2" Type="GeneProduct" BackpageHead="Ugp2" GraphId="a3bc0">
+    <Graphics Color="000000" CenterX="9135.0" CenterY="3705.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000001891"/>
+  </DataNode>
+  <DataNode TextLabel="Hk1" Type="GeneProduct" BackpageHead="Hk1" GraphId="d8b8b">
+    <Graphics Color="000000" CenterX="2550.0" CenterY="3795.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000037012"/>
+  </DataNode>
+  <DataNode TextLabel="Substrate" Type="Metabolite" GraphId="b01d8">
+    <Graphics Color="339900" CenterX="14925.0" CenterY="3480.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Phosphate" Type="Metabolite" GraphId="ded2e" GroupRef="ff61e">
+    <Graphics Color="0000ff" CenterX="10185.0" CenterY="5760.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01429"/>
+  </DataNode>
+  <DataNode TextLabel="Phosphate" Type="Metabolite" GraphId="e6301" GroupRef="ff61e">
+    <Graphics Color="0000ff" CenterX="10185.0" CenterY="6060.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="HMDB" ID="HMDB01429"/>
+  </DataNode>
+  <DataNode TextLabel="UGT2B17" Type="GeneProduct" GraphId="d5e95" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="21510.0" CenterY="2355.0" Width="1200.0" Height="300.0" ZOrder="32771"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a5" Type="GeneProduct" BackpageHead="Ugt1a5" GraphId="ef639" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="21510.0" CenterY="855.0" Width="1200.0" Height="300.0" ZOrder="32772"/>
+    <Xref Database="Entrez Gene" ID="394433"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a8" Type="GeneProduct" GraphId="ec7ad" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="19110.0" CenterY="1455.0" Width="1200.0" Height="300.0" ZOrder="32773"/>
+    <Xref Database="MGI" ID="MGI:3576090"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt2a3" Type="GeneProduct" BackpageHead="Ugt2a3" GraphId="d9490" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="21510.0" CenterY="1755.0" Width="1200.0" Height="300.0" ZOrder="32774"/>
+    <Xref Database="Entrez Gene" ID="72094"/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A6" Type="GeneProduct" GraphId="f7048" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="20310.0" CenterY="1155.0" Width="1200.0" Height="300.0" ZOrder="32775"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="UGT2B15" Type="GeneProduct" GraphId="a64db" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="20310.0" CenterY="2355.0" Width="1200.0" Height="300.0" ZOrder="32776"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ugt2b1" Type="GeneProduct" BackpageHead="Ugt2b1" GraphId="c17ed" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="19110.0" CenterY="2055.0" Width="1200.0" Height="300.0" ZOrder="32777"/>
+    <Xref Database="Entrez Gene" ID="71773"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt2b34" Type="GeneProduct" BackpageHead="Ugt2b34" GraphId="ce709" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="21510.0" CenterY="2055.0" Width="1200.0" Height="300.0" ZOrder="32778"/>
+    <Xref Database="Entrez Gene" ID="100727"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a10" Type="GeneProduct" GraphId="c6e77" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="21510.0" CenterY="1455.0" Width="1200.0" Height="300.0" ZOrder="32779"/>
+    <Xref Database="Entrez Gene" ID="394430"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a5" Type="GeneProduct" GraphId="d8b16" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="19110.0" CenterY="1155.0" Width="1200.0" Height="300.0" ZOrder="32780"/>
+    <Xref Database="Entrez Gene" ID="394433"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt2a1" Type="GeneProduct" BackpageHead="Ugt2a1" GraphId="b8b3c" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="19110.0" CenterY="1755.0" Width="1200.0" Height="300.0" ZOrder="32781"/>
+    <Xref Database="Entrez Gene" ID="94215"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a1" Type="GeneProduct" BackpageHead="Ugt1a1" GraphId="c16b8" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="19110.0" CenterY="855.0" Width="1200.0" Height="300.0" ZOrder="32782"/>
+    <Xref Database="Entrez Gene" ID="394436"/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a9" Type="GeneProduct" GraphId="ba9f5" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="20310.0" CenterY="1455.0" Width="1200.0" Height="300.0" ZOrder="32783"/>
+    <Xref Database="Entrez Gene" ID="434493"/>
+  </DataNode>
+  <DataNode TextLabel="UGT2B28" Type="GeneProduct" GraphId="fc5ba" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="19110.0" CenterY="2655.0" Width="1200.0" Height="300.0" ZOrder="32784"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ugt2a2" Type="GeneProduct" BackpageHead="Ugt2a2" GraphId="acf7d" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="20310.0" CenterY="1755.0" Width="1200.0" Height="300.0" ZOrder="32785"/>
+    <Xref Database="Entrez Gene" ID="552899"/>
+  </DataNode>
+  <DataNode TextLabel="UGT2B7" Type="GeneProduct" GraphId="b97e1" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="20310.0" CenterY="2055.0" Width="1200.0" Height="300.0" ZOrder="32786"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="UGT2B11" Type="GeneProduct" GraphId="e0f0c" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="19110.0" CenterY="2355.0" Width="1200.0" Height="300.0" ZOrder="32787"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Ugt1a2" Type="GeneProduct" BackpageHead="Ugt1a2" GraphId="e5009" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="20310.0" CenterY="855.0" Width="1200.0" Height="300.0" ZOrder="32788"/>
+    <Xref Database="Entrez Gene" ID="22236"/>
+  </DataNode>
+  <DataNode TextLabel="UGT1A7" Type="GeneProduct" GraphId="f4d99" GroupRef="a5a60">
+    <Graphics Color="ff0033" CenterX="21510.0" CenterY="1155.0" Width="1200.0" Height="300.0" ZOrder="32789"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Line Style="Solid" GraphId="b809f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="15525.0" y="3480.0" GraphRef="b01d8" relX="1.0" relY="0.0"/>
+      <Point x="17790.0" y="3480.0" GraphRef="bd8c5" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="fff52"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fe12b">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1935.0" y="4695.0" GraphRef="ea706" relX="1.0" relY="0.0"/>
+      <Point x="3285.0" y="4695.0" GraphRef="a447b" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e8383">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9135.0" y="3855.0" GraphRef="a3bc0" relX="0.0" relY="1.0"/>
+      <Point x="9135.0" y="4695.0" GraphRef="e3f2c" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c878d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5415.0" y="4035.0" GraphRef="bb315" relX="0.0" relY="1.0"/>
+      <Point x="5415.0" y="4695.0" GraphRef="dcece" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d2dc1">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="8047.5" y="5610.0" GraphRef="e6ea3" relX="0.0" relY="-1.0"/>
+      <Point x="9116.25" y="4710.0"/>
+      <Point x="10185.0" y="5490.0" GraphRef="b5420" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fdb12">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2550.0" y="3945.0" GraphRef="d8b8b" relX="0.0" relY="1.0"/>
+      <Point x="2551.42558812296" y="4695.193289595606" GraphRef="bdc58" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b6462">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="12990.0" y="3900.0" GraphRef="df17e" relX="0.0" relY="1.0"/>
+      <Point x="12990.0" y="4695.0" GraphRef="dd5ef" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d0041">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="15120.0" y="4545.0" GraphRef="e3ca0" relX="0.0" relY="-1.0"/>
+      <Point x="16410.0" y="3465.0"/>
+      <Point x="17700.0" y="4560.0" GraphRef="b59d0" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e4100">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4920.0" y="4695.0" GraphRef="a447b" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Point x="6015.0" y="4695.0" GraphRef="e163e" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4520547945205479" Shape="None" GraphId="dcece"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a2286">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="12255.0" y="5085.0" GraphRef="d3a66" relX="0.0" relY="-1.0"/>
+      <Point x="13012.5" y="4710.0"/>
+      <Point x="13770.0" y="5085.0" GraphRef="b7eb7" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c2722">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="16425.0" y="2625.0" GraphRef="ab7f3" relX="0.0" relY="1.0"/>
+      <Point x="16431.0" y="3480.0" GraphRef="fff52" relX="0.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e80c3">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="7770.0" y="4695.0" GraphRef="e163e" relX="1.0" relY="0.0"/>
+      <Point x="10095.0" y="4695.0" GraphRef="de94b" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5870967741935483" Shape="None" GraphId="e3f2c"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cb1e6">
+    <BiopaxRef>b59</BiopaxRef>
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="12420.0" y="4695.0" GraphRef="de94b" relX="1.0" relY="0.0"/>
+      <Point x="13710.0" y="4695.0" GraphRef="e3ca0" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4418604651162791" Shape="None" GraphId="dd5ef"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fdfa1">
+    <Graphics ConnectorType="Curved" ZOrder="12288" Color="000000">
+      <Point x="1811.25" y="5235.0" GraphRef="d080f" relX="0.5" relY="-1.0"/>
+      <Point x="2546.25" y="4695.0"/>
+      <Point x="3281.25" y="5235.0" GraphRef="a1606" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.5025510204081632" Shape="None" GraphId="bdc58"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Uridine diphosphate glucuronic acid synthesis (co-substrate)" GraphId="e6b8c">
+    <Graphics FontSize="150" Color="999999" CenterX="2580.0" CenterY="2295.0" Width="4680.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Rectangle" Style="Solid" GraphId="b0e6c">
+    <Graphics FillColor="Transparent" Color="999999" CenterX="7177.25" CenterY="4297.25" Width="13665.5" Height="4365.5" ZOrder="16384" Rotation="0.0"/>
+  </Shape>
+  <Shape Type="Rectangle" Style="Solid" GraphId="bf9f9" GroupRef="a5a60">
+    <Graphics FillColor="Transparent" Color="ff0000" CenterX="20309.75" CenterY="1754.75" Width="3810.5" Height="2310.5" ZOrder="32770" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="be060" GraphId="b7eb7" Style="Complex"/>
+  <Group GroupId="a9a5a" GraphId="bb315" Style="Complex"/>
+  <Group GroupId="aee33" GraphId="d3a66" Style="Complex"/>
+  <Group GroupId="ff61e" GraphId="b5420" Style="Group"/>
+  <Group GroupId="a5a60" GraphId="bdf04" Style="Complex"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="a14">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19035562</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The biochemistry of drug metabolism--an introduction: part 4. reactions of conjugation and their enzymes.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chem Biodivers</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Testa B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kramer SD</bp:AUTHORS>
+    </bp:PublicationXRef>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b59">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19244115</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Androgen-stimulated UDP-glucose dehydrogenase expression limits prostate androgen availability without impacting hyaluronan levels.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2009</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wei Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Galbenus R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raza A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cerny RL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Simpson MA</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

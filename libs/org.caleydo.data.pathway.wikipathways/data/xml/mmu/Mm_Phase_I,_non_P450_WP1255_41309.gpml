@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Phase I, non P450" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">This pathway lists several phase 1 biotransformations and their related enzymes.
+'''NOTE:''' This pathway is incomplete, reduction and oxidation enzymes are missing</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP136&amp;amp;oldid=29886 WP136(r29886)] with a 75% conversion rate.</Comment>
+  <BiopaxRef>b69</BiopaxRef>
+  <Graphics BoardWidth="10081.5" BoardHeight="6369.0" WindowWidth="18000.0" WindowHeight="12000.0"/>
+  <DataNode TextLabel="Ces1" Type="GeneProduct" GraphId="f26" GroupRef="d23ac">
+    <Graphics Color="000000" CenterX="4230.0" CenterY="1410.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12623"/>
+  </DataNode>
+  <DataNode TextLabel="Esd" Type="GeneProduct" BackpageHead="Esd" GraphId="b38" GroupRef="d23ac">
+    <Graphics Color="000000" CenterX="4230.0" CenterY="1710.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021996"/>
+  </DataNode>
+  <DataNode TextLabel="Ces7" Type="GeneProduct" BackpageHead="Ces7" GraphId="ac5" GroupRef="d23ac">
+    <Graphics Color="000000" CenterX="4230.0" CenterY="2010.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000058019"/>
+  </DataNode>
+  <DataNode TextLabel="Ces2" Type="GeneProduct" GraphId="dd4" GroupRef="d23ac">
+    <Graphics Color="000000" CenterX="4230.0" CenterY="2595.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="234671"/>
+  </DataNode>
+  <DataNode TextLabel="Lipa" Type="GeneProduct" BackpageHead="Lipa" GraphId="b6f" GroupRef="d23ac">
+    <Graphics Color="000000" CenterX="4230.0" CenterY="2310.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000024781"/>
+  </DataNode>
+  <DataNode TextLabel="Pon1" Type="GeneProduct" BackpageHead="Pon1" GraphId="ff0" GroupRef="ee236">
+    <Graphics Color="000000" CenterX="3975.0" CenterY="4920.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000002588"/>
+  </DataNode>
+  <DataNode TextLabel="Pon2" Type="GeneProduct" BackpageHead="Pon2" GraphId="dfd" GroupRef="ee236">
+    <Graphics Color="000000" CenterX="3975.0" CenterY="5220.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000032667"/>
+  </DataNode>
+  <DataNode TextLabel="Pon3" Type="GeneProduct" BackpageHead="Pon3" GraphId="b76" GroupRef="ee236">
+    <Graphics Color="000000" CenterX="3975.0" CenterY="5520.0" Width="1200.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029759"/>
+  </DataNode>
+  <DataNode TextLabel="amides" Type="Metabolite" GraphId="bc7f3" GroupRef="f9ad7">
+    <Graphics Color="0000ff" CenterX="7170.0" CenterY="3120.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="ChEBI" ID="32988"/>
+  </DataNode>
+  <DataNode TextLabel="carboxylic acid esters" Type="Metabolite" GraphId="c109a" GroupRef="cff8d">
+    <Graphics Color="0000ff" CenterX="7170.0" CenterY="2760.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="thio esters" Type="Metabolite" GraphId="b198c" GroupRef="bb086">
+    <Graphics Color="0000ff" CenterX="7170.0" CenterY="3480.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Phosphoric acid esters" Type="Metabolite" GraphId="db710" GroupRef="cd78c">
+    <Graphics Color="0000ff" CenterX="7170.0" CenterY="4365.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="thio esters" Type="Metabolite" GraphId="a1626" GroupRef="b9ae8">
+    <Graphics Color="0000ff" CenterX="1575.0" CenterY="3495.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Phosphoric acid esters" Type="Metabolite" GraphId="a1e36">
+    <Graphics Color="0000ff" CenterX="1575.0" CenterY="4365.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="carboxylic acid esters" Type="Metabolite" GraphId="b758e" GroupRef="b9ae8">
+    <Graphics Color="0000ff" CenterX="1575.0" CenterY="2775.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="amides" Type="Metabolite" GraphId="e744e" GroupRef="b9ae8">
+    <Graphics Color="0000ff" CenterX="1575.0" CenterY="3135.0" Width="1935.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="ChEBI" ID="32988"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="db646">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3075.0927734375" y="3119.990234375" GraphRef="cae49" relX="1.0" relY="0.0"/>
+      <Point x="5962.5" y="3105.0" GraphRef="b0e4c" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="c961d"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="af048">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="2542.5" y="4365.0" GraphRef="a1e36" relX="1.0" relY="0.0"/>
+      <Point x="6082.5" y="4365.0" GraphRef="c28bd" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="ca3c4"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ae21f">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3975.0" y="4650.0" GraphRef="aa661" relX="0.0" relY="-1.0"/>
+      <Point x="3958.5" y="4365.0" GraphRef="ca3c4" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d1dd6">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4230.0" y="2865.0" GraphRef="ab569" relX="0.0" relY="1.0"/>
+      <Point x="4230.0556640625" y="3113.994140625" GraphRef="c961d" relX="0.0" relY="0.0" ArrowHead="mim-stimulation"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="OH" GraphId="db7" GroupRef="cff8d">
+    <Graphics FontSize="150" Color="00ccff" CenterX="8325.0" CenterY="2730.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="OH" GraphId="e68" GroupRef="f9ad7">
+    <Graphics FontSize="150" Color="00ccff" CenterX="8325.0" CenterY="3120.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="OH" GraphId="e3d" GroupRef="bb086">
+    <Graphics FontSize="150" Color="00ccff" CenterX="8325.0" CenterY="3480.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Hydrolysis" GraphId="f6a">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="4230.0" CenterY="735.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="OH" GraphId="f1b" GroupRef="cd78c">
+    <Graphics FontSize="150" Color="00ccff" CenterX="8325.0" CenterY="4365.0" Width="1200.0" Height="300.0" ZOrder="28672"/>
+  </Label>
+  <Shape Type="Brace" Style="Solid" GraphId="f37" GroupRef="b9ae8">
+    <Graphics FillColor="Transparent" Color="000000" CenterX="2797.4741588314237" CenterY="3097.4903068296467" Width="1004.9741312762474" Height="315.09269300455264" ZOrder="16384" Rotation="1.5706526692754137"/>
+  </Shape>
+  <Group GroupId="b9ae8" GraphId="cae49"/>
+  <Group GroupId="cff8d" GraphId="a21b3" GroupRef="a3c4f"/>
+  <Group GroupId="f9ad7" GraphId="ac2ba" GroupRef="a3c4f"/>
+  <Group GroupId="bb086" GraphId="e0819" GroupRef="a3c4f"/>
+  <Group GroupId="cd78c" GraphId="c28bd"/>
+  <Group GroupId="a3c4f" GraphId="b0e4c"/>
+  <Group GroupId="d23ac" GraphId="ab569"/>
+  <Group GroupId="ee236" GraphId="aa661"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="b69">
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Casarett &amp;amp;amp; Doull's Essentials of Toxicology</bp:TITLE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Klaassen, C.D.</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watkins III, J.B.</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

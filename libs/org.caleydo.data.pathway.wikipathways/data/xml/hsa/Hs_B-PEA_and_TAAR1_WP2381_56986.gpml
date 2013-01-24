@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="B-PEA and TAAR1" Author="Eugenio Battaglia" Organism="Homo sapiens"><Comment Source="WikiPathways-description">UNDER CONSTRUCTION</Comment>
+  <Graphics BoardWidth="997.1592827895295" BoardHeight="434.0"/>
+  <DataNode TextLabel="β-PEA" GraphId="ae630" Type="Metabolite">
+    <BiopaxRef>fc5</BiopaxRef>
+    <BiopaxRef>ade</BiopaxRef>
+    <Graphics CenterX="240.25" CenterY="99.75" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="PubChem-compound" ID="1001"/>
+  </DataNode>
+  <DataNode TextLabel="plasmamembrane TAAR1" GraphId="fb271" Type="Protein">
+    <BiopaxRef>d74</BiopaxRef>
+    <Graphics CenterX="413.75" CenterY="173.25" Width="126.5" Height="39.5" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="OMIM" ID="609333"/>
+  </DataNode>
+  <DataNode TextLabel="increase cAMP &#10;in the presynaptic cell&#10;via Gαs protein activation" GraphId="cf825" Type="Pathway">
+    <BiopaxRef>ff9</BiopaxRef>
+    <Graphics CenterX="413.47580645161287" CenterY="269.29838709677415" Width="155.5" Height="70.5" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="Reactome" ID="G-protein activation"/>
+  </DataNode>
+  <DataNode TextLabel="up-regulation of trace amines&#10;in the cell cytoplasm" GraphId="f084e" Type="Pathway">
+    <BiopaxRef>aea</BiopaxRef>
+    <Graphics CenterX="635.0" CenterY="196.5" Width="176.0" Height="53.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="multitude of cellular consequences" GraphId="bb6cc" Type="Pathway">
+    <Graphics CenterX="645.0" CenterY="130.5" Width="216.0" Height="45.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="?" GraphId="e8a96" Type="Pathway">
+    <Graphics CenterX="706.0" CenterY="68.5" Width="46.0" Height="53.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="activation of intracellular TAAR1" GraphId="f5074" Type="Pathway">
+    <Graphics CenterX="704.5" CenterY="329.0" Width="197.0" Height="24.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="activation of&#10;cyclic nucleotide-gated ion channels&#10;via cAMP" GraphId="cf7f3" Type="Pathway">
+    <Graphics CenterX="681.5" CenterY="259.0" Width="227.0" Height="40.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="activation of plasmamembrane TAAR1" GraphId="f4e27" Type="Pathway">
+    <Graphics CenterX="568.5" CenterY="376.0" Width="241.0" Height="56.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="DAT" GraphId="f815f" Type="Protein">
+    <Graphics CenterX="835.4867213127199" CenterY="195.62628152437978" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="PKC" GraphId="bd022" Type="Protein">
+    <Graphics CenterX="792.1449542996119" CenterY="121.44655580261112" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="PKA" GraphId="e6e27" Type="Protein">
+    <Graphics CenterX="886.1680942758269" CenterY="123.01360813554804" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Dopamine Autoreceptor" GraphId="d7097" Type="Protein">
+    <Graphics CenterX="826.6000228691698" CenterY="69.4349858145036" Width="126.97140447799889" Height="41.34104665873835" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Dopamine" GraphId="db9af" Type="Metabolite">
+    <Graphics CenterX="753.8939352258916" CenterY="18.946391078477237" Width="84.33729981212508" Height="20.08815416171148" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <Line>
+    <BiopaxRef>aea</BiopaxRef>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="280.25" Y="99.75" GraphRef="ae630" RelX="1.0" RelY="0.0"/>
+      <Point X="382.125" Y="153.5" GraphRef="fb271" RelX="-0.5" RelY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="413.75" Y="193.0" GraphRef="fb271" RelX="0.0" RelY="1.0"/>
+      <Point X="413.47580645161287" Y="234.04838709677415" GraphRef="cf825" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="fc5">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7306800</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Presence and distribution of phenylethylamine in the rat spinal cord.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brain Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1981</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karoum F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chuang LW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wyatt RJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ade">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7063846</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Excretion of beta-phenethylamine is elevated in humans after profound stress.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1982</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paulos MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tessel RE</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d74">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11459929</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trace amines: identification of a family of mammalian G protein-coupled receptors.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borowsky B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Adham N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones KA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raddatz R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Artymyshyn R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ogozalek KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Durkin MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lakhlani PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bonini JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pathirana S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boyle N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pu X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kouranova E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lichtblau H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ochoa FY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Branchek TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerald C</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="aea">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17088868</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trace amine-associated receptors and their ligands.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Br J Pharmacol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zucchi R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chiellini G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scanlan TS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grandy DK</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ff9">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15294442</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">G protein activation by G protein coupled receptors: ternary complex formation or catalyzed reaction?</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Pharmacol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roberts DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waelbroeck M</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

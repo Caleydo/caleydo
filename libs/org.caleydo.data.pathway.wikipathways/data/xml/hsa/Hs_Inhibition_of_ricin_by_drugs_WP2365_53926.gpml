@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Inhibition of ricin by drugs" Author="Jayashri" Organism="Homo sapiens">
+  <Graphics BoardWidth="611.0" BoardHeight="791.0" />
+  <DataNode TextLabel="Ricin" GraphId="fff81" Type="Protein">
+    <Graphics CenterX="99.0" CenterY="107.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin B chain drug complex" GraphId="b4357" Type="Complex">
+    <Graphics CenterX="356.0" CenterY="115.5" Width="148.0" Height="25.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="β4 Glycoprotein" GraphId="c9af1" Type="Protein">
+    <Graphics CenterX="201.0" CenterY="175.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin gycoprotein complex" GraphId="b8555" Type="Complex">
+    <Graphics CenterX="424.5" CenterY="244.5" Width="139.0" Height="33.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin" GraphId="a4f09" Type="Protein">
+    <Graphics CenterX="122.0" CenterY="291.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin A chain" GraphId="df8ce" Type="Metabolite">
+    <Graphics CenterX="91.0" CenterY="582.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin B chain" GraphId="bc171" Type="Metabolite">
+    <Graphics CenterX="180.0" CenterY="588.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin" GraphId="b982c" Type="Protein">
+    <Graphics CenterX="138.0" CenterY="531.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin A chain drug complex" GraphId="e9063" Type="Complex">
+    <Graphics CenterX="164.0" CenterY="716.5" Width="156.0" Height="29.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Ricin gycoprotein complex" GraphId="b4f70" Type="Complex">
+    <Graphics CenterX="426.5" CenterY="406.5" Width="139.0" Height="33.0" ZOrder="32769" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <Line GraphId="idc9726534">
+    <Comment>surface binding by B chain is inhibited</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="139.0" Y="107.0" GraphRef="fff81" RelX="1.0" RelY="0.0" />
+      <Point X="282.0" Y="109.25" GraphRef="b4357" RelX="-1.0" RelY="-0.5" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id604e35c6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="91.0" Y="116.0" />
+      <Point X="161.0" Y="175.0" GraphRef="c9af1" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id189b3913">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="430.0" Y="335.0" />
+      <Point X="426.5" Y="382.0" GraphRef="eda8c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id2940dd6d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="345.0" Y="397.0" />
+      <Point X="162.0" Y="291.0" GraphRef="a4f09" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id333d5fc3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="122.0" Y="304.0" GraphRef="a4f09" RelX="0.0" RelY="1.0" />
+      <Point X="138.0" Y="521.0" GraphRef="b982c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id807317ec">
+    <Comment>Retro-translocation by endoplasmic reticulum associated degradation (ERAD)</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="138.0" Y="541.0" GraphRef="b982c" RelX="0.0" RelY="1.0" />
+      <Point X="111.0" Y="572.0" GraphRef="df8ce" RelX="0.5" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id53684c7e">
+    <Comment>Dissociation</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="138.0" Y="541.0" GraphRef="b982c" RelX="0.0" RelY="1.0" />
+      <Point X="180.0" Y="578.0" GraphRef="bc171" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id62ea6b60">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="91.0" Y="592.0" GraphRef="df8ce" RelX="0.0" RelY="1.0" />
+      <Point X="103.0" Y="708.0" ArrowHead="TBar" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida4475611">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="201.0" Y="185.0" GraphRef="c9af1" RelX="0.0" RelY="1.0" />
+      <Point X="355.0" Y="236.25" GraphRef="b8555" RelX="-1.0" RelY="-0.5" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Shape GraphId="bc501">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="291.5" CenterY="474.5" Width="579.0" Height="573.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Clathrin coated vesicle" GraphId="e8a8e">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle" />
+    <Graphics CenterX="427.5" CenterY="270.0" Width="195.0" Height="124.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Endosome" GraphId="eda8c">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle" />
+    <Graphics CenterX="426.5" CenterY="441.0" Width="239.0" Height="118.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Golgi complex" GraphId="ade49">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Golgi Apparatus" />
+    <Graphics CenterX="135.5" CenterY="313.0" Width="211.0" Height="200.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Golgi Apparatus" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Endoplasmic reticulum" GraphId="f612c">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Endoplasmic Reticulum" />
+    <Graphics CenterX="130.0" CenterY="537.0" Width="194.0" Height="200.0" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Endoplasmic Reticulum" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

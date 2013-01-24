@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Eicosanoid Synthesis" Organism="Homo sapiens">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Comment Source="WikiPathways-description">In biochemistry, eicosanoids are signaling molecules made by oxidation of twenty-carbon essential fatty acids, (EFAs). They exert complex control over many bodily systems, mainly in inflammation or immunity, and as messengers in the central nervous system.
+
+Source: [[wikipedia:Eicosanoid|Wikipedia]]</Comment>
+  <BiopaxRef>a1a</BiopaxRef>
+  <Graphics BoardWidth="1070.5693372534606" BoardHeight="674.0"/>
+  <DataNode TextLabel="PLA2G2A" GraphId="b6b" Type="GeneProduct" GroupRef="a68d1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PLA2G2A | phospholipase A2 group IIA (platelet..."/>
+    <Graphics CenterX="652.5019139665484" CenterY="101.64609053497941" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5320"/>
+  </DataNode>
+  <DataNode TextLabel="PLA2G6" GraphId="cd0" Type="GeneProduct" GroupRef="a68d1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PLA2G6 | phospholipase A2 group VI (cytosolic..."/>
+    <Graphics CenterX="652.5019139665484" CenterY="121.76709312789207" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8398"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX5AP" GraphId="a08" Type="GeneProduct" GroupRef="ad2f8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX5AP | arachidonate 5-lipoxygenase-activatin..."/>
+    <Graphics CenterX="597.3333333333334" CenterY="231.0" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="241"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX5" GraphId="b97" Type="GeneProduct" GroupRef="ad2f8">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX5 | arachidonate 5-lipoxygenase"/>
+    <Graphics CenterX="597.3333333333334" CenterY="251.0" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="240"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX15" GraphId="cd7" Type="GeneProduct" GroupRef="c4a7d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX15 | arachidonate 15-lipoxygenase"/>
+    <Graphics CenterX="794.1271591326721" CenterY="236.69239250275632" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="246"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX5" GraphId="d87" Type="GeneProduct" GroupRef="a3e4c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX5 | arachidonate 5-lipoxygenase"/>
+    <Graphics CenterX="451.11914323962503" CenterY="334.9357429718875" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="240"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX15" GraphId="eb0" Type="GeneProduct" GroupRef="c4a7d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX15 | arachidonate 15-lipoxygenase"/>
+    <Graphics CenterX="794.1271591326721" CenterY="256.6923925027563" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="246"/>
+  </DataNode>
+  <DataNode TextLabel="Peroxidase" GraphId="f61" Type="GeneProduct">
+    <Graphics CenterX="669.2356091030791" CenterY="325.6024096385542" Width="86.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="EC Number" ID="1.11.1.7"/>
+  </DataNode>
+  <DataNode TextLabel="DPEP1" GraphId="b13" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DPEP1 | dipeptidase 1 (renal)"/>
+    <Graphics CenterX="614.5635876840697" CenterY="586.6773761713521" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1800"/>
+  </DataNode>
+  <DataNode TextLabel="PTGIS" GraphId="b18" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGIS | prostaglandin I2 (prostacyclin) synthas..."/>
+    <Graphics CenterX="145.8232819232111" CenterY="313.62975712373327" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5740"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX5AP" GraphId="f23" Type="GeneProduct" GroupRef="a3e4c">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX5AP | arachidonate 5-lipoxygenase-activatin..."/>
+    <Graphics CenterX="451.11914323962503" CenterY="314.9357429718875" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="241"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX12" GraphId="f7c" Type="GeneProduct" GroupRef="c4a7d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX12 | arachidonate 12-lipoxygenase"/>
+    <Graphics CenterX="794.1271591326721" CenterY="276.6923925027563" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="239"/>
+  </DataNode>
+  <DataNode TextLabel="ALOX15B" GraphId="cf8" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="ALOX15B | arachidonate 15-lipoxygenase second ..."/>
+    <Graphics CenterX="986.2686206051692" CenterY="246.21222793907484" Width="66.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="247"/>
+  </DataNode>
+  <DataNode TextLabel="PTGS1" GraphId="c31" Type="GeneProduct" GroupRef="d67cd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGS1 | prostaglandin-endoperoxide synthase 1 (..."/>
+    <Graphics CenterX="410.1352074966532" CenterY="206.17804551539484" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5742"/>
+  </DataNode>
+  <DataNode TextLabel="PTGS2" GraphId="e1c" Type="GeneProduct" GroupRef="d67cd">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGS2 | prostaglandin-endoperoxide synthase 2 (..."/>
+    <Graphics CenterX="410.1352074966532" CenterY="226.17804551539484" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5743"/>
+  </DataNode>
+  <DataNode TextLabel="TBXAS1" GraphId="bec" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="TBXAS1 | thromboxane A synthase 1 (platelet cy..."/>
+    <Graphics CenterX="284.33333333333337" CenterY="269.0" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6916"/>
+  </DataNode>
+  <DataNode TextLabel="LTC4S" GraphId="e9d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LTC4S | leukotriene C4 synthase"/>
+    <Graphics CenterX="573.880856760375" CenterY="424.3119143239625" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4056"/>
+  </DataNode>
+  <DataNode TextLabel="GGT1" GraphId="c93" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GGT1 | gamma-glutamyltransferase 1"/>
+    <Graphics CenterX="616.8969210174031" CenterY="514.0107095046853" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2678"/>
+  </DataNode>
+  <DataNode TextLabel="GSH peroxidase" GraphId="eff" Type="GeneProduct">
+    <Graphics CenterX="997.2360039201274" CenterY="380.15125158234315" Width="86.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="EC Number" ID="1.11.1.9"/>
+  </DataNode>
+  <DataNode TextLabel="PNPLA8" GraphId="f2c" Type="GeneProduct" GroupRef="a68d1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IPLA2(GAMMA) | intracellular membrane-associate..."/>
+    <Graphics CenterX="652.5019139665484" CenterY="81.6460905349794" Width="66.66666666666666" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="50640"/>
+  </DataNode>
+  <DataNode TextLabel="LTA4H" GraphId="df8" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="LTA4H | leukotriene A4 hydrolase"/>
+    <Graphics CenterX="388.1191432396251" CenterY="433.6773761713521" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4048"/>
+  </DataNode>
+  <DataNode TextLabel="PGE2 9-ketoreduc" GraphId="c8d" Type="GeneProduct">
+    <Graphics CenterX="345.3775999925881" CenterY="542.1539875045938" Width="90.75740505684047" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="EC Number" ID="1.1.1.189"/>
+  </DataNode>
+  <DataNode TextLabel="PTGES" GraphId="d10" Type="GeneProduct" GroupRef="f12f9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGES | prostaglandin E synthase"/>
+    <Graphics CenterX="323.40056022408953" CenterY="396.4453781512606" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9536"/>
+  </DataNode>
+  <DataNode TextLabel="PTGES2" GraphId="af2" Type="GeneProduct" GroupRef="f12f9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGES2 | prostaglandin E synthase 2"/>
+    <Graphics CenterX="323.40056022408953" CenterY="376.4453781512606" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="80142"/>
+  </DataNode>
+  <DataNode TextLabel="PTGDS" GraphId="a4d" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGDS | prostaglandin D2 synthase 21kDa (brain)..."/>
+    <Graphics CenterX="146.0028011204482" CenterY="384.44537815126074" Width="60.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5730"/>
+  </DataNode>
+  <DataNode TextLabel="GSH peroxidase" GraphId="bee" Type="GeneProduct">
+    <Graphics CenterX="831.5631814283959" CenterY="381.91256278329047" Width="86.66666666666667" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="EC Number" ID="1.11.1.9"/>
+  </DataNode>
+  <DataNode TextLabel="PGD2 11-ketoreduc" GraphId="f92" Type="GeneProduct">
+    <Graphics CenterX="113.50032890774821" CenterY="541.9489158397647" Width="98.84939731129477" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="EC Number" ID="1.1.1.188"/>
+  </DataNode>
+  <DataNode TextLabel="15-HETE" GraphId="f0d" Type="Metabolite">
+    <Graphics CenterX="917.6568765568213" CenterY="441.82859651271974" Width="72.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="70608-72-9"/>
+  </DataNode>
+  <DataNode TextLabel="12-HETE" GraphId="eee" Type="Metabolite">
+    <Graphics CenterX="754.0789640246641" CenterY="447.1083751888605" Width="72.33333333333333" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="70608-72-9"/>
+  </DataNode>
+  <DataNode TextLabel="5-HETE" GraphId="a0d" Type="Metabolite">
+    <Graphics CenterX="648.6666666666666" CenterY="395.3333333333333" Width="63.333333333333336" Height="19.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="70608-72-9"/>
+  </DataNode>
+  <DataNode TextLabel="Arachidonic acid" GraphId="f3e34" Type="Metabolite">
+    <Graphics CenterX="655.5" CenterY="192.0" Width="97.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01043"/>
+  </DataNode>
+  <DataNode TextLabel="5-HPETE" GraphId="a607f" Type="Metabolite">
+    <Graphics CenterX="557.5" CenterY="297.0" Width="65.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01193"/>
+  </DataNode>
+  <DataNode TextLabel="Thromboxane B2" GraphId="bf27d" Type="Metabolite">
+    <Graphics CenterX="291.5" CenterY="101.0" Width="91.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB03252"/>
+  </DataNode>
+  <DataNode TextLabel="Thromboxane A2" GraphId="f3aab" Type="Metabolite">
+    <Graphics CenterX="233.0" CenterY="194.0" Width="84.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01452"/>
+  </DataNode>
+  <DataNode TextLabel="Prostaglandin H2" GraphId="a62fc" Type="Metabolite">
+    <Graphics CenterX="230.5" CenterY="347.0" Width="93.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01381"/>
+  </DataNode>
+  <DataNode TextLabel="Prostaglandin D2" GraphId="c7d13" Type="Metabolite">
+    <Graphics CenterX="180.5115766262404" CenterY="480.4873208379272" Width="86.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01403"/>
+  </DataNode>
+  <DataNode TextLabel="Prostaglandin F2a" GraphId="dc2ff" Type="Metabolite">
+    <Graphics CenterX="234.57717750826896" CenterY="629.0" Width="99.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01139"/>
+  </DataNode>
+  <DataNode TextLabel="Leukotriene A4" GraphId="d0c22" Type="Metabolite">
+    <Graphics CenterX="477.0" CenterY="393.0" Width="84.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01337"/>
+  </DataNode>
+  <DataNode TextLabel="Leukotriene B4" GraphId="f8429" Type="Metabolite">
+    <Graphics CenterX="411.0" CenterY="488.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01085"/>
+  </DataNode>
+  <DataNode TextLabel="Leukotriene C4" GraphId="dcf63" Type="Metabolite">
+    <Graphics CenterX="558.0" CenterY="482.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01198"/>
+  </DataNode>
+  <DataNode TextLabel="Leukotriene D4" GraphId="b3f61" Type="Metabolite">
+    <Graphics CenterX="557.0" CenterY="553.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB03080"/>
+  </DataNode>
+  <DataNode TextLabel="Leukotriene E4" GraphId="ddb1e" Type="Metabolite">
+    <Graphics CenterX="557.0" CenterY="634.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB02200"/>
+  </DataNode>
+  <DataNode TextLabel="Prostaglandin I2" GraphId="c1ffb" Type="Metabolite">
+    <Graphics CenterX="46.0" CenterY="346.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID="HMDB01335"/>
+  </DataNode>
+  <DataNode TextLabel="PNPLA3" GraphId="ba4d5" Type="GeneProduct">
+    <Graphics CenterX="528.2494942421406" CenterY="163.70020230314344" Width="56.49898848428256" Height="22.77855586679113" ZOrder="32768" FontSize="10" Valign="Middle"/>
+    <Xref Database="HGNC" ID="PNPLA3"/>
+  </DataNode>
+  <DataNode TextLabel="12-HPETE" GraphId="c3b29" Type="Metabolite">
+    <Graphics CenterX="753.1135816080697" CenterY="335.8243292907016" Width="72.33333333333333" Height="19.0" ZOrder="32769" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="71030-35-8"/>
+  </DataNode>
+  <DataNode TextLabel="15-HPETE" GraphId="d5826" Type="Metabolite">
+    <Graphics CenterX="917.7927232635067" CenterY="334.79897096655606" Width="72.33333333333333" Height="19.0" ZOrder="32770" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="70981-96-3"/>
+  </DataNode>
+  <DataNode TextLabel="Prostaglandin E2" GraphId="da99d" Type="Metabolite">
+    <Graphics CenterX="279.8169790518191" CenterY="480.56449834619616" Width="86.0" Height="20.0" ZOrder="32771" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="CAS" ID="363-24-6"/>
+  </DataNode>
+  <DataNode TextLabel="15-oxo-prostaglandin I2" GraphId="fe57f" Type="Metabolite">
+    <Graphics CenterX="45.289915966386545" CenterY="478.8991596638657" Width="117.40336134453779" Height="20.0" ZOrder="32772" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="dehydrogenase" GraphId="e1a36" Type="GeneProduct">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PTGDS | prostaglandin D2 synthase 21kDa (brain)..."/>
+    <Graphics CenterX="105.54341736694677" CenterY="425.9579831932769" Width="78.82913165266109" Height="20.0" ZOrder="32773" FontSize="10" Valign="Middle"/>
+    <Xref Database="EC Number" ID="1.1.1.231"/>
+  </DataNode>
+  <DataNode TextLabel="Thromboxane A3" GraphId="d4812" Type="Metabolite">
+    <Graphics CenterX="163.61512717536831" CenterY="101.62918340026776" Width="91.0" Height="20.0" ZOrder="32774" FontSize="10" Valign="Middle" Color="0000ff"/>
+    <Xref Database="HMDB" ID=""/>
+  </DataNode>
+  <Line GraphId="d5927">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="653.3333333333335" Y="52.833333333333336" GraphRef="a9b" RelX="0.0" RelY="1.0"/>
+      <Point X="655.5" Y="182.0" GraphRef="f3e34" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eeb95">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="631.25" Y="202.0" GraphRef="f3e34" RelX="-0.5" RelY="1.0"/>
+      <Point X="557.5" Y="287.0" GraphRef="a607f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="c3268"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b1f09">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="207.25" Y="357.0" GraphRef="a62fc" RelX="-0.5" RelY="1.0"/>
+      <Point X="180.5115766262404" Y="470.4873208379272" GraphRef="c7d13" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="c09bc"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0bc9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="279.8169790518191" Y="490.56449834619616" GraphRef="da99d" RelX="0.0" RelY="1.0"/>
+      <Point X="259.32717750826896" Y="619.0" GraphRef="dc2ff" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="a16be"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5d25">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="212.0" Y="184.0" GraphRef="f3aab" RelX="-0.5" RelY="-1.0"/>
+      <Point X="163.61512717536831" Y="111.62918340026776" GraphRef="d4812" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c7d08">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="230.5" Y="337.0" GraphRef="a62fc" RelX="0.0" RelY="-1.0"/>
+      <Point X="233.0" Y="204.0" GraphRef="f3aab" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.511026970514686" Shape="None" GraphId="d6416"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eb604">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="253.75" Y="357.0" GraphRef="a62fc" RelX="0.5" RelY="1.0"/>
+      <Point X="279.8169790518191" Y="470.56449834619616" GraphRef="da99d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="f57a7"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7744">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="541.25" Y="307.0" GraphRef="a607f" RelX="-0.5" RelY="1.0"/>
+      <Point X="477.0" Y="383.0" GraphRef="d0c22" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="a3998"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b83cf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="573.75" Y="307.0" GraphRef="a607f" RelX="0.5" RelY="1.0"/>
+      <Point X="648.6666666666667" Y="385.8333333333333" GraphRef="a0d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="e66bd"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c4dc9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="456.0" Y="403.0" GraphRef="d0c22" RelX="-0.5" RelY="1.0"/>
+      <Point X="411.0" Y="478.0" GraphRef="f8429" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="e03c0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c726c">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="498.0" Y="403.0" GraphRef="d0c22" RelX="0.5" RelY="1.0"/>
+      <Point X="558.0" Y="472.0" GraphRef="dcf63" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="dadfc"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="abdbd">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="558.0" Y="492.0" GraphRef="dcf63" RelX="0.0" RelY="1.0"/>
+      <Point X="557.0" Y="543.0" GraphRef="b3f61" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="dc228"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dfe89">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="557.0" Y="563.0" GraphRef="b3f61" RelX="0.0" RelY="1.0"/>
+      <Point X="557.0" Y="624.0" GraphRef="ddb1e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="b9e41"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eea5a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="679.75" Y="202.0" GraphRef="f3e34" RelX="0.5" RelY="1.0"/>
+      <Point X="753.1135816080698" Y="326.3243292907016" GraphRef="c3b29" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4367885417265956" Shape="None" GraphId="a2efb"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f161a">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="704.0" Y="192.0" GraphRef="f3e34" RelX="1.0" RelY="0.0"/>
+      <Point X="917.7927232635068" Y="325.29897096655606" GraphRef="d5826" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.772416980169923" Shape="None" GraphId="b13b5"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fad49">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="753.1135816080698" Y="345.3243292907016" GraphRef="c3b29" RelX="0.0" RelY="1.0"/>
+      <Point X="754.0789640246642" Y="437.6083751888605" GraphRef="eee" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="b2124"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dcbc2">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="917.7927232635068" Y="344.29897096655606" GraphRef="d5826" RelX="0.0" RelY="1.0"/>
+      <Point X="917.6568765568213" Y="432.32859651271974" GraphRef="f0d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="d0ab2"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bedb3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="180.5115766262404" Y="490.4873208379272" GraphRef="c7d13" RelX="0.0" RelY="1.0"/>
+      <Point X="209.82717750826896" Y="619.0" GraphRef="dc2ff" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="db88c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ad839">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="254.0" Y="184.0" GraphRef="f3aab" RelX="0.5" RelY="-1.0"/>
+      <Point X="291.5" Y="111.0" GraphRef="bf27d" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c7772">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="607.0" Y="192.0" GraphRef="f3e34" RelX="-1.0" RelY="0.0"/>
+      <Point X="277.0" Y="347.0" GraphRef="a62fc" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="e2631"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ad7aa">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="952.9352872718359" Y="246.21222793907486" GraphRef="cf8" RelX="-1.0" RelY="0.0"/>
+      <Point X="917.7927232635068" Y="246.30679503574066" GraphRef="b13b5" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f22fb">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="492.4524765729584" Y="324.9357429718875" GraphRef="fdefd" RelX="1.0" RelY="0.0"/>
+      <Point X="515.55" Y="337.4" GraphRef="a3998" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bb0cc">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="625.9022757697458" Y="325.6024096385542" GraphRef="f61" RelX="-1.0" RelY="0.0"/>
+      <Point X="603.7166666666667" Y="338.5333333333333" GraphRef="e66bd" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b943f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="597.3333333333333" Y="213.0" GraphRef="cf4f7" RelX="0.0" RelY="-1.0"/>
+      <Point X="601.75" Y="236.0" GraphRef="c3268" RelX="0.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dfcaa">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="953.9026705867941" Y="380.15125158234315" GraphRef="eff" RelX="-1.0" RelY="0.0"/>
+      <Point X="917.7383845808326" Y="379.51082118502154" GraphRef="d0ab2" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c8760">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="788.2298480950626" Y="381.91256278329047" GraphRef="bee" RelX="-1.0" RelY="0.0"/>
+      <Point X="753.4997345747075" Y="382.2379476499652" GraphRef="b2124" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b4618">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="429.1352074966532" Y="244.17804551539484" GraphRef="c98a5" RelX="0.5" RelY="1.0"/>
+      <Point X="475.0" Y="254.0" GraphRef="e2631" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f75a6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="254.33333333333337" Y="269.0" GraphRef="bec" RelX="-1.0" RelY="0.0"/>
+      <Point X="231.7775674262867" Y="269.03341292154676" GraphRef="d6416" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ef4e9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="285.40056022408953" Y="386.4453781512606" GraphRef="a6526" RelX="-1.0" RelY="0.0"/>
+      <Point X="264.1767916207276" Y="402.42579933847844" GraphRef="f57a7" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d403a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="176.0028011204482" Y="384.44537815126074" GraphRef="a4d" RelX="1.0" RelY="0.0"/>
+      <Point X="196.55463065049616" Y="402.3949283351709" GraphRef="c09bc" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bfc69">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="299.99889746416784" Y="542.1539875045938" GraphRef="c8d" RelX="-1.0" RelY="0.0"/>
+      <Point X="271.62105843439906" Y="541.9386990077177" GraphRef="a16be" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a700f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="162.9250275633956" Y="541.9489158397647" GraphRef="f92" RelX="1.0" RelY="0.0"/>
+      <Point X="192.23781697905184" Y="541.8923925027564" GraphRef="db88c" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a1f33">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="543.880856760375" Y="424.3119143239625" GraphRef="e9d" RelX="-1.0" RelY="0.0"/>
+      <Point X="522.0" Y="430.6" GraphRef="dadfc" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f847a">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="418.1191432396251" Y="433.6773761713521" GraphRef="df8" RelX="1.0" RelY="0.0"/>
+      <Point X="438.0" Y="433.0" GraphRef="e03c0" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cef5d">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="586.8969210174031" Y="514.0107095046853" GraphRef="c93" RelX="-1.0" RelY="0.0"/>
+      <Point X="557.6" Y="512.4" GraphRef="dc228" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2259">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="584.5635876840697" Y="586.6773761713521" GraphRef="b13" RelX="-1.0" RelY="0.0"/>
+      <Point X="557.0" Y="587.4" GraphRef="b9e41" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5ec5">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="184.0" Y="347.0" GraphRef="a62fc" RelX="-1.0" RelY="0.0"/>
+      <Point X="86.0" Y="346.0" GraphRef="c1ffb" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.4" Shape="None" GraphId="b047c"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="df43e">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="145.8232819232111" Y="323.62975712373327" GraphRef="b18" RelX="0.0" RelY="1.0"/>
+      <Point X="144.8" Y="346.6" GraphRef="b047c" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b7f72">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="46.0" Y="356.0" GraphRef="c1ffb" RelX="0.0" RelY="1.0"/>
+      <Point X="45.289915966386545" Y="468.8991596638657" GraphRef="fe57f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6150840600342754" Shape="None" GraphId="dd8ce"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idf51d0fb9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="556.4989884842819" Y="163.70020230314344" GraphRef="ba4d5" RelX="1.0" RelY="0.0"/>
+      <Point X="601.8518518518517" Y="181.71296296296293" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb71ff975">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="756.1271591326721" Y="256.6923925027563" GraphRef="d547b" RelX="-1.0" RelY="0.0"/>
+      <Point X="711.7943718264289" Y="256.3034424920226" GraphRef="a2efb" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3ff9fdaf">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="66.12885154061621" Y="425.9579831932769" GraphRef="e1a36" RelX="-1.0" RelY="0.0"/>
+      <Point X="45.56323862963952" Y="425.4424735005084" GraphRef="dd8ce" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Cell Membrane" GraphId="a9b">
+    <Graphics CenterX="653.3333333333334" CenterY="43.333333333333336" Width="118.33333333333333" Height="19.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Group GroupId="a68d1" GraphId="e20bb"/>
+  <Group GroupId="c4a7d" GraphId="d547b"/>
+  <Group GroupId="ad2f8" GraphId="cf4f7"/>
+  <Group GroupId="a3e4c" GraphId="fdefd"/>
+  <Group GroupId="d67cd" GraphId="c98a5"/>
+  <Group GroupId="f12f9" GraphId="a6526"/>
+  <InfoBox CenterX="15.0" CenterY="8.333333333333334"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a1a">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11729303</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prostaglandins and leukotrienes: advances in eicosanoid biology.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Funk CD</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>inflammatory response pathway</bp:TERM><bp:ID>PW:0000024</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary><bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>epithelial cell</bp:TERM><bp:ID>CL:0000066</bp:ID><bp:Ontology>Cell Type</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

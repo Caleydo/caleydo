@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Effects of PIP2 hydrolysis" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Maintainer="Jupe, S" Email="sjupe@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">Hydrolysis of phosphatidyl inositol-bisphosphate (PIP2) by phospholipase C (PLC) produces diacylglycerol (DAG) and inositol triphosphate (IP3). Both are potent second messengers. IP3 diffuses into the cytosol, but as DAG is a hydrophobic lipid it remains within the plasma membrane. IP3 stimulates the release of calcium ions from the smooth endoplasmic reticulum, while DAG activates the conventional and unconventional protein kinase C (PKC) isoforms, facilitating the translocation of PKC from the cytosol to the plasma membrane. The effects of DAG are mimicked by tumor-promoting phorbol esters. DAG is also a precursor for the biosynthesis of prostaglandins, the endocannabinoid 2-arachidonoylglycerol and an activator of a subfamily of TRP-C (Transient Receptor Potential Canonical) cation channels 3, 6, and 7.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n284_REACTOME_418292" TextLabel="IP3 receptor&#10;" Type="Complex">
+    <BiopaxRef>lit_418288</BiopaxRef>
+    <Graphics Color="000000" CenterX="814.5" CenterY="341.0" Width="75.0" Height="32.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18961"/>
+  </DataNode>
+  <DataNode GraphId="n285_REACTOME_114520" TextLabel="1D-myo-Inositol &#10;1,4,5-trisphosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="813.0" CenterY="225.0" Width="132.0" Height="46.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16595"/>
+  </DataNode>
+  <DataNode GraphId="n286_REACTOME_139839" TextLabel="IP3 receptor bound &#10;to IP3 and Ca++&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="693.5" CenterY="303.0" Width="125.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_4346"/>
+  </DataNode>
+  <DataNode GraphId="n289_REACTOME_139827" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="594.5" CenterY="341.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n290_REACTOME_74016" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="595.5" CenterY="261.5" Width="57.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n292_REACTOME_392488" TextLabel="CalDAG-GEFs&#10;" Type="Protein">
+    <Comment Source="WikiPathways-description">Rap1 can be activated by certain GEFs that respond to calcium and diacylglycerol (CalDAG-GEFs).</Comment>
+    <Graphics Color="000000" CenterX="802.0" CenterY="37.0" Width="96.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_18194"/>
+  </DataNode>
+  <DataNode GraphId="n293_REACTOME_114519" TextLabel="1,2-&#10;Diacylglycerol&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="683.5" CenterY="38.5" Width="101.0" Height="35.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="17815"/>
+  </DataNode>
+  <DataNode GraphId="n296_REACTOME_425850" TextLabel="Protein kinase C, novel &#10;isoforms&#10;" Type="Protein">
+    <Comment Source="WikiPathways-description">These isoforms of PKC bind DAG and phosphatidylserine (PS), but unlike the conventional forms, do not require calcium for PS binding.</Comment>
+    <Graphics Color="000000" CenterX="550.0" CenterY="38.0" Width="132.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_22540"/>
+  </DataNode>
+  <DataNode GraphId="n297_REACTOME_426071" TextLabel="Protein kinase C, &#10;novel isoforms:DAG&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="408.5" CenterY="32.5" Width="121.0" Height="41.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_23271"/>
+  </DataNode>
+  <DataNode GraphId="n299_REACTOME_426176" TextLabel="TRPC3/6/7&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="298.0" CenterY="34.0" Width="72.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_23108"/>
+  </DataNode>
+  <DataNode GraphId="n300_REACTOME_426179" TextLabel="DAG-activated &#10;TRPC3/6/7&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="206.0" CenterY="38.0" Width="98.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24061"/>
+  </DataNode>
+  <DataNode GraphId="n302_REACTOME_426030" TextLabel="2-Arachidonoylglycerol&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="154.5" CenterY="244.0" Width="149.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="52392"/>
+  </DataNode>
+  <DataNode GraphId="n303_REACTOME_426026" TextLabel="Fatty Acid&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="48.5" CenterY="183.5" Width="65.0" Height="29.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_19601"/>
+  </DataNode>
+  <DataNode GraphId="n304_REACTOME_426024" TextLabel="Diacylglycerol &#10;lipase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="89.5" CenterY="37.5" Width="115.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19676"/>
+  </DataNode>
+  <DataNode GraphId="n323_REACTOME_76116" TextLabel="Glycerol&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="281.0" CenterY="375.5" Width="60.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17754"/>
+  </DataNode>
+  <DataNode GraphId="n324_REACTOME_422506" TextLabel="Arachidonate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="175.0" CenterY="408.5" Width="88.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15843"/>
+  </DataNode>
+  <DataNode GraphId="n325_REACTOME_426055" TextLabel="Monoglyceride &#10;lipase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="67.0" CenterY="355.5" Width="120.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q99685"/>
+  </DataNode>
+  <DataNode GraphId="n327_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="570.0" CenterY="207.5" Width="38.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n328_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="417.5" CenterY="211.5" Width="39.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n329_REACTOME_76108" TextLabel="1,2-diacyl-glycerol 3-&#10;phosphate&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="298.5" CenterY="173.0" Width="183.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="ChEBI" ID="29089"/>
+  </DataNode>
+  <DataNode GraphId="n330_REACTOME_426070" TextLabel="Diacylglycerol kinase&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="481.0" CenterY="415.0" Width="120.0" Height="32.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20449"/>
+  </DataNode>
+  <DataNode GraphId="n331_REACTOME_392841" TextLabel="CalDAG-GEFs:&#10;DAG:Ca2+&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="897.5" CenterY="146.0" Width="111.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_24405"/>
+  </DataNode>
+  <DataNode GraphId="n332_REACTOME_29356" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="221.0" CenterY="283.5" Width="42.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n333_REACTOME_70106" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="258.5" CenterY="322.5" Width="35.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <Line GraphId="e_283_REACTOME_139941">
+    <Comment Source="WikiPathways-description">The IP3 receptor (IP3R) is an intracellular calcium release channel that mobilizes Ca2+ from internal stores in the ER to the cytoplasm. Though its activity is stimulated by IP3, the principal activator of the IP3R is Ca2+. This process of calcium-induced calcium release is central to the mechanism of Ca2+ signalling. The effect of cytosolic Ca2+ on IP3R is complex: it can be both stimulatory and inhibitory and can the effect varies between IP3R isoforms. In general, the IP3Rs have a bell-shaped Ca2+ dependence when treated with low concentrations of IP3; low concentrations of Ca2+ (100â300 nM) are stimulatory but above 300 nM, Ca2+ becomes inhibitory and switches the channel off. The stimulatory effect of IP3 is to relieve Ca2+ inhibition of the channel, enabling Ca2+ activation sites to gate it. &lt;br&gt;Functionally the IP3 receptor is believed to be tetrameric, with results indicating that the tetramer is composed of 2 pairs of protein isoforms.</Comment>
+    <BiopaxRef>lit_140053</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="813.0" Y="299.0" GraphId="e_283_0"/>
+      <Point X="791.0" Y="299.0" GraphId="e_283_1"/>
+      <Point X="759.0" Y="300.0" GraphId="e_283_2" GraphRef="n286_REACTOME_139839" RelX="1.056" RelY="-0.15789473684210525" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_283_a_i"/>
+      <Anchor Position="0.4072895861693408" GraphId="e_283_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_283_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="813.0" Y="322.0" GraphId="e_283_i0_0" GraphRef="n284_REACTOME_418292" RelX="-0.02666666666666667" RelY="-1.1875"/>
+      <Point X="813.0" Y="299.0" GraphId="e_283_i0_1" GraphRef="e_283_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_283_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="813.0" Y="251.0" GraphId="e_283_i1_0" GraphRef="n285_REACTOME_114520" RelX="0.0" RelY="1.1304347826086956"/>
+      <Point X="813.0" Y="299.0" GraphId="e_283_i1_1" GraphRef="e_283_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_REACTOME_139854">
+    <Comment Source="WikiPathways-description">The IP3 receptor (IP3R) is an intracellular calcium release channel that mobilizes Ca2+ from internal stores in the ER to the cytoplasm. Though its activity is stimulated by IP3, the principal activator of the IP3R is Ca2+. This process of calcium-induced calcium release is central to the mechanism of Ca2+ signalling. The effect of cytosolic Ca2+ on IP3R is complex: it can be both stimulatory and inhibitory and can the effect varies between IP3R isoforms. In general, the IP3Rs have a bell-shaped Ca2+ dependence when treated with low concentrations of IP3; low concentrations of Ca2+ (100â300 nM) are stimulatory but above 300 nM, Ca2+ becomes inhibitory and switches the channel off. The stimulatory effect of IP3 is to relieve Ca2+ inhibition of the channel, enabling Ca2+ activation sites to gate it. &lt;br&gt;Functionally the IP3 receptor is believed to be tetrameric, with results indicating that the tetramer is composed of 2 pairs of protein isoforms.</Comment>
+    <BiopaxRef>lit_140089</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="594.0" Y="323.0" GraphId="e_288_0" GraphRef="n289_REACTOME_139827" RelX="0.0" RelY="-1.1612903225806452"/>
+      <Point X="594.0" Y="304.0" GraphId="e_288_1"/>
+      <Point X="594.0" Y="280.0" GraphId="e_288_2" GraphRef="n290_REACTOME_74016" RelX="-0.03508771929824561" RelY="1.2258064516129032" ArrowHead="Arrow"/>
+      <Anchor Position="0.4418604651162791" GraphId="e_288_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_288_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="628.0" Y="303.0" GraphId="e_288_c__0_0" GraphRef="n286_REACTOME_139839" RelX="-1.04" RelY="0.0"/>
+      <Point X="594.0" Y="304.0" GraphId="e_288_c__0_1" GraphRef="e_288_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_291_REACTOME_392831">
+    <Comment Source="WikiPathways-description">Calcium and DAG regulated guanine nucleotide exchange factors (CalDAG-GEFs, also called RasGRPs) contain a regulatory C1 diacylglycerol (DAG) -binding domain analogous to the C1 domain found in Protein Kinase C, and a pair of calcium-binding EF-hand domains. All forms show enhanced activity in response to DAG and bind calcium, but the effect of Ca2+ seems to differ between isoforms. CalDAG-GEFI exhibited additive enhancement of Rap1 activation in response to Ca2+ ionophore and phorbol ester (Kawasaki et al. 1998). RasGRP2, an isofom of CalDAG-GEFI  with an alternatively spliced N-terminal extension, reported to target it to the plasma membrane, was stimulated by diacylglycerol but inhibited by calcium (Clyde-Smith et al. 2000). CalDAG-GEF II/RasGRP1 was additively stimulated by Ca2+ ionophore and phorbol ester.&lt;br&gt;&lt;br&gt;CalDAG-GEFI was found to primarily target Rap1A and inhibit Ras-dependent activation of the Erk/MAP kinase cascade (Kawasaki et al. 1998). RasGRP2  selectively activated  N- and Ki-Ras, but not Ha-Ras. It also had Rap1A stimulating activity, but less than CalDAG-GEFI. The difference in substrate specificity seen for these isoforms may be due to their different cellular locations, as prolonged exposure to phorbol esters, or growth in serum, resulted in localization of CalDAG-GEFI to the cell membrane and restoration of Ras exchange activity (Clyde-Smith et al. 2000). CalDAG-GEF II/RasGRP1 targeted Ras proteins rather than Rap (Kawasaki et al. 1998, Ebinu et al. 1998).&lt;br&gt; &lt;br&gt;Mouse platelets that lack CalDAG-GEFI are severely compromised in integrin-dependent aggregation as a consequence of their inability to signal through CalDAG-GEFI to its target, the small GTPase Rap1 (Crittenden et al. 2004)</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="758.0" Y="94.0" GraphId="e_291_0"/>
+      <Point X="792.0" Y="95.0" GraphId="e_291_1"/>
+      <Point X="857.0" Y="124.0" GraphId="e_291_2" GraphRef="n331_REACTOME_392841" RelX="-0.7207207207207207" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_291_a_i"/>
+      <Anchor Position="0.3233627499474847" GraphId="e_291_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_291_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="789.0" Y="56.0" GraphId="e_291_i0_0" GraphRef="n292_REACTOME_392488" RelX="-0.2708333333333333" RelY="1.1875"/>
+      <Point X="758.0" Y="94.0" GraphId="e_291_i0_1" GraphRef="e_291_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_291_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="610.0" Y="243.0" GraphId="e_291_i1_0" GraphRef="n290_REACTOME_74016" RelX="0.5263157894736842" RelY="-1.1612903225806452"/>
+      <Point X="758.0" Y="94.0" GraphId="e_291_i1_1" GraphRef="e_291_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_291_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="706.0" Y="59.0" GraphId="e_291_i2_0" GraphRef="n293_REACTOME_114519" RelX="0.45544554455445546" RelY="1.2"/>
+      <Point X="758.0" Y="94.0" GraphId="e_291_i2_1" GraphRef="e_291_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_295_REACTOME_425861">
+    <Comment Source="WikiPathways-description">Activation of the novel Protein Kinase C (nPKC) isoforms (delta, epsilon, eta and theta) requires binding to the membrane lipid diacylglycerol (DAG). nPKC activation is sensitive to DAG concentration.</Comment>
+    <BiopaxRef>lit_425857</BiopaxRef>
+    <BiopaxRef>lit_425852</BiopaxRef>
+    <BiopaxRef>lit_434875</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="549.0" Y="87.0" GraphId="e_295_0"/>
+      <Point X="407.0" Y="89.0" GraphId="e_295_1"/>
+      <Point X="407.0" Y="56.0" GraphId="e_295_2" GraphRef="n297_REACTOME_426071" RelX="-0.01652892561983471" RelY="1.170731707317073" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_295_a_i"/>
+      <Anchor Position="0.8114437462296631" GraphId="e_295_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_295_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="549.0" Y="60.0" GraphId="e_295_i0_0" GraphRef="n296_REACTOME_425850" RelX="-0.015151515151515152" RelY="1.1578947368421053"/>
+      <Point X="549.0" Y="87.0" GraphId="e_295_i0_1" GraphRef="e_295_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_295_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="635.0" Y="59.0" GraphId="e_295_i1_0" GraphRef="n293_REACTOME_114519" RelX="-0.9504950495049505" RelY="1.2"/>
+      <Point X="549.0" Y="87.0" GraphId="e_295_i1_1" GraphRef="e_295_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_298_REACTOME_426209">
+    <Comment Source="WikiPathways-description">TRPC3, 6 and 7 are non-selective cation channels that are activated by diacylglycerol (DAG) independently of protein kinase C activation by DAG. By analogy with the structures of voltage-regulated calcium channels, TRPC channels are probably tetramers of TRPC protein; heterotetramers within the 3/6/7 group have been observed.</Comment>
+    <BiopaxRef>lit_426211</BiopaxRef>
+    <BiopaxRef>lit_426195</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="279.0" Y="83.0" GraphId="e_298_0"/>
+      <Point X="252.0" Y="82.0" GraphId="e_298_1"/>
+      <Point X="225.0" Y="60.0" GraphId="e_298_2" GraphRef="n300_REACTOME_426179" RelX="0.3877551020408163" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_298_a_i"/>
+      <Anchor Position="0.4368629029699817" GraphId="e_298_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_298_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="292.0" Y="52.0" GraphId="e_298_i0_0" GraphRef="n299_REACTOME_426176" RelX="-0.16666666666666666" RelY="1.2"/>
+      <Point X="279.0" Y="83.0" GraphId="e_298_i0_1" GraphRef="e_298_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_298_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="653.0" Y="59.0" GraphId="e_298_i1_0" GraphRef="n293_REACTOME_114519" RelX="-0.594059405940594" RelY="1.2"/>
+      <Point X="542.0" Y="121.0" GraphId="e_298_i1_1"/>
+      <Point X="365.0" Y="120.0" GraphId="e_298_i1_2"/>
+      <Point X="279.0" Y="83.0" GraphId="e_298_i1_3" GraphRef="e_298_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_301_REACTOME_426032">
+    <Comment Source="WikiPathways-description">Diacylglycerol lipase (DAGL) hydrolyzes diacylglycerol (DAG) at the sn-1 position, producing 2-monoacylglycerols, including 2-arachidonlyglycerol (2-AG) and free fatty acid. This reaction was first characterised for the release of arachidonate from membrane phospholipids in platelets, but is also involved in the spatial and temporal regulation of endocannabinoid signaling in the brain. DAGL exhibits strong selectivity for diacylglycerols over phospholipids, monoacylglycerols, triacylglycerols and fatty acid amides, and prefers the acyl group at sn-1 position to that at sn-2.</Comment>
+    <BiopaxRef>lit_426036</BiopaxRef>
+    <BiopaxRef>lit_426031</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="661.0" Y="59.0" GraphId="e_301_0" GraphRef="n293_REACTOME_114519" RelX="-0.43564356435643564" RelY="1.2"/>
+      <Point X="545.0" Y="150.0" GraphId="e_301_1"/>
+      <Point X="147.0" Y="152.0" GraphId="e_301_2"/>
+      <Point X="128.0" Y="186.0" GraphId="e_301_3"/>
+      <Anchor Position="0.9333513781552057" GraphId="e_301_a_p"/>
+      <Anchor Position="1.0" GraphId="e_301_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_301_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="146.0" Y="225.0" GraphId="e_301_o0_0" ArrowHead="Arrow" GraphRef="n302_REACTOME_426030" RelX="-0.10738255033557047" RelY="-1.1875"/>
+      <Point X="128.0" Y="186.0" GraphId="e_301_o0_1" GraphRef="e_301_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_301_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="84.0" Y="184.0" GraphId="e_301_o1_0" ArrowHead="Arrow" GraphRef="n303_REACTOME_426026" RelX="1.1076923076923078" RelY="0.06896551724137931"/>
+      <Point X="128.0" Y="186.0" GraphId="e_301_o1_1" GraphRef="e_301_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_301_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="97.0" Y="57.0" GraphId="e_301_c__0_0" GraphRef="n304_REACTOME_426024" RelX="0.1391304347826087" RelY="1.2121212121212122"/>
+      <Point X="147.0" Y="152.0" GraphId="e_301_c__0_1" GraphRef="e_301_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_322_REACTOME_426043">
+    <Comment Source="WikiPathways-description">Monoacylglycerol lipase (MAGL) is a key enzyme in the hydrolysis of the endocannabinoid 2-arachidonoylglycerol to arachidonate and glycerol. In adipocytes MAGL and hormone-sensitive lipase (LIPE) hydrolyze intracellular triglyceride stores. MAGL may also complement lipoprotein lipase (LPL) in completing hydrolysis of monoglycerides resulting from degradation of lipoprotein triglycerides.</Comment>
+    <BiopaxRef>lit_426051</BiopaxRef>
+    <BiopaxRef>lit_426418</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="175.0" Y="289.0" GraphId="e_322_0"/>
+      <Point X="191.0" Y="318.0" GraphId="e_322_1"/>
+      <Point X="207.0" Y="367.0" GraphId="e_322_2"/>
+      <Anchor Position="0.0" GraphId="e_322_a_i"/>
+      <Anchor Position="0.39119086070341996" GraphId="e_322_a_p"/>
+      <Anchor Position="1.0" GraphId="e_322_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_322_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="161.0" Y="263.0" GraphId="e_322_i0_0" GraphRef="n302_REACTOME_426030" RelX="0.09395973154362416" RelY="1.1875"/>
+      <Point X="175.0" Y="289.0" GraphId="e_322_i0_1" GraphRef="e_322_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_322_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="197.0" Y="285.0" GraphId="e_322_i1_0" GraphRef="n332_REACTOME_29356" RelX="-1.1428571428571428" RelY="0.13793103448275862"/>
+      <Point X="175.0" Y="289.0" GraphId="e_322_i1_1" GraphRef="e_322_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_322_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="248.0" Y="371.0" GraphId="e_322_o0_0" ArrowHead="Arrow" GraphRef="n323_REACTOME_76116" RelX="-1.1" RelY="-0.25806451612903225"/>
+      <Point X="207.0" Y="367.0" GraphId="e_322_o0_1" GraphRef="e_322_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_322_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="241.0" Y="340.0" GraphId="e_322_o1_0" ArrowHead="Arrow" GraphRef="n333_REACTOME_70106" RelX="-0.9714285714285714" RelY="1.2413793103448276"/>
+      <Point X="207.0" Y="367.0" GraphId="e_322_o1_1" GraphRef="e_322_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_322_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="187.0" Y="390.0" GraphId="e_322_o2_0" ArrowHead="Arrow" GraphRef="n324_REACTOME_422506" RelX="0.2727272727272727" RelY="-1.1612903225806452"/>
+      <Point X="207.0" Y="367.0" GraphId="e_322_o2_1" GraphRef="e_322_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_322_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="125.0" Y="335.0" GraphId="e_322_c__0_0" GraphRef="n325_REACTOME_426055" RelX="0.9666666666666667" RelY="-1.1428571428571428"/>
+      <Point X="191.0" Y="318.0" GraphId="e_322_c__0_1" GraphRef="e_322_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_326_REACTOME_426240">
+    <Comment Source="WikiPathways-description">Diacylglycerol kinases (DGKs) are intracellular lipid kinases that use ATP to  phosphorylate diacylglycerol (DAG)., generating phosphatidic acid (PA). This lowers membrane DAG levels, regulating signalling proteins that require DAG for membrane association such as Protein Kinase C. PA is a signalling molecule that regulates Raf-1 and PKC zeta, and a substrate for the resynthesis of phosphatidylinositol.</Comment>
+    <BiopaxRef>lit_426229</BiopaxRef>
+    <BiopaxRef>lit_426243</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="557.0" Y="170.0" GraphId="e_326_0"/>
+      <Point X="479.0" Y="170.0" GraphId="e_326_1"/>
+      <Point X="443.0" Y="170.0" GraphId="e_326_2"/>
+      <Anchor Position="0.0" GraphId="e_326_a_i"/>
+      <Anchor Position="0.6842105263157895" GraphId="e_326_a_p"/>
+      <Anchor Position="1.0" GraphId="e_326_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_326_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="564.0" Y="189.0" GraphId="e_326_i0_0" GraphRef="n327_REACTOME_113592" RelX="-0.3157894736842105" RelY="-1.1612903225806452"/>
+      <Point X="557.0" Y="170.0" GraphId="e_326_i0_1" GraphRef="e_326_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_326_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="666.0" Y="59.0" GraphId="e_326_i1_0" GraphRef="n293_REACTOME_114519" RelX="-0.33663366336633666" RelY="1.2"/>
+      <Point X="557.0" Y="170.0" GraphId="e_326_i1_1" GraphRef="e_326_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_326_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="426.0" Y="193.0" GraphId="e_326_o0_0" ArrowHead="Arrow" GraphRef="n328_REACTOME_29370" RelX="0.46153846153846156" RelY="-1.1612903225806452"/>
+      <Point X="443.0" Y="170.0" GraphId="e_326_o0_1" GraphRef="e_326_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_326_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="393.0" Y="171.0" GraphId="e_326_o1_0" ArrowHead="Arrow" GraphRef="n329_REACTOME_76108" RelX="1.0382513661202186" RelY="-0.1111111111111111"/>
+      <Point X="443.0" Y="170.0" GraphId="e_326_o1_1" GraphRef="e_326_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_326_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="478.0" Y="399.0" GraphId="e_326_c__0_0" GraphRef="n330_REACTOME_426070" RelX="-0.05" RelY="-1.0"/>
+      <Point X="478.0" Y="406.0" GraphId="e_326_c__0_1"/>
+      <Point X="479.0" Y="170.0" GraphId="e_326_c__0_2" GraphRef="e_326_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_282" GroupRef="group_comp_282" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="74.5" CenterY="397.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_287" GroupRef="group_comp_287" TextLabel="platelet dense tubular network lumen">
+    <Graphics Color="000000" CenterX="696.0" CenterY="375.5" Width="236.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_282" GroupRef="group_comp_282">
+    <Graphics Color="000000" CenterX="467.0" CenterY="224.5" Width="860.0" Height="389.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_287" GroupRef="group_comp_287">
+    <Graphics Color="000000" CenterX="691.5" CenterY="344.5" Width="277.0" Height="107.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418288" rdf:id="lit_418288">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17429043</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inositol trisphosphate receptor Ca2+ release channels</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foskett, JK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">White, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cheung, KH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mak, DO</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiol Rev 87:593-658</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140053" rdf:id="lit_140053">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11413485</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The versatility and universality of calcium signalling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berridge, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lipp, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bootman, MD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 1:11-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140089" rdf:id="lit_140089">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1693919</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Receptor-activated single channels in intact human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mahaut-Smith, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sage, SO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rink, TJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 265:10479-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_425857" rdf:id="lit_425857">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9601053</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The extended protein kinase C superfamily</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mellor, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parker, PJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 332:281-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_425852" rdf:id="lit_425852">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19033211</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lipid activation of protein kinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Newton, AC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Lipid Res 50:S266-71</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_434875" rdf:id="lit_434875">
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protein Kinase C</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dekker, L</bp:AUTHORS>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426211" rdf:id="lit_426211">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9930701</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Direct activation of human TRPC6 and TRPC3 channels by diacylglycerol</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hofmann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Obukhov, AG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schaefer, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harteneck, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gudermann, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schultz, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 397:259-63</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426195" rdf:id="lit_426195">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11805119</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning and functional expression of human short TRP7, a candidate protein for store-operated Ca2+ influx</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Riccio, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mattei, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kelsell, RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Medhurst, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calver, AR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Randall, AD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benham, CD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pangalos, MN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:12302-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426036" rdf:id="lit_426036">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10348910</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and characterization of diacylglycerol lipase from human platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moriyama, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Urade, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kito, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem 125:1077-85</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426031" rdf:id="lit_426031">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19126434</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biology of endocannabinoid synthesis system</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueda, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prostaglandins Other Lipid Mediat</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426051" rdf:id="lit_426051">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7295321</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1981</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Release of arachidonate from diglyceride in human platelets requires the sequential action of a diglyceride lipase and a monoglyceride lipase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chau, LY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tai, HH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 100:1688-95</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426418" rdf:id="lit_426418">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18096503</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A comprehensive profile of brain enzymes that hydrolyze the endocannabinoid 2-arachidonoylglycerol</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blankman, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Simon, GM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cravatt, BF</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chem Biol 14:1347-56</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426229" rdf:id="lit_426229">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2175712</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification, cDNA-cloning and expression of human diacylglycerol kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schaap, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de Widt, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Wal, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vandekerckhove, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Damme, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gussow, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ploegh, HL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Blitterswijk, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Bend, RL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 275:151-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_426243" rdf:id="lit_426243">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11080611</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Properties and functions of diacylglycerol kinases</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Blitterswijk, WJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Houssa, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Signal 12:595-605</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Vitamin D synthesis" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-description">Photochemical synthesis of vitamin D3 (cholecalciferol, D3) occurs cutaneously where pro-vitamin D3 (7-dehydrocholesterol) is converted to pre-vitamin D3 (pre-D3) in response to ultraviolet B (sunlight) exposure. DHCR7 encodes the enzyme 7-dehydrocholesterol (7-DHC) reductase, which converts 7-DHC to cholesterol, thereby removing the substrate from the synthetic pathway of vitamin D3, a precursor of 25-hydroxyvitamin D3.The finding that common variants at DHCR7 are strongly associated with circulating 25-hydroxyvitamin D concentrations suggests that this enzyme could have a larger role in regulation of vitamin D status than has previously been recognised. Vitamin D3, obtained from the isomerization of pre-vitamin D3 in the epidermal basal layers or intestinal absorption of natural and fortified foods and supplements, binds to vitamin D-binding protein (DBP) in the bloodstream, and is transported to the liver. D3 is hydroxylated by liver 25-hydroxylases (25-OHase). The resultant 25-hydroxycholecalciferol (25(OH)D3) is 1-hydroxylated in the kidney by 25-hydroxyvitamin D3-1 -hydroxylase (1-OHase). This yields the active secosteroid 1 ,25(OH)2D3 (calcitriol), which has different effects on various target tissues. The synthesis of 1,25(OH)2D3 from 25(OH)D3 is stimulated by parathyroid hormone (PTH) and suppressed by Ca2+, Pi and 1,25(OH)2D3 itself. The rate-limiting step in catabolism is the degradation of 25(OH)D3 and 1,25(OH)2D3 to 24,25(OH)D3 and 1,24,25(OH)2D3, respectively,which occurs through 24-hydroxylation by 25-hydroxyvitamin D 24-hydroxylase (24-OHase), encoded by the CYP24A1 gene. 24,25(OH)D3 and 1,24,25(OH)2D3 are consequently excreted. Vitamin D activity is mediated through binding of 1,25(OH)2D3 to the vitamin D receptor (VDR), which can regulate transcription of other genes involved in cell regulation, growth, and immunity. VDR modulates the expression of genes by forming a heterodimer complex with retinoid-X-receptors (RXR).</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <BiopaxRef>f3f</BiopaxRef>
+  <Graphics BoardWidth="1116.916666666666" BoardHeight="1069.0218712029157" />
+  <DataNode TextLabel="7-Dehydro-&#xA;cholesterol" GraphId="fd693" Type="Metabolite">
+    <Graphics CenterX="275.7949283351709" CenterY="122.91933537050156" Width="76.0" Height="28.0" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00032" />
+  </DataNode>
+  <DataNode TextLabel="Previtamin D3" GraphId="b7c22" Type="Metabolite">
+    <Graphics CenterX="275.5" CenterY="239.51093560145804" Width="85.0" Height="24.97812879708391" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB06500" />
+  </DataNode>
+  <DataNode TextLabel="Cholecalciferol" GraphId="dc335" Type="Metabolite">
+    <Graphics CenterX="274.38378583241456" CenterY="319.73050101858394" Width="92.5625" Height="24.538997962832113" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00876" />
+  </DataNode>
+  <DataNode TextLabel="Calcidiol" GraphId="a51a5" Type="Metabolite">
+    <Graphics CenterX="274.38378583241456" CenterY="485.9177045362487" Width="62.5625" Height="30.20833333333553" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03550" />
+  </DataNode>
+  <DataNode TextLabel="CYP2R1 " GraphId="ba64b" Type="GeneProduct" GroupRef="bc6d9">
+    <BiopaxRef>def</BiopaxRef>
+    <Graphics CenterX="275.63910327085625" CenterY="388.6303374076707" Width="59.3333333333332" Height="22.416666666666288" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="120227" />
+  </DataNode>
+  <DataNode TextLabel="Calcidiol" GraphId="a5036" Type="Metabolite">
+    <Graphics CenterX="623.8645833333334" CenterY="485.9177045362487" Width="61.72916666666674" Height="30.20833333333553" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB03550" />
+  </DataNode>
+  <DataNode TextLabel="Inactive&#xA;24,25-OH-&#xA;vitamin D" GraphId="a3330" Type="Metabolite">
+    <Graphics CenterX="1043.958333333333" CenterY="484.9067689347905" Width="85.91666666666606" Height="40.186462130419045" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00430" />
+  </DataNode>
+  <DataNode TextLabel="Calcitriol" GraphId="ba01d" Type="Metabolite">
+    <Graphics CenterX="623.947916666666" CenterY="764.7510378695815" Width="76.1041666666681" Height="26.541666666668334" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01903" />
+  </DataNode>
+  <DataNode TextLabel="CYP27B1" GraphId="e42dc" Type="GeneProduct">
+    <Graphics CenterX="622.4432194046308" CenterY="693.7090725994602" Width="82.81367144432215" Height="26.592521131938383" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1594" />
+  </DataNode>
+  <DataNode TextLabel="Parathyroid hormone" GraphId="b3aa4" Type="GeneProduct">
+    <Graphics CenterX="762.9688533627336" CenterY="594.6762262194536" Width="118.5" Height="25.0" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="5741" />
+  </DataNode>
+  <DataNode TextLabel="CYP24A1" GraphId="e26ee" Type="GeneProduct">
+    <Graphics CenterX="894.7199558985651" CenterY="486.17742063327125" Width="76.09922822491421" Height="24.897280411616862" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1591" />
+  </DataNode>
+  <DataNode TextLabel="Vitamin D binding protein" GraphId="c72dd" Type="GeneProduct">
+    <Graphics CenterX="726.1820345320684" CenterY="828.188537869577" Width="141.03073573080337" Height="29.0" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="2638" />
+  </DataNode>
+  <DataNode TextLabel="Ca" GraphId="ffd6c" Type="Metabolite" GroupRef="d99ea">
+    <Graphics CenterX="775.1957001102536" CenterY="719.0596832364066" Width="27.0" Height="20.0" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00464" />
+  </DataNode>
+  <DataNode TextLabel="Pi" GraphId="bbd6c" Type="Metabolite" GroupRef="d99ea">
+    <Graphics CenterX="802.1957001102534" CenterY="719.0596832364066" Width="27.0" Height="20.0" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB01429" />
+  </DataNode>
+  <DataNode TextLabel="VDR" GraphId="d69a4" Type="GeneProduct">
+    <Comment></Comment>
+    <Comment>Type your comment here</Comment>
+    <Comment>Type your comment here</Comment>
+    <Graphics CenterX="623.8124999999993" CenterY="908.646871202915" Width="59.46926426919663" Height="28.75" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="7421" />
+  </DataNode>
+  <DataNode TextLabel="Vitamin D binding protein" GraphId="f687e" Type="GeneProduct" GroupRef="d9dda">
+    <Graphics CenterX="442.1242649761124" CenterY="343.61076739664503" Width="144.25" Height="26.25" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P02774" />
+  </DataNode>
+  <DataNode TextLabel="CYP27A1" GraphId="bfa93" Type="GeneProduct" GroupRef="bc6d9">
+    <BiopaxRef>a3b</BiopaxRef>
+    <Graphics CenterX="275.63910327085625" CenterY="411.047004074337" Width="59.3333333333332" Height="22.416666666666288" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1593" />
+  </DataNode>
+  <DataNode TextLabel="RXRA" GraphId="a4a3c" Type="GeneProduct">
+    <Comment></Comment>
+    <Comment>Type your comment here</Comment>
+    <Comment>Type your comment here</Comment>
+    <Graphics CenterX="704.1666666666665" CenterY="922.5218712029157" Width="55.66666666666697" Height="22.99999999999997" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6256" />
+  </DataNode>
+  <DataNode TextLabel="RXRB" GraphId="d14a3" Type="GeneProduct">
+    <Comment></Comment>
+    <Comment>Type your comment here</Comment>
+    <Comment>Type your comment here</Comment>
+    <Graphics CenterX="704.1666666666665" CenterY="945.5218712029157" Width="55.66666666666697" Height="23.0" ZOrder="32768" FontName="Verdana" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="6257" />
+  </DataNode>
+  <DataNode TextLabel="alpha-globulin" GraphId="d140a" Type="GeneProduct">
+    <Graphics CenterX="450.52535832414577" CenterY="486.28960365422114" Width="80.99999999999966" Height="22.333333333333258" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Cholesterol" GraphId="de7a4" Type="Metabolite">
+    <Graphics CenterX="275.0" CenterY="39.021871202916174" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="HMDB" ID="HMDB00067" />
+  </DataNode>
+  <DataNode TextLabel="DHCR7" GraphId="bcdc9" Type="GeneProduct">
+    <BiopaxRef>b3f</BiopaxRef>
+    <BiopaxRef>d5b</BiopaxRef>
+    <BiopaxRef>ca1</BiopaxRef>
+    <Graphics CenterX="276.058985667034" CenterY="81.66134198571655" Width="61.88202866593201" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Entrez Gene" ID="1717" />
+  </DataNode>
+  <Line GraphId="id879db83f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="275.7949283351709" Y="136.91933537050156" GraphRef="fd693" RelX="0.0" RelY="1.0" />
+      <Point X="275.5" Y="227.0218712029161" GraphRef="b7c22" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.32432432432432434" Shape="None" GraphId="c244f" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id52d502db">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="184.12752664461618" Y="165.5860020371683" GraphRef="f2831" RelX="-1.0" RelY="0.0" />
+      <Point X="275.69927590214246" Y="166.14177942425763" GraphRef="c244f" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id44f7d0a6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="275.5" Y="252.0" GraphRef="b7c22" RelX="0.0" RelY="1.0" />
+      <Point X="274.38378583241456" Y="307.4610020371679" GraphRef="dc335" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5043143983864936" Shape="None" GraphId="febe0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ide926490f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="274.38378583241456" Y="332.0" GraphRef="dc335" RelX="0.0" RelY="1.0" />
+      <Point X="274.38378583241456" Y="470.81353786958095" GraphRef="a51a5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5562994872346358" Shape="None" GraphId="d2d61" />
+      <Anchor Position="0.3200000000000018" Shape="None" GraphId="ac97a" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idaa80d2d4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="313.3057699375229" Y="399.83867074100385" GraphRef="ee55c" RelX="1.0" RelY="0.0" />
+      <Point X="274.38378583241456" Y="409.2218999380736" GraphRef="d2d61" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb2536244">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="305.66503583241456" Y="485.9177045362487" GraphRef="a51a5" RelX="1.0" RelY="0.0" />
+      <Point X="593.0" Y="485.9177045362487" GraphRef="a5036" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4695557963163597" Shape="None" GraphId="ad672" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3306118f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="654.7291666666667" Y="485.9177045362487" GraphRef="a5036" RelX="1.0" RelY="0.0" />
+      <Point X="1001.0" Y="484.9067689347905" GraphRef="a3330" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.7946450768539909" Shape="None" GraphId="c892a" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3a3d310">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="623.8645833333334" Y="501.0218712029165" GraphRef="a5036" RelX="0.0" RelY="1.0" />
+      <Point X="623.947916666666" Y="751.4802045362474" GraphRef="ba01d" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.770584694368244" Shape="None" GraphId="a249f" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id867ef92">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="581.0363836824697" Y="693.7090725994602" GraphRef="e42dc" RelX="-1.0" RelY="0.0" />
+      <Point X="623.9287987245301" Y="694.021229446561" GraphRef="a249f" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idba7e735a">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="009900">
+      <Point X="733.3438533627336" Y="607.1762262194536" GraphRef="b3aa4" RelX="-0.5" RelY="1.0" />
+      <Point X="622.4432194046308" Y="680.412812033491" GraphRef="e42dc" RelX="0.0" RelY="-1.0" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id6c5af5d8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="894.7199558985651" Y="473.7287804274628" GraphRef="e26ee" RelX="0.0" RelY="-1.0" />
+      <Point X="929.8915796331288" Y="485.1143695375335" GraphRef="c892a" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id402e7170">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="0000cc">
+      <Point X="762.9688533627336" Y="582.1762262194536" />
+      <Point X="856.670341786108" Y="486.17742063327125" GraphRef="e26ee" RelX="-1.0" RelY="0.0" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id646fbe27">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="009900">
+      <Point X="662.0" Y="764.7510378695815" GraphRef="ba01d" RelX="1.0" RelY="0.0" />
+      <Point X="1092.0" Y="628.5763893028785" />
+      <Point X="932.7695700110222" Y="492.4017407361755" GraphRef="e26ee" RelX="1.0" RelY="0.5" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="f41a2">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="ff0000">
+      <Point X="753.6957001102536" Y="719.0596832364066" GraphRef="a9fb3" RelX="-1.0" RelY="0.0" />
+      <Point X="663.8500551267919" Y="693.7090725994602" GraphRef="e42dc" RelX="1.0" RelY="0.0" ArrowHead="mim-inhibition" />
+    </Graphics>
+  </Line>
+  <Line GraphId="b6cd3">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="274.9370771236037" Y="279.9697818762864" GraphRef="febe0" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+      <Point X="188.83333333333326" Y="276.5109356014581" GraphRef="cbc34" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="becb8">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="359.66593164278004" Y="331.0691007299781" GraphRef="fb5c0" RelX="-1.0" RelY="0.0" />
+      <Point X="276.0" Y="353.71729045009266" />
+      <Point X="274.38378583241456" Y="376.4203321182662" GraphRef="ac97a" RelX="0.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idfbbae2a">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="623.6862494567324" Y="994.3955116633125" GraphRef="e77d0" RelX="0.0" RelY="0.0" ArrowHead="mim-binding" />
+      <Point X="623.0" Y="958.4586914331142" />
+      <Point X="676.333333333333" Y="922.5218712029157" GraphRef="a4a3c" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf68b763e">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="623.6862494567324" Y="994.3955116633125" GraphRef="e77d0" RelX="0.0" RelY="0.0" ArrowHead="mim-binding" />
+      <Point X="624.0" Y="969.1506879562039" />
+      <Point X="676.333333333333" Y="945.5218712029157" GraphRef="d14a3" RelX="-1.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id4f4dd7e8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="623.8124999999993" Y="923.021871202915" GraphRef="d69a4" RelX="0.0" RelY="1.0" />
+      <Point X="623.6562499999997" Y="1011.3552045362537" GraphRef="c7c40" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.808003476910111" Shape="None" GraphId="e77d0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id3edf95c8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="623.947916666666" Y="778.0218712029157" GraphRef="ba01d" RelX="0.0" RelY="1.0" />
+      <Point X="623.8124999999993" Y="894.271871202915" GraphRef="d69a4" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding" />
+      <Anchor Position="0.692961696932024" Shape="None" GraphId="a5684" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ac27b">
+    <Graphics ConnectorType="Curved" ZOrder="12288" LineThickness="1.0">
+      <Point X="796.6974023974701" Y="828.188537869577" GraphRef="c72dd" RelX="1.0" RelY="0.0" />
+      <Point X="623.0" Y="843.38360317042" />
+      <Point X="623.8540781035398" Y="858.578668471263" GraphRef="a5684" RelX="0.0" RelY="0.0" ArrowHead="mim-binding" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd3589337">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="450.52535832414577" Y="497.45627032088777" GraphRef="d140a" RelX="0.0" RelY="1.0" />
+      <Point X="440.5848337416578" Y="485.9177045362487" GraphRef="ad672" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idcb62e696">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="009933">
+      <Point X="892.3333333333327" Y="824.0218712029152" />
+      <Point X="946.8333333333329" Y="824.0218712029152" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c39c4">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="1.0" Color="0000cc">
+      <Point X="892.8333333333327" Y="846.5218712029152" />
+      <Point X="944.8333333333329" Y="846.5218712029152" ArrowHead="mim-stimulation" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idaf407315">
+    <Comment>7-dehydrocholesterolreductase</Comment>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="245.117971334068" Y="81.66134198571655" GraphRef="bcdc9" RelX="-1.0" RelY="0.0" />
+      <Point X="275.3827419794439" Y="77.8612935569364" GraphRef="d39c1" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idc015bca4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="275.7949283351709" Y="108.91933537050156" GraphRef="fd693" RelX="0.0" RelY="-1.0" />
+      <Point X="275.0" Y="49.021871202916174" GraphRef="de7a4" RelX="0.0" RelY="1.0" ArrowHead="mim-modification" />
+      <Anchor Position="0.5185201451378435" Shape="None" GraphId="d39c1" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="UV B radiation from sunlight" GraphId="f2831">
+    <Graphics CenterX="275.5637633223081" CenterY="165.5860020371683" Width="182.87247335538382" Height="26.0" ZOrder="28672" FillColor="ffffff" FontName="Verdana" FontSize="12" Valign="Middle" ShapeType="Rectangle" />
+  </Label>
+  <Label TextLabel="Spontaneous isomerisation" GraphId="cbc34">
+    <Graphics CenterX="276.91666666666663" CenterY="276.5109356014581" Width="176.16666666666674" Height="24.97812879708391" ZOrder="28672" FillColor="ffffff" FontName="Verdana" FontSize="12" Valign="Middle" ShapeType="Rectangle" />
+  </Label>
+  <Label TextLabel="Vitamin D from Diet" GraphId="a3a68" GroupRef="d9dda">
+    <Graphics CenterX="445.16593164278004" CenterY="315.4024340633112" Width="155.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontName="Verdana" FontSize="12" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Endocrine modulators" GraphId="d67d2">
+    <Graphics CenterX="826.8869900771768" CenterY="688.7276778916272" Width="125.0" Height="25.0" ZOrder="28672" FillColor="ffffff" FontName="Verdana" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Activation" GraphId="d4332">
+    <Graphics CenterX="985.6666666666661" CenterY="824.5755760570811" Width="80.0" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Label TextLabel="Tissue-specific regulation" GraphId="c9dc6">
+    <Graphics CenterX="1019.6666666666622" CenterY="850.0218712029152" Width="130.66666666666669" Height="20.0" ZOrder="28672" FillColor="ffffff" FontSize="10" Valign="Middle" />
+  </Label>
+  <Shape TextLabel="VDR targets" GraphId="c7c40">
+    <BiopaxRef>cab</BiopaxRef>
+    <Graphics CenterX="623.6562499999997" CenterY="1025.1885378695847" Width="87.31249999999932" Height="27.666666666661968" ZOrder="16384" FontName="Verdana" FontSize="12" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Hepatocyte" GraphId="b1389">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="238.16666666666677" CenterY="473.52187120291654" Width="308.33333333333354" Height="160.9999999999999" ZOrder="16384" FontWeight="Bold" FontSize="14" Valign="Bottom" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Kidney" GraphId="becc9">
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="622.6666666666662" CenterY="478.85520453624883" Width="206.66666666666765" Height="139.0" ZOrder="16384" FontWeight="Bold" FontSize="14" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Shape GraphId="afcca">
+    <Graphics CenterX="977.8333333333348" CenterY="836.521871202915" Width="207.00000000000003" Height="67.00000000000055" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0" />
+  </Shape>
+  <Shape TextLabel="Skin" GraphId="dc46a">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Cell" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="276.5" CenterY="111.0" Width="217.0" Height="188.0" ZOrder="16384" FontWeight="Bold" FontSize="14" Valign="Middle" Align="Left" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="0.0" />
+  </Shape>
+  <Group GroupId="d99ea" GraphId="a9fb3" Style="Group" />
+  <Group GroupId="bc6d9" GraphId="ee55c" Style="Group" />
+  <Group GroupId="d9dda" GraphId="fb5c0" />
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>metabolic pathway of cofactors and vitamins</bp:TERM>
+      
+      
+      <bp:ID>PW:0000135</bp:ID>
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>rickets</bp:TERM>
+      
+      
+      <bp:ID>DOID:10609</bp:ID>
+      
+      
+      <bp:Ontology>Disease</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>skin fibroblast</bp:TERM>
+      <bp:ID>CL:0002620</bp:ID>
+      <bp:Ontology>Cell Type</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>hepatocyte</bp:TERM>
+      <bp:ID>CL:0000182</bp:ID>
+      <bp:Ontology>Cell Type</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>kidney cell</bp:TERM>
+      <bp:ID>CL:1000497</bp:ID>
+      <bp:Ontology>Cell Type</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="a3b">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7690968</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transfected human liver cytochrome P-450 hydroxylates vitamin D analogs at different side-chain positions.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1993</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guo YD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Strugnell S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Back DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones G</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="b3f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20418485</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genome-wide association study of circulating vitamin D levels.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet. 2010 Jul 1;19(13):2739-45</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ahn J, Yu K, Stolzenberg-Solomon R, Simon KC, McCullough ML, Gallicchio L, Jacobs EJ, Ascherio A, Helzlsouer K, Jacobs KB, Li Q, Weinstein SJ, Purdue M, Virtamo J, Horst R, Wheeler W, Chanock S, Hunter DJ, Hayes RB, Kraft P, Albanes D</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="def">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15128933</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetic evidence that the human CYP2R1 enzyme is a key vitamin D 25-hydroxylase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15128933</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genetic evidence that the human CYP2R1 enzyme is a key vitamin D 25-hydroxylase.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cheng JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Levine MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bell NH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mangelsdorf DJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Russell DW</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="cfc">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11111101 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemical and genetic aspects of 7-dehydrocholesterol reductase and Smith-Lemli-Opitz syndrome</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta. 2000 Dec 15;1529(1-3):340-56</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham HR, Wanders RJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="f3f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18689389</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">From vitamin D to hormone D: fundamentals of the vitamin D endocrine system essential for good health.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Clin Nutr</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2008</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Norman AW</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="d5b">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11111101</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemical and genetic aspects of 7-dehydrocholesterol reductase and Smith-Lemli-Opitz syndrome.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders RJ</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="ca1">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20541252</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Common genetic determinants of vitamin D insufficiency: a genome-wide association study</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lancet,376:180-188</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomas J Wang*, Feng Zhang*, J Brent Richards*, Bryan Kestenbaum*, Joyce B van Meurs*, Diane Berry*, Douglas P Kiel, Elizabeth A Streeten,&#xD;
+Claes Ohlsson, Daniel L Koller, Leena Peltonen†, Jason D Cooper, Paul F O’Reilly, Denise K Houston, Nicole L Glazer, Liesbeth Vandenput, Munro Peacock,&#xD;
+Julia Shi, Fernando Rivadeneira, Mark I McCarthy, Pouta Anneli, Ian H de Boer, Massimo Mangino, Bernet Kato, Deborah J Smyth, Sarah L Booth,&#xD;
+Paul F Jacques, Greg L Burke, Mark Goodarzi, Ching-Lung Cheung, Myles Wolf, Kenneth Rice, David Goltzman, Nick Hidiroglou, Martin Ladouceur,&#xD;
+Nicholas J Wareham, Lynne J Hocking, Deborah Hart, Nigel K Arden, Cyrus Cooper, Suneil Malik, William D Fraser, Anna-Liisa Hartikainen,&#xD;
+Guangju Zhai, Helen M Macdonald, Nita G Forouhi, Ruth J F Loos, David M Reid, Alan Hakim, Elaine Dennison, Yongmei Liu, Chris Power,&#xD;
+Helen E Stevens, Laitinen Jaana, Ramachandran S Vasan, Nicole Soranzo, Jörg Bojunga, Bruce M Psaty, Mattias Lorentzon, Tatiana Foroud,&#xD;
+Tamara B Harris, Albert Hofman, John-Olov Jansson, Jane A Cauley, Andre G Uitterlinden, Quince Gibson, Marjo-Riitta Järvelin, David Karasik,&#xD;
+David S Siscovick, Michael J Econs, Stephen B Kritchevsky, Jose C Florez, John A Todd*, Josee Dupuis*, Elina Hyppönen*, Timothy D Spector*</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="cab">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20736230</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A ChIP-seq defined genome-wide map of vitamin D receptor binding: Associations with disease and evolution.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genome Res</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ramagopalan SV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heger A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Berlanga AJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maugeri NJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lincoln MR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burrell A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handunnetthi L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handel AE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Disanto G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Orton SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watson CT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morahan JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Giovannoni G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ponting CP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ebers GC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Knight JC</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

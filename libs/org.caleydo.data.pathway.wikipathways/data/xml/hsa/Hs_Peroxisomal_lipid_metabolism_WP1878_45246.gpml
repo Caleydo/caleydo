@@ -1,0 +1,2541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Peroxisomal lipid metabolism" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="D'Eustachio, P" Maintainer="D'Eustachio, P" Email="deustp01@nyumc.org">
+  <Comment Source="WikiPathways-description">In humans, the catabolism of phytanate, pristanate, and very long chain fatty acids as well as the first four steps of the biosynthesis of plasmalogens are catalyzed by peroxisomal enzymes. Defects in any of these enzymes or in the assembly of peroxisomes are associated with severe developmental disorders (Wanders and Watherham 2006).</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_389650</BiopaxRef>
+  <DataNode GraphId="n36_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="146.5" CenterY="365.5" Width="33.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_389620" TextLabel="AMP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="219.0" CenterY="410.5" Width="36.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_389573" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="224.5" CenterY="367.0" Width="33.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_76577" TextLabel="AMP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="155.5" CenterY="409.0" Width="39.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_389642" TextLabel="PMP34&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="184.5" CenterY="334.0" Width="51.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O43808"/>
+  </DataNode>
+  <DataNode GraphId="n43_REACTOME_389596" TextLabel="Phytanate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="347.5" CenterY="384.5" Width="71.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16285"/>
+  </DataNode>
+  <DataNode GraphId="n44_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="306.5" CenterY="353.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_389615" TextLabel="Phytanoyl-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="307.5" CenterY="500.0" Width="89.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15538"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_389593" TextLabel="Pyrophosp&#10;hate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="248.5" CenterY="465.5" Width="63.0" Height="43.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_389579" TextLabel="SLC27A2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="183.5" CenterY="647.0" Width="63.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14975"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_389620" TextLabel="AMP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="351.5" CenterY="461.0" Width="39.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_389556" TextLabel="NADP+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="654.5" CenterY="432.0" Width="51.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18009"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_389548" TextLabel="Isocitrate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="709.5" CenterY="396.5" Width="79.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="151"/>
+  </DataNode>
+  <DataNode GraphId="n53_REACTOME_193465" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="526.5" CenterY="472.5" Width="29.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_113602" TextLabel="NADPH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="494.0" CenterY="447.0" Width="64.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16474"/>
+  </DataNode>
+  <DataNode GraphId="n55_REACTOME_389536" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="555.5" CenterY="498.0" Width="41.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n56_REACTOME_389537" TextLabel="2-Oxoglutarate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="472.5" CenterY="400.5" Width="99.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="30915"/>
+  </DataNode>
+  <DataNode GraphId="n57_REACTOME_389557" TextLabel="IDH1 &#10;dimer&#10;" Type="Complex">
+    <BiopaxRef>lit_389555</BiopaxRef>
+    <Graphics Color="000000" CenterX="592.5" CenterY="442.5" Width="47.0" Height="37.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17197"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_113535" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="328.5" CenterY="540.0" Width="57.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_389594" TextLabel="2-&#10;Hydroxyphytanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="425.5" CenterY="609.0" Width="121.0" Height="36.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15475"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_389583" TextLabel="Succinate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="325.0" CenterY="599.0" Width="64.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15741"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_389634" TextLabel="PHYH:&#10;Fe++&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="436.0" CenterY="547.0" Width="60.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17895"/>
+  </DataNode>
+  <DataNode GraphId="n64_REACTOME_389636" TextLabel="Pristanal&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="372.5" CenterY="694.0" Width="65.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="49189"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_389578" TextLabel="Formyl-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="529.5" CenterY="702.5" Width="77.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15522"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_389616" TextLabel="HACL1 &#10;tetramer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="365.0" CenterY="653.0" Width="62.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17962"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_141343" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="489.5" CenterY="730.5" Width="37.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n69_REACTOME_389585" TextLabel="Formate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="579.0" CenterY="801.5" Width="60.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="30751"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="506.5" CenterY="802.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_192307" TextLabel="NAD+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="420.0" CenterY="720.0" Width="44.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15846"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_389612" TextLabel="Pristanic acid&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="372.5" CenterY="802.0" Width="93.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="51340"/>
+  </DataNode>
+  <DataNode GraphId="n75_REACTOME_192305" TextLabel="NADH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="428.5" CenterY="763.5" Width="49.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16908"/>
+  </DataNode>
+  <DataNode GraphId="n76_REACTOME_389603" TextLabel="Pristanal &#10;dehydrogenase&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="301.5" CenterY="752.5" Width="97.0" Height="31.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_17759"/>
+  </DataNode>
+  <DataNode GraphId="n77_REACTOME_193465" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="443.5" CenterY="793.5" Width="29.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n79_REACTOME_389573" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="316.0" CenterY="823.0" Width="40.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_389569" TextLabel="(2R) Pristanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="378.0" CenterY="905.5" Width="112.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="51341"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_389620" TextLabel="AMP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="319.0" CenterY="870.5" Width="36.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16027"/>
+  </DataNode>
+  <DataNode GraphId="n83_REACTOME_389593" TextLabel="Pyrophosp&#10;hate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="436.5" CenterY="864.5" Width="63.0" Height="43.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29888"/>
+  </DataNode>
+  <DataNode GraphId="n86_REACTOME_389893" TextLabel="(2S) Pristanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="527.5" CenterY="905.5" Width="103.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17371"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_192146" TextLabel="AMACR&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="451.0" CenterY="945.5" Width="52.0" Height="19.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UHK6"/>
+  </DataNode>
+  <DataNode GraphId="n89_REACTOME_389894" TextLabel="trans-2,3-&#10;dehydropristanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="758.5" CenterY="910.0" Width="111.0" Height="46.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17125"/>
+  </DataNode>
+  <DataNode GraphId="n90_REACTOME_113575" TextLabel="H2O2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="671.5" CenterY="905.0" Width="45.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16240"/>
+  </DataNode>
+  <DataNode GraphId="n91_REACTOME_192320" TextLabel="ACOX2:&#10;FAD&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="638.5" CenterY="834.5" Width="53.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_10603"/>
+  </DataNode>
+  <DataNode GraphId="n93_REACTOME_113535" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="613.5" CenterY="905.0" Width="57.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n95_REACTOME_389905" TextLabel="ACOX3:&#10;FAD&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="638.0" CenterY="973.5" Width="52.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17430"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_141343" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="817.0" CenterY="873.5" Width="42.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n98_REACTOME_389982" TextLabel="3-&#10;hydroxypristanoyl&#10;-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="939.5" CenterY="910.5" Width="107.0" Height="45.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17101"/>
+  </DataNode>
+  <DataNode GraphId="n99_REACTOME_389999" TextLabel="HSD17B4 &#10;dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="960.5" CenterY="996.5" Width="67.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17840"/>
+  </DataNode>
+  <DataNode GraphId="n102_REACTOME_389996" TextLabel="3-&#10;ketopristanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1138.0" CenterY="910.0" Width="94.0" Height="46.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_18106"/>
+  </DataNode>
+  <DataNode GraphId="n104_REACTOME_192307" TextLabel="NAD+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="987.0" CenterY="870.0" Width="44.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15846"/>
+  </DataNode>
+  <DataNode GraphId="n106_REACTOME_192305" TextLabel="NADH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1096.5" CenterY="947.5" Width="49.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16908"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_193465" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1052.5" CenterY="965.5" Width="29.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n111_REACTOME_192314" TextLabel="propionyl &#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1319.0" CenterY="966.5" Width="76.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15539"/>
+  </DataNode>
+  <DataNode GraphId="n112_REACTOME_390002" TextLabel="4,8,12-&#10;trimethyltridecanoyl&#10;-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1332.0" CenterY="911.5" Width="118.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_18090"/>
+  </DataNode>
+  <DataNode GraphId="n113_REACTOME_192348" TextLabel="SCP2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1227.0" CenterY="869.0" Width="42.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P22307-1"/>
+  </DataNode>
+  <DataNode GraphId="n115_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1196.5" CenterY="986.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n118_REACTOME_141343" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1404.0" CenterY="808.0" Width="34.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n119_REACTOME_353123" TextLabel="Acetyl-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1567.5" CenterY="873.5" Width="69.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15351"/>
+  </DataNode>
+  <DataNode GraphId="n120_REACTOME_390271" TextLabel="4,8-dimethylnonanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1568.0" CenterY="917.5" Width="134.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_18121"/>
+  </DataNode>
+  <DataNode GraphId="n122_REACTOME_192305" TextLabel="NADH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1506.5" CenterY="966.5" Width="49.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16908"/>
+  </DataNode>
+  <DataNode GraphId="n124_REACTOME_192307" TextLabel="NAD+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1344.0" CenterY="857.0" Width="44.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15846"/>
+  </DataNode>
+  <DataNode GraphId="n126_REACTOME_113535" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1353.5" CenterY="823.0" Width="57.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n128_REACTOME_193465" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1457.0" CenterY="970.0" Width="32.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n131_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1452.5" CenterY="839.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n132_REACTOME_113575" TextLabel="H2O2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1497.5" CenterY="868.0" Width="45.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16240"/>
+  </DataNode>
+  <DataNode GraphId="n134_REACTOME_390294" TextLabel="Carnitine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1613.5" CenterY="950.0" Width="59.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17126"/>
+  </DataNode>
+  <DataNode GraphId="n135_REACTOME_390290" TextLabel="4,8-&#10;dimethylnonanoyl&#10;carnitine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1568.5" CenterY="1050.0" Width="105.0" Height="50.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17091"/>
+  </DataNode>
+  <DataNode GraphId="n136_REACTOME_390296" TextLabel="CROT&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1622.5" CenterY="979.5" Width="49.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UKG9"/>
+  </DataNode>
+  <DataNode GraphId="n138_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1621.5" CenterY="1009.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n141_REACTOME_390287" TextLabel="Acetylcarnitine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1675.5" CenterY="1046.0" Width="95.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15960"/>
+  </DataNode>
+  <DataNode GraphId="n142_REACTOME_390293" TextLabel="CRAT&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1716.0" CenterY="981.5" Width="42.0" Height="17.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P43155"/>
+  </DataNode>
+  <DataNode GraphId="n146_REACTOME_141343" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1621.5" CenterY="851.0" Width="37.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n147_REACTOME_390305" TextLabel="Acetate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1567.0" CenterY="756.0" Width="58.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15366"/>
+  </DataNode>
+  <DataNode GraphId="n148_REACTOME_193426" TextLabel="ACOT8&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1623.5" CenterY="815.5" Width="53.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14734"/>
+  </DataNode>
+  <DataNode GraphId="n150_REACTOME_390274" TextLabel="Propionylcarnitine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1320.0" CenterY="1058.5" Width="110.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="28867"/>
+  </DataNode>
+  <DataNode GraphId="n151_REACTOME_390294" TextLabel="Carnitine&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1375.5" CenterY="985.0" Width="59.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17126"/>
+  </DataNode>
+  <DataNode GraphId="n164_REACTOME_390426" TextLabel="palmitoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="788.5" CenterY="464.5" Width="63.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15525"/>
+  </DataNode>
+  <DataNode GraphId="n165_REACTOME_390440" TextLabel="Hexadecanol&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1104.5" CenterY="465.0" Width="81.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16125"/>
+  </DataNode>
+  <DataNode GraphId="n166_REACTOME_390412" TextLabel="FAR1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="929.5" CenterY="389.5" Width="41.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8WVX9"/>
+  </DataNode>
+  <DataNode GraphId="n168_REACTOME_193465" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="916.5" CenterY="465.5" Width="29.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n170_REACTOME_113602" TextLabel="NADPH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="861.0" CenterY="465.0" Width="64.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16474"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1027.5" CenterY="465.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n174_REACTOME_389556" TextLabel="NADP+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="966.5" CenterY="465.0" Width="51.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18009"/>
+  </DataNode>
+  <DataNode GraphId="n177_REACTOME_390430" TextLabel="FAR2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="932.5" CenterY="546.5" Width="45.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96K12"/>
+  </DataNode>
+  <DataNode GraphId="n180_REACTOME_390404" TextLabel="Dihydroxyacetone &#10;phosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1213.0" CenterY="604.5" Width="110.0" Height="51.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16108"/>
+  </DataNode>
+  <DataNode GraphId="n181_REACTOME_390419" TextLabel="1-Palmitoyl &#10;dihydroxyacetone &#10;phosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1212.0" CenterY="470.0" Width="104.0" Height="60.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17868"/>
+  </DataNode>
+  <DataNode GraphId="n182_REACTOME_76165" TextLabel="GNPAT:AGPS &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1314.5" CenterY="469.5" Width="83.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_2259"/>
+  </DataNode>
+  <DataNode GraphId="n184_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1150.5" CenterY="522.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n186_REACTOME_390435" TextLabel="Palmitate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1129.0" CenterY="372.5" Width="66.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15756"/>
+  </DataNode>
+  <DataNode GraphId="n187_REACTOME_390409" TextLabel="O-hexadecylglycerone &#10;phosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1212.5" CenterY="334.0" Width="133.0" Height="46.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17197"/>
+  </DataNode>
+  <DataNode GraphId="n191_REACTOME_75973" TextLabel="O-hexadecylglycerone &#10;phosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1213.5" CenterY="234.0" Width="143.0" Height="40.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17197"/>
+  </DataNode>
+  <DataNode GraphId="n194_REACTOME_70106" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1135.0" CenterY="183.0" Width="32.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n195_REACTOME_29364" TextLabel="NADPH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1081.0" CenterY="183.5" Width="56.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16474"/>
+  </DataNode>
+  <DataNode GraphId="n196_REACTOME_29366" TextLabel="NADP+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="940.0" CenterY="183.5" Width="56.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18009"/>
+  </DataNode>
+  <DataNode GraphId="n197_REACTOME_390422" TextLabel="1-hexadecylglycerol-&#10;3-phosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="885.0" CenterY="234.0" Width="128.0" Height="40.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_18220"/>
+  </DataNode>
+  <DataNode GraphId="n198_REACTOME_76161" TextLabel="AADHAPR&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1024.5" CenterY="284.5" Width="77.0" Height="25.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_4622"/>
+  </DataNode>
+  <DataNode GraphId="n200_REACTOME_390394" TextLabel="Hexacosanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="115.5" CenterY="1090.5" Width="97.0" Height="37.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17364"/>
+  </DataNode>
+  <DataNode GraphId="n201_REACTOME_390260" TextLabel="Hexacosanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="396.5" CenterY="1091.5" Width="87.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17913"/>
+  </DataNode>
+  <DataNode GraphId="n202_REACTOME_382579" TextLabel="ABCD1 &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="185.5" CenterY="1138.0" Width="77.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_15606"/>
+  </DataNode>
+  <DataNode GraphId="n204_REACTOME_390249" TextLabel="trans-2,3-&#10;dehydrohexacosanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="618.5" CenterY="1091.5" Width="133.0" Height="51.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_18221"/>
+  </DataNode>
+  <DataNode GraphId="n205_REACTOME_390232" TextLabel="ACOX1 &#10;dimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="491.0" CenterY="1138.5" Width="50.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_18252"/>
+  </DataNode>
+  <DataNode GraphId="n207_REACTOME_113535" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="437.5" CenterY="1061.0" Width="57.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n209_REACTOME_113575" TextLabel="H2O2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="546.5" CenterY="1061.0" Width="45.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16240"/>
+  </DataNode>
+  <DataNode GraphId="n211_REACTOME_141343" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="688.0" CenterY="1050.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n212_REACTOME_390248" TextLabel="3-&#10;hydroxyhexacosanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="829.0" CenterY="1091.0" Width="144.0" Height="46.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17869"/>
+  </DataNode>
+  <DataNode GraphId="n214_REACTOME_390241" TextLabel="3-ketohexacosanoyl-&#10;CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1076.5" CenterY="1092.0" Width="133.0" Height="40.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17480"/>
+  </DataNode>
+  <DataNode GraphId="n216_REACTOME_192307" TextLabel="NAD+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="914.0" CenterY="1056.0" Width="44.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15846"/>
+  </DataNode>
+  <DataNode GraphId="n218_REACTOME_390246" TextLabel="tetracosanoyl-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1073.5" CenterY="1207.0" Width="135.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="Reactome" ID="REACT_17646"/>
+  </DataNode>
+  <DataNode GraphId="n219_REACTOME_390238" TextLabel="ACAA1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1011.0" CenterY="1148.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P09110"/>
+  </DataNode>
+  <DataNode GraphId="n222_REACTOME_353123" TextLabel="Acetyl-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1279.5" CenterY="1128.5" Width="69.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15351"/>
+  </DataNode>
+  <DataNode GraphId="n224_REACTOME_141343" TextLabel="H2O&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1150.0" CenterY="1264.5" Width="42.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15377"/>
+  </DataNode>
+  <DataNode GraphId="n225_REACTOME_390303" TextLabel="Octanoyl-CoA&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1314.0" CenterY="1203.5" Width="98.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15533"/>
+  </DataNode>
+  <DataNode GraphId="n227_REACTOME_193514" TextLabel="CoA-SH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1100.5" CenterY="1281.0" Width="57.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15346"/>
+  </DataNode>
+  <DataNode GraphId="n229_REACTOME_193465" TextLabel="H+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1211.5" CenterY="1171.5" Width="29.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15378"/>
+  </DataNode>
+  <DataNode GraphId="n231_REACTOME_113535" TextLabel="Oxygen&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1042.5" CenterY="1255.0" Width="57.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15379"/>
+  </DataNode>
+  <DataNode GraphId="n233_REACTOME_192307" TextLabel="NAD+&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1044.0" CenterY="1285.0" Width="44.0" Height="28.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15846"/>
+  </DataNode>
+  <DataNode GraphId="n235_REACTOME_192305" TextLabel="NADH&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1209.5" CenterY="1238.5" Width="49.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16908"/>
+  </DataNode>
+  <DataNode GraphId="n237_REACTOME_113575" TextLabel="H2O2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1275.5" CenterY="1240.0" Width="45.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16240"/>
+  </DataNode>
+  <DataNode GraphId="n239_REACTOME_389545" TextLabel="Isocitrate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="894.0" CenterY="107.5" Width="68.0" Height="27.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="151"/>
+  </DataNode>
+  <DataNode GraphId="n240_REACTOME_113528" TextLabel="CO2&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1155.0" CenterY="135.0" Width="38.0" Height="26.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16526"/>
+  </DataNode>
+  <DataNode GraphId="n241_REACTOME_29406" TextLabel="2-oxoglutarate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="1137.0" CenterY="80.5" Width="96.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="30915"/>
+  </DataNode>
+  <DataNode GraphId="n242_REACTOME_389559" TextLabel="IDH1 &#10;dimer&#10;" Type="Complex">
+    <BiopaxRef>lit_879979</BiopaxRef>
+    <BiopaxRef>lit_389555</BiopaxRef>
+    <Graphics Color="000000" CenterX="1005.5" CenterY="150.5" Width="49.0" Height="39.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_17471"/>
+  </DataNode>
+  <DataNode GraphId="n244_REACTOME_390344" TextLabel="isocitrate-&#10;oxoglutarate &#10;transporter&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="512.5" CenterY="284.5" Width="81.0" Height="49.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_18178"/>
+  </DataNode>
+  <Line GraphId="e_35_REACTOME_389652">
+    <Comment Source="WikiPathways-description">The peroxisomal membrane transport protein PMP34 mediates the exchange of adenine nucleotides between the cytosol and the peroxisomal matrix. The localization of PMP34 has been established by immunofluoresence studies (Wylin et al. 1998). The cloned human protein restores adenine nucleotide transport in yeast whose endogenous peroxisomal transporter has been disrupted, and has adenine nucleotide transport activity in reconstituted lipid vesicles in vitro (Visser et al. 2002), consistent with its hypothesized role in vivo (Wanders and Waterham 2006).</Comment>
+    <BiopaxRef>lit_389650</BiopaxRef>
+    <BiopaxRef>lit_389646</BiopaxRef>
+    <BiopaxRef>lit_389645</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="184.0" Y="378.0" GraphId="e_35_0"/>
+      <Point X="181.0" Y="374.0" GraphId="e_35_1"/>
+      <Point X="180.0" Y="378.0" GraphId="e_35_2"/>
+      <Anchor Position="0.0" GraphId="e_35_a_i"/>
+      <Anchor Position="0.5480589839889621" GraphId="e_35_a_p"/>
+      <Anchor Position="1.0" GraphId="e_35_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="166.0" Y="370.0" GraphId="e_35_i0_0" GraphRef="n36_REACTOME_113592" RelX="1.2121212121212122" RelY="0.37037037037037035"/>
+      <Point X="184.0" Y="378.0" GraphId="e_35_i0_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="203.0" Y="393.0" GraphId="e_35_i1_0" GraphRef="n37_REACTOME_389620" RelX="-0.8888888888888888" RelY="-1.1724137931034482"/>
+      <Point X="184.0" Y="378.0" GraphId="e_35_i1_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="205.0" Y="371.0" GraphId="e_35_o0_0" ArrowHead="Arrow" GraphRef="n38_REACTOME_389573" RelX="-1.1515151515151516" RelY="0.3076923076923077"/>
+      <Point X="180.0" Y="378.0" GraphId="e_35_o0_1" GraphRef="e_35_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="166.0" Y="392.0" GraphId="e_35_o1_0" ArrowHead="Arrow" GraphRef="n39_REACTOME_76577" RelX="0.5641025641025641" RelY="-1.2142857142857142"/>
+      <Point X="180.0" Y="378.0" GraphId="e_35_o1_1" GraphRef="e_35_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="183.0" Y="348.0" GraphId="e_35_c__0_0" GraphRef="n40_REACTOME_389642" RelX="-0.0392156862745098" RelY="1.2727272727272727"/>
+      <Point X="181.0" Y="374.0" GraphId="e_35_c__0_1" GraphRef="e_35_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_REACTOME_389622">
+    <Comment Source="WikiPathways-description">VLCS (very long chain acyl-CoA synthetase), associated with the inner surface of the peroxisomal membrane, cayalyzes the reaction of phytanate, CoA-SH, and ATP to form phytanoyl-CoA, AMP, and pyrophosphate (Steinberg et al. 1999).</Comment>
+    <BiopaxRef>lit_389623</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="304.0" Y="418.0" GraphId="e_41_0"/>
+      <Point X="305.0" Y="436.0" GraphId="e_41_1"/>
+      <Point X="306.0" Y="452.0" GraphId="e_41_2"/>
+      <Anchor Position="0.0" GraphId="e_41_a_i"/>
+      <Anchor Position="0.5293099951122278" GraphId="e_41_a_p"/>
+      <Anchor Position="1.0" GraphId="e_41_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="331.0" Y="400.0" GraphId="e_41_i0_0" GraphRef="n43_REACTOME_389596" RelX="-0.4507042253521127" RelY="1.28"/>
+      <Point X="304.0" Y="418.0" GraphId="e_41_i0_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="305.0" Y="370.0" GraphId="e_41_i1_0" GraphRef="n44_REACTOME_193514" RelX="-0.03508771929824561" RelY="1.2142857142857142"/>
+      <Point X="304.0" Y="418.0" GraphId="e_41_i1_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="244.0" Y="377.0" GraphId="e_41_i2_0" GraphRef="n38_REACTOME_389573" RelX="1.2121212121212122" RelY="0.7692307692307693"/>
+      <Point X="304.0" Y="418.0" GraphId="e_41_i2_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="306.0" Y="484.0" GraphId="e_41_o0_0" ArrowHead="Arrow" GraphRef="n45_REACTOME_389615" RelX="-0.02247191011235955" RelY="-1.2307692307692308"/>
+      <Point X="306.0" Y="452.0" GraphId="e_41_o0_1" GraphRef="e_41_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="283.0" Y="457.0" GraphId="e_41_o1_0" ArrowHead="Arrow" GraphRef="n46_REACTOME_389593" RelX="1.1111111111111112" RelY="-0.37209302325581395"/>
+      <Point X="306.0" Y="452.0" GraphId="e_41_o1_1" GraphRef="e_41_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="329.0" Y="457.0" GraphId="e_41_o2_0" ArrowHead="Arrow" GraphRef="n48_REACTOME_389620" RelX="-1.1282051282051282" RelY="-0.2857142857142857"/>
+      <Point X="306.0" Y="452.0" GraphId="e_41_o2_1" GraphRef="e_41_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="183.0" Y="632.0" GraphId="e_41_c__0_0" GraphRef="n47_REACTOME_389579" RelX="0.0" RelY="-1.25"/>
+      <Point X="183.0" Y="436.0" GraphId="e_41_c__0_1"/>
+      <Point X="305.0" Y="436.0" GraphId="e_41_c__0_2" GraphRef="e_41_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_REACTOME_389550">
+    <Comment Source="WikiPathways-description">Peroxisomal IDH1 (isocitrate dehydrogenase 1) homodimer catalyzes the reaction of isocitrate and NADP+ to form 2-oxoglutarate, CO2, and NADPH + H+. The same enzyme can also localize to the cytosol in at least some cell types (Geisbrecht and Gould 1999; Xu et al. 2004).</Comment>
+    <BiopaxRef>lit_389555</BiopaxRef>
+    <BiopaxRef>lit_389560</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="636.0" Y="397.0" GraphId="e_50_0"/>
+      <Point X="590.0" Y="397.0" GraphId="e_50_1"/>
+      <Point X="555.0" Y="398.0" GraphId="e_50_2"/>
+      <Anchor Position="0.0" GraphId="e_50_a_i"/>
+      <Anchor Position="0.5678011137066664" GraphId="e_50_a_p"/>
+      <Anchor Position="1.0" GraphId="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="646.0" Y="414.0" GraphId="e_50_i0_0" GraphRef="n51_REACTOME_389556" RelX="-0.3137254901960784" RelY="-1.2"/>
+      <Point X="636.0" Y="397.0" GraphId="e_50_i0_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="667.0" Y="396.0" GraphId="e_50_i1_0" GraphRef="n52_REACTOME_389548" RelX="-1.0632911392405062" RelY="0.0"/>
+      <Point X="636.0" Y="397.0" GraphId="e_50_i1_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="530.0" Y="458.0" GraphId="e_50_o0_0" ArrowHead="Arrow" GraphRef="n53_REACTOME_193465" RelX="0.27586206896551724" RelY="-1.2173913043478262"/>
+      <Point X="555.0" Y="398.0" GraphId="e_50_o0_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="507.0" Y="433.0" GraphId="e_50_o1_0" ArrowHead="Arrow" GraphRef="n54_REACTOME_113602" RelX="0.40625" RelY="-1.2727272727272727"/>
+      <Point X="555.0" Y="398.0" GraphId="e_50_o1_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="555.0" Y="483.0" GraphId="e_50_o2_0" ArrowHead="Arrow" GraphRef="n55_REACTOME_389536" RelX="0.0" RelY="-1.25"/>
+      <Point X="555.0" Y="398.0" GraphId="e_50_o2_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="525.0" Y="398.0" GraphId="e_50_o3_0" ArrowHead="Arrow" GraphRef="n56_REACTOME_389537" RelX="1.0707070707070707" RelY="-0.12903225806451613"/>
+      <Point X="555.0" Y="398.0" GraphId="e_50_o3_1" GraphRef="e_50_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="591.0" Y="421.0" GraphId="e_50_c__0_0" GraphRef="n57_REACTOME_389557" RelX="-0.0425531914893617" RelY="-1.135135135135135"/>
+      <Point X="590.0" Y="397.0" GraphId="e_50_c__0_1" GraphRef="e_50_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_REACTOME_389639">
+    <Comment Source="WikiPathways-description">Peroxisomal phytanoyl-CoA dioxygenase catalyzes the reaction of phytanoyl-CoA, 2-oxoglutarate, and O2 to form 2-hydroxyphytanoyl-CoA, succinate, and CO2. The mature form of the enzyme lacks the first 30 amino acid residues of the full-length polypeptide and is complexed with Fe++. Mutations in this enzyme are the commonest cause of Refsum disease (Mukherji et al. 2001; McDonough et al. 2005).</Comment>
+    <BiopaxRef>lit_389576</BiopaxRef>
+    <BiopaxRef>lit_389604</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="382.0" Y="526.0" GraphId="e_58_0"/>
+      <Point X="384.0" Y="550.0" GraphId="e_58_1"/>
+      <Point X="384.0" Y="573.0" GraphId="e_58_2"/>
+      <Anchor Position="0.0" GraphId="e_58_a_i"/>
+      <Anchor Position="0.5115029289324394" GraphId="e_58_a_p"/>
+      <Anchor Position="1.0" GraphId="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="344.0" Y="516.0" GraphId="e_58_i0_0" GraphRef="n45_REACTOME_389615" RelX="0.8314606741573034" RelY="1.2307692307692308"/>
+      <Point X="382.0" Y="526.0" GraphId="e_58_i0_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="460.0" Y="419.0" GraphId="e_58_i1_0" GraphRef="n56_REACTOME_389537" RelX="-0.24242424242424243" RelY="1.2258064516129032"/>
+      <Point X="382.0" Y="526.0" GraphId="e_58_i1_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="360.0" Y="532.0" GraphId="e_58_i2_0" GraphRef="n59_REACTOME_113535" RelX="1.1228070175438596" RelY="-0.7272727272727273"/>
+      <Point X="382.0" Y="526.0" GraphId="e_58_i2_1" GraphRef="e_58_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="404.0" Y="588.0" GraphId="e_58_o0_0" ArrowHead="Arrow" GraphRef="n60_REACTOME_389594" RelX="-0.34710743801652894" RelY="-1.1666666666666667"/>
+      <Point X="384.0" Y="573.0" GraphId="e_58_o0_1" GraphRef="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="543.0" Y="513.0" GraphId="e_58_o1_0" ArrowHead="Arrow" GraphRef="n55_REACTOME_389536" RelX="-0.5853658536585366" RelY="1.25"/>
+      <Point X="485.0" Y="572.0" GraphId="e_58_o1_1"/>
+      <Point X="384.0" Y="573.0" GraphId="e_58_o1_2" GraphRef="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="356.0" Y="582.0" GraphId="e_58_o2_0" ArrowHead="Arrow" GraphRef="n61_REACTOME_389583" RelX="0.96875" RelY="-1.2142857142857142"/>
+      <Point X="384.0" Y="573.0" GraphId="e_58_o2_1" GraphRef="e_58_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_58_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="403.0" Y="548.0" GraphId="e_58_c__0_0" GraphRef="n62_REACTOME_389634" RelX="-1.1" RelY="0.05555555555555555"/>
+      <Point X="384.0" Y="550.0" GraphId="e_58_c__0_1" GraphRef="e_58_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_REACTOME_389611">
+    <Comment Source="WikiPathways-description">Peroxisomal HACL1 catalyzes the reaction of 2-hydroxyphytanoyl-CoA to form pristanal and formyl-CoA. The active form of the enzyme is a homotetramer, with one Mg++ and one molecule of thiamin pyrophosphate bound to each monomer (Croes et al. 1997; Foulon et al. 1999).</Comment>
+    <BiopaxRef>lit_389614</BiopaxRef>
+    <BiopaxRef>lit_389630</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="424.0" Y="630.0" GraphId="e_63_0" GraphRef="n60_REACTOME_389594" RelX="-0.01652892561983471" RelY="1.1666666666666667"/>
+      <Point X="424.0" Y="651.0" GraphId="e_63_1"/>
+      <Point X="425.0" Y="672.0" GraphId="e_63_2"/>
+      <Anchor Position="0.499716874201404" GraphId="e_63_a_p"/>
+      <Anchor Position="1.0" GraphId="e_63_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="403.0" Y="678.0" GraphId="e_63_o0_0" ArrowHead="Arrow" GraphRef="n64_REACTOME_389636" RelX="0.9538461538461539" RelY="-1.2307692307692308"/>
+      <Point X="425.0" Y="672.0" GraphId="e_63_o0_1" GraphRef="e_63_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="488.0" Y="690.0" GraphId="e_63_o1_0" ArrowHead="Arrow" GraphRef="n65_REACTOME_389578" RelX="-1.0649350649350648" RelY="-0.7741935483870968"/>
+      <Point X="425.0" Y="672.0" GraphId="e_63_o1_1" GraphRef="e_63_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_63_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="399.0" Y="651.0" GraphId="e_63_c__0_0" GraphRef="n66_REACTOME_389616" RelX="1.096774193548387" RelY="-0.10526315789473684"/>
+      <Point X="424.0" Y="651.0" GraphId="e_63_c__0_1" GraphRef="e_63_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_REACTOME_389580">
+    <Comment Source="WikiPathways-description">Formyl-CoA formed during the alpha-oxidation of phytanoyl-CoA is spontaneously hydrolyzed to formate and CoASH (Croes et al. 1997).</Comment>
+    <BiopaxRef>lit_389630</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="530.0" Y="737.0" GraphId="e_67_0"/>
+      <Point X="529.0" Y="754.0" GraphId="e_67_1"/>
+      <Point X="530.0" Y="773.0" GraphId="e_67_2"/>
+      <Anchor Position="0.0" GraphId="e_67_a_i"/>
+      <Anchor Position="0.4723079552875682" GraphId="e_67_a_p"/>
+      <Anchor Position="1.0" GraphId="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="511.0" Y="733.0" GraphId="e_67_i0_0" GraphRef="n68_REACTOME_141343" RelX="1.1891891891891893" RelY="0.2608695652173913"/>
+      <Point X="530.0" Y="737.0" GraphId="e_67_i0_1" GraphRef="e_67_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="529.0" Y="721.0" GraphId="e_67_i1_0" GraphRef="n65_REACTOME_389578" RelX="0.0" RelY="1.2258064516129032"/>
+      <Point X="530.0" Y="737.0" GraphId="e_67_i1_1" GraphRef="e_67_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="555.0" Y="785.0" GraphId="e_67_o0_0" ArrowHead="Arrow" GraphRef="n69_REACTOME_389585" RelX="-0.8" RelY="-1.1851851851851851"/>
+      <Point X="530.0" Y="773.0" GraphId="e_67_o0_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_67_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="517.0" Y="785.0" GraphId="e_67_o1_0" ArrowHead="Arrow" GraphRef="n70_REACTOME_193514" RelX="0.38596491228070173" RelY="-1.2142857142857142"/>
+      <Point X="530.0" Y="773.0" GraphId="e_67_o1_1" GraphRef="e_67_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_REACTOME_389609">
+    <Comment Source="WikiPathways-description">Peroxisomes contain a pristanal dehydrogenase activity that catalyzes the reaction of pristanal and NAD+ to form pristanate and NADH + H+. The enzyme responsible for this activity has not yet been purified (Jansen et al. 2001).</Comment>
+    <BiopaxRef>lit_389626</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="371.0" Y="728.0" GraphId="e_72_0"/>
+      <Point X="372.0" Y="753.0" GraphId="e_72_1"/>
+      <Point X="372.0" Y="773.0" GraphId="e_72_2"/>
+      <Anchor Position="0.0" GraphId="e_72_a_i"/>
+      <Anchor Position="0.5557529197881763" GraphId="e_72_a_p"/>
+      <Anchor Position="1.0" GraphId="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="395.0" Y="723.0" GraphId="e_72_i0_0" GraphRef="n73_REACTOME_192307" RelX="-1.1363636363636365" RelY="0.21428571428571427"/>
+      <Point X="371.0" Y="728.0" GraphId="e_72_i0_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="371.0" Y="710.0" GraphId="e_72_i1_0" GraphRef="n64_REACTOME_389636" RelX="-0.03076923076923077" RelY="1.2307692307692308"/>
+      <Point X="371.0" Y="728.0" GraphId="e_72_i1_1" GraphRef="e_72_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="372.0" Y="786.0" GraphId="e_72_o0_0" ArrowHead="Arrow" GraphRef="n74_REACTOME_389612" RelX="0.0" RelY="-1.2307692307692308"/>
+      <Point X="372.0" Y="773.0" GraphId="e_72_o0_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="401.0" Y="767.0" GraphId="e_72_o1_0" ArrowHead="Arrow" GraphRef="n75_REACTOME_192305" RelX="-1.1020408163265305" RelY="0.38095238095238093"/>
+      <Point X="372.0" Y="773.0" GraphId="e_72_o1_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="426.0" Y="788.0" GraphId="e_72_o2_0" ArrowHead="Arrow" GraphRef="n77_REACTOME_193465" RelX="-1.1724137931034482" RelY="-0.43478260869565216"/>
+      <Point X="372.0" Y="773.0" GraphId="e_72_o2_1" GraphRef="e_72_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="353.0" Y="752.0" GraphId="e_72_c__0_0" GraphRef="n76_REACTOME_389603" RelX="1.0721649484536082" RelY="0.0"/>
+      <Point X="372.0" Y="753.0" GraphId="e_72_c__0_1" GraphRef="e_72_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_REACTOME_389632">
+    <Comment Source="WikiPathways-description">VLCS (very long chain acyl-CoA synthetase), associated with the inner surface of the peroxisomal membrane, catalyzes the reaction of pristanate, CoA-SH and ATP to form pristanoyl-CoA, AMP and pyrophosphate (Steinberg et al. 1999).</Comment>
+    <BiopaxRef>lit_389623</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="372.0" Y="831.0" GraphId="e_78_0"/>
+      <Point X="372.0" Y="847.0" GraphId="e_78_1"/>
+      <Point X="372.0" Y="863.0" GraphId="e_78_2"/>
+      <Anchor Position="0.0" GraphId="e_78_a_i"/>
+      <Anchor Position="0.5" GraphId="e_78_a_p"/>
+      <Anchor Position="1.0" GraphId="e_78_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="339.0" Y="825.0" GraphId="e_78_i0_0" GraphRef="n79_REACTOME_389573" RelX="1.15" RelY="0.14285714285714285"/>
+      <Point X="372.0" Y="831.0" GraphId="e_78_i0_1" GraphRef="e_78_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="372.0" Y="818.0" GraphId="e_78_i1_0" GraphRef="n74_REACTOME_389612" RelX="0.0" RelY="1.2307692307692308"/>
+      <Point X="372.0" Y="831.0" GraphId="e_78_i1_1" GraphRef="e_78_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="475.0" Y="808.0" GraphId="e_78_i2_0" GraphRef="n70_REACTOME_193514" RelX="-1.087719298245614" RelY="0.42857142857142855"/>
+      <Point X="372.0" Y="831.0" GraphId="e_78_i2_1" GraphRef="e_78_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="375.0" Y="885.0" GraphId="e_78_o0_0" ArrowHead="Arrow" GraphRef="n80_REACTOME_389569" RelX="-0.05357142857142857" RelY="-1.1428571428571428"/>
+      <Point X="372.0" Y="863.0" GraphId="e_78_o0_1" GraphRef="e_78_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="340.0" Y="867.0" GraphId="e_78_o1_0" ArrowHead="Arrow" GraphRef="n82_REACTOME_389620" RelX="1.1666666666666667" RelY="-0.20689655172413793"/>
+      <Point X="372.0" Y="863.0" GraphId="e_78_o1_1" GraphRef="e_78_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="402.0" Y="863.0" GraphId="e_78_o2_0" ArrowHead="Arrow" GraphRef="n83_REACTOME_389593" RelX="-1.0793650793650793" RelY="-0.046511627906976744"/>
+      <Point X="372.0" Y="863.0" GraphId="e_78_o2_1" GraphRef="e_78_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_78_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="183.0" Y="662.0" GraphId="e_78_c__0_0" GraphRef="n47_REACTOME_389579" RelX="0.0" RelY="1.25"/>
+      <Point X="183.0" Y="845.0" GraphId="e_78_c__0_1"/>
+      <Point X="372.0" Y="847.0" GraphId="e_78_c__0_2" GraphRef="e_78_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_REACTOME_389897">
+    <Comment Source="WikiPathways-description">Peroxisomal 2-methylacyl-CoA racemase (AMACR) catalyzes the isomerization of (2R)-pristanoyl-CoA to form (2S)-pristanoyl-CoA. The active form of the enzyme is a monomer (Schmitz et al. 1995; Amery et al. 2000; Ferdinandusse et al. 2000).</Comment>
+    <BiopaxRef>lit_192112</BiopaxRef>
+    <BiopaxRef>lit_192185</BiopaxRef>
+    <BiopaxRef>lit_389890</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="437.0" Y="905.0" GraphId="e_85_0" GraphRef="n80_REACTOME_389569" RelX="1.0535714285714286" RelY="0.0"/>
+      <Point X="451.0" Y="905.0" GraphId="e_85_1"/>
+      <Point X="473.0" Y="905.0" GraphId="e_85_2" GraphRef="n86_REACTOME_389893" RelX="-1.0485436893203883" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.3888888888888889" GraphId="e_85_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="451.0" Y="933.0" GraphId="e_85_c__0_0" GraphRef="n87_REACTOME_192146" RelX="0.0" RelY="-1.263157894736842"/>
+      <Point X="451.0" Y="905.0" GraphId="e_85_c__0_1" GraphRef="e_85_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_389889">
+    <Comment Source="WikiPathways-description">In human liver and kidney tissue, monomeric peroxisomal ACOX2 catalyzes the reaction of (2S)-pristanoyl-CoA and O2 to form trans-2,3-dehydropristanoyl-CoA and H2O2 (Vanhove et al. 1993; Baumgart et al. 1996).</Comment>
+    <BiopaxRef>lit_193409</BiopaxRef>
+    <BiopaxRef>lit_192346</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="620.0" Y="880.0" GraphId="e_88_0"/>
+      <Point X="638.0" Y="879.0" GraphId="e_88_1"/>
+      <Point X="663.0" Y="879.0" GraphId="e_88_2"/>
+      <Anchor Position="0.0" GraphId="e_88_a_i"/>
+      <Anchor Position="0.4189796981099955" GraphId="e_88_a_p"/>
+      <Anchor Position="1.0" GraphId="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="582.0" Y="891.0" GraphId="e_88_i0_0" GraphRef="n86_REACTOME_389893" RelX="1.0679611650485437" RelY="-0.9032258064516129"/>
+      <Point X="620.0" Y="880.0" GraphId="e_88_i0_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="616.0" Y="891.0" GraphId="e_88_i1_0" GraphRef="n93_REACTOME_113535" RelX="0.10526315789473684" RelY="-1.2727272727272727"/>
+      <Point X="620.0" Y="880.0" GraphId="e_88_i1_1" GraphRef="e_88_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="700.0" Y="891.0" GraphId="e_88_o0_0" ArrowHead="Arrow" GraphRef="n89_REACTOME_389894" RelX="-1.045045045045045" RelY="-0.8260869565217391"/>
+      <Point X="663.0" Y="879.0" GraphId="e_88_o0_1" GraphRef="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="667.0" Y="889.0" GraphId="e_88_o1_0" ArrowHead="Arrow" GraphRef="n90_REACTOME_113575" RelX="-0.17777777777777778" RelY="-1.2307692307692308"/>
+      <Point X="663.0" Y="879.0" GraphId="e_88_o1_1" GraphRef="e_88_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="638.0" Y="857.0" GraphId="e_88_c__0_0" GraphRef="n91_REACTOME_192320" RelX="0.0" RelY="1.1794871794871795"/>
+      <Point X="638.0" Y="879.0" GraphId="e_88_c__0_1" GraphRef="e_88_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_REACTOME_389891">
+    <Comment Source="WikiPathways-description">Peroxisomal ACOX3 catalyzes the reaction of (2S)-pristanoyl-CoA and O2 to form trans-2,3-dehydropristanoyl-CoA and H2O2. ACOX3 protein and enzyme activity have been observed in prostate tumors, but are undetectable in normal prostate tissue as well as in liver and kidney (where ACOX2 catalyzes the oxidation of pristanoyl-CoA) (Zha et al. 2005; Vanhooren et al. 1997). The physiological consequences of this differential gene expression are unknown.</Comment>
+    <BiopaxRef>lit_389882</BiopaxRef>
+    <BiopaxRef>lit_389902</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="618.0" Y="932.0" GraphId="e_94_0"/>
+      <Point X="638.0" Y="932.0" GraphId="e_94_1"/>
+      <Point X="660.0" Y="932.0" GraphId="e_94_2"/>
+      <Anchor Position="0.0" GraphId="e_94_a_i"/>
+      <Anchor Position="0.47619047619047616" GraphId="e_94_a_p"/>
+      <Anchor Position="1.0" GraphId="e_94_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="582.0" Y="920.0" GraphId="e_94_i0_0" GraphRef="n86_REACTOME_389893" RelX="1.0679611650485437" RelY="0.967741935483871"/>
+      <Point X="618.0" Y="932.0" GraphId="e_94_i0_1" GraphRef="e_94_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="615.0" Y="919.0" GraphId="e_94_i1_0" GraphRef="n93_REACTOME_113535" RelX="0.07017543859649122" RelY="1.2727272727272727"/>
+      <Point X="618.0" Y="932.0" GraphId="e_94_i1_1" GraphRef="e_94_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="700.0" Y="922.0" GraphId="e_94_o0_0" ArrowHead="Arrow" GraphRef="n89_REACTOME_389894" RelX="-1.045045045045045" RelY="0.5217391304347826"/>
+      <Point X="660.0" Y="932.0" GraphId="e_94_o0_1" GraphRef="e_94_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="665.0" Y="921.0" GraphId="e_94_o1_0" ArrowHead="Arrow" GraphRef="n90_REACTOME_113575" RelX="-0.26666666666666666" RelY="1.2307692307692308"/>
+      <Point X="660.0" Y="932.0" GraphId="e_94_o1_1" GraphRef="e_94_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_94_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="638.0" Y="953.0" GraphId="e_94_c__0_0" GraphRef="n95_REACTOME_389905" RelX="0.0" RelY="-1.1428571428571428"/>
+      <Point X="638.0" Y="932.0" GraphId="e_94_c__0_1" GraphRef="e_94_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_REACTOME_389986">
+    <Comment Source="WikiPathways-description">Peroxisomal HSD17B4 dimer catalyzes the reaction of trans-2,3-dehydropristanoyl-CoA and H2O to form 3-hydroxypristanoyl-CoA. The enzyme is bifunctional - an aminoterminal domain catalyzes the dehydrogenation of a variety of 3-hydroxyacyl-CoA's and a carboxyterminal domain catalyzes the hydration of a variety of trans-2,3-dehydroacyl-CoA's, the reaction annotated here (Jiang et al. 1996, 1997). Defects in the enzyme are associated with a severe disorder of peroxisomal fatty acid metabolism in humans (Ferdinandusse et al. 2006).</Comment>
+    <BiopaxRef>lit_389997</BiopaxRef>
+    <BiopaxRef>lit_192311</BiopaxRef>
+    <BiopaxRef>lit_389983</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="832.0" Y="910.0" GraphId="e_96_0"/>
+      <Point X="855.0" Y="910.0" GraphId="e_96_1"/>
+      <Point X="883.0" Y="910.0" GraphId="e_96_2" GraphRef="n98_REACTOME_389982" RelX="-1.0467289719626167" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_96_a_i"/>
+      <Anchor Position="0.45098039215686275" GraphId="e_96_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="817.0" Y="910.0" GraphId="e_96_i0_0" GraphRef="n89_REACTOME_389894" RelX="1.063063063063063" RelY="0.0"/>
+      <Point X="832.0" Y="910.0" GraphId="e_96_i0_1" GraphRef="e_96_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="822.0" Y="890.0" GraphId="e_96_i1_0" GraphRef="n97_REACTOME_141343" RelX="0.23809523809523808" RelY="1.2592592592592593"/>
+      <Point X="832.0" Y="910.0" GraphId="e_96_i1_1" GraphRef="e_96_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="924.0" Y="979.0" GraphId="e_96_c__0_0" GraphRef="n99_REACTOME_389999" RelX="-1.0746268656716418" RelY="-0.9714285714285714"/>
+      <Point X="855.0" Y="945.0" GraphId="e_96_c__0_1"/>
+      <Point X="855.0" Y="910.0" GraphId="e_96_c__0_2" GraphRef="e_96_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_REACTOME_389995">
+    <Comment Source="WikiPathways-description">Peroxisomal HSD17B4 dimer catalyzes the reaction of 3-hydroxypristanoyl-CoA and NAD+ to form 3-ketoxypristanoyl-CoA and NADH + H+. The enzyme is bifunctional - an aminoterminal domain catalyzes the dehydrogenation of a variety of 3-hydroxyacyl-CoA's, the reaction annotated here, and a carboxyterminal domain catalyzes the hydration of a variety of trans-2,3-dehydroacyl-CoA's (Jiang et al. 1996, 1997). Defects in the enzyme are associated with a severe disorder of peroxisomal fatty acid metabolism in humans (Ferdinandusse et al. 2006).</Comment>
+    <BiopaxRef>lit_389997</BiopaxRef>
+    <BiopaxRef>lit_192311</BiopaxRef>
+    <BiopaxRef>lit_389983</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1012.0" Y="909.0" GraphId="e_101_0"/>
+      <Point X="1033.0" Y="910.0" GraphId="e_101_1"/>
+      <Point X="1052.0" Y="910.0" GraphId="e_101_2"/>
+      <Anchor Position="0.0" GraphId="e_101_a_i"/>
+      <Anchor Position="0.5252824099883441" GraphId="e_101_a_p"/>
+      <Anchor Position="1.0" GraphId="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="996.0" Y="909.0" GraphId="e_101_i0_0" GraphRef="n98_REACTOME_389982" RelX="1.0654205607476634" RelY="-0.044444444444444446"/>
+      <Point X="1012.0" Y="909.0" GraphId="e_101_i0_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="995.0" Y="887.0" GraphId="e_101_i1_0" GraphRef="n104_REACTOME_192307" RelX="0.36363636363636365" RelY="1.2142857142857142"/>
+      <Point X="1012.0" Y="909.0" GraphId="e_101_i1_1" GraphRef="e_101_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1088.0" Y="910.0" GraphId="e_101_o0_0" ArrowHead="Arrow" GraphRef="n102_REACTOME_389996" RelX="-1.0638297872340425" RelY="0.0"/>
+      <Point X="1052.0" Y="910.0" GraphId="e_101_o0_1" GraphRef="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1083.0" Y="934.0" GraphId="e_101_o1_0" ArrowHead="Arrow" GraphRef="n106_REACTOME_192305" RelX="-0.5306122448979592" RelY="-1.2380952380952381"/>
+      <Point X="1052.0" Y="910.0" GraphId="e_101_o1_1" GraphRef="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1052.0" Y="951.0" GraphId="e_101_o2_0" ArrowHead="Arrow" GraphRef="n108_REACTOME_193465" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="1052.0" Y="910.0" GraphId="e_101_o2_1" GraphRef="e_101_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_101_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="986.0" Y="976.0" GraphId="e_101_c__0_0" GraphRef="n99_REACTOME_389999" RelX="0.7761194029850746" RelY="-1.1428571428571428"/>
+      <Point X="1034.0" Y="948.0" GraphId="e_101_c__0_1"/>
+      <Point X="1033.0" Y="910.0" GraphId="e_101_c__0_2" GraphRef="e_101_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_REACTOME_390224">
+    <Comment Source="WikiPathways-description">Peroxisomal SCPx (Non-specific lipid transfer protein; SCP2) catalyzes the reaction of 3-ketopristanoyl-CoA and CoASH to form 4,8,12-trimethyltridecanoyl-CoA and propionyl-CoA. Both intact SCPx and an SCPx fragment corresponding to approximately the 430 aminoterminal residues of the protein are catalytically active in vitro; the latter form may predominate in vivo. Consistent with the role of SCPx in the beta-oxidation of branched-chain fatty acids in vitro, mutations in the protein are associated with elevated levels of pristanic acid in the blood in vivo and the development of neurological defects (Ferdinandusse et al. 2000, 2006).</Comment>
+    <BiopaxRef>lit_193392</BiopaxRef>
+    <BiopaxRef>lit_390220</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1208.0" Y="908.0" GraphId="e_110_0"/>
+      <Point X="1229.0" Y="908.0" GraphId="e_110_1"/>
+      <Point X="1246.0" Y="909.0" GraphId="e_110_2"/>
+      <Anchor Position="0.0" GraphId="e_110_a_i"/>
+      <Anchor Position="0.5522045451360634" GraphId="e_110_a_p"/>
+      <Anchor Position="1.0" GraphId="e_110_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1188.0" Y="908.0" GraphId="e_110_i0_0" GraphRef="n102_REACTOME_389996" RelX="1.0638297872340425" RelY="-0.08695652173913043"/>
+      <Point X="1208.0" Y="908.0" GraphId="e_110_i0_1" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1198.0" Y="969.0" GraphId="e_110_i1_0" GraphRef="n115_REACTOME_193514" RelX="0.07017543859649122" RelY="-1.2142857142857142"/>
+      <Point X="1208.0" Y="908.0" GraphId="e_110_i1_1" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1296.0" Y="946.0" GraphId="e_110_o0_0" ArrowHead="Arrow" GraphRef="n111_REACTOME_192314" RelX="-0.6052631578947368" RelY="-1.1428571428571428"/>
+      <Point X="1246.0" Y="909.0" GraphId="e_110_o0_1" GraphRef="e_110_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1270.0" Y="909.0" GraphId="e_110_o1_0" ArrowHead="Arrow" GraphRef="n112_REACTOME_390002" RelX="-1.0508474576271187" RelY="-0.07547169811320754"/>
+      <Point X="1246.0" Y="909.0" GraphId="e_110_o1_1" GraphRef="e_110_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1227.0" Y="883.0" GraphId="e_110_c__0_0" GraphRef="n113_REACTOME_192348" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1229.0" Y="908.0" GraphId="e_110_c__0_1" GraphRef="e_110_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_REACTOME_390276">
+    <Comment Source="WikiPathways-description">In two cycles of beta-oxidation mediated by the same enzyme activities responsible for the conversion of pristanoyl-CoA to 4,8,12-trimethyltridecanoyl-CoA, the latter molecule is converted to 4,8-dimethylnonanoyl-CoA. Two molecules each of O2, H2O, NAD+, and CoASH are consumed in the process and  two molecules of H2O2 and NADH + H+ are generated, together with single molecules of acetyl-CoA and propionyl-CoA (Verhoeven et al. 1998).</Comment>
+    <BiopaxRef>lit_390289</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1418.0" Y="914.0" GraphId="e_117_0"/>
+      <Point X="1439.0" Y="914.0" GraphId="e_117_1"/>
+      <Point X="1464.0" Y="913.0" GraphId="e_117_2"/>
+      <Anchor Position="0.0" GraphId="e_117_a_i"/>
+      <Anchor Position="0.45632341694197703" GraphId="e_117_a_p"/>
+      <Anchor Position="1.0" GraphId="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1405.0" Y="823.0" GraphId="e_117_i0_0" GraphRef="n118_REACTOME_141343" RelX="0.058823529411764705" RelY="1.25"/>
+      <Point X="1418.0" Y="914.0" GraphId="e_117_i0_1" GraphRef="e_117_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1394.0" Y="913.0" GraphId="e_117_i1_0" GraphRef="n112_REACTOME_390002" RelX="1.0508474576271187" RelY="0.07547169811320754"/>
+      <Point X="1418.0" Y="914.0" GraphId="e_117_i1_1" GraphRef="e_117_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1362.0" Y="874.0" GraphId="e_117_i2_0" GraphRef="n124_REACTOME_192307" RelX="0.8181818181818182" RelY="1.2142857142857142"/>
+      <Point X="1418.0" Y="914.0" GraphId="e_117_i2_1" GraphRef="e_117_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1360.0" Y="837.0" GraphId="e_117_i3_0" GraphRef="n126_REACTOME_113535" RelX="0.24561403508771928" RelY="1.2727272727272727"/>
+      <Point X="1418.0" Y="914.0" GraphId="e_117_i3_1" GraphRef="e_117_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_i4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1445.0" Y="856.0" GraphId="e_117_i4_0" GraphRef="n131_REACTOME_193514" RelX="-0.24561403508771928" RelY="1.2142857142857142"/>
+      <Point X="1418.0" Y="914.0" GraphId="e_117_i4_1" GraphRef="e_117_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1530.0" Y="886.0" GraphId="e_117_o0_0" ArrowHead="Arrow" GraphRef="n119_REACTOME_353123" RelX="-1.0724637681159421" RelY="0.8387096774193549"/>
+      <Point X="1464.0" Y="913.0" GraphId="e_117_o0_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1360.0" Y="959.0" GraphId="e_117_o1_0" ArrowHead="Arrow" GraphRef="n111_REACTOME_192314" RelX="1.0789473684210527" RelY="-0.4"/>
+      <Point X="1417.0" Y="950.0" GraphId="e_117_o1_1"/>
+      <Point X="1464.0" Y="913.0" GraphId="e_117_o1_2" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1498.0" Y="914.0" GraphId="e_117_o2_0" ArrowHead="Arrow" GraphRef="n120_REACTOME_390271" RelX="-1.044776119402985" RelY="-0.16216216216216217"/>
+      <Point X="1464.0" Y="913.0" GraphId="e_117_o2_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1497.0" Y="953.0" GraphId="e_117_o3_0" ArrowHead="Arrow" GraphRef="n122_REACTOME_192305" RelX="-0.3673469387755102" RelY="-1.2380952380952381"/>
+      <Point X="1464.0" Y="913.0" GraphId="e_117_o3_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1458.0" Y="954.0" GraphId="e_117_o4_0" ArrowHead="Arrow" GraphRef="n128_REACTOME_193465" RelX="0.0625" RelY="-1.2307692307692308"/>
+      <Point X="1464.0" Y="913.0" GraphId="e_117_o4_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_117_o5">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1487.0" Y="884.0" GraphId="e_117_o5_0" ArrowHead="Arrow" GraphRef="n132_REACTOME_113575" RelX="-0.4444444444444444" RelY="1.2307692307692308"/>
+      <Point X="1464.0" Y="913.0" GraphId="e_117_o5_1" GraphRef="e_117_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_REACTOME_390281">
+    <Comment Source="WikiPathways-description">Peroxisomal CROT catalyzes the reaction of 4,8-dimethylnonanoyl-CoA and carnitine to form 4,8-dimethylnonanoylcarnitine and CoASH (Ferdinandusse et al. 1999).</Comment>
+    <BiopaxRef>lit_390279</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1569.0" Y="953.0" GraphId="e_133_0"/>
+      <Point X="1569.0" Y="978.0" GraphId="e_133_1"/>
+      <Point X="1570.0" Y="1000.0" GraphId="e_133_2"/>
+      <Anchor Position="0.0" GraphId="e_133_a_i"/>
+      <Anchor Position="0.5316579382954928" GraphId="e_133_a_p"/>
+      <Anchor Position="1.0" GraphId="e_133_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1568.0" Y="939.0" GraphId="e_133_i0_0" GraphRef="n120_REACTOME_390271" RelX="0.0" RelY="1.1891891891891893"/>
+      <Point X="1569.0" Y="953.0" GraphId="e_133_i0_1" GraphRef="e_133_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1581.0" Y="952.0" GraphId="e_133_i1_0" GraphRef="n134_REACTOME_390294" RelX="-1.0847457627118644" RelY="0.18181818181818182"/>
+      <Point X="1569.0" Y="953.0" GraphId="e_133_i1_1" GraphRef="e_133_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1569.0" Y="1022.0" GraphId="e_133_o0_0" ArrowHead="Arrow" GraphRef="n135_REACTOME_390290" RelX="0.01904761904761905" RelY="-1.12"/>
+      <Point X="1570.0" Y="1000.0" GraphId="e_133_o0_1" GraphRef="e_133_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1590.0" Y="1003.0" GraphId="e_133_o1_0" ArrowHead="Arrow" GraphRef="n138_REACTOME_193514" RelX="-1.087719298245614" RelY="-0.42857142857142855"/>
+      <Point X="1570.0" Y="1000.0" GraphId="e_133_o1_1" GraphRef="e_133_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_133_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1595.0" Y="978.0" GraphId="e_133_c__0_0" GraphRef="n136_REACTOME_390296" RelX="-1.1020408163265305" RelY="-0.09523809523809523"/>
+      <Point X="1569.0" Y="978.0" GraphId="e_133_c__0_1" GraphRef="e_133_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_REACTOME_390291">
+    <Comment Source="WikiPathways-description">Peroxisomal carnitineacetyltransferase (CRAT) catalyzes the reaction of acetyl-CoA and carnitine to form acetylcarnitine and CoASH. The active form of the enzyme is a monomer (Bloisi et al. 1990; Wu et al. 2003).</Comment>
+    <BiopaxRef>lit_390283</BiopaxRef>
+    <BiopaxRef>lit_201037</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1667.0" Y="949.0" GraphId="e_140_0"/>
+      <Point X="1669.0" Y="980.0" GraphId="e_140_1"/>
+      <Point X="1670.0" Y="1001.0" GraphId="e_140_2"/>
+      <Anchor Position="0.0" GraphId="e_140_a_i"/>
+      <Anchor Position="0.596381180231081" GraphId="e_140_a_p"/>
+      <Anchor Position="1.0" GraphId="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1605.0" Y="887.0" GraphId="e_140_i0_0" GraphRef="n119_REACTOME_353123" RelX="1.1014492753623188" RelY="0.9032258064516129"/>
+      <Point X="1645.0" Y="906.0" GraphId="e_140_i0_1"/>
+      <Point X="1667.0" Y="949.0" GraphId="e_140_i0_2" GraphRef="e_140_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1646.0" Y="949.0" GraphId="e_140_i1_0" GraphRef="n134_REACTOME_390294" RelX="1.11864406779661" RelY="-0.09090909090909091"/>
+      <Point X="1667.0" Y="949.0" GraphId="e_140_i1_1" GraphRef="e_140_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1673.0" Y="1028.0" GraphId="e_140_o0_0" ArrowHead="Arrow" GraphRef="n141_REACTOME_390287" RelX="-0.042105263157894736" RelY="-1.2"/>
+      <Point X="1670.0" Y="1001.0" GraphId="e_140_o0_1" GraphRef="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1653.0" Y="1004.0" GraphId="e_140_o1_0" ArrowHead="Arrow" GraphRef="n138_REACTOME_193514" RelX="1.1228070175438596" RelY="-0.35714285714285715"/>
+      <Point X="1670.0" Y="1001.0" GraphId="e_140_o1_1" GraphRef="e_140_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_140_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1692.0" Y="980.0" GraphId="e_140_c__0_0" GraphRef="n142_REACTOME_390293" RelX="-1.1428571428571428" RelY="-0.11764705882352941"/>
+      <Point X="1669.0" Y="980.0" GraphId="e_140_c__0_1" GraphRef="e_140_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_REACTOME_390304">
+    <Comment Source="WikiPathways-description">Peroxisomal ACOT8 catalyzes the hydrolysis of acetyl-CoA to form acetate and CoASH (Jones et al. 1999; Wanders and Waterham 2006).</Comment>
+    <BiopaxRef>lit_193495</BiopaxRef>
+    <BiopaxRef>lit_389650</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1566.0" Y="842.0" GraphId="e_145_0"/>
+      <Point X="1567.0" Y="817.0" GraphId="e_145_1"/>
+      <Point X="1566.0" Y="795.0" GraphId="e_145_2"/>
+      <Anchor Position="0.0" GraphId="e_145_a_i"/>
+      <Anchor Position="0.5318569722792756" GraphId="e_145_a_p"/>
+      <Anchor Position="1.0" GraphId="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1566.0" Y="855.0" GraphId="e_145_i0_0" GraphRef="n119_REACTOME_353123" RelX="-0.028985507246376812" RelY="-1.1612903225806452"/>
+      <Point X="1566.0" Y="842.0" GraphId="e_145_i0_1" GraphRef="e_145_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1600.0" Y="847.0" GraphId="e_145_i1_0" GraphRef="n146_REACTOME_141343" RelX="-1.135135135135135" RelY="-0.3333333333333333"/>
+      <Point X="1566.0" Y="842.0" GraphId="e_145_i1_1" GraphRef="e_145_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1566.0" Y="772.0" GraphId="e_145_o0_0" ArrowHead="Arrow" GraphRef="n147_REACTOME_390305" RelX="-0.034482758620689655" RelY="1.2307692307692308"/>
+      <Point X="1566.0" Y="795.0" GraphId="e_145_o0_1" GraphRef="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1484.0" Y="828.0" GraphId="e_145_o1_0" ArrowHead="Arrow" GraphRef="n131_REACTOME_193514" RelX="1.1228070175438596" RelY="-0.7857142857142857"/>
+      <Point X="1566.0" Y="795.0" GraphId="e_145_o1_1" GraphRef="e_145_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1594.0" Y="815.0" GraphId="e_145_c__0_0" GraphRef="n148_REACTOME_193426" RelX="-1.0943396226415094" RelY="0.0"/>
+      <Point X="1567.0" Y="817.0" GraphId="e_145_c__0_1" GraphRef="e_145_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_REACTOME_390284">
+    <Comment Source="WikiPathways-description">Peroxisomal carnitineacetyltransferase (CRAT) catalyzes the reaction of propionyl-CoA and carnitine to form propionylcarnitine and CoASH. The active form of the enzyme is a monomer (Bloisi et al. 1990; Wu et al. 2003).</Comment>
+    <BiopaxRef>lit_390283</BiopaxRef>
+    <BiopaxRef>lit_201037</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1318.0" Y="999.0" GraphId="e_149_0"/>
+      <Point X="1319.0" Y="1012.0" GraphId="e_149_1"/>
+      <Point X="1320.0" Y="1028.0" GraphId="e_149_2"/>
+      <Anchor Position="0.0" GraphId="e_149_a_i"/>
+      <Anchor Position="0.448523333235975" GraphId="e_149_a_p"/>
+      <Anchor Position="1.0" GraphId="e_149_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1318.0" Y="987.0" GraphId="e_149_i0_0" GraphRef="n111_REACTOME_192314" RelX="-0.02631578947368421" RelY="1.2"/>
+      <Point X="1318.0" Y="999.0" GraphId="e_149_i0_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1343.0" Y="992.0" GraphId="e_149_i1_0" GraphRef="n151_REACTOME_390294" RelX="-1.0847457627118644" RelY="0.6363636363636364"/>
+      <Point X="1318.0" Y="999.0" GraphId="e_149_i1_1" GraphRef="e_149_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1320.0" Y="1039.0" GraphId="e_149_o0_0" ArrowHead="Arrow" GraphRef="n150_REACTOME_390274" RelX="0.0" RelY="-1.1515151515151516"/>
+      <Point X="1320.0" Y="1028.0" GraphId="e_149_o0_1" GraphRef="e_149_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1228.0" Y="995.0" GraphId="e_149_o1_0" ArrowHead="Arrow" GraphRef="n115_REACTOME_193514" RelX="1.1228070175438596" RelY="0.6428571428571429"/>
+      <Point X="1320.0" Y="1028.0" GraphId="e_149_o1_1" GraphRef="e_149_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_149_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1718.0" Y="993.0" GraphId="e_149_c__0_0" GraphRef="n142_REACTOME_390293" RelX="0.09523809523809523" RelY="1.411764705882353"/>
+      <Point X="1732.0" Y="1029.0" GraphId="e_149_c__0_1"/>
+      <Point X="1731.0" Y="1087.0" GraphId="e_149_c__0_2"/>
+      <Point X="1534.0" Y="1088.0" GraphId="e_149_c__0_3"/>
+      <Point X="1361.0" Y="1012.0" GraphId="e_149_c__0_4"/>
+      <Point X="1319.0" Y="1012.0" GraphId="e_149_c__0_5" GraphRef="e_149_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_REACTOME_390425">
+    <Comment Source="WikiPathways-description">Peroxisomal fatty acyl-CoA reductase 1 (FAR1) catalyzes the reaction of palmitoyl-CoA and 2 NADPH + 2 H+ to form hexadecanol, CoASH, and 2 NADP+. As judged from mRNA levels, FAR1 is widely expressed in the body (Cheng and Russell 2004).</Comment>
+    <BiopaxRef>lit_390429</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="900.0" Y="421.0" GraphId="e_163_0"/>
+      <Point X="931.0" Y="422.0" GraphId="e_163_1"/>
+      <Point X="962.0" Y="423.0" GraphId="e_163_2"/>
+      <Anchor Position="0.0" GraphId="e_163_a_i"/>
+      <Anchor Position="0.5" GraphId="e_163_a_p"/>
+      <Anchor Position="1.0" GraphId="e_163_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="811.0" Y="446.0" GraphId="e_163_i0_0" GraphRef="n164_REACTOME_390426" RelX="0.7301587301587301" RelY="-1.1612903225806452"/>
+      <Point X="850.0" Y="423.0" GraphId="e_163_i0_1"/>
+      <Point X="900.0" Y="421.0" GraphId="e_163_i0_2" GraphRef="e_163_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="911.0" Y="451.0" GraphId="e_163_i1_0" GraphRef="n168_REACTOME_193465" RelX="-0.3448275862068966" RelY="-1.2173913043478262"/>
+      <Point X="900.0" Y="421.0" GraphId="e_163_i1_1" GraphRef="e_163_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="870.0" Y="451.0" GraphId="e_163_i2_0" GraphRef="n170_REACTOME_113602" RelX="0.28125" RelY="-1.2727272727272727"/>
+      <Point X="900.0" Y="421.0" GraphId="e_163_i2_1" GraphRef="e_163_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1077.0" Y="447.0" GraphId="e_163_o0_0" ArrowHead="Arrow" GraphRef="n165_REACTOME_390440" RelX="-0.6666666666666666" RelY="-1.2"/>
+      <Point X="1029.0" Y="423.0" GraphId="e_163_o0_1"/>
+      <Point X="962.0" Y="423.0" GraphId="e_163_o0_2" GraphRef="e_163_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1005.0" Y="448.0" GraphId="e_163_o1_0" ArrowHead="Arrow" GraphRef="n172_REACTOME_193514" RelX="-0.7719298245614035" RelY="-1.2142857142857142"/>
+      <Point X="962.0" Y="423.0" GraphId="e_163_o1_1" GraphRef="e_163_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="964.0" Y="447.0" GraphId="e_163_o2_0" ArrowHead="Arrow" GraphRef="n174_REACTOME_389556" RelX="-0.0784313725490196" RelY="-1.2"/>
+      <Point X="962.0" Y="423.0" GraphId="e_163_o2_1" GraphRef="e_163_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_163_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="929.0" Y="403.0" GraphId="e_163_c__0_0" GraphRef="n166_REACTOME_390412" RelX="0.0" RelY="1.3333333333333333"/>
+      <Point X="931.0" Y="422.0" GraphId="e_163_c__0_1" GraphRef="e_163_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_REACTOME_390438">
+    <Comment Source="WikiPathways-description">Peroxisomal fatty acyl-CoA reductase 2 (FAR2) catalyzes the reaction of palmitoyl-CoA and 2 NADPH + 2 H+ to form hexadecanol, CoASH, and 2 NADP+. As judged from mRNA levels, FAR2 is not widely expressed in the body but is abundant in brain (Cheng and Russell 2004).</Comment>
+    <BiopaxRef>lit_390429</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="894.0" Y="513.0" GraphId="e_176_0"/>
+      <Point X="931.0" Y="512.0" GraphId="e_176_1"/>
+      <Point X="971.0" Y="513.0" GraphId="e_176_2"/>
+      <Anchor Position="0.0" GraphId="e_176_a_i"/>
+      <Anchor Position="0.480532634131565" GraphId="e_176_a_p"/>
+      <Anchor Position="1.0" GraphId="e_176_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="807.0" Y="483.0" GraphId="e_176_i0_0" GraphRef="n164_REACTOME_390426" RelX="0.6031746031746031" RelY="1.2258064516129032"/>
+      <Point X="849.0" Y="513.0" GraphId="e_176_i0_1"/>
+      <Point X="894.0" Y="513.0" GraphId="e_176_i0_2" GraphRef="e_176_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="910.0" Y="480.0" GraphId="e_176_i1_0" GraphRef="n168_REACTOME_193465" RelX="-0.41379310344827586" RelY="1.3043478260869565"/>
+      <Point X="894.0" Y="513.0" GraphId="e_176_i1_1" GraphRef="e_176_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="868.0" Y="479.0" GraphId="e_176_i2_0" GraphRef="n170_REACTOME_113602" RelX="0.21875" RelY="1.2727272727272727"/>
+      <Point X="894.0" Y="513.0" GraphId="e_176_i2_1" GraphRef="e_176_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1081.0" Y="483.0" GraphId="e_176_o0_0" ArrowHead="Arrow" GraphRef="n165_REACTOME_390440" RelX="-0.5679012345679012" RelY="1.2"/>
+      <Point X="1033.0" Y="513.0" GraphId="e_176_o0_1"/>
+      <Point X="971.0" Y="513.0" GraphId="e_176_o0_2" GraphRef="e_176_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1010.0" Y="482.0" GraphId="e_176_o1_0" ArrowHead="Arrow" GraphRef="n172_REACTOME_193514" RelX="-0.5964912280701754" RelY="1.2142857142857142"/>
+      <Point X="971.0" Y="513.0" GraphId="e_176_o1_1" GraphRef="e_176_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="967.0" Y="483.0" GraphId="e_176_o2_0" ArrowHead="Arrow" GraphRef="n174_REACTOME_389556" RelX="0.0392156862745098" RelY="1.2"/>
+      <Point X="971.0" Y="513.0" GraphId="e_176_o2_1" GraphRef="e_176_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_176_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="931.0" Y="533.0" GraphId="e_176_c__0_0" GraphRef="n177_REACTOME_390430" RelX="-0.044444444444444446" RelY="-1.2380952380952381"/>
+      <Point X="931.0" Y="512.0" GraphId="e_176_c__0_1" GraphRef="e_176_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_REACTOME_75879">
+    <Comment Source="WikiPathways-description">Peroxisomal glyceronephosphate O-acyltransferase (GNPAT) catalyzes the reaction of palmitoyl-CoA and DHAP to form 1-palmitoyl glycerone phosphate (1-palmitoyl dihydroxyacetone phosphate) and CoASH. The active form of the enzyme is one subunit of a heterotrimer with two molecules of the alkylglycerone phosphate synthase (AGPS) enzyme (Biermann et al. 1999). It was first purified and characterized biochemically by Ofman and Wanders (1994). Mutations in the GNPAT gene are associated with rhizomelic chondrodysplasia type 2 (Ofman et al. 1998, 2001).</Comment>
+    <BiopaxRef>lit_200031</BiopaxRef>
+    <BiopaxRef>lit_390401</BiopaxRef>
+    <BiopaxRef>lit_390405</BiopaxRef>
+    <BiopaxRef>lit_390414</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1211.0" Y="567.0" GraphId="e_179_0"/>
+      <Point X="1211.0" Y="544.0" GraphId="e_179_1"/>
+      <Point X="1210.0" Y="521.0" GraphId="e_179_2"/>
+      <Anchor Position="0.0" GraphId="e_179_a_i"/>
+      <Anchor Position="0.49976392818155824" GraphId="e_179_a_p"/>
+      <Anchor Position="1.0" GraphId="e_179_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1211.0" Y="576.0" GraphId="e_179_i0_0" GraphRef="n180_REACTOME_390404" RelX="-0.03636363636363636" RelY="-1.0980392156862746"/>
+      <Point X="1211.0" Y="567.0" GraphId="e_179_i0_1" GraphRef="e_179_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="800.0" Y="483.0" GraphId="e_179_i1_0" GraphRef="n164_REACTOME_390426" RelX="0.38095238095238093" RelY="1.2258064516129032"/>
+      <Point X="870.0" Y="566.0" GraphId="e_179_i1_1"/>
+      <Point X="1211.0" Y="567.0" GraphId="e_179_i1_2" GraphRef="e_179_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1210.0" Y="503.0" GraphId="e_179_o0_0" ArrowHead="Arrow" GraphRef="n181_REACTOME_390419" RelX="-0.038461538461538464" RelY="1.1"/>
+      <Point X="1210.0" Y="521.0" GraphId="e_179_o0_1" GraphRef="e_179_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1182.0" Y="521.0" GraphId="e_179_o1_0" ArrowHead="Arrow" GraphRef="n184_REACTOME_193514" RelX="1.1228070175438596" RelY="-0.07142857142857142"/>
+      <Point X="1210.0" Y="521.0" GraphId="e_179_o1_1" GraphRef="e_179_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_179_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1297.0" Y="492.0" GraphId="e_179_c__0_0" GraphRef="n182_REACTOME_76165" RelX="-0.40963855421686746" RelY="1.1794871794871795"/>
+      <Point X="1253.0" Y="540.0" GraphId="e_179_c__0_1"/>
+      <Point X="1211.0" Y="544.0" GraphId="e_179_c__0_2" GraphRef="e_179_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_REACTOME_390427">
+    <Comment Source="WikiPathways-description">Peroxisomal alkylglycerone phosphate synthase (AGPS) catalyzes the reaction of 1-palmitoylglycerone phosphate and hexadecanol to form O-hexadecylglycerone phosphate and palmitate. The active form of the enzyme is post-translationally cleaved to remove its 58 aminoterminal residues, has a molecule of FAD as a cofactor, and occurs in the peroxisome as a complex with glyceronephosphate O-acyltransferase (GNPAT) (Biermann et al. 1999; Bierman and van den Bosch 1999; de Vet et al. 2000).</Comment>
+    <BiopaxRef>lit_200031</BiopaxRef>
+    <BiopaxRef>lit_390403</BiopaxRef>
+    <BiopaxRef>lit_390441</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1210.0" Y="423.0" GraphId="e_185_0"/>
+      <Point X="1211.0" Y="404.0" GraphId="e_185_1"/>
+      <Point X="1211.0" Y="385.0" GraphId="e_185_2"/>
+      <Anchor Position="0.0" GraphId="e_185_a_i"/>
+      <Anchor Position="0.5003457816314867" GraphId="e_185_a_p"/>
+      <Anchor Position="1.0" GraphId="e_185_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1210.0" Y="437.0" GraphId="e_185_i0_0" GraphRef="n181_REACTOME_390419" RelX="-0.038461538461538464" RelY="-1.1"/>
+      <Point X="1210.0" Y="423.0" GraphId="e_185_i0_1" GraphRef="e_185_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1141.0" Y="447.0" GraphId="e_185_i1_0" GraphRef="n165_REACTOME_390440" RelX="0.9135802469135802" RelY="-1.2"/>
+      <Point X="1210.0" Y="423.0" GraphId="e_185_i1_1" GraphRef="e_185_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1165.0" Y="377.0" GraphId="e_185_o0_0" ArrowHead="Arrow" GraphRef="n186_REACTOME_390435" RelX="1.0909090909090908" RelY="0.43478260869565216"/>
+      <Point X="1211.0" Y="385.0" GraphId="e_185_o0_1" GraphRef="e_185_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1211.0" Y="360.0" GraphId="e_185_o1_0" ArrowHead="Arrow" GraphRef="n187_REACTOME_390409" RelX="-0.015037593984962405" RelY="1.1304347826086956"/>
+      <Point X="1211.0" Y="385.0" GraphId="e_185_o1_1" GraphRef="e_185_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_185_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1294.0" Y="447.0" GraphId="e_185_c__0_0" GraphRef="n182_REACTOME_76165" RelX="-0.4819277108433735" RelY="-1.1282051282051282"/>
+      <Point X="1249.0" Y="403.0" GraphId="e_185_c__0_1"/>
+      <Point X="1211.0" Y="404.0" GraphId="e_185_c__0_2" GraphRef="e_185_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_190_REACTOME_390402">
+    <Comment Source="WikiPathways-description">O-hexadecylglycerone phosphate is synthesized in the peroxisomal matrix but its further metabolism takes place in the cytosol and endoplasmic reticulum. The mechanism by which it leaves the peroxisome is unknown (Nagan and Zoeller 2001).</Comment>
+    <BiopaxRef>lit_390406</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1212.0" Y="308.0" GraphId="e_190_0" GraphRef="n187_REACTOME_390409" RelX="0.0" RelY="-1.1304347826086956"/>
+      <Point X="1212.0" Y="283.0" GraphId="e_190_1"/>
+      <Point X="1212.0" Y="257.0" GraphId="e_190_2" GraphRef="n191_REACTOME_75973" RelX="-0.013986013986013986" RelY="1.15" ArrowHead="Arrow"/>
+      <Anchor Position="0.49019607843137253" GraphId="e_190_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_193_REACTOME_75883">
+    <Comment Source="WikiPathways-description">AADHAPR catalyzes the reaction of O-hexadecyldihydroxyacetone phosphate and NADPH + H+ to form 1-hexadecyl glycerol-3-phosphate and NADP+. The enzyme is associated with the outer face of the peroxisomal membrane; its substrates and products are thought to be cytosolic. The enzyme appears to be well-conserved among animal species. The properties of the human enzyme are inferred from those of an activity partially purified from guinea pig liver (Datta et al. 1990).</Comment>
+    <BiopaxRef>lit_390424</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1064.0" Y="233.0" GraphId="e_193_0"/>
+      <Point X="1024.0" Y="234.0" GraphId="e_193_1"/>
+      <Point X="1001.0" Y="233.0" GraphId="e_193_2"/>
+      <Anchor Position="0.0" GraphId="e_193_a_i"/>
+      <Anchor Position="0.6347741537644545" GraphId="e_193_a_p"/>
+      <Anchor Position="1.0" GraphId="e_193_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_193_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1116.0" Y="194.0" GraphId="e_193_i0_0" GraphRef="n194_REACTOME_70106" RelX="-1.1875" RelY="0.9166666666666666"/>
+      <Point X="1064.0" Y="233.0" GraphId="e_193_i0_1" GraphRef="e_193_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_193_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1139.0" Y="233.0" GraphId="e_193_i1_0" GraphRef="n191_REACTOME_75973" RelX="-1.034965034965035" RelY="-0.05"/>
+      <Point X="1064.0" Y="233.0" GraphId="e_193_i1_1" GraphRef="e_193_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_193_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1076.0" Y="199.0" GraphId="e_193_i2_0" GraphRef="n195_REACTOME_29364" RelX="-0.17857142857142858" RelY="1.28"/>
+      <Point X="1064.0" Y="233.0" GraphId="e_193_i2_1" GraphRef="e_193_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_193_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="955.0" Y="199.0" GraphId="e_193_o0_0" ArrowHead="Arrow" GraphRef="n196_REACTOME_29366" RelX="0.5357142857142857" RelY="1.28"/>
+      <Point X="1001.0" Y="233.0" GraphId="e_193_o0_1" GraphRef="e_193_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_193_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="952.0" Y="233.0" GraphId="e_193_o1_0" ArrowHead="Arrow" GraphRef="n197_REACTOME_390422" RelX="1.046875" RelY="-0.05"/>
+      <Point X="1001.0" Y="233.0" GraphId="e_193_o1_1" GraphRef="e_193_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_193_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1024.0" Y="269.0" GraphId="e_193_c__0_0" GraphRef="n198_REACTOME_76161" RelX="0.0" RelY="-1.2"/>
+      <Point X="1024.0" Y="234.0" GraphId="e_193_c__0_1" GraphRef="e_193_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_199_REACTOME_390393">
+    <Comment Source="WikiPathways-description">Homodimeric ABCD1 associated with the peroxisomal membrane mediates the uptake of cytosolic very long chain fatty acyl CoAs such as hexacosanoyl-CoA into the peroxisomal matrix. While the requirement for this uptake step in the catabolism of very long chain fatty acids is well-established, direct evidence for the function of ABCD1 as a transporter comes only from studies of its ability to restore peroxisomal long chain fatty acid catabolism in yeast strains whose endogenous transporters have been disrupted by mutation. ABCD1 is inferred to function as a dimer like other members of the ABCD transporter family. The energy requirements of peroxisomal fatty acid uptake (other ABCD transporter-mediated reactions are coupled to ATP hydrolysis) have not been established (van Roermund et al. 2008).</Comment>
+    <BiopaxRef>lit_390395</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="167.0" Y="1090.0" GraphId="e_199_0" GraphRef="n200_REACTOME_390394" RelX="1.0721649484536082" RelY="0.0"/>
+      <Point X="184.0" Y="1091.0" GraphId="e_199_1"/>
+      <Point X="350.0" Y="1091.0" GraphId="e_199_2" GraphRef="n201_REACTOME_390260" RelX="-1.0574712643678161" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.09304181532838637" GraphId="e_199_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_199_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="184.0" Y="1116.0" GraphId="e_199_c__0_0" GraphRef="n202_REACTOME_382579" RelX="-0.025974025974025976" RelY="-1.1578947368421053"/>
+      <Point X="184.0" Y="1091.0" GraphId="e_199_c__0_1" GraphRef="e_199_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_203_REACTOME_390256">
+    <Comment Source="WikiPathways-description">Peroxisomal ACOX1 catalyzes the reaction of hexacosanoyl-CoA and O2 to form trans-2,3-dehydrohexacosanoyl-CoA and H2O2. The active form of the enzyme is a homodimer with FAD as a cofactor (Chu et al. 1995). Mutations in the ACOX1 gene are asociated with accumulation of very long chain fatty acids. Two isoforms of ACOX1, generated by alternative splicing are known; a mutation affecting specifically the second isoform blocks the oxidation of very long chain fatty acids (Ferdinandusse et al. 2007).</Comment>
+    <BiopaxRef>lit_390245</BiopaxRef>
+    <BiopaxRef>lit_390239</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="461.0" Y="1092.0" GraphId="e_203_0"/>
+      <Point X="489.0" Y="1091.0" GraphId="e_203_1"/>
+      <Point X="516.0" Y="1090.0" GraphId="e_203_2"/>
+      <Anchor Position="0.0" GraphId="e_203_a_i"/>
+      <Anchor Position="0.5090788999692117" GraphId="e_203_a_p"/>
+      <Anchor Position="1.0" GraphId="e_203_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_203_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="443.0" Y="1091.0" GraphId="e_203_i0_0" GraphRef="n201_REACTOME_390260" RelX="1.0804597701149425" RelY="0.0"/>
+      <Point X="461.0" Y="1092.0" GraphId="e_203_i0_1" GraphRef="e_203_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_203_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="445.0" Y="1075.0" GraphId="e_203_i1_0" GraphRef="n207_REACTOME_113535" RelX="0.2807017543859649" RelY="1.2727272727272727"/>
+      <Point X="461.0" Y="1092.0" GraphId="e_203_i1_1" GraphRef="e_203_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_203_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="549.0" Y="1090.0" GraphId="e_203_o0_0" ArrowHead="Arrow" GraphRef="n204_REACTOME_390249" RelX="-1.037593984962406" RelY="-0.0392156862745098"/>
+      <Point X="516.0" Y="1090.0" GraphId="e_203_o0_1" GraphRef="e_203_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_203_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="532.0" Y="1077.0" GraphId="e_203_o1_0" ArrowHead="Arrow" GraphRef="n209_REACTOME_113575" RelX="-0.6222222222222222" RelY="1.2307692307692308"/>
+      <Point X="516.0" Y="1090.0" GraphId="e_203_o1_1" GraphRef="e_203_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_203_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="490.0" Y="1116.0" GraphId="e_203_c__0_0" GraphRef="n205_REACTOME_390232" RelX="-0.04" RelY="-1.1282051282051282"/>
+      <Point X="489.0" Y="1091.0" GraphId="e_203_c__0_1" GraphRef="e_203_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_210_REACTOME_390252">
+    <Comment Source="WikiPathways-description">Peroxisomal HSD17B4 dimer catalyzes the reaction of trans-2,3-dehydrohexacosanoyl-CoA and H2O to form 3-hydroxyhexacosanoyl-CoA. The enzyme is bifunctional - an aminoterminal domain catalyzes the dehydrogenation of a variety of 3-hydroxyacyl-CoA's and a carboxyterminal domain catalyzes the hydration of a variety of trans-2,3-dehydroacyl-CoA's, the reaction annotated here (Jiang et al. 1996, 1997). Defects in the enzyme are associated with a severe disorder of peroxisomal fatty acid metabolism in humans (Ferdinandusse et al. 2006).</Comment>
+    <BiopaxRef>lit_389997</BiopaxRef>
+    <BiopaxRef>lit_192311</BiopaxRef>
+    <BiopaxRef>lit_389983</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="700.0" Y="1090.0" GraphId="e_210_0"/>
+      <Point X="726.0" Y="1089.0" GraphId="e_210_1"/>
+      <Point X="754.0" Y="1089.0" GraphId="e_210_2" GraphRef="n212_REACTOME_390248" RelX="-1.0416666666666667" RelY="-0.08695652173913043" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_210_a_i"/>
+      <Anchor Position="0.4816660051442103" GraphId="e_210_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_210_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="692.0" Y="1069.0" GraphId="e_210_i0_0" GraphRef="n211_REACTOME_141343" RelX="0.19047619047619047" RelY="1.2258064516129032"/>
+      <Point X="700.0" Y="1090.0" GraphId="e_210_i0_1" GraphRef="e_210_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_210_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="688.0" Y="1090.0" GraphId="e_210_i1_0" GraphRef="n204_REACTOME_390249" RelX="1.0526315789473684" RelY="-0.0392156862745098"/>
+      <Point X="700.0" Y="1090.0" GraphId="e_210_i1_1" GraphRef="e_210_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_210_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="924.0" Y="1003.0" GraphId="e_210_c__0_0" GraphRef="n99_REACTOME_389999" RelX="-1.0746268656716418" RelY="0.4"/>
+      <Point X="726.0" Y="1050.0" GraphId="e_210_c__0_1"/>
+      <Point X="726.0" Y="1089.0" GraphId="e_210_c__0_2" GraphRef="e_210_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_REACTOME_390251">
+    <Comment Source="WikiPathways-description">Peroxisomal HSD17B4 dimer catalyzes the reaction of 3-hydroxyhexacosanoyl-CoA and NAD+ to form 3-ketohexacosanoyl-CoA and NADH + H+. The enzyme is bifunctional - an aminoterminal domain catalyzes the dehydrogenation of a variety of 3-hydroxyacyl-CoA's, the reaction annotated here, and a carboxyterminal domain catalyzes the hydration of a variety of trans-2,3-dehydroacyl-CoA's (Jiang et al. 1996, 1997). Defects in the enzyme are associated with a severe disorder of peroxisomal fatty acid metabolism in humans (Ferdinandusse et al. 2006).</Comment>
+    <BiopaxRef>lit_389997</BiopaxRef>
+    <BiopaxRef>lit_192311</BiopaxRef>
+    <BiopaxRef>lit_389983</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="921.0" Y="1092.0" GraphId="e_213_0"/>
+      <Point X="960.0" Y="1091.0" GraphId="e_213_1"/>
+      <Point X="980.0" Y="1090.0" GraphId="e_213_2"/>
+      <Anchor Position="0.0" GraphId="e_213_a_i"/>
+      <Anchor Position="0.6608108119795755" GraphId="e_213_a_p"/>
+      <Anchor Position="1.0" GraphId="e_213_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="904.0" Y="1091.0" GraphId="e_213_i0_0" GraphRef="n212_REACTOME_390248" RelX="1.0416666666666667" RelY="0.0"/>
+      <Point X="921.0" Y="1092.0" GraphId="e_213_i0_1" GraphRef="e_213_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="916.0" Y="1073.0" GraphId="e_213_i1_0" GraphRef="n216_REACTOME_192307" RelX="0.09090909090909091" RelY="1.2142857142857142"/>
+      <Point X="921.0" Y="1092.0" GraphId="e_213_i1_1" GraphRef="e_213_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1007.0" Y="1090.0" GraphId="e_213_o0_0" ArrowHead="Arrow" GraphRef="n214_REACTOME_390241" RelX="-1.037593984962406" RelY="-0.1"/>
+      <Point X="980.0" Y="1090.0" GraphId="e_213_o0_1" GraphRef="e_213_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1045.0" Y="980.0" GraphId="e_213_o1_0" ArrowHead="Arrow" GraphRef="n108_REACTOME_193465" RelX="-0.4827586206896552" RelY="1.3043478260869565"/>
+      <Point X="980.0" Y="1090.0" GraphId="e_213_o1_1" GraphRef="e_213_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1087.0" Y="961.0" GraphId="e_213_o2_0" ArrowHead="Arrow" GraphRef="n106_REACTOME_192305" RelX="-0.3673469387755102" RelY="1.3333333333333333"/>
+      <Point X="980.0" Y="1090.0" GraphId="e_213_o2_1" GraphRef="e_213_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_213_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="960.0" Y="1017.0" GraphId="e_213_c__0_0" GraphRef="n99_REACTOME_389999" RelX="0.0" RelY="1.2"/>
+      <Point X="960.0" Y="1091.0" GraphId="e_213_c__0_1" GraphRef="e_213_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_217_REACTOME_390250">
+    <Comment Source="WikiPathways-description">Peroxisomal ACAA1 catalyzes the reaction of 3-ketohexacosanoyl-CoA and CoASH to form tetracosanoyl-CoA + acetyl-CoA (Bout et al. 1991).</Comment>
+    <BiopaxRef>lit_390257</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1073.0" Y="1125.0" GraphId="e_217_0"/>
+      <Point X="1074.0" Y="1147.0" GraphId="e_217_1"/>
+      <Point X="1073.0" Y="1170.0" GraphId="e_217_2"/>
+      <Anchor Position="0.0" GraphId="e_217_a_i"/>
+      <Anchor Position="0.4889108042741053" GraphId="e_217_a_p"/>
+      <Anchor Position="1.0" GraphId="e_217_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_217_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1074.0" Y="1115.0" GraphId="e_217_i0_0" GraphRef="n214_REACTOME_390241" RelX="-0.03007518796992481" RelY="1.15"/>
+      <Point X="1073.0" Y="1125.0" GraphId="e_217_i0_1" GraphRef="e_217_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_217_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1196.0" Y="1003.0" GraphId="e_217_i1_0" GraphRef="n115_REACTOME_193514" RelX="0.0" RelY="1.2142857142857142"/>
+      <Point X="1196.0" Y="1102.0" GraphId="e_217_i1_1"/>
+      <Point X="1073.0" Y="1125.0" GraphId="e_217_i1_2" GraphRef="e_217_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_217_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1073.0" Y="1192.0" GraphId="e_217_o0_0" ArrowHead="Arrow" GraphRef="n218_REACTOME_390246" RelX="0.0" RelY="-1.25"/>
+      <Point X="1073.0" Y="1170.0" GraphId="e_217_o0_1" GraphRef="e_217_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_217_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1242.0" Y="1135.0" GraphId="e_217_o1_0" ArrowHead="Arrow" GraphRef="n222_REACTOME_353123" RelX="-1.0724637681159421" RelY="0.45161290322580644"/>
+      <Point X="1073.0" Y="1170.0" GraphId="e_217_o1_1" GraphRef="e_217_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_217_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1038.0" Y="1147.0" GraphId="e_217_c__0_0" GraphRef="n219_REACTOME_390238" RelX="1.125" RelY="-0.09090909090909091"/>
+      <Point X="1074.0" Y="1147.0" GraphId="e_217_c__0_1" GraphRef="e_217_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_REACTOME_390302">
+    <Comment Source="WikiPathways-description">In eight cycles of beta-oxidation mediated by the same enzyme activities responsible for the conversion of hexacosanoyl-CoA to tetracosenoyl-CoA, the latter molecule is converted to octanoyl-CoA. Eight molecules each of O2, H2O, NAD+, and CoASH are consumed in the process and  eight molecules of H2O2 and NADH + H+ are generated, together with eight molecules of acetyl-CoA (Wanders and Waterham 2006).</Comment>
+    <BiopaxRef>lit_389650</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1165.0" Y="1204.0" GraphId="e_223_0"/>
+      <Point X="1195.0" Y="1203.0" GraphId="e_223_1"/>
+      <Point X="1229.0" Y="1204.0" GraphId="e_223_2"/>
+      <Anchor Position="0.0" GraphId="e_223_a_i"/>
+      <Anchor Position="0.46878060713035263" GraphId="e_223_a_p"/>
+      <Anchor Position="1.0" GraphId="e_223_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1153.0" Y="1246.0" GraphId="e_223_i0_0" GraphRef="n224_REACTOME_141343" RelX="0.14285714285714285" RelY="-1.1612903225806452"/>
+      <Point X="1165.0" Y="1204.0" GraphId="e_223_i0_1" GraphRef="e_223_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1144.0" Y="1204.0" GraphId="e_223_i1_0" GraphRef="n218_REACTOME_390246" RelX="1.0518518518518518" RelY="-0.25"/>
+      <Point X="1165.0" Y="1204.0" GraphId="e_223_i1_1" GraphRef="e_223_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1111.0" Y="1264.0" GraphId="e_223_i2_0" GraphRef="n227_REACTOME_193514" RelX="0.38596491228070173" RelY="-1.2142857142857142"/>
+      <Point X="1165.0" Y="1204.0" GraphId="e_223_i2_1" GraphRef="e_223_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1068.0" Y="1241.0" GraphId="e_223_i3_0" GraphRef="n231_REACTOME_113535" RelX="0.9122807017543859" RelY="-1.2727272727272727"/>
+      <Point X="1165.0" Y="1204.0" GraphId="e_223_i3_1" GraphRef="e_223_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_i4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1064.0" Y="1268.0" GraphId="e_223_i4_0" GraphRef="n233_REACTOME_192307" RelX="0.9090909090909091" RelY="-1.2142857142857142"/>
+      <Point X="1165.0" Y="1204.0" GraphId="e_223_i4_1" GraphRef="e_223_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1262.0" Y="1203.0" GraphId="e_223_o0_0" ArrowHead="Arrow" GraphRef="n225_REACTOME_390303" RelX="-1.0612244897959184" RelY="0.0"/>
+      <Point X="1229.0" Y="1204.0" GraphId="e_223_o0_1" GraphRef="e_223_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1217.0" Y="1186.0" GraphId="e_223_o1_0" ArrowHead="Arrow" GraphRef="n229_REACTOME_193465" RelX="0.41379310344827586" RelY="1.3043478260869565"/>
+      <Point X="1229.0" Y="1204.0" GraphId="e_223_o1_1" GraphRef="e_223_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1215.0" Y="1225.0" GraphId="e_223_o2_0" ArrowHead="Arrow" GraphRef="n235_REACTOME_192305" RelX="0.24489795918367346" RelY="-1.2380952380952381"/>
+      <Point X="1229.0" Y="1204.0" GraphId="e_223_o2_1" GraphRef="e_223_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1258.0" Y="1224.0" GraphId="e_223_o3_0" ArrowHead="Arrow" GraphRef="n237_REACTOME_113575" RelX="-0.7555555555555555" RelY="-1.2307692307692308"/>
+      <Point X="1229.0" Y="1204.0" GraphId="e_223_o3_1" GraphRef="e_223_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_223_o4">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1268.0" Y="1147.0" GraphId="e_223_o4_0" ArrowHead="Arrow" GraphRef="n222_REACTOME_353123" RelX="-0.3188405797101449" RelY="1.2258064516129032"/>
+      <Point X="1229.0" Y="1204.0" GraphId="e_223_o4_1" GraphRef="e_223_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_REACTOME_389540">
+    <Comment Source="WikiPathways-description">Cytosolic IDH1 (isocitrate dehydrogenase 1) homodimer catalyzes the reaction of isocitrate and NADP+ to form 2-oxoglutarate, CO2, and NADPH + H+. The same enzyme can also localize to peroxisomes (Geisbrecht and Gould 1999; Xu et al. 2004).</Comment>
+    <BiopaxRef>lit_389560</BiopaxRef>
+    <BiopaxRef>lit_389555</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="954.0" Y="109.0" GraphId="e_238_0"/>
+      <Point X="1001.0" Y="109.0" GraphId="e_238_1"/>
+      <Point X="1059.0" Y="108.0" GraphId="e_238_2"/>
+      <Anchor Position="0.0" GraphId="e_238_a_i"/>
+      <Anchor Position="0.4475823030340459" GraphId="e_238_a_p"/>
+      <Anchor Position="1.0" GraphId="e_238_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="931.0" Y="108.0" GraphId="e_238_i0_0" GraphRef="n239_REACTOME_389545" RelX="1.088235294117647" RelY="0.07407407407407407"/>
+      <Point X="954.0" Y="109.0" GraphId="e_238_i0_1" GraphRef="e_238_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="942.0" Y="168.0" GraphId="e_238_i1_0" GraphRef="n196_REACTOME_29366" RelX="0.07142857142857142" RelY="-1.2"/>
+      <Point X="954.0" Y="109.0" GraphId="e_238_i1_1" GraphRef="e_238_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1122.0" Y="168.0" GraphId="e_238_o0_0" ArrowHead="Arrow" GraphRef="n194_REACTOME_70106" RelX="-0.8125" RelY="-1.25"/>
+      <Point X="1059.0" Y="108.0" GraphId="e_238_o0_1" GraphRef="e_238_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1077.0" Y="168.0" GraphId="e_238_o1_0" ArrowHead="Arrow" GraphRef="n195_REACTOME_29364" RelX="-0.14285714285714285" RelY="-1.2"/>
+      <Point X="1059.0" Y="108.0" GraphId="e_238_o1_1" GraphRef="e_238_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_o2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1133.0" Y="129.0" GraphId="e_238_o2_0" ArrowHead="Arrow" GraphRef="n240_REACTOME_113528" RelX="-1.1578947368421053" RelY="-0.46153846153846156"/>
+      <Point X="1059.0" Y="108.0" GraphId="e_238_o2_1" GraphRef="e_238_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_o3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1093.0" Y="99.0" GraphId="e_238_o3_0" ArrowHead="Arrow" GraphRef="n241_REACTOME_29406" RelX="-0.9166666666666666" RelY="1.2258064516129032"/>
+      <Point X="1059.0" Y="108.0" GraphId="e_238_o3_1" GraphRef="e_238_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_238_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1003.0" Y="128.0" GraphId="e_238_c__0_0" GraphRef="n242_REACTOME_389559" RelX="-0.08163265306122448" RelY="-1.1282051282051282"/>
+      <Point X="1001.0" Y="109.0" GraphId="e_238_c__0_1" GraphRef="e_238_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_REACTOME_390347">
+    <Comment Source="WikiPathways-description">A specific transport process that exchanges 2-oxoglutarate for isocitrate across a lipid membrane has been reconstituted in vitro with proteins purified from bovine peroxisomal membranes. The specific protein or proteins that mediate this transport process have not yet been identified in any mammalian system, however (Visser et al. 2006).</Comment>
+    <BiopaxRef>lit_390350</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="590.0" Y="284.0" GraphId="e_243_0"/>
+      <Point X="598.0" Y="284.0" GraphId="e_243_1"/>
+      <Point X="589.0" Y="284.0" GraphId="e_243_2"/>
+      <Anchor Position="0.0" GraphId="e_243_a_i"/>
+      <Anchor Position="0.47058823529411764" GraphId="e_243_a_p"/>
+      <Anchor Position="1.0" GraphId="e_243_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="870.0" Y="124.0" GraphId="e_243_i0_0" GraphRef="n239_REACTOME_389545" RelX="-0.7058823529411765" RelY="1.2592592592592593"/>
+      <Point X="590.0" Y="284.0" GraphId="e_243_i0_1" GraphRef="e_243_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="487.0" Y="382.0" GraphId="e_243_i1_0" GraphRef="n56_REACTOME_389537" RelX="0.30303030303030304" RelY="-1.1612903225806452"/>
+      <Point X="590.0" Y="284.0" GraphId="e_243_i1_1" GraphRef="e_243_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="696.0" Y="382.0" GraphId="e_243_o0_0" ArrowHead="Arrow" GraphRef="n52_REACTOME_389548" RelX="-0.3291139240506329" RelY="-1.2173913043478262"/>
+      <Point X="589.0" Y="284.0" GraphId="e_243_o0_1" GraphRef="e_243_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1086.0" Y="79.0" GraphId="e_243_o1_0" ArrowHead="Arrow" GraphRef="n241_REACTOME_29406" RelX="-1.0625" RelY="-0.06451612903225806"/>
+      <Point X="746.0" Y="77.0" GraphId="e_243_o1_1"/>
+      <Point X="589.0" Y="284.0" GraphId="e_243_o1_2" GraphRef="e_243_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_243_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="556.0" Y="284.0" GraphId="e_243_c__0_0" GraphRef="n244_REACTOME_390344" RelX="1.0864197530864197" RelY="0.0"/>
+      <Point X="598.0" Y="284.0" GraphId="e_243_c__0_1" GraphRef="e_243_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_33" GroupRef="group_comp_33" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="97.5" CenterY="1341.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_34" GroupRef="group_comp_34" TextLabel="peroxisomal matrix">
+    <Graphics Color="000000" CenterX="274.0" CenterY="1328.5" Width="132.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_33" GroupRef="group_comp_33">
+    <Graphics Color="000000" CenterX="937.0" CenterY="720.0" Width="1780.0" Height="1388.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_34" GroupRef="group_comp_34">
+    <Graphics Color="000000" CenterX="976.5" CenterY="823.5" Width="1597.0" Height="1089.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389650" rdf:id="lit_389650">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16756494</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry of mammalian peroxisomes revisited</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 75:295-332</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389555" rdf:id="lit_389555">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15173171</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structures of human cytosolic NADP-dependent isocitrate dehydrogenase reveal a novel self-regulatory mechanism of activity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhao, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, Q</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arnold, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ding, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:33946-57</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879979" rdf:id="lit_879979">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19935646</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cancer-associated IDH1 mutations produce 2-hydroxyglutarate</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dang, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">White, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gross, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bennett, BD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bittinger, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Driggers, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fantin, VR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jang, HG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jin, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keenan, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marks, KM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prins, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ward, PS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yen, KE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liau, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rabinowitz, JD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cantley, LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thompson, CB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vander Heiden, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Su, SM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 462:739-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389646" rdf:id="lit_389646">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9874197</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification and characterization of human PMP34, a protein closely related to the peroxisomal integral membrane protein PMP47 of Candida boidinii</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wylin, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baes, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brees, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fransen, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 258:332-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389645" rdf:id="lit_389645">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12445829</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of human PMP34 as a peroxisomal ATP transporter</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Visser, WF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Roermund, CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 299:494-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389623" rdf:id="lit_389623">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10198260</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human very-long-chain acyl-CoA synthetase: cloning, topography, and relevance to branched-chain fatty acid metabolism</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Steinberg, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim, DG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mihalik, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Watkins, PA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 257:615-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389560" rdf:id="lit_389560">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10521434</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human PICD gene encodes a cytoplasmic and peroxisomal NADP(+)-dependent isocitrate dehydrogenase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Geisbrecht, BV</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gould, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 274:30527-33</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389576" rdf:id="lit_389576">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16186124</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of human phytanoyl-CoA 2-hydroxylase identifies molecular mechanisms of Refsum disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McDonough, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kavanagh, KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butler, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Searls, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oppermann, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schofield, CJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:41101-10</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389604" rdf:id="lit_389604">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11555634</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure-function analysis of phytanoyl-CoA 2-hydroxylase mutations causing Refsum's disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mukherji, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chien, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kershaw, NJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clifton, IJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schofield, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wierzbicki, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lloyd, MD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 10:1971-82</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389614" rdf:id="lit_389614">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10468558</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification, molecular cloning, and expression of 2-hydroxyphytanoyl-CoA lyase, a peroxisomal thiamine pyrophosphate-dependent enzyme that catalyzes the carbon-carbon bond cleavage during alpha-oxidation of 3-methyl-branched fatty acids</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Foulon, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antonenkov, VD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Croes, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waelkens, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Casteels, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 96:10039-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389630" rdf:id="lit_389630">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9166898</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Production of formyl-CoA during peroxisomal alpha-oxidation of 3-methyl-branched fatty acids</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Croes, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Casteels, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 407:197-200</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389626" rdf:id="lit_389626">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11341778</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of pristanal dehydrogenase activity in peroxisomes: conclusive evidence that the complete phytanic acid alpha-oxidation pathway is localized in peroxisomes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jansen, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Brink, DM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ofman, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Draghici, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dacremont, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 283:674-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_192112" rdf:id="lit_192112">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7649182</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and characterization of an alpha-methylacyl-CoA racemase from human liver</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schmitz, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Albers, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fingerhut, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Conzelmann, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 231:815-22</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_192185" rdf:id="lit_192185">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11060344</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitochondrial and peroxisomal targeting of 2-methylacyl-CoA racemase in humans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amery, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fransen, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Nys, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Lipid Res 41:1752-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389890" rdf:id="lit_389890">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11060359</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subcellular localization and physiological role of alpha-methylacyl-CoA racemase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdinandusse, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IJlst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dacremont, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Lipid Res 41:1890-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_193409" rdf:id="lit_193409">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8387517</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1993</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The CoA esters of 2-methyl-branched chain fatty acids and of the bile acid intermediates di- and trihydroxycoprostanic acids are oxidized by one single peroxisomal branched chain acyl-CoA oxidase in human liver and kidney</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vanhove, GF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fransen, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eyssen, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 268:10335-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_192346" rdf:id="lit_192346">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8943006</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular characterization of the human peroxisomal branched-chain acyl-CoA oxidase: cDNA cloning, chromosomal assignment, tissue distribution, and evidence for the absence of the protein in Zellweger syndrome</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baumgart, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vanhooren, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fransen, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marynen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Puype, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vandekerckhove, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leunissen, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fahimi, HD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 93:13748-53</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389882" rdf:id="lit_389882">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15599942</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peroxisomal branched chain fatty acid beta-oxidation pathway is upregulated in prostate cancer</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zha, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdinandusse, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hicks, JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dunn, TA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luo, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">De Marzo, AM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isaacs, WB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prostate 63:316-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389902" rdf:id="lit_389902">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9271077</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Evidence for the existence of a pristanoyl-CoA oxidase gene in man</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vanhooren, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marynen, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mannaerts, GP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Van Veldhoven, PP</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 325:593-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389997" rdf:id="lit_389997">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16385454</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutational spectrum of D-bifunctional protein deficiency and structure-based genotype-phenotype analysis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdinandusse, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ylianttila, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gloerich, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koski, MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oostheim, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hiltunen, JK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glumoff, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Hum Genet 78:112-24</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_192311" rdf:id="lit_192311">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8902629</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and properties of human D-3-hydroxyacyl-CoA dehydratase: medium-chain enoyl-CoA hydratase is D-3-hydroxyacyl-CoA dehydratase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiang, LL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuura, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukushima, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hashimoto, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem (Tokyo) 120:624-32</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_389983" rdf:id="lit_389983">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9089413</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of D-3-hydroxyacyl-CoA dehydratase/D-3-hydroxyacyl-CoA dehydrogenase bifunctional protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jiang, LL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyazawa, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Souri, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hashimoto, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biochem 121:364-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_193392" rdf:id="lit_193392">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10706581</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peroxisomal fatty acid oxidation disorders and 58 kDa sterol carrier protein X (SCPx). Activity measurements in liver and fibroblasts using a newly developed method.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdinandusse, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Berkel, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dacremont, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Lipid Res 41:336-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390220" rdf:id="lit_390220">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16685654</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutations in the gene encoding peroxisomal sterol carrier protein X (SCPx) cause leukencephalopathy with dystonia and motor neuropathy</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdinandusse, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kostopoulos, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rusch, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Overmars, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dillmann, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reith, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haas, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Duran, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marziniak, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Am J Hum Genet 78:1046-52</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390289" rdf:id="lit_390289">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9469587</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phytanic acid and pristanic acid are oxidized by sequential peroxisomal and mitochondrial reactions in cultured fibroblasts</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verhoeven, NM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roe, DS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kok, RM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jakobs, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roe, CR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Lipid Res 39:66-74</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390279" rdf:id="lit_390279">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10486279</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular cloning and expression of human carnitine octanoyltransferase: evidence for its role in the peroxisomal beta-oxidation of branched-chain fatty acids</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdinandusse, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mulders, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IJlst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dacremont, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 263:213-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390283" rdf:id="lit_390283">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2351134</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and properties of carnitine acetyltransferase from human liver</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bloisi, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colombo, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garavaglia, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Giardini, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Finocchiaro, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DiDonato, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 189:539-46</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_201037" rdf:id="lit_201037">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12562770</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure of human carnitine acetyltransferase. Molecular basis for fatty acyl transfer.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Govindasamy, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lian, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kukar, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agbandje-McKenna, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McKenna, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:13159-65</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_193495" rdf:id="lit_193495">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10092594</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of peroxisomal acyl-CoA thioesterases in yeast and humans</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nau, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Geraghty, MT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Erdmann, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gould, SJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 274:9216-23</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390429" rdf:id="lit_390429">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15220348</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mammalian wax biosynthesis. I. Identification of two fatty acyl-Coenzyme A reductases with different substrate specificities and tissue distributions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cheng, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Russell, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 279:37789-97</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_200031" rdf:id="lit_200031">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10215861</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alkyl-dihydroxyacetone phosphate synthase and dihydroxyacetone phosphate acyltransferase form a protein complex in peroxisomes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biermann, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Just, WW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Bosch, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Biochem 261:492-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390401" rdf:id="lit_390401">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9536089</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Acyl-CoA:dihydroxyacetonephosphate acyltransferase: cloning of the human cDNA and resolution of the molecular basis in rhizomelic chondrodysplasia punctata type 2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ofman, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hettema, EH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hogenhout, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Caruso, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muijsers, AO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 7:847-53</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390405" rdf:id="lit_390405">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11237722</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Etherphospholipid biosynthesis and dihydroxyactetone-phosphate acyltransferase: resolution of the genomic organization of the human gnpat gene and its use in the identification of novel mutations</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ofman, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lajmir, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 281:754-60</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390414" rdf:id="lit_390414">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8186247</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification of peroxisomal acyl-CoA: dihydroxyacetonephosphate acyltransferase from human placenta</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ofman, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1206:27-34</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390403" rdf:id="lit_390403">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10692424</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Alkyl-dihydroxyacetonephosphate synthase. Presence and role of flavin adenine dinucleotide</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de Vet, EC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hilkes, YH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fraaije, MW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Bosch, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:6276-83</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390441" rdf:id="lit_390441">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10415121</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">In vitro processing of the human alkyl-dihydroxyacetonephosphate synthase precursor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biermann, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Bosch, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arch Biochem Biophys 368:139-46</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390406" rdf:id="lit_390406">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11275267</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Plasmalogens: biosynthesis and functions</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagan, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zoeller, RA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prog Lipid Res 40:199-229</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390424" rdf:id="lit_390424">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2335525</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1990</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification and properties of acyl/alkyl dihydroxyacetone-phosphate reductase from guinea pig liver peroxisomes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Datta, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ghosh, MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hajra, AK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 265:8268-74</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390395" rdf:id="lit_390395">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18757502</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human peroxisomal ABC half transporter ALDP functions as a homodimer and accepts acyl-CoA esters</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Roermund, CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Visser, WF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IJlst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Cruchten, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Boek, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kulik, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FASEB J 22:4201-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390245" rdf:id="lit_390245">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7876265</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Overexpression and characterization of the human peroxisomal acyl-CoA oxidase in insect cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chu, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Varanasi, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chu, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lin, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Usuda, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rao, MS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reddy, JK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 270:4908-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390239" rdf:id="lit_390239">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17458872</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Clinical, biochemical, and mutational spectrum of peroxisomal acyl-coenzyme A oxidase deficiency</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ferdinandusse, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Denis, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hogenhout, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koster, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Roermund, CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IJlst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moser, AB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wanders, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mutat 28:904-12</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390257" rdf:id="lit_390257">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1679347</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of the gene encoding human peroxisomal 3-oxoacyl-CoA thiolase (ACAA). No large DNA rearrangement in a thiolase-deficient patient</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bout, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Franse, MM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Collins, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blonden, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tager, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Benne, R</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1090:43-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_390350" rdf:id="lit_390350">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16919238</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">First identification of a 2-ketoglutarate/isocitrate transport system in mammalian peroxisomes and its characterization</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Visser, WF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Roermund, CW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IJlst, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hellingwerf, KJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Waterham, HR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 348:1224-31</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>lipid metabolic pathway</bp:TERM><bp:ID>PW:0000010</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

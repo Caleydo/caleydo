@@ -1,0 +1,1317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Nucleotide Excision Repair" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Hoeijmakers, JH" Maintainer="Gopinathrao, G" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">NER was first described in the model organism E. coli in the early 1960s as a process whereby bulky base damage is enzymatically removed from DNA, facilitating the recovery of DNA synthesis and cell survival. Deficient NER processes have been identified from the cells of cancer-prone patients with different variants of xeroderma pigmentosum (XP), trichothiodystrophy (TTD), and Cockayneâ€™s syndrome.  These XP cells exhibited an ultraviolet radiation hypersensitivity leading to a hypermutability response to UV, offering a direct connection between deficient NER, increased mutations, and cancer. While the NER pathway in prokaryotes is unique, the pathway utilized in yeast and higher eukaryotes is highly conserved and includes a variety of proteins that interact to form   complexes.&lt;BR&gt; NER is involved in the repair of bulky adducts in DNA, such as UV-induced photo lesions [of both 6-4 photoproducts (6-4 pps) and cyclobutane pyrimidine dimer (CPDs)], intrastrand cross-links, large chemical adducts formed from exposure to aflatoxin, benzopyrene and other genotoxic agents.  Specific proteins have been identified that participate in base damage recognition, cleavage of the damaged strand on both sides of the lesion, excision of the oligonucleotide bearing the lesion, and accessory proteins necessary for efficient function. Polymerization and ligation restore the strand to its original state. NER consists of two related pathways called  global genomic repair (GG-NER) and transcription-coupled NER (TC-NER).  The pathways differ in the way in which DNA damage is initially recognized, but the majority of the participating molecules are shared between these two branches of NER". GG-NER is considered to be transcription-independent, removing lesions from non-transcribed regions of genome in addition to non-transcribed strands of transcribed regions. The preferential repair of UV-induced damage in transcribed strands of active genes is known as Transcription-coupled NER (TC-NER).&lt;BR&gt;Several of the proteins involved in NER are key components of the basal transcription complex TFIIH. NER proteins have also been shown to interact with the 19S regulatory subunit of the proteasome, suggesting a role in cellular regulation signal pathways. The establishment of mutant mouse models for NER genes and other DNA repair-related genes have been useful in demonstrating the associations between NER defects and cancer.&lt;BR&gt;&lt;BR&gt;</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_110555</BiopaxRef>
+  <BiopaxRef>lit_110556</BiopaxRef>
+  <BiopaxRef>lit_110557</BiopaxRef>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0" />
+  <DataNode TextLabel="HR23B, RAD23B &#xA;homolog protein&#xA;" GraphId="n6_REACTOME_62590" Type="Protein">
+    <Graphics CenterX="521.0" CenterY="547.0" Width="114.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="P54727" />
+  </DataNode>
+  <DataNode TextLabel="XPC protein&#xA;" GraphId="n7_REACTOME_67441" Type="Protein">
+    <Graphics CenterX="548.0" CenterY="586.5" Width="78.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q01831" />
+  </DataNode>
+  <DataNode TextLabel="XPC:HR23B &#xA;complex&#xA;" GraphId="n8_REACTOME_109938" Type="Complex">
+    <Graphics CenterX="411.0" CenterY="639.0" Width="88.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_4017" />
+  </DataNode>
+  <DataNode TextLabel="damaged DNA &#xA;substrate&#xA;" GraphId="n11_REACTOME_109939">
+    <Graphics CenterX="794.5" CenterY="585.0" Width="85.0" Height="52.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2765" />
+  </DataNode>
+  <DataNode TextLabel="XPC:HR23B:&#xA;damaged DNA &#xA;complex&#xA;" GraphId="n12_REACTOME_109940" Type="Complex">
+    <Graphics CenterX="832.5" CenterY="690.5" Width="95.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3245" />
+  </DataNode>
+  <DataNode TextLabel="RPA heterotrimer&#xA;" GraphId="n18_REACTOME_68462" Type="Complex">
+    <Graphics CenterX="679.5" CenterY="736.5" Width="107.0" Height="23.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3427" />
+  </DataNode>
+  <DataNode TextLabel="DDB2, DNA &#xA;damage &#xA;binding protein &#xA;2&#xA;" GraphId="n19_REACTOME_53491" Type="Protein">
+    <Graphics CenterX="664.0" CenterY="830.0" Width="92.0" Height="62.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q92466" />
+  </DataNode>
+  <DataNode TextLabel="XPG protein&#xA;" GraphId="n20_REACTOME_67447" Type="Protein">
+    <Graphics CenterX="750.0" CenterY="938.5" Width="76.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="P28715" />
+  </DataNode>
+  <DataNode TextLabel="XPA protein&#xA;" GraphId="n21_REACTOME_67437" Type="Protein">
+    <Graphics CenterX="805.0" CenterY="982.5" Width="76.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="P23025" />
+  </DataNode>
+  <DataNode TextLabel="DDB1, DNA damage &#xA;binding protein 1&#xA;" GraphId="n22_REACTOME_53489" Type="Protein">
+    <Graphics CenterX="913.0" CenterY="862.0" Width="126.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q16531" />
+  </DataNode>
+  <DataNode TextLabel="TFIIH&#xA;" GraphId="n23_REACTOME_109634" Type="Complex">
+    <Graphics CenterX="1020.0" CenterY="827.5" Width="38.0" Height="23.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3832" />
+  </DataNode>
+  <DataNode TextLabel="pre-incision complex &#xA;in GG-NER&#xA;" GraphId="n24_REACTOME_109941" Type="Complex">
+    <Graphics CenterX="1025.0" CenterY="736.0" Width="122.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5795" />
+  </DataNode>
+  <DataNode TextLabel="pre-incision &#xA;complex with &#xA;open DNA &#xA;bubble&#xA;" GraphId="n26_REACTOME_109945" Type="Complex">
+    <Graphics CenterX="1297.0" CenterY="730.5" Width="98.0" Height="75.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5689" />
+  </DataNode>
+  <DataNode TextLabel="ERCC1:XPF &#xA;complex&#xA;" GraphId="n28_REACTOME_109943" Type="Complex">
+    <Graphics CenterX="1437.0" CenterY="767.0" Width="76.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3454" />
+  </DataNode>
+  <DataNode TextLabel="incision complex for &#xA;GG-NER&#xA;" GraphId="n29_REACTOME_109946" Type="Complex">
+    <Graphics CenterX="1586.0" CenterY="730.0" Width="118.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5159" />
+  </DataNode>
+  <DataNode TextLabel="Incision &#xA;complex  with &#xA;3'-incised &#xA;damaged &#xA;DNA&#xA;" GraphId="n35_REACTOME_109947" Type="Complex">
+    <Graphics CenterX="1855.0" CenterY="720.0" Width="80.0" Height="96.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5099" />
+  </DataNode>
+  <DataNode TextLabel="incised DNA without &#xA;lesion&#xA;" GraphId="n41_REACTOME_109961">
+    <Graphics CenterX="870.0" CenterY="1286.0" Width="130.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3852" />
+  </DataNode>
+  <DataNode TextLabel="excised DNA &#xA;fragment with &#xA;lesion&#xA;" GraphId="n42_REACTOME_109960">
+    <Graphics CenterX="899.0" CenterY="1163.5" Width="92.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2556" />
+  </DataNode>
+  <DataNode TextLabel="PCNA homotrimer&#xA;" GraphId="n44_REACTOME_68440" Type="Complex">
+    <Graphics CenterX="446.0" CenterY="1433.5" Width="128.0" Height="23.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_2542" />
+  </DataNode>
+  <DataNode TextLabel="DNA polymerase &#xA;epsilon&#xA;" GraphId="n45_REACTOME_68483" Type="Complex">
+    <BiopaxRef>lit_68474</BiopaxRef>
+    <Graphics CenterX="547.0" CenterY="1508.0" Width="100.0" Height="50.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_4621" />
+  </DataNode>
+  <DataNode TextLabel="dNTP&#xA;" GraphId="n46_REACTOME_110300">
+    <Graphics CenterX="415.5" CenterY="1136.5" Width="43.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2960" />
+  </DataNode>
+  <DataNode TextLabel="RFC Heteropentamer&#xA;" GraphId="n47_REACTOME_68436" Type="Complex">
+    <Graphics CenterX="872.5" CenterY="1585.0" Width="149.0" Height="28.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_4881" />
+  </DataNode>
+  <DataNode TextLabel="newly synthesized &#xA;DNA fragment&#xA;" GraphId="n48_REACTOME_109964">
+    <Graphics CenterX="891.5" CenterY="1381.5" Width="133.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3448" />
+  </DataNode>
+  <DataNode TextLabel="DNA Polymerase &#xA;delta tetramer&#xA;" GraphId="n60_REACTOME_68450" Type="Complex">
+    <Graphics CenterX="382.0" CenterY="1205.0" Width="128.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5801" />
+  </DataNode>
+  <DataNode TextLabel="DNA ligase I&#xA;" GraphId="n66_REACTOME_53787" Type="Protein">
+    <Graphics CenterX="1003.0" CenterY="1258.5" Width="92.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="P18858" />
+  </DataNode>
+  <DataNode TextLabel="Repaired double-&#xA;stranded DNA&#xA;" GraphId="n67_REACTOME_109966">
+    <Graphics CenterX="1123.0" CenterY="1370.0" Width="128.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_4318" />
+  </DataNode>
+  <DataNode TextLabel="damaged DNA &#xA;substrate:nascent &#xA;mRNA hybrid&#xA;" GraphId="n73_REACTOME_110291">
+    <Graphics CenterX="1337.5" CenterY="1246.5" Width="107.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3022" />
+  </DataNode>
+  <DataNode TextLabel="RNA Polymerase II &#xA;holoenzyme &#xA;complex &#xA;(hyperphosphorylat&#xA;ed)&#xA;" GraphId="n74_REACTOME_109909" Type="Complex">
+    <Graphics CenterX="1209.5" CenterY="1187.5" Width="113.0" Height="91.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_4889" />
+  </DataNode>
+  <DataNode TextLabel="Active Pol II  &#xA;transcription complex &#xA;with damaged DNA &#xA;hybrid&#xA;" GraphId="n75_REACTOME_110292" Type="Complex">
+    <Graphics CenterX="1474.5" CenterY="1184.0" Width="127.0" Height="68.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3609" />
+  </DataNode>
+  <DataNode TextLabel="Stalled Pol II &#xA;complex with &#xA;damaged DNA &#xA;hybrid&#xA;" GraphId="n81_REACTOME_110293" Type="Complex">
+    <Graphics CenterX="1665.0" CenterY="1184.0" Width="110.0" Height="68.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3072" />
+  </DataNode>
+  <DataNode TextLabel="XPA-binding &#xA;protein 2&#xA;" GraphId="n83_REACTOME_67411" Type="Protein">
+    <Graphics CenterX="1448.5" CenterY="1062.0" Width="97.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q9HCS7" />
+  </DataNode>
+  <DataNode TextLabel="CSB protein&#xA;" GraphId="n84_REACTOME_54429" Type="Protein">
+    <Graphics CenterX="1536.0" CenterY="1102.5" Width="88.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q03468" />
+  </DataNode>
+  <DataNode TextLabel="CSA protein&#xA;" GraphId="n85_REACTOME_52835" Type="Protein">
+    <Graphics CenterX="1574.0" CenterY="951.5" Width="88.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q13216" />
+  </DataNode>
+  <DataNode TextLabel="TFIIS protein&#xA;" GraphId="n86_REACTOME_65748" Type="Protein">
+    <Graphics CenterX="1634.5" CenterY="1003.5" Width="97.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="P23193" />
+  </DataNode>
+  <DataNode TextLabel="Transcription-&#xA;coupled (TC) repair &#xA;complex&#xA;" GraphId="n87_REACTOME_110276" Type="Complex">
+    <Graphics CenterX="1812.5" CenterY="1038.5" Width="115.0" Height="53.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_3969" />
+  </DataNode>
+  <DataNode TextLabel="Stalled Pol II in TC-&#xA;NER&#xA;" GraphId="n89_REACTOME_110294" Type="Complex">
+    <Graphics CenterX="1813.5" CenterY="1364.0" Width="119.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_4443" />
+  </DataNode>
+  <DataNode TextLabel="damaged DNA &#xA;substrate:nascent &#xA;mRNA hybrid with &#xA;3' incision&#xA;" GraphId="n91_REACTOME_110298">
+    <Graphics CenterX="2042.5" CenterY="1283.5" Width="115.0" Height="83.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2845" />
+  </DataNode>
+  <DataNode TextLabel="damaged DNA &#xA;substrate:nascent &#xA;mRNA hybrid with &#xA;dual incisions&#xA;" GraphId="n97_REACTOME_110303">
+    <Graphics CenterX="1791.0" CenterY="838.5" Width="122.0" Height="75.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_5428" />
+  </DataNode>
+  <DataNode TextLabel="dNTP&#xA;" GraphId="n119_REACTOME_110300">
+    <Graphics CenterX="1788.5" CenterY="1722.5" Width="43.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2960" />
+  </DataNode>
+  <DataNode TextLabel="dNTP&#xA;" GraphId="n121_REACTOME_110300">
+    <Graphics CenterX="814.5" CenterY="1333.5" Width="43.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2960" />
+  </DataNode>
+  <DataNode TextLabel="DNA Polymerase &#xA;delta tetramer&#xA;" GraphId="n122_REACTOME_68450" Type="Complex">
+    <Graphics CenterX="1436.0" CenterY="1600.0" Width="128.0" Height="38.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_5801" />
+  </DataNode>
+  <DataNode TextLabel="repaired DNA &#xA;template:nascent &#xA;mRNA hybrid&#xA;" GraphId="n136_REACTOME_110295">
+    <Graphics CenterX="1093.5" CenterY="551.0" Width="115.0" Height="68.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_5433" />
+  </DataNode>
+  <DataNode TextLabel="Active Pol II complex &#xA;with repaired DNA &#xA;template:mRNA &#xA;hybrid&#xA;" GraphId="n146_REACTOME_110296" Type="Complex">
+    <Graphics CenterX="2420.5" CenterY="552.5" Width="119.0" Height="83.0" ZOrder="32768" FillColor="ccffff" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="2.0" />
+    <Xref Database="Reactome" ID="REACT_2462" />
+  </DataNode>
+  <DataNode TextLabel="dNTP&#xA;" GraphId="n169_REACTOME_110300">
+    <Graphics CenterX="692.5" CenterY="1799.5" Width="43.0" Height="23.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2960" />
+  </DataNode>
+  <DataNode TextLabel="newly synthesized &#xA;DNA fragment&#xA;" GraphId="n170_REACTOME_109964">
+    <Graphics CenterX="225.5" CenterY="1012.5" Width="133.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3448" />
+  </DataNode>
+  <DataNode TextLabel="newly synthesized &#xA;DNA fragment&#xA;" GraphId="n176_REACTOME_109964">
+    <Graphics CenterX="957.5" CenterY="1467.5" Width="133.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3448" />
+  </DataNode>
+  <DataNode TextLabel="newly synthesized &#xA;DNA fragment&#xA;" GraphId="n178_REACTOME_109964">
+    <Graphics CenterX="1270.5" CenterY="1490.5" Width="133.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3448" />
+  </DataNode>
+  <DataNode TextLabel="newly synthesized &#xA;DNA fragment&#xA;" GraphId="n180_REACTOME_109964">
+    <Graphics CenterX="332.5" CenterY="1382.5" Width="133.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3448" />
+  </DataNode>
+  <DataNode TextLabel="newly synthesized &#xA;DNA fragment&#xA;" GraphId="n182_REACTOME_109964">
+    <Graphics CenterX="1572.5" CenterY="666.5" Width="133.0" Height="53.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3448" />
+  </DataNode>
+  <DataNode TextLabel="incised DNA without &#xA;lesion&#xA;" GraphId="n183_REACTOME_109961">
+    <Graphics CenterX="312.0" CenterY="1276.0" Width="130.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3852" />
+  </DataNode>
+  <DataNode TextLabel="incised DNA without &#xA;lesion&#xA;" GraphId="n185_REACTOME_109961">
+    <Graphics CenterX="771.0" CenterY="1228.0" Width="130.0" Height="38.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3852" />
+  </DataNode>
+  <DataNode TextLabel="incised DNA &#xA;without lesion&#xA;" GraphId="n191_REACTOME_109961">
+    <Graphics CenterX="1020.0" CenterY="922.5" Width="80.0" Height="61.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_3852" />
+  </DataNode>
+  <DataNode TextLabel="ERCC1, DNA excision &#xA;repair protein&#xA;" GraphId="n193_REACTOME_54427" Type="Protein">
+    <Graphics CenterX="1566.0" CenterY="778.5" Width="144.0" Height="27.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="P07992" />
+  </DataNode>
+  <DataNode TextLabel="XPF &#xA;protein&#xA;" GraphId="n194_REACTOME_67445" Type="Protein">
+    <Graphics CenterX="1692.5" CenterY="752.5" Width="65.0" Height="25.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" ShapeType="RoundedRectangle" />
+    <Xref Database="UniProt" ID="Q92889" />
+  </DataNode>
+  <Line GraphId="e_5_REACTOME_109948">
+    <Comment Source="WikiPathways-description">XPC is mutated in individuals with xeroderma pigmentosum from genetic Complementation Group C (XP-C). It forms a tight heterodimeric complex with human Rad 23B homolog, HR23B and is thought to bind to the damaged site with lesion first triggering subsequent reactions&lt;BR&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="457.0" Y="586.0" />
+      <Point X="411.0" Y="586.0" />
+      <Point X="411.0" Y="617.0" GraphRef="n8_REACTOME_109938" RelX="0.0" RelY="-1.1578947368421053" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_5_a_i" />
+      <Anchor Position="0.5974025974025974" Shape="None" GraphId="e_5_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="489.0" Y="569.0" GraphRef="n6_REACTOME_62590" RelX="-0.5614035087719298" RelY="1.1578947368421053" />
+      <Point X="457.0" Y="586.0" GraphRef="e_5_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="506.0" Y="586.5" GraphRef="n7_REACTOME_67441" RelX="-1.0769230769230769" RelY="0.0" />
+      <Point X="457.0" Y="586.0" GraphRef="e_5_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_REACTOME_109949">
+    <Comment Source="WikiPathways-description">Disruption of normal Watson-Crick base pairing and altered chemistry in the damaged strand involving bases may act as signals of damage that are recognized by XPC:HR23B complex.&lt;BR&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="793.0" Y="639.0" />
+      <Point X="827.0" Y="639.0" />
+      <Point X="829.5" Y="661.5" GraphRef="n12_REACTOME_109940" RelX="-0.06315789473684211" RelY="-1.0943396226415094" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_10_a_i" />
+      <Anchor Position="0.6061608545378238" Shape="None" GraphId="e_10_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="458.0" Y="639.0" GraphRef="n8_REACTOME_109938" RelX="1.0681818181818181" RelY="0.0" />
+      <Point X="793.0" Y="639.0" GraphRef="e_10_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_10_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="793.5" Y="614.0" GraphRef="n11_REACTOME_109939" RelX="-0.023529411764705882" RelY="1.1153846153846154" />
+      <Point X="793.0" Y="639.0" GraphRef="e_10_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_73936">
+    <Comment Source="WikiPathways-description">Transcription factor II H (TFIIH) and XPG are added to the damaged site on the DNA to form a pre-incision complex along with lesioned DNA template.&lt;BR&gt;</Comment>
+    <BiopaxRef>lit_110564</BiopaxRef>
+    <BiopaxRef>lit_110738</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="831.0" Y="735.0" />
+      <Point X="909.0" Y="735.0" />
+      <Point X="961.0" Y="735.0" GraphRef="n24_REACTOME_109941" RelX="-1.0491803278688525" RelY="-0.05263157894736842" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_17_a_i" />
+      <Anchor Position="0.6" Shape="None" GraphId="e_17_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="736.5" Y="735.5" GraphRef="n18_REACTOME_68462" RelX="1.0654205607476634" RelY="-0.08695652173913043" />
+      <Point X="831.0" Y="735.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="831.5" Y="720.5" GraphRef="n12_REACTOME_109940" RelX="-0.021052631578947368" RelY="1.1320754716981132" />
+      <Point X="831.0" Y="735.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="713.0" Y="803.0" GraphRef="n19_REACTOME_53491" RelX="1.065217391304348" RelY="-0.8709677419354839" />
+      <Point X="831.0" Y="735.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="754.0" Y="924.5" GraphRef="n20_REACTOME_67447" RelX="0.10526315789473684" RelY="-1.2173913043478262" />
+      <Point X="831.0" Y="735.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="806.0" Y="968.5" GraphRef="n21_REACTOME_67437" RelX="0.02631578947368421" RelY="-1.2173913043478262" />
+      <Point X="831.0" Y="735.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="900.0" Y="840.0" GraphRef="n22_REACTOME_53489" RelX="-0.20634920634920634" RelY="-1.1578947368421053" />
+      <Point X="831.0" Y="735.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i6">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="998.0" Y="817.5" GraphRef="n23_REACTOME_109634" RelX="-1.1578947368421053" RelY="-0.8695652173913043" />
+      <Point X="831.0" Y="735.0" GraphRef="e_17_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_REACTOME_73934">
+    <Comment Source="WikiPathways-description">Two DNA helicases XPG and XPD, which are part of TFIIH, unwind DNA duplex around this lesion to form an open bubble structure that exposes the damaged site.&lt;BR&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1089.0" Y="727.0" GraphRef="n24_REACTOME_109941" RelX="1.0491803278688525" RelY="-0.47368421052631576" />
+      <Point X="1187.0" Y="731.0" />
+      <Point X="1245.0" Y="730.5" GraphRef="n26_REACTOME_109945" RelX="-1.0612244897959184" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.628364797482537" Shape="None" GraphId="e_25_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_25_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1089.0" Y="734.0" GraphRef="n24_REACTOME_109941" RelX="1.0491803278688525" RelY="-0.10526315789473684" />
+      <Point X="1187.0" Y="731.0" GraphRef="e_25_a_p" RelX="0.004058946444956746" RelY="1.6567128341193893E-4" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_REACTOME_109953">
+    <Comment Source="WikiPathways-description">ERCC1-XPF complex with 5â€™ endonuclease activity binds to this pre-incision complex around the bubble structure to form an active incision complex.&lt;BR&gt;</Comment>
+    <BiopaxRef>lit_110739</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1438.0" Y="730.0" />
+      <Point X="1490.0" Y="730.0" />
+      <Point X="1524.0" Y="730.0" GraphRef="n29_REACTOME_109946" RelX="-1.0508474576271187" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_27_a_i" />
+      <Anchor Position="0.6046511627906976" Shape="None" GraphId="e_27_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1437.0" Y="745.0" GraphRef="n28_REACTOME_109943" RelX="0.0" RelY="-1.1578947368421053" />
+      <Point X="1438.0" Y="730.0" GraphRef="e_27_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1349.0" Y="730.5" GraphRef="n26_REACTOME_109945" RelX="1.0612244897959184" RelY="0.0" />
+      <Point X="1438.0" Y="730.0" GraphRef="e_27_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_73938">
+    <Comment Source="WikiPathways-description">The cleavage of the damaged strand of DNA 3' to the site of damage occurs at the junction of single-stranded DNA and double-stranded DNA that is formed when the DNA duplex is unwound.  The incision is carried out by XPG.&lt;BR&gt;</Comment>
+    <BiopaxRef>lit_110739</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1648.0" Y="718.0" GraphRef="n29_REACTOME_109946" RelX="1.0508474576271187" RelY="-0.631578947368421" />
+      <Point X="1725.0" Y="720.0" />
+      <Point X="1812.0" Y="720.0" GraphRef="n35_REACTOME_109947" RelX="-1.075" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.4695961853635673" Shape="None" GraphId="e_34_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1648.0" Y="725.0" GraphRef="n29_REACTOME_109946" RelX="1.0508474576271187" RelY="-0.2631578947368421" />
+      <Point X="1725.0" Y="720.0" GraphRef="e_34_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_73939">
+    <Comment Source="WikiPathways-description">The cleavage of the damaged strand of DNA 5' to the site of damage occurs at the junction of single-stranded DNA and double-stranded DNA that is formed when the DNA duplex is unwound. The incision is carried out by ERCC1-XPF complex.&lt;BR&gt;</Comment>
+    <BiopaxRef>lit_110739</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1812.0" Y="734.0" GraphRef="n35_REACTOME_109947" RelX="-1.075" RelY="0.2916666666666667" />
+      <Point X="1559.0" Y="830.0" />
+      <Point X="923.0" Y="1102.0" />
+      <Point X="780.0" Y="1142.0" />
+      <Anchor Position="0.8663239507312855" Shape="None" GraphId="e_40_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_40_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="424.0" Y="661.0" GraphRef="n8_REACTOME_109938" RelX="0.29545454545454547" RelY="1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="664.5" Y="751.5" GraphRef="n18_REACTOME_68462" RelX="-0.2803738317757009" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="580.0" Y="812.0" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1403.0" Y="789.0" GraphRef="n28_REACTOME_109943" RelX="-0.8947368421052632" RelY="1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="675.0" Y="864.0" GraphRef="n19_REACTOME_53491" RelX="0.2391304347826087" RelY="1.096774193548387" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="803.0" Y="997.5" GraphRef="n21_REACTOME_67437" RelX="-0.05263157894736842" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="751.0" Y="953.5" GraphRef="n20_REACTOME_67447" RelX="0.02631578947368421" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o6">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="850.0" Y="1154.5" GraphRef="n42_REACTOME_109960" RelX="-1.065217391304348" RelY="-0.33962264150943394" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o7">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="903.0" Y="884.0" GraphRef="n22_REACTOME_53489" RelX="-0.15873015873015872" RelY="1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o8">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1011.0" Y="842.5" GraphRef="n23_REACTOME_109634" RelX="-0.47368421052631576" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_o9">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="986.0" Y="956.5" GraphRef="n191_REACTOME_109961" RelX="-0.85" RelY="1.1147540983606556" ArrowHead="Arrow" />
+      <Point X="780.0" Y="1142.0" GraphRef="e_40_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1812.0" Y="739.0" GraphRef="n35_REACTOME_109947" RelX="-1.075" RelY="0.3958333333333333" />
+      <Point X="1589.0" Y="851.0" />
+      <Point X="923.0" Y="1102.0" GraphRef="e_40_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_REACTOME_109968">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'dNTP', 1 molecule of 'incised DNA without lesion', 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', and 1 molecule of 'DNA polymerase epsilon' are present. At the end of this reaction, 1 molecule of 'incised DNA without lesion', 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', 1 molecule of 'newly synthesized DNA fragment ', and 1 molecule of 'DNA polymerase epsilon' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'DNA-directed DNA polymerase activity' of 'DNA polymerase epsilon'.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="766.0" Y="1423.0" />
+      <Point X="766.0" Y="1424.0" />
+      <Point X="766.0" Y="1423.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_43_a_i" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_43_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_43_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="641.5" Y="751.5" GraphRef="n18_REACTOME_68462" RelX="-0.7102803738317757" RelY="1.3043478260869565" />
+      <Point X="426.0" Y="813.0" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="469.0" Y="1419.5" GraphRef="n44_REACTOME_68440" RelX="0.359375" RelY="-1.2173913043478262" />
+      <Point X="734.0" Y="1291.0" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="600.0" Y="1483.0" GraphRef="n45_REACTOME_68483" RelX="1.06" RelY="-1.0" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="847.5" Y="1568.0" GraphRef="n47_REACTOME_68436" RelX="-0.33557046979865773" RelY="-1.2142857142857142" />
+      <Point X="707.0" Y="1492.0" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="807.5" Y="1348.5" GraphRef="n121_REACTOME_110300" RelX="-0.32558139534883723" RelY="1.3043478260869565" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_i5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="763.0" Y="1250.0" GraphRef="n185_REACTOME_109961" RelX="-0.12307692307692308" RelY="1.1578947368421053" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="650.5" Y="751.5" GraphRef="n18_REACTOME_68462" RelX="-0.5420560747663551" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="461.0" Y="823.0" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="513.0" Y="1432.5" GraphRef="n44_REACTOME_68440" RelX="1.046875" RelY="-0.08695652173913043" ArrowHead="Arrow" />
+      <Point X="639.0" Y="1432.0" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="600.0" Y="1488.0" GraphRef="n45_REACTOME_68483" RelX="1.06" RelY="-0.8" ArrowHead="Arrow" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="862.5" Y="1568.0" GraphRef="n47_REACTOME_68436" RelX="-0.1342281879194631" RelY="-1.2142857142857142" ArrowHead="Arrow" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="888.5" Y="1476.5" GraphRef="n176_REACTOME_109964" RelX="-1.037593984962406" RelY="0.33962264150943394" ArrowHead="Arrow" />
+      <Point X="854.0" Y="1481.0" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_o5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="770.0" Y="1250.0" GraphRef="n185_REACTOME_109961" RelX="-0.015384615384615385" RelY="1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_43_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="600.0" Y="1495.0" GraphRef="n45_REACTOME_68483" RelX="1.06" RelY="-0.52" />
+      <Point X="766.0" Y="1423.0" GraphRef="e_43_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_REACTOME_109969">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'dNTP', 1 molecule of 'incised DNA without lesion', 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', and 1 molecule of 'DNA Polymerase delta tetramer' are present. At the end of this reaction, 1 molecule of 'incised DNA without lesion', 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', 1 molecule of 'newly synthesized DNA fragment ', and 1 molecule of 'DNA Polymerase delta tetramer' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'delta DNA polymerase activity' of 'DNA Polymerase delta tetramer'.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="571.0" Y="1301.0" />
+      <Point X="571.0" Y="1302.0" />
+      <Point X="571.0" Y="1301.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_59_a_i" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_59_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_59_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="623.5" Y="739.5" GraphRef="n18_REACTOME_68462" RelX="-1.0467289719626167" RelY="0.2608695652173913" />
+      <Point X="345.0" Y="759.0" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="449.0" Y="1419.5" GraphRef="n44_REACTOME_68440" RelX="0.046875" RelY="-1.2173913043478262" />
+      <Point X="460.0" Y="1390.0" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="398.0" Y="1227.0" GraphRef="n60_REACTOME_68450" RelX="0.25" RelY="1.1578947368421053" />
+      <Point X="434.0" Y="1266.0" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="425.5" Y="1151.5" GraphRef="n46_REACTOME_110300" RelX="0.46511627906976744" RelY="1.3043478260869565" />
+      <Point X="503.0" Y="1237.0" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="850.5" Y="1568.0" GraphRef="n47_REACTOME_68436" RelX="-0.2953020134228188" RelY="-1.2142857142857142" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="347.0" Y="1298.0" GraphRef="n183_REACTOME_109961" RelX="0.5384615384615384" RelY="1.1578947368421053" />
+      <Point X="776.0" Y="1527.0" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="623.5" Y="743.5" GraphRef="n18_REACTOME_68462" RelX="-1.0467289719626167" RelY="0.6086956521739131" ArrowHead="Arrow" />
+      <Point X="385.0" Y="777.0" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="419.0" Y="1227.0" GraphRef="n60_REACTOME_68450" RelX="0.578125" RelY="1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="456.0" Y="1419.5" GraphRef="n44_REACTOME_68440" RelX="0.15625" RelY="-1.2173913043478262" ArrowHead="Arrow" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="857.5" Y="1568.0" GraphRef="n47_REACTOME_68436" RelX="-0.20134228187919462" RelY="-1.2142857142857142" ArrowHead="Arrow" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="402.5" Y="1359.5" GraphRef="n180_REACTOME_109964" RelX="1.0526315789473684" RelY="-0.8679245283018868" ArrowHead="Arrow" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_o5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="380.0" Y="1282.0" GraphRef="n183_REACTOME_109961" RelX="1.0461538461538462" RelY="0.3157894736842105" ArrowHead="Arrow" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="419.0" Y="1227.0" GraphRef="n60_REACTOME_68450" RelX="0.578125" RelY="1.1578947368421053" />
+      <Point X="571.0" Y="1301.0" GraphRef="e_59_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_REACTOME_74968">
+    <Comment Source="WikiPathways-description">DNA Ligase 1 ligates the newly synthesized fragment to the gap in the template DNA. &lt;BR&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="951.0" Y="1326.0" />
+      <Point X="1001.0" Y="1325.0" />
+      <Point X="1069.0" Y="1326.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_65_a_i" />
+      <Anchor Position="0.42375123950825944" Shape="None" GraphId="e_65_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_65_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="908.0" Y="1308.0" GraphRef="n41_REACTOME_109961" RelX="0.5846153846153846" RelY="1.1578947368421053" />
+      <Point X="951.0" Y="1326.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="994.0" Y="1273.5" GraphRef="n66_REACTOME_53787" RelX="-0.1956521739130435" RelY="1.3043478260869565" />
+      <Point X="951.0" Y="1326.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="919.5" Y="1352.5" GraphRef="n48_REACTOME_109964" RelX="0.42105263157894735" RelY="-1.0943396226415094" />
+      <Point X="951.0" Y="1326.0" GraphRef="e_65_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1014.0" Y="1273.5" GraphRef="n66_REACTOME_53787" RelX="0.2391304347826087" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="1069.0" Y="1326.0" GraphRef="e_65_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1099.0" Y="1348.0" GraphRef="n67_REACTOME_109966" RelX="-0.375" RelY="-1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="1069.0" Y="1326.0" GraphRef="e_65_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_65_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1002.0" Y="1273.5" GraphRef="n66_REACTOME_53787" RelX="-0.021739130434782608" RelY="1.3043478260869565" />
+      <Point X="1001.0" Y="1325.0" GraphRef="e_65_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_REACTOME_110301">
+    <Comment Source="WikiPathways-description">An active Pol II complex consisting mainly of the Pol II holoenzyme transcribes the damaged DNA template. &lt;BR&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1337.0" Y="1185.0" />
+      <Point X="1374.0" Y="1186.0" />
+      <Point X="1408.5" Y="1185.0" GraphRef="n75_REACTOME_110292" RelX="-1.0393700787401574" RelY="0.029411764705882353" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_72_a_i" />
+      <Anchor Position="0.5211099799989845" Shape="None" GraphId="e_72_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1337.5" Y="1217.5" GraphRef="n73_REACTOME_110291" RelX="0.0" RelY="-1.0943396226415094" />
+      <Point X="1337.0" Y="1185.0" GraphRef="e_72_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_72_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1269.5" Y="1186.5" GraphRef="n74_REACTOME_109909" RelX="1.0619469026548674" RelY="-0.02197802197802198" />
+      <Point X="1337.0" Y="1185.0" GraphRef="e_72_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_80_REACTOME_109972">
+    <Comment Source="WikiPathways-description">At the site of damage, the Pol II complex is arrested resulting in reduced levels of transcription.  Several models have been proposed to explain the mechanism of this transcriptional downregulation. These include a. hyperphosphorylation of Pol II  resulting in aborted entry to new pre-initiation complexes b. sequestration of TATA-binding proteins (TBP)  c. enhanced use of TFIIH complexes for repair purposes precluding their use in transcription.&lt;BR&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1541.5" Y="1183.0" GraphRef="n75_REACTOME_110292" RelX="1.0551181102362204" RelY="-0.029411764705882353" />
+      <Point X="1571.0" Y="1183.0" />
+      <Point X="1607.0" Y="1183.0" GraphRef="n81_REACTOME_110293" RelX="-1.0545454545454545" RelY="-0.029411764705882353" ArrowHead="Arrow" />
+      <Anchor Position="0.45454545454545453" Shape="None" GraphId="e_80_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_REACTOME_109973">
+    <Comment Source="WikiPathways-description">A proper assembly of repair complex may require displacement of Pol II from the damage site exposing a significant length of the corresponding template DNA with the lesions. Speculations on the mode of this displacement of Pol II are available from experimental evidences: a. CSB mediated dissociation of Pol II  b. degradation of Pol II  c. CSB mediated remodeling of damaged DNA-RNA PII interface etc.&lt;BR&gt;The TC-repair complex now consists of damaged DNA template: nascent mRNA hybrid. The damage site needs to be exposed to subsequent endonuclease activities.&lt;BR&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1552.0" Y="1036.0" />
+      <Point X="1606.0" Y="1035.0" />
+      <Point X="1665.0" Y="1035.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_82_a_i" />
+      <Anchor Position="0.4779188820358568" Shape="None" GraphId="e_82_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_82_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1500.5" Y="1049.0" GraphRef="n83_REACTOME_67411" RelX="1.0721649484536082" RelY="-0.6842105263157895" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1538.0" Y="1088.5" GraphRef="n84_REACTOME_54429" RelX="0.045454545454545456" RelY="-1.2173913043478262" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1445.0" Y="789.0" GraphRef="n28_REACTOME_109943" RelX="0.21052631578947367" RelY="1.1578947368421053" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1571.0" Y="966.5" GraphRef="n85_REACTOME_52835" RelX="-0.06818181818181818" RelY="1.3043478260869565" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="791.0" Y="942.5" GraphRef="n20_REACTOME_67447" RelX="1.0789473684210527" RelY="0.34782608695652173" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1639.0" Y="1147.0" GraphRef="n81_REACTOME_110293" RelX="-0.4727272727272727" RelY="-1.088235294117647" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i6">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1605.5" Y="1018.5" GraphRef="n86_REACTOME_65748" RelX="-0.5979381443298969" RelY="1.3043478260869565" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_i7">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1042.0" Y="834.5" GraphRef="n23_REACTOME_109634" RelX="1.1578947368421053" RelY="0.6086956521739131" />
+      <Point X="1552.0" Y="1036.0" GraphRef="e_82_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1752.5" Y="1036.5" GraphRef="n87_REACTOME_110276" RelX="-1.0434782608695652" RelY="-0.07547169811320754" ArrowHead="Arrow" />
+      <Point X="1665.0" Y="1035.0" GraphRef="e_82_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_82_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1665.0" Y="1147.0" GraphRef="n81_REACTOME_110293" RelX="0.0" RelY="-1.088235294117647" ArrowHead="Arrow" />
+      <Point X="1665.0" Y="1035.0" GraphRef="e_82_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_109974">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Transcription-coupled (TC) repair complex', and 1 molecule of 'Stalled Pol II complex with damaged DNA hybrid' are present. At the end of this reaction, 1 molecule of 'Transcription-coupled (TC) repair complex', 1 molecule of 'Stalled Pol II in TC-NER', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1773.0" Y="1183.0" />
+      <Point X="1786.0" Y="1219.0" />
+      <Point X="1812.0" Y="1245.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_88_a_i" />
+      <Anchor Position="0.5100324364306792" Shape="None" GraphId="e_88_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_88_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1804.5" Y="1068.5" GraphRef="n87_REACTOME_110276" RelX="-0.1391304347826087" RelY="1.1320754716981132" />
+      <Point X="1773.0" Y="1183.0" GraphRef="e_88_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1723.0" Y="1183.0" GraphRef="n81_REACTOME_110293" RelX="1.0545454545454545" RelY="-0.029411764705882353" />
+      <Point X="1773.0" Y="1183.0" GraphRef="e_88_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1812.5" Y="1068.5" GraphRef="n87_REACTOME_110276" RelX="0.0" RelY="1.1320754716981132" ArrowHead="Arrow" />
+      <Point X="1812.0" Y="1245.0" GraphRef="e_88_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1394.5" Y="1245.5" GraphRef="n73_REACTOME_110291" RelX="1.0654205607476634" RelY="-0.03773584905660377" ArrowHead="Arrow" />
+      <Point X="1812.0" Y="1245.0" GraphRef="e_88_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1812.5" Y="1342.0" GraphRef="n89_REACTOME_110294" RelX="-0.01680672268907563" RelY="-1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="1812.0" Y="1245.0" GraphRef="e_88_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_REACTOME_109975">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Transcription-coupled (TC) repair complex', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid' are present. At the end of this reaction, 1 molecule of 'Transcription-coupled (TC) repair complex', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with 3' incision' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'endodeoxyribonuclease activity' of 'Transcription-coupled (TC) repair complex'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_113805</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1698.0" Y="1287.0" />
+      <Point X="1882.0" Y="1287.0" />
+      <Point X="1949.0" Y="1287.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_90_a_i" />
+      <Anchor Position="0.7330677290836654" Shape="None" GraphId="e_90_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_90_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1394.5" Y="1252.5" GraphRef="n73_REACTOME_110291" RelX="1.0654205607476634" RelY="0.22641509433962265" />
+      <Point X="1698.0" Y="1287.0" GraphRef="e_90_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1799.5" Y="1068.5" GraphRef="n87_REACTOME_110276" RelX="-0.22608695652173913" RelY="1.1320754716981132" />
+      <Point X="1698.0" Y="1287.0" GraphRef="e_90_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1982.5" Y="1285.5" GraphRef="n91_REACTOME_110298" RelX="-1.0434782608695652" RelY="0.04819277108433735" ArrowHead="Arrow" />
+      <Point X="1949.0" Y="1287.0" GraphRef="e_90_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1826.5" Y="1068.5" GraphRef="n87_REACTOME_110276" RelX="0.24347826086956523" RelY="1.1320754716981132" ArrowHead="Arrow" />
+      <Point X="1949.0" Y="1287.0" GraphRef="e_90_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1819.5" Y="1068.5" GraphRef="n87_REACTOME_110276" RelX="0.12173913043478261" RelY="1.1320754716981132" />
+      <Point X="1882.0" Y="1287.0" GraphRef="e_90_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_REACTOME_109976">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Transcription-coupled (TC) repair complex', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with 3' incision' are present. At the end of this reaction, 1 molecule of 'Transcription-coupled (TC) repair complex', 1 molecule of 'excised DNA fragment with lesion', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with dual incisions' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'endodeoxyribonuclease activity' of 'Transcription-coupled (TC) repair complex'.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_113805</BiopaxRef>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1989.0" Y="1041.0" />
+      <Point X="1972.0" Y="921.0" />
+      <Point X="1836.0" Y="921.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_96_a_i" />
+      <Anchor Position="0.47122488402019663" Shape="None" GraphId="e_96_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_96_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="2032.5" Y="1239.5" GraphRef="n91_REACTOME_110298" RelX="-0.17391304347826086" RelY="-1.0602409638554218" />
+      <Point X="1989.0" Y="1041.0" GraphRef="e_96_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1873.5" Y="1038.5" GraphRef="n87_REACTOME_110276" RelX="1.0608695652173914" RelY="0.0" />
+      <Point X="1989.0" Y="1041.0" GraphRef="e_96_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1811.0" Y="879.5" GraphRef="n97_REACTOME_110303" RelX="0.32786885245901637" RelY="1.0933333333333333" ArrowHead="Arrow" />
+      <Point X="1836.0" Y="921.0" GraphRef="e_96_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1817.5" Y="1009.5" GraphRef="n87_REACTOME_110276" RelX="0.08695652173913043" RelY="-1.0943396226415094" ArrowHead="Arrow" />
+      <Point X="1836.0" Y="921.0" GraphRef="e_96_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="948.0" Y="1145.5" GraphRef="n42_REACTOME_109960" RelX="1.065217391304348" RelY="-0.6792452830188679" ArrowHead="Arrow" />
+      <Point X="1551.0" Y="921.0" />
+      <Point X="1836.0" Y="921.0" GraphRef="e_96_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_96_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1848.5" Y="1009.5" GraphRef="n87_REACTOME_110276" RelX="0.6260869565217392" RelY="-1.0943396226415094" />
+      <Point X="1972.0" Y="921.0" GraphRef="e_96_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_REACTOME_110305">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'dNTP', 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', 1 molecule of 'DNA Polymerase delta tetramer', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with dual incisions' are present. At the end of this reaction, 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', 1 molecule of 'newly synthesized DNA fragment ', 1 molecule of 'DNA Polymerase delta tetramer', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with dual incisions' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'delta DNA polymerase activity' of 'DNA Polymerase delta tetramer'.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1738.0" Y="1690.0" />
+      <Point X="1541.0" Y="1573.0" />
+      <Point X="1466.0" Y="1527.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_110_a_i" />
+      <Anchor Position="0.7225452313057592" Shape="None" GraphId="e_110_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_110_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="689.5" Y="751.5" GraphRef="n18_REACTOME_68462" RelX="0.18691588785046728" RelY="1.3043478260869565" />
+      <Point X="1261.0" Y="1361.0" />
+      <Point X="1738.0" Y="1690.0" GraphRef="e_110_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1855.0" Y="842.5" GraphRef="n97_REACTOME_110303" RelX="1.0491803278688525" RelY="0.10666666666666667" />
+      <Point X="2197.0" Y="870.0" />
+      <Point X="2197.0" Y="1344.0" />
+      <Point X="1738.0" Y="1690.0" GraphRef="e_110_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="441.0" Y="1448.5" GraphRef="n44_REACTOME_68440" RelX="-0.078125" RelY="1.3043478260869565" />
+      <Point X="378.0" Y="1599.0" />
+      <Point X="664.0" Y="1776.0" />
+      <Point X="1322.0" Y="1719.0" />
+      <Point X="1738.0" Y="1690.0" GraphRef="e_110_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="950.5" Y="1594.0" GraphRef="n47_REACTOME_68436" RelX="1.0469798657718121" RelY="0.6428571428571429" />
+      <Point X="1738.0" Y="1690.0" GraphRef="e_110_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1770.5" Y="1708.5" GraphRef="n119_REACTOME_110300" RelX="-0.8372093023255814" RelY="-1.2173913043478262" />
+      <Point X="1738.0" Y="1690.0" GraphRef="e_110_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1499.0" Y="1622.0" GraphRef="n122_REACTOME_68450" RelX="0.984375" RelY="1.1578947368421053" />
+      <Point X="1738.0" Y="1690.0" GraphRef="e_110_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="688.5" Y="751.5" GraphRef="n18_REACTOME_68462" RelX="0.16822429906542055" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="1234.0" Y="1379.0" />
+      <Point X="1466.0" Y="1527.0" GraphRef="e_110_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1855.0" Y="848.5" GraphRef="n97_REACTOME_110303" RelX="1.0491803278688525" RelY="0.26666666666666666" ArrowHead="Arrow" />
+      <Point X="2149.0" Y="902.0" />
+      <Point X="2149.0" Y="1331.0" />
+      <Point X="1970.0" Y="1476.0" />
+      <Point X="1466.0" Y="1527.0" GraphRef="e_110_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="446.0" Y="1448.5" GraphRef="n44_REACTOME_68440" RelX="0.0" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="447.0" Y="1585.0" />
+      <Point X="682.0" Y="1743.0" />
+      <Point X="1466.0" Y="1527.0" GraphRef="e_110_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="950.5" Y="1577.0" GraphRef="n47_REACTOME_68436" RelX="1.0469798657718121" RelY="-0.5714285714285714" ArrowHead="Arrow" />
+      <Point X="1466.0" Y="1527.0" GraphRef="e_110_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1443.0" Y="1578.0" GraphRef="n122_REACTOME_68450" RelX="0.109375" RelY="-1.1578947368421053" ArrowHead="Arrow" />
+      <Point X="1466.0" Y="1527.0" GraphRef="e_110_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_o5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1340.5" Y="1502.5" GraphRef="n178_REACTOME_109964" RelX="1.0526315789473684" RelY="0.4528301886792453" ArrowHead="Arrow" />
+      <Point X="1466.0" Y="1527.0" GraphRef="e_110_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1503.0" Y="1583.0" GraphRef="n122_REACTOME_68450" RelX="1.046875" RelY="-0.8947368421052632" />
+      <Point X="1541.0" Y="1573.0" GraphRef="e_110_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_REACTOME_109978">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'newly synthesized DNA fragment ', 1 molecule of 'DNA ligase I ', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with dual incisions' are present. At the end of this reaction, 1 molecule of 'repaired DNA template:nascent mRNA hybrid', and 1 molecule of 'DNA ligase I ' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'DNA ligase activity' of 'DNA ligase I '.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1471.0" Y="618.0" />
+      <Point X="1254.0" Y="618.0" />
+      <Point X="1139.0" Y="618.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_135_a_i" />
+      <Anchor Position="0.6536144578313253" Shape="None" GraphId="e_135_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_135_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1855.0" Y="813.5" GraphRef="n97_REACTOME_110303" RelX="1.0491803278688525" RelY="-0.6666666666666666" />
+      <Point X="1984.0" Y="761.0" />
+      <Point X="1885.0" Y="618.0" />
+      <Point X="1471.0" Y="618.0" GraphRef="e_135_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1011.0" Y="1244.5" GraphRef="n66_REACTOME_53787" RelX="0.17391304347826086" RelY="-1.2173913043478262" />
+      <Point X="1471.0" Y="618.0" GraphRef="e_135_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1516.5" Y="637.5" GraphRef="n182_REACTOME_109964" RelX="-0.8421052631578947" RelY="-1.0943396226415094" />
+      <Point X="1471.0" Y="618.0" GraphRef="e_135_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1005.0" Y="1244.5" GraphRef="n66_REACTOME_53787" RelX="0.043478260869565216" RelY="-1.2173913043478262" ArrowHead="Arrow" />
+      <Point X="1139.0" Y="618.0" GraphRef="e_135_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1116.5" Y="588.0" GraphRef="n136_REACTOME_110295" RelX="0.4" RelY="1.088235294117647" ArrowHead="Arrow" />
+      <Point X="1139.0" Y="618.0" GraphRef="e_135_a_o" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_135_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="1007.0" Y="1244.5" GraphRef="n66_REACTOME_53787" RelX="0.08695652173913043" RelY="-1.2173913043478262" />
+      <Point X="1254.0" Y="618.0" GraphRef="e_135_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_REACTOME_109980">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'Stalled Pol II in TC-NER', and 1 molecule of 'repaired DNA template:nascent mRNA hybrid' are present. At the end of this reaction, 1 molecule of 'Active Pol II complex with repaired DNA template:mRNA hybrid' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="2270.0" Y="550.0" />
+      <Point X="2321.0" Y="551.0" />
+      <Point X="2358.5" Y="551.5" GraphRef="n146_REACTOME_110296" RelX="-1.0420168067226891" RelY="-0.024096385542168676" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_145_a_i" />
+      <Anchor Position="0.5795922869109378" Shape="None" GraphId="e_145_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1876.5" Y="1363.0" GraphRef="n89_REACTOME_110294" RelX="1.0588235294117647" RelY="-0.05263157894736842" />
+      <Point X="2270.0" Y="1363.0" />
+      <Point X="2270.0" Y="550.0" GraphRef="e_145_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_145_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1154.5" Y="550.0" GraphRef="n136_REACTOME_110295" RelX="1.0608695652173914" RelY="-0.029411764705882353" />
+      <Point X="2270.0" Y="550.0" GraphRef="e_145_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_REACTOME_110306">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'dNTP', 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', 1 molecule of 'DNA polymerase epsilon', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with dual incisions' are present. At the end of this reaction, 1 molecule of 'RPA heterotrimer', 1 molecule of 'PCNA homotrimer', 1 molecule of 'RFC Heteropentamer', 1 molecule of 'newly synthesized DNA fragment ', 1 molecule of 'DNA polymerase epsilon', and 1 molecule of 'damaged DNA substrate:nascent mRNA hybrid with dual incisions' are present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus' and  is mediated by the 'DNA-directed DNA polymerase activity' of 'DNA polymerase epsilon'.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="783.0" Y="1839.0" />
+      <Point X="99.0" Y="1795.0" />
+      <Point X="90.0" Y="750.0" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_159_a_i" />
+      <Anchor Position="0.3960893142618899" Shape="None" GraphId="e_159_a_p" />
+      <Anchor Position="1.0" Shape="None" GraphId="e_159_a_o" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="623.5" Y="734.5" GraphRef="n18_REACTOME_68462" RelX="-1.0467289719626167" RelY="-0.17391304347826086" />
+      <Point X="34.0" Y="721.0" />
+      <Point X="37.0" Y="1839.0" />
+      <Point X="783.0" Y="1839.0" GraphRef="e_159_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1855.0" Y="832.5" GraphRef="n97_REACTOME_110303" RelX="1.0491803278688525" RelY="-0.16" />
+      <Point X="2245.0" Y="798.0" />
+      <Point X="2249.0" Y="1835.0" />
+      <Point X="783.0" Y="1839.0" GraphRef="e_159_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="492.0" Y="1448.5" GraphRef="n44_REACTOME_68440" RelX="0.71875" RelY="1.3043478260869565" />
+      <Point X="673.0" Y="1489.0" />
+      <Point X="783.0" Y="1839.0" GraphRef="e_159_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="564.0" Y="1536.0" GraphRef="n45_REACTOME_68483" RelX="0.34" RelY="1.12" />
+      <Point X="783.0" Y="1839.0" GraphRef="e_159_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="867.5" Y="1602.0" GraphRef="n47_REACTOME_68436" RelX="-0.06711409395973154" RelY="1.2142857142857142" />
+      <Point X="783.0" Y="1839.0" GraphRef="e_159_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_i5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="717.5" Y="1808.5" GraphRef="n169_REACTOME_110300" RelX="1.1627906976744187" RelY="0.782608695652174" />
+      <Point X="783.0" Y="1839.0" GraphRef="e_159_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="623.5" Y="737.5" GraphRef="n18_REACTOME_68462" RelX="-1.0467289719626167" RelY="0.08695652173913043" ArrowHead="Arrow" />
+      <Point X="90.0" Y="750.0" GraphRef="e_159_a_o" RelX="0.0" RelY="-2.2737367544323206E-13" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1776.0" Y="798.5" GraphRef="n97_REACTOME_110303" RelX="-0.2459016393442623" RelY="-1.0666666666666667" ArrowHead="Arrow" />
+      <Point X="1661.0" Y="504.0" />
+      <Point X="492.0" Y="504.0" />
+      <Point X="90.0" Y="750.0" GraphRef="e_159_a_o" RelX="0.0" RelY="-2.2737367544323206E-13" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o2">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="420.0" Y="1448.5" GraphRef="n44_REACTOME_68440" RelX="-0.40625" RelY="1.3043478260869565" ArrowHead="Arrow" />
+      <Point X="230.0" Y="1531.0" />
+      <Point X="90.0" Y="750.0" GraphRef="e_159_a_o" RelX="0.0" RelY="-2.2737367544323206E-13" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o3">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="494.0" Y="1523.0" GraphRef="n45_REACTOME_68483" RelX="-1.06" RelY="0.6" ArrowHead="Arrow" />
+      <Point X="175.0" Y="1621.0" />
+      <Point X="90.0" Y="750.0" GraphRef="e_159_a_o" RelX="0.0" RelY="-2.2737367544323206E-13" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o4">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="858.5" Y="1568.0" GraphRef="n47_REACTOME_68436" RelX="-0.18791946308724833" RelY="-1.2142857142857142" ArrowHead="Arrow" />
+      <Point X="90.0" Y="750.0" GraphRef="e_159_a_o" RelX="0.0" RelY="-2.2737367544323206E-13" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_o5">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="211.5" Y="983.5" GraphRef="n170_REACTOME_109964" RelX="-0.21052631578947367" RelY="-1.0943396226415094" ArrowHead="Arrow" />
+      <Point X="90.0" Y="750.0" GraphRef="e_159_a_o" RelX="0.0" RelY="-2.2737367544323206E-13" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_159_c__0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineStyle="Broken" LineThickness="1.0">
+      <Point X="507.0" Y="1536.0" GraphRef="n45_REACTOME_68483" RelX="-0.8" RelY="1.12" />
+      <Point X="99.0" Y="1795.0" GraphRef="e_159_a_p" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_192_REACTOME_109955">
+    <Comment Source="WikiPathways-description">At the beginning of this reaction, 1 molecule of 'ERCC1, DNA excision repair protein', and 1 molecule of 'XPF protein' are present. At the end of this reaction, 1 molecule of 'ERCC1:XPF complex' is present.&lt;br&gt;&lt;br&gt; This reaction takes place in the 'nucleus'.&lt;br&gt;</Comment>
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1584.0" Y="752.0" />
+      <Point X="1520.0" Y="753.0" />
+      <Point X="1478.0" Y="760.0" GraphRef="n28_REACTOME_109943" RelX="1.0789473684210527" RelY="-0.3684210526315789" ArrowHead="Arrow" />
+      <Anchor Position="0.0" Shape="None" GraphId="e_192_a_i" />
+      <Anchor Position="0.6005209087790956" Shape="None" GraphId="e_192_a_p" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_192_i0">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1575.0" Y="762.5" GraphRef="n193_REACTOME_54427" RelX="0.125" RelY="-1.1851851851851851" />
+      <Point X="1584.0" Y="752.0" GraphRef="e_192_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Line GraphId="e_192_i1">
+    <Graphics ConnectorType="Segmented" ZOrder="12288" LineThickness="1.0">
+      <Point X="1657.5" Y="752.5" GraphRef="n194_REACTOME_67445" RelX="-1.0769230769230769" RelY="0.0" />
+      <Point X="1584.0" Y="752.0" GraphRef="e_192_a_i" RelX="0.0" RelY="0.0" />
+    </Graphics>
+  </Line>
+  <Label TextLabel="nucleoplasm" GraphId="comp_text_9" GroupRef="group_comp_9">
+    <Graphics CenterX="138.0" CenterY="1942.5" Width="92.0" Height="33.0" ZOrder="28672" FontSize="12" Valign="Middle" />
+  </Label>
+  <Shape GraphId="comp_9" GroupRef="group_comp_9">
+    <Graphics CenterX="1278.0" CenterY="1193.0" Width="2548.0" Height="1592.0" ZOrder="16384" FontSize="12" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0" Rotation="0.0" />
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_110739">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10214908</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DNA damage recognition during nucleotide excision repair in mammalian cells.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wood, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochimie 81:39-44</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_110557">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10583946</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quality control by DNA repair</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lindahl, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wood, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 286:1897-905</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_113805">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11313499</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis of transcription: an RNA polymerase II elongation complex at 3.3 A resolution.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gnatt, AL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cramer, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bushnell, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kornberg, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 292:1876-82</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_110556">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14599765</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms of human DNA repair: an update.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christmann, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomicic, MT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Roos, WP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaina, B</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toxicology 193:3-34</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_68474">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9405441</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Purification, cDNA cloning, and gene mapping of the small subunit of human DNA polymerase epsilon.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Asahara, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patel, VS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Linn, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:32337-44</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_110738">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10526214</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protein complexes in nucleotide excision repair.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Araújo, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wood, RD</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutat Res 435:23-33</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_110564">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11511374</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sequential assembly of the nucleotide excision repair factors in vivo.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Volker, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moné, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Karmakar, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Hoffen, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schul, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vermeulen, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoeijmakers, JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Driel, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Zeeland, AA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mullenders, LH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell 8:213-24</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_110555">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11900249</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">How nucleotide excision repair protects against cancer.</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Friedberg, EC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Cancer 1:22-33</bp:SOURCE>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

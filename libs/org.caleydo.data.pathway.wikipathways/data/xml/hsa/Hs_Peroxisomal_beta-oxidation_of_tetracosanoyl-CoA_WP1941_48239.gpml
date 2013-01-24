@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Peroxisomal beta-oxidation of tetracosanoyl-CoA" Organism="Homo sapiens" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="937.7111350085806" BoardHeight="503.9169067958395" />
+  <DataNode TextLabel="tetracosanoyl-CoA" GraphId="ba539" Type="Metabolite">
+    <Graphics CenterX="102.5" CenterY="134.0" Width="125.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="52974" />
+  </DataNode>
+  <DataNode TextLabel="(2E)-tetracosenoyl-CoA" GraphId="fc276" Type="Metabolite">
+    <Graphics CenterX="330.5" CenterY="134.0" Width="145.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Acyl-CoA Oxidase 1" GraphId="fe505" Type="Protein">
+    <Graphics CenterX="211.0" CenterY="85.0" Width="104.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="Q15067" />
+  </DataNode>
+  <DataNode TextLabel="H2O2" GraphId="fd764" Type="Metabolite">
+    <Graphics CenterX="278.125" CenterY="162.25" Width="39.75" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="16240" />
+  </DataNode>
+  <DataNode TextLabel="3-hydroxytetracosanoyl-CoA" GraphId="efc98" Type="Metabolite">
+    <Graphics CenterX="651.5" CenterY="135.0" Width="167.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="52326" />
+  </DataNode>
+  <DataNode TextLabel="D-bifunctional protein" GraphId="a3450" Type="Protein">
+    <Graphics CenterX="485.5" CenterY="83.0" Width="119.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P51659" />
+  </DataNode>
+  <DataNode TextLabel="O2" GraphId="ae9c7" Type="Metabolite">
+    <Graphics CenterX="145.5" CenterY="162.0" Width="33.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15379" />
+  </DataNode>
+  <DataNode TextLabel="H20" GraphId="e9292" Type="Metabolite">
+    <Graphics CenterX="379.0" CenterY="161.0" Width="46.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15377" />
+  </DataNode>
+  <DataNode TextLabel="NAD+" GraphId="ab6b5" Type="Metabolite">
+    <Graphics CenterX="590.0" CenterY="160.0" Width="44.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15846" />
+  </DataNode>
+  <DataNode TextLabel="docosanoyl-CoA" GraphId="ca5db" Type="Metabolite">
+    <Graphics CenterX="297.0" CenterY="333.0" Width="112.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="PubChem-compound" ID="24892788" />
+  </DataNode>
+  <DataNode TextLabel="CoA-SH" GraphId="ed23c" Type="Metabolite">
+    <Graphics CenterX="605.0" CenterY="366.0" Width="56.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15346" />
+  </DataNode>
+  <DataNode TextLabel="acetyl-CoA" GraphId="dce4f" Type="Metabolite">
+    <Graphics CenterX="285.0" CenterY="363.0" Width="84.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="15351" />
+  </DataNode>
+  <DataNode TextLabel="Peroxisomal 3-oxoacyl-CoA thiolase" GraphId="b0960" Type="Protein">
+    <Graphics CenterX="464.0" CenterY="407.0" Width="220.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P09110" />
+  </DataNode>
+  <DataNode TextLabel="Sterol carrier protein X" GraphId="cf671" Type="Protein">
+    <Graphics CenterX="464.0" CenterY="288.0" Width="142.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P22307" />
+  </DataNode>
+  <DataNode TextLabel="Peroxisomal beta-oxidation&#xA;of docosanoyl-CoA" GraphId="e8cf2" Type="Pathway">
+    <Graphics CenterX="117.5" CenterY="333.0" Width="171.0" Height="40.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Peroxisomal beta-oxidation&#xA;of hexacosanoyl-CoA" GraphId="b4e5e" Type="Pathway">
+    <Graphics CenterX="113.0" CenterY="225.5" Width="168.0" Height="57.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="3-ketotetracosanoyl-CoA" GraphId="e59c0" Type="Metabolite">
+    <Graphics CenterX="651.0" CenterY="337.0" Width="150.0" Height="20.0" ZOrder="32771" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="52329" />
+  </DataNode>
+  <DataNode TextLabel="D-bifunctional protein" GraphId="cbed1" Type="Protein">
+    <Graphics CenterX="752.0" CenterY="236.0" Width="130.0" Height="20.0" ZOrder="32772" FontSize="10" Valign="Middle" />
+    <Xref Database="Uniprot/TrEMBL" ID="P51659" />
+  </DataNode>
+  <DataNode TextLabel="NADH" GraphId="d5712" Type="Metabolite">
+    <Graphics CenterX="598.0" CenterY="309.0" Width="44.0" Height="20.0" ZOrder="32773" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="ChEBI" ID="16908" />
+  </DataNode>
+  <Line GraphId="id248a5d23">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="165.0" Y="134.0" GraphRef="ba539" RelX="1.0" RelY="0.0" />
+      <Point X="258.0" Y="134.0" GraphRef="fc276" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5" Shape="None" GraphId="ffc67" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id22e34d56">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="211.0" Y="95.0" GraphRef="fe505" RelX="0.0" RelY="1.0" />
+      <Point X="211.5" Y="134.0" GraphRef="ffc67" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id2ab1d39b">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="211.5" Y="134.0" GraphRef="ffc67" RelX="0.0" RelY="0.0" />
+      <Point X="258.25" Y="162.25" GraphRef="fd764" RelX="-1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id12643bd4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="485.5" Y="93.0" GraphRef="a3450" RelX="0.0" RelY="1.0" />
+      <Point X="485.5" Y="134.5" GraphRef="fe444" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf807d3fa">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="162.0" Y="162.0" GraphRef="ae9c7" RelX="1.0" RelY="0.0" />
+      <Point X="211.5" Y="134.0" GraphRef="ffc67" RelX="0.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id8aea186f">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="402.0" Y="161.0" GraphRef="e9292" RelX="1.0" RelY="0.0" />
+      <Point X="485.5" Y="134.5" GraphRef="fe444" RelX="0.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id563ea124">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="687.0" Y="236.0" GraphRef="cbed1" RelX="-1.0" RelY="0.0" />
+      <Point X="651.25" Y="236.0" GraphRef="e3b54" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idf3b08bb8">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="601.0" Y="170.0" GraphRef="ab6b5" RelX="0.5" RelY="1.0" />
+      <Point X="651.25" Y="236.0" GraphRef="e3b54" RelX="0.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd285ec97">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="651.25" Y="236.0" GraphRef="e3b54" RelX="0.0" RelY="0.0" />
+      <Point X="609.0" Y="299.0" GraphRef="d5712" RelX="0.5" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idd8587197">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="577.0" Y="366.0" GraphRef="ed23c" RelX="-1.0" RelY="0.0" />
+      <Point X="464.5" Y="335.0" GraphRef="b7bfc" RelX="0.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id28d6f8fd">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="464.5" Y="335.0" GraphRef="b7bfc" RelX="0.0" RelY="0.0" />
+      <Point X="327.0" Y="363.0" GraphRef="dce4f" RelX="1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id75e3cac4">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="464.0" Y="397.0" GraphRef="b0960" RelX="0.0" RelY="-1.0" />
+      <Point X="464.5" Y="335.0" GraphRef="b7bfc" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="idb69bc2a6">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="464.0" Y="298.0" GraphRef="cf671" RelX="0.0" RelY="1.0" />
+      <Point X="464.5" Y="335.0" GraphRef="b7bfc" RelX="0.0" RelY="0.0" ArrowHead="mim-catalysis" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ida6d397e9">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="241.0" Y="333.0" GraphRef="ca5db" RelX="-1.0" RelY="0.0" />
+      <Point X="203.0" Y="333.0" GraphRef="e8cf2" RelX="1.0" RelY="0.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="id701f3d89">
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="71.0" Y="197.0" GraphRef="b4e5e" RelX="-0.5" RelY="-1.0" />
+      <Point X="71.25" Y="144.0" GraphRef="ba539" RelX="-0.5" RelY="1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <Line GraphId="ac82d">
+    <Graphics ZOrder="32769" LineThickness="1.0">
+      <Point X="403.0" Y="134.0" GraphRef="fc276" RelX="1.0" RelY="0.0" />
+      <Point X="568.0" Y="135.0" GraphRef="efc98" RelX="-1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5" Shape="None" GraphId="fe444" />
+    </Graphics>
+  </Line>
+  <Line GraphId="c079c">
+    <Graphics ZOrder="32770" LineThickness="1.0">
+      <Point X="651.5" Y="145.0" GraphRef="efc98" RelX="0.0" RelY="1.0" />
+      <Point X="651.0" Y="327.0" GraphRef="e59c0" RelX="0.0" RelY="-1.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5" Shape="None" GraphId="e3b54" />
+    </Graphics>
+  </Line>
+  <Line GraphId="fdf3b">
+    <Graphics ZOrder="32774" LineThickness="1.0">
+      <Point X="576.0" Y="337.0" GraphRef="e59c0" RelX="-1.0" RelY="0.0" />
+      <Point X="353.0" Y="333.0" GraphRef="ca5db" RelX="1.0" RelY="0.0" ArrowHead="Arrow" />
+      <Anchor Position="0.5" Shape="None" GraphId="b7bfc" />
+    </Graphics>
+  </Line>
+  <Shape TextLabel="Peroxisome" GraphId="e79bf">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Organelle" />
+    <Attribute Key="org.pathvisio.DoubleLineProperty" Value="Double" />
+    <Graphics CenterX="434.45185841003143" CenterY="249.56368181362996" Width="836.0256195591749" Height="417.08519418335743" ZOrder="16384" FontSize="14" Valign="Middle" ShapeType="RoundedRectangle" LineThickness="3.0" Color="c0c0c0" Rotation="6.275767901536524" />
+  </Shape>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      
+      
+      <bp:TERM>fatty acid beta degradation pathway</bp:TERM>
+      
+      
+      <bp:ID>PW:0000738</bp:ID>
+      
+      
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+      
+    
+    </bp:openControlledVocabulary>
+  </Biopax>
+</Pathway>

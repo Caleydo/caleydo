@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Hemostasis" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="D'Eustachio, P, Pace, N.P., Farndale, R, de Bono, B" Maintainer="Joshi-Tope, G" Organism="Homo sapiens">
+  <Comment Source="WikiPathways-description">Two principal mechanisms limit blood loss after vascular injury.  Initially, platelets are activated, adhere to the site of the injury, and aggregate into a plug that limits blood loss.  Proteins and small molecules released from activated platelets stimulate the plug formation process, and fibrinogen from the plasma forms bridges between activated platelets.  These events allow the initiation of the clotting cascade, the second mechanism to limit blood loss.  Negatively charged phospholipids exposed on cell surfaces at the site of injury and on activated platelets interact with tissue factor, setting off a cascade of reactions leading to generation of fibrin and the formation of an insoluble fibrin clot that strengthens the platelet plug.</Comment>
+  <Comment Source="WikiPathways-category">Physiological Process</Comment>
+  <Graphics BoardWidth="4259.75" BoardHeight="6985.0" />
+  <DataNode TextLabel="Formation of Platelet &#xA;plug&#xA;" GraphId="n1_REACTOME_75178" Type="Pathway">
+    <Comment Source="WikiPathways-description">Hemostasis is a physiological response that culminates in the arrest of bleeding from an injured vessel. Acute vessel injury results in its constriction to reduce the loss of blood. Under normal conditions vascular endothelium supports vasodilation, inhibits platelet adhesion and activation, suppresses coagulation, enhances fibrin cleavage and is anti-inflammatory in character. Under acute vascular trauma vasoconstrictor mechanisms predominate and the endothelium becomes prothrombotic, procoagulatory and proinflammatory in nature. This is achieved by a reduction of endothelial dilating agents: adenosine, NO and prostacyclin; and the direct action of ADP, serotonin and thromboxane on vascular smooth muscle cells to elicit their contraction (Becker, Heindl et al. 2000).&lt;br&gt;The chief trigger for the change in endothelial function that leads to the formation of haemostatic thrombus is the loss of the endothelial cell barrier between blood and ECM components (Ruggeri 2002). Circulating platelets identify and discriminate areas of endothelial lesions; here, they adhere to the exposed sub endothelium. Their interaction with the various thrombogenic substrates and locally generated or released agonists results in platelet activation. This process is described as possessing two stages, firstly, adhesion -  the initial tethering to a surface, and secondly aggregation - the platelet-platelet cohesion (Savage, Cattaneo et al. 2001).</Comment>
+    <Graphics CenterX="238.0" CenterY="107.0" Width="132.0" Height="46.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_20" />
+  </DataNode>
+  <DataNode TextLabel="Formation of Fibrin &#xA;Clot (Clotting &#xA;Cascade)&#xA;" GraphId="n2_REACTOME_140877" Type="Pathway">
+    <Comment Source="WikiPathways-description">The formation of a fibrin clot at the site of an injury to the wall of a normal blood vessel is an essential part of the process to stop blood loss after vascular injury.  The reactions that lead to fibrin clot formation are commonly described as a cascade, in which the product of each step is an enzyme or cofactor needed for following reactions to proceed efficiently.  The entire clotting cascade can be divided into three portions, the extrinsic pathway, the intrinsic pathway, and the common pathway.  The extrinsic pathway begins with the release of tissue factor at the site of vascular injury and leads to the activation of factor X.  The intrinsic pathway provides an alternative mechanism for activation of factor X, starting from the activation of factor XII.  The common pathway consists of the steps linking the activation of factor X to the formation of a multimeric, cross-linked fibrin clot.  Each of these pathways includes not only a cascade of events that generate the catalytic activities needed for clot formation, but also numerous positive and negative regulatory events.</Comment>
+    <BiopaxRef>lit_140914</BiopaxRef>
+    <BiopaxRef>lit_140899</BiopaxRef>
+    <Graphics CenterX="389.0" CenterY="101.5" Width="122.0" Height="61.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_2051" />
+  </DataNode>
+  <DataNode TextLabel="Dissolution of Fibrin &#xA;Clot&#xA;" GraphId="n3_REACTOME_75205" Type="Pathway">
+    <Comment Source="WikiPathways-description">The crosslinked fibrin multimers in a clot are broken down to soluble polypeptides by plasmin, a serine protease. Plasmin can be generated from its inactive precursor plasminogen and recruited to the site of a fibrin clot in two ways, by interaction with tissue plasminogen activator at the surface of a fibrin clot, and by interaction with urokinase plasminogen activator at a cell surface. The first mechanism appears to be the major one responsible for the dissolution of clots within blood vessels. The second, although capable of mediating clot dissolution, may normally play a major role in tissue remodeling, cell migration, and inflammation (Chapman 1997; Lijnen 2001). These other functions of urokinase plasminogen activator will be annotated in future versions of Reactome.&lt;br&gt;Clot dissolution is regulated in two ways. First, efficient plasmin activation and fibrinolysis occur only in complexes formed at the clot surface or on a cell membrane - proteins free in the blood are inefficient catalysts and are rapidly inactivated. Second, both plasminogen activators and plasmin itself are inactivated by specific serpins, proteins that bind to serine proteases to form stable, enzymatically inactive complexes (Kohler and Grant 2000).&lt;br&gt;These events are outlined in the drawing: black arrows connect the substrates (inputs) and products (outputs) of individual reactions, and blue lines connect output activated enzymes to the other reactions that they catalyze.</Comment>
+    <Graphics CenterX="536.5" CenterY="99.0" Width="129.0" Height="46.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_641" />
+  </DataNode>
+  <DataNode TextLabel="Cell surface &#xA;interactions at the &#xA;vascular wall&#xA;" GraphId="n4_REACTOME_202733" Type="Pathway">
+    <Comment Source="WikiPathways-description">Leukocyte extravasation is a rigorously controlled process that guides white cell movement from the vascular lumen to sites of tissue inflammation. The powerful adhesive interactions that are required for leukocytes to withstand local flow at the vessel wall is a multistep process mediated by different adhesion molecules. Platelets adhered to injured vessel walls form strong adhesive substrates for leukocytes. For instance, the initial tethering and rolling of leukocytes over the site of injury are mediated by reversible binding of selectins to their cognate cell-surface glycoconjugates.&lt;p&gt;&#xD;
+&#xD;
+Endothelial cells are tightly connected through various proteins, which regulate the organization of the junctional complex and bind to cytoskeletal proteins or cytoplasmic interaction partners that allow the transfer of intracellular signals. An important role for these junctional proteins in governing the transendothelial migration of leukocytes under normal or inflammatory conditions has been established.&lt;p&gt;&#xD;
+&#xD;
+This pathway describes some of the key interactions that assist in the process of platelet and leukocyte interaction with the endothelium, in response to injury.</Comment>
+    <BiopaxRef>lit_203278</BiopaxRef>
+    <BiopaxRef>lit_203286</BiopaxRef>
+    <BiopaxRef>lit_203285</BiopaxRef>
+    <BiopaxRef>lit_202753</BiopaxRef>
+    <BiopaxRef>lit_203235</BiopaxRef>
+    <BiopaxRef>lit_203533</BiopaxRef>
+    <Graphics CenterX="692.0" CenterY="94.5" Width="116.0" Height="61.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_12051" />
+  </DataNode>
+  <DataNode TextLabel="Factors involved in &#xA;megakaryocyte &#xA;development and &#xA;platelet production&#xA;" GraphId="n5_REACTOME_983231" Type="Pathway">
+    <Comment Source="WikiPathways-description">Megakaryocytes (MKs) give rise to circulating platelets (thrombocytes) through terminal differentiation of MKs which  release cytoplasmic fragments as circulating platelets. As MKs mature they undergo endoreduplication (polyploidisation) and expansion of cytoplasmic mass to cell sizes larger than 50-100 microns, and ploidy ranges up to 128 N. As MK's mature, the polyploid nucleus becomes horseshoe-shaped, the cytoplasm expands, and platelet organelles and the demarcation membrane system are amplified. Proplatelet projections form which give rise to de novo circulating platelets (Deutsch &amp; Tomer 2006).  &lt;br&gt;The processes of megakaryocytopoiesis and platelet production occur within a complex microenvironment where chemokines, cytokines and adhesive interactions play major roles (Avecilla et al. 2004).  Megakaryocytopoiesis is regulated at several levels including proliferation, differentiation and platelet release (Kaushansky 2003). Thrombopoietin (TPO/c-Mpl ligand) is the most potent cytokine stimulating proliferation and maturation of MK progenitors (Kaushansky 2005) but many other growth factors are involved. MK development is controlled by the action of multiple Transcriptin Factors, many MK-specific genes are co-regulated by GATA and friend of GATA (FOG), RUNX1 and ETS proteins. Nuclear factor erythroid 2 (NF-E2) which has an MK-erythroid specific 45-kDa subunit controls terminal MK maturation, proplatelet formation and platelet release (Schulze &amp; Shivdasani 2004). NF-E2 deficient mice have profound thrombocytopenia (Shiraga et al. 1999). c-myb functions with p300 as a negative regulator of thrombopoiesis (Metcalf et al. 2005). During MK maturation, internal membrane systems, granules and organelles are assembled. Cytoplasmic fragmentation requires changes in the MK cytoskeleton and formation of organelles and channels. Individual organelles migrate from the cell body to the proplatelet ends, with approximately 30 percent of organelles/granules in motion at any given time (Richardson et al. 2005).</Comment>
+    <BiopaxRef>lit_1013931</BiopaxRef>
+    <BiopaxRef>lit_1013930</BiopaxRef>
+    <BiopaxRef>lit_1027318</BiopaxRef>
+    <Graphics CenterX="85.0" CenterY="108.0" Width="138.0" Height="84.0" ZOrder="32768" FillColor="ccffcc" FontSize="12" Valign="Middle" />
+    <Xref Database="Reactome" ID="REACT_24970" />
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0" />
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_1013931">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16856888</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Megakaryocyte development and platelet production</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deutsch, VR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tomer, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Br J Haematol 134:453-66</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_203533">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8578462</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The molecular basis of platelet and endothelial cell interaction with neutrophils and monocytes: role of P-selectin and the P-selectin ligand, PSGL-1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furie, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furie, BC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thromb Haemost 74:224-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_202753">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17525755</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of junctional adhesion molecules in vascular inflammation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weber, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fraemohs, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dejana, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Immunol 7:467-77</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_140899">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12524220</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The dynamics of thrombin formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mann, KG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butenas, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arterioscler Thromb Vasc Biol 23:17-25</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_203285">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10798271</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Endothelial function and hemostasis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Becker, BF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Heindl, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kupatt, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zahler, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Z Kardiol 89:160-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_1027318">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17635743</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">From hematopoietic stem cells to platelets</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bluteau, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Debili, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vainchenker, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Thromb Haemost 5:318-27</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_203235">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14615387</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelet-monocyte complexes support monocyte adhesion to endothelium by enhancing secondary tethering and cluster formation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">da Costa Martins, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Berk, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ulfman, LH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koenderman, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hordijk, PL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zwaginga, JJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arterioscler Thromb Vasc Biol 24:193-9</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_1013930">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17934486</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transcriptional control of megakaryocyte development</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goldfarb, AN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 26:6795-802</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_203278">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11282294</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Platelets and the injured vessel wall-- "rolling into action": focus on glycoprotein Ib/V/IX and the platelet cytoskeleton</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackson, SP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mistry, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yuan, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cardiovasc Med 10:192-7</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_203286">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16115029</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mechanisms of monocyte recruitment in vascular repair after injury</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schober, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weber, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Antioxid Redox Signal 7:1249-57</bp:SOURCE>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="lit_140914">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1931959</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1991</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The coagulation cascade: initiation, maintenance, and regulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujikawa, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kisiel, W</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 30:10363-70</bp:SOURCE>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

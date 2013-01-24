@@ -1,0 +1,1297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Circadian Clock" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="May, B" Maintainer="May, B">
+  <Comment Source="WikiPathways-description">At the center of the mammalian circadian clock is a negative transcription/translation-based feedback loop: The BMAL1:CLOCK/NPAS2 heterodimer transactivates CRY and PER genes by binding E-box elements in their promoters; the CRY and PER proteins then inhibit transactivation by BMAL1:CLOCK/NPAS2. BMAL1:CLOCK/NPAS2 activates transcription of CRY, PER, and several other genes in the morning. Levels of PER and CRY proteins rise during the day and inhibit expression of CRY, PER, and other BMAL1:CLOCK/NPAS2-activated genes in the afternoon and evening. During the night CRY and PER proteins are targeted for degradation by phosphorylation and polyubiquitination, allowing the cycle to commence again in the morning. &lt;br&gt;Transcription of the BMAL1 (ARNTL) gene is controlled by ROR-alpha and REV-ERBA, both of which are targets of BMAL1:CLOCK/NPAS2 in mice and both of which compete for the same element (RORE) in the BMAL1 promoter. ROR-alpha activates transcription of BMAL1; REV-ERBA represses transcription of BMAL1. This mutual control forms a secondary, reinforcing loop of the circadian clock. REV-ERBA shows strong circadian rhythmicity and confers circadian expression on BMAL1. &lt;br&gt;BMAL1 can form heterodimers with either CLOCK or NPAS2, which act redundantly but show different tissue specificity. The BMAL1:CLOCK and BMAL1:NPAS2 heterodimers activate a set of genes that possess E-box elements (consensus CACGTG) in their promoters. This confers circadian expression on the genes. The PER genes (PER1, PER2, PER3) and CRY genes (CRY1, CRY2) are among those activated by BMAL1:CLOCK and BMAL1:NPAS2. PER and CRY mRNA accumulates during the morning and the proteins accumulate during the afternoon. PER and CRY proteins form complexes in the cytosol and these are bound by either CSNK1D or CSNK1E kinases which phosphorylate PER and CRY. The phosphorylated PER:CRY:kinase complex is translocated into the nucleus due to the nuclear localization signal of PER and CRY. Within the nucleus the PER:CRY complexes bind BMAL1:CLOCK and BMAL1:NPAS2, inhibiting their transactivation activity and their phosphorylation. This reduces expression of the target genes of BMAL1:CLOCK and BMAL1:NPAS2 during the afternoon and evening. &lt;br&gt;PER:CRY complexes also traffic out of the nucleus into the cytosol due to the nuclear export signal of PER. During the night PER:CRY complexes are polyubiquitinated and degraded, allowing the cycle to begin again. Phosphorylated PER is bound by Beta-TrCP1, a cytosolic F-box type component of some SCF E3 ubiquitin ligases. CRY is bound by FBXL3, a nucleoplasmic F-box type component of some SCF E3 ubiquitin ligases. Phosphorylation of CRY1 by Adenosine monophosphate-activated kinase (AMPK) enhances degradation of CRY1. PER and CRY are subsequently polyubiquitinated and proteolyzed by the 26S proteasome.&lt;br&gt;The circadian clock is cell-autonomous and some, but not all cells of the body exhibit circadian rhythms in metabolism, cell division, and gene transcription. The suprachiasmatic nucleus (SCN) in the hypothalamus is the major clock in the body and receives its major input from light (via retinal neurons) and a minor input from nutrient intake.  The SCN and other brain tissues determine waking and feeding cycles and influence the clocks in other tissues by hormone secretion and nervous stimulation. Independently of the SCN, other tissues such as liver receive inputs from signals from the brain and from nutrients.</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_400262</BiopaxRef>
+  <BiopaxRef>lit_400269</BiopaxRef>
+  <BiopaxRef>lit_400222</BiopaxRef>
+  <BiopaxRef>lit_400322</BiopaxRef>
+  <DataNode GraphId="n6_REACTOME_400353" TextLabel="BMAL1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="171.5" CenterY="221.5" Width="91.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O00327"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_400325" TextLabel="Nuclear receptor &#10;ROR-alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="760.0" CenterY="125.5" Width="128.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P35398"/>
+  </DataNode>
+  <DataNode GraphId="n8_REACTOME_375499" TextLabel="NR1D1_HUMAN&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="742.0" CenterY="194.5" Width="96.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P20393"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_400343" TextLabel="CLOCK or &#10;NPAS2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="87.0" CenterY="265.5" Width="96.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26942"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_400360" TextLabel="BMAL1:CLOCK/NPAS2 &#10;Heterodimer&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">BMAL1 (ARNTL) contains both a nuclear localization signal and a nuclear export signal. The shuttling of BMAL1 between the nucleus and cytoplasm is important for transactivation by BMAL1:CLOCK/NPAS2 and degradation of BMAL1:CLOCK/NPAS2. BMAL1 initially forms a heterodimer with CLOCK or NPAS2 in the cytosol. The heterodimer is then phosphorylated and translocated into the nucleus.</Comment>
+    <Graphics Color="000000" CenterX="172.0" CenterY="389.5" Width="128.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26547"/>
+  </DataNode>
+  <DataNode GraphId="n14_REACTOME_549373" TextLabel="DNA Containing an &#10;E-box Element&#10;" Type="Unknown">
+    <Comment Source="WikiPathways-description">The consensus sequence of the E-box is CACGTG.</Comment>
+    <BiopaxRef>lit_400229</BiopaxRef>
+    <Graphics Color="000000" CenterX="577.0" CenterY="314.5" Width="122.0" Height="49.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_25457"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_421315" TextLabel="Phosphorylated &#10;BMAL1:CLOCK/NPAS2 &#10;Heterodimer Bound to &#10;DNA&#10;" Type="Complex">
+    <BiopaxRef>lit_400260</BiopaxRef>
+    <BiopaxRef>lit_421313</BiopaxRef>
+    <Graphics Color="000000" CenterX="655.0" CenterY="481.5" Width="128.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25790"/>
+  </DataNode>
+  <DataNode GraphId="n18_REACTOME_400247" TextLabel="Cryptochrome-&#10;1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="176.5" CenterY="773.5" Width="91.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q16526"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_400255" TextLabel="Cryptochrome-&#10;2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="78.5" CenterY="772.5" Width="91.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q49AN0"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_400373" TextLabel="Period circadian &#10;protein homolog 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="283.5" CenterY="775.5" Width="107.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O15534"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_400399" TextLabel="Period circadian &#10;protein homolog 2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="396.5" CenterY="774.5" Width="107.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O15055"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_879850" TextLabel="Glucocorticoid &#10;receptor:&#10;Dexamethasone &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="565.0" CenterY="663.5" Width="128.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26089"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_879741" TextLabel="Class E basic helix-&#10;loop-helix protein &#10;40&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1132.0" CenterY="123.5" Width="116.0" Height="63.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O14503"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_879703" TextLabel="Class E basic helix-&#10;loop-helix protein &#10;41&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1129.0" CenterY="198.5" Width="116.0" Height="63.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9C0J9"/>
+  </DataNode>
+  <DataNode GraphId="n33_REACTOME_879796" TextLabel="D site-binding &#10;protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1132.0" CenterY="267.5" Width="104.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q10586"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_388474" TextLabel="AVP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1688.5" CenterY="482.5" Width="129.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P01185"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_400186" TextLabel="Peroxisome &#10;proliferator-activated &#10;receptor alpha&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1129.5" CenterY="343.5" Width="133.0" Height="77.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q07869"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_508391" TextLabel="Nocturnin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1132.0" CenterY="415.5" Width="104.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UK39"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_158797" TextLabel="plasminogen activator &#10;inhibitor 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1687.0" CenterY="385.5" Width="126.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P05121"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_879827" TextLabel="BMAL2:CLOCK &#10;Heterodimer&#10;" Type="Complex">
+    <BiopaxRef>lit_879777</BiopaxRef>
+    <Graphics Color="000000" CenterX="1266.5" CenterY="406.0" Width="105.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26482"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_400223" TextLabel="CRY Proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="90.5" CenterY="625.5" Width="121.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26101"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_549449" TextLabel="BMAL1:&#10;CLOCK/NPAS2:CRY &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="220.5" CenterY="527.5" Width="121.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25684"/>
+  </DataNode>
+  <DataNode GraphId="n54_REACTOME_421287" TextLabel="CRY:PER:Kinase &#10;Ternary Complex, &#10;unphosphorylated&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">As inferred from mouse, PER proteins can form homodimers and CRY proteins can form heterodimers with PER proteins. CRY and PER proteins may therefore form trimers (PER:PER:CRY).</Comment>
+    <Graphics Color="000000" CenterX="238.0" CenterY="848.5" Width="126.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26725"/>
+  </DataNode>
+  <DataNode GraphId="n55_REACTOME_421296" TextLabel="CRY:PER:Kinase &#10;Ternary Complex, &#10;phosphorylated&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="640.0" CenterY="946.5" Width="126.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26285"/>
+  </DataNode>
+  <DataNode GraphId="n56_REACTOME_421289" TextLabel="Casein kinase I delta &#10;or Casein kinase I &#10;epsilon&#10;" Type="Unknown">
+    <BiopaxRef>lit_421281</BiopaxRef>
+    <BiopaxRef>lit_421298</BiopaxRef>
+    <BiopaxRef>lit_421294</BiopaxRef>
+    <Graphics Color="000000" CenterX="443.5" CenterY="1012.5" Width="121.0" Height="49.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_26408"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_400277" TextLabel="CRY:PER:Kinase &#10;Ternary Complex, &#10;phosphorylated&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="767.0" CenterY="756.5" Width="126.0" Height="63.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25528"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_400273" TextLabel="BMAL1:&#10;CLOCK/NPAS2:CRY:&#10;PER Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1204.5" CenterY="610.5" Width="115.0" Height="49.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_26318"/>
+  </DataNode>
+  <DataNode GraphId="n63_REACTOME_174237" TextLabel="Beta-TrCP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="953.5" CenterY="961.5" Width="105.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y297"/>
+  </DataNode>
+  <DataNode GraphId="n64_REACTOME_400346" TextLabel="Phosphorylated &#10;PER Proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="768.5" CenterY="957.5" Width="105.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25419"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_400368" TextLabel="Beta-TrCP1:PER &#10;complex&#10;" Type="Complex">
+    <BiopaxRef>lit_400234</BiopaxRef>
+    <Graphics Color="000000" CenterX="1021.5" CenterY="1079.5" Width="131.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_27062"/>
+  </DataNode>
+  <DataNode GraphId="n67_REACTOME_400380" TextLabel="FBXL3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1009.0" CenterY="685.5" Width="110.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UKT7"/>
+  </DataNode>
+  <DataNode GraphId="n68_REACTOME_400237" TextLabel="Phosphorylated CRY &#10;Proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="905.0" CenterY="762.5" Width="126.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26910"/>
+  </DataNode>
+  <DataNode GraphId="n69_REACTOME_400351" TextLabel="FBXL3:CRY &#10;Complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1051.5" CenterY="818.5" Width="105.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_25657"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_517938" TextLabel="Ubiquitinated &#10;Phosphorylated CRY &#10;Proteins&#10;" Type="Protein">
+    <BiopaxRef>lit_400236</BiopaxRef>
+    <Graphics Color="000000" CenterX="1209.0" CenterY="693.5" Width="126.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_26499"/>
+  </DataNode>
+  <DataNode GraphId="n75_REACTOME_113595" TextLabel="ubiquitin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1166.5" CenterY="1062.5" Width="105.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_3316"/>
+  </DataNode>
+  <DataNode GraphId="n76_REACTOME_517830" TextLabel="Ubiquitinated &#10;Phosphorylated &#10;PER Proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1252.5" CenterY="941.5" Width="105.0" Height="49.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25524"/>
+  </DataNode>
+  <DataNode GraphId="n77_REACTOME_174155" TextLabel="SCF-beta-TrCP1 &#10;complex&#10;" Type="Complex">
+    <BiopaxRef>lit_174111</BiopaxRef>
+    <Graphics Color="000000" CenterX="1194.5" CenterY="1008.5" Width="131.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_6992"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_159848" TextLabel="pro-factor VII, &#10;uncarboxylated&#10;" Type="Protein">
+    <BiopaxRef>lit_140716</BiopaxRef>
+    <BiopaxRef>lit_140725</BiopaxRef>
+    <Graphics Color="000000" CenterX="1447.5" CenterY="622.5" Width="103.0" Height="35.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P08709"/>
+  </DataNode>
+  <DataNode GraphId="n79_REACTOME_68524" TextLabel="ubiquitin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1151.5" CenterY="786.5" Width="61.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_3995"/>
+  </DataNode>
+  <Line GraphId="e_5_REACTOME_400342">
+    <Comment Source="WikiPathways-description">The BMAL1 (ARNTL) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. The ROR-alpha transcription factor binds the RORE element of the BMAL1 (ARNTL) promoter and activates transcription of the BMAL1 gene. The REV-ERBA transcription factor binds the same RORE element and represses transcription of the BMAL1 gene.</Comment>
+    <BiopaxRef>lit_549415</BiopaxRef>
+    <BiopaxRef>lit_879738</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="261.0" Y="105.0" GraphId="e_5_0"/>
+      <Point X="263.0" Y="131.0" GraphId="e_5_1"/>
+      <Point X="181.0" Y="208.0" GraphId="e_5_2" GraphRef="n6_REACTOME_400353" RelX="0.21978021978021978" RelY="-1.2380952380952381" ArrowHead="Arrow"/>
+      <Anchor Position="0.18819547257406377" GraphId="e_5_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_i__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="691.0" Y="187.0" GraphId="e_5_i__0_0" GraphRef="n8_REACTOME_375499" RelX="-1.0625" RelY="-0.4"/>
+      <Point X="263.0" Y="131.0" GraphId="e_5_i__0_1" GraphRef="e_5_a_p" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_5_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="693.0" Y="125.0" GraphId="e_5_a__0_0" GraphRef="n7_REACTOME_400325" RelX="-1.046875" RelY="0.0"/>
+      <Point X="263.0" Y="131.0" GraphId="e_5_a__0_1" GraphRef="e_5_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_REACTOME_400228">
+    <Comment Source="WikiPathways-description">BMAL1 (ARNTL), CLOCK, and NPAS2 are basic helix-loop-helix transcription factors. In humans BMAL1 has been demonstrated to form a heterodimer with CLOCK. In mouse, BMAL1 can form a heterodimer with either CLOCK or NPAS2. By analogy with other basic helix-loop-helix proteins the basic domain binds DNA, in this case the E-box motif, and the helix-loop-helix domains interact to form the heterodimer. BMAL1 and CLOCK/NPAS2 are codependently phosphorylated by unknown kinases after dimerization. The phosphorylation enhances transactivation activity and is inhibited by PER:CRY complexes. Both CLOCK and NPAS2 are expressed in the suprachiasmatic nucleus of the hypothalamus and act redundantly there. The tissue distributions of CLOCK and NPAS2 do not entirely overlap, however. For example, NPAS2 but not CLOCK is found in forebrain.</Comment>
+    <BiopaxRef>lit_879771</BiopaxRef>
+    <BiopaxRef>lit_508691</BiopaxRef>
+    <BiopaxRef>lit_879766</BiopaxRef>
+    <BiopaxRef>lit_879754</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="171.0" Y="288.0" GraphId="e_9_0"/>
+      <Point X="172.0" Y="318.0" GraphId="e_9_1"/>
+      <Point X="172.0" Y="369.0" GraphId="e_9_2" GraphRef="n11_REACTOME_400360" RelX="0.0" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_9_a_i"/>
+      <Anchor Position="0.37049986118821804" GraphId="e_9_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="138.0" Y="278.0" GraphId="e_9_i0_0" GraphRef="n10_REACTOME_400343" RelX="1.0625" RelY="0.7428571428571429"/>
+      <Point X="171.0" Y="288.0" GraphId="e_9_i0_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_9_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="171.0" Y="235.0" GraphId="e_9_i1_0" GraphRef="n6_REACTOME_400353" RelX="0.0" RelY="1.3333333333333333"/>
+      <Point X="171.0" Y="288.0" GraphId="e_9_i1_1" GraphRef="e_9_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_REACTOME_421320">
+    <Comment Source="WikiPathways-description">In mouse, BMAL1, CLOCK, and NPAS2 are phosphorylated by unknown kinases. The phosphorylation is dependent on the heterodimerization of BMAL1 with CLOCK or NPAS2. Phosphorylated BMAL1:CLOCK/NPAS2 is a much stronger transactivator of gene expression than is unphosphorylated BMAL1:CLOCK/NPAS2.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="545.0" Y="384.0" GraphId="e_13_0"/>
+      <Point X="578.0" Y="410.0" GraphId="e_13_1"/>
+      <Point X="620.0" Y="447.0" GraphId="e_13_2" GraphRef="n15_REACTOME_421315" RelX="-0.546875" RelY="-1.0793650793650793" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_13_a_i"/>
+      <Anchor Position="0.42875802932809803" GraphId="e_13_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="239.0" Y="388.0" GraphId="e_13_i0_0" GraphRef="n11_REACTOME_400360" RelX="1.046875" RelY="-0.05714285714285714"/>
+      <Point X="545.0" Y="384.0" GraphId="e_13_i0_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_13_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="565.0" Y="342.0" GraphId="e_13_i1_0" GraphRef="n14_REACTOME_549373" RelX="-0.19672131147540983" RelY="1.1428571428571428"/>
+      <Point X="545.0" Y="384.0" GraphId="e_13_i1_1" GraphRef="e_13_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_549467">
+    <Comment Source="WikiPathways-description">The CRYPTOCHROME-1 (CRY1) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. CRY1 mRNA and protein show circadian expression. The promoter of the CRY1 gene contains an E-box which is bound by the BMAL1:CLOCK heterodimer (and probably also the BMAL1:NPAS2 heterodimer), which activates transcription of CRY1.</Comment>
+    <BiopaxRef>lit_549523</BiopaxRef>
+    <BiopaxRef>lit_549466</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="323.0" Y="573.0" GraphId="e_17_0"/>
+      <Point X="323.0" Y="593.0" GraphId="e_17_1"/>
+      <Point X="190.0" Y="753.0" GraphId="e_17_2" GraphRef="n18_REACTOME_400247" RelX="0.3076923076923077" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0876961866561349" GraphId="e_17_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="588.0" Y="502.0" GraphId="e_17_a__0_0" GraphRef="n15_REACTOME_421315" RelX="-1.046875" RelY="0.6666666666666666"/>
+      <Point X="323.0" Y="593.0" GraphId="e_17_a__0_1" GraphRef="e_17_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_549470">
+    <Comment Source="WikiPathways-description">The CRYPTOCHROME-2 (CRY2) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. As inferred from mouse, the CRY2 protein shows circadian rhythm in the suprachiasmatic nucleus (SCN) and in peripheral tissues. The mRNA shows circadian rhythm in muscle but not in the SCN. Expression is dependent on CLOCK.</Comment>
+    <BiopaxRef>lit_549376</BiopaxRef>
+    <BiopaxRef>lit_549466</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="81.0" Y="682.0" GraphId="e_19_0"/>
+      <Point X="83.0" Y="703.0" GraphId="e_19_1"/>
+      <Point X="79.0" Y="752.0" GraphId="e_19_2" GraphRef="n20_REACTOME_400255" RelX="0.02197802197802198" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.30025076017717817" GraphId="e_19_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_REACTOME_549533">
+    <Comment Source="WikiPathways-description">The PERIOD-1 (PER1) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. The promoter of the PER1 gene contains E-boxes which are bound by the BMAL1:CLOCK heterodimer (and probably also the BMAL1:NPAS2 heterodimer). The BMAL1:CLOCK heterodimer activates transcription of PER1.</Comment>
+    <BiopaxRef>lit_508324</BiopaxRef>
+    <BiopaxRef>lit_400293</BiopaxRef>
+    <BiopaxRef>lit_549407</BiopaxRef>
+    <BiopaxRef>lit_879713</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="366.0" Y="608.0" GraphId="e_21_0"/>
+      <Point X="366.0" Y="620.0" GraphId="e_21_1"/>
+      <Point X="296.0" Y="748.0" GraphId="e_21_2" GraphRef="n22_REACTOME_400373" RelX="0.24299065420560748" RelY="-1.1020408163265305" ArrowHead="Arrow"/>
+      <Anchor Position="0.07600210206170013" GraphId="e_21_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="588.0" Y="511.0" GraphId="e_21_a__0_0" GraphRef="n15_REACTOME_421315" RelX="-1.046875" RelY="0.9523809523809523"/>
+      <Point X="366.0" Y="620.0" GraphId="e_21_a__0_1" GraphRef="e_21_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_REACTOME_549493">
+    <Comment Source="WikiPathways-description">The PERIOD-2 (PER2) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. The promoter of the PER2 gene contains an E-box which binds the BMAL1:CLOCK heterodimer (and probably also the BMAL1:NPAS2 heterodimer). The BMAL1:CLOCK heterodimer activates transcription of PER2.</Comment>
+    <BiopaxRef>lit_508316</BiopaxRef>
+    <BiopaxRef>lit_549407</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="437.0" Y="604.0" GraphId="e_23_0"/>
+      <Point X="440.0" Y="625.0" GraphId="e_23_1"/>
+      <Point X="403.0" Y="747.0" GraphId="e_23_2" GraphRef="n24_REACTOME_400399" RelX="0.1308411214953271" RelY="-1.1020408163265305" ArrowHead="Arrow"/>
+      <Anchor Position="0.1426572840705347" GraphId="e_23_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="607.0" Y="516.0" GraphId="e_23_a__0_0" GraphRef="n15_REACTOME_421315" RelX="-0.75" RelY="1.1111111111111112"/>
+      <Point X="440.0" Y="625.0" GraphId="e_23_a__0_1" GraphRef="e_23_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_23_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="498.0" Y="643.0" GraphId="e_23_a__1_0" GraphRef="n25_REACTOME_879850" RelX="-1.046875" RelY="-0.6349206349206349"/>
+      <Point X="440.0" Y="625.0" GraphId="e_23_a__1_1" GraphRef="e_23_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_REACTOME_549475">
+    <Comment Source="WikiPathways-description">The NR1D1 (REV-ERBA) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. In mouse the Rev-erba gene shows circadian expression due to transactivation by the BMAL1:CLOCK heterodimer.</Comment>
+    <BiopaxRef>lit_549377</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="798.0" Y="278.0" GraphId="e_27_0"/>
+      <Point X="776.0" Y="276.0" GraphId="e_27_1"/>
+      <Point X="749.0" Y="215.0" GraphId="e_27_2" GraphRef="n8_REACTOME_375499" RelX="0.14583333333333334" RelY="1.2" ArrowHead="Arrow"/>
+      <Anchor Position="0.24877207510931137" GraphId="e_27_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_27_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="673.0" Y="447.0" GraphId="e_27_a__0_0" GraphRef="n15_REACTOME_421315" RelX="0.28125" RelY="-1.0793650793650793"/>
+      <Point X="776.0" Y="276.0" GraphId="e_27_a__0_1" GraphRef="e_27_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_REACTOME_879798">
+    <Comment Source="WikiPathways-description">The DEC1 (BHLHE40, BHLHB2) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. The DEC1 gene contains E-box elements in its promoter which bind the BMAL:CLOCK heterodimer and confer circadian rhythm on its expression.</Comment>
+    <BiopaxRef>lit_879704</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="871.0" Y="217.0" GraphId="e_28_0"/>
+      <Point X="874.0" Y="237.0" GraphId="e_28_1"/>
+      <Point X="1071.0" Y="148.0" GraphId="e_28_2" GraphRef="n29_REACTOME_879741" RelX="-1.0517241379310345" RelY="0.7936507936507936" ArrowHead="Arrow"/>
+      <Anchor Position="0.08555066899540402" GraphId="e_28_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_28_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="683.0" Y="447.0" GraphId="e_28_a__0_0" GraphRef="n15_REACTOME_421315" RelX="0.4375" RelY="-1.0793650793650793"/>
+      <Point X="874.0" Y="237.0" GraphId="e_28_a__0_1" GraphRef="e_28_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_879770">
+    <Comment Source="WikiPathways-description">The DEC2 (BHLHE41, BHLHB3) gene is transcribed to yield mRNA and the mRNA is translated to yield protein. As inferred from mouse, the BMAL1:CLOCK heterodimer binds E-box elements in the DEC2 promoter and activates transcription of DEC2.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="884.0" Y="291.0" GraphId="e_30_0"/>
+      <Point X="883.0" Y="311.0" GraphId="e_30_1"/>
+      <Point X="1068.0" Y="224.0" GraphId="e_30_2" GraphRef="n31_REACTOME_879703" RelX="-1.0517241379310345" RelY="0.8253968253968254" ArrowHead="Arrow"/>
+      <Anchor Position="0.08921372900803129" GraphId="e_30_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="697.0" Y="447.0" GraphId="e_30_a__0_0" GraphRef="n15_REACTOME_421315" RelX="0.65625" RelY="-1.0793650793650793"/>
+      <Point X="883.0" Y="311.0" GraphId="e_30_a__0_1" GraphRef="e_30_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_879762">
+    <Comment Source="WikiPathways-description">The DBP gene is transcribed to yield mRNA and the mRNA is translated to yield protein. As inferred from mouse, BMAL1:CLOCK heterodimers bind E-boxes in the DBP promoter and activate transcription of DBP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="894.0" Y="333.0" GraphId="e_32_0"/>
+      <Point X="892.0" Y="353.0" GraphId="e_32_1"/>
+      <Point X="1077.0" Y="285.0" GraphId="e_32_2" GraphRef="n33_REACTOME_879796" RelX="-1.0576923076923077" RelY="0.7346938775510204" ArrowHead="Arrow"/>
+      <Anchor Position="0.09253975947647729" GraphId="e_32_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="713.0" Y="447.0" GraphId="e_32_a__0_0" GraphRef="n15_REACTOME_421315" RelX="0.90625" RelY="-1.0793650793650793"/>
+      <Point X="892.0" Y="353.0" GraphId="e_32_a__0_1" GraphRef="e_32_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_REACTOME_879782">
+    <Comment Source="WikiPathways-description">The AVP gene is transcribed to yield mRNA and the mRNA is translated to yield protein. As inferred from mouse, BMAL1:CLOCK heterodimers bind an E-box enhancer in the promoter of the AVP gene and activate transcription of AVP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1451.0" Y="457.0" GraphId="e_38_0"/>
+      <Point X="1450.0" Y="481.0" GraphId="e_38_1"/>
+      <Point X="1621.0" Y="481.0" GraphId="e_38_2" GraphRef="n39_REACTOME_388474" RelX="-1.0387596899224807" RelY="-0.05714285714285714" ArrowHead="Arrow"/>
+      <Anchor Position="0.12317056081205677" GraphId="e_38_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_38_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="722.0" Y="481.0" GraphId="e_38_a__0_0" GraphRef="n15_REACTOME_421315" RelX="1.046875" RelY="0.0"/>
+      <Point X="1450.0" Y="481.0" GraphId="e_38_a__0_1" GraphRef="e_38_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_REACTOME_879724">
+    <Comment Source="WikiPathways-description">The PPARA gene is transcribed to yield mRNA and the mRNA is translated to yield protein. As inferred from mouse, BMAL1:CLOCK heterodimers bind the scond intron of the PPARA gene and activate transcription of PPARA.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="896.0" Y="384.0" GraphId="e_40_0"/>
+      <Point X="894.0" Y="397.0" GraphId="e_40_1"/>
+      <Point X="1060.0" Y="358.0" GraphId="e_40_2" GraphRef="n41_REACTOME_400186" RelX="-1.037593984962406" RelY="0.38961038961038963" ArrowHead="Arrow"/>
+      <Anchor Position="0.07161077053251405" GraphId="e_40_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_40_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="722.0" Y="458.0" GraphId="e_40_a__0_0" GraphRef="n15_REACTOME_421315" RelX="1.046875" RelY="-0.7301587301587301"/>
+      <Point X="894.0" Y="397.0" GraphId="e_40_a__0_1" GraphRef="e_40_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_REACTOME_549428">
+    <Comment Source="WikiPathways-description">The FACTOR VII (F7)  gene is transcribed to yield mRNA and the mRNA is translated to yield protein. In mouse the F7 gene shows circadian expression due to activation by the Bmal1:Clock heterodimer.</Comment>
+    <BiopaxRef>lit_549398</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1452.0" Y="546.0" GraphId="e_42_0"/>
+      <Point X="1447.0" Y="561.0" GraphId="e_42_1"/>
+      <Point X="1447.0" Y="602.0" GraphId="e_42_2" GraphRef="n78_REACTOME_159848" RelX="0.0" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.27831371092558893" GraphId="e_42_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="722.0" Y="487.0" GraphId="e_42_a__0_0" GraphRef="n15_REACTOME_421315" RelX="1.046875" RelY="0.19047619047619047"/>
+      <Point X="1447.0" Y="561.0" GraphId="e_42_a__0_1" GraphRef="e_42_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_REACTOME_549424">
+    <Comment Source="WikiPathways-description">The NOCTURNIN gene is transcribed to yield mRNA and the mRNA is translated to yield protein. The NOCTURNIN gene shows circadian expression because the BMAL1:CLOCK heterodimer binds an E-box element in the NOCTURNIN promoter and activates transcription.</Comment>
+    <BiopaxRef>lit_508357</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="902.0" Y="417.0" GraphId="e_44_0"/>
+      <Point X="899.0" Y="436.0" GraphId="e_44_1"/>
+      <Point X="1077.0" Y="419.0" GraphId="e_44_2" GraphRef="n45_REACTOME_508391" RelX="-1.0576923076923077" RelY="0.22857142857142856" ArrowHead="Arrow"/>
+      <Anchor Position="0.09712616391143791" GraphId="e_44_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="722.0" Y="469.0" GraphId="e_44_a__0_0" GraphRef="n15_REACTOME_421315" RelX="1.046875" RelY="-0.38095238095238093"/>
+      <Point X="899.0" Y="436.0" GraphId="e_44_a__0_1" GraphRef="e_44_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_REACTOME_549364">
+    <Comment Source="WikiPathways-description">The PAI-1 gene is transcribed to yield mRNA and the mRNA is translated to yield protein. The PAI-1 gene shows circadian expression due to direct transcriptional activation by the BMAL1:CLOCK heterodimer and the BMAL2(CLIF, ARNTL2):CLOCK heterodimer.</Comment>
+    <BiopaxRef>lit_508365</BiopaxRef>
+    <BiopaxRef>lit_549454</BiopaxRef>
+    <BiopaxRef>lit_549419</BiopaxRef>
+    <BiopaxRef>lit_879777</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1460.0" Y="411.0" GraphId="e_46_0"/>
+      <Point X="1455.0" Y="436.0" GraphId="e_46_1"/>
+      <Point X="1621.0" Y="398.0" GraphId="e_46_2" GraphRef="n47_REACTOME_158797" RelX="-1.0476190476190477" RelY="0.5306122448979592" ArrowHead="Arrow"/>
+      <Anchor Position="0.13021723700947024" GraphId="e_46_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_a__0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1322.0" Y="414.0" GraphId="e_46_a__0_0" GraphRef="n48_REACTOME_879827" RelX="1.0666666666666667" RelY="0.32"/>
+      <Point X="1455.0" Y="436.0" GraphId="e_46_a__0_1" GraphRef="e_46_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_46_a__1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="722.0" Y="477.0" GraphId="e_46_a__1_0" GraphRef="n15_REACTOME_421315" RelX="1.046875" RelY="-0.12698412698412698"/>
+      <Point X="1455.0" Y="436.0" GraphId="e_46_a__1_1" GraphRef="e_46_a_p" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_REACTOME_549355">
+    <Comment Source="WikiPathways-description">CRY1 and CRY2 bind the unphosphorylated BMAL1:CLOCK heterodimer (and by homology the BMAL1:NPAS2 heterodimer) and prolong its half-life. The unphosphorylated BMAL1:CLOCK heterodimer only weakly activates transcription and is therefore believed to competitively reduce transcription by phosphorylated BMAL1:CLOCK heterodimer. The complex of unphosphorylated BMAL1:CLOCK with CRY may contain additional components and may traffic into the nucleus.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="167.0" Y="448.0" GraphId="e_50_0"/>
+      <Point X="186.0" Y="480.0" GraphId="e_50_1"/>
+      <Point X="207.0" Y="507.0" GraphId="e_50_2" GraphRef="n52_REACTOME_549449" RelX="-0.21487603305785125" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_50_a_i"/>
+      <Anchor Position="0.5210745555505696" GraphId="e_50_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="170.0" Y="410.0" GraphId="e_50_i0_0" GraphRef="n11_REACTOME_400360" RelX="-0.03125" RelY="1.2"/>
+      <Point X="167.0" Y="448.0" GraphId="e_50_i0_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_50_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="94.0" Y="612.0" GraphId="e_50_i1_0" GraphRef="n51_REACTOME_400223" RelX="0.06611570247933884" RelY="-1.2380952380952381"/>
+      <Point X="167.0" Y="448.0" GraphId="e_50_i1_1" GraphRef="e_50_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_53_REACTOME_400382">
+    <Comment Source="WikiPathways-description">In the cytosol the kinases CSNK1D (casein kinase I delta) and CSNK1E (casein kinase I epsilon) phosphorylate PER1, PER2, CRY1, and CRY2 at multiple sites. Evidence indicates that PER:CRY complexes form a stable ternary complex with either CSNK1E or CSNK1D. Both kinases are able to bind and phosphorylate PER proteins. CSNK1E has been shown to phosphorylate CRY proteins only when they are complexed with PER proteins.&lt;br&gt;PER proteins contain a nuclear localization sequence and a nuclear export sequence allowing their movement into and out of the nucleus. Phosphorylation is required for transit of PER:CRY:kinase complexes into the nucleus and for interaction of PER proteins with the ubiquitin-mediated degradation process in the cytoplasm.&lt;br&gt;A mutation at Serine662 of PER2 is responsible for familial advanced phase sleep syndrome, however the particular kinase responsible for phosphorylating Serine662 is unknown.</Comment>
+    <BiopaxRef>lit_400293</BiopaxRef>
+    <BiopaxRef>lit_508355</BiopaxRef>
+    <BiopaxRef>lit_508337</BiopaxRef>
+    <BiopaxRef>lit_508347</BiopaxRef>
+    <BiopaxRef>lit_508333</BiopaxRef>
+    <BiopaxRef>lit_508733</BiopaxRef>
+    <BiopaxRef>lit_508746</BiopaxRef>
+    <BiopaxRef>lit_400234</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="304.0" Y="879.0" GraphId="e_53_0" GraphRef="n54_REACTOME_421287" RelX="1.0476190476190477" RelY="0.9841269841269841"/>
+      <Point X="437.0" Y="946.0" GraphId="e_53_1"/>
+      <Point X="574.0" Y="946.0" GraphId="e_53_2" GraphRef="n55_REACTOME_421296" RelX="-1.0476190476190477" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.5208496818760799" GraphId="e_53_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_53_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="440.0" Y="985.0" GraphId="e_53_c__0_0" GraphRef="n56_REACTOME_421289" RelX="-0.049586776859504134" RelY="-1.1020408163265305"/>
+      <Point X="437.0" Y="946.0" GraphId="e_53_c__0_1" GraphRef="e_53_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_REACTOME_549385">
+    <Comment Source="WikiPathways-description">The ternary complex containing phosphorylated CRY and PER proteins with a kinase (CSNK1D or CSNK1E) is translocated to the nucleus. Phosphorylation controls transfer to the nucleus and retention in the nucleus.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="678.0" Y="912.0" GraphId="e_57_0" GraphRef="n55_REACTOME_421296" RelX="0.6031746031746031" RelY="-1.0793650793650793"/>
+      <Point X="712.0" Y="887.0" GraphId="e_57_1"/>
+      <Point X="753.0" Y="791.0" GraphId="e_57_2" GraphRef="n58_REACTOME_400277" RelX="-0.2222222222222222" RelY="1.1111111111111112" ArrowHead="Arrow"/>
+      <Anchor Position="0.2878895227969452" GraphId="e_57_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_REACTOME_400256">
+    <Comment Source="WikiPathways-description">CRY (CRY1 and CRY2) and PER (PER1, PER2, PER3) proteins form complex in the cytoplasm where they are phosphorylated by CSNK1D and CSNK1E kinases. CRY:PER complexes appear to form stable complexes with a kinase. Because of the nuclear localization signals of PER and CRY, the complexes are translocated to the nucleus where they bind BMAL1:CLOCK/NPAS2 heterodimers and inhibit the transactivation activity of BMAL1:CLOCK/NPAS2.&lt;br&gt;CRY and PER proteins are themselves transcriptionally activated by BMAL1:CLOCK/NPAS2 thus they participate in a negative loop inhibiting their own synthesis and the synthesis of other targets of BMAL1:CLOCK/NPAS2.&lt;br&gt;Experiments with two-hybrid interactions and in vitro associations show that CRY1, CRY2, and PER2 bind BMAL1 at two different sites on BMAL1. PER2 but not CRY1 or CRY2 binds CLOCK. Different combinations of PER and CRY proteins in PER:CRY complexes have different inhibitory activities.</Comment>
+    <BiopaxRef>lit_508317</BiopaxRef>
+    <BiopaxRef>lit_879801</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="800.0" Y="629.0" GraphId="e_60_0"/>
+      <Point X="862.0" Y="627.0" GraphId="e_60_1"/>
+      <Point X="1144.0" Y="612.0" GraphId="e_60_2" GraphRef="n61_REACTOME_400273" RelX="-1.0434782608695652" RelY="0.08163265306122448" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_60_a_i"/>
+      <Anchor Position="0.1801007079939916" GraphId="e_60_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="775.0" Y="722.0" GraphId="e_60_i0_0" GraphRef="n58_REACTOME_400277" RelX="0.12698412698412698" RelY="-1.0793650793650793"/>
+      <Point X="800.0" Y="629.0" GraphId="e_60_i0_1" GraphRef="e_60_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_60_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="685.0" Y="516.0" GraphId="e_60_i1_0" GraphRef="n15_REACTOME_421315" RelX="0.46875" RelY="1.1111111111111112"/>
+      <Point X="800.0" Y="629.0" GraphId="e_60_i1_1" GraphRef="e_60_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_REACTOME_400219">
+    <Comment Source="WikiPathways-description">Beta-TrCP1 is an F-box type component of a particular SKP/CUL/F-Box (SCF) E3 ubiquitin ligase. Beta-TrCP1 interacts specifically with phosphorylated PER proteins and directs their polyubiquitination.</Comment>
+    <BiopaxRef>lit_400234</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="856.0" Y="1029.0" GraphId="e_62_0"/>
+      <Point X="897.0" Y="1060.0" GraphId="e_62_1"/>
+      <Point X="953.0" Y="1068.0" GraphId="e_62_2" GraphRef="n65_REACTOME_400368" RelX="-1.0381679389312977" RelY="-0.6285714285714286" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_62_a_i"/>
+      <Anchor Position="0.4760664789637987" GraphId="e_62_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="938.0" Y="975.0" GraphId="e_62_i0_0" GraphRef="n63_REACTOME_174237" RelX="-0.2857142857142857" RelY="1.3333333333333333"/>
+      <Point X="856.0" Y="1029.0" GraphId="e_62_i0_1" GraphRef="e_62_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_62_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="789.0" Y="978.0" GraphId="e_62_i1_0" GraphRef="n64_REACTOME_400346" RelX="0.4" RelY="1.2"/>
+      <Point X="856.0" Y="1029.0" GraphId="e_62_i1_1" GraphRef="e_62_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_REACTOME_400272">
+    <Comment Source="WikiPathways-description">FBXL3 is an F-box type component of a particular SKP/CUL/F-Box E3 ubiquitin ligase. FBXL3 interacts specifically with CRY1 and CRY2 in the cytosol to direct the polyubiquitination of CRY1 and CRY2. It is unknown if FBXL3 requires phosphorylation or other modification of CRY proteins in order to bind and ubiquitinate them. Phosphorylation of CRY by Adenosine monophosphate-dependent kinase increases degradation of CRY, apparently by increasing association of CRY with FBXL3 Polyubiquitination of CRY proteins directs them to the 26S proteasome for degradation.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="994.0" Y="756.0" GraphId="e_66_0"/>
+      <Point X="1018.0" Y="774.0" GraphId="e_66_1"/>
+      <Point X="1037.0" Y="798.0" GraphId="e_66_2" GraphRef="n69_REACTOME_400351" RelX="-0.26666666666666666" RelY="-1.1428571428571428" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_66_a_i"/>
+      <Anchor Position="0.49496410542805486" GraphId="e_66_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1006.0" Y="699.0" GraphId="e_66_i0_0" GraphRef="n67_REACTOME_400380" RelX="-0.05454545454545454" RelY="1.3333333333333333"/>
+      <Point X="994.0" Y="756.0" GraphId="e_66_i0_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_66_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="971.0" Y="757.0" GraphId="e_66_i1_0" GraphRef="n68_REACTOME_400237" RelX="1.0476190476190477" RelY="-0.2857142857142857"/>
+      <Point X="994.0" Y="756.0" GraphId="e_66_i1_1" GraphRef="e_66_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_REACTOME_400282">
+    <Comment Source="WikiPathways-description">Polyubiquitination of CRY proteins is directed by the FBXL3 component of SCF E3 ubiquitin ligase. The polyubiquitinated CRY proteins are recognized and degraded by the 26S proteasome. Degradation of CRY proteins occurs during the night and is necessary to allow new transcription of BMAL1:CLOCK/NPAS2 targets in the morning during the circadian cycle.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1077.0" Y="764.0" GraphId="e_71_0"/>
+      <Point X="1092.0" Y="730.0" GraphId="e_71_1"/>
+      <Point X="1103.0" Y="706.0" GraphId="e_71_2"/>
+      <Anchor Position="0.0" GraphId="e_71_a_i"/>
+      <Anchor Position="0.5846492792730049" GraphId="e_71_a_p"/>
+      <Anchor Position="1.0" GraphId="e_71_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1059.0" Y="798.0" GraphId="e_71_i0_0" GraphRef="n69_REACTOME_400351" RelX="0.1523809523809524" RelY="-1.1428571428571428"/>
+      <Point X="1077.0" Y="764.0" GraphId="e_71_i0_1" GraphRef="e_71_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1118.0" Y="776.0" GraphId="e_71_i1_0" GraphRef="n79_REACTOME_68524" RelX="-1.0819672131147542" RelY="-0.9523809523809523"/>
+      <Point X="1077.0" Y="764.0" GraphId="e_71_i1_1" GraphRef="e_71_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1056.0" Y="699.0" GraphId="e_71_o0_0" ArrowHead="Arrow" GraphRef="n67_REACTOME_400380" RelX="0.8545454545454545" RelY="1.3333333333333333"/>
+      <Point X="1103.0" Y="706.0" GraphId="e_71_o0_1" GraphRef="e_71_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_71_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1143.0" Y="700.0" GraphId="e_71_o1_0" ArrowHead="Arrow" GraphRef="n73_REACTOME_517938" RelX="-1.0476190476190477" RelY="0.2857142857142857"/>
+      <Point X="1103.0" Y="706.0" GraphId="e_71_o1_1" GraphRef="e_71_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_REACTOME_400267">
+    <Comment Source="WikiPathways-description">Polyubiquitination of PER proteins is directed by the Beta-TrCP1 component of SCF E3 ubiquitin ligase. The polyubiquitinated PER proteins are recognized and degraded by the 26S proteasome. Degradation of PER proteins occurs during the night and is necessary to allow new transcription of BMAL1:CLOCK/NPAS2 targets in the morning during the circadian cycle.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1072.0" Y="1045.0" GraphId="e_74_0"/>
+      <Point X="1068.0" Y="1021.0" GraphId="e_74_1"/>
+      <Point X="1048.0" Y="993.0" GraphId="e_74_2"/>
+      <Anchor Position="0.0" GraphId="e_74_a_i"/>
+      <Anchor Position="0.4142135623730951" GraphId="e_74_a_p"/>
+      <Anchor Position="1.0" GraphId="e_74_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1047.0" Y="1059.0" GraphId="e_74_i0_0" GraphRef="n65_REACTOME_400368" RelX="0.3969465648854962" RelY="-1.1428571428571428"/>
+      <Point X="1072.0" Y="1045.0" GraphId="e_74_i0_1" GraphRef="e_74_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1111.0" Y="1052.0" GraphId="e_74_i1_0" GraphRef="n75_REACTOME_113595" RelX="-1.0476190476190477" RelY="-0.9523809523809523"/>
+      <Point X="1072.0" Y="1045.0" GraphId="e_74_i1_1" GraphRef="e_74_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1197.0" Y="954.0" GraphId="e_74_o0_0" ArrowHead="Arrow" GraphRef="n76_REACTOME_517830" RelX="-1.0476190476190477" RelY="0.5306122448979592"/>
+      <Point X="1048.0" Y="993.0" GraphId="e_74_o0_1" GraphRef="e_74_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="984.0" Y="975.0" GraphId="e_74_o1_0" ArrowHead="Arrow" GraphRef="n63_REACTOME_174237" RelX="0.5904761904761905" RelY="1.3333333333333333"/>
+      <Point X="1048.0" Y="993.0" GraphId="e_74_o1_1" GraphRef="e_74_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_74_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1126.0" Y="1014.0" GraphId="e_74_c__0_0" GraphRef="n77_REACTOME_174155" RelX="-1.0381679389312977" RelY="0.34285714285714286"/>
+      <Point X="1068.0" Y="1021.0" GraphId="e_74_c__0_1" GraphRef="e_74_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_1" GroupRef="group_comp_1" TextLabel="extracellular region">
+    <Graphics Color="000000" CenterX="1623.5" CenterY="1098.5" Width="131.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_2" GroupRef="group_comp_2" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="70.5" CenterY="1071.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_3" GroupRef="group_comp_3" TextLabel="nucleoplasm">
+    <Graphics Color="000000" CenterX="539.0" CenterY="739.5" Width="92.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_80" GroupRef="group_comp_80" TextLabel="endoplasmic reticulum lumen">
+    <Graphics Color="000000" CenterX="1447.0" CenterY="711.5" Width="112.0" Height="47.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_1" GroupRef="group_comp_1">
+    <Graphics Color="000000" CenterX="1674.0" CenterY="579.0" Width="248.0" Height="1116.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_2" GroupRef="group_comp_2">
+    <Graphics Color="000000" CenterX="779.0" CenterY="585.0" Width="1540.0" Height="1124.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_3" GroupRef="group_comp_3">
+    <Graphics Color="000000" CenterX="907.0" CenterY="482.0" Width="860.0" Height="824.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_80" GroupRef="group_comp_80">
+    <Graphics Color="000000" CenterX="1448.5" CenterY="631.5" Width="147.0" Height="229.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400262" rdf:id="lit_400262">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18786386</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cellular circadian pacemaking and the role of cytosolic rhythms</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hastings, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maywood, ES</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Neill, JS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Curr Biol 18:R805-R815</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400269" rdf:id="lit_400269">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16987893</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Molecular components of the mammalian circadian clock</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ko, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, JS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 15:R271-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400222" rdf:id="lit_400222">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18802415</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The genetics of mammalian circadian order and disorder: implications for physiology and disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hong, HK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ko, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McDearmon, EL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Genet 9:764-75</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400322" rdf:id="lit_400322">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18775307</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The meter of metabolism</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Green, CB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bass, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 134:728-42</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400229" rdf:id="lit_400229">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18177499</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A direct repeat of E-box-like elements is required for cell-autonomous circadian rhythm of clock genes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakahata, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshida, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takano, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soma, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamamoto, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yasuda, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakatsu, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takumi, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BMC Mol Biol 9:1</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400260" rdf:id="lit_400260">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17115977</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cryptochromes impair phosphorylation of transcriptional activators in the clock: a general mechanism for circadian repression</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dardente, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fortier, EE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martineau, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cermakian, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 402:525-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421313" rdf:id="lit_421313">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19330005</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CK2alpha phosphorylates BMAL1 to regulate the mammalian clock</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tamaru, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirayama, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isojima, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Norioka, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takamatsu, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sassone-Corsi, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Struct Mol Biol 16:446-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879777" rdf:id="lit_879777">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11018023</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CLIF, a novel cycle-like factor, regulates the circadian oscillation of plasminogen activator inhibitor-1 gene expression</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maemura, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de la Monte, SM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chin, MT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Layne, MD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hsieh, CM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yet, SF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perrella, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, ME</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 275:36847-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421281" rdf:id="lit_421281">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11875063</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The circadian regulatory proteins BMAL1 and cryptochromes are substrates of casein kinase Iepsilon</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eide, EJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vielhaber, EL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hinz, WA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Virshup, DM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:17248-54</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421298" rdf:id="lit_421298">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11779462</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Posttranslational mechanisms regulate the mammalian circadian clock</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Etchegaray, JP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cagampang, FR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loudon, AS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reppert, SM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 107:855-67</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421294" rdf:id="lit_421294">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11865049</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Control of intracellular dynamics of mammalian period proteins by casein kinase I epsilon (CKIepsilon) and CKIdelta in cultured cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Akashi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsuchiya, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshino, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishida, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 22:1693-703</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400234" rdf:id="lit_400234">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15917222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SCFbeta-TRCP controls clock-dependent transcription via casein kinase 1-dependent degradation of the mammalian period-1 (Per1) protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shirogane, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jin, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ang, XL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harper, JW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:26863-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400236" rdf:id="lit_400236">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17463251</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SCFFbxl3 controls the oscillation of the circadian clock by directing the degradation of cryptochrome proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Busino, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bassermann, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maiolica, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lee, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nolan, PM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Godinho, SI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Draetta, GF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pagano, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 316:900-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_174111" rdf:id="lit_174111">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10023660</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human F box protein beta-Trcp associates with the Cul1/Skp1 complex and regulates the stability of beta-catenin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Latres, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chiaur, DS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pagano, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oncogene 18:849-54</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140716" rdf:id="lit_140716">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3486420</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1986</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of a cDNA coding for human factor VII</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hagen, FS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gray, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">O'Hara, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grant, FJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saari, GC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Woodbury, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hart, CE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insley, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kisiel, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kurachi, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 83:2412-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_140725" rdf:id="lit_140725">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3264725</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1988</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Amino acid sequence and posttranslational modifications of human factor VIIa from plasma and transfected baby hamster kidney cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thim, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bjoern, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Christensen, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nicolaisen, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lund-Hansen, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pedersen, AH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hedner, U</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemistry 27:7785-93</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549415" rdf:id="lit_549415">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9144434</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cDNA cloning and tissue-specific expression of a novel basic helix-loop-helix/PAS protein (BMAL1) and identification of alternatively spliced variants with alternative translation initiation site usage</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ikeda, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nomura, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 233:258-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879738" rdf:id="lit_879738">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9079689</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of a subset of the basic-helix-loop-helix-PAS superfamily that interacts with components of the dioxin signaling pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hogenesch, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, WK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jackiw, VH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, RC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gu, YZ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pray-Grant, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perdew, GH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bradfield, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 272:8581-93</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879771" rdf:id="lit_879771">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9576906</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The basic-helix-loop-helix-PAS orphan MOP3 forms transcriptionally active complexes with circadian and hypoxia factors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hogenesch, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gu, YZ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jain, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bradfield, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 95:5474-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508691" rdf:id="lit_508691">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9616112</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Role of the CLOCK protein in the mammalian circadian mechanism</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gekakis, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Staknis, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nguyen, HB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davis, FC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wilsbacher, LD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">King, DP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weitz, CJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 280:1564-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879766" rdf:id="lit_879766">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11441147</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NPAS2: an analog of clock operative in the mammalian forebrain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reick, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Garcia, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dudley, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McKnight, SL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 293:506-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879754" rdf:id="lit_879754">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11441146</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of clock and NPAS2 DNA binding by the redox state of NAD cofactors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rutter, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reick, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">McKnight, SL</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 293:510-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549523" rdf:id="lit_549523">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8921389</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cloning, tissue expression, and mapping of a human photolyase homolog with similarity to plant blue-light receptors</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Spek, PJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bootsma, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takao, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eker, AP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yasui, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genomics 37:177-82</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549466" rdf:id="lit_549466">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14507900</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Expression of the blue-light receptor cryptochrome in the human retina</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thompson, CL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bowes Rickman, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shaw, SJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ebright, JN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kelly, U</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sancar, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rickman, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Invest Ophthalmol Vis Sci 44:4515-21</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549376" rdf:id="lit_549376">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9801304</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of photolyase/blue-light receptor homologs in mouse and human cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kanno, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smit, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Horst, GT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takao, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yasui, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nucleic Acids Res 26:5086-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508324" rdf:id="lit_508324">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17994337</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Activation of human period-1 by PKA or CLOCK/BMAL1 is conferred by separate signal transduction pathways</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Motzkus, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Loumi, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cadenas, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vinson, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Forssmann, WG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maronde, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chronobiol Int 24:783-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_400293" rdf:id="lit_400293">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14750904</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation of clock protein PER1 regulates its circadian degradation in normal human fibroblasts</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyazaki, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagase, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mesaki, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Narukawa, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohara, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishida, N</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J 380:95-103</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549407" rdf:id="lit_549407">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9427249</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Two period homologs: circadian expression and photic regulation in the suprachiasmatic nuclei</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shearman, LP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zylka, MJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weaver, DR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kolakowski LF, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reppert, SM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neuron 19:1261-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879713" rdf:id="lit_879713">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9333243</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Circadian oscillation of a mammalian homologue of the Drosophila period gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tei, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okamura, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shigeyoshi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukuhara, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ozawa, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirose, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakaki, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 389:512-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508316" rdf:id="lit_508316">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18317514</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cryptochrome and Period Proteins Are Regulated by the CLOCK/BMAL1 Gene: Crosstalk between the PPARs/RXRalpha-Regulated and CLOCK/BMAL1-Regulated Systems</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakamura, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Inoue, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Komoda, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Katayama, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PPAR Res 2008:348610</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549377" rdf:id="lit_549377">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2539258</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1989</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Two erbA homologs encoding proteins with different T3 binding capacities are transcribed from opposite DNA strands of the same genetic locus</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyajima, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horiuchi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shibuya, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukushige, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsubara, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toyoshima, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamamoto, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 57:31-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879704" rdf:id="lit_879704">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14672706</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A novel autofeedback loop of Dec1 transcription involved in circadian rhythm regulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kawamoto, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noshiro, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sato, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maemura, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takeda, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagai, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iwata, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujimoto, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Furukawa, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyazaki, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Honma, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Honma, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kato, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 313:117-24</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549398" rdf:id="lit_549398">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8618898</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1995</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liver-specific expression of the human factor VII gene</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Greenberg, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miao, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ho, WT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chung, DW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Davie, EW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 92:12347-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508357" rdf:id="lit_508357">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18587630</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CLOCK/BMAL1 regulates human nocturnin transcription through binding to the E-box of nocturnin promoter</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yue, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhou, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hao, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yuan, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qiang, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ding, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cao, JM</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biochem 317:169-77</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508365" rdf:id="lit_508365">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16857194</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Circadian clock genes cause activation of the human PAI-1 gene promoter with 4G/5G allelic preference</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chong, NW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Codd, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chan, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Samani, NJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 580:4469-72</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549454" rdf:id="lit_549454">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12406875</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The 4G5G polymorphism in the gene for PAI-1 and the circadian oscillation of plasma PAI-1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van der Bom, JG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bots, ML</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Haverkate, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kluft, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grobbee, DE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 101:1841-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_549419" rdf:id="lit_549419">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12738229</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of the PAI-1 promoter by circadian clock components: differential activation by BMAL1 and BMAL2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schoenhard, JA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith, LH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Painter, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eren, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Johnson, CH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vaughan, DE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Mol Cell Cardiol 35:473-81</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508355" rdf:id="lit_508355">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19805222</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CKIepsilon/delta-dependent phosphorylation is a temperature-insensitive, period-determining process in the mammalian circadian clock</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isojima, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakajima, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ukai, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujishima, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamada, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Masumoto, KH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiuchi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishida, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ukai-Tadenuma, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Minami, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kito, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakao, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kishimoto, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoo, SH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimomura, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takao, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takano, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kojima, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakaki, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueda, HR</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A 106:15744-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508337" rdf:id="lit_508337">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17218255</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Modeling of a human circadian mutation yields insights into clock regulation by PER2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toh, KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shin, JY</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, YH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PtÃ¡cek, LJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 128:59-70</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508347" rdf:id="lit_508347">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11232563</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An hPer2 phosphorylation site mutation in familial advanced sleep phase syndrome</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Toh, KL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">He, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eide, EJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hinz, WA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Virshup, DM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PtÃ¡cek, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, YH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 291:1040-3</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508333" rdf:id="lit_508333">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11165242</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Human casein kinase Idelta phosphorylation of human circadian clock proteins period 1 and 2</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Camacho, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cilio, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guo, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Virshup, DM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patel, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khorkova, O</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Styren, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morse, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yao, Z</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keesler, GA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 489:159-65</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508733" rdf:id="lit_508733">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15800623</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional consequences of a CKIdelta mutation causing familial advanced sleep phase syndrome</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Padiath, QS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shapiro, RE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, CR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, SC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saigoh, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saigoh, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PtÃ¡cek, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fu, YH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 434:640-4</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508746" rdf:id="lit_508746">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10790862</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Phosphorylation and destabilization of human period I clock protein by human casein kinase I epsilon</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Keesler, GA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Camacho, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Guo, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Virshup, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mondadori, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yao, Z</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neuroreport 11:951-5</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_508317" rdf:id="lit_508317">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16474406</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feedback repression is required for mammalian circadian clock function</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sato, TK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamada, RG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ukai, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baggs, JE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miraglia, LJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, TJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Welsh, DK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kay, SA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueda, HR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hogenesch, JB</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Genet 38:312-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_879801" rdf:id="lit_879801">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10531061</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Light-independent role of CRY1 and CRY2 in the mammalian circadian clock</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Griffin EA, Jr</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Staknis, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Weitz, CJ</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Science 286:768-71</bp:SOURCE>
+    </bp:publicationXref>
+  </Biopax>
+</Pathway>

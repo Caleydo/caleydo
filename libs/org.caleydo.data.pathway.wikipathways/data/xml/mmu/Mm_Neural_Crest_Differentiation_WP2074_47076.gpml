@@ -1,0 +1,1764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Neural Crest Differentiation" Author="Nathan Salomonis" Organism="Mus musculus" Last-Modified="12/1/2011"><Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">Gene regulatory network model of cranial neural crest cell (CNCC) development, adaped from PMID: 19575671. Most interactions in the model are proposed to regulate transcription of core factors involved involved in neural crest and downstream progenitor specification. Transcriptional regulation arrows are proposed to promote transcription, unless a graphical T-bar is present at the end of the arrow (commented to be inhibitors of transcriptional regulation). Additional gene information was obtained from http://www.ncbi.nlm.nih.gov/books/NBK53143
+
+When citing thies pathway, please reference the source publication (PMID: 19575671).</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP2064&amp;oldid=45837 WP2064(r45837)] with a 96% conversion rate.</Comment>
+  <BiopaxRef>b40</BiopaxRef>
+  <Graphics BoardWidth="1174.7619047619044" BoardHeight="1542.5"/>
+  <DataNode TextLabel="Differentiation" GraphId="ce0a4" Type="Pathway">
+    <Graphics CenterX="655.5" CenterY="1108.0" Width="97.0" Height="20.0" ZOrder="32768" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="None" Color="14961e"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Bmp7" GraphId="e0c75" Type="GeneProduct" GroupRef="d6802">
+    <Graphics CenterX="925.0462184873936" CenterY="179.0" Width="55.0" Height="20.0" ZOrder="32770" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000008999"/>
+  </DataNode>
+  <DataNode TextLabel="Rhob" GraphId="a65e3" Type="GeneProduct">
+    <Graphics CenterX="205.0966386554622" CenterY="739.6386554621848" Width="55.0" Height="20.0" ZOrder="32772" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000054364"/>
+  </DataNode>
+  <DataNode TextLabel="Myb" GraphId="de36d" Type="GeneProduct">
+    <Graphics CenterX="265.0966386554622" CenterY="710.638655462185" Width="55.0" Height="20.0" ZOrder="32774" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000019982"/>
+  </DataNode>
+  <DataNode TextLabel="Itgb1" GraphId="c06b7" Type="GeneProduct">
+    <Graphics CenterX="483.09663865546213" CenterY="869.6386554621848" Width="55.0" Height="20.0" ZOrder="32776" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000025809"/>
+  </DataNode>
+  <DataNode TextLabel="Wnt1" GraphId="aebd4" Type="GeneProduct" GroupRef="b80de">
+    <Graphics CenterX="936.5" CenterY="47.79831932773109" Width="55.0" Height="20.0" ZOrder="32778" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022997"/>
+  </DataNode>
+  <DataNode TextLabel="Tcfap2a" GraphId="a53a5" Type="GeneProduct">
+    <Graphics CenterX="681.2647058823529" CenterY="332.4789915966386" Width="55.0" Height="20.0" ZOrder="32780" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021359"/>
+  </DataNode>
+  <DataNode TextLabel="Zic1" GraphId="c4b15" Type="GeneProduct">
+    <Graphics CenterX="279.5" CenterY="238.0" Width="55.0" Height="20.0" ZOrder="32782" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000032368"/>
+  </DataNode>
+  <DataNode TextLabel="Pax3" GraphId="e5c01" Type="GeneProduct" GroupRef="a298d">
+    <Graphics CenterX="179.5" CenterY="244.0" Width="55.0" Height="20.0" ZOrder="32784" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000004872"/>
+  </DataNode>
+  <DataNode TextLabel="Pax7" GraphId="fbe26" Type="GeneProduct" GroupRef="a298d">
+    <Graphics CenterX="179.5" CenterY="263.0" Width="55.0" Height="20.0" ZOrder="32786" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028736"/>
+  </DataNode>
+  <DataNode TextLabel="Dlx5" GraphId="ac2af" Type="GeneProduct">
+    <Graphics CenterX="381.5" CenterY="238.0" Width="55.0" Height="20.0" ZOrder="32788" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029755"/>
+  </DataNode>
+  <DataNode TextLabel="Msx3" GraphId="eff3d" Type="GeneProduct">
+    <Graphics CenterX="749.5" CenterY="250.0" Width="55.0" Height="20.0" ZOrder="32790" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000025469"/>
+  </DataNode>
+  <DataNode TextLabel="Msx2" GraphId="b6125" Type="GeneProduct">
+    <Graphics CenterX="664.5" CenterY="265.0" Width="55.0" Height="20.0" ZOrder="32792" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021469"/>
+  </DataNode>
+  <DataNode TextLabel="Foxd3" GraphId="f81b4" Type="GeneProduct">
+    <Graphics CenterX="533.8949579831935" CenterY="460.268907563025" Width="55.0" Height="20.0" ZOrder="32794" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000067261"/>
+  </DataNode>
+  <DataNode TextLabel="Snai1" GraphId="d3d21" Type="GeneProduct" GroupRef="e797f">
+    <Graphics CenterX="463.5" CenterY="556.0" Width="55.0" Height="20.0" ZOrder="32796" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000042821"/>
+  </DataNode>
+  <DataNode TextLabel="Snai2" GraphId="d86ed" Type="GeneProduct" GroupRef="e797f">
+    <Graphics CenterX="463.5" CenterY="576.0" Width="55.0" Height="20.0" ZOrder="32798" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022676"/>
+  </DataNode>
+  <DataNode TextLabel="Wnt3a" GraphId="f931f" Type="GeneProduct" GroupRef="b80de">
+    <Graphics CenterX="936.5" CenterY="67.7983193277311" Width="55.0" Height="20.0" ZOrder="32802" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000009900"/>
+  </DataNode>
+  <DataNode TextLabel="Fzd3" GraphId="fe7b2" Type="GeneProduct">
+    <Graphics CenterX="813.7731018066406" CenterY="67.7983193277311" Width="55.0" Height="20.0" ZOrder="32804" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000007989"/>
+  </DataNode>
+  <DataNode TextLabel="Gsk3b" GraphId="feba7" Type="GeneProduct">
+    <Graphics CenterX="404.5" CenterY="67.7983193277311" Width="55.0" Height="20.0" ZOrder="32806" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022812"/>
+  </DataNode>
+  <DataNode TextLabel="Ctnnb1" GraphId="f8569" Type="GeneProduct">
+    <Graphics CenterX="323.5" CenterY="67.7983193277311" Width="55.0" Height="20.0" ZOrder="32808" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000006932"/>
+  </DataNode>
+  <DataNode TextLabel="Tcf7l1" GraphId="efbb3" Type="GeneProduct" GroupRef="c0c2c">
+    <Graphics CenterX="236.5" CenterY="58.79831932773109" Width="55.0" Height="20.0" ZOrder="32810" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000055799"/>
+  </DataNode>
+  <DataNode TextLabel="Tcf4" GraphId="b398b" Type="GeneProduct" GroupRef="c0c2c">
+    <Graphics CenterX="236.5" CenterY="77.7983193277311" Width="55.0" Height="20.0" ZOrder="32812" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000053477"/>
+  </DataNode>
+  <DataNode TextLabel="Gbx2" GraphId="f0142" Type="GeneProduct">
+    <Graphics CenterX="130.5" CenterY="68.7983193277311" Width="55.0" Height="20.0" ZOrder="32814" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000034486"/>
+  </DataNode>
+  <DataNode TextLabel="Axin2" GraphId="df842" Type="GeneProduct" GroupRef="f602d">
+    <Graphics CenterX="494.66666666666663" CenterY="77.13165266106441" Width="60.0" Height="20.0" ZOrder="32816" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12006"/>
+  </DataNode>
+  <DataNode TextLabel="Axin1" GraphId="a36c1" Type="GeneProduct" GroupRef="f602d">
+    <Graphics CenterX="494.66666666666663" CenterY="57.13165266106441" Width="60.0" Height="20.0" ZOrder="32818" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12005"/>
+  </DataNode>
+  <DataNode TextLabel="DVL3" GraphId="af9f6" Type="GeneProduct" GroupRef="a8bcc">
+    <Graphics CenterX="594.6666666666666" CenterY="87.13165266106441" Width="60.0" Height="20.0" ZOrder="32820" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="DVL2" GraphId="d1d3c" Type="GeneProduct" GroupRef="a8bcc">
+    <Graphics CenterX="594.6666666666666" CenterY="67.13165266106444" Width="60.0" Height="20.0" ZOrder="32822" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="DVL1" GraphId="f3716" Type="GeneProduct" GroupRef="a8bcc">
+    <Graphics CenterX="594.6666666666666" CenterY="47.131652661064436" Width="60.0" Height="20.0" ZOrder="32824" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Bmp4" GraphId="a4343" Type="GeneProduct">
+    <Graphics CenterX="649.5" CenterY="169.0" Width="55.0" Height="20.0" ZOrder="32826" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021835"/>
+  </DataNode>
+  <DataNode TextLabel="Smad1" GraphId="a193a" Type="GeneProduct">
+    <Graphics CenterX="544.6666666666666" CenterY="169.33333333333334" Width="60.0" Height="20.0" ZOrder="32828" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031681"/>
+  </DataNode>
+  <DataNode TextLabel="Id1" GraphId="a7a4c" Type="GeneProduct">
+    <Graphics CenterX="617.5" CenterY="592.0" Width="55.0" Height="20.0" ZOrder="32832" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000042745"/>
+  </DataNode>
+  <DataNode TextLabel="Notch1" GraphId="a9bc3" Type="GeneProduct" GroupRef="c9c43">
+    <Graphics CenterX="813.7731018066406" CenterY="323.0672268907564" Width="60.0" Height="20.0" ZOrder="32852" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000026923"/>
+  </DataNode>
+  <DataNode TextLabel="Dll3" GraphId="c524b" Type="GeneProduct" GroupRef="cfe83">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DLL3"/>
+    <Graphics CenterX="919.8277310924374" CenterY="353.40056022408965" Width="60.0" Height="20.0" ZOrder="32854" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000003436"/>
+  </DataNode>
+  <DataNode TextLabel="Notch4" GraphId="f09f3" Type="GeneProduct" GroupRef="c9c43">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NOTCH4"/>
+    <Graphics CenterX="813.7731018066406" CenterY="383.0672268907564" Width="60.0" Height="20.0" ZOrder="32856" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000015468"/>
+  </DataNode>
+  <DataNode TextLabel="Notch2" GraphId="f9598" Type="GeneProduct" GroupRef="c9c43">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NOTCH2"/>
+    <Graphics CenterX="813.7731018066406" CenterY="343.0672268907564" Width="60.0" Height="20.0" ZOrder="32858" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000027878"/>
+  </DataNode>
+  <DataNode TextLabel="Dll4" GraphId="b6975" Type="GeneProduct" GroupRef="cfe83">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="DLL4"/>
+    <Graphics CenterX="919.8277310924374" CenterY="373.40056022408965" Width="60.0" Height="20.0" ZOrder="32860" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000027314"/>
+  </DataNode>
+  <DataNode TextLabel="Notch3" GraphId="f4083" Type="GeneProduct" GroupRef="c9c43">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="NOTCH3"/>
+    <Graphics CenterX="813.7731018066406" CenterY="363.0672268907564" Width="60.0" Height="20.0" ZOrder="32862" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000038146"/>
+  </DataNode>
+  <DataNode TextLabel="Dll1" GraphId="fc68c" Type="GeneProduct" GroupRef="cfe83">
+    <Graphics CenterX="919.8277310924374" CenterY="333.40056022408965" Width="60.0" Height="20.0" ZOrder="32864" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000014773"/>
+  </DataNode>
+  <DataNode TextLabel="Hey2" GraphId="fe469" Type="GeneProduct">
+    <Graphics CenterX="571.2647058823529" CenterY="395.0" Width="55.0" Height="20.0" ZOrder="32868" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000019789"/>
+  </DataNode>
+  <DataNode TextLabel="Twist1" GraphId="dc90f" Type="GeneProduct">
+    <Graphics CenterX="784.2647058823529" CenterY="635.0" Width="55.0" Height="20.0" ZOrder="32870" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000035799"/>
+  </DataNode>
+  <DataNode TextLabel="Sox10" GraphId="ba2c7" Type="GeneProduct">
+    <Graphics CenterX="555.2647058823529" CenterY="1048.4789915966385" Width="55.0" Height="20.0" ZOrder="32872" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000033006"/>
+  </DataNode>
+  <DataNode TextLabel="Fgf2" GraphId="c22de" Type="GeneProduct" GroupRef="eff87">
+    <Graphics CenterX="922.2647058823529" CenterY="718.4789915966386" Width="55.0" Height="20.0" ZOrder="32874" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000037225"/>
+  </DataNode>
+  <DataNode TextLabel="Hes5" GraphId="d150c" Type="GeneProduct" GroupRef="b6337">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HES5"/>
+    <Graphics CenterX="342.33333333333326" CenterY="1208.0" Width="60.0" Height="20.0" ZOrder="32876" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000048001"/>
+  </DataNode>
+  <DataNode TextLabel="Hes1" GraphId="e242e" Type="GeneProduct" GroupRef="b6337">
+    <Graphics CenterX="342.33333333333326" CenterY="1188.0" Width="60.0" Height="20.0" ZOrder="32878" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022528"/>
+  </DataNode>
+  <DataNode TextLabel="Rbpj" GraphId="f6357" Type="GeneProduct">
+    <Graphics CenterX="768.3333333333333" CenterY="1234.0" Width="60.0" Height="20.0" ZOrder="32880" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039191"/>
+  </DataNode>
+  <DataNode TextLabel="Hes5" GraphId="a0846" Type="GeneProduct" GroupRef="eb7a9">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="HES5"/>
+    <Graphics CenterX="767.3333333333333" CenterY="1304.0" Width="60.0" Height="20.0" ZOrder="32882" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000048001"/>
+  </DataNode>
+  <DataNode TextLabel="Hes1" GraphId="b355e" Type="GeneProduct" GroupRef="eb7a9">
+    <Graphics CenterX="767.3333333333333" CenterY="1284.0" Width="60.0" Height="20.0" ZOrder="32884" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022528"/>
+  </DataNode>
+  <DataNode TextLabel="Fgfr1" GraphId="a24a3" Type="GeneProduct" GroupRef="e10c4">
+    <Graphics CenterX="813.7731018066406" CenterY="107.4789915966386" Width="55.0" Height="20.0" ZOrder="32900" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031565"/>
+  </DataNode>
+  <DataNode TextLabel="Fgfr2" GraphId="dbcd4" Type="GeneProduct" GroupRef="e10c4">
+    <Graphics CenterX="813.7731018066406" CenterY="127.4789915966386" Width="55.0" Height="20.0" ZOrder="32902" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000030849"/>
+  </DataNode>
+  <DataNode TextLabel="Fgfr3" GraphId="e4910" Type="GeneProduct" GroupRef="e10c4">
+    <Graphics CenterX="813.7731018066406" CenterY="147.4789915966386" Width="55.0" Height="20.0" ZOrder="32904" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000054252"/>
+  </DataNode>
+  <DataNode TextLabel="Zic5" GraphId="eb509" Type="GeneProduct">
+    <Graphics CenterX="278.5" CenterY="312.0" Width="55.0" Height="20.0" ZOrder="32912" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000041703"/>
+  </DataNode>
+  <DataNode TextLabel="Bmyc" GraphId="adc7b" Type="GeneProduct">
+    <Graphics CenterX="353.5" CenterY="618.0" Width="55.0" Height="20.0" ZOrder="32930" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000049086"/>
+  </DataNode>
+  <DataNode TextLabel="Sox9" GraphId="f96cf" Type="GeneProduct">
+    <Graphics CenterX="439.09663865546213" CenterY="673.6386554621848" Width="55.0" Height="20.0" ZOrder="32956" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000567"/>
+  </DataNode>
+  <DataNode TextLabel="Sox10" GraphId="f429e" Type="GeneProduct">
+    <Graphics CenterX="561.0966386554621" CenterY="742.6386554621848" Width="55.0" Height="20.0" ZOrder="32960" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000033006"/>
+  </DataNode>
+  <DataNode TextLabel="Isl1" GraphId="ed0a8" Type="GeneProduct">
+    <Graphics CenterX="54.096638655462186" CenterY="1161.638655462185" Width="55.0" Height="20.0" ZOrder="32978" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000042258"/>
+  </DataNode>
+  <DataNode TextLabel="Cdh6" GraphId="bf85e" Type="GeneProduct">
+    <Graphics CenterX="314.0966386554622" CenterY="814.6386554621848" Width="55.0" Height="20.0" ZOrder="32980" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039385"/>
+  </DataNode>
+  <DataNode TextLabel="Cdh2" GraphId="ae32b" Type="GeneProduct">
+    <Graphics CenterX="698.0966386554621" CenterY="686.6386554621848" Width="55.0" Height="20.0" ZOrder="32982" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000024304"/>
+  </DataNode>
+  <DataNode TextLabel="Cdh1" GraphId="cb815" Type="GeneProduct">
+    <Graphics CenterX="379.0966386554622" CenterY="814.6386554621848" Width="55.0" Height="20.0" ZOrder="32984" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000303"/>
+  </DataNode>
+  <DataNode TextLabel="Sox5" GraphId="b2ae0" Type="GeneProduct">
+    <Graphics CenterX="205.0966386554622" CenterY="616.638655462185" Width="55.0" Height="20.0" ZOrder="32986" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000041540"/>
+  </DataNode>
+  <DataNode TextLabel="Ets1" GraphId="cd396" Type="GeneProduct">
+    <Graphics CenterX="265.0966386554622" CenterY="767.6386554621848" Width="55.0" Height="20.0" ZOrder="32988" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000032035"/>
+  </DataNode>
+  <DataNode TextLabel="Pax3" GraphId="c6307" Type="GeneProduct" GroupRef="e4405">
+    <Graphics CenterX="481.5" CenterY="921.0" Width="55.0" Height="20.0" ZOrder="33028" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000004872"/>
+  </DataNode>
+  <DataNode TextLabel="Pax7" GraphId="acccb" Type="GeneProduct" GroupRef="e4405">
+    <Graphics CenterX="481.5" CenterY="940.0" Width="55.0" Height="20.0" ZOrder="33030" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028736"/>
+  </DataNode>
+  <DataNode TextLabel="Nfkb1" GraphId="fd3c0" Type="GeneProduct" GroupRef="dd74f">
+    <Graphics CenterX="276.0966386554622" CenterY="889.6386554621848" Width="55.0" Height="20.0" ZOrder="33032" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028163"/>
+  </DataNode>
+  <DataNode TextLabel="Cdh7" GraphId="f7a1a" Type="GeneProduct">
+    <Graphics CenterX="602.0966386554621" CenterY="898.6386554621848" Width="55.0" Height="20.0" ZOrder="33034" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000026312"/>
+  </DataNode>
+  <DataNode TextLabel="Tcfap2a" GraphId="fe7fc" Type="GeneProduct">
+    <Graphics CenterX="602.2647058823529" CenterY="953.4789915966386" Width="55.0" Height="20.0" ZOrder="33036" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021359"/>
+  </DataNode>
+  <DataNode TextLabel="Snai1" GraphId="ec4d9" Type="GeneProduct" GroupRef="bd817">
+    <Graphics CenterX="307.5" CenterY="1010.0" Width="55.0" Height="20.0" ZOrder="33038" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000042821"/>
+  </DataNode>
+  <DataNode TextLabel="Snai2" GraphId="a2d71" Type="GeneProduct" GroupRef="bd817">
+    <Graphics CenterX="307.5" CenterY="1030.0" Width="55.0" Height="20.0" ZOrder="33040" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022676"/>
+  </DataNode>
+  <DataNode TextLabel="Foxd3" GraphId="b5a88" Type="GeneProduct">
+    <Graphics CenterX="382.89495798319354" CenterY="957.268907563025" Width="55.0" Height="20.0" ZOrder="33044" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000067261"/>
+  </DataNode>
+  <DataNode TextLabel="Id1" GraphId="b9655" Type="GeneProduct">
+    <Graphics CenterX="655.5" CenterY="1067.0" Width="55.0" Height="20.0" ZOrder="33046" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000042745"/>
+  </DataNode>
+  <DataNode TextLabel="Sox9" GraphId="f79d4" Type="GeneProduct">
+    <Graphics CenterX="365.09663865546213" CenterY="1077.638655462185" Width="55.0" Height="20.0" ZOrder="33048" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000567"/>
+  </DataNode>
+  <DataNode TextLabel="Nfkb2" GraphId="dd95c" Type="GeneProduct" GroupRef="dd74f">
+    <Graphics CenterX="276.0966386554622" CenterY="909.6386554621848" Width="55.0" Height="20.0" ZOrder="33050" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000025225"/>
+  </DataNode>
+  <DataNode TextLabel="Neurog1" GraphId="f5459" Type="GeneProduct">
+    <Graphics CenterX="55.096638655462186" CenterY="1278.638655462185" Width="55.0" Height="20.0" ZOrder="33088" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000048904"/>
+  </DataNode>
+  <DataNode TextLabel="Sox10" GraphId="cc05f" Type="GeneProduct">
+    <Graphics CenterX="166.09663865546213" CenterY="1242.638655462185" Width="55.0" Height="20.0" ZOrder="33090" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000033006"/>
+  </DataNode>
+  <DataNode TextLabel="Phox2b" GraphId="aed06" Type="GeneProduct">
+    <Graphics CenterX="200.0966386554622" CenterY="1356.638655462185" Width="55.0" Height="20.0" ZOrder="33092" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000012520"/>
+  </DataNode>
+  <DataNode TextLabel="Gfap" GraphId="a63cb" Type="GeneProduct">
+    <Graphics CenterX="390.09663865546213" CenterY="1254.638655462185" Width="55.0" Height="20.0" ZOrder="33094" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000020932"/>
+  </DataNode>
+  <DataNode TextLabel="Olig1" GraphId="fbd92" Type="GeneProduct" GroupRef="c4011">
+    <Graphics CenterX="180.09663865546213" CenterY="1392.2100840336134" Width="55.0" Height="20.0" ZOrder="33096" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000046160"/>
+  </DataNode>
+  <DataNode TextLabel="Olig2" GraphId="d92dc" Type="GeneProduct" GroupRef="c4011">
+    <Graphics CenterX="180.09663865546213" CenterY="1412.2100840336134" Width="55.0" Height="20.0" ZOrder="33098" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000039830"/>
+  </DataNode>
+  <DataNode TextLabel="Gjb1" GraphId="fa4f2" Type="GeneProduct">
+    <Graphics CenterX="390.09663865546213" CenterY="1280.638655462185" Width="55.0" Height="20.0" ZOrder="33100" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000047797"/>
+  </DataNode>
+  <DataNode TextLabel="Ascl1" GraphId="ba17d" Type="GeneProduct">
+    <Graphics CenterX="166.09663865546213" CenterY="1308.638655462185" Width="55.0" Height="20.0" ZOrder="33102" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000020052"/>
+  </DataNode>
+  <DataNode TextLabel="Mitf" GraphId="e5f13" Type="GeneProduct">
+    <Graphics CenterX="298.0966386554622" CenterY="1255.638655462185" Width="55.0" Height="20.0" ZOrder="33104" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000035158"/>
+  </DataNode>
+  <DataNode TextLabel="Pmp22" GraphId="ba933" Type="GeneProduct">
+    <Graphics CenterX="311.0966386554622" CenterY="1374.638655462185" Width="55.0" Height="20.0" ZOrder="33106" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000018217"/>
+  </DataNode>
+  <DataNode TextLabel="Mpz" GraphId="f3c5c" Type="GeneProduct">
+    <Graphics CenterX="312.0966386554622" CenterY="1347.638655462185" Width="55.0" Height="20.0" ZOrder="33108" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000056569"/>
+  </DataNode>
+  <DataNode TextLabel="Mbp" GraphId="ade50" Type="GeneProduct">
+    <Graphics CenterX="311.0966386554622" CenterY="1407.638655462185" Width="55.0" Height="20.0" ZOrder="33110" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000041607"/>
+  </DataNode>
+  <DataNode TextLabel="Foxd3" GraphId="ea36b" Type="GeneProduct">
+    <Graphics CenterX="166.09663865546213" CenterY="1192.638655462185" Width="55.0" Height="20.0" ZOrder="33112" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000067261"/>
+  </DataNode>
+  <DataNode TextLabel="Pax3" GraphId="eb40e" Type="GeneProduct">
+    <Graphics CenterX="250.5" CenterY="1194.0" Width="55.0" Height="20.0" ZOrder="33114" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000004872"/>
+  </DataNode>
+  <DataNode TextLabel="Lhx1" GraphId="f780a" Type="GeneProduct" GroupRef="cafde">
+    <Graphics CenterX="52.09663865546213" CenterY="1382.638655462185" Width="55.0" Height="20.0" ZOrder="33116" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000018698"/>
+  </DataNode>
+  <DataNode TextLabel="Lhx2" GraphId="e9f6c" Type="GeneProduct" GroupRef="cafde">
+    <Graphics CenterX="52.09663865546213" CenterY="1402.638655462185" Width="55.0" Height="20.0" ZOrder="33118" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000247"/>
+  </DataNode>
+  <DataNode TextLabel="Bmp4" GraphId="e611a" Type="GeneProduct" GroupRef="d6802">
+    <Graphics CenterX="925.0462184873936" CenterY="159.0" Width="55.0" Height="20.0" ZOrder="33124" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000021835"/>
+  </DataNode>
+  <DataNode TextLabel="Fgf8" GraphId="b6385" Type="GeneProduct" GroupRef="eff87">
+    <Graphics CenterX="922.2647058823529" CenterY="738.4789915966386" Width="55.0" Height="20.0" ZOrder="33126" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000025219"/>
+  </DataNode>
+  <DataNode TextLabel="Fgf15" GraphId="c1f43" Type="GeneProduct" GroupRef="eff87">
+    <Graphics CenterX="922.2647058823529" CenterY="758.4789915966386" Width="55.0" Height="20.0" ZOrder="33128" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031073"/>
+  </DataNode>
+  <DataNode TextLabel="Sox10" GraphId="f9f95" Type="GeneProduct">
+    <Graphics CenterX="514.0966386554621" CenterY="1181.638655462185" Width="55.0" Height="20.0" ZOrder="33190" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000033006"/>
+  </DataNode>
+  <DataNode TextLabel="Pax3" GraphId="cae36" Type="GeneProduct" GroupRef="dd865">
+    <Graphics CenterX="515.5" CenterY="1227.0" Width="55.0" Height="20.0" ZOrder="33192" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000004872"/>
+  </DataNode>
+  <DataNode TextLabel="Pax7" GraphId="f1b39" Type="GeneProduct" GroupRef="dd865">
+    <Graphics CenterX="515.5" CenterY="1246.0" Width="55.0" Height="20.0" ZOrder="33194" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028736"/>
+  </DataNode>
+  <DataNode TextLabel="Sox5" GraphId="b4243" Type="GeneProduct">
+    <Graphics CenterX="516.0966386554621" CenterY="1285.638655462185" Width="55.0" Height="20.0" ZOrder="33198" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000041540"/>
+  </DataNode>
+  <DataNode TextLabel="Mitf" GraphId="c3a60" Type="GeneProduct">
+    <Graphics CenterX="637.0966386554621" CenterY="1236.638655462185" Width="55.0" Height="20.0" ZOrder="33200" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000035158"/>
+  </DataNode>
+  <DataNode TextLabel="HDAC1" GraphId="d2f0d" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="494.09663865546213" CenterY="1338.638655462185" Width="55.0" Height="20.0" ZOrder="33204" FontSize="10" Valign="Middle"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Hdac2" GraphId="d64ab" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="494.09663865546213" CenterY="1358.638655462185" Width="55.0" Height="20.0" ZOrder="33206" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000019777"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac3" GraphId="adb66" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="494.09663865546213" CenterY="1378.638655462185" Width="55.0" Height="20.0" ZOrder="33208" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000024454"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac4" GraphId="b6946" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="494.09663865546213" CenterY="1398.638655462185" Width="55.0" Height="20.0" ZOrder="33210" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000026313"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac5" GraphId="f85c8" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="494.09663865546213" CenterY="1418.638655462185" Width="55.0" Height="20.0" ZOrder="33212" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000008855"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac6" GraphId="cf02a" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="494.09663865546213" CenterY="1438.638655462185" Width="55.0" Height="20.0" ZOrder="33214" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000031161"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac7" GraphId="e46fe" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="565.0966386554621" CenterY="1337.638655462185" Width="55.0" Height="20.0" ZOrder="33216" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022475"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac8" GraphId="b5d34" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="565.0966386554621" CenterY="1357.638655462185" Width="55.0" Height="20.0" ZOrder="33218" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000067567"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac9" GraphId="ab2ba" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="565.0966386554621" CenterY="1377.638655462185" Width="55.0" Height="20.0" ZOrder="33220" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000004698"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac10" GraphId="a7dfd" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="565.0966386554621" CenterY="1397.638655462185" Width="55.0" Height="20.0" ZOrder="33222" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000062906"/>
+  </DataNode>
+  <DataNode TextLabel="Hdac11" GraphId="b659c" Type="GeneProduct" GroupRef="f974e">
+    <Graphics CenterX="565.0966386554621" CenterY="1417.638655462185" Width="55.0" Height="20.0" ZOrder="33224" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000034245"/>
+  </DataNode>
+  <DataNode TextLabel="Ctbp2" GraphId="e003f" Type="GeneProduct">
+    <Graphics CenterX="589.0966386554621" CenterY="1285.638655462185" Width="55.0" Height="20.0" ZOrder="33226" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000030970"/>
+  </DataNode>
+  <DataNode TextLabel="Dct" GraphId="f0bf7" Type="GeneProduct">
+    <Graphics CenterX="676.0966386554621" CenterY="1376.638655462185" Width="55.0" Height="20.0" ZOrder="33234" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022129"/>
+  </DataNode>
+  <DataNode TextLabel="Sox5" GraphId="f03b6" Type="GeneProduct">
+    <Graphics CenterX="847.0966386554621" CenterY="1248.638655462185" Width="55.0" Height="20.0" ZOrder="33248" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000041540"/>
+  </DataNode>
+  <DataNode TextLabel="Sox9" GraphId="c2556" Type="GeneProduct">
+    <Graphics CenterX="847.0966386554621" CenterY="1188.638655462185" Width="55.0" Height="20.0" ZOrder="33250" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000000567"/>
+  </DataNode>
+  <DataNode TextLabel="Col2a1" GraphId="afb94" Type="GeneProduct">
+    <Graphics CenterX="946.5" CenterY="1302.0" Width="55.0" Height="20.0" ZOrder="33252" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000022483"/>
+  </DataNode>
+  <DataNode TextLabel="Col11a2" GraphId="e22b9" Type="GeneProduct">
+    <Graphics CenterX="946.5" CenterY="1216.0" Width="55.0" Height="20.0" ZOrder="33254" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000024330"/>
+  </DataNode>
+  <DataNode TextLabel="Mia1" GraphId="a87c6" Type="GeneProduct">
+    <Graphics CenterX="946.5" CenterY="1385.0" Width="55.0" Height="20.0" ZOrder="33256" FontSize="10" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="12587"/>
+  </DataNode>
+  <DataNode TextLabel="Wnt8a" GraphId="a13db" Type="GeneProduct" GroupRef="b80de">
+    <BiopaxRef>e22</BiopaxRef>
+    <Graphics CenterX="936.5" CenterY="87.0" Width="55.0" Height="20.0" ZOrder="33270" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000012282"/>
+  </DataNode>
+  <DataNode TextLabel="Hoxb1" GraphId="eff97" Type="GeneProduct">
+    <BiopaxRef>b42</BiopaxRef>
+    <Graphics CenterX="390.09663865546213" CenterY="1325.0" Width="55.0" Height="20.0" ZOrder="33271" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000018973"/>
+  </DataNode>
+  <DataNode TextLabel="Prtg" GraphId="db89b" Type="GeneProduct">
+    <BiopaxRef>e36</BiopaxRef>
+    <Graphics CenterX="1076.8585434173658" CenterY="84.06722689075389" Width="55.0" Height="20.0" ZOrder="33272" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000036030"/>
+  </DataNode>
+  <DataNode TextLabel="Olig3" GraphId="b0adf" Type="GeneProduct">
+    <BiopaxRef>ec7</BiopaxRef>
+    <Graphics CenterX="180.09663865546213" CenterY="1436.0672268907551" Width="55.0" Height="20.0" ZOrder="33273" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000045591"/>
+  </DataNode>
+  <DataNode TextLabel="Tbx6" GraphId="c60af" Type="GeneProduct">
+    <BiopaxRef>cac</BiopaxRef>
+    <Graphics CenterX="1076.8585434173658" CenterY="108.06722689075389" Width="55.0" Height="20.0" ZOrder="33275" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000030699"/>
+  </DataNode>
+  <DataNode TextLabel="Hoxa1" GraphId="ac9c3" Type="GeneProduct">
+    <BiopaxRef>e64</BiopaxRef>
+    <Graphics CenterX="397.66666666666663" CenterY="404.33333333333337" Width="60.0" Height="20.0" ZOrder="33276" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029844"/>
+  </DataNode>
+  <DataNode TextLabel="Lhx5" GraphId="d3dd9" Type="GeneProduct">
+    <Graphics CenterX="274.66666666666663" CenterY="404.33333333333337" Width="60.0" Height="20.0" ZOrder="33279" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000029595"/>
+  </DataNode>
+  <DataNode TextLabel="Tlx2" GraphId="f7a62" Type="GeneProduct">
+    <BiopaxRef>f97</BiopaxRef>
+    <Graphics CenterX="1076.8585434173658" CenterY="132.0672268907539" Width="55.0" Height="20.0" ZOrder="33280" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000068327"/>
+  </DataNode>
+  <DataNode TextLabel="Tcfap2b" GraphId="a527c" Type="GeneProduct">
+    <BiopaxRef>c16</BiopaxRef>
+    <Graphics CenterX="1076.8585434173658" CenterY="156.0672268907539" Width="55.0" Height="20.0" ZOrder="33281" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000025927"/>
+  </DataNode>
+  <DataNode TextLabel="Dmbx1" GraphId="f7d25" Type="GeneProduct">
+    <BiopaxRef>a91</BiopaxRef>
+    <Graphics CenterX="1076.8585434173658" CenterY="180.0672268907539" Width="55.0" Height="20.0" ZOrder="33282" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000028707"/>
+  </DataNode>
+  <DataNode TextLabel="Hand1" GraphId="ea98c" Type="GeneProduct">
+    <BiopaxRef>a91</BiopaxRef>
+    <Graphics CenterX="1076.8585434173658" CenterY="204.0672268907539" Width="55.0" Height="20.0" ZOrder="33283" FontSize="10" Valign="Middle"/>
+    <Xref Database="Ensembl Mouse" ID="ENSMUSG00000037335"/>
+  </DataNode>
+  <Line GraphId="b1d59">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="-4" LineThickness="1.0" Color="00cc99">
+      <Point X="547.3466386554621" Y="732.6386554621848" GraphRef="f429e" RelX="-0.5" RelY="-1.0"/>
+      <Point X="670.5966386554621" Y="686.6386554621848" GraphRef="ae32b" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb4e3ff23">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="ff99cc">
+      <Point X="688.0" Y="137.0" GraphRef="ba422" RelX="0.0" RelY="1.0"/>
+      <Point X="722.0" Y="250.0" GraphRef="eff3d" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idca04e030">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0">
+      <Point X="390.09663865546213" Y="1335.0" GraphRef="eff97" RelX="0.0" RelY="1.0"/>
+      <Point X="386.17331932773106" Y="1346.0"/>
+      <Point X="382.25" Y="1428.5" GraphRef="c0c79" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb6078f83">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="1.0" Color="006666">
+      <Point X="397.66666666666663" Y="394.33333333333337" GraphRef="ac9c3" RelX="0.0" RelY="-1.0"/>
+      <Point X="345.4583333333333" Y="280.0"/>
+      <Point X="293.25" Y="248.0" GraphRef="c4b15" RelX="0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id26efb39e">
+    <Graphics ConnectorType="Elbow" ZOrder="12290" LineThickness="1.0">
+      <Point X="957.7647058823529" Y="738.4789915966386" GraphRef="f438d" RelX="1.0" RelY="0.0"/>
+      <Point X="849.2731018066406" Y="127.4789915966386" GraphRef="ebd39" RelX="1.0" RelY="0.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9890cc5d">
+    <Graphics ZOrder="12292" LineThickness="1.0">
+      <Point X="889.5462184873936" Y="169.0" GraphRef="d447c" RelX="-1.0" RelY="0.0"/>
+      <Point X="677.0" Y="169.0" GraphRef="a4343" RelX="1.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id97e2389e">
+    <Graphics ZOrder="12294" LineThickness="1.0">
+      <Point X="881.8277310924374" Y="353.40056022408965" GraphRef="dad84" RelX="-1.0" RelY="0.0"/>
+      <Point X="851.7731018066406" Y="353.0672268907564" GraphRef="c079f" RelX="1.0" RelY="0.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id303c8158">
+    <Graphics ConnectorType="Elbow" ZOrder="12296" LineThickness="1.0">
+      <Point X="655.5" Y="1118.0" GraphRef="ce0a4" RelX="0.0" RelY="1.0"/>
+      <Point X="584.7983193277311" Y="1151.0"/>
+      <Point X="514.0966386554621" Y="1171.638655462185" GraphRef="f9f95" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb3a0d0a4">
+    <Graphics ConnectorType="Elbow" ZOrder="12298" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="208.0" Y="195.0"/>
+      <Point X="179.5" Y="226.0" GraphRef="b10b3" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfe12f8c5">
+    <Graphics ConnectorType="Elbow" ZOrder="12300" LineThickness="1.0">
+      <Point X="250.5" Y="1204.0" GraphRef="eb40e" RelX="0.0" RelY="1.0"/>
+      <Point X="298.0966386554622" Y="1245.638655462185" GraphRef="e5f13" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idbac670e0">
+    <Graphics ZOrder="12302" LineThickness="1.0" Color="33ff00">
+      <Point X="556.6666666666666" Y="67.13165266106442" GraphRef="efe73" RelX="-1.0" RelY="0.0"/>
+      <Point X="532.6666666666666" Y="67.13165266106441" GraphRef="bbf49" RelX="1.0" RelY="0.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idf1d6d879">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="12304" LineThickness="1.0">
+      <Point X="600.5966386554621" Y="1353.888655462185" GraphRef="bba98" RelX="1.0" RelY="-0.5"/>
+      <Point X="650.8466386554621" Y="1246.638655462185" GraphRef="c3a60" RelX="0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb99b09d6">
+    <Graphics ZOrder="12306" LineThickness="1.0">
+      <Point X="778.2731018066406" Y="127.4789915966386" GraphRef="ebd39" RelX="-1.0" RelY="0.0"/>
+      <Point X="732.0" Y="127.0" GraphRef="ba422" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idf584af00">
+    <Graphics ConnectorType="Elbow" ZOrder="12308" LineThickness="1.0" Color="3366ff">
+      <Point X="763.25" Y="260.0" GraphRef="eff3d" RelX="0.5" RelY="1.0"/>
+      <Point X="545.125" Y="287.0"/>
+      <Point X="327.0" Y="262.5"/>
+      <Point X="307.0" Y="238.0" GraphRef="c4b15" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id81cfb54b">
+    <Graphics ZOrder="12310" LineThickness="1.0" Color="33ff00">
+      <Point X="377.0" Y="67.7983193277311" GraphRef="feba7" RelX="-1.0" RelY="0.0"/>
+      <Point X="351.0" Y="67.7983193277311" GraphRef="f8569" RelX="1.0" RelY="0.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id733752a2">
+    <Graphics ZOrder="12312" LineThickness="1.0" Color="33ff00">
+      <Point X="786.2731018066406" Y="67.7983193277311" GraphRef="fe7b2" RelX="-1.0" RelY="0.0"/>
+      <Point X="632.6666666666666" Y="67.13165266106442" GraphRef="efe73" RelX="1.0" RelY="0.0" ArrowHead="mim-necessary-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idcd85cec2">
+    <Graphics ConnectorType="Elbow" ZOrder="12314" LineThickness="1.0" Color="cc99ff">
+      <Point X="130.5" Y="78.7983193277311" GraphRef="f0142" RelX="0.0" RelY="1.0"/>
+      <Point X="161.75" Y="226.0" GraphRef="b10b3" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idc341acef">
+    <Graphics ZOrder="12316" LineThickness="1.0" Color="33ff00">
+      <Point X="456.66666666666663" Y="67.13165266106441" GraphRef="bbf49" RelX="-1.0" RelY="0.0"/>
+      <Point X="432.0" Y="67.7983193277311" GraphRef="feba7" RelX="1.0" RelY="0.0" ArrowHead="mim-necessary-stimulation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id607a65c0">
+    <Graphics ZOrder="12318" LineThickness="1.0" Color="666600">
+      <Point X="529.8466386554621" Y="1295.638655462185" GraphRef="b4243" RelX="0.5" RelY="1.0"/>
+      <Point X="529.5966386554621" Y="1319.638655462185" GraphRef="bba98" RelX="0.0" RelY="-1.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id5101dbbe">
+    <Graphics ZOrder="12320" LineThickness="1.0">
+      <Point X="901.0" Y="67.39915966386555" GraphRef="b74c4" RelX="-1.0" RelY="0.0"/>
+      <Point X="841.2731018066406" Y="67.7983193277311" GraphRef="fe7b2" RelX="1.0" RelY="0.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id53777f0">
+    <Graphics ZOrder="12322" LineStyle="Broken" LineThickness="1.0">
+      <Point X="768.3333333333333" Y="1244.0" GraphRef="f6357" RelX="0.0" RelY="1.0"/>
+      <Point X="767.3333333333333" Y="1266.0" GraphRef="bff8c" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id93112d98">
+    <Graphics ZOrder="12324" LineThickness="1.0" Color="33ff00">
+      <Point X="201.0" Y="68.2983193277311" GraphRef="f3170" RelX="-1.0" RelY="0.0"/>
+      <Point X="158.0" Y="68.7983193277311" GraphRef="f0142" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9ccdc5df">
+    <Graphics ConnectorType="Elbow" ZOrder="12326" LineThickness="1.0" Color="ffcc00">
+      <Point X="279.5" Y="248.0" GraphRef="c4b15" RelX="0.0" RelY="1.0"/>
+      <Point X="215.0" Y="267.25" GraphRef="b10b3" RelX="1.0" RelY="0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id450c471d">
+    <Graphics ZOrder="12328" LineThickness="1.0" Color="33ff00">
+      <Point X="296.0" Y="67.7983193277311" GraphRef="f8569" RelX="-1.0" RelY="0.0"/>
+      <Point X="272.0" Y="68.2983193277311" GraphRef="f3170" RelX="1.0" RelY="0.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idffe825b9">
+    <Graphics ZOrder="12330" LineThickness="1.0" Color="666600">
+      <Point X="543.5966386554621" Y="1285.638655462185" GraphRef="b4243" RelX="1.0" RelY="0.0"/>
+      <Point X="561.5966386554621" Y="1285.638655462185" GraphRef="e003f" RelX="-1.0" RelY="0.0" ArrowHead="mim-binding"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6bebde00">
+    <Graphics ZOrder="12332" LineThickness="1.0">
+      <Point X="327.0" Y="778.0"/>
+      <Point X="327.0" Y="797.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id70895625">
+    <Graphics ZOrder="12334" LineThickness="1.0" Color="990099">
+      <Point X="622.0" Y="169.0" GraphRef="a4343" RelX="-1.0" RelY="0.0"/>
+      <Point X="574.6666666666666" Y="169.33333333333334" GraphRef="a193a" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ida9b7b81f">
+    <Graphics ZOrder="12336" LineThickness="1.0" Color="99cc00">
+      <Point X="655.5" Y="1077.0" GraphRef="b9655" RelX="0.0" RelY="1.0"/>
+      <Point X="655.5" Y="1098.0" GraphRef="ce0a4" RelX="0.0" RelY="-1.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b99f2">
+    <Graphics ConnectorType="Elbow" ZOrder="32830" LineThickness="1.0" Color="990099">
+      <Point X="544.6666666666666" Y="179.33333333333334" GraphRef="a193a" RelX="0.0" RelY="1.0"/>
+      <Point X="494.2083333333333" Y="205.0"/>
+      <Point X="443.75" Y="521.0" GraphRef="ebd11" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b0525">
+    <Graphics ConnectorType="Elbow" ZOrder="32834" LineThickness="1.0" Color="990099">
+      <Point X="544.6666666666666" Y="179.33333333333334" GraphRef="a193a" RelX="0.0" RelY="1.0"/>
+      <Point X="581.0833333333333" Y="205.0"/>
+      <Point X="617.5" Y="582.0" GraphRef="a7a4c" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e78fb">
+    <Graphics ConnectorType="Elbow" ZOrder="32836" LineThickness="1.0" Color="990099">
+      <Point X="544.6666666666666" Y="179.33333333333334" GraphRef="a193a" RelX="0.0" RelY="1.0"/>
+      <Point X="604.5833333333333" Y="205.0"/>
+      <Point X="664.5" Y="255.0" GraphRef="b6125" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c551e">
+    <Graphics ConnectorType="Elbow" ZOrder="32838" LineThickness="1.0" Color="990099">
+      <Point X="544.6666666666666" Y="179.33333333333334" GraphRef="a193a" RelX="0.0" RelY="1.0"/>
+      <Point X="463.0833333333333" Y="205.0"/>
+      <Point X="381.5" Y="228.0" GraphRef="ac2af" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d1b3b">
+    <Graphics ConnectorType="Elbow" ZOrder="32840" LineThickness="1.0" Color="990099">
+      <Point X="544.6666666666666" Y="179.33333333333334" GraphRef="a193a" RelX="0.0" RelY="1.0"/>
+      <Point X="412.0833333333333" Y="205.0"/>
+      <Point X="279.5" Y="228.0" GraphRef="c4b15" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a1c59">
+    <Graphics ConnectorType="Elbow" ZOrder="32842" LineThickness="1.0" Color="990099">
+      <Point X="544.6666666666666" Y="179.33333333333334" GraphRef="a193a" RelX="0.0" RelY="1.0"/>
+      <Point X="370.9583333333333" Y="205.0"/>
+      <Point X="197.25" Y="226.0" GraphRef="b10b3" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fea89">
+    <Graphics ConnectorType="Elbow" ZOrder="32844" LineThickness="1.0" Color="990099">
+      <Point X="544.6666666666666" Y="179.33333333333334" GraphRef="a193a" RelX="0.0" RelY="1.0"/>
+      <Point X="647.0833333333333" Y="205.0"/>
+      <Point X="749.5" Y="240.0" GraphRef="eff3d" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6d98">
+    <Graphics ConnectorType="Elbow" ZOrder="32846" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="264.875" Y="195.0"/>
+      <Point X="293.25" Y="228.0" GraphRef="c4b15" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cbd74">
+    <Graphics ConnectorType="Elbow" ZOrder="32848" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="486.125" Y="195.0"/>
+      <Point X="735.75" Y="240.0" GraphRef="eff3d" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aa722">
+    <Graphics ConnectorType="Elbow" ZOrder="32850" LineThickness="1.0" Color="cc99ff">
+      <Point X="130.5" Y="78.7983193277311" GraphRef="f0142" RelX="0.0" RelY="1.0"/>
+      <Point X="446.875" Y="106.0"/>
+      <Point X="763.25" Y="240.0" GraphRef="eff3d" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a7792">
+    <Graphics ConnectorType="Elbow" ZOrder="32886" LineThickness="1.0" Color="00ccff">
+      <Point X="813.7731018066406" Y="401.0672268907564" GraphRef="c079f" RelX="0.0" RelY="1.0"/>
+      <Point X="798.0147058823529" Y="625.0" GraphRef="dc90f" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dd02f">
+    <Graphics ConnectorType="Elbow" ZOrder="32888" LineThickness="1.0" Color="00ccff">
+      <Point X="813.7731018066406" Y="401.0672268907564" GraphRef="c079f" RelX="0.0" RelY="1.0"/>
+      <Point X="582.7647058823529" Y="1048.4789915966385" GraphRef="ba2c7" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e9e87">
+    <Graphics ConnectorType="Elbow" ZOrder="32890" LineThickness="1.0" Color="00ccff">
+      <Point X="813.7731018066406" Y="401.0672268907564" GraphRef="c079f" RelX="0.0" RelY="1.0"/>
+      <Point X="791.0532175699869" Y="1142.0"/>
+      <Point X="768.3333333333333" Y="1224.0" GraphRef="f6357" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bb66d">
+    <Graphics ConnectorType="Elbow" ZOrder="32892" LineThickness="1.0" Color="00ccff">
+      <Point X="813.7731018066406" Y="401.0672268907564" GraphRef="c079f" RelX="0.0" RelY="1.0"/>
+      <Point X="578.0532175699869" Y="1142.0"/>
+      <Point X="342.33333333333326" Y="1170.0" GraphRef="a867e" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+      <Anchor Position="0.9792385999483958" Shape="None" GraphId="e519e"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c52b6">
+    <Graphics ConnectorType="Elbow" ZOrder="32894" LineThickness="1.0" Color="00ccff">
+      <Point X="813.7731018066406" Y="401.0672268907564" GraphRef="c079f" RelX="0.0" RelY="1.0"/>
+      <Point X="756.5835028255688" Y="421.0"/>
+      <Point X="699.3939038444968" Y="393.0"/>
+      <Point X="642.2043048634248" Y="365.0"/>
+      <Point X="585.0147058823529" Y="385.0" GraphRef="fe469" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a57f7">
+    <Graphics ConnectorType="Elbow" ZOrder="32908" LineThickness="1.0" Color="ff99cc">
+      <Point X="644.0" Y="127.0" GraphRef="ba422" RelX="-1.0" RelY="0.0"/>
+      <Point X="245.0" Y="190.25"/>
+      <Point X="215.0" Y="253.5" GraphRef="b10b3" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cf615">
+    <Graphics ConnectorType="Elbow" ZOrder="32910" LineThickness="1.0" Color="ff99cc">
+      <Point X="644.0" Y="127.0" GraphRef="ba422" RelX="-1.0" RelY="0.0"/>
+      <Point X="265.75" Y="228.0" GraphRef="c4b15" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dca2e">
+    <Graphics ConnectorType="Elbow" ZOrder="32914" LineThickness="1.0" Color="ff99cc">
+      <Point X="644.0" Y="127.0" GraphRef="ba422" RelX="-1.0" RelY="0.0"/>
+      <Point X="335.0" Y="219.5"/>
+      <Point X="306.0" Y="312.0" GraphRef="eb509" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a35a3">
+    <Graphics ConnectorType="Elbow" ZOrder="32916" LineThickness="1.0" Color="ff99cc">
+      <Point X="644.0" Y="127.0" GraphRef="ba422" RelX="-1.0" RelY="0.0"/>
+      <Point X="463.5" Y="521.0" GraphRef="ebd11" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c56f8">
+    <Graphics ConnectorType="Elbow" ZOrder="32918" LineThickness="1.0" Color="3366ff">
+      <Point X="763.25" Y="260.0" GraphRef="eff3d" RelX="0.5" RelY="1.0"/>
+      <Point X="722.2573529411765" Y="287.0"/>
+      <Point X="681.2647058823529" Y="322.4789915966386" GraphRef="a53a5" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ade58">
+    <Graphics ConnectorType="Elbow" ZOrder="32920" LineThickness="1.0" Color="3366ff">
+      <Point X="763.25" Y="260.0" GraphRef="eff3d" RelX="0.5" RelY="1.0"/>
+      <Point X="623.25" Y="287.0"/>
+      <Point X="483.25" Y="521.0" GraphRef="ebd11" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fcb90">
+    <Graphics ConnectorType="Elbow" ZOrder="32922" LineThickness="1.0" Color="3366ff">
+      <Point X="763.25" Y="260.0" GraphRef="eff3d" RelX="0.5" RelY="1.0"/>
+      <Point X="641.6974789915968" Y="287.0"/>
+      <Point X="520.1449579831935" Y="450.268907563025" GraphRef="f81b4" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="da41e">
+    <Graphics ConnectorType="Elbow" ZOrder="32924" LineThickness="1.0" Color="00ccff">
+      <Point X="794.7731018066406" Y="305.0672268907564" GraphRef="c079f" RelX="-0.5" RelY="-1.0"/>
+      <Point X="777.0" Y="250.0" GraphRef="eff3d" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f49a1">
+    <Graphics ConnectorType="Elbow" ZOrder="32926" LineThickness="1.0" Color="ffcc00">
+      <Point X="279.5" Y="248.0" GraphRef="c4b15" RelX="0.0" RelY="1.0"/>
+      <Point X="309.625" Y="267.0"/>
+      <Point X="339.75" Y="608.0" GraphRef="adc7b" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a155c">
+    <Graphics ConnectorType="Elbow" ZOrder="32928" LineThickness="1.0" Color="ffcc00">
+      <Point X="279.5" Y="248.0" GraphRef="c4b15" RelX="0.0" RelY="1.0"/>
+      <Point X="406.69747899159677" Y="267.0"/>
+      <Point X="533.8949579831935" Y="450.268907563025" GraphRef="f81b4" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aa6b1">
+    <Graphics ConnectorType="Elbow" ZOrder="32932" LineThickness="1.0" Color="660066">
+      <Point X="681.2647058823529" Y="342.4789915966386" GraphRef="a53a5" RelX="0.0" RelY="1.0"/>
+      <Point X="749.5" Y="260.0" GraphRef="eff3d" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d1535">
+    <Graphics ConnectorType="Elbow" ZOrder="32934" LineThickness="1.0" Color="660066">
+      <Point X="681.2647058823529" Y="342.4789915966386" GraphRef="a53a5" RelX="0.0" RelY="1.0"/>
+      <Point X="179.5" Y="281.0" GraphRef="b10b3" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de6d7">
+    <Graphics ConnectorType="Elbow" ZOrder="32936" LineThickness="1.0" Color="660066">
+      <Point X="681.2647058823529" Y="342.4789915966386" GraphRef="a53a5" RelX="0.0" RelY="1.0"/>
+      <Point X="353.5" Y="608.0" GraphRef="adc7b" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c3762">
+    <Graphics ConnectorType="Elbow" ZOrder="32938" LineThickness="1.0" Color="000066">
+      <Point X="409.0" Y="238.0" GraphRef="ac2af" RelX="1.0" RelY="0.0"/>
+      <Point X="735.75" Y="260.0" GraphRef="eff3d" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="deaf3">
+    <Graphics ConnectorType="Elbow" ZOrder="32940" LineThickness="1.0" Color="006633">
+      <Point X="571.2647058823529" Y="405.0" GraphRef="fe469" RelX="0.0" RelY="1.0"/>
+      <Point X="547.6449579831935" Y="450.268907563025" GraphRef="f81b4" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e01c3">
+    <Graphics ConnectorType="Elbow" ZOrder="32942" LineThickness="1.0" Color="006633">
+      <Point X="571.2647058823529" Y="405.0" GraphRef="fe469" RelX="0.0" RelY="1.0"/>
+      <Point X="503.0" Y="575.75" GraphRef="ebd11" RelX="1.0" RelY="0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c6fea">
+    <Graphics ConnectorType="Elbow" ZOrder="32944" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="424.0" Y="575.75" GraphRef="ebd11" RelX="-1.0" RelY="0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b8ab5">
+    <Graphics ConnectorType="Elbow" ZOrder="32946" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="506.39495798319354" Y="460.268907563025" GraphRef="f81b4" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e06bf">
+    <Graphics ConnectorType="Elbow" ZOrder="32948" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="433.875" Y="195.0"/>
+      <Point X="631.25" Y="582.0" GraphRef="a7a4c" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ca62e">
+    <Graphics ConnectorType="Elbow" ZOrder="32950" LineThickness="1.0" Color="ffcc00">
+      <Point X="279.5" Y="248.0" GraphRef="c4b15" RelX="0.0" RelY="1.0"/>
+      <Point X="441.625" Y="267.0"/>
+      <Point X="603.75" Y="582.0" GraphRef="a7a4c" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d45e0">
+    <Graphics ConnectorType="Elbow" ZOrder="32952" LineThickness="1.0" Color="660066">
+      <Point X="681.2647058823529" Y="342.4789915966386" GraphRef="a53a5" RelX="0.0" RelY="1.0"/>
+      <Point X="645.0" Y="592.0" GraphRef="a7a4c" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bfe7a">
+    <Graphics ConnectorType="Elbow" ZOrder="32954" LineThickness="1.0" Color="660066">
+      <Point X="681.2647058823529" Y="342.4789915966386" GraphRef="a53a5" RelX="0.0" RelY="1.0"/>
+      <Point X="503.0" Y="539.25" GraphRef="ebd11" RelX="1.0" RelY="-0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c292a">
+    <Graphics ConnectorType="Elbow" ZOrder="32958" LineThickness="1.0" Color="006666">
+      <Point X="411.59663865546213" Y="673.6386554621848" GraphRef="f96cf" RelX="-1.0" RelY="0.0"/>
+      <Point X="391.59663865546213" Y="657.3193277310925"/>
+      <Point X="427.54831932773106" Y="641.0"/>
+      <Point X="463.5" Y="594.0" GraphRef="ebd11" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e4c49">
+    <Graphics ConnectorType="Elbow" ZOrder="32962" LineThickness="1.0" Color="006666">
+      <Point X="411.59663865546213" Y="673.6386554621848" GraphRef="f96cf" RelX="-1.0" RelY="0.0"/>
+      <Point X="533.5966386554621" Y="742.6386554621848" GraphRef="f429e" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d7720">
+    <Graphics ConnectorType="Elbow" ZOrder="32964" LineThickness="1.0" Color="ff0000">
+      <Point X="547.3466386554621" Y="732.6386554621848" GraphRef="f429e" RelX="-0.5" RelY="-1.0"/>
+      <Point X="439.09663865546213" Y="683.6386554621848" GraphRef="f96cf" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bf251">
+    <Graphics ConnectorType="Elbow" ZOrder="32966" LineThickness="1.0" Color="ff0000">
+      <Point X="547.3466386554621" Y="732.6386554621848" GraphRef="f429e" RelX="-0.5" RelY="-1.0"/>
+      <Point X="547.6449579831935" Y="470.268907563025" GraphRef="f81b4" RelX="0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5be9">
+    <Graphics ConnectorType="Elbow" ZOrder="32968" LineThickness="1.0" Color="ff0000">
+      <Point X="547.3466386554621" Y="732.6386554621848" GraphRef="f429e" RelX="-0.5" RelY="-1.0"/>
+      <Point X="483.25" Y="594.0" GraphRef="ebd11" RelX="0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="faaa7">
+    <Graphics ConnectorType="Elbow" ZOrder="32970" LineThickness="1.0" Color="ff0000">
+      <Point X="547.3466386554621" Y="732.6386554621848" GraphRef="f429e" RelX="-0.5" RelY="-1.0"/>
+      <Point X="483.09663865546213" Y="859.6386554621848" GraphRef="c06b7" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c4e95">
+    <Graphics ConnectorType="Elbow" ZOrder="32972" LineThickness="1.0" Color="ff6633">
+      <Point X="353.5" Y="628.0" GraphRef="adc7b" RelX="0.0" RelY="1.0"/>
+      <Point X="161.75" Y="281.0" GraphRef="b10b3" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f1c47">
+    <Graphics ConnectorType="Elbow" ZOrder="32974" LineThickness="1.0" Color="ff6633">
+      <Point X="353.5" Y="628.0" GraphRef="adc7b" RelX="0.0" RelY="1.0"/>
+      <Point X="735.75" Y="260.0" GraphRef="eff3d" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d2fbc">
+    <Graphics ConnectorType="Elbow" ZOrder="32976" LineThickness="1.0" Color="ff6633">
+      <Point X="353.5" Y="628.0" GraphRef="adc7b" RelX="0.0" RelY="1.0"/>
+      <Point X="617.5" Y="602.0" GraphRef="a7a4c" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fadca">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="32990" LineThickness="1.0" Color="663300">
+      <Point X="443.75" Y="594.0" GraphRef="ebd11" RelX="-0.5" RelY="1.0"/>
+      <Point X="411.42331932773106" Y="635.0"/>
+      <Point X="379.0966386554622" Y="804.6386554621848" GraphRef="cb815" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a2041">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="32992" LineThickness="1.0" Color="663300">
+      <Point X="443.75" Y="594.0" GraphRef="ebd11" RelX="-0.5" RelY="1.0"/>
+      <Point X="385.79831932773106" Y="635.0"/>
+      <Point X="327.8466386554622" Y="804.6386554621848" GraphRef="bf85e" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5ba9">
+    <Graphics ConnectorType="Elbow" ZOrder="32994" LineThickness="1.0" Color="666600">
+      <Point X="292.5966386554622" Y="710.638655462185" GraphRef="de36d" RelX="1.0" RelY="0.0"/>
+      <Point X="312.5966386554622" Y="742.8193277310925"/>
+      <Point X="436.84663865546213" Y="775.0"/>
+      <Point X="561.0966386554621" Y="752.6386554621848" GraphRef="f429e" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5421">
+    <Graphics ConnectorType="Elbow" ZOrder="32996" LineThickness="1.0" Color="666600">
+      <Point X="265.0966386554622" Y="720.638655462185" GraphRef="de36d" RelX="0.0" RelY="1.0"/>
+      <Point X="265.0966386554622" Y="757.6386554621848" GraphRef="cd396" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6245">
+    <Graphics ConnectorType="Elbow" ZOrder="32998" LineThickness="1.0" Color="990000">
+      <Point X="292.5966386554622" Y="767.6386554621848" GraphRef="cd396" RelX="1.0" RelY="0.0"/>
+      <Point X="547.3466386554621" Y="752.6386554621848" GraphRef="f429e" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d4042">
+    <Graphics ConnectorType="Elbow" ZOrder="33000" LineThickness="1.0" Color="ff33cc">
+      <Point X="443.75" Y="594.0" GraphRef="ebd11" RelX="-0.5" RelY="1.0"/>
+      <Point X="509.29831932773106" Y="635.0"/>
+      <Point X="574.8466386554621" Y="732.6386554621848" GraphRef="f429e" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c569f">
+    <Graphics ZOrder="33002" LineThickness="1.0">
+      <Point X="379.0" Y="778.0"/>
+      <Point X="379.0" Y="797.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f8657">
+    <Graphics ConnectorType="Elbow" ZOrder="33004" LineThickness="1.0" Color="ff00cc">
+      <Point X="443.75" Y="594.0" GraphRef="ebd11" RelX="-0.5" RelY="1.0"/>
+      <Point X="488.82247899159677" Y="635.0"/>
+      <Point X="533.8949579831935" Y="470.268907563025" GraphRef="f81b4" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b8ba0">
+    <Graphics ConnectorType="Elbow" ZOrder="33006" LineThickness="1.0" Color="ff33cc">
+      <Point X="443.75" Y="594.0" GraphRef="ebd11" RelX="-0.5" RelY="1.0"/>
+      <Point X="756.7647058823529" Y="635.0" GraphRef="dc90f" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b50cf">
+    <Graphics ConnectorType="Elbow" ZOrder="33008" LineThickness="1.0" Color="ff9966">
+      <Point X="561.3949579831935" Y="460.268907563025" GraphRef="f81b4" RelX="1.0" RelY="0.0"/>
+      <Point X="784.2647058823529" Y="625.0" GraphRef="dc90f" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ad864">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33010" LineThickness="1.0" Color="00cccc">
+      <Point X="561.3949579831935" Y="460.268907563025" GraphRef="f81b4" RelX="1.0" RelY="0.0"/>
+      <Point X="698.0966386554621" Y="676.6386554621848" GraphRef="ae32b" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f7a60">
+    <Graphics ZOrder="33012" LineThickness="1.0">
+      <Point X="698.0" Y="651.0"/>
+      <Point X="698.0" Y="670.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e7b84">
+    <Graphics ZOrder="33014" LineThickness="1.0">
+      <Point X="648.0" Y="686.0"/>
+      <Point X="663.0" Y="686.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d91e6">
+    <Graphics ConnectorType="Elbow" ZOrder="33016" LineThickness="1.0" Color="996600">
+      <Point X="232.5966386554622" Y="616.638655462185" GraphRef="b2ae0" RelX="1.0" RelY="0.0"/>
+      <Point X="424.0" Y="557.5" GraphRef="ebd11" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b6538">
+    <Graphics ConnectorType="Elbow" ZOrder="33018" LineThickness="1.0" Color="996600">
+      <Point X="205.0966386554622" Y="626.638655462185" GraphRef="b2ae0" RelX="0.0" RelY="1.0"/>
+      <Point X="205.0966386554622" Y="729.6386554621848" GraphRef="a65e3" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c2856">
+    <Graphics ConnectorType="Elbow" ZOrder="33052" LineThickness="1.0" Color="3399ff">
+      <Point X="215.0" Y="267.25" GraphRef="b10b3" RelX="1.0" RelY="0.5"/>
+      <Point X="223.0" Y="403.25"/>
+      <Point X="424.0" Y="539.25" GraphRef="ebd11" RelX="-1.0" RelY="-0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="da6bc">
+    <Graphics ConnectorType="Elbow" ZOrder="33054" LineThickness="1.0" Color="3399ff">
+      <Point X="215.0" Y="267.25" GraphRef="b10b3" RelX="1.0" RelY="0.5"/>
+      <Point X="223.0" Y="382.125"/>
+      <Point X="371.57247899159677" Y="497.0"/>
+      <Point X="520.1449579831935" Y="470.268907563025" GraphRef="f81b4" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ac23d">
+    <Graphics ConnectorType="Elbow" ZOrder="33056" LineThickness="1.0" Color="3399ff">
+      <Point X="517.0" Y="930.5" GraphRef="a2d94" RelX="1.0" RelY="0.0"/>
+      <Point X="541.5147058823529" Y="1038.4789915966385" GraphRef="ba2c7" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b96c6">
+    <Graphics ConnectorType="Elbow" ZOrder="33058" LineThickness="1.0" Color="d94a02">
+      <Point X="311.5966386554622" Y="899.6386554621848" GraphRef="d3665" RelX="1.0" RelY="0.0"/>
+      <Point X="555.2647058823529" Y="1038.4789915966385" GraphRef="ba2c7" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ba6cd">
+    <Graphics ConnectorType="Elbow" ZOrder="33060" LineThickness="1.0" Color="ff9966">
+      <Point X="561.3949579831935" Y="460.268907563025" GraphRef="f81b4" RelX="1.0" RelY="0.0"/>
+      <Point X="735.0" Y="649.9537815126049"/>
+      <Point X="615.9233193277311" Y="839.6386554621848"/>
+      <Point X="496.84663865546213" Y="859.6386554621848" GraphRef="c06b7" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a1b53">
+    <Graphics ConnectorType="Elbow" ZOrder="33062" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="527.7647058823529" Y="1048.4789915966385" GraphRef="ba2c7" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e9000">
+    <Graphics ConnectorType="Elbow" ZOrder="33064" LineThickness="1.0" Color="33ff00">
+      <Point X="236.5" Y="95.7983193277311" GraphRef="f3170" RelX="0.0" RelY="1.0"/>
+      <Point X="337.59663865546213" Y="1077.638655462185" GraphRef="f79d4" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b4800">
+    <Graphics ConnectorType="Elbow" ZOrder="33068" LineThickness="1.0" Color="006666">
+      <Point X="392.59663865546213" Y="1077.638655462185" GraphRef="f79d4" RelX="1.0" RelY="0.0"/>
+      <Point X="541.5147058823529" Y="1058.4789915966385" GraphRef="ba2c7" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c46c4">
+    <Graphics ConnectorType="Curved" ZOrder="33070" LineThickness="1.0" Color="ff0000">
+      <Point X="555.2647058823529" Y="1058.4789915966385" GraphRef="ba2c7" RelX="0.0" RelY="1.0"/>
+      <Point X="562.1397058823529" Y="1109.0"/>
+      <Point X="569.0147058823529" Y="1058.4789915966385" GraphRef="ba2c7" RelX="0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e0df6">
+    <Graphics ConnectorType="Elbow" ZOrder="33072" LineThickness="1.0" Color="660066">
+      <Point X="602.2647058823529" Y="963.4789915966386" GraphRef="fe7fc" RelX="0.0" RelY="1.0"/>
+      <Point X="569.0147058823529" Y="1038.4789915966385" GraphRef="ba2c7" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d1a07">
+    <Graphics ConnectorType="Elbow" ZOrder="33074" LineThickness="1.0" Color="ff9966">
+      <Point X="561.3949579831935" Y="460.268907563025" GraphRef="f81b4" RelX="1.0" RelY="0.0"/>
+      <Point X="735.0" Y="679.4537815126049"/>
+      <Point X="629.5966386554621" Y="898.6386554621848" GraphRef="f7a1a" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f11cf">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33076" LineThickness="1.0" Color="00cccc">
+      <Point X="382.89495798319354" Y="967.268907563025" GraphRef="b5a88" RelX="0.0" RelY="1.0"/>
+      <Point X="410.39495798319354" Y="957.268907563025" GraphRef="b5a88" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f662c">
+    <Graphics ZOrder="33078" LineThickness="1.0">
+      <Point X="428.0" Y="958.0"/>
+      <Point X="417.0" Y="958.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b5fe0">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33080" LineThickness="1.0" Color="00cccc">
+      <Point X="382.89495798319354" Y="967.268907563025" GraphRef="b5a88" RelX="0.0" RelY="1.0"/>
+      <Point X="347.0" Y="1029.75" GraphRef="a7bbc" RelX="1.0" RelY="0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c109c">
+    <Graphics ZOrder="33082" LineThickness="1.0">
+      <Point X="364.0" Y="1030.0"/>
+      <Point X="353.0" Y="1030.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ab0b4">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33084" LineThickness="1.0" Color="663300">
+      <Point X="177.5966386554622" Y="616.638655462185" GraphRef="b2ae0" RelX="-1.0" RelY="0.0"/>
+      <Point X="157.5966386554622" Y="861.8193277310925"/>
+      <Point X="356.43067226890753" Y="1107.0"/>
+      <Point X="555.2647058823529" Y="1058.4789915966385" GraphRef="ba2c7" RelX="0.0" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aba60">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33086" LineThickness="1.0" Color="663300">
+      <Point X="177.5966386554622" Y="616.638655462185" GraphRef="b2ae0" RelX="-1.0" RelY="0.0"/>
+      <Point X="355.39495798319354" Y="957.268907563025" GraphRef="b5a88" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c923c">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33120" LineThickness="1.0" Color="00cccc">
+      <Point X="179.84663865546213" Y="1182.638655462185" GraphRef="ea36b" RelX="0.5" RelY="-1.0"/>
+      <Point X="250.5" Y="1184.0" GraphRef="eb40e" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f74ef">
+    <Graphics ZOrder="33122" LineThickness="1.0">
+      <Point X="250.0" Y="1163.0"/>
+      <Point X="250.0" Y="1178.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ea6ff">
+    <Graphics ConnectorType="Elbow" ZOrder="33130" LineThickness="1.0" Color="b8b898">
+      <Point X="380.33333333333326" Y="1198.0" GraphRef="a867e" RelX="1.0" RelY="0.0"/>
+      <Point X="390.09663865546213" Y="1244.638655462185" GraphRef="a63cb" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b8785">
+    <Graphics ConnectorType="Elbow" ZOrder="33132" LineThickness="1.0" Color="ff0000">
+      <Point X="193.59663865546213" Y="1242.638655462185" GraphRef="cc05f" RelX="1.0" RelY="0.0"/>
+      <Point X="261.0" Y="1295.138655462185"/>
+      <Point X="284.5966386554622" Y="1347.638655462185" GraphRef="f3c5c" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="edb5c">
+    <Graphics ConnectorType="Elbow" ZOrder="33134" LineThickness="1.0" Color="ff0000">
+      <Point X="193.59663865546213" Y="1242.638655462185" GraphRef="cc05f" RelX="1.0" RelY="0.0"/>
+      <Point X="82.59663865546219" Y="1278.638655462185" GraphRef="f5459" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fad46">
+    <Graphics ConnectorType="Elbow" ZOrder="33136" LineThickness="1.0" Color="ff0000">
+      <Point X="193.59663865546213" Y="1242.638655462185" GraphRef="cc05f" RelX="1.0" RelY="0.0"/>
+      <Point X="213.0" Y="1260.638655462185"/>
+      <Point X="189.54831932773106" Y="1278.638655462185"/>
+      <Point X="166.09663865546213" Y="1298.638655462185" GraphRef="ba17d" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e4da0">
+    <Graphics ConnectorType="Elbow" ZOrder="33138" LineThickness="1.0" Color="ff0000">
+      <Point X="193.59663865546213" Y="1242.638655462185" GraphRef="cc05f" RelX="1.0" RelY="0.0"/>
+      <Point X="213.8466386554622" Y="1346.638655462185" GraphRef="aed06" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a8078">
+    <Graphics ConnectorType="Elbow" ZOrder="33140" LineThickness="1.0" Color="ff0000">
+      <Point X="193.59663865546213" Y="1242.638655462185" GraphRef="cc05f" RelX="1.0" RelY="0.0"/>
+      <Point X="261.0" Y="1308.638655462185"/>
+      <Point X="283.5966386554622" Y="1374.638655462185" GraphRef="ba933" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c924f">
+    <Graphics ConnectorType="Elbow" ZOrder="33142" LineThickness="1.0" Color="ff0000">
+      <Point X="193.59663865546213" Y="1242.638655462185" GraphRef="cc05f" RelX="1.0" RelY="0.0"/>
+      <Point X="261.0" Y="1261.638655462185"/>
+      <Point X="362.59663865546213" Y="1280.638655462185" GraphRef="fa4f2" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f026b">
+    <Graphics ConnectorType="Elbow" ZOrder="33144" LineThickness="1.0" Color="ff0000">
+      <Point X="193.59663865546213" Y="1242.638655462185" GraphRef="cc05f" RelX="1.0" RelY="0.0"/>
+      <Point X="261.0" Y="1325.138655462185"/>
+      <Point X="283.5966386554622" Y="1407.638655462185" GraphRef="ade50" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bc935">
+    <Graphics ConnectorType="Elbow" ZOrder="33158" LineThickness="1.0" Color="ff9966">
+      <Point X="417.59663865546213" Y="1254.638655462185" GraphRef="a63cb" RelX="1.0" RelY="0.0"/>
+      <Point X="428.0" Y="1351.8193277310925"/>
+      <Point X="395.0" Y="1449.0" GraphRef="c0c79" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bc735">
+    <Graphics ConnectorType="Elbow" ZOrder="33160" LineThickness="1.0" Color="ff9999">
+      <Point X="417.59663865546213" Y="1280.638655462185" GraphRef="fa4f2" RelX="1.0" RelY="0.0"/>
+      <Point X="433.0" Y="1369.9443277310925"/>
+      <Point X="395.0" Y="1459.25" GraphRef="c0c79" RelX="1.0" RelY="0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ca50c">
+    <Graphics ConnectorType="Elbow" ZOrder="33162" LineThickness="1.0" Color="33ccff">
+      <Point X="324.8466386554622" Y="1417.638655462185" GraphRef="ade50" RelX="0.5" RelY="1.0"/>
+      <Point X="344.0" Y="1438.75" GraphRef="c0c79" RelX="-1.0" RelY="-0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f5f97">
+    <Graphics ConnectorType="Elbow" ZOrder="33164" LineThickness="1.0" Color="9933ff">
+      <Point X="338.5966386554622" Y="1374.638655462185" GraphRef="ba933" RelX="1.0" RelY="0.0"/>
+      <Point X="356.75" Y="1428.5" GraphRef="c0c79" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cf8f9">
+    <Graphics ConnectorType="Elbow" ZOrder="33166" LineThickness="1.0" Color="9933ff">
+      <Point X="339.5966386554622" Y="1347.638655462185" GraphRef="f3c5c" RelX="1.0" RelY="0.0"/>
+      <Point X="369.5" Y="1428.5" GraphRef="c0c79" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a1098">
+    <Graphics ConnectorType="Elbow" ZOrder="33168" LineThickness="1.0" Color="663300">
+      <Point X="270.5966386554622" Y="1255.638655462185" GraphRef="e5f13" RelX="-1.0" RelY="0.0"/>
+      <Point X="344.0" Y="1449.0" GraphRef="c0c79" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ef40c">
+    <Graphics ConnectorType="Elbow" ZOrder="33170" LineThickness="1.0" Color="cc9900">
+      <Point X="144.59663865546213" Y="1402.2100840336134" GraphRef="eb2ce" RelX="-1.0" RelY="0.0"/>
+      <Point X="135.75" Y="1452.5" GraphRef="f4aec" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cd59d">
+    <Graphics ConnectorType="Elbow" ZOrder="33172" LineThickness="1.0" Color="ff0099">
+      <Point X="34.34663865546213" Y="1420.638655462185" GraphRef="f2fde" RelX="-0.5" RelY="1.0"/>
+      <Point X="78.0" Y="1462.75" GraphRef="f4aec" RelX="-1.0" RelY="-0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cc6c7">
+    <Graphics ConnectorType="Elbow" ZOrder="33174" LineThickness="1.0" Color="00ccff">
+      <Point X="342.33333333333326" Y="1144.2481294511797" GraphRef="e519e" RelX="0.0" RelY="0.0"/>
+      <Point X="116.0" Y="1288.37406472559"/>
+      <Point X="116.25" Y="1432.5"/>
+      <Point X="116.5" Y="1452.5" GraphRef="f4aec" RelX="0.0" RelY="-1.0" ArrowHead="mim-inhibition"/>
+      <Anchor Position="0.9792385999483958" Shape="None"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e499f">
+    <Graphics ConnectorType="Elbow" ZOrder="33176" LineThickness="1.0" Color="ff6699">
+      <Point X="193.59663865546213" Y="1308.638655462185" GraphRef="ba17d" RelX="1.0" RelY="0.0"/>
+      <Point X="240.0" Y="1453.5" GraphRef="e94c3" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e1ec4">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33178" LineThickness="1.0" Color="330099">
+      <Point X="81.59663865546219" Y="1161.638655462185" GraphRef="ed0a8" RelX="1.0" RelY="0.0"/>
+      <Point X="107.0" Y="1205.138655462185"/>
+      <Point X="87.9233193277311" Y="1248.638655462185"/>
+      <Point X="68.84663865546219" Y="1268.638655462185" GraphRef="f5459" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e0f14">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33180" LineThickness="1.0" Color="330099">
+      <Point X="81.59663865546219" Y="1161.638655462185" GraphRef="ed0a8" RelX="1.0" RelY="0.0"/>
+      <Point X="107.0" Y="1277.138655462185"/>
+      <Point X="87.59663865546213" Y="1392.638655462185" GraphRef="f2fde" RelX="1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ccf9c">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33182" LineThickness="1.0" Color="330099">
+      <Point X="81.59663865546219" Y="1161.638655462185" GraphRef="ed0a8" RelX="1.0" RelY="0.0"/>
+      <Point X="107.0" Y="1274.9243697478992"/>
+      <Point X="144.59663865546213" Y="1388.2100840336134" GraphRef="eb2ce" RelX="-1.0" RelY="-0.5" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fcefe">
+    <Graphics ZOrder="33184" LineThickness="1.0">
+      <Point X="104.0" Y="1392.0"/>
+      <Point X="93.0" Y="1392.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cdd74">
+    <Graphics ZOrder="33186" LineThickness="1.0">
+      <Point X="124.0" Y="1396.1904761904761"/>
+      <Point X="137.0" Y="1396.1904761904761" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5ee6">
+    <Graphics ZOrder="33188" LineThickness="1.0">
+      <Point X="67.0" Y="1247.0"/>
+      <Point X="67.0" Y="1262.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f852c">
+    <Graphics ConnectorType="Elbow" ZOrder="33196" LineThickness="1.0" Color="3399ff">
+      <Point X="551.0" Y="1236.5" GraphRef="d2ab7" RelX="1.0" RelY="0.0"/>
+      <Point X="623.3466386554621" Y="1226.638655462185" GraphRef="c3a60" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d6e3a">
+    <Graphics ConnectorType="Elbow" ZOrder="33202" LineThickness="1.0" Color="ff0000">
+      <Point X="541.5966386554621" Y="1181.638655462185" GraphRef="f9f95" RelX="1.0" RelY="0.0"/>
+      <Point X="637.0966386554621" Y="1226.638655462185" GraphRef="c3a60" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c6dd2">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33228" LineThickness="1.0">
+      <Point X="616.5966386554621" Y="1285.638655462185" GraphRef="e003f" RelX="1.0" RelY="0.0"/>
+      <Point X="623.3466386554621" Y="1246.638655462185" GraphRef="c3a60" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e97ca">
+    <Graphics ZOrder="33230" LineThickness="1.0">
+      <Point X="650.0" Y="1268.0"/>
+      <Point X="650.0" Y="1252.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a4ec6">
+    <Graphics ZOrder="33232" LineThickness="1.0">
+      <Point X="624.0" Y="1268.0"/>
+      <Point X="624.0" Y="1252.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e977f">
+    <Graphics ConnectorType="Elbow" ZOrder="33236" LineThickness="1.0" Color="663300">
+      <Point X="664.5966386554621" Y="1236.638655462185" GraphRef="c3a60" RelX="1.0" RelY="0.0"/>
+      <Point X="676.0966386554621" Y="1366.638655462185" GraphRef="f0bf7" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e2771">
+    <Graphics ConnectorType="Elbow" ZOrder="33238" LineThickness="1.0" Color="ff0000">
+      <Point X="541.5966386554621" Y="1181.638655462185" GraphRef="f9f95" RelX="1.0" RelY="0.0"/>
+      <Point X="689.8466386554621" Y="1366.638655462185" GraphRef="f0bf7" RelX="0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c5293">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33240" LineThickness="1.0">
+      <Point X="616.5966386554621" Y="1285.638655462185" GraphRef="e003f" RelX="1.0" RelY="0.0"/>
+      <Point X="662.3466386554621" Y="1366.638655462185" GraphRef="f0bf7" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d5cc8">
+    <Comment>inhitory transcriptional regulation</Comment>
+    <Graphics ConnectorType="Elbow" ZOrder="33242" LineThickness="1.0">
+      <Point X="600.5966386554621" Y="1353.888655462185" GraphRef="bba98" RelX="1.0" RelY="-0.5"/>
+      <Point X="623.0" Y="1380.263655462185"/>
+      <Point X="642.6733193277311" Y="1406.638655462185"/>
+      <Point X="662.3466386554621" Y="1386.638655462185" GraphRef="f0bf7" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ac74e">
+    <Graphics ZOrder="33244" LineThickness="1.0">
+      <Point X="662.0" Y="1406.0"/>
+      <Point X="662.0" Y="1392.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b3b9a">
+    <Graphics ZOrder="33246" LineThickness="1.0">
+      <Point X="662.0" Y="1345.0"/>
+      <Point X="662.0" Y="1360.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a12e3">
+    <Graphics ConnectorType="Elbow" ZOrder="33258" LineThickness="1.0" Color="006666">
+      <Point X="874.5966386554621" Y="1188.638655462185" GraphRef="c2556" RelX="1.0" RelY="0.0"/>
+      <Point X="919.0" Y="1216.0" GraphRef="e22b9" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d924a">
+    <Graphics ConnectorType="Elbow" ZOrder="33260" LineThickness="1.0" Color="006666">
+      <Point X="874.5966386554621" Y="1188.638655462185" GraphRef="c2556" RelX="1.0" RelY="0.0"/>
+      <Point X="919.0" Y="1302.0" GraphRef="afb94" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d8276">
+    <Graphics ConnectorType="Elbow" ZOrder="33262" LineThickness="1.0" Color="006666">
+      <Point X="874.5966386554621" Y="1188.638655462185" GraphRef="c2556" RelX="1.0" RelY="0.0"/>
+      <Point X="919.0" Y="1385.0" GraphRef="a87c6" RelX="-1.0" RelY="0.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6c15">
+    <Graphics ConnectorType="Elbow" ZOrder="33264" LineThickness="1.0" Color="996600">
+      <Point X="874.5966386554621" Y="1248.638655462185" GraphRef="f03b6" RelX="1.0" RelY="0.0"/>
+      <Point X="946.5" Y="1292.0" GraphRef="afb94" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dbcc8">
+    <Graphics ConnectorType="Elbow" ZOrder="33266" LineThickness="1.0" Color="999999">
+      <Point X="805.3333333333333" Y="1294.0" GraphRef="bff8c" RelX="1.0" RelY="0.0"/>
+      <Point X="932.75" Y="1312.0" GraphRef="afb94" RelX="-0.5" RelY="1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4291">
+    <Graphics ConnectorType="Elbow" ZOrder="33268" LineThickness="1.0">
+      <Point X="655.5" Y="1118.0" GraphRef="ce0a4" RelX="0.0" RelY="1.0"/>
+      <Point X="751.2983193277311" Y="1151.0"/>
+      <Point X="847.0966386554621" Y="1178.638655462185" GraphRef="c2556" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="eefa3">
+    <Graphics ConnectorType="Elbow" ZOrder="33277" LineThickness="1.0" Color="006666">
+      <Point X="397.66666666666663" Y="414.33333333333337" GraphRef="ac9c3" RelX="0.0" RelY="1.0"/>
+      <Point X="458.9058123249301" Y="433.0"/>
+      <Point X="520.1449579831935" Y="450.268907563025" GraphRef="f81b4" RelX="-0.5" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f8445">
+    <Graphics ZOrder="33278" LineThickness="1.0" Color="006666">
+      <Point X="367.66666666666663" Y="404.33333333333337" GraphRef="ac9c3" RelX="-1.0" RelY="0.0"/>
+      <Point X="309.0" Y="404.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Snail/Slug" GraphId="f2cd3" GroupRef="e797f">
+    <Graphics CenterX="463.5" CenterY="539.0" Width="63.0" Height="20.0" ZOrder="32800" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Delta" GraphId="c3740">
+    <Graphics CenterX="919.8277310924374" CenterY="309.68067226890753" Width="63.0" Height="20.0" ZOrder="32866" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="(high)" GraphId="a1354">
+    <Graphics CenterX="924.0" CenterY="198.0" Width="58.0" Height="20.0" ZOrder="32896" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="(intermed)" GraphId="a2339">
+    <Graphics CenterX="649.0" CenterY="187.0" Width="58.0" Height="20.0" ZOrder="32898" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Nuclear TFs" GraphId="ba422">
+    <Graphics CenterX="688.0" CenterY="127.0" Width="88.0" Height="20.0" ZOrder="32906" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Epidermis" GraphId="c597e">
+    <Graphics CenterX="936.5" CenterY="653.0" Width="89.0" Height="20.0" ZOrder="33020" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle" Color="660066"/>
+  </Label>
+  <Label TextLabel="Mesoderm" GraphId="b28e6">
+    <Graphics CenterX="936.5" CenterY="815.0" Width="89.0" Height="20.0" ZOrder="33022" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle" Color="006633"/>
+  </Label>
+  <Label TextLabel="Neural plate border" GraphId="e5bce">
+    <Graphics CenterX="240.5" CenterY="32.0" Width="169.0" Height="20.0" ZOrder="33024" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Neural&#10;plate" GraphId="a85b0">
+    <Graphics CenterX="46.5" CenterY="802.5" Width="89.0" Height="37.0" ZOrder="33026" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle" Color="ff00cc"/>
+  </Label>
+  <Label TextLabel="Snail/Slug" GraphId="d6b16" GroupRef="bd817">
+    <Graphics CenterX="307.5" CenterY="993.0" Width="63.0" Height="20.0" ZOrder="33042" FillColor="ffffff" FontSize="10" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Premigratory CNCC" GraphId="b2086">
+    <Graphics CenterX="249.5" CenterY="478.0" Width="169.0" Height="20.0" ZOrder="33066" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Neurons/glia" GraphId="a009c">
+    <Graphics CenterX="367.0" CenterY="1479.0" Width="124.0" Height="20.0" ZOrder="33146" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle" Color="ff6633"/>
+  </Label>
+  <Label TextLabel="Melanocytes" GraphId="bdb64">
+    <Graphics CenterX="591.0" CenterY="1479.0" Width="124.0" Height="20.0" ZOrder="33148" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle" Color="3366ff"/>
+  </Label>
+  <Label TextLabel="Chondrocytes" GraphId="c18b3">
+    <Graphics CenterX="879.0" CenterY="1479.0" Width="124.0" Height="20.0" ZOrder="33150" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle" Color="cc6600"/>
+  </Label>
+  <Label TextLabel="Autonomic&#10;Nervous&#10;System" GraphId="e94c3">
+    <Graphics CenterX="240.0" CenterY="1483.0" Width="76.0" Height="59.0" ZOrder="33152" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" Color="666666"/>
+  </Label>
+  <Label TextLabel="Sensory&#10;Neurons" GraphId="f4aec">
+    <Graphics CenterX="116.5" CenterY="1473.0" Width="77.0" Height="41.0" ZOrder="33154" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" Color="666666"/>
+  </Label>
+  <Label TextLabel="Glia" GraphId="c0c79">
+    <Graphics CenterX="369.5" CenterY="1449.0" Width="51.0" Height="41.0" ZOrder="33156" FillColor="ffffff" FontWeight="Bold" FontSize="14" Valign="Middle" Color="666666"/>
+  </Label>
+  <Label TextLabel="Migratory CNCC" GraphId="ab210">
+    <Graphics CenterX="80.0" CenterY="854.0" Width="148.0" Height="20.0" ZOrder="33269" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Other Implicated" GraphId="c59ef">
+    <Graphics CenterX="1077.619047619047" CenterY="46.047619047618014" Width="134.2857142857144" Height="20.0" ZOrder="33274" FillColor="ffffff" FontWeight="Bold" FontSize="16" Valign="Middle" Color="330033"/>
+  </Label>
+  <Shape GraphId="f8e28">
+    <Graphics CenterX="503.5" CenterY="983.5" Width="979.0" Height="285.0" ZOrder="-20" FillColor="eceaea" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="f5f2f2" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b9267">
+    <Graphics CenterX="859.0" CenterY="1320.5" Width="270.0" Height="383.0" ZOrder="-18" FillColor="ffffcc" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="ffffff" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="cacb7">
+    <Graphics CenterX="228.0" CenterY="1321.0" Width="428.0" Height="380.0" ZOrder="-16" FillColor="fbe5ce" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="fce6cf" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ddf44">
+    <Graphics CenterX="587.5" CenterY="1320.5" Width="259.0" Height="383.0" ZOrder="-14" FillColor="cefbf0" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="ffffff" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="d9efc">
+    <Graphics CenterX="48.0" CenterY="423.5" Width="90.0" Height="815.0" ZOrder="-12" FillColor="fcdaf2" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="f6d7fb" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="fb62f">
+    <Graphics CenterX="483.5" CenterY="634.0" Width="771.0" Height="396.0" ZOrder="-10" FillColor="eceaea" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="f5f2f2" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="c4a09">
+    <Graphics CenterX="483.0" CenterY="221.5" Width="772.0" Height="411.0" ZOrder="-8" FillColor="eceaea" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="f5f2f2" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e5c79">
+    <Graphics CenterX="934.5" CenterY="751.6773761713521" Width="117.0" Height="159.35475234270416" ZOrder="-6" FillColor="ccffcc" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="ccffcc" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="dfcc0">
+    <Graphics CenterX="933.5" CenterY="340.5" Width="117.0" Height="647.0" ZOrder="-2" FillColor="ffdaff" FontSize="10" Valign="Middle" ShapeType="Rectangle" Color="f6d7fb" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e9af3">
+    <Graphics CenterX="1077.8452380952374" CenterY="155.77380952380918" Width="118.59523809523836" Height="190.45238095238165" ZOrder="16384" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="a298d" GraphId="b10b3" Style="Group"/>
+  <Group GroupId="e797f" GraphId="ebd11" Style="Group"/>
+  <Group GroupId="cfe83" GraphId="dad84"/>
+  <Group GroupId="e4405" GraphId="a2d94" Style="Group"/>
+  <Group GroupId="c0c2c" GraphId="f3170" Style="Group"/>
+  <Group GroupId="dd74f" GraphId="d3665" Style="Group"/>
+  <Group GroupId="bd817" GraphId="a7bbc" Style="Group"/>
+  <Group GroupId="eff87" GraphId="f438d" Style="Group"/>
+  <Group GroupId="b6337" GraphId="a867e"/>
+  <Group GroupId="cafde" GraphId="f2fde" Style="Group"/>
+  <Group GroupId="dd865" GraphId="d2ab7" Style="Group"/>
+  <Group GroupId="d6802" GraphId="d447c" Style="Group"/>
+  <Group GroupId="c4011" GraphId="eb2ce" Style="Group"/>
+  <Group GroupId="a8bcc" GraphId="efe73" Style="Group"/>
+  <Group GroupId="c9c43" GraphId="c079f"/>
+  <Group GroupId="f974e" GraphId="bba98" Style="Group"/>
+  <Group GroupId="e10c4" GraphId="ebd39" Style="Group"/>
+  <Group GroupId="eb7a9" GraphId="bff8c"/>
+  <Group GroupId="f602d" GraphId="bbf49" Style="Group"/>
+  <Group GroupId="b80de" GraphId="b74c4" Style="Group"/>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>cranial neural crest cell</bp:TERM>
+      <bp:ID>CL:0000008</bp:ID>
+      <bp:Ontology>Cell Type</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>regulatory pathway</bp:TERM>
+      <bp:ID>PW:0000004</bp:ID>
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>neuron neural crest derived</bp:TERM>
+      <bp:ID>CL:0000029</bp:ID>
+      <bp:Ontology>Cell Type</bp:Ontology>
+    </bp:openControlledVocabulary>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="c16">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15944192</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AP2-dependent signals from the ectoderm regulate craniofacial development in the zebrafish embryo.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Development</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Knight RD</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Javidan Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nelson S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schilling TF</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e64">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">21784065</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of novel Hoxa1 downstream targets regulating hindbrain, neural crest and inner ear development.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2011</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Makki N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Capecchi MR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="f97">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16402914</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string"/>
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16402914</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The TLX2 homeobox gene is a transcriptional target of PHOX2B in neural-crest-derived cells.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem J</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borghini S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bachetti T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fava M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Di Duca M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cargnin F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fornasari D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ravazzolo R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ceccherini I</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e22">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14973296</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reiterated Wnt signaling during zebrafish neural crest development.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Development</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2004</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lewis JL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bonner J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Modrell M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ragland JW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moon RT</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dorsky RI</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raible DW</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="e36">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">21108791</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Protogenin, a new member of the immunoglobulin superfamily, is implicated in the development of the mouse lower first molar.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BMC Dev Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi KF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiyoshima T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xie M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaza H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujiwara H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ookuma Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagata K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wada H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakai T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Terada Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sakai H</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="a91">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16845469</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Generation and maintenance of Dmbx1 gene-targeted mutant alleles.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mamm Genome</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohtoshi A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bradley A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Behringer RR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishijima I</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="b42">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12815623 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoxb1 neural crest preferentially form glia of the PNS.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Dyn</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2003</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arenkiel BR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gaufo GO</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Capecchi MR</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="cac">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20083100</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A divergent Tbx6-related gene and Tbx6 are both required for neural crest and intermediate mesoderm development in Xenopus.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dev Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Callery EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thomsen GH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Smith JC</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="ec7">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15731351 </bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The basic helix-loop-helix olig3 establishes the neural plate boundary of the trunk and is necessary for development of the dorsal spinal cord.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Proc Natl Acad Sci U S A</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2005</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Filippi A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tiso N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deflorian G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zecchin E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bortolussi M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Argenton F</bp:AUTHORS>
+    </bp:PublicationXref>
+    <bp:PublicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:id="b40">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19575671</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Assembling neural crest regulatory circuits into a gene regulatory network.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Cell Dev Biol</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2010</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Betancur P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bronner-Fraser M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sauka-Spengler T</bp:AUTHORS>
+    </bp:PublicationXref>
+  </Biopax>
+</Pathway>

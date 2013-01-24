@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Transmembrane transport of small molecules" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n1_REACTOME_382556" TextLabel="ABC-family proteins &#10;mediated transport&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">The ATP-binding cassette (ABC) superfamily of active transporters involves a large number of functionally diverse transmembrane proteins. They transport  a variety of compounds through membranes against steep concentration gradients at the cost of ATP hydrolysis.  These substrates include amino acids, lipids, inorganic ions, peptides, saccharides, peptides for antigen presentation, metals, drugs, and proteins. The ABC transporters not only move a variety of substrates into and out of the cell, but also are also involved in intracellular compartmental transport. Energy derived from the hydrolysis of ATP is used to transport the substrate across the membrane against a concentration gradient. Human genome contains 48 ABC genes; 16 of these have a known function and 14 are associated with a defined human disease.</Comment>
+    <BiopaxRef>lit_387001</BiopaxRef>
+    <BiopaxRef>lit_386999</BiopaxRef>
+    <Graphics Color="000000" CenterX="160.5" CenterY="188.0" Width="133.0" Height="68.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_15480"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_425407" TextLabel="SLC-mediated &#10;transmembrane &#10;transport&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Proteins with transporting functions can be roughly classified into 3 categories: ATP-powered pumps, ion channels, and transporters. Pumps utilize the energy released by ATP hydrolysis to power the movement of the substrates across the membrane, against their electrochemical gradient. Channels at the open state can transfer the substrates (ions or water) down their electrochemical gradient, at an extremely high efficiency (up to 108 s-1). Transporters facilitate the movement of a specific substrate âeither against or following their concentration gradient, at a lower speed (about 102 -104 s-1); as generally believed, conformational change of the transporter protein is involved in the transfer process.&lt;br&gt;&lt;br&gt;According to the Human Genome Organization (HUGO) Gene Nomenclature Committee, all human transporters can be grouped into the solute-carrier (SLC) superfamily. Currently, there are 55 SLC families in the superfamily, with a total of at least 362 putatively functional protein-coding genes (Hediger et al, 2004; He et al., 2009). At least 20-25% amino-acid sequence identity is shared by members belonging to the same SLC family.  No homology is shared between different SLC families. While the HUGO nomenclature system by definition only includes human genes, the nomenclature system has been informally extended to include rodent species through the use of lower cases letters (e.g., Slc1a1 denotes the rodent ortholog of the human SLC1A1 gene).  And it's worthwhile to mention that pumps, channels and aquporins are not included in SLC superfamily.</Comment>
+    <BiopaxRef>lit_427985</BiopaxRef>
+    <BiopaxRef>lit_427951</BiopaxRef>
+    <Graphics Color="000000" CenterX="312.5" CenterY="189.0" Width="127.0" Height="68.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_19118"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_445717" TextLabel="Aquaporin-mediated &#10;transport&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Aquaporins (AQP's) are six-pass transmembrane proteins that form channels in membranes. Each monomer contains a central channel formed in part by two asparagine-proline-alanine motifs (NPA boxes) that confer selectivity for water and/or solutes. The monomers assemble into tetramers. Most aquaporins (i.e. AQP0/MIP, AQP1, AQP2, AQP3, AQP4, AQP5, AQP7, AQP8, AQP9, AQP10) passively transport water into and out of cells according to the osmotic gradient across the membrane. Four aquaporins (the aquaglyceroporins AQP3, AQP7,  AQP9,  AQP10) conduct glycerol, three aquaporins (AQP7, AQP9, AQP10) conduct urea, and one aquaporin (AQP6) conducts anions, especially nitrate. AQP8 also conducts ammonia in addition to water.&lt;br&gt;AQP11 and AQP12, classified as group III aquaporins, were identified as a result of the genome sequencing project and are characterized by having variations in the first NPA box when compared to more traditional aquaporins. Additionally, a conserved cysteine residue is present about 9 amino acids downstream from the second NPA box and this cysteine is considered indicative of group III aquaporins. Purified AQP11 incorporated into liposomes showed water transport. Knockout mice lacking AQP11 had fatal cyst formation in the proximal tubule of the kidney. Exogenously expressed AQP12 showed intracellular localization. AQP12 is expressed exclusively in pancreatic acinar cells.&lt;br&gt;Aquaporins are important in fluid and solute transport in various tissues. In adipocytes, glycerol generated by triglyceride hydrolysis is exported by AQP7 and is imported by liver cells via AQP9. AQP1 plays a role in forming cerebrospinal fluid and AQP1, AQP4, and AQP9 appear to be important in maintaining fluid balance in the brain. AQP0, AQP1, AQP3, AQP4, AQP8, AQP9, and AQP11 play roles in the physiology of the hepatobiliary tract. In the kidney, water and solutes are passed out of the bloodstream and into the proximal tubule via the slit-like structure formed by nephrin in the glomerulus. Water is reabsorbed from the filtrate during its transit through the proximal tubule, the descending loop of Henle, the distal convoluted tubule, and the collecting duct. Aquaporin-1 (AQP1) in the proximal tubule and the descending thin limb of Henle is responsible for about 90% of reabsorption (as estimated from mouse knockouts of AQP1). AQP1 is located on both the apical and basolateral surface of epithelial cells and thus transports water through the epithelium and back into the bloodstream. In the collecting duct epithelial cells have AQP2 on their apical surfaces and AQP3 and AQP4 on their basolateral surfaces to transport water across the epithelium. The permeability of the epithelium is regulated by vasopressin, which activates a signaling cascade leading to the phosphorylation of AQP2 and its translocation from intracellular vesicles to the apical membrane of collecting duct cells.</Comment>
+    <BiopaxRef>lit_431876</BiopaxRef>
+    <BiopaxRef>lit_431905</BiopaxRef>
+    <BiopaxRef>lit_431779</BiopaxRef>
+    <BiopaxRef>lit_431776</BiopaxRef>
+    <BiopaxRef>lit_431987</BiopaxRef>
+    <BiopaxRef>lit_431986</BiopaxRef>
+    <BiopaxRef>lit_431655</BiopaxRef>
+    <BiopaxRef>lit_913482</BiopaxRef>
+    <BiopaxRef>lit_918098</BiopaxRef>
+    <BiopaxRef>lit_918078</BiopaxRef>
+    <BiopaxRef>lit_918089</BiopaxRef>
+    <BiopaxRef>lit_918086</BiopaxRef>
+    <Graphics Color="000000" CenterX="458.5" CenterY="189.5" Width="125.0" Height="65.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_23887"/>
+  </DataNode>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_387001" rdf:id="lit_387001">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12045106</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mammalian ABC transporters in health and disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borst, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elferink, RO</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Biochem 71:537-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_386999" rdf:id="lit_386999">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10856718</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ABC transporters in lipid transport</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borst, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zelcer, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Helvoort, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochim Biophys Acta 1486:128-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427985" rdf:id="lit_427985">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19164095</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Analysis and update of the human solute carrier (SLC) gene superfamily</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">He, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vasiliou, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nebert, DW</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Genomics 3:195-206</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_427951" rdf:id="lit_427951">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">14624363</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The ABCs of solute carriers: physiological, pathological and therapeutic implications of human membrane transport proteinsIntroduction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hediger, MA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Romero, MF</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng, JB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rolfs, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takanaga, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bruford, EA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pflugers Arch 447:465-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_431876" rdf:id="lit_431876">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19096770</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Discovery of the aquaporins and development of the field</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Carbrey, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agre, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Handb Exp Pharmacol3-28</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_431905" rdf:id="lit_431905">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15340377</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">From structure to disease: the evolving tale of aquaporin biology</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">King, LS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kozono, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agre, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Mol Cell Biol 5:687-98</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_431779" rdf:id="lit_431779">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19448080</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aquaporins: translating bench research to human disease</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verkman, AS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Exp Biol 212:1707-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_431776" rdf:id="lit_431776">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11773613</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aquaporins in the kidney: from molecules to medicine</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FrÃ¸kiaer, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marples, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kwon, TH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agre, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Knepper, MA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physiol Rev 82:205-44</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_431987" rdf:id="lit_431987">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17222168</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation and dysregulation of aquaporins in water balance disorders</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kwon, TH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FrÃ¸kiaer, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agre, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Intern Med 261:53-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_431986" rdf:id="lit_431986">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15924268</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The renal plumbing system: aquaporin water channels</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nejsum, LN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell Mol Life Sci 62:1692-706</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_431655" rdf:id="lit_431655">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17961083</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A current view of the mammalian aquaglyceroporins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rojek, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Praetorius, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FrÃ¸kiaer, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fenton, RA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Annu Rev Physiol 70:301-27</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_913482" rdf:id="lit_913482">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15901243</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aquaporins: highways for cells to recycle water with the outside world</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calamita, G</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biol Cell 97:351-3</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_918098" rdf:id="lit_918098">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16650285</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aquaporin-11: a channel protein lacking apparent transport function expressed in brain</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gorelick, DA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Praetorius, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tsunenari, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nielsen, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agre, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BMC Biochem 7:14</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_918078" rdf:id="lit_918078">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16107722</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Disruption of aquaporin-11 produces polycystic kidneys following vacuolization of the proximal tubule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Morishita, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuzaki, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hara-chikuma, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andoo, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shimono, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kobayashi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ikeda, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamamoto, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Verkman, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kusano, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ookawara, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takata, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sasaki, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishibashi, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Cell Biol 25:7770-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_918089" rdf:id="lit_918089">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20224213</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The role of a group III AQP, AQP11 in intracellular organelle homeostasis</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishibashi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koike, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kondo, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hara, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Med Invest 56:312-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_918086" rdf:id="lit_918086">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15809071</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Identification of a novel aquaporin, AQP12, expressed in pancreatic acinar cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Itoh, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rai, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kuwahara, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ko, SB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Uchida, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sasaki, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishibashi, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 330:832-8</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>transport pathway</bp:TERM><bp:ID>PW:0000103</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

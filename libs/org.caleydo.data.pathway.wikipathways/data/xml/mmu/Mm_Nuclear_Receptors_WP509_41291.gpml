@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Nuclear Receptors" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="WikiPathways-category">Molecular Function</Comment>
+  <Comment Source="HomologyConvert">This pathway was inferred from Homo sapiens pathway [http://www.wikipathways.org/index.php?title=Pathway:WP170&amp;amp;oldid=21037 WP170(r21037)] with a 100% conversion rate.</Comment>
+  <Comment Source="WikiPathways-description">Nuclear receptors are a class of proteins found within the interior of cells that are responsible for sensing the presence of steroid and thyroid hormones and certain other molecules. In response, these receptors work in concert with other proteins to regulate the expression of specific genes thereby controlling the development, homeostasis, and metabolism of the organism. Nuclear receptors have the ability to directly bind to DNA and regulate the expression of adjacent genes, hence these receptors are classified as transcription factors. The regulation of gene expression by nuclear receptors only happens when a ligandâa molecule which affects the receptor's behaviorâis present. More specifically, ligand binding to a nuclear receptor results in a conformational change in the receptor which in turn activates the receptor resulting in up-regulation of gene expression. A unique property of nuclear receptors which differentiate them from other classes of receptors is their ability to directly interact with and control the expression of genomic DNA. Consequently nuclear receptors play key roles in both embryonic development and adult homeostasis. As discussed in more detail below, nuclear receptors may be classified either according to mechanism or homology.
+
+Source: Wikipedia ([[wikipedia:Nuclear_receptor]])</Comment>
+  <BiopaxRef>d1f</BiopaxRef>
+  <Graphics BoardWidth="16057.25" BoardHeight="12870.0" WindowWidth="16188.0" WindowHeight="14520.0"/>
+  <DataNode TextLabel="Thra" Type="GeneProduct" BackpageHead="Thra" GraphId="c8b" GroupRef="e9bc1">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21833"/>
+  </DataNode>
+  <DataNode TextLabel="Thrb" Type="GeneProduct" BackpageHead="Thrb" GraphId="db9" GroupRef="e9bc1">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21834"/>
+  </DataNode>
+  <DataNode TextLabel="Thrb" Type="GeneProduct" BackpageHead="Thrb" GraphId="c5e" GroupRef="e9bc1">
+    <Graphics Color="000000" CenterX="1250.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21834"/>
+  </DataNode>
+  <DataNode TextLabel="Rara" Type="GeneProduct" BackpageHead="Rara" GraphId="ec8" GroupRef="f82df">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19401"/>
+  </DataNode>
+  <DataNode TextLabel="Rarb" Type="GeneProduct" BackpageHead="Rarb" GraphId="a3b" GroupRef="f82df">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="218772"/>
+  </DataNode>
+  <DataNode TextLabel="Rarg" Type="GeneProduct" BackpageHead="Rarg" GraphId="e14" GroupRef="f82df">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19411"/>
+  </DataNode>
+  <DataNode TextLabel="Rarg" Type="GeneProduct" BackpageHead="Rarg" GraphId="b12" GroupRef="f82df">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19411"/>
+  </DataNode>
+  <DataNode TextLabel="Ppara" Type="GeneProduct" BackpageHead="Ppara" GraphId="f19" GroupRef="c10c6">
+    <Graphics Color="000000" CenterX="8300.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19013"/>
+  </DataNode>
+  <DataNode TextLabel="Ppard" Type="GeneProduct" BackpageHead="Ppard" GraphId="cf2" GroupRef="c10c6">
+    <Graphics Color="000000" CenterX="8300.0" CenterY="2500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19015"/>
+  </DataNode>
+  <DataNode TextLabel="Pparg" Type="GeneProduct" BackpageHead="Pparg" GraphId="fbc" GroupRef="c10c6">
+    <Graphics Color="000000" CenterX="8300.0" CenterY="2800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19016"/>
+  </DataNode>
+  <DataNode TextLabel="Pparg" Type="GeneProduct" BackpageHead="Pparg" GraphId="d7c" GroupRef="c10c6">
+    <Graphics Color="000000" CenterX="8300.0" CenterY="3100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19016"/>
+  </DataNode>
+  <DataNode TextLabel="Nr1d2" Type="GeneProduct" BackpageHead="Nr1d2" GraphId="c6d">
+    <Graphics Color="000000" CenterX="11000.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="353187"/>
+  </DataNode>
+  <DataNode TextLabel="Nr0b1" Type="GeneProduct" BackpageHead="Nr0b1" GraphId="d7f">
+    <Graphics Color="000000" CenterX="13400.0" CenterY="2200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11614"/>
+  </DataNode>
+  <DataNode TextLabel="Ror1" Type="GeneProduct" BackpageHead="Ror1" GraphId="d7d" GroupRef="ca73c">
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26563"/>
+  </DataNode>
+  <DataNode TextLabel="Rora" Type="GeneProduct" BackpageHead="Rora" GraphId="cd4" GroupRef="ca73c">
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19883"/>
+  </DataNode>
+  <DataNode TextLabel="Rorc" Type="GeneProduct" BackpageHead="Rorc" GraphId="c98" GroupRef="ca73c">
+    <Graphics Color="000000" CenterX="2250.0" CenterY="4850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19885"/>
+  </DataNode>
+  <DataNode TextLabel="Nr1h2" Type="GeneProduct" BackpageHead="Nr1h2" GraphId="e39" GroupRef="c0325">
+    <Graphics Color="000000" CenterX="5800.0" CenterY="4250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22260"/>
+  </DataNode>
+  <DataNode TextLabel="Nr1h3" Type="GeneProduct" BackpageHead="Nr1h3" GraphId="e7c" GroupRef="c0325">
+    <Graphics Color="000000" CenterX="5800.0" CenterY="4550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22259"/>
+  </DataNode>
+  <DataNode TextLabel="Vdr" Type="GeneProduct" BackpageHead="Vdr" GraphId="c07" GroupRef="e72ee">
+    <Graphics Color="000000" CenterX="9000.0" CenterY="4250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22337"/>
+  </DataNode>
+  <DataNode TextLabel="Hnf4a" Type="GeneProduct" BackpageHead="Hnf4a" GraphId="f78">
+    <Graphics Color="000000" CenterX="1850.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15378"/>
+  </DataNode>
+  <DataNode TextLabel="Rxra" Type="GeneProduct" BackpageHead="Rxra" GraphId="db6" GroupRef="e957e">
+    <Graphics Color="000000" CenterX="5250.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20181"/>
+  </DataNode>
+  <DataNode TextLabel="Rxrb" Type="GeneProduct" BackpageHead="Rxrb" GraphId="a09" GroupRef="e957e">
+    <Graphics Color="000000" CenterX="5250.0" CenterY="7050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20182"/>
+  </DataNode>
+  <DataNode TextLabel="Rxrg" Type="GeneProduct" BackpageHead="Rxrg" GraphId="ca3" GroupRef="e957e">
+    <Graphics Color="000000" CenterX="5250.0" CenterY="7350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20183"/>
+  </DataNode>
+  <DataNode TextLabel="Nr2c2" Type="GeneProduct" BackpageHead="Nr2c2" GraphId="ac1">
+    <Graphics Color="000000" CenterX="8650.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22026"/>
+  </DataNode>
+  <DataNode TextLabel="Nr2f1" Type="GeneProduct" BackpageHead="Nr2f1" GraphId="d0c" GroupRef="e8fcd">
+    <Graphics Color="000000" CenterX="11950.0" CenterY="6750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13865"/>
+  </DataNode>
+  <DataNode TextLabel="Nr2f2" Type="GeneProduct" BackpageHead="Nr2f2" GraphId="be9" GroupRef="e8fcd">
+    <Graphics Color="000000" CenterX="11950.0" CenterY="7050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11819"/>
+  </DataNode>
+  <DataNode TextLabel="Nr2f6" Type="GeneProduct" BackpageHead="Nr2f6" GraphId="f18" GroupRef="e8fcd">
+    <Graphics Color="000000" CenterX="11950.0" CenterY="7350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13864"/>
+  </DataNode>
+  <DataNode TextLabel="Nr2e1" Type="GeneProduct" BackpageHead="Nr2e1" GraphId="bde">
+    <Graphics Color="000000" CenterX="1850.0" CenterY="7800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="21907"/>
+  </DataNode>
+  <DataNode TextLabel="Esr1" Type="GeneProduct" BackpageHead="Esr1" GraphId="ed2" GroupRef="d285f">
+    <Graphics Color="000000" CenterX="1150.0" CenterY="9750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13982"/>
+  </DataNode>
+  <DataNode TextLabel="Esr2" Type="GeneProduct" BackpageHead="Esr2" GraphId="df6" GroupRef="d285f">
+    <Graphics Color="000000" CenterX="1150.0" CenterY="10050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13983"/>
+  </DataNode>
+  <DataNode TextLabel="Esrra" Type="GeneProduct" BackpageHead="Esrra" GraphId="a34" GroupRef="baf7a">
+    <Graphics Color="000000" CenterX="4050.0" CenterY="9750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26379"/>
+  </DataNode>
+  <DataNode TextLabel="Esrrb" Type="GeneProduct" BackpageHead="Esrrb" GraphId="fbe" GroupRef="baf7a">
+    <Graphics Color="000000" CenterX="4050.0" CenterY="10050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26380"/>
+  </DataNode>
+  <DataNode TextLabel="Nr3c1" Type="GeneProduct" BackpageHead="Nr3c1" GraphId="a53">
+    <Graphics Color="000000" CenterX="7250.0" CenterY="9600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14815"/>
+  </DataNode>
+  <DataNode TextLabel="Pgr" Type="GeneProduct" BackpageHead="Pgr" GraphId="bc1">
+    <Graphics Color="000000" CenterX="7250.0" CenterY="10650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18667"/>
+  </DataNode>
+  <DataNode TextLabel="Ar" Type="GeneProduct" BackpageHead="Ar" GraphId="b83">
+    <Graphics Color="000000" CenterX="7250.0" CenterY="11550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11835"/>
+  </DataNode>
+  <DataNode TextLabel="Nr4a1" Type="GeneProduct" BackpageHead="Nr4a1" GraphId="d8d" GroupRef="ad669">
+    <Graphics Color="000000" CenterX="10500.0" CenterY="9650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15370"/>
+  </DataNode>
+  <DataNode TextLabel="Nr4a2" Type="GeneProduct" BackpageHead="Nr4a2" GraphId="b33" GroupRef="ad669">
+    <Graphics Color="000000" CenterX="10500.0" CenterY="9950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18227"/>
+  </DataNode>
+  <DataNode TextLabel="Nr5a1" Type="GeneProduct" BackpageHead="Nr5a1" GraphId="c43" GroupRef="cb7b1">
+    <Graphics Color="000000" CenterX="13200.0" CenterY="9650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26423"/>
+  </DataNode>
+  <DataNode TextLabel="Nr5a2" Type="GeneProduct" BackpageHead="Nr5a2" GraphId="abf" GroupRef="cb7b1">
+    <Graphics Color="000000" CenterX="13200.0" CenterY="9950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26424"/>
+  </DataNode>
+  <DataNode TextLabel="Nr1i2" Type="GeneProduct" BackpageHead="Nr1i2" GraphId="ee5" GroupRef="e72ee">
+    <Graphics Color="000000" CenterX="9000.0" CenterY="4550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18171"/>
+  </DataNode>
+  <DataNode TextLabel="Nr1i3" Type="GeneProduct" BackpageHead="Nr1i3" GraphId="fcc" GroupRef="e72ee">
+    <Graphics Color="000000" CenterX="9000.0" CenterY="4850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12355"/>
+  </DataNode>
+  <Label TextLabel="Thyroid Receptor" GraphId="a28">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1250.0" CenterY="1600.0" Width="2075.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Peroxisome Proliferator&#10;Activated Receptor" GraphId="ec4">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="8297.5" CenterY="1658.75" Width="2275.0" Height="462.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nuclear Receptor ROR" GraphId="bec">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="2250.0" CenterY="3750.0" Width="2675.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Oxysterols Receptor" GraphId="eca">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5750.0" CenterY="3750.0" Width="2420.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Vitamin D3 Receptor" GraphId="a63">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="8950.0" CenterY="3750.0" Width="2420.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Hepatocyte Nuclear Factor" GraphId="eab">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1850.0" CenterY="6250.0" Width="3125.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Retinoic Acid Receptor RXR" GraphId="c8f">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="5250.0" CenterY="6250.0" Width="3290.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Nuclear Receptor" GraphId="a6f">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="8650.0" CenterY="6250.0" Width="2990.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Nuclear receptor TLX" GraphId="d46">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1850.0" CenterY="7350.0" Width="2510.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Coup Transcription Factor" GraphId="a05">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="11950.0" CenterY="6250.0" Width="3095.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Estrogen Receptor" GraphId="e80">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="1200.0" CenterY="9100.0" Width="2240.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steroid Hormone Receptor" GraphId="ab2">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4050.0" CenterY="9100.0" Width="3140.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Glucocorticoid Receptor" GraphId="a89">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7250.0" CenterY="9100.0" Width="2870.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Progesterone Receptor" GraphId="a8a">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7250.0" CenterY="10000.0" Width="2750.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Androgen Receptor" GraphId="fde">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="7250.0" CenterY="11100.0" Width="2330.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR5 SUPERFAMILY" Outline="Rectangle" GraphId="b1e">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13200.0" CenterY="8551.25" Width="2360.0" Height="387.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Steroidogenic Receptor" GraphId="d42">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13200.0" CenterY="9100.0" Width="2795.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Receptor" GraphId="e07">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13400.0" CenterY="1600.0" Width="2045.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR0 SUPERFAMILY" Outline="Rectangle" GraphId="a4d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="13400.0" CenterY="1098.75" Width="2360.0" Height="382.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR1 SUPERFAMILY" Outline="Rectangle" GraphId="fd0">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="6000.0" CenterY="1083.75" Width="2360.0" Height="352.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR2 SUPERFAMILY" Outline="Rectangle" GraphId="cde">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="6885.0" CenterY="5746.25" Width="2360.0" Height="417.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR3 SUPERFAMILY" Outline="Rectangle" GraphId="f8d">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4350.0" CenterY="8566.25" Width="2360.0" Height="417.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="NR4 SUPERFAMILY" Outline="Rectangle" GraphId="d37">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="10500.0" CenterY="8551.25" Width="2360.0" Height="387.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Receptor" GraphId="a62">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="10500.0" CenterY="9100.0" Width="2045.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Orphan Nuclear&#10;Receptor" GraphId="fc2">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="10957.5" CenterY="1746.25" Width="1575.0" Height="437.5" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Retinoic Acid Receptor" GraphId="d53">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4750.0" CenterY="1600.0" Width="2705.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="d285f" GraphId="eb597"/>
+  <Group GroupId="baf7a" GraphId="baac5"/>
+  <Group GroupId="ad669" GraphId="ddefc"/>
+  <Group GroupId="cb7b1" GraphId="d6352"/>
+  <Group GroupId="e8fcd" GraphId="b0108"/>
+  <Group GroupId="e957e" GraphId="e0d80"/>
+  <Group GroupId="ca73c" GraphId="f7948"/>
+  <Group GroupId="e9bc1" GraphId="f1eb2"/>
+  <Group GroupId="f82df" GraphId="d12b1"/>
+  <Group GroupId="c10c6" GraphId="c3fab"/>
+  <Group GroupId="e72ee" GraphId="ff4f0"/>
+  <Group GroupId="c0325" GraphId="d3c6d"/>
+  <InfoBox CenterX="10581.0" CenterY="3529.0"/>
+  <Legend CenterX="9850.0" CenterY="10364.0"/>
+  <Biopax>
+    <bp:PublicationXRef xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level2.owl#" rdf:id="d1f">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16729019</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Twenty years of nuclear receptors: Conference on Nuclear Receptors: from Chromatin to Disease.</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO Rep</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2006</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nagy L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SchÃ¼le R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gronemeyer H</bp:AUTHORS>
+    </bp:PublicationXRef>
+  </Biopax>
+</Pathway>

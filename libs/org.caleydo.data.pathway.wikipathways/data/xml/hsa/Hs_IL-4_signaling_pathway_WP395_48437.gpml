@@ -1,0 +1,1581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="IL-4 signaling pathway" Organism="Homo sapiens" License="Freely available under Creative Commons license">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Comment Source="WikiPathways-description">IL-4 is a glycoprotein which is composed of 129 amino acids and has a molecular weight of 20kDa. IL-4 and IL-13 are produced by CD4+ cells and exhibit significant functional overlap. Both these cytokines play a critical role in the promotion of allergic responses. IL-4 is primarily involved in promoting the differentiation and proliferation of T helper 2 (TH2) cells and the synthesis of immunoglobulin E (IgE). Apart from its role in allergic responses including asthma, IL-4 was also found to regulate retinal progenitor proliferation, rod photoreceptor differentiation, cholinergic and GABAergic amacrine differentiation and neuroprotection and survival. IL-4 was also found to have regulatory effects in a number of neurological diseases including Alzheimer's disease, Multiple sclerosis, Experimental autoimmune encephelitis. It was also found to relieve inflammatory and neuropathic pain. IL-4 is capable of exerting its biological activities through interaction with two cell surface receptor complexes - Type I IL4 receptor and Type II IL4 Receptor. Both these receptor complexes comprise of a common IL4Rα (CD124) subunit, which is also the functional receptor chain. Type I IL-4 receptor is formed by the interaction of IL4Rα subunit with IL-2γc (CD132). Type II IL-4 receptor is formed by the interaction of IL-4Rα subunit with IL-13Rα. Interaction of IL-4 with its receptor results in receptor dimerization and activation. The Type I receptors activates JAK1 and 3, which are associated with the receptor subunits. The activated JAK phosphorylates tyrosine residues the cytoplasmic tails of the receptor which then serves as docking sites for a number of adaptor or signaling molecules including STAT6. Activated STAT6 dimerizes, translocated to the nucleus and transcriptionally actives genes responsive to IL-4. Many of the key functions of IL4 allergic disorders, including TH2 cell differentiation, airway hyper responsiveness, mucus cell metaplasia and IgE synthesis are dependent on STAT6 activation. Other phosphorylated tyrosine residue bind to proteins with phospho-tyrosine binding (PTB) motifs including IRS proteins. This results in the phosphorylation of the IRS proteins, which can then potentially activate the PI3K/AKT cascade by binding to the p85 subunit of PI3K or the Ras/Raf/MEK/ERK cascade. The PI3K/AKT pathway is thought to mediate the growth and survival signals in multiple IL-4 responsive cell types including T- and B- lymphocytes and natural killer cells.
+
+
+Please access this pathway at [http://www.netpath.org/netslim/IL_4_pathway.html NetSlim] database.
+
+If you use this pathway, you must cite following paper:
+Kandasamy, K., Mohan, S. S., Raju, R., Keerthikumar, S., Kumar, G. S. S., Venugopal, A. K., Telikicherla, D., Navarro, J. D., Mathivanan, S., Pecquet, C., Gollapudi, S. K., Tattikota, S. G., Mohan, S., Padhukasahasram, H., Subbannayya, Y., Goel, R., Jacob, H. K. C., Zhong, J., Sekhar, R., Nanjappa, V., Balakrishnan, L., Subbaiah, R., Ramachandra, Y. L., Rahiman, B. A., Prasad, T. S. K., Lin, J., Houtman, J. C. D., Desiderio, S., Renauld, J., Constantinescu, S. N., Ohara, O., Hirano, T., Kubo, M., Singh, S., Khatri, P., Draghici, S., Bader, G. D., Sander, C., Leonard, W. J. and Pandey, A. (2010). NetPath: A public resource of curated signal transduction pathways. &lt;i&gt;Genome Biology&lt;/i&gt;. 11:R3.</Comment>
+  <Attribute Key="org.pathvisio.model.WindowHeight" Value="11190.0"/>
+  <Attribute Key="org.pathvisio.model.WindowWidth" Value="15480.0"/>
+  <Graphics BoardWidth="1156.0" BoardHeight="1545.75"/>
+  <DataNode TextLabel="MAPK3" GraphId="efadd" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="396.0675999999995" CenterY="1070.8333333333333" Width="50.0" Height="20.0" ZOrder="-2" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5595"/>
+  </DataNode>
+  <DataNode TextLabel="BIRC5 " GraphId="ac6dd" Type="Rna">
+    <Graphics CenterX="123.25" CenterY="1505.75" Width="50.0" Height="20.0" ZOrder="32768" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="332"/>
+  </DataNode>
+  <DataNode TextLabel="STAT1 " GraphId="ad159" Type="Protein">
+    <Graphics CenterX="642.2499999999997" CenterY="829.0" Width="50.0" Height="20.0" ZOrder="32770" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6772"/>
+  </DataNode>
+  <DataNode TextLabel="HRH1 " GraphId="a1571" Type="Rna">
+    <Graphics CenterX="293.74999999999966" CenterY="1505.25" Width="50.0" Height="20.0" ZOrder="32773" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3269"/>
+  </DataNode>
+  <DataNode TextLabel="NFIL3" GraphId="eebf0" Type="Rna">
+    <Graphics CenterX="236.24999999999966" CenterY="1505.75" Width="50.0" Height="20.0" ZOrder="32778" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4783"/>
+  </DataNode>
+  <DataNode TextLabel="PTPN11" GraphId="b1c22" Type="Protein">
+    <Graphics CenterX="597.4166666666662" CenterY="779.625" Width="50.0" Height="20.0" ZOrder="32780" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5781"/>
+  </DataNode>
+  <DataNode TextLabel="STAT6" GraphId="ca2e5" Type="Protein">
+    <Graphics CenterX="201.7499999999996" CenterY="870.75" Width="50.0" Height="20.0" ZOrder="32782" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6778 "/>
+  </DataNode>
+  <DataNode TextLabel="CEBPB " GraphId="f6ad3" Type="Protein">
+    <Graphics CenterX="201.24999999999966" CenterY="1348.75" Width="50.0" Height="20.0" ZOrder="32784" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1051"/>
+  </DataNode>
+  <DataNode TextLabel="RELA " GraphId="ac4d6" Type="Protein" GroupRef="ea099">
+    <Graphics CenterX="286.25" CenterY="1088.25" Width="50.0" Height="20.0" ZOrder="32786" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5970"/>
+  </DataNode>
+  <DataNode TextLabel="TYK2" GraphId="e1bcf" Type="Protein">
+    <Graphics CenterX="408.5833333333329" CenterY="634.0" Width="41.166666666666515" Height="20.0" ZOrder="32789" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="7297"/>
+  </DataNode>
+  <DataNode TextLabel="FOS " GraphId="d7094" Type="Rna">
+    <Graphics CenterX="396.24999999999966" CenterY="1503.75" Width="50.0" Height="20.0" ZOrder="32792" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2353"/>
+  </DataNode>
+  <DataNode TextLabel="GATA3 " GraphId="c9917" Type="Rna">
+    <Graphics CenterX="178.25000000000034" CenterY="1505.25" Width="50.0" Height="20.0" ZOrder="32794" FontName="Bitstream Vera Sans" FontStyle="Italic" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2625"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK11 " GraphId="fe52c" Type="Protein">
+    <Comment/>
+    <Graphics CenterX="562.3749999999998" CenterY="1239.75" Width="60.749999999999545" Height="20.0" ZOrder="32796" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5600"/>
+  </DataNode>
+  <DataNode TextLabel="NCOA3" GraphId="eb342" Type="Protein" GroupRef="d2a41">
+    <Graphics CenterX="257.7499999999996" CenterY="1326.75" Width="50.0" Height="20.0" ZOrder="32799" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8262"/>
+  </DataNode>
+  <DataNode TextLabel="FES " GraphId="bf505" Type="Protein">
+    <Graphics CenterX="481.4166666666662" CenterY="607.125" Width="50.0" Height="20.0" ZOrder="32801" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2242 "/>
+  </DataNode>
+  <DataNode TextLabel="JAK2" GraphId="fbc31" Type="Protein">
+    <Graphics CenterX="633.7499999999997" CenterY="607.625" Width="50.0" Height="20.0" ZOrder="32806" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3717"/>
+  </DataNode>
+  <DataNode TextLabel="SHC1 " GraphId="e9354" Type="Protein">
+    <Graphics CenterX="344.99999999999955" CenterY="848.75" Width="50.0" Height="20.0" ZOrder="32809" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6464"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB1" GraphId="dd909" Type="Protein" GroupRef="c2a52">
+    <Graphics CenterX="337.2500000000002" CenterY="1241.25" Width="50.0" Height="20.0" ZOrder="32818" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4790"/>
+  </DataNode>
+  <DataNode TextLabel="SOCS5" GraphId="bb61e" Type="Protein">
+    <Graphics CenterX="191.7499999999996" CenterY="561.625" Width="50.0" Height="20.0" ZOrder="32824" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9655"/>
+  </DataNode>
+  <DataNode TextLabel="RPS6KB1" GraphId="c7881" Type="GeneProduct">
+    <Comment/>
+    <Graphics CenterX="531.1874999999997" CenterY="1129.375" Width="63.70833333333303" Height="20.0" ZOrder="32826" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6198"/>
+  </DataNode>
+  <DataNode TextLabel="EP300" GraphId="e3b55" Type="Protein" GroupRef="d2a41">
+    <Graphics CenterX="257.2499999999996" CenterY="1347.75" Width="50.0" Height="20.0" ZOrder="32831" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2033"/>
+  </DataNode>
+  <DataNode TextLabel="CEBPA " GraphId="f4bb7" Type="Protein">
+    <Graphics CenterX="146.75000000000023" CenterY="1348.25" Width="50.0" Height="20.0" ZOrder="32833" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1050"/>
+  </DataNode>
+  <DataNode TextLabel="CBL" GraphId="b38ef" Type="Protein">
+    <Graphics CenterX="440.6874999999998" CenterY="956.75" Width="40.70833333333326" Height="20.0" ZOrder="32837" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="867"/>
+  </DataNode>
+  <DataNode TextLabel="PTPN6" GraphId="b35d3" Type="Protein">
+    <Graphics CenterX="531.9166666666662" CenterY="750.125" Width="50.0" Height="20.0" ZOrder="32845" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5777"/>
+  </DataNode>
+  <DataNode TextLabel="ATF2" GraphId="b3995" Type="Protein">
+    <Graphics CenterX="550.2499999999997" CenterY="1338.75" Width="50.0" Height="20.0" ZOrder="32847" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1386"/>
+  </DataNode>
+  <DataNode TextLabel="STAT6" GraphId="d920f" Type="Protein">
+    <Graphics CenterX="201.8749999999996" CenterY="773.875" Width="50.0" Height="20.0" ZOrder="32849" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6778 "/>
+  </DataNode>
+  <DataNode TextLabel="INPP5D" GraphId="da63e" Type="Protein">
+    <Graphics CenterX="307.0" CenterY="753.875" Width="54.0" Height="20.0" ZOrder="32854" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3635"/>
+  </DataNode>
+  <DataNode TextLabel="IRS1" GraphId="c6225" Type="Protein" GroupRef="e3672">
+    <Graphics CenterX="440.6666666666662" CenterY="784.125" Width="50.0" Height="20.0" ZOrder="32859" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3667 "/>
+  </DataNode>
+  <DataNode TextLabel="IRS2" GraphId="a32b1" Type="Protein" GroupRef="e3672">
+    <Comment/>
+    <Graphics CenterX="440.4166666666662" CenterY="805.125" Width="50.0" Height="20.0" ZOrder="32862" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8660 "/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R2" GraphId="b78c6" Type="Protein" GroupRef="bc096">
+    <Graphics CenterX="531.9166666666662" CenterY="956.0" Width="50.0" Height="20.0" ZOrder="32865" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5296"/>
+  </DataNode>
+  <DataNode TextLabel="BAD" GraphId="c228b" Type="Protein">
+    <Graphics CenterX="460.95833333333303" CenterY="1129.75" Width="37.91666666666606" Height="20.0" ZOrder="32869" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="572"/>
+  </DataNode>
+  <DataNode TextLabel="SOCS1" GraphId="fe14d" Type="Protein">
+    <Graphics CenterX="193.99999999999966" CenterY="651.625" Width="50.0" Height="20.0" ZOrder="32872" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8651"/>
+  </DataNode>
+  <DataNode TextLabel="GAB2 " GraphId="d1b57" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SHC1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="609.4999999999992" CenterY="956.5" Width="50.0" Height="20.0" ZOrder="32874" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9846"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK14 " GraphId="edcf8" Type="Protein">
+    <Comment/>
+    <Graphics CenterX="484.375" CenterY="1240.5" Width="58.75" Height="20.0" ZOrder="32876" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1432"/>
+  </DataNode>
+  <DataNode TextLabel="ELK1" GraphId="cc2fd" Type="Protein">
+    <Graphics CenterX="484.75" CenterY="1338.75" Width="50.0" Height="20.0" ZOrder="32881" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2002"/>
+  </DataNode>
+  <DataNode TextLabel="IL4" GraphId="b8f45" Type="Protein" GroupRef="fee7d">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="316.3333333333336" CenterY="303.0" Width="50.0" Height="20.0" ZOrder="32883" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3565"/>
+  </DataNode>
+  <DataNode TextLabel="JAK1" GraphId="cb66d" Type="Protein">
+    <Graphics CenterX="271.66666666666663" CenterY="607.0" Width="44.66666666666674" Height="20.0" ZOrder="32890" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3716"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5B" GraphId="d6dad" Type="Protein" GroupRef="eb5d1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5B"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="723.6666666666665" CenterY="850.3333333333335" Width="57.33333333333306" Height="20.0" ZOrder="32892" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="STAT5B"/>
+  </DataNode>
+  <DataNode TextLabel="IL2RG" GraphId="d7ec3" Type="Protein" GroupRef="fee7d">
+    <Comment> IL-4 induces the formation of a complex consisting of IL-4 receptor alpha and common gamma chain.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6ST"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="346.54166666666663" CenterY="434.0" Width="62.91666666666674" Height="20.0" ZOrder="32895" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3561"/>
+  </DataNode>
+  <DataNode TextLabel="AKT1" GraphId="bd3e5" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="AKT1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="531.666666666666" CenterY="1047.3333333333333" Width="50.0" Height="20.0" ZOrder="32904" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="207"/>
+  </DataNode>
+  <DataNode TextLabel="STAT6" GraphId="f9578" Type="Protein" GroupRef="c0ab2">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="201.66666666666634" CenterY="940.0" Width="50.0" Height="20.0" ZOrder="32909" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6778"/>
+  </DataNode>
+  <DataNode TextLabel="SOS1" GraphId="c89bf" Type="Protein" GroupRef="a49bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="SOS1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="396.3333333333327" CenterY="933.5" Width="50.0" Height="20.0" ZOrder="32911" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6654"/>
+  </DataNode>
+  <DataNode TextLabel="RELA" GraphId="f22a5" Type="Protein" GroupRef="c2a52">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="FOS"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="285.9999999999998" CenterY="1241.0" Width="50.0" Height="20.0" ZOrder="32915" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2353"/>
+  </DataNode>
+  <DataNode TextLabel="IL4R" GraphId="b2a57" Type="Protein" GroupRef="fee7d">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="IL6R"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="285.5" CenterY="434.0" Width="57.0" Height="20.0" ZOrder="32922" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3566"/>
+  </DataNode>
+  <DataNode TextLabel="STAT6" GraphId="a3e48" Type="Protein" GroupRef="c0ab2">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="201.66666666666634" CenterY="960.0" Width="50.0" Height="20.0" ZOrder="32927" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6778"/>
+  </DataNode>
+  <DataNode TextLabel="STAT3" GraphId="ea4b4" Type="Protein">
+    <Comment>
+</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="685.9999999999997" CenterY="780.0" Width="50.0" Height="20.0" ZOrder="32929" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK1" GraphId="b670b" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="396.8333333333327" CenterY="1049.3333333333333" Width="50.0" Height="20.0" ZOrder="32935" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK1" GraphId="e83da" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="396.49999999999955" CenterY="1240.6666666666665" Width="50.0" Height="20.0" ZOrder="32942" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5594"/>
+  </DataNode>
+  <DataNode TextLabel="MAPK3" GraphId="bb6bd" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="396.7342666666664" CenterY="1261.6666666666665" Width="50.0" Height="20.0" ZOrder="32942" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5595"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3CA" GraphId="e5e39" Type="Protein" GroupRef="bc096">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="531.0833333333329" CenterY="1000.8333333333333" Width="50.0" Height="20.0" ZOrder="32948" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5290"/>
+  </DataNode>
+  <DataNode TextLabel="GRB2" GraphId="db5db" Type="Protein" GroupRef="a49bf">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="GRB2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="396.3333333333327" CenterY="912.5" Width="50.0" Height="20.0" ZOrder="32952" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="2885"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3CD" GraphId="c2e0a" Type="Protein" GroupRef="bc096">
+    <Comment> IL-4 induces the interaction of PIK3CD,PIK3CA with PIK3R1,PIK3R2 in human neutrophils.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="531.4999999999997" CenterY="978.0" Width="50.0" Height="20.0" ZOrder="32957" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5293"/>
+  </DataNode>
+  <DataNode TextLabel="JAK3" GraphId="dba31" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="566.6666666666662" CenterY="607.5" Width="50.0" Height="20.0" ZOrder="32959" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3718"/>
+  </DataNode>
+  <DataNode TextLabel="RASA1" GraphId="cc683" Type="Protein">
+    <Comment> IL-4 stimulation leads to tyrosine phosphorylation of DOK2 and subsequent interaction of DOK2 with N-terminal SH2 domain of RASA1 in 32D cells.</Comment>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="MAPK3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="372.3671333333335" CenterY="806.8333333333333" Width="43.26573333333294" Height="20.0" ZOrder="32962" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9046"/>
+  </DataNode>
+  <DataNode TextLabel="DOK2" GraphId="ed41b" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="372.37500000000017" CenterY="677.5" Width="40.75000000000034" Height="20.0" ZOrder="32968" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9046"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5A" GraphId="a8f5b" Type="Protein" GroupRef="eb5d1">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5A"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="724.333333333333" CenterY="829.3333333333335" Width="58.666666666666174" Height="20.0" ZOrder="32977" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="STAT5A"/>
+  </DataNode>
+  <DataNode TextLabel="PIK3R1" GraphId="b50b9" Type="Protein" GroupRef="bc096">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="PIK3R1"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="531.3333333333331" CenterY="935.3333333333333" Width="50.0" Height="20.0" ZOrder="32986" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5295"/>
+  </DataNode>
+  <DataNode TextLabel="STAT6" GraphId="a75f2" Type="Protein" GroupRef="e5f5a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="201.66666666666634" CenterY="1262.0" Width="50.0" Height="20.0" ZOrder="32996" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6778"/>
+  </DataNode>
+  <DataNode TextLabel="STAT6" GraphId="d6922" Type="Protein" GroupRef="e5f5a">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="201.66666666666634" CenterY="1241.0" Width="50.0" Height="20.0" ZOrder="33002" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6778"/>
+  </DataNode>
+  <DataNode TextLabel="PRKCZ" GraphId="c5b1a" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="JAK2"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="151.9999999999996" CenterY="607.5" Width="50.0" Height="20.0" ZOrder="33006" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3716"/>
+  </DataNode>
+  <DataNode TextLabel="NFKB1" GraphId="ca907" Type="Protein" GroupRef="ea099">
+    <Graphics CenterX="337.2500000000002" CenterY="1088.25" Width="50.0" Height="20.0" ZOrder="33010" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4790"/>
+  </DataNode>
+  <DataNode TextLabel="NFKBIA" GraphId="b07ad" Type="Protein" GroupRef="ea099">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="296.6666666666665" CenterY="1067.0" Width="50.0" Height="20.0" ZOrder="33013" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="4792"/>
+  </DataNode>
+  <DataNode TextLabel="IKBKB" GraphId="e4f4a" Type="Protein" GroupRef="e90d1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="335.66666666666686" CenterY="999.0" Width="50.0" Height="20.0" ZOrder="33016" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="3551"/>
+  </DataNode>
+  <DataNode TextLabel="CHUK" GraphId="ead44" Type="Protein" GroupRef="e90d1">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="335.66666666666686" CenterY="978.0" Width="50.0" Height="20.0" ZOrder="33018" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="1147"/>
+  </DataNode>
+  <DataNode TextLabel="SOCS3" GraphId="bb705" Type="Protein">
+    <Graphics CenterX="224.78369905956077" CenterY="684.375" Width="50.0" Height="20.0" ZOrder="33024" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="9021"/>
+  </DataNode>
+  <DataNode TextLabel="STAT1 " GraphId="d29d0" Type="Protein">
+    <Graphics CenterX="642.2499999999991" CenterY="1239.5" Width="50.0" Height="20.0" ZOrder="33032" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6772"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5B" GraphId="f3590" Type="Protein">
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5B"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="724.1666666666667" CenterY="1260.499999999999" Width="58.333333333332575" Height="20.0" ZOrder="33035" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="STAT5B"/>
+  </DataNode>
+  <DataNode TextLabel="STAT3" GraphId="b9d74" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT3"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="685.9999999999991" CenterY="1206.5" Width="50.0" Height="20.0" ZOrder="33038" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="6774"/>
+  </DataNode>
+  <DataNode TextLabel="STAT5A" GraphId="c7860" Type="Protein">
+    <Comment/>
+    <Attribute Key="org.pathvisio.model.BackpageHead" Value="STAT5A"/>
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="723.8333333333333" CenterY="1240.499999999999" Width="57.666666666665606" Height="20.0" ZOrder="33041" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="STAT5A"/>
+  </DataNode>
+  <State GraphRef="efadd" TextLabel="P" GraphId="b79fa">
+    <Comment>IL-4 stimulation leads to phosphorylation of ERK2 in Jurkat cell.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ad159" TextLabel="P" GraphId="c2851">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ca2e5" TextLabel="P" GraphId="c982e">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff33" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e1bcf" TextLabel="P" GraphId="a181b">
+    <Comment> IL-4 induces association of IL-4 receptor alpha chain and IL-13 receptor alpha1 in a complex leading to phosphorylation of Tyk2 in HT29 cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fe52c" TextLabel="p" GraphId="dc32f">
+    <Comment>IL-4 stimulation leads to phosphorylation of p38 beta MAPK in human dermal fibroblasts and subsequent activation of ATF2.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="fbc31" TextLabel="p" GraphId="eb869">
+    <Comment>IL-4 stimulation leads to phosphorylation of JAK2 and subsequent association of JAK2 with IL-4 receptor alpha chain in HT29 cells.
+</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="14.75" Height="16.5" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e9354" TextLabel="P" GraphId="dcdaf">
+    <Comment> IL-4 Stimulated the Phosphorylation of Shc in Human Keratinocytic Cell Lines.
+</Comment>
+    <Graphics RelX="0.9090909090909091" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c7881" TextLabel="p" GraphId="dc990">
+    <Comment> IL-4 induces phosphorylation of RPS6KB1 on Thr 421 and Ser 424 residues in 32D cells.
+</Comment>
+    <Graphics RelX="1.0" RelY="0.8222222222222222" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b38ef" TextLabel="P" GraphId="d37da">
+    <Comment>IL-4 stimulation leads to phosphorylation of Cbl on tyrosine 731 in Ba/F3 cells and subsequent binding to the p85 subunit of PI3-kinase.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d920f" TextLabel="p" GraphId="b0a8d">
+    <Comment> IL-4 induces phosphorylation of STAT6 on serine 756 in HT29 cells.
+</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c6225" TextLabel="P" GraphId="f8d64">
+    <Comment> IL-4 receptor stimulation induces tyrosine phosphorylation IRS1 in human T lymphocytes and murine 32D cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="16.5" Height="16.5" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a32b1" TextLabel="P" GraphId="d7c86">
+    <Comment>IL-4 stimulation induces tyrosine phosphorylation IRS1 in human T lymphocytes and murine 32D cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c228b" TextLabel="P" GraphId="ca5ff">
+    <Comment> IL-4 stimulation leads to phosphorylation of Bad on Ser 112 in FD-6 cells.
+</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="edcf8" TextLabel="p" GraphId="d2d55">
+    <Comment>IL-4 stimulation leads to phosphorylation of p38 alpha MAPK in human dermal fibroblasts and subsequent activation of ATF2.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d6dad" TextLabel="P" GraphId="ba193">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="bd3e5" TextLabel="P" GraphId="f5814">
+    <Comment> IL-4 stimulation leads to phosphorylation of Akt1 on serine residues in human pancreatic cancer cell lines COLO-357, BaF3 and FD-6 cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.666666666666963" Height="16.833333333333485" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f9578" TextLabel="P" GraphId="dd934">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b2a57" TextLabel="P" GraphId="b30db">
+    <Comment>IL-4 stimulation leads to phosphorylation of IL4R alpha in Splenic CD8+ T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a3e48" TextLabel="P" GraphId="a8c70">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ea4b4" TextLabel="P" GraphId="e587c">
+    <Comment> IL-4 stimulated the phosphorylation of STAT3 and activated its nuclear translocation in mouse T (CD8+) cells..
+</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff33" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b670b" TextLabel="P" GraphId="f2bbd">
+    <Comment>IL-4 stimulation leads to phosphorylation of MAPK1 in Jurkat cells.</Comment>
+    <Graphics RelX="0.9245283018867925" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e83da" TextLabel="p" GraphId="a5723">
+    <Comment>IL-4 stimulation leads to phosphorylation of MAPK1 in Jurkat cells.
+</Comment>
+    <Graphics RelX="0.9245283018867925" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="bb6bd" TextLabel="p" GraphId="e1c95">
+    <Comment> IL-4 stimulation leads to phosphorylation of ERK2 in Jurkat cell.
+</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="dba31" TextLabel="p" GraphId="ede01">
+    <Comment>IL-4 stimulation leads to rapid tyrosine phosphorylation and activation of JAK3 in human Ramos B cells and mouse TH1 cells.
+</Comment>
+    <Graphics RelX="0.8" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ed41b" TextLabel="p" GraphId="a6437">
+    <Comment>Stimulation of 32D cells with IL-4 induces the phosphorylation of DOK2.
+</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a8f5b" TextLabel="P" GraphId="deb20">
+    <Comment> IL-4 stimulation leads to phosphorylation of STAT5 alpha in human T cells and DO11.10 CD4 T cells.
+</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="a75f2" TextLabel="P" GraphId="dda0e">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d6922" TextLabel="P" GraphId="fea90">
+    <Graphics RelX="1.0" RelY="0.4" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ca907" TextLabel="P" GraphId="d4bb0">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b07ad" TextLabel="P" GraphId="a1029">
+    <Comment> IL-4 induces phosphorylation of NFKBIA in LNCaP cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="e4f4a" TextLabel="P" GraphId="f00db">
+    <Comment>IL-4 induces phosphorylation of IKKA in thyroid cancer cells.</Comment>
+    <Graphics RelX="0.92" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="ead44" TextLabel="P" GraphId="ed339">
+    <Comment>IL-4 induces phosphorylation of IKKA in thyroid cancer cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="d29d0" TextLabel="P" GraphId="b81e6">
+    <Graphics RelX="1.0" RelY="0.8" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="f3590" TextLabel="P" GraphId="b4657">
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="b9d74" TextLabel="P" GraphId="ff1ce">
+    <Comment>IL-4 stimulated the phosphorylation of STAT3 and activated its nuclear translocation in mouse T (CD8+) cells..</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff33" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <State GraphRef="c7860" TextLabel="P" GraphId="ea706">
+    <Comment>IL-4 stimulation leads to phosphorylation of STAT5 alpha in human T cells and DO11.10 CD4 T cells.</Comment>
+    <Graphics RelX="1.0" RelY="1.0" Width="15.0" Height="15.0" FillColor="ffff00" ShapeType="Oval"/>
+    <Xref Database="" ID=""/>
+  </State>
+  <Line GraphId="id6149d2e9">
+    <Graphics ZOrder="12288" LineThickness="2.0">
+      <Point X="178.75635649398475" Y="1438.0" GraphRef="e474f" RelX="0.0" RelY="0.0"/>
+      <Point X="178.25000000000034" Y="1495.25" GraphRef="c9917" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id62ad32b3">
+    <Graphics ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="506.49999999999966" Y="978.0" GraphRef="c2e0a" RelX="-1.0" RelY="0.0"/>
+      <Point X="360.66666666666686" Y="978.0" GraphRef="ead44" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id95f70097">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="440.49999999999966" Y="824.0" GraphRef="a5b37" RelX="0.0" RelY="1.0"/>
+      <Point X="424.6666666666662" Y="842.0"/>
+      <Point X="408.8333333333327" Y="902.5" GraphRef="db5db" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.17620308520165154" Shape="None" GraphId="d657b"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idff6d2b16">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="566.6666666666662" Y="617.5" GraphRef="dba31" RelX="0.0" RelY="1.0"/>
+      <Point X="443.5833333333331" Y="711.0"/>
+      <Point X="320.5" Y="743.875" GraphRef="da63e" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id57522d2e">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="260.49999999999994" Y="617.0" GraphRef="cb66d" RelX="-0.5" RelY="1.0"/>
+      <Point X="406.6666666666662" Y="779.0" GraphRef="a5b37" RelX="-1.0" RelY="-0.5" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8a9daf14">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="282.8333333333333" Y="617.0" GraphRef="cb66d" RelX="0.5" RelY="1.0"/>
+      <Point X="288.16666666666663" Y="710.0"/>
+      <Point X="293.5" Y="743.875" GraphRef="da63e" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id840b7aef">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="468.9166666666662" Y="617.125" GraphRef="bf505" RelX="-0.5" RelY="1.0"/>
+      <Point X="463.1666666666663" Y="688.0"/>
+      <Point X="457.4166666666664" Y="764.0" GraphRef="a5b37" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd1e06062">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="493.9166666666662" Y="617.125" GraphRef="bf505" RelX="0.5" RelY="1.0"/>
+      <Point X="506.37499999999966" Y="793.0"/>
+      <Point X="518.8333333333331" Y="925.3333333333333" GraphRef="b50b9" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idddc6d123">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="271.66666666666663" Y="617.0" GraphRef="cb66d" RelX="0.0" RelY="1.0"/>
+      <Point X="236.77083333333312" Y="710.0"/>
+      <Point X="201.8749999999996" Y="763.875" GraphRef="d920f" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id277b53fb">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="408.5833333333329" Y="644.0" GraphRef="e1bcf" RelX="0.0" RelY="1.0"/>
+      <Point X="416.0833333333329" Y="688.0"/>
+      <Point X="423.5833333333329" Y="764.0" GraphRef="a5b37" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9d8edfbd">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="ff0000">
+      <Point X="216.7499999999996" Y="561.625" GraphRef="bb61e" RelX="1.0" RelY="0.0"/>
+      <Point X="260.49999999999994" Y="597.0" GraphRef="cb66d" RelX="-0.5" RelY="-1.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9ca6acf0">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="372.3671333333335" Y="816.8333333333333" GraphRef="cc683" RelX="0.0" RelY="1.0"/>
+      <Point X="384.3502333333331" Y="831.0"/>
+      <Point X="396.3333333333327" Y="902.5" GraphRef="db5db" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd82ed9b3">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="506.33333333333314" Y="935.3333333333333" GraphRef="b50b9" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="485.33333333333314" Y="888.6666666666666"/>
+      <Point X="453.5184690168164" Y="842.0"/>
+      <Point X="439.088293446951" Y="842.0" GraphRef="d657b" RelX="0.0" RelY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id977d319">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="371.3333333333327" Y="912.5" GraphRef="db5db" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+      <Point X="344.99999999999955" Y="858.75" GraphRef="e9354" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd68689f3">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineStyle="Broken" LineThickness="2.0">
+      <Point X="519.166666666666" Y="1057.3333333333333" GraphRef="bd3e5" RelX="-0.5" RelY="1.0"/>
+      <Point X="490.0624999999995" Y="1081.0"/>
+      <Point X="460.95833333333303" Y="1119.75" GraphRef="c228b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idfe6447df">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="544.556106727821" Y="854.0" GraphRef="a5caa" RelX="0.0" RelY="0.0"/>
+      <Point X="492.94472003057683" Y="854.0"/>
+      <Point X="441.3333333333327" Y="883.25"/>
+      <Point X="421.3333333333327" Y="912.5" GraphRef="db5db" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id86e77979">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="597.4166666666662" Y="789.625" GraphRef="b1c22" RelX="0.0" RelY="1.0"/>
+      <Point X="570.6249999999997" Y="854.0"/>
+      <Point X="543.8333333333331" Y="925.3333333333333" GraphRef="b50b9" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.6193381991046204" Shape="None" GraphId="a5caa"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id61627742">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="499.0625" Y="1250.5" GraphRef="edcf8" RelX="0.5" RelY="1.0"/>
+      <Point X="518.4062499999998" Y="1288.0"/>
+      <Point X="537.7499999999997" Y="1328.75" GraphRef="b3995" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6b77d5">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="0000ff">
+      <Point X="323.16666666666686" Y="1009.0" GraphRef="e4f4a" RelX="-0.5" RelY="1.0"/>
+      <Point X="309.9166666666667" Y="1034.0"/>
+      <Point X="296.6666666666665" Y="1057.0" GraphRef="b07ad" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id74d2a50b">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="409.2342666666664" Y="1271.6666666666665" GraphRef="bb6bd" RelX="0.5" RelY="1.0"/>
+      <Point X="440.7421333333332" Y="1287.0"/>
+      <Point X="472.25" Y="1328.75" GraphRef="cc2fd" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7e5f5403">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="201.85671074057194" Y="1293.0"/>
+      <Point X="146.75000000000023" Y="1338.25" GraphRef="f4bb7" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idef97440">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0" Color="00cc00">
+      <Point X="201.66666666666634" Y="1272.0" GraphRef="a75f2" RelX="0.0" RelY="1.0"/>
+      <Point X="229.70833333333297" Y="1293.0"/>
+      <Point X="257.7499999999996" Y="1316.75" GraphRef="eb342" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.20125239782112386" Shape="None" GraphId="afbee"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id71ef3e90">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0">
+      <Point X="205.0000000000001" Y="1418.0" GraphRef="b163b" RelX="0.0" RelY="1.0"/>
+      <Point X="123.25" Y="1495.75" GraphRef="ac6dd" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+      <Anchor Position="0.1354677142155661" Shape="None" GraphId="ea88e"/>
+      <Anchor Position="0.28992879941075445" Shape="None" GraphId="e474f"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ideef57acf">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" LineThickness="2.0">
+      <Point X="293.74999999999966" Y="1495.25" GraphRef="a1571" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+      <Point X="248.57144979130848" Y="1438.0"/>
+      <Point X="203.3928995826173" Y="1438.0" GraphRef="ea88e" RelX="0.0" RelY="0.0"/>
+      <Anchor Position="0.7748734813230211" Shape="None" GraphId="a86bd"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id5dd9c8a">
+    <Graphics ZOrder="12290" LineStyle="Broken" LineThickness="2.0">
+      <Point X="724.0" Y="671.0"/>
+      <Point X="724.333333333333" Y="819.3333333333335" GraphRef="a8f5b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idf4e4195">
+    <Graphics ZOrder="12292" LineStyle="Broken" LineThickness="2.0">
+      <Point X="686.0" Y="673.0"/>
+      <Point X="685.9999999999997" Y="770.0" GraphRef="ea4b4" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8951380b">
+    <Graphics ZOrder="12294" LineStyle="Broken" LineThickness="2.0">
+      <Point X="578.0" Y="671.0"/>
+      <Point X="725.0" Y="671.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id3abdca66">
+    <Graphics ZOrder="12298" LineStyle="Broken" LineThickness="2.0">
+      <Point X="335.66666666666686" Y="1009.0" GraphRef="e4f4a" RelX="0.0" RelY="1.0"/>
+      <Point X="335.0000000000002" Y="1078.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id26340b28">
+    <Comment> IL-4 stimulation Jak1 is a target of inhibition by both SOCS-1 and SOCS-3 in 293T cells.</Comment>
+    <Graphics ZOrder="12304" LineThickness="2.0" Color="ff3300">
+      <Point X="224.78369905956077" Y="674.375" GraphRef="bb705" RelX="0.0" RelY="-1.0"/>
+      <Point X="250.0" Y="625.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id739da414">
+    <Comment>IL-4 induces the Jak3-mediated phosphorylation and nuclear migration of STAT1, STAT3, and STAT5 in Spleen CD8+ T cells.</Comment>
+    <Graphics ZOrder="12306" LineStyle="Broken" LineThickness="2.0">
+      <Point X="642.0" Y="671.0"/>
+      <Point X="642.2499999999997" Y="819.0" GraphRef="ad159" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id67496446">
+    <Graphics ZOrder="12308" LineStyle="Broken" LineThickness="2.0">
+      <Point X="579.1666666666662" Y="617.5" GraphRef="dba31" RelX="0.5" RelY="1.0"/>
+      <Point X="578.0" Y="670.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id27acfdf0">
+    <Graphics ZOrder="12310" LineThickness="2.0">
+      <Point X="396.7342666666664" Y="1271.6666666666665" GraphRef="bb6bd" RelX="0.0" RelY="1.0"/>
+      <Point X="396.24999999999966" Y="1493.75" GraphRef="d7094" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idca64d14c">
+    <Graphics ZOrder="12314" LineThickness="2.0">
+      <Point X="236.62317223158584" Y="1438.0" GraphRef="a86bd" RelX="0.0" RelY="0.0"/>
+      <Point X="236.24999999999966" Y="1495.75" GraphRef="eebf0" RelX="0.0" RelY="-1.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f5ced">
+    <Comment>GAB2 interacts with SHP2 upon stimulation of BaF3 cells with IL-4.</Comment>
+    <Graphics ZOrder="12318" LineThickness="2.0" Color="33cc00">
+      <Point X="609.9166666666662" Y="789.625" GraphRef="b1c22" RelX="0.5" RelY="1.0"/>
+      <Point X="609.4999999999992" Y="946.5" GraphRef="d1b57" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c48e5">
+    <Comment>IL-4 induces association of Shp2 with IRS2 in TS1/IRS-1 cells</Comment>
+    <Graphics ZOrder="12320" LineThickness="2.0" Color="33cc00">
+      <Point X="474.33333333333314" Y="779.0" GraphRef="a5b37" RelX="1.0" RelY="-0.5"/>
+      <Point X="572.4166666666662" Y="779.625" GraphRef="b1c22" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id72fbc61">
+    <Comment> IL-4 induces physical association of SOCS1 with JAK1 and subsequent inhibition of JAK1 by SOCS1 in 293T cells.</Comment>
+    <Graphics ZOrder="12330" LineThickness="2.0" Color="ff0000">
+      <Point X="193.99999999999966" Y="641.625" GraphRef="fe14d" RelX="0.0" RelY="-1.0"/>
+      <Point X="241.0" Y="619.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id9ad99f8f">
+    <Comment> IL-4 induces direct binding of DOK2 to the phosphorylated I4R motif of the IL-4 receptor.
+</Comment>
+    <Graphics ZOrder="12334" LineThickness="2.0" Color="33cc00">
+      <Point X="372.0000000000001" Y="502.0"/>
+      <Point X="372.37500000000017" Y="667.5" GraphRef="ed41b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f25a7">
+    <Comment>IL-4 induces activation of Elk1 by p38 MAPK alpha in mouse splenic B cells.</Comment>
+    <Graphics ZOrder="12336" LineThickness="2.0" Color="00cc00">
+      <Point X="484.375" Y="1250.5" GraphRef="edcf8" RelX="0.0" RelY="1.0"/>
+      <Point X="484.75" Y="1328.75" GraphRef="cc2fd" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aae68">
+    <Comment>IL-4 induces interaction of p85 subunit of PI3-kinase with Cbl in BaF3 cells.</Comment>
+    <Graphics ZOrder="12342" LineThickness="2.0" Color="33cc00">
+      <Point X="461.0416666666664" Y="956.75" GraphRef="b38ef" RelX="1.0" RelY="0.0"/>
+      <Point X="506.9166666666662" Y="956.0" GraphRef="b78c6" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id4378d3e0">
+    <Graphics ZOrder="12344" LineThickness="2.0" Color="0000ff">
+      <Point X="541.6666666666662" Y="607.5" GraphRef="dba31" RelX="-1.0" RelY="0.0"/>
+      <Point X="506.4166666666662" Y="607.125" GraphRef="bf505" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id73a1adc0">
+    <Comment> IL-4 stimulation leads to interaction of SHP-1 with p85 alpha subunit of PI3-kinase and subsequent dephosphorylation of p85 alpha by SHP-1 in a B cell line.</Comment>
+    <Graphics ZOrder="12346" LineThickness="2.0" Color="00cccc">
+      <Point X="531.9166666666662" Y="760.125" GraphRef="b35d3" RelX="0.0" RelY="1.0"/>
+      <Point X="531.3333333333331" Y="925.3333333333333" GraphRef="b50b9" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fcab4">
+    <Comment>IL-4 leads to interaction of IL-4R alpha conseved motif ITIM with SHIP in M12 cells.</Comment>
+    <Graphics ZOrder="12350" LineThickness="2.0" Color="33cc00">
+      <Point X="307.0" Y="501.0"/>
+      <Point X="307.0" Y="743.875" GraphRef="da63e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c9f86">
+    <Comment>IL-4 induces binding of IRS2 to the IL-4 receptor in Splenic CD8+ T cells.</Comment>
+    <Graphics ZOrder="12364" LineThickness="2.0" Color="33cc00">
+      <Point X="440.33333333333314" Y="502.0"/>
+      <Point X="440.49999999999966" Y="764.0" GraphRef="a5b37" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id1964598e">
+    <Graphics ZOrder="12368" LineStyle="Broken" LineThickness="2.0">
+      <Point X="531.666666666666" Y="1057.3333333333333" GraphRef="bd3e5" RelX="0.0" RelY="1.0"/>
+      <Point X="531.1874999999997" Y="1119.375" GraphRef="c7881" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id570eaaec">
+    <Graphics ZOrder="12372" LineThickness="2.0" Color="33cc00">
+      <Point X="152.0" Y="501.0"/>
+      <Point X="632.0" Y="501.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id1437f246">
+    <Comment> IL-4 induces association of JAK2 with IL-4 receptor alpha chain in colon cancer cells.
+</Comment>
+    <Graphics ZOrder="12374" LineThickness="2.0" Color="33cc00">
+      <Point X="632.9999999999995" Y="501.0"/>
+      <Point X="633.7499999999997" Y="597.625" GraphRef="fbc31" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id44ab1ab8">
+    <Comment> IL-4 induces interaction of Fes with JAK1 and subsequent phosphorylation of Fes in M12 cells.</Comment>
+    <Graphics ZOrder="12382" LineThickness="2.0" Color="0000ff">
+      <Point X="294.0" Y="607.0" GraphRef="cb66d" RelX="1.0" RelY="0.0"/>
+      <Point X="456.4166666666662" Y="607.125" GraphRef="bf505" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idb6db6509">
+    <Comment> IL-4 induces association of tyrosine phosphorylated Shc1 with IL-4 receptor alpha in Burkitts B lymphoma cell line.</Comment>
+    <Graphics ZOrder="12384" LineThickness="2.0" Color="33cc00">
+      <Point X="345.0" Y="502.0"/>
+      <Point X="344.99999999999955" Y="838.75" GraphRef="e9354" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0308">
+    <Comment>JAK3 associates with IRS1 in T cells and suggest that JAK/IRS association may be important for IRS-1 and IRS-2 tyrosine phosphorylation, which plays an important role in T lymphocyte activation.</Comment>
+    <Graphics ZOrder="12402" LineThickness="2.0" Color="00cc00">
+      <Point X="554.1666666666662" Y="617.5" GraphRef="dba31" RelX="-0.5" RelY="1.0"/>
+      <Point X="467.33333333333314" Y="764.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cb494">
+    <Graphics ZOrder="12412" LineThickness="2.0" Color="33cc00">
+      <Point X="285.0" Y="499.0"/>
+      <Point X="285.5" Y="444.0" GraphRef="b2a57" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id443af156">
+    <Comment> IL-4 induces tyrosine phosphorylation of GAB2 and its subsequent interaction with p85 in BaF3 cells.
+</Comment>
+    <Graphics ZOrder="12414" LineThickness="2.0" Color="33cc00">
+      <Point X="584.4999999999992" Y="956.5" GraphRef="d1b57" RelX="-1.0" RelY="0.0"/>
+      <Point X="556.9166666666662" Y="956.0" GraphRef="b78c6" RelX="1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ideb3f0831">
+    <Comment> IL-4 stimulation led to STAT6 phosphorylation on Ser and Tyr 641 and subsequent dimerization of STAT6 in 293T cells.
+</Comment>
+    <Graphics ZOrder="12416" LineThickness="2.0" Color="00cc00">
+      <Point X="201.8749999999996" Y="783.875" GraphRef="d920f" RelX="0.0" RelY="1.0"/>
+      <Point X="201.7499999999996" Y="860.75" GraphRef="ca2e5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ida369e3ea">
+    <Graphics ZOrder="12418" LineStyle="Broken" LineThickness="2.0">
+      <Point X="396.3333333333327" Y="943.5" GraphRef="c89bf" RelX="0.0" RelY="1.0"/>
+      <Point X="396.8333333333327" Y="1039.3333333333333" GraphRef="b670b" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id6e1e3bbe">
+    <Graphics ZOrder="12422" LineThickness="2.0" Color="33cc00">
+      <Point X="372.37500000000017" Y="687.5" GraphRef="ed41b" RelX="0.0" RelY="1.0"/>
+      <Point X="372.3671333333335" Y="796.8333333333333" GraphRef="cc683" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8f5f3003">
+    <Comment> IL-4 induces interaction of the common gamma chain with JAK3.
+
+</Comment>
+    <Graphics ZOrder="12430" LineThickness="2.0" Color="33cc00">
+      <Point X="565.3333333333331" Y="435.0"/>
+      <Point X="566.6666666666662" Y="597.5" GraphRef="dba31" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id629f9c0d">
+    <Comment> STAT6 interacts with CEBPA in BJAB cell line and  HEK293 cells in IL-4 stimulation.</Comment>
+    <Graphics ZOrder="12434" LineThickness="2.0" Color="00cc00">
+      <Point X="201.66666666666634" Y="1292.29295011363" GraphRef="afbee" RelX="0.0" RelY="0.0"/>
+      <Point X="201.24999999999966" Y="1338.75" GraphRef="f6ad3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7035f80a">
+    <Comment> IL-4 leads to interaction of IL-4R alpha conseved motif ITIM with SHP-1.
+</Comment>
+    <Graphics ZOrder="12440" LineThickness="2.0" Color="33cc00">
+      <Point X="531.3333333333331" Y="501.0"/>
+      <Point X="531.9166666666662" Y="740.125" GraphRef="b35d3" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="idd414efec">
+    <Comment>IL-4 induces tyrosine phosphorylation of STAT6 and subsequent binding to p65 subunit of NFkB in B cells.
+</Comment>
+    <Graphics ZOrder="12444" LineThickness="2.0" Color="33cc00">
+      <Point X="226.66666666666634" Y="1241.0" GraphRef="d6922" RelX="1.0" RelY="0.0"/>
+      <Point X="260.9999999999998" Y="1241.0" GraphRef="f22a5" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id500e24ea">
+    <Comment> IL-4 induces tyrosine phosphorylation of FES and its association with IL-4 receptor alpha in CTLL-2, HT2, and COS7 cells.
+</Comment>
+    <Graphics ZOrder="12462" LineThickness="2.0" Color="00cc00">
+      <Point X="481.33333333333314" Y="502.0"/>
+      <Point X="481.4166666666662" Y="597.125" GraphRef="bf505" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id7b49a933">
+    <Comment> IL-4 stimulation leads to interaction of PRKCZ with JAK1 that subsequently leads to  phosphorylation of JAK1 in primary embryo fibroblasts and 293 cells. </Comment>
+    <Graphics ZOrder="12464" LineThickness="2.0" Color="3300cc">
+      <Point X="176.9999999999996" Y="607.5" GraphRef="c5b1a" RelX="1.0" RelY="0.0"/>
+      <Point X="249.33333333333326" Y="607.0" GraphRef="cb66d" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c6792">
+    <Comment>IL-4 leads to interaction of IL-4R alpha conseved motif ITIM with SHP-2.</Comment>
+    <Graphics ZOrder="12476" LineThickness="2.0" Color="33cc00">
+      <Point X="597.3333333333331" Y="502.0"/>
+      <Point X="597.4166666666662" Y="769.625" GraphRef="b1c22" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bfa9a">
+    <Comment>IL-4 induces the activation of p38 MAPK beta and subsequent phosphorylation of ATF-2 in mouse B cells.</Comment>
+    <Graphics ZOrder="12486" LineThickness="2.0" Color="00cc00">
+      <Point X="562.3749999999998" Y="1249.75" GraphRef="fe52c" RelX="0.0" RelY="1.0"/>
+      <Point X="562.7499999999997" Y="1328.75" GraphRef="b3995" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ided95e4e7">
+    <Graphics ZOrder="12490" LineStyle="Broken" LineThickness="2.0">
+      <Point X="531.0833333333329" Y="1010.8333333333333" GraphRef="e5e39" RelX="0.0" RelY="1.0"/>
+      <Point X="531.666666666666" Y="1037.3333333333333" GraphRef="bd3e5" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id649707bb">
+    <Comment>IL4 induces the  interaction of IL4R with SOC5 in Th1 and HEK293 cells as well as in vitro.</Comment>
+    <Graphics ZOrder="12504" LineThickness="2.0" Color="33cc00">
+      <Point X="191.0" Y="501.0"/>
+      <Point X="191.7499999999996" Y="551.625" GraphRef="bb61e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id8bef4ba5">
+    <Comment> IL-4 stimulation leads to interaction of PRKCZ with JAK1 and subsequent phosphorylation of JAK1 in primary embryo fibroblasts and 293 cells. </Comment>
+    <Graphics ZOrder="12506" LineThickness="2.0" Color="33cc00">
+      <Point X="151.9999999999996" Y="502.0"/>
+      <Point X="151.9999999999996" Y="597.5" GraphRef="c5b1a" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cac85">
+    <Comment>JAK1  phosphorylates  STAT6 at tyrosine 641 under IL-4 stimulation and induces the translocation from cytoplasm to nucleus in Daudi cells and lung tumor myo fibroblasts respectively. It is PKC-zeta dependant translocation.</Comment>
+    <Graphics ZOrder="12516" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="201.66666666666634" Y="970.0" GraphRef="a3e48" RelX="0.0" RelY="1.0"/>
+      <Point X="201.66666666666634" Y="1231.0" GraphRef="d6922" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="id10f0506d">
+    <Comment/>
+    <Graphics ZOrder="12520" LineStyle="Broken" LineThickness="2.0">
+      <Point X="201.7499999999996" Y="880.75" GraphRef="ca2e5" RelX="0.0" RelY="1.0"/>
+      <Point X="201.66666666666634" Y="930.0" GraphRef="f9578" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a0f95" GroupRef="fee7d">
+    <Comment>IL4 interacts with IL4R in KB, A253, RPMI 2650, HEp-2 and COS7 cells.</Comment>
+    <Graphics ZOrder="12526" LineThickness="3.0">
+      <Point X="285.0" Y="380.0" GraphRef="e07c3" RelX="0.0" RelY="1.0"/>
+      <Point X="285.5" Y="424.0" GraphRef="b2a57" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b56c7" GroupRef="fee7d">
+    <Comment>IL4 interacts with IL4R in KB, A253, RPMI 2650, HEp-2 and COS7 cells.</Comment>
+    <Graphics ZOrder="12528" LineThickness="3.0">
+      <Point X="346.0" Y="380.0" GraphRef="b6f21" RelX="0.0" RelY="1.0"/>
+      <Point X="346.54166666666663" Y="424.0" GraphRef="d7ec3" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f6729">
+    <Graphics ZOrder="12530" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="396.0675999999995" Y="1080.8333333333333" GraphRef="efadd" RelX="0.0" RelY="1.0"/>
+      <Point X="396.49999999999955" Y="1230.6666666666665" GraphRef="e83da" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="be055">
+    <Comment> IL-4 induces phosphorylation of JAK1 and subsequent association of JAK1 with IL-4 Receptor alpha chain.&#13;
+&#13;
+</Comment>
+    <Graphics ZOrder="12532" LineThickness="2.0" Color="0000ff">
+      <Point X="271.66666666666663" Y="597.0" GraphRef="cb66d" RelX="0.0" RelY="-1.0"/>
+      <Point X="271.25" Y="444.0" GraphRef="b2a57" RelX="-0.5" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aaf11" GroupRef="fee7d">
+    <Graphics ZOrder="12536" LineThickness="3.0" Color="ff3399">
+      <Point X="316.3333333333336" Y="313.0" GraphRef="b8f45" RelX="0.0" RelY="1.0"/>
+      <Point X="316.0" Y="345.0" GraphRef="ad4bb" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a65ac">
+    <Comment> IL-4 stimulation leads to activation of NFkB1 and subsequent translocation to the nucleus in LNCaP.</Comment>
+    <Comment>Type your comment here</Comment>
+    <Graphics ZOrder="33028" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="337.2500000000002" Y="1098.25" GraphRef="ca907" RelX="0.0" RelY="1.0"/>
+      <Point X="337.2500000000002" Y="1231.25" GraphRef="dd909" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e3eae">
+    <Comment>IL-4 induces the Jak3-mediated phosphorylation and nuclear migration of STAT1, STAT3, and STAT5 in Spleen CD8+ T cells.</Comment>
+    <Graphics ZOrder="33030" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="723.6666666666665" Y="860.3333333333335" GraphRef="d6dad" RelX="0.0" RelY="1.0"/>
+      <Point X="723.8333333333333" Y="1230.499999999999" GraphRef="c7860" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b7b1d">
+    <Graphics ZOrder="33044" LineThickness="2.0" Color="33cc00">
+      <Point X="378.0" Y="434.0" GraphRef="d7ec3" RelX="1.0" RelY="0.0"/>
+      <Point X="566.0" Y="434.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d46c4">
+    <Comment>IL-4 induces the Jak3-mediated phosphorylation and nuclear migration of STAT1, STAT3, and STAT5 in Spleen CD8+ T cells.</Comment>
+    <Graphics ZOrder="33046" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="642.2499999999997" Y="839.0" GraphRef="ad159" RelX="0.0" RelY="1.0"/>
+      <Point X="642.2499999999991" Y="1229.5" GraphRef="d29d0" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b30bb">
+    <Comment>IL-4 induces the Jak3-mediated phosphorylation and nuclear migration of STAT1, STAT3, and STAT5 in Spleen CD8+ T cells.</Comment>
+    <Graphics ZOrder="33048" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="685.9999999999997" Y="790.0" GraphRef="ea4b4" RelX="0.0" RelY="1.0"/>
+      <Point X="685.9999999999991" Y="1196.5" GraphRef="b9d74" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="db4a7">
+    <Graphics ZOrder="33736" LineThickness="2.0" Color="00cc00">
+      <Point X="785.0" Y="720.0"/>
+      <Point X="842.0" Y="720.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b01bb">
+    <Graphics ZOrder="33737" LineThickness="2.0">
+      <Point X="812.0" Y="714.0"/>
+      <Point X="812.0" Y="726.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ce389">
+    <Graphics ZOrder="33739" LineThickness="2.0" Color="ff0033">
+      <Point X="786.0" Y="1066.0"/>
+      <Point X="851.0" Y="1066.0" ArrowHead="mim-inhibition"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="dbce5">
+    <Graphics ZOrder="33740" LineThickness="2.0" Color="9900cc">
+      <Point X="786.0" Y="967.0"/>
+      <Point X="844.0" Y="967.5024647292423" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d4276">
+    <Graphics ZOrder="33741" LineThickness="3.0" Color="ff00ff">
+      <Point X="840.0" Y="1156.0"/>
+      <Point X="840.0" Y="1134.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cdee3">
+    <Graphics ZOrder="33742" LineThickness="2.0" Color="cc00cc">
+      <Point X="786.0" Y="947.658208482304"/>
+      <Point X="844.0" Y="947.658208482304" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f2ac9">
+    <Graphics ZOrder="33743" LineThickness="2.0" Color="999900">
+      <Point X="786.0" Y="907.6593972779119"/>
+      <Point X="844.0" Y="907.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f56d6">
+    <Graphics ZOrder="33744" LineStyle="Broken" LineThickness="2.0" Color="00cccc">
+      <Point X="787.0" Y="1086.0"/>
+      <Point X="845.0" Y="1086.5012759336341" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a8a5a">
+    <Graphics ZOrder="33745" LineThickness="2.0" Color="00ffff">
+      <Point X="786.0" Y="887.6593972779119"/>
+      <Point X="844.0" Y="887.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ccac9">
+    <Graphics ZOrder="33746" LineThickness="2.0" Color="ffcc33">
+      <Point X="786.0" Y="827.0"/>
+      <Point X="844.0000017000198" Y="827.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ebaf1">
+    <Graphics ZOrder="33747" LineThickness="3.0" Color="ff00ff">
+      <Point X="840.0" Y="1151.0"/>
+      <Point X="840.0" Y="1166.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d0321">
+    <Graphics ZOrder="33764" LineThickness="2.0" Color="0000ff">
+      <Point X="786.0" Y="867.6593972779119"/>
+      <Point X="844.0" Y="867.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="cdb64">
+    <Graphics ZOrder="33765" LineThickness="2.0" Color="ff9933">
+      <Point X="786.0" Y="847.6593972779119"/>
+      <Point X="844.0" Y="847.6593972779119" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b7b5c">
+    <Graphics ZOrder="33772" LineThickness="2.0" Color="cccc00">
+      <Point X="785.0" Y="927.0"/>
+      <Point X="844.0" Y="927.5036535248503" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d0eec">
+    <Graphics ZOrder="33774" LineThickness="2.0" Color="770000">
+      <Point X="786.0" Y="987.6570196866958"/>
+      <Point X="844.0" Y="987.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fcf08">
+    <Graphics ZOrder="33776" LineThickness="2.0" Color="775200">
+      <Point X="786.0" Y="1007.6570196866958"/>
+      <Point X="844.0" Y="1007.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f4116">
+    <Graphics ZOrder="33778" LineThickness="2.0" Color="ff6666">
+      <Point X="786.0" Y="1027.6570196866958"/>
+      <Point X="844.0" Y="1027.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fe61c">
+    <Graphics ZOrder="33792" LineThickness="2.0" Color="999999">
+      <Point X="786.0" Y="1047.6570196866958"/>
+      <Point X="844.0" Y="1047.6570196866958" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="aeb92">
+    <Graphics ZOrder="33794" LineThickness="2.0">
+      <Point X="811.0" Y="782.0"/>
+      <Point X="844.0" Y="782.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e2303">
+    <Graphics ZOrder="33795" LineThickness="2.0">
+      <Point X="787.0" Y="782.0"/>
+      <Point X="812.0" Y="782.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b81ae">
+    <Graphics ZOrder="33796" LineThickness="2.0">
+      <Point X="785.0" Y="759.0"/>
+      <Point X="843.0" Y="759.0" ArrowHead="mim-transcription-translation"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fc9de">
+    <Graphics ZOrder="33797" LineThickness="2.0" Color="00cc00">
+      <Point X="785.0" Y="701.0"/>
+      <Point X="843.0" Y="701.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a778b">
+    <Graphics ZOrder="33798" LineStyle="Broken" LineThickness="2.0">
+      <Point X="785.0" Y="741.0"/>
+      <Point X="843.0" Y="741.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="efb7f">
+    <Graphics ZOrder="33799" LineThickness="2.0">
+      <Point X="832.3333333333335" Y="807.3333333333326"/>
+      <Point X="839.0" Y="813.9999999999991" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="fe29c">
+    <Graphics ZOrder="33806" LineThickness="3.0">
+      <Point X="888.0952380952383" Y="617.0" GraphRef="ca142" RelX="0.0" RelY="1.0"/>
+      <Point X="888.5" Y="642.952380952381" GraphRef="ddcc3" RelX="0.0" RelY="-1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c127e">
+    <Graphics ZOrder="33809" LineThickness="3.0" Color="ff3399">
+      <Point X="811.5485028072367" Y="640.0818257433984" GraphRef="e17bc" RelX="0.0" RelY="-1.0"/>
+      <Point X="811.5" Y="619.952380952381" GraphRef="ccfb1" RelX="0.0" RelY="1.0"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b03b0" GroupRef="abd59">
+    <Graphics ZOrder="33813" LineThickness="3.0" Color="ff00ff">
+      <Point X="218.0" Y="1163.0"/>
+      <Point X="218.0" Y="1138.666666666667" GraphRef="ed3cb" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="de257" GroupRef="abd59">
+    <Graphics ZOrder="33814" LineThickness="3.0" Color="ff00ff">
+      <Point X="218.0" Y="1158.0"/>
+      <Point X="218.0" Y="1179.666666666667" GraphRef="bb6e9" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="c20ef" GroupRef="c4c5e">
+    <Graphics ZOrder="33818" LineThickness="3.0" Color="ff00ff">
+      <Point X="353.0" Y="1161.0"/>
+      <Point X="353.0" Y="1136.666666666667" GraphRef="a08a1" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f05f3" GroupRef="c4c5e">
+    <Graphics ZOrder="33819" LineThickness="3.0" Color="ff00ff">
+      <Point X="353.0" Y="1156.0"/>
+      <Point X="353.0" Y="1177.666666666667" GraphRef="ad4ae" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b50ff" GroupRef="eb536">
+    <Graphics ZOrder="33823" LineThickness="3.0" Color="ff00ff">
+      <Point X="411.0" Y="1161.0"/>
+      <Point X="411.0" Y="1136.666666666667" GraphRef="ea256" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e78f5" GroupRef="eb536">
+    <Graphics ZOrder="33824" LineThickness="3.0" Color="ff00ff">
+      <Point X="411.0" Y="1156.0"/>
+      <Point X="411.0" Y="1177.666666666667" GraphRef="ac4d4" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="f694e" GroupRef="b3d24">
+    <Graphics ZOrder="33828" LineThickness="3.0" Color="ff00ff">
+      <Point X="658.0" Y="1158.0"/>
+      <Point X="658.0" Y="1133.666666666667" GraphRef="eab8f" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="b73e7" GroupRef="b3d24">
+    <Graphics ZOrder="33829" LineThickness="3.0" Color="ff00ff">
+      <Point X="658.0" Y="1153.0"/>
+      <Point X="658.0" Y="1174.666666666667" GraphRef="b2773" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a6970" GroupRef="ff749">
+    <Graphics ZOrder="33833" LineThickness="3.0" Color="ff00ff">
+      <Point X="703.0" Y="1159.0"/>
+      <Point X="703.0" Y="1134.666666666667" GraphRef="db4dc" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="bfd0c" GroupRef="ff749">
+    <Graphics ZOrder="33834" LineThickness="3.0" Color="ff00ff">
+      <Point X="703.0" Y="1154.0"/>
+      <Point X="703.0" Y="1175.666666666667" GraphRef="ea894" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="d641b" GroupRef="bf676">
+    <Graphics ZOrder="33838" LineThickness="3.0" Color="ff00ff">
+      <Point X="744.0" Y="1159.0"/>
+      <Point X="744.0" Y="1134.666666666667" GraphRef="a1c45" RelX="0.0" RelY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e4f50" GroupRef="bf676">
+    <Graphics ZOrder="33839" LineThickness="3.0" Color="ff00ff">
+      <Point X="744.0" Y="1154.0"/>
+      <Point X="744.0" Y="1175.666666666667" GraphRef="de10e" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="gene expression" GraphId="b163b" GroupRef="adefa">
+    <Graphics CenterX="205.0000000000001" CenterY="1406.0" Width="110.0" Height="24.0" ZOrder="28672" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="STAT6 dependent" GraphId="b972b" GroupRef="adefa">
+    <Graphics CenterX="208.0000000000001" CenterY="1385.0" Width="114.0" Height="26.0" ZOrder="28674" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff0000"/>
+  </Label>
+  <Label TextLabel="IL-4 Signaling Pathway" GraphId="ce987">
+    <Graphics CenterX="321.0" CenterY="212.5" Width="250.0" Height="47.0" ZOrder="28678" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="18" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="f26d5">
+    <Graphics CenterX="815.5" CenterY="1107.0" Width="60.0" Height="20.0" ZOrder="33735" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein - protein dissociation" GraphId="c282e">
+    <Graphics CenterX="966.0" CenterY="720.0" Width="186.0" Height="18.0" ZOrder="33738" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Inhibition" GraphId="cc7b3">
+    <Graphics CenterX="900.0" CenterY="1066.0" Width="66.0" Height="20.0" ZOrder="33748" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Auto catalysis" GraphId="ed3b6">
+    <Graphics CenterX="917.0" CenterY="807.0" Width="94.0" Height="20.0" ZOrder="33749" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Transport" GraphId="d741c">
+    <Graphics CenterX="900.0" CenterY="1087.0" Width="66.0" Height="20.0" ZOrder="33750" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Positive regulation of gene expression" GraphId="ef07a">
+    <Graphics CenterX="992.8333333333333" CenterY="762.0" Width="247.0" Height="20.0" ZOrder="33751" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Leads to through unknown mechanism" GraphId="b5f5e">
+    <Graphics CenterX="994.8333333333333" CenterY="741.0" Width="243.0" Height="20.0" ZOrder="33752" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Negative regulation of gene expression" GraphId="cd70e">
+    <Graphics CenterX="994.8333333333333" CenterY="783.0" Width="247.0" Height="20.0" ZOrder="33753" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Translocation " GraphId="df0f3">
+    <Graphics CenterX="916.0" CenterY="1149.0" Width="92.0" Height="20.0" ZOrder="33754" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Ubiquitination" GraphId="daa77">
+    <Graphics CenterX="916.8333333333333" CenterY="946.0" Width="93.66666666666663" Height="20.0" ZOrder="33755" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deubiquitination" GraphId="b87f9">
+    <Graphics CenterX="924.1666666666665" CenterY="967.0" Width="111.0" Height="20.0" ZOrder="33756" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Sumoylation" GraphId="a104a">
+    <Graphics CenterX="911.0" CenterY="906.0" Width="86.0" Height="20.0" ZOrder="33757" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Induced catalysis" GraphId="b55ee">
+    <Graphics CenterX="923.5" CenterY="1107.0" Width="111.0" Height="20.0" ZOrder="33758" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Protein-protein interaction" GraphId="b6337">
+    <Graphics CenterX="958.3333333333333" CenterY="701.0" Width="172.66666666666663" Height="20.0" ZOrder="33759" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Acetylation" GraphId="b85ac">
+    <Graphics CenterX="909.0" CenterY="827.0" Width="74.0" Height="20.0" ZOrder="33760" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Dephosphorylation" GraphId="a36f7">
+    <Graphics CenterX="931.1666666666665" CenterY="886.0" Width="127.0" Height="20.0" ZOrder="33761" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="LEGEND" GraphId="b9c59">
+    <Graphics CenterX="941.0" CenterY="560.0" Width="80.0" Height="20.0" ZOrder="33762" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="14" Valign="Middle" Color="3333ff"/>
+  </Label>
+  <Label TextLabel="Phosphorylation" GraphId="a01d8">
+    <Graphics CenterX="923.1666666666665" CenterY="867.0" Width="111.0" Height="20.0" ZOrder="33763" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Deacetylation" GraphId="b1545">
+    <Graphics CenterX="914.5" CenterY="848.0" Width="89.0" Height="20.0" ZOrder="33766" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Golgi apparatus" GraphId="c63fa">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="921.3333333333337" CenterY="1277.6666666666667" Width="106.33333333333333" Height="16.0" ZOrder="33768" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Endosome" GraphId="e83b1">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="904.6666666666667" CenterY="1242.6666666666667" Width="71.33333333333333" Height="16.0" ZOrder="33769" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Nucleus" GraphId="dcab2">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="897.3333333333333" CenterY="1314.6666666666667" Width="55.333333333333336" Height="16.0" ZOrder="33770" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Mitochondrion" GraphId="ee1d0">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="917.0000000000002" CenterY="1295.6666666666667" Width="96.33333333333333" Height="16.0" ZOrder="33771" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Desumoylation" GraphId="b4705">
+    <Graphics CenterX="919.5" CenterY="926.0" Width="99.0" Height="20.0" ZOrder="33773" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Methylation" GraphId="ae569">
+    <Graphics CenterX="908.5" CenterY="988.0" Width="75.0" Height="20.0" ZOrder="33775" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Demethylation" GraphId="cd001">
+    <Graphics CenterX="917.5" CenterY="1008.0" Width="93.0" Height="20.0" ZOrder="33777" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Palmitoylation" GraphId="e471d">
+    <Graphics CenterX="916.0" CenterY="1027.0" Width="90.0" Height="20.0" ZOrder="33779" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Cytoplasm" GraphId="f20c6">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="903.6666666666667" CenterY="1203.6666666666667" Width="71.33333333333333" Height="16.0" ZOrder="33780" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="EC" GraphId="e2d63">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="835.0" CenterY="1224.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33781" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Plasma membrane" GraphId="c8f32">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="929.3333333333335" CenterY="1183.6666666666667" Width="120.66666666666674" Height="16.0" ZOrder="33782" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="MT" GraphId="e8b82">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="836.0" CenterY="1294.6666666666667" Width="24.333333333333332" Height="16.0" ZOrder="33783" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Endoplasmic reticulum" GraphId="c880c">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="944.6666666666667" CenterY="1260.6666666666667" Width="150.33333333333334" Height="16.0" ZOrder="33784" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="da1f1">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="835.0" CenterY="1203.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33785" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="PM" GraphId="df979">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="836.0" CenterY="1184.6666666666667" Width="25.333333333333332" Height="16.0" ZOrder="33786" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="GO" GraphId="b8a95">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="835.0" CenterY="1277.6666666666667" Width="25.333333333333332" Height="16.0" ZOrder="33787" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="a12e5">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="835.0" CenterY="1314.6666666666667" Width="23.333333333333332" Height="16.0" ZOrder="33788" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Extracellular" GraphId="ef900">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="910.6666666666667" CenterY="1222.6666666666667" Width="86.33333333333333" Height="16.0" ZOrder="33789" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="ER" GraphId="d6b96">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="835.0" CenterY="1260.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33790" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="EN" GraphId="f8e14">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="835.0" CenterY="1243.6666666666667" Width="22.333333333333332" Height="16.0" ZOrder="33791" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="Proteolytic cleavage" GraphId="b05c3">
+    <Graphics CenterX="931.0" CenterY="1047.0" Width="122.0" Height="20.0" ZOrder="33793" FillColor="ffffff" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle"/>
+  </Label>
+  <Label TextLabel="Receptor" GraphId="ddcc3">
+    <Graphics CenterX="888.5" CenterY="652.952380952381" Width="65.0" Height="20.0" ZOrder="33802" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Protein" GraphId="dc16f">
+    <Graphics CenterX="985.0" CenterY="611.452380952381" Width="52.0" Height="20.0" ZOrder="33803" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="mRNA" GraphId="a1610">
+    <Graphics CenterX="1048.0" CenterY="610.952380952381" Width="48.0" Height="20.0" ZOrder="33804" FillColor="ffffff" FontStyle="Italic" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="Ligand" GraphId="ccfb1">
+    <Graphics CenterX="811.5" CenterY="609.952380952381" Width="51.0" Height="20.0" ZOrder="33805" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="ed3cb" GroupRef="abd59">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="218.0" CenterY="1124.8333333333335" Width="22.333333333333332" Height="27.666666666666956" ZOrder="33811" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="bb6e9" GroupRef="abd59">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="218.0" CenterY="1189.8333333333335" Width="23.333333333333332" Height="20.33333333333306" ZOrder="33812" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="a08a1" GroupRef="c4c5e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="353.00000000000006" CenterY="1122.8333333333335" Width="22.333333333333332" Height="27.666666666666956" ZOrder="33816" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="ad4ae" GroupRef="c4c5e">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="353.00000000000006" CenterY="1187.8333333333335" Width="23.333333333333332" Height="20.33333333333306" ZOrder="33817" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="ea256" GroupRef="eb536">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="411.0" CenterY="1122.8333333333335" Width="22.333333333333332" Height="27.666666666666956" ZOrder="33821" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="ac4d4" GroupRef="eb536">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="411.0" CenterY="1187.8333333333335" Width="23.333333333333332" Height="20.33333333333306" ZOrder="33822" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="eab8f" GroupRef="b3d24">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="658.0" CenterY="1119.8333333333335" Width="22.333333333333332" Height="27.666666666666956" ZOrder="33826" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="b2773" GroupRef="b3d24">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="658.0" CenterY="1184.8333333333335" Width="23.333333333333332" Height="20.33333333333306" ZOrder="33827" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="db4dc" GroupRef="ff749">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="703.0" CenterY="1120.8333333333335" Width="22.333333333333332" Height="27.666666666666956" ZOrder="33831" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="ea894" GroupRef="ff749">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="703.0" CenterY="1185.8333333333335" Width="23.333333333333332" Height="20.33333333333306" ZOrder="33832" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="CY" GraphId="a1c45" GroupRef="bf676">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="744.0" CenterY="1120.8333333333335" Width="22.333333333333332" Height="27.666666666666956" ZOrder="33836" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Label TextLabel="NU" GraphId="de10e" GroupRef="bf676">
+    <Attribute Key="org.pathvisio.model.GenMAPP-Xref" Value=""/>
+    <Graphics CenterX="744.0" CenterY="1185.8333333333335" Width="23.333333333333332" Height="20.33333333333306" ZOrder="33837" FillColor="ffffff" FontWeight="Bold" FontSize="12" Valign="Middle" Color="ff00ff"/>
+  </Label>
+  <Shape GraphId="a5b37">
+    <Graphics CenterX="440.49999999999966" CenterY="794.0" Width="67.66666666666697" Height="60.0" ZOrder="16386" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ad4bb" GroupRef="fee7d">
+    <Graphics CenterX="316.0" CenterY="360.5" Width="30.0" Height="31.0" ZOrder="16390" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" Color="ff0066" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e07c3" GroupRef="fee7d">
+    <Graphics CenterX="285.0" CenterY="365.0" Width="30.0" Height="30.0" ZOrder="16416" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="b6f21" GroupRef="fee7d">
+    <Graphics CenterX="346.0" CenterY="364.5" Width="30.0" Height="31.0" ZOrder="16418" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="c23b2">
+    <Graphics CenterX="948.5" CenterY="937.5" Width="355.0" Height="783.0" ZOrder="33767" FontSize="10" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="dc1e3">
+    <Graphics CenterX="827.6666666666666" CenterY="810.6666666666658" Width="14.907119999999999" Height="20.0" ZOrder="33800" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="2.0" Rotation="2.554867"/>
+  </Shape>
+  <Shape GraphId="d9a8d">
+    <Graphics CenterX="846.0" CenterY="1117.5" Width="14.0" Height="13.0" ZOrder="33801" FillColor="ffffff" FontSize="10" Valign="Middle" ShapeType="Oval" Rotation="0.0"/>
+  </Shape>
+  <Shape TextLabel="Enzyme complex" GraphId="e48f7">
+    <Graphics CenterX="1016.8809523809527" CenterY="652.1190476190473" Width="115.0" Height="22.333333333332575" ZOrder="33807" FillColor="ccff33" FontName="SansSerif" FontWeight="Bold" FontSize="12" Valign="Middle" ShapeType="Rectangle" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="ca142">
+    <Graphics CenterX="888.0952380952383" CenterY="601.5" Width="30.0" Height="31.0" ZOrder="33808" FontSize="10" Valign="Middle" ShapeType="Arc" LineThickness="3.0" Rotation="0.0"/>
+  </Shape>
+  <Shape GraphId="e17bc">
+    <Attribute Key="org.pathvisio.CellularComponentProperty" Value="Vesicle"/>
+    <Graphics CenterX="811.5485028072367" CenterY="651.6175400291123" Width="23.357142857143003" Height="23.071428571427703" ZOrder="33810" FillColor="ff3399" FontSize="10" Valign="Middle" ShapeType="Oval" LineThickness="3.0" Color="ff00cc" Rotation="0.0"/>
+  </Shape>
+  <Group GroupId="fee7d" Style="Group"/>
+  <Group GroupId="e3672" Style="Group"/>
+  <Group GroupId="eb5d1" Style="Group"/>
+  <Group GroupId="bc096" Style="Group"/>
+  <Group GroupId="a49bf" GraphId="cf1a8" Style="Group"/>
+  <Group GroupId="e90d1" Style="Group"/>
+  <Group GroupId="ea099" Style="Group"/>
+  <Group GroupId="c0ab2" Style="Group"/>
+  <Group GroupId="e5f5a" Style="Group"/>
+  <Group GroupId="d2a41" Style="Group"/>
+  <Group GroupId="c2a52" Style="Group"/>
+  <Group GroupId="abd59" Style="Group"/>
+  <Group GroupId="c4c5e" Style="Group"/>
+  <Group GroupId="eb536" Style="Group"/>
+  <Group GroupId="b3d24" Style="Group"/>
+  <Group GroupId="ff749" Style="Group"/>
+  <Group GroupId="bf676" Style="Group"/>
+  <Group GroupId="adefa" Style="Group"/>
+  <InfoBox CenterX="15.0" CenterY="8.333333333333334"/>
+  <Biopax>
+    <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#">
+      <bp:TERM>Interleukin mediated signaling pathway</bp:TERM>
+      <bp:ID>PW:0000512</bp:ID>
+      <bp:Ontology>Pathway Ontology</bp:Ontology>
+    </bp:openControlledVocabulary>
+  </Biopax>
+</Pathway>

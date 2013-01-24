@@ -1,0 +1,1607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Cell junction organization" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Maintainer="Matthews, L" Email="lisa.matthews@cshl.edu">
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <DataNode GraphId="n1_REACTOME_445997" TextLabel="Integrin alpha 6:beta &#10;4:Plectin:BP180:&#10;Laminin-322 complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="136.5" CenterY="1977.0" Width="131.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20915"/>
+  </DataNode>
+  <DataNode GraphId="n2_REACTOME_446066" TextLabel="CD151:BP230:BP180:&#10;Plectin:Integrin alpha &#10;6 beta 4: Laminin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="213.5" CenterY="2400.0" Width="131.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21118"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_446004" TextLabel="Laminin-332&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="47.0" CenterY="1865.5" Width="84.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20843"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_446086" TextLabel="Type II &#10;hemidesmosome&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="197.5" CenterY="2625.0" Width="113.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20848"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_215997" TextLabel="Integrin alpha6beta4&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="112.5" CenterY="1556.0" Width="131.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_14337"/>
+  </DataNode>
+  <DataNode GraphId="n6_REACTOME_446069" TextLabel="Keratin 5/14&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="185.5" CenterY="2487.5" Width="79.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_20869"/>
+  </DataNode>
+  <DataNode GraphId="n7_REACTOME_446010" TextLabel="BP230:BP180:&#10;Plectin:integrin &#10;alpha 6 beta 4:&#10;Laminin 332&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="176.5" CenterY="2179.0" Width="97.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20979"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_446072" TextLabel="CD151&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="165.0" CenterY="2264.5" Width="72.0" Height="19.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P48509"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_201575" TextLabel="Plectin 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="180.0" CenterY="1508.5" Width="58.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15149"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_445993" TextLabel="Integrin alpha6:beta4:&#10;Plectin:BP180 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="174.5" CenterY="1813.5" Width="129.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21046"/>
+  </DataNode>
+  <DataNode GraphId="n12_REACTOME_445994" TextLabel="BP180&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="180.5" CenterY="1700.5" Width="47.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9UMD9"/>
+  </DataNode>
+  <DataNode GraphId="n13_REACTOME_445996" TextLabel="Integrin alpha 6:beta &#10;4:Plectin complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="193.5" CenterY="1643.0" Width="131.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21067"/>
+  </DataNode>
+  <DataNode GraphId="n20_REACTOME_446308" TextLabel="MIGFILIN:VASP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="4813.5" CenterY="550.5" Width="85.0" Height="41.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21228"/>
+  </DataNode>
+  <DataNode GraphId="n21_REACTOME_430323" TextLabel="Migfilin:Filamin A:&#10;F-actin&#10;" Type="Complex">
+    <Comment Source="WikiPathways-description">Interaction of Filamin with Migfiln mediates the association with the Migfilin with actin filaments (Tu et al., 2002).</Comment>
+    <Graphics Color="000000" CenterX="5014.5" CenterY="704.5" Width="105.0" Height="43.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20733"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_430301" TextLabel="Migfilin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="4934.5" CenterY="625.5" Width="47.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8WUP2"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_446104" TextLabel="PINCH&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="247.0" CenterY="941.5" Width="60.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20717"/>
+  </DataNode>
+  <DataNode GraphId="n24_REACTOME_446328" TextLabel="Filamin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="5080.0" CenterY="625.5" Width="56.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20988"/>
+  </DataNode>
+  <DataNode GraphId="n25_REACTOME_446032" TextLabel="alpha/beta &#10;parvin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="264.5" CenterY="994.5" Width="97.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20989"/>
+  </DataNode>
+  <DataNode GraphId="n26_REACTOME_430295" TextLabel="MIG-2:&#10;MIGFILIN&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="4891.0" CenterY="706.5" Width="70.0" Height="41.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21097"/>
+  </DataNode>
+  <DataNode GraphId="n27_REACTOME_432864" TextLabel="ILK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="238.5" CenterY="1068.5" Width="39.0" Height="29.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q13418"/>
+  </DataNode>
+  <DataNode GraphId="n28_REACTOME_446323" TextLabel="VASP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="4886.0" CenterY="585.0" Width="52.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P50552"/>
+  </DataNode>
+  <DataNode GraphId="n29_REACTOME_201877" TextLabel="F-actin&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="5012.0" CenterY="591.5" Width="50.0" Height="23.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_20433"/>
+  </DataNode>
+  <DataNode GraphId="n30_REACTOME_432932" TextLabel="PINCH-ILK-&#10;parvin complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="260.5" CenterY="797.5" Width="89.0" Height="57.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20853"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_430275" TextLabel="MIG-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="4844.5" CenterY="625.5" Width="47.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96AC1"/>
+  </DataNode>
+  <DataNode GraphId="n36_REACTOME_57596" TextLabel="Integrin beta-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="223.0" CenterY="1132.5" Width="106.0" Height="25.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P05556"/>
+  </DataNode>
+  <DataNode GraphId="n37_REACTOME_446408" TextLabel="ILK:Integrin beta-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="225.0" CenterY="1251.5" Width="118.0" Height="33.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20766"/>
+  </DataNode>
+  <DataNode GraphId="n38_REACTOME_180493" TextLabel="Paxillin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="190.5" CenterY="1304.5" Width="49.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P49023"/>
+  </DataNode>
+  <DataNode GraphId="n39_REACTOME_446326" TextLabel="PARVA:Paxillin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="213.0" CenterY="1439.5" Width="94.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21170"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_432848" TextLabel="PARVA&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="299.5" CenterY="1341.5" Width="49.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NVD7"/>
+  </DataNode>
+  <DataNode GraphId="n44_REACTOME_446035" TextLabel="ParvB/Affixin:&#10;Alpha-Pix&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="406.5" CenterY="1207.0" Width="115.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20814"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_354096" TextLabel="Alpha-actinin 1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="696.5" CenterY="1108.5" Width="103.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P12814"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_446302" TextLabel="Rsu-1:Pinch1 &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="482.0" CenterY="877.0" Width="128.0" Height="48.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20937"/>
+  </DataNode>
+  <DataNode GraphId="n47_REACTOME_446016" TextLabel="PARVB/Affixin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="535.5" CenterY="1106.0" Width="91.0" Height="24.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9HBI1"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_432859" TextLabel="PINCH1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="485.0" CenterY="1053.0" Width="68.0" Height="20.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P48059"/>
+  </DataNode>
+  <DataNode GraphId="n49_REACTOME_446396" TextLabel="TESK1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="392.0" CenterY="1306.5" Width="48.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15569"/>
+  </DataNode>
+  <DataNode GraphId="n50_REACTOME_446404" TextLabel="PARVA:TESK1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="356.5" CenterY="1417.5" Width="89.0" Height="23.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21038"/>
+  </DataNode>
+  <DataNode GraphId="n51_REACTOME_446297" TextLabel="Rsu-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="533.0" CenterY="1022.5" Width="56.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15404"/>
+  </DataNode>
+  <DataNode GraphId="n52_REACTOME_446335" TextLabel="PARVB:alpha actinin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="646.0" CenterY="1197.0" Width="118.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21104"/>
+  </DataNode>
+  <DataNode GraphId="n53_REACTOME_195017" TextLabel="Alpha-Pix&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="510.0" CenterY="1158.5" Width="72.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15052"/>
+  </DataNode>
+  <DataNode GraphId="n58_REACTOME_420009" TextLabel="CRB3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="192.0" CenterY="638.5" Width="52.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BUF7"/>
+  </DataNode>
+  <DataNode GraphId="n59_REACTOME_420006" TextLabel="JAM-A:PAR-aPKC &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="462.0" CenterY="517.0" Width="134.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20246"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_420663" TextLabel="CRB3:PALS1:PATJ &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="297.0" CenterY="514.0" Width="134.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20032"/>
+  </DataNode>
+  <DataNode GraphId="n62_REACTOME_420011" TextLabel="PATJ&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="185.5" CenterY="740.5" Width="39.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8NI35"/>
+  </DataNode>
+  <DataNode GraphId="n64_REACTOME_419976" TextLabel="Par3:Par6:aPKC &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="637.0" CenterY="592.0" Width="126.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19423"/>
+  </DataNode>
+  <DataNode GraphId="n65_REACTOME_197845" TextLabel="JAM-A&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="685.5" CenterY="515.5" Width="55.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y624"/>
+  </DataNode>
+  <DataNode GraphId="n66_REACTOME_419969" TextLabel="PALS1/MPP5&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="213.0" CenterY="675.5" Width="94.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8N3R9"/>
+  </DataNode>
+  <DataNode GraphId="n70_REACTOME_420583" TextLabel="Necl-1/Necl-&#10;2/Necl-3 &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="4068.5" CenterY="494.0" Width="119.0" Height="44.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19578"/>
+  </DataNode>
+  <DataNode GraphId="n71_REACTOME_191735" TextLabel="alpha-&#10;catenin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="5681.5" CenterY="513.5" Width="75.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P35221"/>
+  </DataNode>
+  <DataNode GraphId="n72_REACTOME_420594" TextLabel="Necl-1/Necl-&#10;2/Necl-3 trans &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="4248.5" CenterY="493.0" Width="119.0" Height="44.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19789"/>
+  </DataNode>
+  <DataNode GraphId="n73_REACTOME_418993" TextLabel="Beta-catenin/gamma &#10;catenin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="5555.5" CenterY="519.0" Width="131.0" Height="38.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19976"/>
+  </DataNode>
+  <DataNode GraphId="n74_REACTOME_419017" TextLabel="Nectin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="4876.0" CenterY="495.5" Width="58.0" Height="33.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20136"/>
+  </DataNode>
+  <DataNode GraphId="n75_REACTOME_418342" TextLabel="Afadin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="4967.0" CenterY="560.5" Width="42.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P55196-2"/>
+  </DataNode>
+  <DataNode GraphId="n76_REACTOME_418972" TextLabel="Nectin trans &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="4432.0" CenterY="496.0" Width="82.0" Height="38.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19779"/>
+  </DataNode>
+  <DataNode GraphId="n77_REACTOME_433726" TextLabel="Afadin:F-actin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="5123.0" CenterY="559.5" Width="96.0" Height="25.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19820"/>
+  </DataNode>
+  <DataNode GraphId="n78_REACTOME_418976" TextLabel="Cadherin:Catenin &#10;complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="5267.0" CenterY="513.5" Width="106.0" Height="45.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20065"/>
+  </DataNode>
+  <DataNode GraphId="n79_REACTOME_418999" TextLabel="Cadherin trans-&#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="6041.0" CenterY="518.5" Width="94.0" Height="43.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19942"/>
+  </DataNode>
+  <DataNode GraphId="n80_REACTOME_419013" TextLabel="Nectin:afadin complex&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="5064.5" CenterY="515.5" Width="133.0" Height="29.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20350"/>
+  </DataNode>
+  <DataNode GraphId="n81_REACTOME_140648" TextLabel="Calcium&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="5893.5" CenterY="518.5" Width="73.0" Height="31.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="29108"/>
+  </DataNode>
+  <DataNode GraphId="n82_REACTOME_418977" TextLabel="Classic &#10;Cadherin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="5779.0" CenterY="519.5" Width="88.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20296"/>
+  </DataNode>
+  <DataNode GraphId="n83_REACTOME_418996" TextLabel="p120 &#10;catenin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="5440.5" CenterY="515.5" Width="75.0" Height="23.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O60716"/>
+  </DataNode>
+  <DataNode GraphId="n84_REACTOME_433730" TextLabel="Nectin cis-&#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="4684.5" CenterY="495.5" Width="125.0" Height="35.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19521"/>
+  </DataNode>
+  <DataNode GraphId="n92_REACTOME_420601" TextLabel="Nectin-1:Nectin-3 &#10;trans heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3400.0" CenterY="491.5" Width="132.0" Height="55.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20025"/>
+  </DataNode>
+  <DataNode GraphId="n93_REACTOME_420575" TextLabel="Nectin-2 cis &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3717.0" CenterY="489.5" Width="108.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20053"/>
+  </DataNode>
+  <DataNode GraphId="n94_REACTOME_197780" TextLabel="Nectin-3&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1538.5" CenterY="482.0" Width="79.0" Height="58.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9NQS3-1"/>
+  </DataNode>
+  <DataNode GraphId="n95_REACTOME_420600" TextLabel="Necl-5/PVR&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1422.5" CenterY="496.5" Width="117.0" Height="43.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="P15151"/>
+  </DataNode>
+  <DataNode GraphId="n96_REACTOME_420607" TextLabel="Nectin-1 cis &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3236.0" CenterY="488.0" Width="110.0" Height="48.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19460"/>
+  </DataNode>
+  <DataNode GraphId="n97_REACTOME_420578" TextLabel="Nectin-3:Necl-2 trans &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2726.0" CenterY="496.5" Width="142.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19977"/>
+  </DataNode>
+  <DataNode GraphId="n98_REACTOME_420579" TextLabel="Necl-5:Nectin-3 trans &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1236.5" CenterY="485.5" Width="129.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19715"/>
+  </DataNode>
+  <DataNode GraphId="n99_REACTOME_420609" TextLabel="Nectin-1:Nectin-4 &#10;trans heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2920.0" CenterY="493.5" Width="124.0" Height="53.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20421"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_420590" TextLabel="Nectin-3 cis &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3572.5" CenterY="492.0" Width="107.0" Height="52.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19940"/>
+  </DataNode>
+  <DataNode GraphId="n101_REACTOME_420587" TextLabel="Necl-1:Necl-2 trans &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2411.0" CenterY="495.5" Width="136.0" Height="55.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20182"/>
+  </DataNode>
+  <DataNode GraphId="n102_REACTOME_420589" TextLabel="Necl-2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2550.0" CenterY="498.5" Width="66.0" Height="43.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9BY67"/>
+  </DataNode>
+  <DataNode GraphId="n103_REACTOME_197884" TextLabel="Nectin-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2036.0" CenterY="494.0" Width="84.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q15223-1"/>
+  </DataNode>
+  <DataNode GraphId="n104_REACTOME_420585" TextLabel="Necl-1:Nectin-1 trans &#10;heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2226.5" CenterY="491.5" Width="139.0" Height="55.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19689"/>
+  </DataNode>
+  <DataNode GraphId="n105_REACTOME_420577" TextLabel="Necl-1:Nectin-3 &#10;trans heterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1751.0" CenterY="498.0" Width="124.0" Height="58.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19782"/>
+  </DataNode>
+  <DataNode GraphId="n106_REACTOME_198169" TextLabel="Necl-1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1874.0" CenterY="483.5" Width="66.0" Height="53.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q8N126"/>
+  </DataNode>
+  <DataNode GraphId="n107_REACTOME_420605" TextLabel="Nectin-2:Nectin-3 &#10;transheterodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3915.0" CenterY="486.0" Width="134.0" Height="68.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20370"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_420606" TextLabel="Nectin-4 cis &#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="3108.0" CenterY="489.0" Width="110.0" Height="46.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20206"/>
+  </DataNode>
+  <DataNode GraphId="n264_REACTOME_419998" TextLabel="Claudin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1057.5" CenterY="499.0" Width="133.0" Height="68.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20372"/>
+  </DataNode>
+  <DataNode GraphId="n265_REACTOME_421252" TextLabel="claudin trans-&#10;homodimer&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="799.0" CenterY="500.0" Width="118.0" Height="66.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20391"/>
+  </DataNode>
+  <DataNode GraphId="n277_REACTOME_391160" TextLabel="Signal regulatory &#10;protein (SIRP) family &#10;interactions&#10;" Type="Pathway">
+    <Comment Source="WikiPathways-description">Signal regulatory protein (SIRP)alpha, also known as SHPS-1 or SIRPA or CD172a, is a transmembrane protein expressed mostly on myeloid cells. CD47, a widely expressed transmembrane protein, is a ligand for SIRP alpha, with the two proteins constituting a cell-cell communication system. The interaction of SIRP alpha with CD47 is important for the regulation of migration and phagocytosis. SIRP alpha functions as a docking protein to recruit and activate SHP-1 or SHP-2 at the cell membrane in response to extracellular stimuli. SIRP alpha also binds other intracellular proteins including the adaptor molecules Src kinase-associated protein (SKAP2 SKAP55hom/R), Fyn-binding protein/SLP-76-associated phosphoprotein (FYB/SLAP-130) and the tyrosine kinase PYK2. SIRP alpha also binds the extracellular proteins, surfactant-A (SP-A) and surfactant-D (SP-D). &lt;br&gt;In addition to SIRP alpha there are two closely related proteins in the SIRP family namely SIRP beta and SIRP gamma. These three family proteins show high sequence similarity and similar extracellular structural topology, including three Ig domains, but their ligand binding topology might differ. SIRP beta is expressed on myeloid cells, including monocytes, granulocytes and DCs. A natural ligand for SIRP beta remains unknown; SIRP gamma can bind to CD47 but the binding affinity is lower than that of SIRP alpha.</Comment>
+    <BiopaxRef>lit_203245</BiopaxRef>
+    <BiopaxRef>lit_391053</BiopaxRef>
+    <BiopaxRef>lit_548909</BiopaxRef>
+    <BiopaxRef>lit_391140</BiopaxRef>
+    <BiopaxRef>lit_925201</BiopaxRef>
+    <Graphics Color="000000" CenterX="103.5" CenterY="495.5" Width="121.0" Height="61.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_23916"/>
+  </DataNode>
+  <DataNode GraphId="n405_REACTOME_447012" TextLabel="BP230&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="318.0" CenterY="2049.5" Width="50.0" Height="21.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_25566"/>
+  </DataNode>
+  <Line GraphId="e_14_REACTOME_446083">
+    <Comment Source="WikiPathways-description">CD151 interacts with  the extracellular domain of the integrin alpha 6  subunit. CD151 is thought to play a role in the formation and stability of hemidesmosomes by providing a framework for the spatial organization of the hemidesmosomal components (Sterk  et al., 2000).</Comment>
+    <BiopaxRef>lit_446085</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="247.0" Y="2261.0" GraphId="e_14_0"/>
+      <Point X="177.0" Y="2318.0" GraphId="e_14_1"/>
+      <Point X="227.0" Y="2337.0" GraphId="e_14_2"/>
+      <Point X="220.0" Y="2363.0" GraphId="e_14_3" GraphRef="n2_REACTOME_446066" RelX="0.10687022900763359" RelY="-1.088235294117647" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_14_a_i"/>
+      <Anchor Position="0.5288766331374677" GraphId="e_14_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="205.0" Y="2216.0" GraphId="e_14_i0_0" GraphRef="n7_REACTOME_446010" RelX="0.5979381443298969" RelY="1.088235294117647"/>
+      <Point X="247.0" Y="2261.0" GraphId="e_14_i0_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="204.0" Y="2262.0" GraphId="e_14_i1_0" GraphRef="n9_REACTOME_446072" RelX="1.0833333333333333" RelY="-0.21052631578947367"/>
+      <Point X="247.0" Y="2261.0" GraphId="e_14_i1_1" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_REACTOME_446089">
+    <Comment Source="WikiPathways-description">BP180 interacts with Plectin following the association of Plectin with Integrin b4 (b4) (Koster et al., 2003). It is not clear whether the binding of BP180 to Plectin and b4 occurs sequentially or at the same time as the interaction between BP180 and Laminin?332.</Comment>
+    <BiopaxRef>lit_446006</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="126.0" Y="1861.0" GraphId="e_15_0"/>
+      <Point X="169.0" Y="1881.0" GraphId="e_15_1"/>
+      <Point X="305.0" Y="1975.0" GraphId="e_15_2"/>
+      <Point X="205.0" Y="1976.0" GraphId="e_15_3" GraphRef="n1_REACTOME_445997" RelX="1.0534351145038168" RelY="-0.029411764705882353" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_15_a_i"/>
+      <Anchor Position="0.1516330505972977" GraphId="e_15_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="147.0" Y="1843.0" GraphId="e_15_i0_0" GraphRef="n11_REACTOME_445993" RelX="-0.4186046511627907" RelY="1.1320754716981132"/>
+      <Point X="126.0" Y="1861.0" GraphId="e_15_i0_1" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_15_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="92.0" Y="1862.0" GraphId="e_15_i1_0" GraphRef="n3_REACTOME_446004" RelX="1.0714285714285714" RelY="-0.2608695652173913"/>
+      <Point X="126.0" Y="1861.0" GraphId="e_15_i1_1" GraphRef="e_15_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_REACTOME_446077">
+    <Comment Source="WikiPathways-description">BP230  interacts with cytokeratins  K5/K14 (Fontao et al., 2003).</Comment>
+    <BiopaxRef>lit_446082</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="313.0" Y="2485.0" GraphId="e_16_0"/>
+      <Point X="172.0" Y="2535.0" GraphId="e_16_1"/>
+      <Point X="252.0" Y="2558.0" GraphId="e_16_2"/>
+      <Point X="212.0" Y="2603.0" GraphId="e_16_3" GraphRef="n4_REACTOME_446086" RelX="0.26548672566371684" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_16_a_i"/>
+      <Anchor Position="0.5105002391652851" GraphId="e_16_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="228.0" Y="2486.0" GraphId="e_16_i0_0" GraphRef="n6_REACTOME_446069" RelX="1.0886075949367089" RelY="-0.08695652173913043"/>
+      <Point X="313.0" Y="2485.0" GraphId="e_16_i0_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_16_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="253.0" Y="2437.0" GraphId="e_16_i1_0" GraphRef="n2_REACTOME_446066" RelX="0.6106870229007634" RelY="1.088235294117647"/>
+      <Point X="313.0" Y="2485.0" GraphId="e_16_i1_1" GraphRef="e_16_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_REACTOME_432909">
+    <Comment Source="WikiPathways-description">The actin-binding domain of plectin interacts with the first pair of FNIII repeats and the N-terminal 35 amino acids of the connecting segment of integrin b4 ( Geerts et al., 1999;  Niessen et al., 1997;  Koster et al., 2004). This interaction is thought to be the initial step in hemidesmosome (HD) assembly and is critical for the mechanical stability of the HD. This interaction is destabilized when HD disassembly is required, for example, to allow cell migration during wound healing. The Integrin a6b4 also associates extracellularly with  laminin-332 (See Koster et al., 2003).</Comment>
+    <BiopaxRef>lit_446048</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="282.0" Y="1555.0" GraphId="e_17_0"/>
+      <Point X="175.0" Y="1591.0" GraphId="e_17_1"/>
+      <Point X="357.0" Y="1642.0" GraphId="e_17_2"/>
+      <Point X="262.0" Y="1642.0" GraphId="e_17_3" GraphRef="n13_REACTOME_445996" RelX="1.0534351145038168" RelY="-0.05263157894736842" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_17_a_i"/>
+      <Anchor Position="0.28443568088579635" GraphId="e_17_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="181.0" Y="1555.0" GraphId="e_17_i0_0" GraphRef="n5_REACTOME_215997" RelX="1.0534351145038168" RelY="-0.05263157894736842"/>
+      <Point X="282.0" Y="1555.0" GraphId="e_17_i0_1" GraphRef="e_17_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_17_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="204.0" Y="1523.0" GraphId="e_17_i1_0" GraphRef="n10_REACTOME_201575" RelX="0.8275862068965517" RelY="1.3043478260869565"/>
+      <Point X="282.0" Y="1555.0" GraphId="e_17_i1_1" GraphRef="e_17_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_REACTOME_432952">
+    <Comment Source="WikiPathways-description">BP180 interacts with Plectin following the association of Plectin with Integrin b4 (b4) (Koster et al., 2003). It is not clear whether the binding of BP180 to Plectin and b4 occurs sequentially or at the same time as the interaction between BP180 and Laminin?332.</Comment>
+    <BiopaxRef>lit_446006</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="310.0" Y="1698.0" GraphId="e_18_0"/>
+      <Point X="178.0" Y="1763.0" GraphId="e_18_1"/>
+      <Point X="358.0" Y="1810.0" GraphId="e_18_2"/>
+      <Point X="242.0" Y="1811.0" GraphId="e_18_3" GraphRef="n11_REACTOME_445993" RelX="1.054263565891473" RelY="-0.07547169811320754" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_18_a_i"/>
+      <Anchor Position="0.32756923548664774" GraphId="e_18_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="207.0" Y="1699.0" GraphId="e_18_i0_0" GraphRef="n12_REACTOME_445994" RelX="1.148936170212766" RelY="-0.08695652173913043"/>
+      <Point X="310.0" Y="1698.0" GraphId="e_18_i0_1" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_18_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="255.0" Y="1665.0" GraphId="e_18_i1_0" GraphRef="n13_REACTOME_445996" RelX="0.9465648854961832" RelY="1.1578947368421053"/>
+      <Point X="334.0" Y="1686.0" GraphId="e_18_i1_1"/>
+      <Point X="310.0" Y="1698.0" GraphId="e_18_i1_2" GraphRef="e_18_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_REACTOME_432956">
+    <Comment Source="WikiPathways-description">Following the association of BP180 with the forming hemidesmosome, BP230 is recruited  through associations with BP180 and a region on beta 4 integrin  that includes the C-terminal 21 amino acids of the connecting segment and the second pair of FNIII repeats (Hopkinson et al.,2000).</Comment>
+    <BiopaxRef>lit_446011</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="159.0" Y="2048.0" GraphId="e_19_0"/>
+      <Point X="172.0" Y="2082.0" GraphId="e_19_1"/>
+      <Point X="232.0" Y="2120.0" GraphId="e_19_2"/>
+      <Point X="208.0" Y="2142.0" GraphId="e_19_3" GraphRef="n7_REACTOME_446010" RelX="0.6597938144329897" RelY="-1.088235294117647" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_19_a_i"/>
+      <Anchor Position="0.26004234725430864" GraphId="e_19_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="290.0" Y="2048.0" GraphId="e_19_i0_0" GraphRef="n405_REACTOME_447012" RelX="-1.12" RelY="-0.09523809523809523"/>
+      <Point X="159.0" Y="2048.0" GraphId="e_19_i0_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_19_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="147.0" Y="2014.0" GraphId="e_19_i1_0" GraphRef="n1_REACTOME_445997" RelX="0.16793893129770993" RelY="1.088235294117647"/>
+      <Point X="159.0" Y="2048.0" GraphId="e_19_i1_1" GraphRef="e_19_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_REACTOME_430341">
+    <Comment Source="WikiPathways-description">Migfilin functions in cell shape modulation regulating filamin-mediated cross-linking and stabilization of actin filaments. Migfilin is  recruited to cellâExtra Cellular Matrix adhesion sites in a  variety of fibroblasts, epithelial, and endothelial cells by  interaction with Mig-2 (Tu et al., 2003).</Comment>
+    <BiopaxRef>lit_430277</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4890.0" Y="625.0" GraphId="e_32_0"/>
+      <Point X="4890.0" Y="651.0" GraphId="e_32_1"/>
+      <Point X="4890.0" Y="683.0" GraphId="e_32_2" GraphRef="n26_REACTOME_430295" RelX="-0.02857142857142857" RelY="-1.1219512195121952" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_32_a_i"/>
+      <Anchor Position="0.4482758620689655" GraphId="e_32_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4908.0" Y="625.0" GraphId="e_32_i0_0" GraphRef="n22_REACTOME_430301" RelX="-1.1063829787234043" RelY="0.0"/>
+      <Point X="4890.0" Y="625.0" GraphId="e_32_i0_1" GraphRef="e_32_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_32_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4871.0" Y="625.0" GraphId="e_32_i1_0" GraphRef="n31_REACTOME_430275" RelX="1.148936170212766" RelY="0.0"/>
+      <Point X="4890.0" Y="625.0" GraphId="e_32_i1_1" GraphRef="e_32_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_REACTOME_430347">
+    <Comment Source="WikiPathways-description">Migfilin associates with actin filaments as a result of its interaction with filamin (Tu et al., 2003). Migfilin associates with actin filaments and  loss of migfilin decreases the level of F-actin suggesting  that,  in addition to providing an anchoring site for actin filaments at cell-ECM adhesions, migfilin also functions  in the regulation of filamin-mediated cross-linking and stabilization of actin filaments (Tu et al., 2003).</Comment>
+    <BiopaxRef>lit_430277</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5013.0" Y="625.0" GraphId="e_33_0"/>
+      <Point X="5013.0" Y="644.0" GraphId="e_33_1"/>
+      <Point X="5013.0" Y="680.0" GraphId="e_33_2" GraphRef="n21_REACTOME_430323" RelX="-0.01904761904761905" RelY="-1.1162790697674418" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_33_a_i"/>
+      <Anchor Position="0.34545454545454546" GraphId="e_33_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4961.0" Y="625.0" GraphId="e_33_i0_0" GraphRef="n22_REACTOME_430301" RelX="1.148936170212766" RelY="0.0"/>
+      <Point X="5013.0" Y="625.0" GraphId="e_33_i0_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5012.0" Y="606.0" GraphId="e_33_i1_0" GraphRef="n29_REACTOME_201877" RelX="0.0" RelY="1.3043478260869565"/>
+      <Point X="5013.0" Y="625.0" GraphId="e_33_i1_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_33_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5049.0" Y="625.0" GraphId="e_33_i2_0" GraphRef="n24_REACTOME_446328" RelX="-1.1071428571428572" RelY="0.0"/>
+      <Point X="5013.0" Y="625.0" GraphId="e_33_i2_1" GraphRef="e_33_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_REACTOME_446391">
+    <Comment Source="WikiPathways-description">The PINCH-ILK-parvin complex (Tu et al., 2001;  Zhang et al., 2002;  Li et al., 1999)  localizes to focal adhesions and plays a critical role in the regulation of cell adhesion, cell shape modulation, motility and ECM deposition (Velyvis et al., 2001;  Braun et al, 2003).  ILK binds PINCH through its N-terminal domain and binds PARVA or PARVB through its C-terminal domain, resulting in formation of  the ternary PINCH-ILK-parvin complex (Tu et al., 2001). These complexes form before they are localized to integrin-rich adhesion sites (Zhang et al., 2002). Formation of the ILK-PINCH-parvin complexes stabilizes these proteins by protecting them from degradation by the proteasome (Fukuda et al., 2003).</Comment>
+    <BiopaxRef>lit_446358</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="315.0" Y="942.0" GraphId="e_34_0"/>
+      <Point X="225.0" Y="852.0" GraphId="e_34_1"/>
+      <Point X="308.0" Y="851.0" GraphId="e_34_2"/>
+      <Point X="285.0" Y="829.0" GraphId="e_34_3" GraphRef="n30_REACTOME_432932" RelX="0.5617977528089888" RelY="1.1228070175438596" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_34_a_i"/>
+      <Anchor Position="0.5257019256959333" GraphId="e_34_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="261.0" Y="1057.0" GraphId="e_34_i0_0" GraphRef="n27_REACTOME_432864" RelX="1.1794871794871795" RelY="-0.7586206896551724"/>
+      <Point X="361.0" Y="1001.0" GraphId="e_34_i0_1"/>
+      <Point X="315.0" Y="942.0" GraphId="e_34_i0_2" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="280.0" Y="941.0" GraphId="e_34_i1_0" GraphRef="n23_REACTOME_446104" RelX="1.1" RelY="0.0"/>
+      <Point X="315.0" Y="942.0" GraphId="e_34_i1_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_34_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="280.0" Y="975.0" GraphId="e_34_i2_0" GraphRef="n25_REACTOME_446032" RelX="0.32989690721649484" RelY="-1.1515151515151516"/>
+      <Point X="315.0" Y="942.0" GraphId="e_34_i2_1" GraphRef="e_34_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_REACTOME_446364">
+    <Comment Source="WikiPathways-description">Migfilin interacts with VASP and regulates VASP localization to cell-matrix adhesions (Zhang  et al., 2006).  Interaction between migfilin and VASP  is critical for migfilin-mediated regulation of cell migration (Zhang  et al., 2006).</Comment>
+    <BiopaxRef>lit_446321</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4934.0" Y="585.0" GraphId="e_35_0"/>
+      <Point X="4934.0" Y="551.0" GraphId="e_35_1"/>
+      <Point X="4859.0" Y="550.0" GraphId="e_35_2" GraphRef="n20_REACTOME_446308" RelX="1.0823529411764705" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_35_a_i"/>
+      <Anchor Position="0.3119075294392591" GraphId="e_35_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4934.0" Y="611.0" GraphId="e_35_i0_0" GraphRef="n22_REACTOME_430301" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="4934.0" Y="585.0" GraphId="e_35_i0_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_35_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4915.0" Y="585.0" GraphId="e_35_i1_0" GraphRef="n28_REACTOME_446323" RelX="1.1153846153846154" RelY="0.0"/>
+      <Point X="4934.0" Y="585.0" GraphId="e_35_i1_1" GraphRef="e_35_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_REACTOME_446322">
+    <Comment Source="WikiPathways-description">The focal adhesion protein alpha-parvin, interacts with paxillin, through the C-terminal CH-containing fragment of the alpha-parvin and paxillin LD motif  (Wang et al., 2008; Lorenz et al., 2008). This interaction likely contributes to the localization of the PINCH-ILK-parvin complexes to focal adhesions.</Comment>
+    <BiopaxRef>lit_446336</BiopaxRef>
+    <BiopaxRef>lit_446313</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="222.0" Y="1341.0" GraphId="e_41_0"/>
+      <Point X="178.0" Y="1358.0" GraphId="e_41_1"/>
+      <Point X="280.0" Y="1408.0" GraphId="e_41_2"/>
+      <Point X="237.0" Y="1425.0" GraphId="e_41_3" GraphRef="n39_REACTOME_446326" RelX="0.5106382978723404" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_41_a_i"/>
+      <Anchor Position="0.2278693254105264" GraphId="e_41_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="199.0" Y="1319.0" GraphId="e_41_i0_0" GraphRef="n38_REACTOME_180493" RelX="0.3673469387755102" RelY="1.3043478260869565"/>
+      <Point X="222.0" Y="1341.0" GraphId="e_41_i0_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_41_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="272.0" Y="1341.0" GraphId="e_41_i1_0" GraphRef="n40_REACTOME_432848" RelX="-1.1020408163265305" RelY="0.0"/>
+      <Point X="222.0" Y="1341.0" GraphId="e_41_i1_1" GraphRef="e_41_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_REACTOME_432897">
+    <Comment Source="WikiPathways-description">ILK interacts with the cytoplasmic domain of beta1-integrin (Hannigan et al., 1996).</Comment>
+    <BiopaxRef>lit_446381</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="320.0" Y="1127.0" GraphId="e_42_0"/>
+      <Point X="177.0" Y="1207.0" GraphId="e_42_1"/>
+      <Point X="253.0" Y="1205.0" GraphId="e_42_2"/>
+      <Point X="235.0" Y="1232.0" GraphId="e_42_3" GraphRef="n37_REACTOME_446408" RelX="0.1694915254237288" RelY="-1.1515151515151516" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_42_a_i"/>
+      <Anchor Position="0.6016777047770638" GraphId="e_42_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="279.0" Y="1129.0" GraphId="e_42_i0_0" GraphRef="n36_REACTOME_57596" RelX="1.0566037735849056" RelY="-0.24"/>
+      <Point X="320.0" Y="1127.0" GraphId="e_42_i0_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_42_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="261.0" Y="1082.0" GraphId="e_42_i1_0" GraphRef="n27_REACTOME_432864" RelX="1.1794871794871795" RelY="0.9655172413793104"/>
+      <Point X="320.0" Y="1127.0" GraphId="e_42_i1_1" GraphRef="e_42_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_REACTOME_430308">
+    <Comment Source="WikiPathways-description">PARVB interacts with the actin cross-linking protein Alpha-actinin  (Yamaji et al. 2004).  The ILK-PARVB complex may serve as an integrin-anchoring site for alpha-actinin and thereby mediate integrin signaling to alpha-actinin, which has been shown to play an important  role in actin polymerization at focal adhesions (Yamaji  et al., 2004).</Comment>
+    <BiopaxRef>lit_446312</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="603.0" Y="1116.0" GraphId="e_54_0"/>
+      <Point X="621.0" Y="1146.0" GraphId="e_54_1"/>
+      <Point X="636.0" Y="1175.0" GraphId="e_54_2" GraphRef="n52_REACTOME_446335" RelX="-0.1694915254237288" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_54_a_i"/>
+      <Anchor Position="0.5172694852178651" GraphId="e_54_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="642.0" Y="1112.0" GraphId="e_54_i0_0" GraphRef="n45_REACTOME_354096" RelX="-1.0485436893203883" RelY="0.25806451612903225"/>
+      <Point X="603.0" Y="1116.0" GraphId="e_54_i0_1" GraphRef="e_54_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_54_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="584.0" Y="1112.0" GraphId="e_54_i1_0" GraphRef="n47_REACTOME_446016" RelX="1.0769230769230769" RelY="0.5"/>
+      <Point X="603.0" Y="1116.0" GraphId="e_54_i1_1" GraphRef="e_54_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_REACTOME_432946">
+    <Comment Source="WikiPathways-description">The Rho GTPases, Cdc42 and Rac1, play critical roles in cell migration by  integrating cell-substrate adhesion and actin polymerization. PARVB/affixin appears to participate in the activation of Rac and Cdc42 by associating with alpha PIX through its CH1 domain (Mishima et al., 2004; Rosenberger et al., 2005). This activity of PARVB/affixin could promote the polymerization of actin through the activation of downstream effectors of Rac1/Cdc42, including WASP-Arp2/3  and Mena/VASP. Alpha-PIX, ILK and PARVB can be found at the leading edge of spreading cells (Rosenberger et al., 2005 ), and it is likely that  activation of Rac1 and Cdc42 at the lamellipodia  in some cells is stimulated by interactions of aPIX with PARVB and regulated by interaction of ILK and PARVB (see Sepulveda and Wu, 2005 ).</Comment>
+    <BiopaxRef>lit_446300</BiopaxRef>
+    <BiopaxRef>lit_432927</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="453.0" Y="1113.0" GraphId="e_55_0"/>
+      <Point X="383.0" Y="1161.0" GraphId="e_55_1"/>
+      <Point X="396.0" Y="1185.0" GraphId="e_55_2" GraphRef="n44_REACTOME_446035" RelX="-0.17391304347826086" RelY="-1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_55_a_i"/>
+      <Anchor Position="0.7566690911108734" GraphId="e_55_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="495.0" Y="1144.0" GraphId="e_55_i0_0" GraphRef="n53_REACTOME_195017" RelX="-0.4166666666666667" RelY="-1.2173913043478262"/>
+      <Point X="453.0" Y="1113.0" GraphId="e_55_i0_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_55_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="487.0" Y="1109.0" GraphId="e_55_i1_0" GraphRef="n47_REACTOME_446016" RelX="-1.054945054945055" RelY="0.25"/>
+      <Point X="453.0" Y="1113.0" GraphId="e_55_i1_1" GraphRef="e_55_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_REACTOME_446372">
+    <Comment Source="WikiPathways-description">The association of  PARVA with TESK1 appears to suppress  cell spreading (Lalonde et al.  2005). TESK1 can phosphorylate cofilin and promote F-actin polymerization and cell spreading (Tsumura et al., 2005 ; Toshima et al., 2001; Leeksma et al., 2002).  PARVA associates with  testicular protein kinase 1 (TESK1) and inhibits its activity (Lalonde et al.  2005).</Comment>
+    <BiopaxRef>lit_446356</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="355.0" Y="1338.0" GraphId="e_56_0"/>
+      <Point X="355.0" Y="1370.0" GraphId="e_56_1"/>
+      <Point X="355.0" Y="1403.0" GraphId="e_56_2" GraphRef="n50_REACTOME_446404" RelX="-0.02247191011235955" RelY="-1.2173913043478262" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_56_a_i"/>
+      <Anchor Position="0.49230769230769234" GraphId="e_56_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="378.0" Y="1321.0" GraphId="e_56_i0_0" GraphRef="n49_REACTOME_446396" RelX="-0.5833333333333334" RelY="1.3043478260869565"/>
+      <Point X="355.0" Y="1338.0" GraphId="e_56_i0_1" GraphRef="e_56_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_56_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="327.0" Y="1339.0" GraphId="e_56_i1_0" GraphRef="n40_REACTOME_432848" RelX="1.1428571428571428" RelY="-0.17391304347826086"/>
+      <Point X="355.0" Y="1338.0" GraphId="e_56_i1_1" GraphRef="e_56_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_REACTOME_430311">
+    <Comment Source="WikiPathways-description">The Ras suppressor,  Rsu-1,  interacts with the LIM 5 domain of PINCH1 (but not PINCH2)  and may inhibit cell migration by stabilizing the Pinch-ILK-parvin adhesion complex (Dougherty et al., 2008; Kadrmas  et al., 2004).</Comment>
+    <BiopaxRef>lit_446296</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="487.0" Y="1008.0" GraphId="e_57_0"/>
+      <Point X="481.0" Y="961.0" GraphId="e_57_1"/>
+      <Point X="481.0" Y="904.0" GraphId="e_57_2" GraphRef="n46_REACTOME_446302" RelX="-0.015625" RelY="1.125" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_57_a_i"/>
+      <Anchor Position="0.4539258613843889" GraphId="e_57_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="502.0" Y="1013.0" GraphId="e_57_i0_0" GraphRef="n51_REACTOME_446297" RelX="-1.1071428571428572" RelY="-0.8571428571428571"/>
+      <Point X="487.0" Y="1008.0" GraphId="e_57_i0_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_57_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="485.0" Y="1040.0" GraphId="e_57_i1_0" GraphRef="n48_REACTOME_432859" RelX="0.0" RelY="-1.3"/>
+      <Point X="487.0" Y="1008.0" GraphId="e_57_i1_1" GraphRef="e_57_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_REACTOME_420661">
+    <Comment Source="WikiPathways-description">The CRB3âPals1âPATJ complex is the second major cell polarity protein complex at Tight Junctions (TJs) (Shin et al., 2006). The integral membrane protein CRB3 localizes to the apical domain of epithelial cells and is concentrated at TJs. CRB3 directly associates with Pals1 which interacts with PATJ, a proteins consisting of 10 PDZ domains. The interaction with CRB3 might recruit the Pals1-PATJ complex to TJs (Lemmers et al., 2002; Roh et al., 2003). Although its precise functions of the individual components have not been established, the complex is required for TJ formation, in part through the stabilization of apical and lateral components of tight junctions (Michel et al., 2005; Shin et al., 2005).</Comment>
+    <BiopaxRef>lit_421254</BiopaxRef>
+    <BiopaxRef>lit_421242</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="341.0" Y="636.0" GraphId="e_68_0"/>
+      <Point X="176.0" Y="581.0" GraphId="e_68_1"/>
+      <Point X="271.0" Y="581.0" GraphId="e_68_2"/>
+      <Point X="289.0" Y="536.0" GraphId="e_68_3" GraphRef="n60_REACTOME_420663" RelX="-0.11940298507462686" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_68_a_i"/>
+      <Anchor Position="0.5479829541980108" GraphId="e_68_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="221.0" Y="637.0" GraphId="e_68_i0_0" GraphRef="n58_REACTOME_420009" RelX="1.1153846153846154" RelY="-0.08695652173913043"/>
+      <Point X="341.0" Y="636.0" GraphId="e_68_i0_1" GraphRef="e_68_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="202.0" Y="726.0" GraphId="e_68_i1_0" GraphRef="n62_REACTOME_420011" RelX="0.8717948717948718" RelY="-1.2173913043478262"/>
+      <Point X="341.0" Y="636.0" GraphId="e_68_i1_1" GraphRef="e_68_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_68_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="250.0" Y="661.0" GraphId="e_68_i2_0" GraphRef="n66_REACTOME_419969" RelX="0.7872340425531915" RelY="-1.2173913043478262"/>
+      <Point X="341.0" Y="636.0" GraphId="e_68_i2_1" GraphRef="e_68_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_REACTOME_419981">
+    <Comment Source="WikiPathways-description">PAR-3 exists in a ternary complex with aPKC and PAR-6 to form the PAR-aPKC complex (Macara, 2004; Suzuki and Ohno, 2006). This complex is critically involved in the development of Tight Junctions (TJs) from primordial spot-like Adherens Junctions (AJs) (Suzuki et al., 2002). PAR-3 directly interacts with Junctional Adhesion Molecules (JAM)-A, -B, and -C (Ebnet et al., 2001; Ebnet et al., 2004).The interaction with JAM-A might anchor the PAR-aPKC complex to TJs but might also be necessary to recruit the PAR-aPKC complex to primordial spot-like AJs where it becomes activated in response to cell-cell adhesion (reviewed in (Ebnet et al., 2008). The PAR-aPKC complex might also be physically linked to the second polarity protein complex at TJs, the CRB3-Pals1-PATJ complex through a direct interaction between PAR-6 and Pals1 (Hurd et al., 2003).</Comment>
+    <BiopaxRef>lit_419972</BiopaxRef>
+    <BiopaxRef>lit_419982</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="638.0" Y="553.0" GraphId="e_69_0"/>
+      <Point X="566.0" Y="512.0" GraphId="e_69_1"/>
+      <Point X="544.0" Y="561.0" GraphId="e_69_2"/>
+      <Point X="497.0" Y="539.0" GraphId="e_69_3" GraphRef="n59_REACTOME_420006" RelX="0.5223880597014925" RelY="1.1578947368421053" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_69_a_i"/>
+      <Anchor Position="0.439640166249505" GraphId="e_69_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="637.0" Y="570.0" GraphId="e_69_i0_0" GraphRef="n64_REACTOME_419976" RelX="0.0" RelY="-1.1578947368421053"/>
+      <Point X="638.0" Y="553.0" GraphId="e_69_i0_1" GraphRef="e_69_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_69_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="670.0" Y="530.0" GraphId="e_69_i1_0" GraphRef="n65_REACTOME_197845" RelX="-0.5454545454545454" RelY="1.3043478260869565"/>
+      <Point X="638.0" Y="553.0" GraphId="e_69_i1_1" GraphRef="e_69_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_REACTOME_419003">
+    <Comment Source="WikiPathways-description">Nectins are immunoglobulin-like cell adhesion molecules comprising a family of four members, nectin 1 - 4 (Takai and Nakanishi, 2003). In contrast to classical cadherins which interact only homophilically, nectins undergo trans-homophilic and trans-heterophilic interactions with nectins and nectin-like molecules (Takai et al., 2008b). Nectins cooperate with cadherins in regulating the formation of adherens junctions (AJs) and the strength of cell-cell adhesion. Nectins are linked to the underlying actin cytoskeleton through their interaction with the actin-binding protein Afadin (Takai et al., 2008a). Nectin-based cellâcell adhesions contribute to formation of many types of cell-cell junctions including AJs, tight junctions, and synaptic junctions.</Comment>
+    <BiopaxRef>lit_419007</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4966.0" Y="538.0" GraphId="e_85_0"/>
+      <Point X="4966.0" Y="514.0" GraphId="e_85_1"/>
+      <Point X="4995.0" Y="514.0" GraphId="e_85_2" GraphRef="n80_REACTOME_419013" RelX="-1.037593984962406" RelY="-0.06896551724137931" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_85_a_i"/>
+      <Anchor Position="0.4528301886792453" GraphId="e_85_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4908.0" Y="508.0" GraphId="e_85_i0_0" GraphRef="n74_REACTOME_419017" RelX="1.103448275862069" RelY="0.7878787878787878"/>
+      <Point X="4966.0" Y="538.0" GraphId="e_85_i0_1" GraphRef="e_85_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_85_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4966.0" Y="546.0" GraphId="e_85_i1_0" GraphRef="n75_REACTOME_418342" RelX="-0.047619047619047616" RelY="-1.2173913043478262"/>
+      <Point X="4966.0" Y="538.0" GraphId="e_85_i1_1" GraphRef="e_85_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_REACTOME_419001">
+    <Comment Source="WikiPathways-description">Cadherins are the major cell adhesion molecules at adherens junctions (AJs). Classical cadherins are Ca2+-dependent, homophilic adhesion molecules that link adjacent cells (Gumbiner, 2005; Halbleib and Nelson, 2006; Pokutta and Weis, 2007). The extracellular domain of classical cadherins consists of five cadherin-type repeats (called "extracellular cadherin" (EC) -domains). In the presence of Ca2+, the monomers form parallel cis-dimers resulting in a rod-like structure (Gumbiner, 2005). The cis-dimers undergo trans homophilic interactions to mediate homotypic cell-cell interactions. The cytoplasmic tails of classical cadherins interact with different proteins (primarily catenins) to regulate cell surface expression levels, linkage to the actin cytoskeleton, and cell signaling. Non-classical cadherins (Atypical cadherins, Proto-cadherins, cadherin-related proteins) have a variable number of cadherin-type repeats,  do not associate with catenins, and are not associated with AJs (Halbleib and Nelson, 2006).</Comment>
+    <BiopaxRef>lit_433731</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5851.0" Y="565.0" GraphId="e_86_0"/>
+      <Point X="5892.0" Y="603.0" GraphId="e_86_1"/>
+      <Point X="5963.0" Y="519.0" GraphId="e_86_2"/>
+      <Point X="6005.0" Y="565.0" GraphId="e_86_3"/>
+      <Point X="6024.0" Y="543.0" GraphId="e_86_4" GraphRef="n79_REACTOME_418999" RelX="-0.3617021276595745" RelY="1.1627906976744187" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_86_a_i"/>
+      <Anchor Position="0.6448600969749579" GraphId="e_86_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5879.0" Y="537.0" GraphId="e_86_i0_0" GraphRef="n81_REACTOME_140648" RelX="-0.3835616438356164" RelY="1.2258064516129032"/>
+      <Point X="5851.0" Y="565.0" GraphId="e_86_i0_1" GraphRef="e_86_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_86_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5797.0" Y="534.0" GraphId="e_86_i1_0" GraphRef="n82_REACTOME_418977" RelX="0.4090909090909091" RelY="1.3043478260869565"/>
+      <Point X="5851.0" Y="565.0" GraphId="e_86_i1_1" GraphRef="e_86_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_REACTOME_433725">
+    <Comment Source="WikiPathways-description">Afadin serves as a linker of the actin cytoskeleton to the plasma membrane at cell-to-cell Adherens Junctions  (Mandai et al., 1997).</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5012.0" Y="559.0" GraphId="e_87_0"/>
+      <Point X="5036.0" Y="559.0" GraphId="e_87_1"/>
+      <Point X="5072.0" Y="559.0" GraphId="e_87_2" GraphRef="n77_REACTOME_433726" RelX="-1.0625" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_87_a_i"/>
+      <Anchor Position="0.4" GraphId="e_87_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4991.0" Y="559.0" GraphId="e_87_i0_0" GraphRef="n75_REACTOME_418342" RelX="1.1428571428571428" RelY="-0.08695652173913043"/>
+      <Point X="5012.0" Y="559.0" GraphId="e_87_i0_1" GraphRef="e_87_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_87_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5012.0" Y="577.0" GraphId="e_87_i1_0" GraphRef="n29_REACTOME_201877" RelX="0.0" RelY="-1.2173913043478262"/>
+      <Point X="5012.0" Y="559.0" GraphId="e_87_i1_1" GraphRef="e_87_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_88_REACTOME_420592">
+    <Comment Source="WikiPathways-description">The nectin-like (Necl) family comprises five members, called Necl-1 to -5. Necl have an overall organization like that of nectins with three Ig-like domains, a transmembrane region and a cytoplasmic domain. Necls have a greater variety of functions than nectins and are ubiquitously expressed. In contrast to nectins, Necls do not interact with afadin. Transhomodimerization has been described for Necl-1, -2 and -3 but not for Necl-4 and -5. (Sakisaka et al., 2007; Sakisaka and Takai, 2004; Takai et al., 2008).</Comment>
+    <BiopaxRef>lit_433747</BiopaxRef>
+    <BiopaxRef>lit_433744</BiopaxRef>
+    <BiopaxRef>lit_433751</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4081.0" Y="469.0" GraphId="e_88_0" GraphRef="n70_REACTOME_420583" RelX="0.2184873949579832" RelY="-1.1363636363636365"/>
+      <Point X="4118.0" Y="415.0" GraphId="e_88_1"/>
+      <Point X="4150.0" Y="492.0" GraphId="e_88_2"/>
+      <Point X="4186.0" Y="492.0" GraphId="e_88_3" GraphRef="n72_REACTOME_420594" RelX="-1.0420168067226891" RelY="-0.045454545454545456" ArrowHead="Arrow"/>
+      <Anchor Position="0.8052417687625337" GraphId="e_88_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_89_REACTOME_433711">
+    <Comment Source="WikiPathways-description">The Nectin family of Ca2+-independent  cell adhesion molecules (CAMs) is  comprised of four members, nectin-1, nectin-2, nectin-3, and nectin-4 (reviewed in Sakisaka et al., 2007). Each nectin first forms homophilic cis-dimers and then forms homophilic or heterophilic trans-dimers involved in cellâcell adhesion. Heterophilic trans-interactions are stronger than homophilic trans-interactions.</Comment>
+    <BiopaxRef>lit_433776</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4844.0" Y="495.0" GraphId="e_89_0" GraphRef="n74_REACTOME_419017" RelX="-1.103448275862069" RelY="0.0"/>
+      <Point X="4801.0" Y="496.0" GraphId="e_89_1"/>
+      <Point X="4750.0" Y="495.0" GraphId="e_89_2" GraphRef="n84_REACTOME_433730" RelX="1.056" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.45746620370209146" GraphId="e_89_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_REACTOME_419002">
+    <Comment Source="WikiPathways-description">The cytoplasmic tails of classical cadherins form a multiprotein complex with alpha-catenin, beta/gamma-catenins and p120 catenin (p120ctn) (Gumbiner, 2005). Beta-catenin and p120ctn directly interact with the cadherin molecule through highly conserved regions in the membrane-distal and membrane-proximal domains, respectively, of the cadherin. The interactions with beta-catenin and p120ctn regulate cadherin localization at cell-cell contacts as well as its adhesive activity (Halbleib and Nelson, 2006). The association of beta-catenin and alpha-catenin probably serves to link the cadherin-catenin complex to the F-actin cytoskeleton through the protein ELPIN (Abe and Takeichi, 2008). Independently of its association with the cadherin-catenin complex, alpha-catenin also regulates the bundling and growth of actin filaments at sites of cell-cell contact formation (Drees et al., 2005; Weis and Nelson, 2006).</Comment>
+    <BiopaxRef>lit_418982</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5555.0" Y="606.0" GraphId="e_90_0"/>
+      <Point X="5370.0" Y="514.0" GraphId="e_90_1"/>
+      <Point X="5350.0" Y="574.0" GraphId="e_90_2"/>
+      <Point X="5297.0" Y="539.0" GraphId="e_90_3" GraphRef="n78_REACTOME_418976" RelX="0.5660377358490566" RelY="1.1555555555555554" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_90_a_i"/>
+      <Anchor Position="0.6197666795476313" GraphId="e_90_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5665.0" Y="528.0" GraphId="e_90_i0_0" GraphRef="n71_REACTOME_191735" RelX="-0.4266666666666667" RelY="1.3043478260869565"/>
+      <Point X="5555.0" Y="606.0" GraphId="e_90_i0_1" GraphRef="e_90_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5555.0" Y="541.0" GraphId="e_90_i1_0" GraphRef="n73_REACTOME_418993" RelX="0.0" RelY="1.1578947368421053"/>
+      <Point X="5555.0" Y="606.0" GraphId="e_90_i1_1" GraphRef="e_90_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5749.0" Y="534.0" GraphId="e_90_i2_0" GraphRef="n82_REACTOME_418977" RelX="-0.6818181818181818" RelY="1.3043478260869565"/>
+      <Point X="5555.0" Y="606.0" GraphId="e_90_i2_1" GraphRef="e_90_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_90_i3">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="5454.0" Y="530.0" GraphId="e_90_i3_0" GraphRef="n83_REACTOME_418996" RelX="0.37333333333333335" RelY="1.3043478260869565"/>
+      <Point X="5555.0" Y="606.0" GraphId="e_90_i3_1" GraphRef="e_90_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_91_REACTOME_419011">
+    <Comment Source="WikiPathways-description">Nectins are Ca(2+)-independent cell adhesion molecules which interact homophilically and heterophilically in trans to form cell-cell adhesions (reviewed in (Sakisaka et al., 2007; Takai et al., 2008). Each nectin first forms homo-cis-dimers and then homo- or hetero-trans-dimers through the extracellular region, causing cellâcell adhesion. The Nectin protein family is made up of four members, nectin-1, -2, -3, and -4, all of which have an extracellular region with three Ig-like loops, a single transmembrane region, and a cytoplasmic tail region.</Comment>
+    <BiopaxRef>lit_433776</BiopaxRef>
+    <BiopaxRef>lit_419007</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="4619.0" Y="495.0" GraphId="e_91_0" GraphRef="n84_REACTOME_433730" RelX="-1.04" RelY="0.0"/>
+      <Point X="4550.0" Y="495.0" GraphId="e_91_1"/>
+      <Point X="4476.0" Y="495.0" GraphId="e_91_2" GraphRef="n76_REACTOME_418972" RelX="1.0731707317073171" RelY="-0.05263157894736842" ArrowHead="Arrow"/>
+      <Anchor Position="0.4825174825174825" GraphId="e_91_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_109_REACTOME_420591">
+    <Comment Source="WikiPathways-description">Nectin-2 and Nectin-3 interact forming a trans heterodimer.</Comment>
+    <BiopaxRef>lit_420576</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3716.0" Y="425.0" GraphId="e_109_0"/>
+      <Point X="3807.0" Y="487.0" GraphId="e_109_1"/>
+      <Point X="3845.0" Y="486.0" GraphId="e_109_2" GraphRef="n107_REACTOME_420605" RelX="-1.044776119402985" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_109_a_i"/>
+      <Anchor Position="0.7433741043292748" GraphId="e_109_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_109_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3716.0" Y="460.0" GraphId="e_109_i0_0" GraphRef="n93_REACTOME_420575" RelX="-0.018518518518518517" RelY="-1.0943396226415094"/>
+      <Point X="3716.0" Y="425.0" GraphId="e_109_i0_1" GraphRef="e_109_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_109_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3629.0" Y="467.0" GraphId="e_109_i1_0" GraphRef="n100_REACTOME_420590" RelX="1.0654205607476634" RelY="-0.9615384615384616"/>
+      <Point X="3716.0" Y="425.0" GraphId="e_109_i1_1" GraphRef="e_109_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_REACTOME_420595">
+    <Comment Source="WikiPathways-description">Necl-2 and Nectin 3 form a trans heterodimer.</Comment>
+    <BiopaxRef>lit_420610</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2548.0" Y="455.0" GraphId="e_110_0"/>
+      <Point X="2623.0" Y="493.0" GraphId="e_110_1"/>
+      <Point X="2652.0" Y="493.0" GraphId="e_110_2" GraphRef="n97_REACTOME_420578" RelX="-1.0422535211267605" RelY="-0.11320754716981132" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_110_a_i"/>
+      <Anchor Position="0.743538372678268" GraphId="e_110_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1581.0" Y="458.0" GraphId="e_110_i0_0" GraphRef="n94_REACTOME_197780" RelX="1.0886075949367089" RelY="-0.8275862068965517"/>
+      <Point X="2054.0" Y="179.0" GraphId="e_110_i0_1"/>
+      <Point X="2548.0" Y="455.0" GraphId="e_110_i0_2" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_110_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2549.0" Y="474.0" GraphId="e_110_i1_0" GraphRef="n102_REACTOME_420589" RelX="-0.030303030303030304" RelY="-1.1162790697674418"/>
+      <Point X="2548.0" Y="455.0" GraphId="e_110_i1_1" GraphRef="e_110_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_111_REACTOME_420598">
+    <Comment Source="WikiPathways-description">Nectin-1 and Nectin-4 interact forming a trans heterodimer.</Comment>
+    <BiopaxRef>lit_420576</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3108.0" Y="420.0" GraphId="e_111_0"/>
+      <Point X="3020.0" Y="492.0" GraphId="e_111_1"/>
+      <Point X="2985.0" Y="492.0" GraphId="e_111_2" GraphRef="n99_REACTOME_420609" RelX="1.0483870967741935" RelY="-0.03773584905660377" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_111_a_i"/>
+      <Anchor Position="0.7646289230971092" GraphId="e_111_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_111_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3190.0" Y="461.0" GraphId="e_111_i0_0" GraphRef="n96_REACTOME_420607" RelX="-0.8363636363636363" RelY="-1.125"/>
+      <Point X="3108.0" Y="420.0" GraphId="e_111_i0_1" GraphRef="e_111_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_111_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3108.0" Y="463.0" GraphId="e_111_i1_0" GraphRef="n108_REACTOME_420606" RelX="0.0" RelY="-1.1304347826086956"/>
+      <Point X="3108.0" Y="420.0" GraphId="e_111_i1_1" GraphRef="e_111_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_REACTOME_420580">
+    <Comment Source="WikiPathways-description">Nectin-1 and Nectin 3 interact forming a trans heterodimer.</Comment>
+    <BiopaxRef>lit_420576</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3501.0" Y="421.0" GraphId="e_112_0"/>
+      <Point X="3500.0" Y="489.0" GraphId="e_112_1"/>
+      <Point X="3469.0" Y="489.0" GraphId="e_112_2" GraphRef="n92_REACTOME_420601" RelX="1.0454545454545454" RelY="-0.07272727272727272" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_112_a_i"/>
+      <Anchor Position="0.6868919408149581" GraphId="e_112_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3294.0" Y="474.0" GraphId="e_112_i0_0" GraphRef="n96_REACTOME_420607" RelX="1.0545454545454545" RelY="-0.5833333333333334"/>
+      <Point X="3501.0" Y="421.0" GraphId="e_112_i0_1" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="3546.0" Y="463.0" GraphId="e_112_i1_0" GraphRef="n100_REACTOME_420590" RelX="-0.48598130841121495" RelY="-1.1153846153846154"/>
+      <Point X="3501.0" Y="421.0" GraphId="e_112_i1_1" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_REACTOME_420584">
+    <Comment Source="WikiPathways-description">Necl-1 displays Ca2+-independent heterophilic cell-cell adhesion activity with Nectin-3 (Kakunaga et al., 2005).</Comment>
+    <BiopaxRef>lit_420576</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1656.0" Y="421.0" GraphId="e_113_0"/>
+      <Point X="1657.0" Y="499.0" GraphId="e_113_1"/>
+      <Point X="1686.0" Y="498.0" GraphId="e_113_2" GraphRef="n105_REACTOME_420577" RelX="-1.0483870967741935" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_113_a_i"/>
+      <Anchor Position="0.728870793756371" GraphId="e_113_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1838.0" Y="473.0" GraphId="e_113_i0_0" GraphRef="n106_REACTOME_198169" RelX="-1.0909090909090908" RelY="-0.37735849056603776"/>
+      <Point X="1656.0" Y="421.0" GraphId="e_113_i0_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_113_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1581.0" Y="461.0" GraphId="e_113_i1_0" GraphRef="n94_REACTOME_197780" RelX="1.0886075949367089" RelY="-0.7241379310344828"/>
+      <Point X="1656.0" Y="421.0" GraphId="e_113_i1_1" GraphRef="e_113_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_114_REACTOME_420582">
+    <Comment Source="WikiPathways-description">Necl-1 displays Ca2+-independent heterophilic cell-cell adhesion activity with  Nectin-1 (Kakunaga et al., 2005).</Comment>
+    <BiopaxRef>lit_420576</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2037.0" Y="448.0" GraphId="e_114_0"/>
+      <Point X="2117.0" Y="490.0" GraphId="e_114_1"/>
+      <Point X="2154.0" Y="490.0" GraphId="e_114_2" GraphRef="n104_REACTOME_420585" RelX="-1.0359712230215827" RelY="-0.03636363636363636" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_114_a_i"/>
+      <Anchor Position="0.7094731903707654" GraphId="e_114_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_114_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1910.0" Y="475.0" GraphId="e_114_i0_0" GraphRef="n106_REACTOME_198169" RelX="1.0909090909090908" RelY="-0.3018867924528302"/>
+      <Point X="2037.0" Y="448.0" GraphId="e_114_i0_1" GraphRef="e_114_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_114_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2036.0" Y="476.0" GraphId="e_114_i1_0" GraphRef="n103_REACTOME_197884" RelX="0.0" RelY="-1.2"/>
+      <Point X="2037.0" Y="448.0" GraphId="e_114_i1_1" GraphRef="e_114_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_REACTOME_420593">
+    <Comment Source="WikiPathways-description">Necl-5 and Nectin 3 interact forming a trans heterodimer.</Comment>
+    <BiopaxRef>lit_420610</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1414.0" Y="429.0" GraphId="e_115_0"/>
+      <Point X="1343.0" Y="484.0" GraphId="e_115_1"/>
+      <Point X="1304.0" Y="484.0" GraphId="e_115_2" GraphRef="n98_REACTOME_420579" RelX="1.054263565891473" RelY="-0.03773584905660377" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_115_a_i"/>
+      <Anchor Position="0.697230620838264" GraphId="e_115_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1496.0" Y="465.0" GraphId="e_115_i0_0" GraphRef="n94_REACTOME_197780" RelX="-1.0632911392405062" RelY="-0.5862068965517241"/>
+      <Point X="1414.0" Y="429.0" GraphId="e_115_i0_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1412.0" Y="472.0" GraphId="e_115_i1_0" GraphRef="n95_REACTOME_420600" RelX="-0.17094017094017094" RelY="-1.1162790697674418"/>
+      <Point X="1414.0" Y="429.0" GraphId="e_115_i1_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i2">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1419.0" Y="472.0" GraphId="e_115_i2_0" GraphRef="n95_REACTOME_420600" RelX="-0.05128205128205128" RelY="-1.1162790697674418"/>
+      <Point X="1414.0" Y="429.0" GraphId="e_115_i2_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_116_REACTOME_420586">
+    <Comment Source="WikiPathways-description">Necl-1 displays Ca2+-independent heterophilic cell-cell adhesion activity with Necl-2 (Kakunaga et al., 2005).</Comment>
+    <BiopaxRef>lit_434223</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2313.0" Y="374.0" GraphId="e_116_0"/>
+      <Point X="2313.0" Y="494.0" GraphId="e_116_1"/>
+      <Point X="2340.0" Y="494.0" GraphId="e_116_2" GraphRef="n101_REACTOME_420587" RelX="-1.0441176470588236" RelY="-0.03636363636363636" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_116_a_i"/>
+      <Anchor Position="0.8163265306122449" GraphId="e_116_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_116_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1910.0" Y="474.0" GraphId="e_116_i0_0" GraphRef="n106_REACTOME_198169" RelX="1.0909090909090908" RelY="-0.33962264150943394"/>
+      <Point X="2313.0" Y="374.0" GraphId="e_116_i0_1" GraphRef="e_116_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_116_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2514.0" Y="480.0" GraphId="e_116_i1_0" GraphRef="n102_REACTOME_420589" RelX="-1.0909090909090908" RelY="-0.8372093023255814"/>
+      <Point X="2313.0" Y="374.0" GraphId="e_116_i1_1" GraphRef="e_116_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_263_REACTOME_420019">
+    <Comment Source="WikiPathways-description">Claudins are the major cell adhesion molecules in tight junctions and are involved in regulating the paracellular flux of water-soluble molecules between adjacent cells (reviewed in (Furuse and Tsukita, 2006). Claudins create paired strands through homophilic and heterophilic cis and trans interactions. A strand of one cell associates laterally with a strand in the apposing membrane of an adjacent cell creating a paired TJ strand (Tsukita et al., 2001). The TJ strands contain aqueous pores with size and charge selectivity that are permeable to water-soluble molecules. Differences in the barrier properties in epithelia of different tissues have been explained by the expression of a unique set of claudins in a given tissue (Van Itallie and Anderson, 2006). 24 claudins were identified in humans, which allows a large number of possible combinations and specific barrier properties.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="988.0" Y="500.0" GraphId="e_263_0" GraphRef="n264_REACTOME_419998" RelX="-1.037593984962406" RelY="0.029411764705882353"/>
+      <Point X="908.0" Y="503.0" GraphId="e_263_1"/>
+      <Point X="861.0" Y="501.0" GraphId="e_263_2" GraphRef="n265_REACTOME_421252" RelX="1.0508474576271187" RelY="0.030303030303030304" ArrowHead="Arrow"/>
+      <Anchor Position="0.6298741829046764" GraphId="e_263_a_p"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_275" GroupRef="group_comp_275" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="309.5" CenterY="2799.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_276" GroupRef="group_comp_276" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="3347.5" CenterY="284.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_275" GroupRef="group_comp_275">
+    <Graphics Color="000000" CenterX="3129.5" CenterY="1691.5" Width="5927.0" Height="2359.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_276" GroupRef="group_comp_276">
+    <Graphics Color="000000" CenterX="3347.0" CenterY="286.0" Width="6364.0" Height="400.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_203245" rdf:id="lit_203245">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16691243</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The SIRP family of receptors and immune regulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barclay, AN</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, MH</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nat Rev Immunol 6:457-64</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_391053" rdf:id="lit_391053">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12023008</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SHPS-1, a multifunctional transmembrane glycoprotein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oshima, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ruhul Amin, AR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hamaguchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matsuda, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FEBS Lett 519:1-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_548909" rdf:id="lit_548909">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19144521</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functions and molecular mechanisms of the CD47-SIRPalpha signalling pathway</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matozaki, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murata, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Okazawa, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohnishi, H</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trends Cell Biol 19:72-80</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_391140" rdf:id="lit_391140">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11792697</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signal regulatory protein (SIRPalpha), a cellular ligand for CD47, regulates neutrophil transmigration</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BÃ¼hring, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zen, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Burst, SL</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Schnell, FJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Williams, IR</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkos, CA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:10028-36</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_925201" rdf:id="lit_925201">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16339511</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A nomenclature for signal regulatory protein family members</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van den Berg, TK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van Beek, EM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BÃ¼hring, HJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Colonna, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hamaguchi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Howard, CJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kasuga, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Matozaki, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Neel, BG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parkos, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sano, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vignery, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vivier, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wright, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zawatzky, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Barclay, AN</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Immunol 175:7788-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446085" rdf:id="lit_446085">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10811835</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The tetraspan molecule CD151, a novel constituent of hemidesmosomes, associates with the integrin alpha6beta4 and may regulate the spatial organization of hemidesmosomes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sterk, LM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Geuijen, CA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Oomen, LC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calafat, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Janssen, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonnenberg, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 149:969-82</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446006" rdf:id="lit_446006">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12482924</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Analysis of the interactions between BP180, BP230, plectin and the integrin alpha6beta4 important for hemidesmosome assembly</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Koster, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Geerts, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Favre, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borradori, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonnenberg, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 116:387-99</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446082" rdf:id="lit_446082">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12802069</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction of the bullous pemphigoid antigen 1 (BP230) and desmoplakin with intermediate filaments is mediated by distinct sequences within their COOH terminus</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fontao, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Favre, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Riou, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Geerts, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jaunin, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Saurat, JH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Green, KJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonnenberg, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Borradori, L</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 14:1978-92</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446048" rdf:id="lit_446048">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">19242489</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2009</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural basis of the interaction between integrin alpha6beta4 and plectin at the hemidesmosomes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">de Pereda, JM</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lillo, MP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sonnenberg, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 28:1180-90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446011" rdf:id="lit_446011">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10637308</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The N terminus of the transmembrane protein BP180 interacts with the N-terminal domain of BP230, thereby mediating keratin cytoskeleton anchorage to the cell surface at the site of the hemidesmosome</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hopkinson, SB</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jones, JC</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol Biol Cell 11:277-86</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_430277" rdf:id="lit_430277">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12679033</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Migfilin and Mig-2 link focal adhesions to filamin and the actin cytoskeleton and function in cell shape modulation</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shi, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 113:37-47</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446358" rdf:id="lit_446358">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11331308</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A new focal adhesion protein that interacts with integrin-linked kinase and regulates cell adhesion and spreading</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Huang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hua, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 153:585-98</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446321" rdf:id="lit_446321">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16531412</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Migfilin interacts with vasodilator-stimulated phosphoprotein (VASP) and regulates VASP localization to cell-matrix adhesions and migration</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tu, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gkretsi, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, C</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:12397-407</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446336" rdf:id="lit_446336">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18508764</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The structure of alpha-parvin CH2-paxillin LD1 complex reveals a novel modular recognition for focal adhesion assembly</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukuda, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Byeon, IJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Velyvis, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wu, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gronenborn, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qin, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 283:21113-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446313" rdf:id="lit_446313">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18940607</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural analysis of the interactions between paxillin LD motifs and alpha-parvin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lorenz, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vakonakis, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lowe, ED</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Campbell, ID</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Noble, ME</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hoellerer, MK</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structure 16:1521-31</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446381" rdf:id="lit_446381">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">8538749</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1996</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Regulation of cell adhesion and anchorage-dependent growth by a new beta 1-integrin-linked protein kinase</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hannigan, GE</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Leung-Hagesteijn, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fitz-Gibbon, L</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Coppolino, MG</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Radeva, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Filmus, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bell, JC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dedhar, S</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nature 379:91-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446312" rdf:id="lit_446312">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15159419</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Affixin interacts with alpha-actinin and mediates integrin signaling for reorganization of F-actin induced by initial cell-substrate interaction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaji, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kanamori, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mishima, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshimi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takasaki, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takabayashi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujimaki, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fujisawa, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohno, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishigatsubo, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 165:539-51</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446300" rdf:id="lit_446300">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12499396</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Interaction of alphaPIX (ARHGEF6) with beta-parvin (PARVB) suggests an involvement of alphaPIX in integrin-mediated signaling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rosenberger, G</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jantke, I</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gal, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kutsche, K</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hum Mol Genet 12:155-67</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_432927" rdf:id="lit_432927">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15005707</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The first CH domain of affixin activates Cdc42 and Rac1 through alphaPIX, a Cdc42/Rac1-specific guanine nucleotide exchanging factor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mishima, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yamaji, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yoshimi, R</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ueda, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kaneko, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tanaka, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miwa, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohno, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ishigatsubo, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Genes Cells 9:193-204</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446356" rdf:id="lit_446356">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15817463</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Actopaxin interacts with TESK1 to regulate cell spreading on fibronectin</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LaLonde, DP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brown, MC</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bouverat, BP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Turner, CE</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 280:21680-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_446296" rdf:id="lit_446296">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18436335</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Rsu-1-PINCH1-ILK complex is regulated by Ras activation in tumor cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dougherty, GW</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jose, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gimona, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cutler, ML</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Eur J Cell Biol 87:721-34</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421254" rdf:id="lit_421254">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11964389</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hINADl/PATJ, a homolog of discs lost, interacts with crumbs and localizes to tight junctions in human epithelial cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lemmers, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MÃ©dina, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Delgrossi, MH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michel, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arsanto, JP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Le Bivic, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:25408-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_421242" rdf:id="lit_421242">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16129888</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PATJ connects and stabilizes apical and lateral components of tight junctions in human intestinal cells</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Michel, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arsanto, JP</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Massey-Harroche, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BÃ©clin, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wijnholds, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Le Bivic, A</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 118:4049-57</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419972" rdf:id="lit_419972">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11447115</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The cell polarity protein ASIP/PAR-3 directly associates with junctional adhesion molecule (JAM)</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ebnet, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Horikoshi, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hirose, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meyer zu Brickwedde, MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohno, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vestweber, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EMBO J 20:3738-48</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419982" rdf:id="lit_419982">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12953056</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The junctional adhesion molecule (JAM) family members JAM-2 and JAM-3 associate with the cell polarity protein PAR-3: a possible role for JAMs in endothelial cell polarity</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ebnet, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aurrand-Lions, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kuhn, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kiefer, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Butz, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zander, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Meyer zu Brickwedde, MK</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Suzuki, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Imhof, BA</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vestweber, D</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 116:3879-91</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_419007" rdf:id="lit_419007">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10225955</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nectin/PRR: an immunoglobulin-like cell adhesion molecule recruited to cadherin-based adherens junctions through interaction with Afadin, a PDZ domain-containing protein</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takahashi, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nakanishi, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Miyahara, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mandai, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Satoh, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Satoh, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nishioka, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aoki, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nomoto, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizoguchi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takai, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 145:539-49</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433731" rdf:id="lit_433731">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9219219</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1997</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vascular endothelial cadherin (VE-cadherin): cloning and role in endothelial cell-cell adhesion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ali, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Liao, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Martens, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Muller, WA</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Microcirculation 4:267-77</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433747" rdf:id="lit_433747">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">17967169</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2007</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The adhesion molecule Necl-3/SynCAM-2 localizes to myelinated axons, binds to oligodendrocytes and promotes cell adhesion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pellissier, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gerber, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bauer, C</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ballivet, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ossipow, V</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BMC Neurosci 8:90</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433744" rdf:id="lit_433744">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12050160</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2002</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The tumor suppressor protein TSLC1 is involved in cell-cell adhesion</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Masuda, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yageta, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fukuhara, H</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kuramochi, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Maruyama, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nomoto, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murakami, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 277:31014-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433751" rdf:id="lit_433751">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">16467305</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2006</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crystal structure of the V domain of human Nectin-like molecule-1/Syncam3/Tsll1/Igsf4b, a neural tissue-specific immunoglobulin-like cell-cell adhesion molecule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dong, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xu, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gong, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gao, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lin, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chen, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng, Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Qiang, B</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yuan, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Peng, X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rao, Z</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 281:10610-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_433776" rdf:id="lit_433776">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9845526</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1998</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The human poliovirus receptor related 2 protein is a new hematopoietic/endothelial homophilic adhesion molecule</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lopez, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aoubala, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jordier, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Isnardon, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Gomez, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dubreuil, P</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Blood 92:4602-11</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_418982" rdf:id="lit_418982">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">7806582</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1994</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">E-cadherin and APC compete for the interaction with beta-catenin and the cytoskeleton</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HÃ¼lsken, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Birchmeier, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Behrens, J</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Biol 127:2061-9</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_420576" rdf:id="lit_420576">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11544254</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nectin4/PRR4, a new afadin-associated member of the nectin family that trans-interacts with nectin1/PRR1 through V domain interaction</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reymond, N</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fabre, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lecocq, E</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AdelaÃ¯de, J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dubreuil, P</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lopez, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:43205-15</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_420610" rdf:id="lit_420610">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12759359</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Recruitment of nectin-3 to cell-cell junctions through trans-heterophilic interaction with CD155, a vitronectin and poliovirus receptor that localizes to alpha(v)beta3 integrin-containing membrane microdomains</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mueller, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wimmer, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 278:31251-60</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_434223" rdf:id="lit_434223">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15741237</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2005</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nectin-like molecule-1/TSLL1/SynCAM3: a neural tissue-specific immunoglobulin-like cell-cell adhesion molecule localizing at non-junctional contact sites of presynaptic nerve terminals, axons and glia cell processes</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kakunaga, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ikeda, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Itoh, S</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deguchi-Tawarada, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ohtsuka, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mizoguchi, A</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Takai, Y</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Cell Sci 118:1267-77</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>cell adhesion signaling pathway</bp:TERM><bp:ID>PW:0000648</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

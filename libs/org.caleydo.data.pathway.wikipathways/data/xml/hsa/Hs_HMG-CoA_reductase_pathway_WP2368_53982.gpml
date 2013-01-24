@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="HMG-CoA reductase pathway" Author="Carel Jonkhout" Organism="Homo sapiens">
+  <Graphics BoardWidth="949.5" BoardHeight="353.0" />
+  <DataNode TextLabel="Acetyl-CoA" GraphId="d423e" Type="Metabolite">
+    <Graphics CenterX="688.0" CenterY="68.0" Width="80.0" Height="20.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="CAS" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Acetoacetyl-CoA&#xA;" GraphId="b2f75" Type="Metabolite">
+    <Graphics CenterX="686.5" CenterY="157.0" Width="123.0" Height="24.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Thiolase" GraphId="c30dc" Type="Protein">
+    <Graphics CenterX="632.25" CenterY="108.75" Width="82.5" Height="24.5" ZOrder="32768" FontSize="10" Valign="Middle" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="3-hydroxy-3-methylglutaryl-CoA" GraphId="f7d34" Type="Metabolite">
+    <Graphics CenterX="827.0" CenterY="74.25" Width="170.0" Height="27.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Mevalonic acid&#xA;" GraphId="b9f6d" Type="Metabolite">
+    <Graphics CenterX="838.25" CenterY="159.75" Width="127.5" Height="26.5" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Mevalonate-5-phosphate" GraphId="d5157" Type="Metabolite">
+    <Graphics CenterX="833.0" CenterY="240.0" Width="138.0" Height="32.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <DataNode TextLabel="Mevalonate-5-pyrophosphate" GraphId="a64bb" Type="Metabolite">
+    <Graphics CenterX="831.0" CenterY="311.0" Width="154.0" Height="24.0" ZOrder="32768" FontSize="10" Valign="Middle" Color="0000ff" />
+    <Xref Database="" ID="" />
+  </DataNode>
+  <Line>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="686.0" Y="81.0" />
+      <Point X="686.5" Y="145.0" GraphRef="b2f75" RelX="0.0" RelY="-1.0" ArrowHead="mim-conversion" />
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0" />
+</Pathway>

@@ -70,6 +70,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 	public IPathwayResourceLoader keggPathwayResourceLoader;
 	public IPathwayResourceLoader biocartaPathwayResourceLoader;
+	public IPathwayResourceLoader wikipathwaysResourceLoader;
 
 	private HashMap<PathwayGraph, Boolean> hashPathwayToVisibilityState;
 
@@ -139,6 +140,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		PathwayDatabase pathwayDatabase = new PathwayDatabase(type, XMLPath, imagePath, imagePath);
 
 		hashPathwayDatabase.put(type, pathwayDatabase);
+		createPathwayResourceLoader(pathwayDatabase.getType());
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Setting pathway loading path: database-type:[" + type
 				+ "] " + "xml-path:[" + pathwayDatabase.getXMLPath() + "] image-path:["
@@ -266,6 +268,13 @@ public class PathwayManager extends AManager<PathwayGraph> {
 				IConfigurationElement[] ce = ext.getConfigurationElements();
 
 				biocartaPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
+			} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
+
+				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
+				IExtension ext = ep.getExtension("org.caleydo.data.pathway.wikipathways.WikiPathwaysResourceLoader");
+				IConfigurationElement[] ce = ext.getConfigurationElements();
+
+				wikipathwaysResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
 			} else {
 				throw new IllegalStateException("Unknown pathway database " + type);
 			}
@@ -281,6 +290,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			return keggPathwayResourceLoader;
 		} else if (type == EPathwayDatabaseType.BIOCARTA) {
 			return biocartaPathwayResourceLoader;
+		} else if (type == EPathwayDatabaseType.WIKIPATHWAYS) {
+			return wikipathwaysResourceLoader;
 		}
 
 		throw new IllegalStateException("Unknown pathway database " + type);
@@ -332,7 +343,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading BioCarta Pathways...");
 		}
 
-		PathwayManager.get().createPathwayResourceLoader(pathwayDatabase.getType());
 		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());
 
 		if (pathwayResourceLoader == null)
@@ -377,6 +387,12 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			throw new IllegalStateException("Pathway list file " + fileName + " not found.");
 		} catch (IOException e) {
 			throw new IllegalStateException("Error reading data from pathway list file: " + fileName);
+		} finally {
+			try {
+				if (file != null)
+					file.close();
+			} catch (IOException e) {
+			}
 		}
 
 		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing " + pathwayDatabase.getName()

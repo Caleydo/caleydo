@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="RalA downstream regulated genes" Version="20120830" Organism="Homo sapiens"><Comment Source="WikiPathways-category">Cellular Process</Comment><Comment Source="WikiPathways-description">Downstream genes of RalA signaling pathways, including the Rac-family GTPase-activating protein RLIP (also known as RLIP76 and ralA binding protein 1 (RALBP1)), CDC42(cell division cycle 42), RAC1 (ras-related C3 botulinum toxin substrate 1), RAC2, RAC3, the Y-box transcription factor ZO-1-associated nucleic acidbinding protein (ZONAB, also known as cold shock domain protein A (CSDA)), and two subunits of the exocyst complex, SEC5 (also known as exocyst complex component 2 (EXOC2)) and EXO84 (also known as EXOC8), which are involved in regulating cell proliferation, apoptosis and migration</Comment>
+  <BiopaxRef>c40</BiopaxRef>
+  <Graphics BoardWidth="618.0" BoardHeight="339.0"/>
+  <DataNode TextLabel="RAS" GraphId="b4897" Type="GeneProduct">
+    <Graphics CenterX="209.0" CenterY="76.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle" Color="ff0033"/>
+    <Xref Database="" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="ZONAB" GraphId="a245f" Type="GeneProduct">
+    <Graphics CenterX="86.0" CenterY="292.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="8531"/>
+  </DataNode>
+  <DataNode TextLabel="SEC5" GraphId="e01fc" Type="GeneProduct">
+    <Graphics CenterX="332.0" CenterY="292.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="55770"/>
+  </DataNode>
+  <DataNode TextLabel="EXOC84" GraphId="b2ab1" Type="GeneProduct">
+    <Graphics CenterX="209.0" CenterY="292.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="149371"/>
+  </DataNode>
+  <DataNode TextLabel="RALBP1" GraphId="a41b9" Type="GeneProduct">
+    <Graphics CenterX="360.0" CenterY="198.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="10928"/>
+  </DataNode>
+  <DataNode TextLabel="CDC42" GraphId="c9b31" Type="GeneProduct">
+    <Graphics CenterX="548.0" CenterY="104.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="998"/>
+  </DataNode>
+  <DataNode TextLabel="RAC3" GraphId="bc678" Type="GeneProduct">
+    <Graphics CenterX="548.0" CenterY="164.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5881"/>
+  </DataNode>
+  <DataNode TextLabel="RAC2" GraphId="c94dd" Type="GeneProduct">
+    <Graphics CenterX="548.0" CenterY="235.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5880"/>
+  </DataNode>
+  <DataNode TextLabel="RAC1" GraphId="e315a" Type="GeneProduct">
+    <Graphics CenterX="548.0" CenterY="293.0" Width="80.0" Height="26.0" ZOrder="32768" FontSize="12" Valign="Middle"/>
+    <Xref Database="Entrez Gene" ID="5879"/>
+  </DataNode>
+  <DataNode TextLabel="RalA" GraphId="b65c2" Type="GeneProduct">
+    <Graphics CenterX="209.0" CenterY="198.0" Width="80.0" Height="26.0" ZOrder="32772" FontWeight="Bold" FontSize="12" Valign="Middle" LineThickness="2.0"/>
+    <Xref Database="Entrez Gene" ID="5898"/>
+  </DataNode>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="400.0" Y="198.0" GraphRef="a41b9" RelX="1.0" RelY="0.0"/>
+      <Point X="508.0" Y="104.0" GraphRef="c9b31" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="249.0" Y="198.0" GraphRef="b65c2" RelX="1.0" RelY="0.0"/>
+      <Point X="320.0" Y="198.0" GraphRef="a41b9" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="12288" LineThickness="1.0" Color="ff0000">
+      <Point X="209.0" Y="89.0" GraphRef="b4897" RelX="0.0" RelY="1.0"/>
+      <Point X="209.0" Y="185.0" GraphRef="b65c2" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line>
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="12288" LineThickness="1.0">
+      <Point X="209.0" Y="211.0" GraphRef="b65c2" RelX="0.0" RelY="1.0"/>
+      <Point X="209.0" Y="279.0" GraphRef="b2ab1" RelX="0.0" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a13c7">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="32769" LineThickness="1.0">
+      <Point X="400.0" Y="198.0" GraphRef="a41b9" RelX="1.0" RelY="0.0"/>
+      <Point X="508.0" Y="164.0" GraphRef="bc678" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a576e">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="32770" LineThickness="1.0">
+      <Point X="400.0" Y="198.0" GraphRef="a41b9" RelX="1.0" RelY="0.0"/>
+      <Point X="508.0" Y="235.0" GraphRef="c94dd" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="af20f">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="32771" LineThickness="1.0">
+      <Point X="400.0" Y="198.0" GraphRef="a41b9" RelX="1.0" RelY="0.0"/>
+      <Point X="508.0" Y="293.0" GraphRef="e315a" RelX="-1.0" RelY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="ef386">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="32773" LineThickness="1.0">
+      <Point X="209.0" Y="211.0" GraphRef="b65c2" RelX="0.0" RelY="1.0"/>
+      <Point X="312.0" Y="279.0" GraphRef="e01fc" RelX="-0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="a95b8">
+    <Attribute Key="org.pathvisio.core.ds" Value=""/>
+    <Attribute Key="org.pathvisio.core.id" Value=""/>
+    <Graphics ZOrder="32774" LineThickness="1.0">
+      <Point X="209.0" Y="211.0" GraphRef="b65c2" RelX="0.0" RelY="1.0"/>
+      <Point X="106.0" Y="279.0" GraphRef="a245f" RelX="0.5" RelY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <InfoBox CenterX="0.0" CenterY="0.0"/>
+  <Biopax>
+    <bp:PublicationXref xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:id="c40">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">22442671</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PubMed</bp:DB>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">miR-181a post-transcriptionally downregulates oncogenic RalA and contributes to growth inhibition and apoptosis in chronic myelogenous leukemia (CML).</bp:TITLE>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PLoS One</bp:SOURCE>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2012</bp:YEAR>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fei J</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Li Y</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhu X</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luo X</bp:AUTHORS>
+    </bp:PublicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>CML - chronic Myelogenous Leukemia</bp:TERM><bp:ID>DOID:8552</bp:ID><bp:Ontology>Disease</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>

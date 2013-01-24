@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Fatty Acid Omega Oxidation" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes">Created by Magali Jaillard, Marijke Vermeer, Michiel Adrieans, Ron Schormans and Chris Evelo, see website.</Comment>
+  <Comment Source="GenMAPP remarks">http://www.bigcat.unimaas.nl/mapps/</Comment>
+  <Comment Source="WikiPathways-category">Metabolic Process</Comment>
+  <Graphics BoardWidth="9900.0" BoardHeight="13851.75" WindowWidth="7077.0" WindowHeight="14221.0"/>
+  <DataNode TextLabel="Cyp1a1" Type="GeneProduct" BackpageHead="CYP1A1 | cytochrome P450 family 1 subfamily A..." GraphId="f56" GroupRef="daf66">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="3210.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13076"/>
+  </DataNode>
+  <DataNode TextLabel="Cyp1a2" Type="GeneProduct" BackpageHead="CYP1A2 | cytochrome P450 family 1 subfamily A..." GraphId="e07" GroupRef="daf66">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="3510.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13077"/>
+  </DataNode>
+  <DataNode TextLabel="CYP3A4" Type="GeneProduct" BackpageHead="CYP3A4 | cytochrome P450 family 3 subfamily A..." GraphId="b47" GroupRef="daf66">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="3810.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CYP4A11" Type="GeneProduct" BackpageHead="CYP4A11 | cytochrome P450 family 4 subfamily ..." GraphId="af0" GroupRef="daf66">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="4110.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CYP2A6" Type="GeneProduct" BackpageHead="CYP2A6 | cytochrome P450 family 2 subfamily A..." GraphId="d7b" GroupRef="daf66">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="4410.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Ensembl Mouse" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="CYP2D6" Type="GeneProduct" BackpageHead="CYP2D6 | cytochrome P450 family 2 subfamily D..." GraphId="a09" GroupRef="daf66">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="4710.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Cyp2e1" Type="GeneProduct" BackpageHead="CYP2E1 | cytochrome P450 family 2 subfamily E..." GraphId="b5e" GroupRef="daf66">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="5010.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13106"/>
+  </DataNode>
+  <DataNode TextLabel="ADH1A" Type="GeneProduct" BackpageHead="ADH1A | alcohol dehydrogenase 1A (class I) alp..." GraphId="c69" GroupRef="bc5d2">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="6925.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="ADH1B" Type="GeneProduct" BackpageHead="ADH1B | alcohol dehydrogenase IB (class I) bet..." GraphId="e45" GroupRef="bc5d2">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="7225.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="ADH1C" Type="GeneProduct" BackpageHead="ADH1C | alcohol dehydrogenase 1C (class I) gam..." GraphId="f85" GroupRef="bc5d2">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="7525.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Adh4" Type="GeneProduct" BackpageHead="ADH4 | alcohol dehydrogenase 4 (class II) pi p..." GraphId="aa6" GroupRef="bc5d2">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="7825.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26876"/>
+  </DataNode>
+  <DataNode TextLabel="ADH6" Type="GeneProduct" BackpageHead="ADH6 | alcohol dehydrogenase 6 (class V)" GraphId="ba6" GroupRef="bc5d2">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="8125.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Adh7" Type="GeneProduct" BackpageHead="ADH7 | alcohol dehydrogenase 7 (class IV) mu o..." GraphId="cc1" GroupRef="bc5d2">
+    <Graphics Color="000000" CenterX="4750.0" CenterY="8425.0" Width="800.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11529"/>
+  </DataNode>
+  <DataNode TextLabel="Aldh1a1" Type="GeneProduct" BackpageHead="ALDH1A1 | aldehyde dehydrogenase 1 family memb..." GraphId="e86" GroupRef="ba935">
+    <Graphics Color="000000" CenterX="4795.0" CenterY="9995.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11668"/>
+  </DataNode>
+  <DataNode TextLabel="Aldh2" Type="GeneProduct" BackpageHead="ALDH2 | aldehyde dehydrogenase 2 family (mitoch..." GraphId="eda" GroupRef="ba935">
+    <Graphics Color="000000" CenterX="4795.0" CenterY="10295.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11669"/>
+  </DataNode>
+  <Line Style="Solid" GraphId="d170d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4780.0" y="2422.5" GraphRef="eb3" relX="0.0" relY="1.0"/>
+      <Point x="4750.0" y="6057.5" GraphRef="f84" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="cffe9"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e7a6a">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4750.0" y="6342.5" GraphRef="f84" relX="0.0" relY="1.0"/>
+      <Point x="4750.0" y="9107.5" GraphRef="b32" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="dfcff"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="d5bbf">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4750.0" y="9392.5" GraphRef="b32" relX="0.0" relY="1.0"/>
+      <Point x="4750.0" y="11057.5" GraphRef="d34" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+      <Anchor position="0.4" Shape="None" GraphId="afd25"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="e10c2">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4750.0" y="11342.5" GraphRef="d34" relX="0.0" relY="1.0"/>
+      <Point x="4750.0" y="12307.5" GraphRef="dfd" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="id96fab666">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4768.0" y="3876.5" GraphRef="cffe9" relX="0.0" relY="0.0"/>
+      <Point x="4130.0" y="4110.0" GraphRef="dba4c" relX="-1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idaeb22c3e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4750.0" y="7448.5" GraphRef="dfcff" relX="0.0" relY="0.0"/>
+      <Point x="4230.0" y="7675.0" GraphRef="b39b3" relX="-1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="idbb46d237">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4750.0" y="10058.5" GraphRef="afd25" relX="0.0" relY="0.0"/>
+      <Point x="4175.0" y="10145.0" GraphRef="bf159" relX="-1.0" relY="0.0"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="CH3-(CH2)10-COO-" GraphId="eb3">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4780.0" CenterY="2280.0" Width="2255.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="HO-CH-(CH2)10-COO-" GraphId="f84">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4750.0" CenterY="6200.0" Width="2555.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="HOC-(CH2)10-COO-" GraphId="b32">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4750.0" CenterY="9250.0" Width="2300.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="-OOC-(CH2)10-COO-" GraphId="d34">
+    <Graphics FontWeight="Bold" FontSize="180" Color="000000" CenterX="4750.0" CenterY="11200.0" Width="2375.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Beta Oxidation" GraphId="dfd">
+    <Graphics FontWeight="Bold" FontSize="180" Color="0000ff" CenterX="4750.0" CenterY="12450.0" Width="1760.0" Height="285.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="daf66" GraphId="dba4c" Style="Complex"/>
+  <Group GroupId="bc5d2" GraphId="b39b3" Style="Complex"/>
+  <Group GroupId="ba935" GraphId="bf159" Style="Complex"/>
+  <InfoBox CenterX="75.0" CenterY="1175.0"/>
+  <Legend CenterX="9000.0" CenterY="1700.0"/>
+</Pathway>

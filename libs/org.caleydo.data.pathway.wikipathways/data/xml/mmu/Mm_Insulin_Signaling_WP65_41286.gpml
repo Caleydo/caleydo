@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2008a" Name="Insulin Signaling" Organism="Mus musculus" License="CC BY 2.0">
+  <Comment Source="GenMAPP notes"/>
+  <Comment Source="GenMAPP remarks"/>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <Graphics BoardWidth="18441.5" BoardHeight="17952.0" WindowWidth="15480.0" WindowHeight="11220.0"/>
+  <DataNode TextLabel="Insr" Type="GeneProduct" BackpageHead="Insr | insulin receptor" GraphId="b2e" GroupRef="cf757">
+    <Graphics Color="000000" CenterX="9250.0" CenterY="1550.0" Width="1700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16337"/>
+  </DataNode>
+  <DataNode TextLabel="Igf1r" Type="GeneProduct" BackpageHead="Igf1r | insulin-like growth factor I receptor" GraphId="cb2" GroupRef="cf757">
+    <Graphics Color="000000" CenterX="11450.0" CenterY="1550.0" Width="1500.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16001"/>
+  </DataNode>
+  <DataNode TextLabel="Irs1" Type="GeneProduct" BackpageHead="Irs1 | insulin receptor substrate 1" GraphId="dc2" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="9475.0" CenterY="3140.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16367"/>
+  </DataNode>
+  <DataNode TextLabel="Irs2" Type="GeneProduct" BackpageHead="Irs2 | insulin receptor substrate 2" GraphId="d14" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="9475.0" CenterY="3440.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16368"/>
+  </DataNode>
+  <DataNode TextLabel="Irs4" Type="GeneProduct" BackpageHead="Irs4 | insulin receptor substrate 4" GraphId="b4b" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="9475.0" CenterY="4040.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16370"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3ca" Type="GeneProduct" BackpageHead="Pik3ca | phosphatidylinositol 3-kinase cataly..." GraphId="e95" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="5300.0" CenterY="3200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18706"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3cb" Type="GeneProduct" BackpageHead="Pik3cb | phosphatidylinositol 3-kinase cataly..." GraphId="f1e" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="5300.0" CenterY="3500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="74769"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3cg" Type="GeneProduct" BackpageHead="Pik3cg | phosphoinositide-3-kinase catalytic..." GraphId="e79" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="5300.0" CenterY="4100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="30955"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3cd" Type="GeneProduct" BackpageHead="Pik3cd | phosphatidylinositol 3-kinase catalyti..." GraphId="c89" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="5300.0" CenterY="3800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18707"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3r1" Type="GeneProduct" BackpageHead="Pik3r1 | phosphatidylinositol 3-kinase regula..." GraphId="cd7" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="3200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18708"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3r2" Type="GeneProduct" BackpageHead="Pik3r2 | phosphatidylinositol 3-kinase regula..." GraphId="b73" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="3500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18709"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3r3" Type="GeneProduct" BackpageHead="Pik3r3 | phosphatidylinositol 3 kinase regula..." GraphId="a0e" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="3800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18710"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3r4" Type="GeneProduct" BackpageHead="Pik3r4 | phosphatidylinositol 3 kinase regula..." GraphId="d21" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="6800.0" CenterY="4100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="75669"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3c2a" Type="GeneProduct" BackpageHead="Pik3c2a | phosphatidylinositol 3-kinase C2 do..." GraphId="bae" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="5300.0" CenterY="4400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18704"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3c3" Type="GeneProduct" BackpageHead="Pik3c3 | phosphoinositide-3-kinase class 3" GraphId="e64" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="5300.0" CenterY="5000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="225326"/>
+  </DataNode>
+  <DataNode TextLabel="Pik3c2g" Type="GeneProduct" BackpageHead="Pik3c2g | phosphatidylinositol 3-kinase C2 do..." GraphId="edf" GroupRef="e07b0">
+    <Graphics Color="000000" CenterX="5300.0" CenterY="4700.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18705"/>
+  </DataNode>
+  <DataNode TextLabel="Pdpk1" Type="GeneProduct" BackpageHead="Pdpk1 | 3-phosphoinositide dependent protein ki..." GraphId="e8c" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="6250.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18607"/>
+  </DataNode>
+  <DataNode TextLabel="Akt1" Type="GeneProduct" BackpageHead="Akt1 | thymoma viral proto-oncogene 1" GraphId="ea6" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="6550.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11651"/>
+  </DataNode>
+  <DataNode TextLabel="Akt2" Type="GeneProduct" BackpageHead="Akt2 | thymoma viral proto-oncogene 2" GraphId="a92" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="6850.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11652"/>
+  </DataNode>
+  <DataNode TextLabel="Gsk3b" Type="GeneProduct" BackpageHead="Gsk3b | glycogen synthase kinase 3 beta" GraphId="c8f" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="7450.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56637"/>
+  </DataNode>
+  <DataNode TextLabel="Gsk3a" Type="GeneProduct" BackpageHead="Gsk3a | glycogen synthase kinase 3 alpha" GraphId="e42" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="7150.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="245619"/>
+  </DataNode>
+  <DataNode TextLabel="Slc2a4" Type="GeneProduct" BackpageHead="Slc2a4 | solute carrier family 2 (facilitated ..." GraphId="ff1">
+    <Graphics Color="000000" CenterX="1450.0" CenterY="1550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20528"/>
+  </DataNode>
+  <DataNode TextLabel="Pten" Type="GeneProduct" BackpageHead="Pten | phosphatase and tensin homolog" GraphId="b2c" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="13650.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19211"/>
+  </DataNode>
+  <DataNode TextLabel="Prkci" Type="GeneProduct" BackpageHead="Prkci | protein kinase C iota" GraphId="efd" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="13950.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18759"/>
+  </DataNode>
+  <DataNode TextLabel="Prkcz" Type="GeneProduct" BackpageHead="Prkcz | protein kinase C zeta" GraphId="f1d" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="14550.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18762"/>
+  </DataNode>
+  <DataNode TextLabel="Pscd3" Type="GeneProduct" BackpageHead="Pscd3 | pleckstrin homology Sec7 and coiled-c..." GraphId="c32" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="14950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19159"/>
+  </DataNode>
+  <DataNode TextLabel="Arf6" Type="GeneProduct" BackpageHead="Arf6 | ADP-ribosylation factor 6" GraphId="b4c" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="12550.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11845"/>
+  </DataNode>
+  <DataNode TextLabel="Arf1" Type="GeneProduct" BackpageHead="Arf1 | ADP-ribosylation factor 1" GraphId="d7c" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="12250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="11840"/>
+  </DataNode>
+  <DataNode TextLabel="Inpp4a" Type="GeneProduct" BackpageHead="Inpp4a | inositol polyphosphate-4-phosphatase..." GraphId="e24" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="14550.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="269180"/>
+  </DataNode>
+  <DataNode TextLabel="Trib3" Type="GeneProduct" BackpageHead="Trib3 | tribbles homolog 3 (Drosophila)" GraphId="f97" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="14850.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="228775"/>
+  </DataNode>
+  <DataNode TextLabel="Foxo1" Type="GeneProduct" BackpageHead="Foxo1 | forkhead box O1" GraphId="ac1" GroupRef="eca64">
+    <Graphics Color="000000" CenterX="5730.0" CenterY="9135.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56458"/>
+  </DataNode>
+  <DataNode TextLabel="Pfkm" Type="GeneProduct" BackpageHead="Pfkm | phosphofructokinase muscle" GraphId="ba1" GroupRef="c0014">
+    <Graphics Color="000000" CenterX="7300.0" CenterY="12650.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18642"/>
+  </DataNode>
+  <DataNode TextLabel="Gys1" Type="GeneProduct" BackpageHead="Gys1 | glycogen synthase 1 muscle" GraphId="c5c" GroupRef="c0014">
+    <Graphics Color="000000" CenterX="7300.0" CenterY="13550.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14936"/>
+  </DataNode>
+  <DataNode TextLabel="Gab1" Type="GeneProduct" BackpageHead="Gab1 | growth factor receptor bound protein 2-a..." GraphId="c98" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="9475.0" CenterY="4340.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14388"/>
+  </DataNode>
+  <DataNode TextLabel="Shc1" Type="GeneProduct" BackpageHead="Shc1 | src homology 2 domain-containing transfo..." GraphId="de9" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="11125.0" CenterY="3140.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20416"/>
+  </DataNode>
+  <DataNode TextLabel="Shc2" Type="GeneProduct" BackpageHead="Shc2 | src homology 2 domain-containing transfo..." GraphId="e8b" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="11125.0" CenterY="3440.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="216148"/>
+  </DataNode>
+  <DataNode TextLabel="Grb2" Type="GeneProduct" BackpageHead="Grb2 | growth factor receptor bound protein 2" GraphId="c97" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="13750.0" CenterY="3200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14784"/>
+  </DataNode>
+  <DataNode TextLabel="Ptpn11" Type="GeneProduct" BackpageHead="Ptpn11 | protein tyrosine phosphatase non-rec..." GraphId="f09" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="14250.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19247"/>
+  </DataNode>
+  <DataNode TextLabel="Sos1" Type="GeneProduct" BackpageHead="Sos1 | Son of sevenless homolog 1 (Drosophila)" GraphId="c33" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="13750.0" CenterY="4300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20662"/>
+  </DataNode>
+  <DataNode TextLabel="Sos2" Type="GeneProduct" BackpageHead="Sos2 | Son of sevenless homolog 2 (Drosophila)" GraphId="f55" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="13750.0" CenterY="4600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20663"/>
+  </DataNode>
+  <DataNode TextLabel="Raf1" Type="GeneProduct" BackpageHead="Raf1 | v-raf-1 leukemia viral oncogene 1" GraphId="b6c" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="15550.0" CenterY="3500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="110157"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k1" Type="GeneProduct" BackpageHead="Map2k1 | mitogen activated protein kinase kinas..." GraphId="ee0" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="9620.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26395"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k2" Type="GeneProduct" BackpageHead="Map2k2 | mitogen activated protein kinase kinas..." GraphId="b20" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="9920.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26396"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k3" Type="GeneProduct" BackpageHead="Map2k3 | mitogen activated protein kinase kinas..." GraphId="b6f" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="10220.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26397"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k4" Type="GeneProduct" BackpageHead="Map2k4 | mitogen activated protein kinase kinas..." GraphId="f5d" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="10520.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26398"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k5" Type="GeneProduct" BackpageHead="Map2k5 | mitogen activated protein kinase kinas..." GraphId="c54" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="10820.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23938"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k6" Type="GeneProduct" BackpageHead="Map2k6 | mitogen activated protein kinase kinas..." GraphId="da7" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="11120.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26399"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k1" Type="GeneProduct" BackpageHead="Map3k1 | mitogen activated protein kinase kinas..." GraphId="e2b" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="6020.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26401"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k2" Type="GeneProduct" BackpageHead="Map3k2 | mitogen activated protein kinase kinas..." GraphId="b58" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="6320.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26405"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k3" Type="GeneProduct" BackpageHead="Map3k3 | mitogen activated protein kinase kinas..." GraphId="aa9" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="6620.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26406"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k4" Type="GeneProduct" BackpageHead="Map3k4 | mitogen activated protein kinase kinas..." GraphId="d79" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="6920.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26407"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk3" Type="GeneProduct" BackpageHead="Mapk3 | mitogen activated protein kinase 3" GraphId="cb9" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="6320.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26417"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk4" Type="GeneProduct" BackpageHead="Mapk4 | mitogen-activated protein kinase 4" GraphId="c4d" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="6620.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="225724"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk1" Type="GeneProduct" BackpageHead="Mapk1 | mitogen activated protein kinase 1" GraphId="dc9" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="6020.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26413"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk6" Type="GeneProduct" BackpageHead="Mapk6 | mitogen-activated protein kinase 6" GraphId="c8a" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="6920.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50772"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk13" Type="GeneProduct" BackpageHead="Mapk13 | mitogen activated protein kinase 13" GraphId="c50" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="9020.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26415"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk9" Type="GeneProduct" BackpageHead="Mapk9 | mitogen activated protein kinase 9" GraphId="b60" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="7820.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26420"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk10" Type="GeneProduct" BackpageHead="Mapk10 | mitogen activated protein kinase 10" GraphId="a3c" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="8120.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26414"/>
+  </DataNode>
+  <DataNode TextLabel="Map4k1" Type="GeneProduct" BackpageHead="Map4k1 | mitogen activated protein kinase kinas..." GraphId="fc9" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="10220.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26411"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k5" Type="GeneProduct" BackpageHead="Map3k5 | mitogen activated protein kinase kinas..." GraphId="a7b" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="7220.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26408"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k10" Type="GeneProduct" BackpageHead="Map3k10 | mitogen activated protein kinase kina..." GraphId="e51" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="8720.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="269881"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk8" Type="GeneProduct" BackpageHead="Mapk8 | mitogen activated protein kinase 8" GraphId="afd" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="7520.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26419"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk14" Type="GeneProduct" BackpageHead="Mapk14 | mitogen activated protein kinase 14" GraphId="fc1" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="9320.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26416"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k8" Type="GeneProduct" BackpageHead="Map3k8 | mitogen activated protein kinase kinas..." GraphId="f7a" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="8120.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26410"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k12" Type="GeneProduct" BackpageHead="Map3k12 | mitogen activated protein kinase kina..." GraphId="f3e" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="9320.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26404"/>
+  </DataNode>
+  <DataNode TextLabel="Map4k2" Type="GeneProduct" BackpageHead="Map4k2 | mitogen activated protein kinase kinas..." GraphId="b09" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="10520.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26412"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k7" Type="GeneProduct" BackpageHead="Map3k7 | mitogen activated protein kinase kinas..." GraphId="d89" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="7820.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26409"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k11" Type="GeneProduct" BackpageHead="Map3k11 | mitogen activated protein kinase kina..." GraphId="fbc" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="9020.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26403"/>
+  </DataNode>
+  <DataNode TextLabel="Map2k7" Type="GeneProduct" BackpageHead="Map2k7 | mitogen activated protein kinase kinas..." GraphId="ead" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="11420.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26400"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk11" Type="GeneProduct" BackpageHead="Mapk11 | mitogen-activated protein kinase 11" GraphId="c86" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="8420.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19094"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k9" Type="GeneProduct" BackpageHead="Map3k9 | mitogen-activated protein kinase kinas..." GraphId="f2c" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="8420.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="338372"/>
+  </DataNode>
+  <DataNode TextLabel="Map4k4" Type="GeneProduct" BackpageHead="Map4k4 | mitogen-activated protein kinase kinas..." GraphId="d34" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="11120.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26921"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk7" Type="GeneProduct" BackpageHead="Mapk7 | mitogen activated protein kinase 7" GraphId="d4f" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="7220.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23939"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k13" Type="GeneProduct" BackpageHead="Map3k13 | mitogen-activated protein kinase kina..." GraphId="f1b" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="9620.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="71751"/>
+  </DataNode>
+  <DataNode TextLabel="Map4k3" Type="GeneProduct" BackpageHead="Map4k3 | mitogen-activated protein kinase kinas..." GraphId="f2b" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="10820.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="225028"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k6" Type="GeneProduct" BackpageHead="Map3k6 | mitogen-activated protein kinase kinas..." GraphId="ed1" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="7520.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="53608"/>
+  </DataNode>
+  <DataNode TextLabel="Mink1" Type="GeneProduct" BackpageHead="Mink1 | misshapen-like kinase 1 (zebrafish)" GraphId="b3f" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="11720.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50932"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk12" Type="GeneProduct" BackpageHead="Mapk12 | mitogen-activated protein kinase 12" GraphId="ebc" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="14545.0" CenterY="8720.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="29857"/>
+  </DataNode>
+  <DataNode TextLabel="Map4k5" Type="GeneProduct" BackpageHead="Map4k5 | mitogen-activated protein kinase kinas..." GraphId="d44" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="11420.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="399510"/>
+  </DataNode>
+  <DataNode TextLabel="Map3k14" Type="GeneProduct" BackpageHead="Map3k14 | mitogen-activated protein kinase kina..." GraphId="bfa" GroupRef="a93f2">
+    <Graphics Color="000000" CenterX="16145.0" CenterY="9920.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="53859"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6kb1" Type="GeneProduct" BackpageHead="Rps6kb1 | ribosomal protein S6 kinase polypep..." GraphId="a9a" GroupRef="ac853">
+    <Graphics Color="000000" CenterX="8870.0" CenterY="9720.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="72508"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6ka2" Type="GeneProduct" BackpageHead="Rps6ka2 | ribosomal protein S6 kinase polypep..." GraphId="e87" GroupRef="c3a3b">
+    <Graphics Color="000000" CenterX="15430.0" CenterY="13630.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20112"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6ka3" Type="GeneProduct" BackpageHead="Rps6ka3 | ribosomal protein S6 kinase polypepti..." GraphId="a78" GroupRef="c3a3b">
+    <Graphics Color="000000" CenterX="15430.0" CenterY="13930.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="110651"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6kb2" Type="GeneProduct" BackpageHead="Rps6kb2 | ribosomal protein S6 kinase polypep..." GraphId="d09" GroupRef="ac853">
+    <Graphics Color="000000" CenterX="8870.0" CenterY="10020.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="58988"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6ka1" Type="GeneProduct" BackpageHead="Rps6ka1 | ribosomal protein S6 kinase polypepti..." GraphId="a2e" GroupRef="c3a3b">
+    <Graphics Color="000000" CenterX="15430.0" CenterY="13330.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20111"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6ka5" Type="GeneProduct" BackpageHead="Rps6ka5 | ribosomal protein S6 kinase polypep..." GraphId="b9b" GroupRef="c3a3b">
+    <Graphics Color="000000" CenterX="15430.0" CenterY="14530.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="73086"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6ka6" Type="GeneProduct" BackpageHead="Rps6ka6 | ribosomal protein S6 kinase polypepti..." GraphId="efb" GroupRef="c3a3b">
+    <Graphics Color="000000" CenterX="15430.0" CenterY="14830.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="67071"/>
+  </DataNode>
+  <DataNode TextLabel="Rps6ka4" Type="GeneProduct" BackpageHead="Rps6ka4 | ribosomal protein S6 kinase polypep..." GraphId="f56" GroupRef="c3a3b">
+    <Graphics Color="000000" CenterX="15430.0" CenterY="14230.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56613"/>
+  </DataNode>
+  <DataNode TextLabel="Irs3" Type="GeneProduct" BackpageHead="Irs3 | insulin receptor substrate 3" GraphId="a1a" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="9475.0" CenterY="3740.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16369"/>
+  </DataNode>
+  <DataNode TextLabel="Ppp1cc" Type="GeneProduct" BackpageHead="Ppp1cc | protein phosphatase 1 catalytic subu..." GraphId="f38" GroupRef="c0014">
+    <Graphics Color="000000" CenterX="7300.0" CenterY="14150.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19047"/>
+  </DataNode>
+  <DataNode TextLabel="Ptprf" Type="GeneProduct" BackpageHead="Ptprf | protein tyrosine phosphatase receptor..." GraphId="b03" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="12750.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19268"/>
+  </DataNode>
+  <DataNode TextLabel="Cbl" Type="GeneProduct" BackpageHead="Cbl | Casitas B-lineage lymphoma" GraphId="ac9" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="9450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12402"/>
+  </DataNode>
+  <DataNode TextLabel="Cblb" Type="GeneProduct" BackpageHead="Cblb | Casitas B-lineage lymphoma b" GraphId="d5c" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="9750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="208650"/>
+  </DataNode>
+  <DataNode TextLabel="Cblc" Type="GeneProduct" BackpageHead="Cblc | Casitas B-lineage lymphoma c" GraphId="ce7" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="10050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="80794"/>
+  </DataNode>
+  <DataNode TextLabel="Rapgef1" Type="GeneProduct" BackpageHead="Rapgef1 | Rap guanine nucleotide exchange facto..." GraphId="c62" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="10650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="107746"/>
+  </DataNode>
+  <DataNode TextLabel="Cap1" Type="GeneProduct" BackpageHead="Cap1 | CAP adenylate cyclase-associated prote..." GraphId="eb9" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="9150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12331"/>
+  </DataNode>
+  <DataNode TextLabel="Sorbs1" Type="GeneProduct" BackpageHead="Sorbs1 | sorbin and SH3 domain containing 1" GraphId="f6e" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="8850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20411"/>
+  </DataNode>
+  <DataNode TextLabel="Rhoj" Type="GeneProduct" BackpageHead="Rhoj | ras homolog gene family member J" GraphId="eb5" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="13150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="80837"/>
+  </DataNode>
+  <DataNode TextLabel="Snx26" Type="GeneProduct" BackpageHead="Snx26 | sorting nexin 26" GraphId="dba" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="14650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="233071"/>
+  </DataNode>
+  <DataNode TextLabel="Rhoq" Type="GeneProduct" BackpageHead="Rhoq | ras homolog gene family member Q" GraphId="b0d" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="10950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="104215"/>
+  </DataNode>
+  <DataNode TextLabel="Crk" Type="GeneProduct" BackpageHead="Crk | v-crk sarcoma virus CT10 oncogene homolog..." GraphId="e15" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2950.0" CenterY="10350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12928"/>
+  </DataNode>
+  <DataNode TextLabel="Flot1" Type="GeneProduct" BackpageHead="Flot1 | flotillin 1" GraphId="b85" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1220.0" CenterY="8850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14251"/>
+  </DataNode>
+  <DataNode TextLabel="Flot2" Type="GeneProduct" BackpageHead="Flot2 | flotillin 2" GraphId="a25" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1220.0" CenterY="9150.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14252"/>
+  </DataNode>
+  <DataNode TextLabel="MGI:1345171" Type="GeneProduct" BackpageHead="MGI:1345171 | adaptor protein with pleckstrin h..." GraphId="b5c" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="13750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="23921"/>
+  </DataNode>
+  <DataNode TextLabel="Ptpn1" Type="GeneProduct" BackpageHead="Ptpn1 | protein tyrosine phosphatase non-rece..." GraphId="a5e" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="13050.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19246"/>
+  </DataNode>
+  <DataNode TextLabel="Frap1" Type="GeneProduct" BackpageHead="Frap1 | FK506 binding protein 12-rapamycin asso..." GraphId="d38">
+    <Graphics Color="000000" CenterX="9820.0" CenterY="8420.0" Width="1700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56717"/>
+  </DataNode>
+  <DataNode TextLabel="Eif4e" Type="GeneProduct" BackpageHead="Eif4e | eukaryotic translation initiation facto..." GraphId="ae2" GroupRef="efeab">
+    <Graphics Color="000000" CenterX="10880.0" CenterY="10050.0" Width="1700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13684"/>
+  </DataNode>
+  <DataNode TextLabel="Eif4ebp1" Type="GeneProduct" BackpageHead="Eif4ebp1 | eukaryotic translation initiation fa..." GraphId="bf9" GroupRef="efeab">
+    <Graphics Color="000000" CenterX="10880.0" CenterY="9750.0" Width="1700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13685"/>
+  </DataNode>
+  <DataNode TextLabel="Lipe" Type="GeneProduct" BackpageHead="Lipe | lipase hormone sensitive" GraphId="bc3" GroupRef="c0014">
+    <Graphics Color="000000" CenterX="7300.0" CenterY="13250.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16890"/>
+  </DataNode>
+  <DataNode TextLabel="Gys2" Type="GeneProduct" BackpageHead="Gys2 | glycogen synthase 2" GraphId="d12" GroupRef="c0014">
+    <Graphics Color="000000" CenterX="7300.0" CenterY="13850.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="232493"/>
+  </DataNode>
+  <DataNode TextLabel="Egr1" Type="GeneProduct" BackpageHead="Egr1 | early growth response 1" GraphId="fce" GroupRef="eca64">
+    <Graphics Color="000000" CenterX="5730.0" CenterY="10335.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13653"/>
+  </DataNode>
+  <DataNode TextLabel="Fos" Type="GeneProduct" BackpageHead="Fos | FBJ osteosarcoma oncogene" GraphId="b0e" GroupRef="eca64">
+    <Graphics Color="000000" CenterX="5730.0" CenterY="10635.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14281"/>
+  </DataNode>
+  <DataNode TextLabel="Jun" Type="GeneProduct" BackpageHead="Jun | Jun oncogene" GraphId="c5b" GroupRef="eca64">
+    <Graphics Color="000000" CenterX="5730.0" CenterY="10935.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16476"/>
+  </DataNode>
+  <DataNode TextLabel="Slc2a1" Type="GeneProduct" BackpageHead="Slc2a1 | solute carrier family 2 (facilitated ..." GraphId="a50">
+    <Graphics Color="000000" CenterX="3100.0" CenterY="1550.0" Width="700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20525"/>
+  </DataNode>
+  <DataNode TextLabel="Grb10" Type="GeneProduct" BackpageHead="Grb10 | growth factor receptor bound protein 10..." GraphId="d78" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="13750.0" CenterY="3500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="14783"/>
+  </DataNode>
+  <DataNode TextLabel="Shc3" Type="GeneProduct" BackpageHead="Shc3 | src homology 2 domain-containing transfo..." GraphId="b44" GroupRef="fe14d">
+    <Graphics Color="000000" CenterX="11125.0" CenterY="3740.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20418"/>
+  </DataNode>
+  <DataNode TextLabel="Hras1" Type="GeneProduct" BackpageHead="Hras1 | Harvey rat sarcoma virus oncogene 1" GraphId="ade" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="15550.0" CenterY="3200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="15461"/>
+  </DataNode>
+  <DataNode TextLabel="Rrad" Type="GeneProduct" BackpageHead="Rrad | Ras-related associated with diabetes" GraphId="f0b" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="15550.0" CenterY="4000.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56437"/>
+  </DataNode>
+  <DataNode TextLabel="Inppl1" Type="GeneProduct" BackpageHead="Inppl1 | inositol polyphosphate phosphatase-lik..." GraphId="d48" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="13950.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16332"/>
+  </DataNode>
+  <DataNode TextLabel="Prkca" Type="GeneProduct" BackpageHead="Prkca | protein kinase C alpha" GraphId="f59" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="12750.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18750"/>
+  </DataNode>
+  <DataNode TextLabel="Prkcb1" Type="GeneProduct" BackpageHead="Prkcb1 | protein kinase C beta 1" GraphId="c40" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="13050.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18751"/>
+  </DataNode>
+  <DataNode TextLabel="Prkcq" Type="GeneProduct" BackpageHead="Prkcq | protein kinase C theta" GraphId="d53" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="14250.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18761"/>
+  </DataNode>
+  <DataNode TextLabel="Prkch" Type="GeneProduct" BackpageHead="Prkch | protein kinase C eta" GraphId="ca0" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="13650.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18755"/>
+  </DataNode>
+  <DataNode TextLabel="Prkcd" Type="GeneProduct" BackpageHead="Prkcd | protein kinase C delta" GraphId="ba4" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="13350.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18753"/>
+  </DataNode>
+  <DataNode TextLabel="Enpp1" Type="GeneProduct" BackpageHead="Enpp1 | ectonucleotide pyrophosphatase/phosphod..." GraphId="ff0" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="13350.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18605"/>
+  </DataNode>
+  <DataNode TextLabel="Gyg1" Type="GeneProduct" BackpageHead="Gyg1 | glycogenin 1" GraphId="f6a" GroupRef="c0014">
+    <Graphics Color="000000" CenterX="7300.0" CenterY="14450.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="27357"/>
+  </DataNode>
+  <DataNode TextLabel="Pfkl" Type="GeneProduct" BackpageHead="Pfkl | phosphofructokinase liver B-type" GraphId="f62" GroupRef="c0014">
+    <Graphics Color="000000" CenterX="7300.0" CenterY="12950.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="18641"/>
+  </DataNode>
+  <DataNode TextLabel="Tsc1" Type="GeneProduct" BackpageHead="Tsc1 | tuberous sclerosis 1" GraphId="e82" GroupRef="e981d">
+    <Graphics Color="000000" CenterX="9820.0" CenterY="6620.0" Width="1700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="64930"/>
+  </DataNode>
+  <DataNode TextLabel="Rheb" Type="GeneProduct" BackpageHead="Rheb | RAS-homolog enriched in brain" GraphId="f2d">
+    <Graphics Color="000000" CenterX="9825.0" CenterY="7720.0" Width="1700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19744"/>
+  </DataNode>
+  <DataNode TextLabel="Tsc2" Type="GeneProduct" BackpageHead="Tsc2 | tuberous sclerosis 2" GraphId="b69" GroupRef="e981d">
+    <Graphics Color="000000" CenterX="9820.0" CenterY="6920.0" Width="1700.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22084"/>
+  </DataNode>
+  <DataNode TextLabel="Rab4a" Type="GeneProduct" BackpageHead="Rab4a | RAB4A member RAS oncogene family" GraphId="e37" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="13450.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19341"/>
+  </DataNode>
+  <DataNode TextLabel="Stxbp4" Type="GeneProduct" BackpageHead="Stxbp4 | syntaxin binding protein 4" GraphId="a30" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="10500.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20913"/>
+  </DataNode>
+  <DataNode TextLabel="Vamp2" Type="GeneProduct" BackpageHead="Vamp2 | vesicle-associated membrane protein 2" GraphId="dbf" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="10800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22318"/>
+  </DataNode>
+  <DataNode TextLabel="Snap25" Type="GeneProduct" BackpageHead="Snap25 | synaptosomal-associated protein 25" GraphId="d42" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="11750.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20614"/>
+  </DataNode>
+  <DataNode TextLabel="Snap23" Type="GeneProduct" BackpageHead="Snap23 | synaptosomal-associated protein 23" GraphId="f52" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="11400.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20619"/>
+  </DataNode>
+  <DataNode TextLabel="Ehd1" Type="GeneProduct" BackpageHead="Ehd1 | EH-domain containing 1" GraphId="ae9" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="14050.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13660"/>
+  </DataNode>
+  <DataNode TextLabel="Ehd2" Type="GeneProduct" BackpageHead="Ehd2 | EH-domain containing 2" GraphId="e7d" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="14350.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="259300"/>
+  </DataNode>
+  <DataNode TextLabel="Myo1c" Type="GeneProduct" BackpageHead="Myo1c | myosin IC" GraphId="c5e" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2900.0" CenterY="12250.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="17913"/>
+  </DataNode>
+  <DataNode TextLabel="Kif5b" Type="GeneProduct" BackpageHead="Kif5b | kinesin family member 5B" GraphId="c58" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2900.0" CenterY="11950.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16573"/>
+  </DataNode>
+  <DataNode TextLabel="Kif3a" Type="GeneProduct" BackpageHead="Kif3a | kinesin family member 3A" GraphId="a23" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="2900.0" CenterY="11650.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16568"/>
+  </DataNode>
+  <DataNode TextLabel="Sgk" Type="GeneProduct" BackpageHead="Sgk | serum/glucocorticoid regulated kinase" GraphId="f87" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="4650.0" CenterY="6250.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20393"/>
+  </DataNode>
+  <DataNode TextLabel="Sgk2" Type="GeneProduct" BackpageHead="Sgk2 | serum/glucocorticoid regulated kinase 2" GraphId="d32" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="4650.0" CenterY="6550.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="27219"/>
+  </DataNode>
+  <DataNode TextLabel="Sgkl" Type="GeneProduct" BackpageHead="Sgkl" GraphId="cce" GroupRef="e4338">
+    <Graphics Color="000000" CenterX="4650.0" CenterY="6850.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID=""/>
+  </DataNode>
+  <DataNode TextLabel="Foxo3a" Type="GeneProduct" BackpageHead="Foxo3a | forkhead box O3a" GraphId="f51" GroupRef="eca64">
+    <Graphics Color="000000" CenterX="5730.0" CenterY="9435.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="56484"/>
+  </DataNode>
+  <DataNode TextLabel="Tbc1d4" Type="GeneProduct" BackpageHead="Tbc1d4 | TBC1 domain family member 4" GraphId="a17" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="12850.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="210789"/>
+  </DataNode>
+  <DataNode TextLabel="Elk1" Type="GeneProduct" BackpageHead="Elk1 | ELK1 member of ETS oncogene family" GraphId="ad8" GroupRef="eca64">
+    <Graphics Color="000000" CenterX="5730.0" CenterY="9735.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="13712"/>
+  </DataNode>
+  <DataNode TextLabel="Srf" Type="GeneProduct" BackpageHead="Srf | serum response factor" GraphId="f4a" GroupRef="eca64">
+    <Graphics Color="000000" CenterX="5730.0" CenterY="10035.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20807"/>
+  </DataNode>
+  <DataNode TextLabel="Grb14" Type="GeneProduct" BackpageHead="Grb14 | growth factor receptor bound protein 14..." GraphId="c4e" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="13750.0" CenterY="3800.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="50915"/>
+  </DataNode>
+  <DataNode TextLabel="Stxbp1" Type="GeneProduct" BackpageHead="Stxbp1 | syntaxin binding protein 1" GraphId="a33" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="9600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20910"/>
+  </DataNode>
+  <DataNode TextLabel="Stxbp2" Type="GeneProduct" BackpageHead="Stxbp2 | syntaxin binding protein 2" GraphId="ac4" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="9900.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20911"/>
+  </DataNode>
+  <DataNode TextLabel="Stxbp3" Type="GeneProduct" BackpageHead="Stxbp3 | syntaxin binding protein 3" GraphId="b46" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="10200.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20912"/>
+  </DataNode>
+  <DataNode TextLabel="Stx4a" Type="GeneProduct" BackpageHead="Stx4a | syntaxin 4A (placental)" GraphId="d22" GroupRef="f222b">
+    <Graphics Color="000000" CenterX="1200.0" CenterY="11100.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="20909"/>
+  </DataNode>
+  <DataNode TextLabel="Mapk8" Type="GeneProduct" BackpageHead="Mapk8 | mitogen activated protein kinase 8" GraphId="efa" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="14850.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="26419"/>
+  </DataNode>
+  <DataNode TextLabel="Socs1" Type="GeneProduct" BackpageHead="Socs1 | suppressor of cytokine signaling 1" GraphId="d69" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="15150.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12703"/>
+  </DataNode>
+  <DataNode TextLabel="Socs3" Type="GeneProduct" BackpageHead="Socs3 | suppressor of cytokine signaling 3" GraphId="ae4" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="15450.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="12702"/>
+  </DataNode>
+  <DataNode TextLabel="Prkaa1" Type="GeneProduct" BackpageHead="Prkaa1 | protein kinase AMP-activated alpha ..." GraphId="f71" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="15150.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="105787"/>
+  </DataNode>
+  <DataNode TextLabel="Prkaa2" Type="GeneProduct" BackpageHead="Prkaa2 | protein kinase AMP-activated alpha ..." GraphId="cd3" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="12100.0" CenterY="15450.0" Width="1100.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="108079"/>
+  </DataNode>
+  <DataNode TextLabel="Ikbkb" Type="GeneProduct" BackpageHead="Ikbkb | inhibitor of kappaB kinase beta" GraphId="e4a" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="15750.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="16150"/>
+  </DataNode>
+  <DataNode TextLabel="Xbp1" Type="GeneProduct" BackpageHead="Xbp1 | X-box binding protein 1" GraphId="b11" GroupRef="eaaf5">
+    <Graphics Color="000000" CenterX="10250.0" CenterY="16050.0" Width="1000.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="22433"/>
+  </DataNode>
+  <DataNode TextLabel="Rac1" Type="GeneProduct" BackpageHead="Rac1 | RAS-related C3 botulinum substrate 1" GraphId="c82" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="15550.0" CenterY="4300.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19353"/>
+  </DataNode>
+  <DataNode TextLabel="Rac2" Type="GeneProduct" BackpageHead="Rac2 | RAS-related C3 botulinum substrate 2" GraphId="a3f" GroupRef="a2d74">
+    <Graphics Color="000000" CenterX="15550.0" CenterY="4600.0" Width="900.0" Height="300.0" ZOrder="32768"/>
+    <Xref Database="Entrez Gene" ID="19354"/>
+  </DataNode>
+  <Line Style="Broken" GraphId="e9f82">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="14350.0" y="1450.0"/>
+      <Point x="800.0" y="1450.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a3db3" GroupRef="cf757">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9250.0" y="1450.0"/>
+      <Point x="9250.0" y="1100.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c4252" GroupRef="cf757">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="11400.0" y="1400.0"/>
+      <Point x="11400.0" y="1100.0" ArrowHead="ReceptorRound"/>
+    </Graphics>
+  </Line>
+  <Line Style="Broken" GraphId="dfcea">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="14350.0" y="1650.0"/>
+      <Point x="800.0" y="1650.0"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="ef5df">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="8852.5" y="3570.0" GraphRef="ace8c" relX="-1.0" relY="0.0"/>
+      <Point x="7370.0" y="3965.0" GraphRef="d0744" relX="1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c02ae">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="14650.0" y="4870.0" GraphRef="fa26c" relX="0.0" relY="1.0"/>
+      <Point x="14672.5" y="5330.0" GraphRef="b426a" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="bdbac">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10300.0" y="1820.0" GraphRef="a060c" relX="0.0" relY="1.0"/>
+      <Point x="10310.0" y="2530.0" GraphRef="ace8c" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f52c1">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4730.0" y="4617.5" GraphRef="d0744" relX="-1.0" relY="0.5"/>
+      <Point x="3800.0" y="5610.0" GraphRef="d1c4a" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="cc077">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="4535.0" y="7720.0" GraphRef="d1c4a" relX="0.5" relY="1.0"/>
+      <Point x="5765.0" y="8540.0" GraphRef="a6742" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a378c">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="3065.0" y="7720.0" GraphRef="d1c4a" relX="-0.5" relY="1.0"/>
+      <Point x="2075.0" y="8210.0" GraphRef="c1737" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="f0141">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="1352.5" y="8210.0" GraphRef="c1737" relX="-0.5" relY="-1.0"/>
+      <Point x="2450.0" y="2120.0" GraphRef="e02" relX="0.0" relY="1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fecbc">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="11767.5" y="3050.0" GraphRef="ace8c" relX="1.0" relY="-0.5"/>
+      <Point x="13180.0" y="3765.0" GraphRef="fa26c" relX="-1.0" relY="0.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="a868d">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="5270.0" y="6665.0" GraphRef="d1c4a" relX="1.0" relY="0.0"/>
+      <Point x="8850.0" y="6770.0" GraphRef="c9361" relX="-1.0" relY="0.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e668e">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9825.0" y="7870.0" GraphRef="f2d" relX="0.0" relY="1.0"/>
+      <Point x="9820.0" y="8270.0" GraphRef="d38" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fde92">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9395.0" y="8570.0" GraphRef="d38" relX="-0.5" relY="1.0"/>
+      <Point x="8870.0" y="9130.0" GraphRef="c717d" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="e96e8">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="9820.0" y="7190.0" GraphRef="c9361" relX="0.0" relY="1.0"/>
+      <Point x="9825.0" y="7570.0" GraphRef="f2d" relX="0.0" relY="-1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="c67ca">
+    <Graphics ConnectorType="Elbow" ZOrder="12288" Color="000000">
+      <Point x="10670.0" y="8420.0" GraphRef="d38" relX="1.0" relY="0.0"/>
+      <Point x="11038.75" y="4610.0" GraphRef="ace8c" relX="0.5" relY="1.0" ArrowHead="TBar"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="fdedf">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="15370.0" y="11990.0" GraphRef="b426a" relX="0.0" relY="1.0"/>
+      <Point x="15385.0" y="12690.0" GraphRef="a6d8e" relX="0.0" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Line Style="Solid" GraphId="b957a">
+    <Graphics ZOrder="12288" Color="000000">
+      <Point x="10245.0" y="8570.0" GraphRef="d38" relX="0.5" relY="1.0"/>
+      <Point x="10520.0" y="9175.0" GraphRef="e9972" relX="-0.5" relY="-1.0" ArrowHead="Arrow"/>
+    </Graphics>
+  </Line>
+  <Label TextLabel="Glucose Transport" GraphId="e02">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2450.0" CenterY="2000.0" Width="1805.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Modulators of Insulin Action" GraphId="f02" GroupRef="eaaf5">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="11500.0" CenterY="12300.0" Width="2720.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="MEK/MAP Kinases" GraphId="d33" GroupRef="a93f2">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="15410.0" CenterY="5570.0" Width="1790.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Insulin Receptor Substrates" GraphId="cbf" GroupRef="fe14d">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="10310.0" CenterY="2770.0" Width="2675.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="PI 3-Kinase" GraphId="a9f" GroupRef="e07b0">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="6150.0" CenterY="2900.0" Width="1145.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="p90 Rsk Kinases" GraphId="f63" GroupRef="c3a3b">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="15385.0" CenterY="12930.0" Width="1595.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Transcriptional Regulators &amp; Immediate Early Genes" GraphId="c0a" GroupRef="eca64">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="5765.0" CenterY="8780.0" Width="4010.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Vesicular Trafficking" GraphId="c45" GroupRef="f222b">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="2100.0" CenterY="8450.0" Width="2030.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="p70 S6 Kinases" GraphId="e68" GroupRef="ac853">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="8870.0" CenterY="9370.0" Width="1505.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Metabolic Regulation" GraphId="a4a" GroupRef="c0014">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="7300.0" CenterY="12350.0" Width="2105.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Ras-MAPK Signaling" GraphId="d85" GroupRef="a2d74">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="14600.0" CenterY="2900.0" Width="2030.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="PDK/Akt Signaling" GraphId="ccd" GroupRef="e4338">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="3850.0" CenterY="5850.0" Width="1820.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Tor Signaling" GraphId="ded">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="9820.0" CenterY="6220.0" Width="1370.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Label TextLabel="Translation Regulation" GraphId="b2d" GroupRef="efeab">
+    <Graphics FontWeight="Bold" FontSize="150" Color="000000" CenterX="11140.0" CenterY="9415.0" Width="2240.0" Height="240.0" ZOrder="28672"/>
+  </Label>
+  <Group GroupId="cf757" GraphId="a060c" Style="Complex"/>
+  <Group GroupId="fe14d" GraphId="ace8c" Style="Complex"/>
+  <Group GroupId="e07b0" GraphId="d0744" Style="Complex"/>
+  <Group GroupId="a2d74" GraphId="fa26c" Style="Complex"/>
+  <Group GroupId="a93f2" GraphId="b426a" Style="Complex"/>
+  <Group GroupId="c3a3b" GraphId="a6d8e" Style="Complex"/>
+  <Group GroupId="eaaf5" Style="Complex"/>
+  <Group GroupId="c0014" Style="Complex"/>
+  <Group GroupId="efeab" GraphId="e9972" Style="Complex"/>
+  <Group GroupId="ac853" GraphId="c717d" Style="Complex"/>
+  <Group GroupId="e981d" GraphId="c9361" Style="Complex"/>
+  <Group GroupId="e4338" GraphId="d1c4a" Style="Complex"/>
+  <Group GroupId="eca64" GraphId="a6742" Style="Complex"/>
+  <Group GroupId="f222b" GraphId="c1737" Style="Complex"/>
+  <InfoBox CenterX="125.0" CenterY="125.0"/>
+  <Legend CenterX="14575.0" CenterY="125.0"/>
+</Pathway>

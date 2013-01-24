@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pathway xmlns="http://genmapp.org/GPML/2010a" Name="Signaling by Robo receptor" Organism="Homo sapiens" Data-Source="Reactome - http://www.reactome.org" Version="release 35" Author="Garapati, P V" Maintainer="Garapati, P V" Email="phani@ebi.ac.uk">
+  <Comment Source="WikiPathways-description">The Roundabout (Robo) family encodes transmembrane receptors that regulate axonal guidance and cell migration. The major function of the Robo receptors is to mediate repulsion of the navigating growth cones. There are four human Robo homologues, Robo1, Robo2, Robo3 and Robo4. Most of the Robos have the similar ectodomain architecture as the cell adhesion molecules, five Ig domains followed by three FN3 repeats except for Robo4, it has 2Ig and 2FN3 repeats. The cytoplasmic domains of Robo receptors are in general poorly conserved. However, there are four short conserved cytoplasmic sequence motifs, named CC0-3, that serve as binding sites for adaptor proteins. The ligands for the human Robo receptors are the three Slit proteins Slit1, Slit2, and Slit3; all of the Slit proteins contain a tandem of four LRR (leucine rich repeat) domains at N terminus, termed D1 D4 followed by six EGF (epidermal growth factor)-like domains, a laminin G like domain (ALPS), three EGF-like domains, and a C-terminal cysteine knot domain. Most Slit proteins are cleaved within the EGF-like region by unknown proteases.&lt;br&gt;&lt;br&gt;Slit protein binding modulates Robo interactions with the cytosolic adaptors. The cytoplasmic domain of Robo1 and Robo2 determines the repulsive responses of these receptors. Based on the studies from both invertebrate and vertebrate organisms its been inferred that Robo induces growth cone repulsion by controlling cytoskeletal dynamics via either Abelson kinase (Abl) and Enabled (Ena), or Rac activity.&lt;br&gt;</Comment>
+  <Comment Source="WikiPathways-category">Cellular Process</Comment>
+  <BiopaxRef>lit_375905</BiopaxRef>
+  <DataNode GraphId="n2_REACTOME_375997" TextLabel="SLIT2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1261.5" CenterY="177.0" Width="39.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O94813"/>
+  </DataNode>
+  <DataNode GraphId="n3_REACTOME_426409" TextLabel="Slit2-N&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1473.0" CenterY="159.0" Width="48.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O94813"/>
+  </DataNode>
+  <DataNode GraphId="n4_REACTOME_426412" TextLabel="Slit2-C&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1441.5" CenterY="242.0" Width="47.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="O94813"/>
+  </DataNode>
+  <DataNode GraphId="n5_REACTOME_428470" TextLabel="Unidentified &#10;protease&#10;" Type="Unknown">
+    <Graphics Color="000000" CenterX="1392.5" CenterY="43.0" Width="81.0" Height="36.0" Valign="Middle" FillColor="ccffcc"/>
+    <Xref Database="Reactome" ID="REACT_19522"/>
+  </DataNode>
+  <DataNode GraphId="n9_REACTOME_426410" TextLabel="ROBO3A.1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="813.5" CenterY="378.0" Width="69.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q96MS0-1"/>
+  </DataNode>
+  <DataNode GraphId="n10_REACTOME_428477" TextLabel="Robo1/ Robo2&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="803.0" CenterY="402.0" Width="94.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19642"/>
+  </DataNode>
+  <DataNode GraphId="n11_REACTOME_428496" TextLabel="Robo1/Robo2:&#10;Robo3A.1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="999.0" CenterY="391.0" Width="94.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19631"/>
+  </DataNode>
+  <DataNode GraphId="n15_REACTOME_428493" TextLabel="Glypican-1:HSPG&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1292.5" CenterY="151.0" Width="107.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19843"/>
+  </DataNode>
+  <DataNode GraphId="n16_REACTOME_428489" TextLabel="Slit2:Glypican-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1088.0" CenterY="162.0" Width="100.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19697"/>
+  </DataNode>
+  <DataNode GraphId="n22_REACTOME_204361" TextLabel="ROBO1&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1088.5" CenterY="391.0" Width="49.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9Y6N7"/>
+  </DataNode>
+  <DataNode GraphId="n23_REACTOME_390371" TextLabel="Robo1:Slit2:&#10;Glypican-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1287.0" CenterY="389.0" Width="78.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19858"/>
+  </DataNode>
+  <DataNode GraphId="n31_REACTOME_428478" TextLabel="Ena/Vasp proteins&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1287.5" CenterY="468.0" Width="115.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20297"/>
+  </DataNode>
+  <DataNode GraphId="n32_REACTOME_376032" TextLabel="Glypican-1:Slit2:&#10;Robo1:Ena/Vasp &#10;proteins&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1506.0" CenterY="390.0" Width="110.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19985"/>
+  </DataNode>
+  <DataNode GraphId="n40_REACTOME_203077" TextLabel="Profilin&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1506.5" CenterY="468.0" Width="47.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20193"/>
+  </DataNode>
+  <DataNode GraphId="n41_REACTOME_428492" TextLabel="Glypican-1:Slit2:&#10;Robo1:Ena/Vasp:&#10;Profilin&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1720.0" CenterY="390.0" Width="110.0" Height="50.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19848"/>
+  </DataNode>
+  <DataNode GraphId="n45_REACTOME_428474" TextLabel="SrGAP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="1720.5" CenterY="468.0" Width="43.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19581"/>
+  </DataNode>
+  <DataNode GraphId="n46_REACTOME_376031" TextLabel="Robo1:Slit2:SrGAP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1929.5" CenterY="390.0" Width="113.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19732"/>
+  </DataNode>
+  <DataNode GraphId="n48_REACTOME_182921" TextLabel="CDC42-GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="1855.0" CenterY="656.0" Width="80.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_12889"/>
+  </DataNode>
+  <DataNode GraphId="n60_REACTOME_200631" TextLabel="KIAA1688 protein&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2033.0" CenterY="468.0" Width="112.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="UniProt" ID="Q9C0H5"/>
+  </DataNode>
+  <DataNode GraphId="n61_REACTOME_428491" TextLabel="Robo1:Slit2:&#10;KIAA1688&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2136.0" CenterY="389.0" Width="78.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19688"/>
+  </DataNode>
+  <DataNode GraphId="n87_REACTOME_418830" TextLabel="CDC42-GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2004.5" CenterY="695.0" Width="81.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20401"/>
+  </DataNode>
+  <DataNode GraphId="n88_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2004.5" CenterY="610.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n100_REACTOME_442641" TextLabel="RAC1-GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2143.5" CenterY="656.0" Width="71.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21594"/>
+  </DataNode>
+  <DataNode GraphId="n101_REACTOME_29372" TextLabel="Orthophosphate&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2287.5" CenterY="610.0" Width="109.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="18367"/>
+  </DataNode>
+  <DataNode GraphId="n102_REACTOME_445010" TextLabel="RAC1-GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2287.0" CenterY="695.0" Width="72.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22018"/>
+  </DataNode>
+  <DataNode GraphId="n108_REACTOME_381949" TextLabel="NCK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="777.5" CenterY="480.0" Width="33.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_17190"/>
+  </DataNode>
+  <DataNode GraphId="n109_REACTOME_428486" TextLabel="Nck:Robo1:Slit2:&#10;Glypican&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="611.0" CenterY="388.0" Width="104.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20473"/>
+  </DataNode>
+  <DataNode GraphId="n113_REACTOME_428475" TextLabel="PAK&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="581.5" CenterY="466.0" Width="33.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19955"/>
+  </DataNode>
+  <DataNode GraphId="n114_REACTOME_428482" TextLabel="Pak:Nck:Robo1:Slit2:&#10;Glypican&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="392.5" CenterY="388.0" Width="129.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19485"/>
+  </DataNode>
+  <DataNode GraphId="n116_REACTOME_167215" TextLabel="SOS&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="354.5" CenterY="465.0" Width="29.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20305"/>
+  </DataNode>
+  <DataNode GraphId="n117_REACTOME_428481" TextLabel="SOS:PAK:Nck:Robo1:&#10;Slit2:Glypican&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="174.0" CenterY="389.0" Width="128.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20383"/>
+  </DataNode>
+  <DataNode GraphId="n126_REACTOME_29438" TextLabel="GTP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="99.0" CenterY="556.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15996"/>
+  </DataNode>
+  <DataNode GraphId="n127_REACTOME_29420" TextLabel="GDP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="257.5" CenterY="559.0" Width="41.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="17552"/>
+  </DataNode>
+  <DataNode GraphId="n149_REACTOME_442641" TextLabel="RAC1-GTP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="257.5" CenterY="610.0" Width="71.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_21594"/>
+  </DataNode>
+  <DataNode GraphId="n150_REACTOME_445010" TextLabel="RAC1-GDP&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="104.0" CenterY="608.0" Width="72.0" Height="22.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_22018"/>
+  </DataNode>
+  <DataNode GraphId="n154_REACTOME_376002" TextLabel="Abl tyrosine kinases&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2141.5" CenterY="440.0" Width="123.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_19619"/>
+  </DataNode>
+  <DataNode GraphId="n155_REACTOME_428873" TextLabel="Abl:Robo1:Slit2:&#10;Glypican-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2364.5" CenterY="387.0" Width="101.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19950"/>
+  </DataNode>
+  <DataNode GraphId="n165_REACTOME_113592" TextLabel="ATP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2407.5" CenterY="444.0" Width="39.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="15422"/>
+  </DataNode>
+  <DataNode GraphId="n166_REACTOME_376027" TextLabel="Abl:pRobo1:slit2:&#10;Glypican-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2563.5" CenterY="387.0" Width="109.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19439"/>
+  </DataNode>
+  <DataNode GraphId="n167_REACTOME_29370" TextLabel="ADP&#10;" Type="Metabolite">
+    <Graphics Color="000000" CenterX="2525.0" CenterY="444.0" Width="40.0" Height="30.0" Valign="Middle" FillColor="ccffcc" ShapeType="Oval"/>
+    <Xref Database="ChEBI" ID="16761"/>
+  </DataNode>
+  <DataNode GraphId="n171_REACTOME_428867" TextLabel="CLASP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2325.5" CenterY="516.0" Width="43.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20461"/>
+  </DataNode>
+  <DataNode GraphId="n172_REACTOME_428876" TextLabel="Clasp:Abl:Robo1:&#10;Slit2:Glypican-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2682.5" CenterY="386.0" Width="109.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_19830"/>
+  </DataNode>
+  <DataNode GraphId="n187_REACTOME_428868" TextLabel="CAP&#10;" Type="Protein">
+    <Graphics Color="000000" CenterX="2265.5" CenterY="443.0" Width="31.0" Height="22.0" Valign="Middle" FillColor="ccffcc" ShapeType="RoundedRectangle"/>
+    <Xref Database="Reactome" ID="REACT_20173"/>
+  </DataNode>
+  <DataNode GraphId="n188_REACTOME_428875" TextLabel="CAP:Abl:Robo1:Slit2:&#10;Glypican-1&#10;" Type="Complex">
+    <Graphics Color="000000" CenterX="2811.0" CenterY="386.0" Width="128.0" Height="36.0" Valign="Middle" FillColor="ccffff" ShapeType="RoundedRectangle" LineThickness="2"/>
+    <Xref Database="Reactome" ID="REACT_20355"/>
+  </DataNode>
+  <Line GraphId="e_1_REACTOME_376149">
+    <Comment Source="WikiPathways-description">The full length Slit proteins are membrane bound via the extracellular matrix proteins when not bound to Robo receptors. These full length Slits undergo post translational modification and proteolytic processing to generate an N terminal fragment (Slit2 N) and a corresponding C terminal fragment (Slit2 C). Slit 2 is cleaved within the EGF repeats, between EGF5 and EGF6, by unknown proteases. Cleavage of Slit proteins is evolutionarily conserved, although the molecular biological significance is unknown. The N-terminal fragment of Slit2 stimulates growth and branching of dorsal root ganglia (DRG) axons, and this activity is opposed by un-cleaved Slit. The stimulation of axon branching is mediated by Robo receptors. Additional functional differences between the full-length and N-terminal forms have been discovered in their abilities to repel different populations of axons and dendrites. Finally, Slit can attract migrating muscles in the fly, and also human endothelial cells, both via Robo receptors.</Comment>
+    <BiopaxRef>lit_375922</BiopaxRef>
+    <BiopaxRef>lit_428397</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1284.0" Y="177.0" GraphId="e_1_0" GraphRef="n2_REACTOME_375997" RelX="1.1794871794871795" RelY="0.0"/>
+      <Point X="1359.0" Y="177.0" GraphId="e_1_1"/>
+      <Point X="1367.0" Y="159.0" GraphId="e_1_2"/>
+      <Point X="1391.0" Y="159.0" GraphId="e_1_3"/>
+      <Point X="1415.0" Y="159.0" GraphId="e_1_4"/>
+      <Anchor Position="0.8318123040829125" GraphId="e_1_a_p"/>
+      <Anchor Position="1.0" GraphId="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1446.0" Y="159.0" GraphId="e_1_o0_0" ArrowHead="Arrow" GraphRef="n3_REACTOME_426409" RelX="-1.125" RelY="0.0"/>
+      <Point X="1415.0" Y="159.0" GraphId="e_1_o0_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1437.0" Y="228.0" GraphId="e_1_o1_0" ArrowHead="Arrow" GraphRef="n4_REACTOME_426412" RelX="-0.1702127659574468" RelY="-1.2727272727272727"/>
+      <Point X="1415.0" Y="159.0" GraphId="e_1_o1_1" GraphRef="e_1_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_1_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1391.0" Y="64.0" GraphId="e_1_c__0_0" GraphRef="n5_REACTOME_428470" RelX="-0.024691358024691357" RelY="1.1666666666666667"/>
+      <Point X="1391.0" Y="159.0" GraphId="e_1_c__0_1" GraphRef="e_1_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_REACTOME_428510">
+    <Comment Source="WikiPathways-description">Robo3 antagonizes Robo1/Robo2 function to prevent their response to slit, thus allowing cells that are expressing Robo1/Robo2 to progress towards and across the floor plate. Exactly how Robo3 interferes with Robo1/Robo2 function is not yet clear. One possibility is that one of the Robo3 isoform Robo3A.1 may sequester Robo1 into inactive receptor complexes. Robo3 in mouse and human have two isoforms, Robo3A.1 and Robo3A.2 with different Slit-binding activities. Both isoforms can form heterodimers with Robo1 and Robo2, but Robo3A.1 heterodimers cannot bind Slit, so this isoform may serve to sequester and inactivate Robo1.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="893.0" Y="390.0" GraphId="e_8_0"/>
+      <Point X="916.0" Y="390.0" GraphId="e_8_1"/>
+      <Point X="949.0" Y="390.0" GraphId="e_8_2" GraphRef="n11_REACTOME_428496" RelX="-1.0638297872340425" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_8_a_i"/>
+      <Anchor Position="0.4107142857142857" GraphId="e_8_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="851.0" Y="376.0" GraphId="e_8_i0_0" GraphRef="n9_REACTOME_426410" RelX="1.1014492753623188" RelY="-0.18181818181818182"/>
+      <Point X="876.0" Y="376.0" GraphId="e_8_i0_1"/>
+      <Point X="893.0" Y="390.0" GraphId="e_8_i0_2" GraphRef="e_8_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_8_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="853.0" Y="402.0" GraphId="e_8_i1_0" GraphRef="n10_REACTOME_428477" RelX="1.0638297872340425" RelY="0.0"/>
+      <Point X="876.0" Y="402.0" GraphId="e_8_i1_1"/>
+      <Point X="893.0" Y="390.0" GraphId="e_8_i1_2" GraphRef="e_8_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_REACTOME_428518">
+    <Comment Source="WikiPathways-description">Slit 2 and both its natural cleavage products bind glypican 1, a glycosyl phosphatidyl inositol (GPI) anchored heparan sulfate proteoglycan (HSPG) through its C terminus. Glypican 1 HSPG is important for high affinity binding of Slit to its receptor and for the repulsive activity of Slit. Slit-Robo signaling strictly requires binding to heparan sulfate. HSPGs may also modulate the extracellular distribution or stability of Slit proteins.</Comment>
+    <BiopaxRef>lit_428443</BiopaxRef>
+    <BiopaxRef>lit_428438</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1199.0" Y="160.0" GraphId="e_14_0"/>
+      <Point X="1176.0" Y="160.0" GraphId="e_14_1"/>
+      <Point X="1141.0" Y="160.0" GraphId="e_14_2" GraphRef="n16_REACTOME_428489" RelX="1.06" RelY="-0.18181818181818182" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_14_a_i"/>
+      <Anchor Position="0.39655172413793105" GraphId="e_14_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1236.0" Y="151.0" GraphId="e_14_i0_0" GraphRef="n15_REACTOME_428493" RelX="-1.0467289719626167" RelY="0.0"/>
+      <Point X="1219.0" Y="151.0" GraphId="e_14_i0_1"/>
+      <Point X="1199.0" Y="160.0" GraphId="e_14_i0_2" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_14_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1239.0" Y="176.0" GraphId="e_14_i1_0" GraphRef="n2_REACTOME_375997" RelX="-1.1282051282051282" RelY="-0.09090909090909091"/>
+      <Point X="1219.0" Y="175.0" GraphId="e_14_i1_1"/>
+      <Point X="1199.0" Y="160.0" GraphId="e_14_i1_2" GraphRef="e_14_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_REACTOME_204364">
+    <Comment Source="WikiPathways-description">The Slit family consists of three members that are all expressed in the ventral midline (floor plate) of the neural tube. Slit 1 is predominantly expressed in the nervous system whereas Slit 2 and  3 are also expressed outside the nervous system.&lt;br&gt;Slit proteins are the ligands for the Robo receptors. In humans there are four robo genes: Robo1,  2,  3 and  4. The extracellular domain of Robo comprises five Ig domains and three Fn domains except for Robo4 (2Ig+2Fn). Ig1 and Ig2 domains of Robo are highly conserved and are important for Slit binding. The concave face of slit's second LRR domain accommodates the Robo's Ig1 and 2 domains. Slit binding with Robo4 is controversial as the interaction is weak and its been observed using the in-vitro methods.&lt;br&gt;</Comment>
+    <BiopaxRef>lit_375922</BiopaxRef>
+    <BiopaxRef>lit_428397</BiopaxRef>
+    <BiopaxRef>lit_204368</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1088.0" Y="305.0" GraphId="e_21_0"/>
+      <Point X="1150.0" Y="305.0" GraphId="e_21_1"/>
+      <Point X="1150.0" Y="389.0" GraphId="e_21_2"/>
+      <Point X="1206.0" Y="389.0" GraphId="e_21_3"/>
+      <Point X="1245.0" Y="389.0" GraphId="e_21_4" GraphRef="n23_REACTOME_390371" RelX="-1.0769230769230769" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_21_a_i"/>
+      <Anchor Position="0.8381742738589212" GraphId="e_21_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1088.0" Y="377.0" GraphId="e_21_i0_0" GraphRef="n22_REACTOME_204361" RelX="0.0" RelY="-1.2727272727272727"/>
+      <Point X="1088.0" Y="305.0" GraphId="e_21_i0_1" GraphRef="e_21_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_21_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1088.0" Y="176.0" GraphId="e_21_i1_0" GraphRef="n16_REACTOME_428489" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1088.0" Y="305.0" GraphId="e_21_i1_1" GraphRef="e_21_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_REACTOME_376140">
+    <Comment Source="WikiPathways-description">Ena is required in part for Robo's repulsive output. Ena is drawn as an effector downstream of Robo signaling via a direct interaction with Robo. Robo's CC2 (LPPPP) motif is the consensus binding site for the EVH1 domain of Ena.&lt;br&gt;The Ena/VASP family of proteins has a universal role in control of cell motility and actin dynamics. These proteins consist of an N terminal EVH1 domain, a central proline rich region, which acts as a ligand for the actin monomer binding protein Profilin as well as several SH3 domain containing proteins including Abl and a C terminal EVH2 domain involved in oligomerization and F actin binding.&lt;br&gt;</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1378.0" Y="388.0" GraphId="e_30_0"/>
+      <Point X="1412.0" Y="388.0" GraphId="e_30_1"/>
+      <Point X="1448.0" Y="388.0" GraphId="e_30_2" GraphRef="n32_REACTOME_376032" RelX="-1.0545454545454545" RelY="-0.08" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_30_a_i"/>
+      <Anchor Position="0.4857142857142857" GraphId="e_30_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1329.0" Y="388.0" GraphId="e_30_i0_0" GraphRef="n23_REACTOME_390371" RelX="1.0769230769230769" RelY="-0.05555555555555555"/>
+      <Point X="1378.0" Y="388.0" GraphId="e_30_i0_1" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_30_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1348.0" Y="467.0" GraphId="e_30_i1_0" GraphRef="n31_REACTOME_428478" RelX="1.0608695652173914" RelY="-0.09090909090909091"/>
+      <Point X="1378.0" Y="467.0" GraphId="e_30_i1_1"/>
+      <Point X="1378.0" Y="388.0" GraphId="e_30_i1_2" GraphRef="e_30_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_REACTOME_428534">
+    <Comment Source="WikiPathways-description">Ena/VASP proteins enhance actin filament elongation via the recruitment of profilin:actin complexes to the tips of spreading lamellipodia. Profilin binds to the central proline rich domain of Ena/VASP protein.</Comment>
+    <BiopaxRef>lit_375873</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1589.0" Y="390.0" GraphId="e_39_0"/>
+      <Point X="1621.0" Y="390.0" GraphId="e_39_1"/>
+      <Point X="1662.0" Y="390.0" GraphId="e_39_2" GraphRef="n41_REACTOME_428492" RelX="-1.0545454545454545" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_39_a_i"/>
+      <Anchor Position="0.4383561643835616" GraphId="e_39_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1564.0" Y="390.0" GraphId="e_39_i0_0" GraphRef="n32_REACTOME_376032" RelX="1.0545454545454545" RelY="0.0"/>
+      <Point X="1589.0" Y="390.0" GraphId="e_39_i0_1" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_39_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1533.0" Y="467.0" GraphId="e_39_i1_0" GraphRef="n40_REACTOME_203077" RelX="1.148936170212766" RelY="-0.09090909090909091"/>
+      <Point X="1589.0" Y="467.0" GraphId="e_39_i1_1"/>
+      <Point X="1589.0" Y="390.0" GraphId="e_39_i1_2" GraphRef="e_39_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_REACTOME_376145">
+    <Comment Source="WikiPathways-description">The Robo1 receptor regulates Rho GTPase activity through a ligand-dependent association with members of a novel family of GAPs called srGAPs (slit-robo GAPs). Extracellular interaction between Slit and Robo increases the intracellular interaction between the CC3 motif of Robo1 and the SH3 motif of the SrGAPs.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1816.0" Y="390.0" GraphId="e_44_0"/>
+      <Point X="1838.0" Y="390.0" GraphId="e_44_1"/>
+      <Point X="1870.0" Y="390.0" GraphId="e_44_2" GraphRef="n46_REACTOME_376031" RelX="-1.0442477876106195" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_44_a_i"/>
+      <Anchor Position="0.4074074074074074" GraphId="e_44_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1745.0" Y="467.0" GraphId="e_44_i0_0" GraphRef="n45_REACTOME_428474" RelX="1.1627906976744187" RelY="-0.09090909090909091"/>
+      <Point X="1816.0" Y="467.0" GraphId="e_44_i0_1"/>
+      <Point X="1816.0" Y="390.0" GraphId="e_44_i0_2" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_44_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1286.0" Y="368.0" GraphId="e_44_i1_0" GraphRef="n23_REACTOME_390371" RelX="-0.02564102564102564" RelY="-1.1666666666666667"/>
+      <Point X="1285.0" Y="325.0" GraphId="e_44_i1_1"/>
+      <Point X="1796.0" Y="325.0" GraphId="e_44_i1_2"/>
+      <Point X="1796.0" Y="390.0" GraphId="e_44_i1_3"/>
+      <Point X="1816.0" Y="390.0" GraphId="e_44_i1_4" GraphRef="e_44_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_REACTOME_428533">
+    <Comment Source="WikiPathways-description">srGAP bound to Robo's cytoplasmic tail increase the intrinsic GTPase activity of Cdc42, which converts the GTP-bound form of Cdc42 into its GDP-bound form, therefore inactivating Cdc42. Inactivation of Cdc42 leads to a reduction in the activation of the Neuronal WiskottAldrich Syndrome protein (NWASP), thus decreasing the level of active Arp2/3 complex. Because active Arp2/3 promotes actin polymerization, the reduction of active Cdc42 eventually decreases actin polymerization. Slit regulates SrGAP interaction with Robo1 and Cdc42, it increases SrGAP interaction with Cdc42.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1898.0" Y="656.0" GraphId="e_47_0" GraphRef="n48_REACTOME_182921" RelX="1.075" RelY="0.0"/>
+      <Point X="1929.0" Y="656.0" GraphId="e_47_1"/>
+      <Point X="1958.0" Y="656.0" GraphId="e_47_2"/>
+      <Anchor Position="0.5166666666666667" GraphId="e_47_a_p"/>
+      <Anchor Position="1.0" GraphId="e_47_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1989.0" Y="628.0" GraphId="e_47_o0_0" ArrowHead="Arrow" GraphRef="n88_REACTOME_29372" RelX="-0.27522935779816515" RelY="1.2"/>
+      <Point X="1958.0" Y="656.0" GraphId="e_47_o0_1" GraphRef="e_47_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1991.0" Y="681.0" GraphId="e_47_o1_0" ArrowHead="Arrow" GraphRef="n87_REACTOME_418830" RelX="-0.32098765432098764" RelY="-1.2727272727272727"/>
+      <Point X="1958.0" Y="656.0" GraphId="e_47_o1_1" GraphRef="e_47_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_47_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="1929.0" Y="404.0" GraphId="e_47_c__0_0" GraphRef="n46_REACTOME_376031" RelX="0.0" RelY="1.2727272727272727"/>
+      <Point X="1929.0" Y="656.0" GraphId="e_47_c__0_1" GraphRef="e_47_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_REACTOME_428536">
+    <Comment Source="WikiPathways-description">Vilse/CrossGAP (CrGAP) a conserved Rac-Specific GAP in Drosophila is involved in Robo mediated repulsion. CrGAP directly binds to Robo both biochemically and genetically. This interaction is mediated by the WW domains in CrGAP and the CC2 motif of Robo. &lt;br&gt;The human homologue of Vilse/CrGAP, KIAA1688, was identified which shares 54.4% sequence similarity with Drosophila CrGAP and is referred as human Vilse/CrGAP protein.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2032.0" Y="388.0" GraphId="e_59_0"/>
+      <Point X="2058.0" Y="388.0" GraphId="e_59_1"/>
+      <Point X="2094.0" Y="388.0" GraphId="e_59_2" GraphRef="n61_REACTOME_428491" RelX="-1.0769230769230769" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_59_a_i"/>
+      <Anchor Position="0.41935483870967744" GraphId="e_59_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2032.0" Y="454.0" GraphId="e_59_i0_0" GraphRef="n60_REACTOME_200631" RelX="-0.017857142857142856" RelY="-1.2727272727272727"/>
+      <Point X="2032.0" Y="388.0" GraphId="e_59_i0_1" GraphRef="e_59_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_59_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1286.0" Y="368.0" GraphId="e_59_i1_0" GraphRef="n23_REACTOME_390371" RelX="-0.02564102564102564" RelY="-1.1666666666666667"/>
+      <Point X="1285.0" Y="300.0" GraphId="e_59_i1_1"/>
+      <Point X="2007.0" Y="300.0" GraphId="e_59_i1_2"/>
+      <Point X="2007.0" Y="388.0" GraphId="e_59_i1_3"/>
+      <Point X="2032.0" Y="388.0" GraphId="e_59_i1_4" GraphRef="e_59_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_99_REACTOME_428522">
+    <Comment Source="WikiPathways-description">Vilse and its human homolog bind directly to the intracellular domains of the corresponding Robo receptors and promote the hydrolysis of RacGTP.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2182.0" Y="655.0" GraphId="e_99_0" GraphRef="n100_REACTOME_442641" RelX="1.0985915492957747" RelY="-0.09090909090909091"/>
+      <Point X="2215.0" Y="655.0" GraphId="e_99_1"/>
+      <Point X="2244.0" Y="655.0" GraphId="e_99_2"/>
+      <Anchor Position="0.532258064516129" GraphId="e_99_a_p"/>
+      <Anchor Position="1.0" GraphId="e_99_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_99_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2272.0" Y="628.0" GraphId="e_99_o0_0" ArrowHead="Arrow" GraphRef="n101_REACTOME_29372" RelX="-0.27522935779816515" RelY="1.2"/>
+      <Point X="2244.0" Y="655.0" GraphId="e_99_o0_1" GraphRef="e_99_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_99_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2275.0" Y="681.0" GraphId="e_99_o1_0" ArrowHead="Arrow" GraphRef="n102_REACTOME_445010" RelX="-0.3333333333333333" RelY="-1.2727272727272727"/>
+      <Point X="2244.0" Y="655.0" GraphId="e_99_o1_1" GraphRef="e_99_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_99_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2178.0" Y="389.0" GraphId="e_99_c__0_0" GraphRef="n61_REACTOME_428491" RelX="1.0769230769230769" RelY="0.0"/>
+      <Point X="2214.0" Y="389.0" GraphId="e_99_c__0_1"/>
+      <Point X="2215.0" Y="655.0" GraphId="e_99_c__0_2" GraphRef="e_99_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_107_REACTOME_428511">
+    <Comment Source="WikiPathways-description">Slit stimulation recruits SH3 SH2 adaptor protein Dreadlocks (Dock) (Nck in vertebrates) to the Robo receptor.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="736.0" Y="445.0" GraphId="e_107_0"/>
+      <Point X="736.0" Y="388.0" GraphId="e_107_1"/>
+      <Point X="704.0" Y="388.0" GraphId="e_107_2"/>
+      <Point X="666.0" Y="388.0" GraphId="e_107_3" GraphRef="n109_REACTOME_428486" RelX="1.0576923076923077" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_107_a_i"/>
+      <Anchor Position="0.7007874015748031" GraphId="e_107_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_107_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="764.0" Y="466.0" GraphId="e_107_i0_0" GraphRef="n108_REACTOME_381949" RelX="-0.7878787878787878" RelY="-1.2727272727272727"/>
+      <Point X="736.0" Y="445.0" GraphId="e_107_i0_1" GraphRef="e_107_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_107_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1286.0" Y="410.0" GraphId="e_107_i1_0" GraphRef="n23_REACTOME_390371" RelX="-0.02564102564102564" RelY="1.1666666666666667"/>
+      <Point X="1286.0" Y="445.0" GraphId="e_107_i1_1"/>
+      <Point X="736.0" Y="445.0" GraphId="e_107_i1_2" GraphRef="e_107_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_REACTOME_428531">
+    <Comment Source="WikiPathways-description">Dock/Nck bound to Robo recruits Pak to specific sites at the growth cone membrane, where Pak, activated by Rac, regulates the recycling and retrograde flow of actin filaments. [In mammals there are six PAK isoforms and PAK binds to the 2nd SH3 domain of Nck with its proline rich PxxP motif.]</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="528.0" Y="386.0" GraphId="e_112_0"/>
+      <Point X="498.0" Y="386.0" GraphId="e_112_1"/>
+      <Point X="460.0" Y="386.0" GraphId="e_112_2" GraphRef="n114_REACTOME_428482" RelX="1.054263565891473" RelY="-0.1111111111111111" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_112_a_i"/>
+      <Anchor Position="0.4411764705882353" GraphId="e_112_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="556.0" Y="386.0" GraphId="e_112_i0_0" GraphRef="n109_REACTOME_428486" RelX="-1.0576923076923077" RelY="-0.1111111111111111"/>
+      <Point X="528.0" Y="386.0" GraphId="e_112_i0_1" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_112_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="562.0" Y="465.0" GraphId="e_112_i1_0" GraphRef="n113_REACTOME_428475" RelX="-1.1515151515151516" RelY="-0.09090909090909091"/>
+      <Point X="528.0" Y="465.0" GraphId="e_112_i1_1"/>
+      <Point X="528.0" Y="386.0" GraphId="e_112_i1_2" GraphRef="e_112_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_REACTOME_428515">
+    <Comment Source="WikiPathways-description">Upon Slit stimulation Sos is recruited into the multiprotein complex consisting of Robo, the SH3-SH2 protein Dock/Nck, and Sos, in which Dock/Nck bridges the physical association between Robo and Sos.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="302.0" Y="388.0" GraphId="e_115_0"/>
+      <Point X="276.0" Y="388.0" GraphId="e_115_1"/>
+      <Point X="241.0" Y="388.0" GraphId="e_115_2" GraphRef="n117_REACTOME_428481" RelX="1.046875" RelY="-0.05555555555555555" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_115_a_i"/>
+      <Anchor Position="0.4262295081967213" GraphId="e_115_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="337.0" Y="464.0" GraphId="e_115_i0_0" GraphRef="n116_REACTOME_167215" RelX="-1.1724137931034482" RelY="-0.09090909090909091"/>
+      <Point X="302.0" Y="464.0" GraphId="e_115_i0_1"/>
+      <Point X="302.0" Y="388.0" GraphId="e_115_i0_2" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_115_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="325.0" Y="388.0" GraphId="e_115_i1_0" GraphRef="n114_REACTOME_428482" RelX="-1.0387596899224807" RelY="0.0"/>
+      <Point X="302.0" Y="388.0" GraphId="e_115_i1_1" GraphRef="e_115_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_REACTOME_428535">
+    <Comment Source="WikiPathways-description">Sos bound to Dock/Nck, with its Rac GEF activity activates Rac. Son of sevenless (Sos) is a dual specificity guanine nucleotide exchange factor (GEF) that regulates both Ras and Rho family GTPases. The Ras and Rac-GEF activities of Sos can be uncoupled during Robo-mediated axon repulsion; Sos axon guidance function depends on its Rac-GEF activity, but not its Ras-GEF activity.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="147.0" Y="579.0" GraphId="e_124_0"/>
+      <Point X="173.0" Y="579.0" GraphId="e_124_1"/>
+      <Point X="199.0" Y="579.0" GraphId="e_124_2"/>
+      <Anchor Position="0.0" GraphId="e_124_a_i"/>
+      <Anchor Position="0.5" GraphId="e_124_a_p"/>
+      <Anchor Position="1.0" GraphId="e_124_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="122.0" Y="565.0" GraphId="e_124_i0_0" GraphRef="n126_REACTOME_29438" RelX="1.15" RelY="0.6"/>
+      <Point X="147.0" Y="579.0" GraphId="e_124_i0_1" GraphRef="e_124_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="120.0" Y="594.0" GraphId="e_124_i1_0" GraphRef="n150_REACTOME_445010" RelX="0.4444444444444444" RelY="-1.2727272727272727"/>
+      <Point X="147.0" Y="579.0" GraphId="e_124_i1_1" GraphRef="e_124_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="234.0" Y="566.0" GraphId="e_124_o0_0" ArrowHead="Arrow" GraphRef="n127_REACTOME_29420" RelX="-1.1219512195121952" RelY="0.4666666666666667"/>
+      <Point X="199.0" Y="579.0" GraphId="e_124_o0_1" GraphRef="e_124_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="236.0" Y="596.0" GraphId="e_124_o1_0" ArrowHead="Arrow" GraphRef="n149_REACTOME_442641" RelX="-0.5915492957746479" RelY="-1.2727272727272727"/>
+      <Point X="199.0" Y="579.0" GraphId="e_124_o1_1" GraphRef="e_124_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_124_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="173.0" Y="410.0" GraphId="e_124_c__0_0" GraphRef="n117_REACTOME_428481" RelX="-0.015625" RelY="1.1666666666666667"/>
+      <Point X="173.0" Y="579.0" GraphId="e_124_c__0_1" GraphRef="e_124_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_REACTOME_376141">
+    <Comment Source="WikiPathways-description">Abl binds directly, via its SH3 domain, to the CC3 motif in the cytoplasmic domain of human Robo1.</Comment>
+    <BiopaxRef>lit_375873</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2232.0" Y="387.0" GraphId="e_153_0"/>
+      <Point X="2274.0" Y="387.0" GraphId="e_153_1"/>
+      <Point X="2311.0" Y="387.0" GraphId="e_153_2" GraphRef="n155_REACTOME_428873" RelX="-1.0495049504950495" RelY="0.0" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_153_a_i"/>
+      <Anchor Position="0.5316455696202531" GraphId="e_153_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2159.0" Y="426.0" GraphId="e_153_i0_0" GraphRef="n154_REACTOME_376002" RelX="0.2926829268292683" RelY="-1.2727272727272727"/>
+      <Point X="2232.0" Y="387.0" GraphId="e_153_i0_1" GraphRef="e_153_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_153_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="1286.0" Y="368.0" GraphId="e_153_i1_0" GraphRef="n23_REACTOME_390371" RelX="-0.02564102564102564" RelY="-1.1666666666666667"/>
+      <Point X="1286.0" Y="312.0" GraphId="e_153_i1_1"/>
+      <Point X="2232.0" Y="312.0" GraphId="e_153_i1_2"/>
+      <Point X="2232.0" Y="387.0" GraphId="e_153_i1_3" GraphRef="e_153_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_REACTOME_428888">
+    <Comment Source="WikiPathways-description">Abl kinase phosphorylates the tyrosine residue (1073) of the conserved CC1 motif (PTPYATT) in human Robo1.</Comment>
+    <BiopaxRef>lit_375873</BiopaxRef>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2439.0" Y="384.0" GraphId="e_164_0"/>
+      <Point X="2463.0" Y="384.0" GraphId="e_164_1"/>
+      <Point X="2484.0" Y="384.0" GraphId="e_164_2"/>
+      <Anchor Position="0.0" GraphId="e_164_a_i"/>
+      <Anchor Position="0.5333333333333333" GraphId="e_164_a_p"/>
+      <Anchor Position="1.0" GraphId="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2415.0" Y="426.0" GraphId="e_164_i0_0" GraphRef="n165_REACTOME_113592" RelX="0.41025641025641024" RelY="-1.2"/>
+      <Point X="2439.0" Y="384.0" GraphId="e_164_i0_1" GraphRef="e_164_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2418.0" Y="384.0" GraphId="e_164_i1_0" GraphRef="n155_REACTOME_428873" RelX="1.0693069306930694" RelY="-0.16666666666666666"/>
+      <Point X="2439.0" Y="384.0" GraphId="e_164_i1_1" GraphRef="e_164_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2506.0" Y="384.0" GraphId="e_164_o0_0" ArrowHead="Arrow" GraphRef="n166_REACTOME_376027" RelX="-1.0458715596330275" RelY="-0.16666666666666666"/>
+      <Point X="2484.0" Y="384.0" GraphId="e_164_o0_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_o1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2514.0" Y="426.0" GraphId="e_164_o1_0" ArrowHead="Arrow" GraphRef="n167_REACTOME_29370" RelX="-0.55" RelY="-1.2"/>
+      <Point X="2484.0" Y="384.0" GraphId="e_164_o1_1" GraphRef="e_164_a_o"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_164_c__0">
+    <Graphics LineStyle="Broken" Color="000000" ConnectorType="Segmented">
+      <Point X="2363.0" Y="366.0" GraphId="e_164_c__0_0" GraphRef="n155_REACTOME_428873" RelX="-0.019801980198019802" RelY="-1.1666666666666667"/>
+      <Point X="2363.0" Y="340.0" GraphId="e_164_c__0_1"/>
+      <Point X="2462.0" Y="340.0" GraphId="e_164_c__0_2"/>
+      <Point X="2463.0" Y="384.0" GraphId="e_164_c__0_3" GraphRef="e_164_a_p" ArrowHead="Line"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_REACTOME_428885">
+    <Comment Source="WikiPathways-description">CLASP acts positively downstream of Abl as part of the repellent response initiated by activation of Robo1. CLASP is spatially positioned to interact with Robo receptors. Slit mediated repulsion results in activation of CLASP, presumably through its phosphorylation by the Abl kinase. Activation of CLASP in turn results in inhibition of microtubule polymerization on the side of the growth cone receiving the repulsive signal and consequently the growth cone turns to the opposite side. A direct link between Abl and CLASP, notably the mechanism of CLASP activation, has not been demonstrated, however.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2364.0" Y="477.0" GraphId="e_170_0"/>
+      <Point X="2532.0" Y="477.0" GraphId="e_170_1"/>
+      <Point X="2682.0" Y="477.0" GraphId="e_170_2"/>
+      <Point X="2682.0" Y="407.0" GraphId="e_170_3" GraphRef="n172_REACTOME_428876" RelX="0.0" RelY="1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_170_a_i"/>
+      <Anchor Position="0.4329896907216495" GraphId="e_170_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2336.0" Y="502.0" GraphId="e_170_i0_0" GraphRef="n171_REACTOME_428867" RelX="0.5116279069767442" RelY="-1.2727272727272727"/>
+      <Point X="2364.0" Y="477.0" GraphId="e_170_i0_1" GraphRef="e_170_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_170_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2364.0" Y="408.0" GraphId="e_170_i1_0" GraphRef="n155_REACTOME_428873" RelX="0.0" RelY="1.1666666666666667"/>
+      <Point X="2364.0" Y="477.0" GraphId="e_170_i1_1" GraphRef="e_170_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_186_REACTOME_428883">
+    <Comment Source="WikiPathways-description">Abl associated with Robo1, Slit2, and glypican at the plasma membrane binds CAP and regulate its activity to inhibit net actin assembly. Studies of CAP homologs from yeast, Dictyostelium, mouse, pig, and human suggest that the C terminal actin binding domain acts to sequester monomers to prevent actin polymerization.</Comment>
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2363.0" Y="310.0" GraphId="e_186_0"/>
+      <Point X="2604.0" Y="310.0" GraphId="e_186_1"/>
+      <Point X="2810.0" Y="310.0" GraphId="e_186_2"/>
+      <Point X="2810.0" Y="365.0" GraphId="e_186_3" GraphRef="n188_REACTOME_428875" RelX="-0.015625" RelY="-1.1666666666666667" ArrowHead="Arrow"/>
+      <Anchor Position="0.0" GraphId="e_186_a_i"/>
+      <Anchor Position="0.4800796812749004" GraphId="e_186_a_p"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_186_i0">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2273.0" Y="429.0" GraphId="e_186_i0_0" GraphRef="n187_REACTOME_428868" RelX="0.5161290322580645" RelY="-1.2727272727272727"/>
+      <Point X="2363.0" Y="310.0" GraphId="e_186_i0_1" GraphRef="e_186_a_i"/>
+    </Graphics>
+  </Line>
+  <Line GraphId="e_186_i1">
+    <Graphics LineStyle="Solid" Color="000000" ConnectorType="Segmented">
+      <Point X="2363.0" Y="366.0" GraphId="e_186_i1_0" GraphRef="n155_REACTOME_428873" RelX="-0.019801980198019802" RelY="-1.1666666666666667"/>
+      <Point X="2363.0" Y="310.0" GraphId="e_186_i1_1" GraphRef="e_186_a_i"/>
+    </Graphics>
+  </Line>
+  <Label GraphId="comp_text_195" GroupRef="group_comp_195" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="1047.5" CenterY="42.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Label GraphId="comp_text_198" GroupRef="group_comp_198" TextLabel="cytosol">
+    <Graphics Color="000000" CenterX="1521.5" CenterY="654.5" Width="59.0" Height="33.0" Valign="Middle" FontSize="12"/>
+  </Label>
+  <Shape GraphId="comp_195" GroupRef="group_comp_195">
+    <Graphics Color="000000" CenterX="1277.5" CenterY="84.5" Width="571.0" Height="161.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <Shape GraphId="comp_198" GroupRef="group_comp_198">
+    <Graphics Color="000000" CenterX="1487.0" CenterY="580.0" Width="2916.0" Height="402.0" Valign="Middle" ShapeType="Rectangle" LineThickness="2.0"/>
+  </Shape>
+  <InfoBox CenterX="3872.5" CenterY="6350.0"/>
+  <Biopax>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375905" rdf:id="lit_375905">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">18363568</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2008</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural insight into Slit-Robo signalling</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hohenester, E</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Soc Trans 36:251-6</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375922" rdf:id="lit_375922">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10102268</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Slit proteins bind Robo receptors and have an evolutionarily conserved role in repulsive axon guidance</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brose, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bland, KS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, KH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arnott, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henzel, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodman, CS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tessier-Lavigne, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kidd, T</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 96:795-806</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428397" rdf:id="lit_428397">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10102266</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1999</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochemical purification of a mammalian slit protein as a positive regulator of sensory axon elongation and branching</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wang, KH</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Brose, K</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Arnott, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kidd, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodman, CS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Henzel, W</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tessier-Lavigne, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 96:771-84</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428443" rdf:id="lit_428443">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">11375980</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2001</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Characterization of Slit protein interactions with glypican-1</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ronca, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Andersen, JS</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paech, V</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Margolis, RU</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">J Biol Chem 276:29141-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_428438" rdf:id="lit_428438">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">15063764</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2004</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural determinants of heparan sulfate interactions with Slit proteins</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zhang, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ronca, F</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Linhardt, RJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Margolis, RU</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biochem Biophys Res Commun 317:352-7</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_204368" rdf:id="lit_204368">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">12508280</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2003</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Movement through Slits: cellular migration via the Slit family</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Piper, M</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Little, M</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bioessays 25:32-8</bp:SOURCE>
+    </bp:publicationXref>
+    <bp:publicationXref xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#" rdf:ID="lit_375873" rdf:id="lit_375873">
+      <bp:ID rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10892742</bp:ID>
+      <bp:DB rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pubmed</bp:DB>
+      <bp:YEAR rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2000</bp:YEAR>
+      <bp:TITLE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Repulsive axon guidance: Abelson and Enabled play opposing roles downstream of the roundabout receptor</bp:TITLE>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bashaw, GJ</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kidd, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Murray, D</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pawson, T</bp:AUTHORS>
+      <bp:AUTHORS rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Goodman, CS</bp:AUTHORS>
+      <bp:SOURCE rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cell 101:703-15</bp:SOURCE>
+    </bp:publicationXref>
+  <bp:openControlledVocabulary xmlns:bp="http://www.biopax.org/release/biopax-level3.owl#"><bp:TERM>signaling pathway</bp:TERM><bp:ID>PW:0000003</bp:ID><bp:Ontology>Pathway Ontology</bp:Ontology></bp:openControlledVocabulary></Biopax>
+</Pathway>
