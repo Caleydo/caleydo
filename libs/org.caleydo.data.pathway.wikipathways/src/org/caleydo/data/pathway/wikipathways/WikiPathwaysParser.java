@@ -1,29 +1,10 @@
-/*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
- *******************************************************************************/
 package org.caleydo.data.pathway.wikipathways;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +18,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.datadomain.pathway.IPathwayParser;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
@@ -54,13 +36,7 @@ import org.pathvisio.core.model.Pathway;
 import org.pathvisio.core.model.PathwayElement;
 import org.pathvisio.core.model.PathwayImporter;
 
-/**
- * Parser for Wikipathway gpml files. Creates a filled {@link PathwayGraph} object for each pathway.
- *
- * @author Christian Partl
- *
- */
-public class WikiPathwaysParser {
+public class WikiPathwaysParser implements IPathwayParser {
 
 	/**
 	 * Maps wikipathway db names to idtypes in caleydo.
@@ -71,9 +47,10 @@ public class WikiPathwaysParser {
 		dbNameMap.put("Ensembl Mouse", "ENSEMBL_GENE_ID");
 		dbNameMap.put("Entrez Gene", "ENTREZ_GENE_ID");
 		dbNameMap.put("RefSeq", "REFSEQ_MRNA");
-		dbNameMap.put("EC Number", "EC_NUMBER");
+		// dbNameMap.put("EC Number", "EC_NUMBER");
 	}
 
+	@Override
 	public void parse() {
 		PathwayManager pathwayManager = PathwayManager.get();
 
@@ -96,18 +73,21 @@ public class WikiPathwaysParser {
 		String line = null;
 
 		try {
+			File tmpPathwayFile = File.createTempFile("tmppathway", "gpml");
+
 			while ((line = pathwayListFile.readLine()) != null) {
 				String[] tokens = line.split("\\s");
 
-				URL url = this.getClass().getClassLoader().getResource(pathwayDatabase.getXMLPath() + tokens[0]);
-				File pathwayFile = new File(url.toURI());
+				Files.copy(resourceLoader.getInputSource(pathwayDatabase.getXMLPath() + tokens[0]).getByteStream(),
+						tmpPathwayFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
 				PathwayImporter importer = new GpmlFormat();
-				Pathway pathway = importer.doImport(pathwayFile);
+				Pathway pathway = importer.doImport(tmpPathwayFile);
 				createPathwayGraph(pathway, tokens[0].substring(0, tokens[0].length() - 5), Integer.valueOf(tokens[1])
 						.intValue(), Integer.valueOf(tokens[2]).intValue());
 
 			}
-		} catch (NumberFormatException | IOException | URISyntaxException | ConverterException e) {
+		} catch (IOException | ConverterException e) {
 			throw new IllegalStateException("Error reading pathway list file " + pathwayListFileName);
 		} finally {
 			if (pathwayListFile != null) {
@@ -151,30 +131,37 @@ public class WikiPathwaysParser {
 			if (element.getObjectType() == ObjectType.DATANODE) {
 				Xref xref = element.getXref();
 				String label = element.getTextLabel();
-				if (xref != null) {
+				if (xref != null && xref.getDataSource() != null && xref.getId() != null && !xref.getId().isEmpty()) {
 					String idType = dbNameMap.get(xref.getDataSource().getFullName());
 					if (idType != null) {
 						IDType sourceIDType = IDType.getIDType(idType);
-						Set<Integer> davidIDs = null;
-						if (sourceIDType.getDataType() == EDataType.INTEGER) {
-							davidIDs = genomeIdManager.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
-									Integer.valueOf(xref.getId()));
-						} else {
-							davidIDs = genomeIdManager
-									.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"), xref.getId());
-						}
+						if (sourceIDType != null) {
 
-						if (davidIDs == null) {
-							Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for " + idType
-									+ " ID: " + xref.getId()));
-							continue;
-						}
+							Set<Integer> davidIDs = null;
+							if (sourceIDType.getDataType() == EDataType.INTEGER) {
+								try {
+									davidIDs = genomeIdManager.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
+											Integer.valueOf(xref.getId()));
+								} catch (NumberFormatException e) {
+									continue;
+								}
+							} else {
+								davidIDs = genomeIdManager.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
+										xref.getId());
+							}
 
-						ArrayList<PathwayVertex> vertices = pathwayItemManager.createGeneVertex(label, xref
-								.getDataSource().getType(), "", davidIDs);
-						pathwayItemManager.createVertexRep(pathwayGraph, vertices, label, "rectangle",
-								(short) element.getMHeight(), (short) element.getMWidth(),
-								(short) element.getMCenterX(), (short) element.getMCenterY());
+							if (davidIDs == null) {
+								Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for " + idType
+										+ " ID: " + xref.getId()));
+								continue;
+							}
+
+							ArrayList<PathwayVertex> vertices = pathwayItemManager.createGeneVertex(label, xref
+									.getDataSource().getType(), "", davidIDs);
+							pathwayItemManager.createVertexRep(pathwayGraph, vertices, label, "rectangle",
+									(short) element.getMHeight(), (short) element.getMWidth(),
+									(short) element.getMCenterX(), (short) element.getMCenterY());
+						}
 					}
 				}
 			}

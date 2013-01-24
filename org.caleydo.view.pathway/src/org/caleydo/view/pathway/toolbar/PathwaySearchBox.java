@@ -146,6 +146,8 @@ public class PathwaySearchBox extends ControlContribution {
 			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
 		} else if (entity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
+		} else if (entity.contains(EPathwayDatabaseType.WIKIPATHWAYS.getName())) {
+			ePathwayDatabaseType = EPathwayDatabaseType.WIKIPATHWAYS;
 		} else
 			return false;
 

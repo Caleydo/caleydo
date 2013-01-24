@@ -37,6 +37,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
@@ -44,6 +45,14 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 
 import com.google.common.collect.Lists;
 
@@ -149,8 +158,26 @@ public class PathwayDataDomain extends ADataDomain {
 
 		pathwayManager.loadPathwaysByType(pathwayDatabase);
 
-		// pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS, "data/xml/",
-		// "data/images/", "");
+		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS, "data/xml/",
+				"data/images/", "");
+
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.data.pathway.PathwayParser");
+		IExtension[] extensions = point.getExtensions();
+
+		for (IExtension extension : extensions) {
+			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
+			for (IConfigurationElement embeddingInfo : embeddingInfos) {
+				try {
+					IPathwayParser parser = (IPathwayParser) embeddingInfo.createExecutableExtension("class");
+					parser.parse();
+				} catch (CoreException e) {
+					Logger.log(new Status(IStatus.WARNING, "PathwayDatadomain", "Could not create pathway parser for "
+							+ extension.getContributor().getName()));
+				}
+
+			}
+		}
 
 		pathwayManager.notifyPathwayLoadingFinished(true);
 

@@ -65,18 +65,20 @@ public class GLPathwayTextureManager {
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load pathway texture with ID: " + pathway.getID()));
 
-		if (type == EPathwayDatabaseType.BIOCARTA) {
-			pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
-					.getTexture(pathwayTexturePath);
-		}
-		else if (type == EPathwayDatabaseType.KEGG) {
-			pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
-					.getTexture(pathwayTexturePath);
+		pathwayTexture = PathwayManager.get().getPathwayResourceLoader(type).getTexture(pathwayTexturePath);
 
-		}
-		else {
-			throw new IllegalStateException("Unknown pathway database " + type);
-		}
+		// if (type == EPathwayDatabaseType.BIOCARTA) {
+		// pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
+		// .getTexture(pathwayTexturePath);
+		// }
+		// else if (type == EPathwayDatabaseType.KEGG) {
+		// pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
+		// .getTexture(pathwayTexturePath);
+		//
+		// }
+		// else {
+		// throw new IllegalStateException("Unknown pathway database " + type);
+		// }
 
 		hashPathwayToTexture.put(pathway, pathwayTexture);
 
