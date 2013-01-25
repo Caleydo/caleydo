@@ -23,6 +23,7 @@ import org.caleydo.datadomain.pathway.IPathwayParser;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.IPathwayResourceLoader;
@@ -131,6 +132,7 @@ public class WikiPathwaysParser implements IPathwayParser {
 		IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE)).getGeneIDMappingManager();
 		Map<String, PathwayVertexRep> vertexReps = new HashMap<>();
+		Map<String, PathwayVertexGroupRep> vertexGroupReps = new HashMap<>();
 
 		Map<ObjectType, List<PathwayElement>> typeToElements = new HashMap<>();
 		// Make sure that there is no null list for an object type
@@ -140,6 +142,37 @@ public class WikiPathwaysParser implements IPathwayParser {
 		// Add all elements to their type specific list
 		for (PathwayElement element : pathway.getDataObjects()) {
 			typeToElements.get(element.getObjectType()).add(element);
+		}
+
+		Map<String, List<PathwayVertexGroupRep>> groupedGroups = new HashMap<>();
+		for (PathwayElement element : typeToElements.get(ObjectType.GROUP)) {
+			PathwayVertexGroupRep vertexGroupRep = pathwayItemManager.createVertexGroupRep(pathwayGraph);
+			vertexReps.put(element.getGraphId(), vertexGroupRep);
+			vertexGroupReps.put(element.getGroupId(), vertexGroupRep);
+
+			String groupRef = element.getGroupRef();
+			if (groupRef != null) {
+				PathwayVertexGroupRep parent = vertexGroupReps.get(groupRef);
+				if (parent != null) {
+					parent.addVertexRep(vertexGroupRep);
+				} else {
+					// Parent group has not (yet) been created. Store for retrieval when parent is created.
+					List<PathwayVertexGroupRep> groups = groupedGroups.get(groupRef);
+					if (groups == null) {
+						groups = new ArrayList<>();
+						groupedGroups.put(groupRef, groups);
+					}
+					groups.add(vertexGroupRep);
+				}
+			}
+
+			// Retrieve children that have been created earlier.
+			List<PathwayVertexGroupRep> groups = groupedGroups.get(element.getGroupId());
+			if (groups != null) {
+				for (PathwayVertexGroupRep group : groups) {
+					vertexGroupRep.addVertexRep(group);
+				}
+			}
 		}
 
 		for (PathwayElement element : typeToElements.get(ObjectType.DATANODE)) {
@@ -157,7 +190,7 @@ public class WikiPathwaysParser implements IPathwayParser {
 								davidIDs = genomeIdManager.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
 										Integer.valueOf(xref.getId()));
 							} catch (NumberFormatException e) {
-								createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
+								createVertexWithoutDavidID(pathwayGraph, element, vertexReps, vertexGroupReps);
 								continue;
 							}
 						} else {
@@ -168,7 +201,7 @@ public class WikiPathwaysParser implements IPathwayParser {
 						if (davidIDs == null) {
 							Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for " + idType
 									+ " ID: " + xref.getId()));
-							createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
+							createVertexWithoutDavidID(pathwayGraph, element, vertexReps, vertexGroupReps);
 							continue;
 						}
 
@@ -179,12 +212,13 @@ public class WikiPathwaysParser implements IPathwayParser {
 								"rectangle", (short) (element.getMCenterX()), (short) (element.getMCenterY()),
 								(short) (element.getMWidth()), (short) (element.getMHeight()));
 						vertexReps.put(element.getGraphId(), vertexRep);
+						addVertexRepToGroup(element, vertexRep, vertexGroupReps);
 					}
 				} else {
-					createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
+					createVertexWithoutDavidID(pathwayGraph, element, vertexReps, vertexGroupReps);
 				}
 			} else {
-				createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
+				createVertexWithoutDavidID(pathwayGraph, element, vertexReps, vertexGroupReps);
 			}
 		}
 
@@ -203,15 +237,17 @@ public class WikiPathwaysParser implements IPathwayParser {
 	}
 
 	/**
-	 * Creates a {@link PathwayVertex} and {@link PathwayVertexRep} for the specified element.
+	 * Creates a {@link PathwayVertex} and {@link PathwayVertexRep} for the specified element and adds it to a
+	 * {@link PathwayVertexGroupRep} if specified.
 	 *
 	 * @param pathwayGraph
 	 * @param element
 	 * @param vertexReps
 	 *            Map where the created VertexRep is stored.
+	 * @param vertexGroupReps
 	 */
 	private void createVertexWithoutDavidID(PathwayGraph pathwayGraph, PathwayElement element,
-			Map<String, PathwayVertexRep> vertexReps) {
+			Map<String, PathwayVertexRep> vertexReps, Map<String, PathwayVertexGroupRep> vertexGroupReps) {
 		PathwayItemManager pathwayItemManager = PathwayItemManager.get();
 		PathwayVertex vertex = pathwayItemManager.createVertex(element.getTextLabel(), "gene", "");
 		List<PathwayVertex> vertices = new ArrayList<>(1);
@@ -220,6 +256,25 @@ public class WikiPathwaysParser implements IPathwayParser {
 				"rectangle", (short) (element.getMCenterX()), (short) (element.getMCenterY()),
 				(short) (element.getMWidth()), (short) (element.getMHeight()));
 		vertexReps.put(element.getGraphId(), vertexRep);
+
+		addVertexRepToGroup(element, vertexRep, vertexGroupReps);
+	}
+
+	/**
+	 * Adds an the vertex rep of an element to a group if specified.
+	 *
+	 * @param element
+	 * @param vertexRep
+	 * @param vertexGroupReps
+	 */
+	private void addVertexRepToGroup(PathwayElement element, PathwayVertexRep vertexRep,
+			Map<String, PathwayVertexGroupRep> vertexGroupReps) {
+		if (element.getGroupRef() != null) {
+			PathwayVertexGroupRep groupRep = vertexGroupReps.get(element.getGroupRef());
+			if (groupRep != null) {
+				groupRep.addVertexRep(vertexRep);
+			}
+		}
 	}
 
 }
