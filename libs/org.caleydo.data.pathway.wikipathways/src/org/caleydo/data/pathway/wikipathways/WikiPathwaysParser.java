@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -131,67 +132,94 @@ public class WikiPathwaysParser implements IPathwayParser {
 				PathwayDataDomain.DATA_DOMAIN_TYPE)).getGeneIDMappingManager();
 		Map<String, PathwayVertexRep> vertexReps = new HashMap<>();
 
+		Map<ObjectType, List<PathwayElement>> typeToElements = new HashMap<>();
+		// Make sure that there is no null list for an object type
+		for (ObjectType objectType : ObjectType.values()) {
+			typeToElements.put(objectType, new ArrayList<PathwayElement>());
+		}
+		// Add all elements to their type specific list
 		for (PathwayElement element : pathway.getDataObjects()) {
-			if (element.getObjectType() == ObjectType.DATANODE) {
-				Xref xref = element.getXref();
-				String label = element.getTextLabel();
-				if (xref != null && xref.getDataSource() != null && xref.getId() != null && !xref.getId().isEmpty()) {
-					String idType = dbNameMap.get(xref.getDataSource().getFullName());
-					if (idType != null) {
-						IDType sourceIDType = IDType.getIDType(idType);
-						if (sourceIDType != null) {
+			typeToElements.get(element.getObjectType()).add(element);
+		}
 
-							Set<Integer> davidIDs = null;
-							if (sourceIDType.getDataType() == EDataType.INTEGER) {
-								try {
-									davidIDs = genomeIdManager.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
-											Integer.valueOf(xref.getId()));
-								} catch (NumberFormatException e) {
-									continue;
-								}
-							} else {
+		for (PathwayElement element : typeToElements.get(ObjectType.DATANODE)) {
+			Xref xref = element.getXref();
+			String label = element.getTextLabel();
+			if (xref != null && xref.getDataSource() != null && xref.getId() != null && !xref.getId().isEmpty()) {
+				String idType = dbNameMap.get(xref.getDataSource().getFullName());
+				if (idType != null) {
+					IDType sourceIDType = IDType.getIDType(idType);
+					if (sourceIDType != null) {
+
+						Set<Integer> davidIDs = null;
+						if (sourceIDType.getDataType() == EDataType.INTEGER) {
+							try {
 								davidIDs = genomeIdManager.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"),
-										xref.getId());
-							}
-
-							if (davidIDs == null) {
-								Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for " + idType
-										+ " ID: " + xref.getId()));
+										Integer.valueOf(xref.getId()));
+							} catch (NumberFormatException e) {
+								createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
 								continue;
 							}
-
-							ArrayList<PathwayVertex> vertices = pathwayItemManager.createGeneVertex(label, xref
-									.getDataSource().getType(), "", davidIDs);
-
-							// float xScaling = (float) pixelWidth / (float) boardWidth;
-							// float yScaling = (float) pixelHeight / (float) boardHeight;
-
-							PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(pathwayGraph, vertices,
-									label, "rectangle", (short) (element.getMCenterX()),
-									(short) (element.getMCenterY()), (short) (element.getMWidth()),
-									(short) (element.getMHeight()));
-							if (element.getGraphId() != null && !element.getGraphId().isEmpty())
-								vertexReps.put(element.getGraphId(), vertexRep);
+						} else {
+							davidIDs = genomeIdManager
+									.getIDAsSet(sourceIDType, IDType.getIDType("DAVID"), xref.getId());
 						}
+
+						if (davidIDs == null) {
+							Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for " + idType
+									+ " ID: " + xref.getId()));
+							createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
+							continue;
+						}
+
+						List<PathwayVertex> vertices = pathwayItemManager.createGeneVertex(label, xref.getDataSource()
+								.getType(), "", davidIDs);
+
+						PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(pathwayGraph, vertices, label,
+								"rectangle", (short) (element.getMCenterX()), (short) (element.getMCenterY()),
+								(short) (element.getMWidth()), (short) (element.getMHeight()));
+						vertexReps.put(element.getGraphId(), vertexRep);
 					}
+				} else {
+					createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
 				}
+			} else {
+				createVertexWithoutDavidID(pathwayGraph, element, vertexReps);
 			}
 		}
 
-		for (PathwayElement element : pathway.getDataObjects()) {
-			if (element.getObjectType() == ObjectType.LINE) {
-				String startGraphRef = element.getStartGraphRef();
-				String endGraphRef = element.getEndGraphRef();
+		for (PathwayElement element : typeToElements.get(ObjectType.LINE)) {
+			String startGraphRef = element.getStartGraphRef();
+			String endGraphRef = element.getEndGraphRef();
 
-				if (startGraphRef != null && endGraphRef != null && !startGraphRef.isEmpty() && !endGraphRef.isEmpty()) {
-					PathwayVertexRep startVertexRep = vertexReps.get(startGraphRef);
-					PathwayVertexRep endVertexRep = vertexReps.get(endGraphRef);
-					if (startVertexRep != null && endVertexRep != null) {
-						pathwayGraph.addEdge(startVertexRep, endVertexRep);
-					}
+			if (startGraphRef != null && endGraphRef != null && !startGraphRef.isEmpty() && !endGraphRef.isEmpty()) {
+				PathwayVertexRep startVertexRep = vertexReps.get(startGraphRef);
+				PathwayVertexRep endVertexRep = vertexReps.get(endGraphRef);
+				if (startVertexRep != null && endVertexRep != null) {
+					pathwayGraph.addEdge(startVertexRep, endVertexRep);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Creates a {@link PathwayVertex} and {@link PathwayVertexRep} for the specified element.
+	 *
+	 * @param pathwayGraph
+	 * @param element
+	 * @param vertexReps
+	 *            Map where the created VertexRep is stored.
+	 */
+	private void createVertexWithoutDavidID(PathwayGraph pathwayGraph, PathwayElement element,
+			Map<String, PathwayVertexRep> vertexReps) {
+		PathwayItemManager pathwayItemManager = PathwayItemManager.get();
+		PathwayVertex vertex = pathwayItemManager.createVertex(element.getTextLabel(), "gene", "");
+		List<PathwayVertex> vertices = new ArrayList<>(1);
+		vertices.add(vertex);
+		PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(pathwayGraph, vertices, element.getTextLabel(),
+				"rectangle", (short) (element.getMCenterX()), (short) (element.getMCenterY()),
+				(short) (element.getMWidth()), (short) (element.getMHeight()));
+		vertexReps.put(element.getGraphId(), vertexRep);
 	}
 
 }

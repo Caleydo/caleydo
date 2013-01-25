@@ -279,7 +279,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		parentView.addIDPickingListener(pickingListener, EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
 
 		for (final Integer sampleID : experimentPerspective.getVirtualArray()) {
-
+			// FIXME: add one type listener
 			parentView.addIDPickingTooltipListener(new ILabelProvider() {
 
 				@Override

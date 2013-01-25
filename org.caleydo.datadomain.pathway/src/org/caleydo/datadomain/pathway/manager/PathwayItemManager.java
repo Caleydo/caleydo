@@ -126,7 +126,7 @@ public class PathwayItemManager {
 	 *            the davidIDType ids that map to this vertex
 	 * @return
 	 */
-	public ArrayList<PathwayVertex> createGeneVertex(final String name, final String type, final String externalLink,
+	public List<PathwayVertex> createGeneVertex(final String name, final String type, final String externalLink,
 			final Set<Integer> mappingDavidIDs) {
 
 		ArrayList<PathwayVertex> vertices = new ArrayList<PathwayVertex>();
@@ -179,7 +179,7 @@ public class PathwayItemManager {
 	 * @param height
 	 * @return
 	 */
-	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
+	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final List<PathwayVertex> vertices,
 			final String name, final String shapeType, final short x, final short y, final short width,
 			final short height) {
 
@@ -206,7 +206,7 @@ public class PathwayItemManager {
 	 *            a string with the coordinates comma separated. e.g. 13,25,15,26,... alternating between x and y values
 	 * @return
 	 */
-	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
+	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final List<PathwayVertex> vertices,
 			final String name, final String shapeType, final String coords) {
 
 		PathwayVertexRep pathwayVertexRep = new PathwayVertexRep(name, shapeType, coords);
@@ -223,7 +223,7 @@ public class PathwayItemManager {
 	 * @param vertices
 	 * @param pathwayVertexRep
 	 */
-	private void registerRep(PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
+	private void registerRep(PathwayGraph parentPathway, final List<PathwayVertex> vertices,
 			PathwayVertexRep pathwayVertexRep) {
 		parentPathway.addVertex(pathwayVertexRep);
 		pathwayVertexRep.setPathway(parentPathway);
