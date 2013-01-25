@@ -33,9 +33,9 @@ import org.caleydo.core.manager.GeneralManager;
 
 /**
  * utility class to hold a list of event listeners to register and remove them all in an convenient way
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class EventListenerManager {
 	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
@@ -48,7 +48,8 @@ public class EventListenerManager {
 		this.owner = owner;
 	}
 
-	private void register(Class<? extends AEvent> event, AEventListener<?> listener) {
+	public void register(Class<? extends AEvent> event, AEventListener<?> listener) {
+		assert listener.getHandler() == owner;
 		listeners.add(listener);
 		EVENT_PUBLISHER.addListener(event, listener);
 	}
