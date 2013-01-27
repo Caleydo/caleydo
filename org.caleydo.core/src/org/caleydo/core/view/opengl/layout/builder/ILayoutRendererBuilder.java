@@ -19,12 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout.builder;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface ILayoutRendererBuilder {
-	public LayoutRenderer build();
+	public ALayoutRenderer build();
 }

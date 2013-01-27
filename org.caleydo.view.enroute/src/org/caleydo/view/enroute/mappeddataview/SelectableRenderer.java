@@ -21,14 +21,14 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.view.enroute.SelectionColorCalculator;
 
 /**
  * @author Alexander Lex
  * 
  */
-public abstract class SelectableRenderer extends LayoutRenderer {
+public abstract class SelectableRenderer extends ALayoutRenderer {
 
 	protected AGLView parentView;
 	protected MappedDataRenderer parent;

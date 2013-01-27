@@ -25,7 +25,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * @author Partl
  * 
  */
-public class CompactPathwayRenderer extends LayoutRenderer {
+public class CompactPathwayRenderer extends ALayoutRenderer {
 
 	private static final int ICON_SIZE_PIXELS = 16;
 	private static final int SPACING_PIXELS = 4;

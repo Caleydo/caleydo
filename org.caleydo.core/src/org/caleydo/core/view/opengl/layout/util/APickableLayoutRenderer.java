@@ -26,7 +26,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * Abstract base class that can hold multiple pickingIDs to be pushed when rendering.
@@ -34,7 +34,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * @author Christian
  */
 public abstract class APickableLayoutRenderer
-	extends LayoutRenderer {
+	extends ALayoutRenderer {
 
 	protected AGLView view;
 	protected List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();

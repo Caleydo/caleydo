@@ -539,7 +539,7 @@ public class MappedDataRenderer {
 				topCaptionLayout.setDynamicSizeUnitsX(experimentPerspective.getVirtualArray().size());
 			}
 
-			// LayoutRenderer columnCaptionRenderer = new
+			// ALayoutRenderer columnCaptionRenderer = new
 			// ColumnCaptionRenderer(parentView,
 			// this, group);
 			// captionLayout.setRenderer(columnCaptionRenderer);

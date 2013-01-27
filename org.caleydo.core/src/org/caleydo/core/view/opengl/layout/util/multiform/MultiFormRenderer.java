@@ -17,12 +17,12 @@ import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.AForwardingRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Renderer that allows to switch between different remotely rendered {@link AGLView}s or {@link LayoutRenderer}s.
+ * Renderer that allows to switch between different remotely rendered {@link AGLView}s or {@link ALayoutRenderer}s.
  * Remotely rendered views are integrated into this renderer using plugin mechanism of extension point
  * <code>org.caleydo.view.EmbeddedView</code>.
  *
@@ -207,7 +207,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	/**
-	 * Info that holds necessary information for {@link LayoutRenderer}s.
+	 * Info that holds necessary information for {@link ALayoutRenderer}s.
 	 *
 	 * @author Christian Partl
 	 */
@@ -216,7 +216,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		/**
 		 * The renderer.
 		 */
-		private final LayoutRenderer renderer;
+		private final ALayoutRenderer renderer;
 
 		/**
 		 * @param rendererID
@@ -224,7 +224,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		 * @param visInfo
 		 */
 		protected LayoutRendererInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo,
-				LayoutRenderer renderer) {
+				ALayoutRenderer renderer) {
 			super(rendererID, iconPath, visInfo);
 			this.renderer = renderer;
 		}
@@ -292,7 +292,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	/**
-	 * Adds a {@link LayoutRenderer} to this {@link MultiFormRenderer}.
+	 * Adds a {@link ALayoutRenderer} to this {@link MultiFormRenderer}.
 	 *
 	 * @param renderer
 	 *            The renderer to be added.
@@ -307,7 +307,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	 * @return Identifier for the currently added renderer that can be used to set it active ({@link #setActive(int)})
 	 *         or remove.
 	 */
-	public int addLayoutRenderer(LayoutRenderer renderer, String iconPath, IEmbeddedVisualizationInfo visInfo,
+	public int addLayoutRenderer(ALayoutRenderer renderer, String iconPath, IEmbeddedVisualizationInfo visInfo,
 			boolean isDefaultRenderer) {
 
 		int rendererID = currentMaxRendererID++;
@@ -361,7 +361,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	/**
-	 * Gets the file path of the icon that is associated with the {@link AGLView} or {@link LayoutRenderer} specified by
+	 * Gets the file path of the icon that is associated with the {@link AGLView} or {@link ALayoutRenderer} specified by
 	 * the provided renderer ID.
 	 *
 	 * @param rendererID
@@ -430,7 +430,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	 * Obtains the ID of the current default renderer. The default renderer is set active automatically, if no renderer
 	 * was set active explicitly. The last renderer that was added as default (either via extension point
 	 * <code>org.caleydo.view.EmbeddedView</code> for plugin views, or via
-	 * {@link #addLayoutRenderer(LayoutRenderer, String, IEmbeddedVisualizationInfo, boolean)}) is default. If no
+	 * {@link #addLayoutRenderer(ALayoutRenderer, String, IEmbeddedVisualizationInfo, boolean)}) is default. If no
 	 * renderer was added as default, the first added renderer is default. It is possible to change the default renderer
 	 * using {@link #setDefaultRenderer(int)}.
 	 *
@@ -457,7 +457,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	/**
-	 * Sets a {@link AGLView} or {@link LayoutRenderer} previously added to this {@link MultiFormRenderer} active, so
+	 * Sets a {@link AGLView} or {@link ALayoutRenderer} previously added to this {@link MultiFormRenderer} active, so
 	 * that it will be rendered. If the specified identifier is invalid, or the renderer is already active, no operation
 	 * is performed.
 	 *
@@ -501,13 +501,13 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	/**
-	 * Gets the {@link LayoutRenderer} associated with the provided rendererID.
+	 * Gets the {@link ALayoutRenderer} associated with the provided rendererID.
 	 *
 	 * @param rendererID
 	 *            Identifier that specifies the layout.
 	 * @return The renderer that is associated with the specified ID. Null, if no renderer corresponds to this ID.
 	 */
-	public LayoutRenderer getLayoutRenderer(int rendererID) {
+	public ALayoutRenderer getLayoutRenderer(int rendererID) {
 		ARendererInfo info = rendererInfos.get(rendererID);
 		if (info == null)
 			return null;
@@ -520,7 +520,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	/**
-	 * @return The ids of all {@link AGLView}s and {@link LayoutRenderer}s added.
+	 * @return The ids of all {@link AGLView}s and {@link ALayoutRenderer}s added.
 	 */
 	public Set<Integer> getRendererIDs() {
 		return new HashSet<>(rendererInfos.keySet());
@@ -539,7 +539,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 
 	/**
 	 * @param rendererID
-	 * @return True, if a {@link LayoutRenderer} is associated with the provided ID.
+	 * @return True, if a {@link ALayoutRenderer} is associated with the provided ID.
 	 */
 	public boolean isLayoutRenderer(int rendererID) {
 		ARendererInfo info = rendererInfos.get(rendererID);
@@ -686,7 +686,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 
 				}
 			} else {
-				LayoutRenderer renderer = ((LayoutRendererInfo) info).renderer;
+				ALayoutRenderer renderer = ((LayoutRendererInfo) info).renderer;
 				// The current renderer has already been destroyed by super
 				if (currentRenderer != renderer) {
 					((LayoutRendererInfo) info).renderer.destroy(gl);

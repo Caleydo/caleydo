@@ -23,7 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.column.BrickColumn;
@@ -35,7 +35,7 @@ import org.caleydo.view.stratomex.column.BrickColumn;
  * @author Partl
  * 
  */
-public class OverviewDetailBandRenderer extends LayoutRenderer {
+public class OverviewDetailBandRenderer extends ALayoutRenderer {
 
 	private GLBrick leftBrick;
 	private GLBrick rightBrick;

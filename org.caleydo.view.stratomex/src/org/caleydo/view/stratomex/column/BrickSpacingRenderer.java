@@ -24,7 +24,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -42,7 +42,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
  *
  */
 public class BrickSpacingRenderer
-	extends LayoutRenderer
+	extends ALayoutRenderer
 	implements IDropArea
 {
 	private BrickColumn dimensionGroup;

@@ -22,9 +22,9 @@ package org.caleydo.core.view.opengl.layout.util;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
-public class LineSeparatorRenderer extends LayoutRenderer {
+public class LineSeparatorRenderer extends ALayoutRenderer {
 
 	private boolean isVertical;
 	private float lineWidth = 1;

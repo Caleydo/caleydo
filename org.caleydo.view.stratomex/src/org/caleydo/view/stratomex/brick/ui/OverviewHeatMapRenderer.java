@@ -28,7 +28,7 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * Renderer for an overview heatmap of values specified by recordVA and dimensionVA. It shows the average values per
@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * @author Christian Partl
  *
  */
-public class OverviewHeatMapRenderer extends LayoutRenderer {
+public class OverviewHeatMapRenderer extends ALayoutRenderer {
 
 	private ColorMapper colorMapper;
 	private ArrayList<Float> heatMapValuesMean;

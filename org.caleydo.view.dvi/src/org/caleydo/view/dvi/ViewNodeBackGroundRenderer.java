@@ -23,10 +23,10 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-public class ViewNodeBackGroundRenderer extends LayoutRenderer {
+public class ViewNodeBackGroundRenderer extends ALayoutRenderer {
 
 	private float[] color;
 	private String imagePath;

@@ -23,7 +23,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -37,7 +37,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class HandleRenderer extends LayoutRenderer {
+public class HandleRenderer extends ALayoutRenderer {
 
 	public static final int RESIZE_HANDLE_UPPER_LEFT = 0x1;
 	public static final int RESIZE_HANDLE_UPPER_RIGHT = 0x2;

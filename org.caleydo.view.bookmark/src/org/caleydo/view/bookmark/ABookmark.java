@@ -29,7 +29,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * 
  * @author Alexander Lex
  */
-public abstract class ABookmark extends LayoutRenderer implements ILayoutedElement {
+public abstract class ABookmark extends ALayoutRenderer implements ILayoutedElement {
 
 	protected IDType idType;
 	protected int id;

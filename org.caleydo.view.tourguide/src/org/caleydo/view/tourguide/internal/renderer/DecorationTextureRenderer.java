@@ -26,7 +26,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.IDim;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -35,7 +35,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  *
  * @author Partl
  */
-public class DecorationTextureRenderer extends LayoutRenderer {
+public class DecorationTextureRenderer extends ALayoutRenderer {
 	private final TextureManager textureManager;
 	private String imagePath;
 	private float z;

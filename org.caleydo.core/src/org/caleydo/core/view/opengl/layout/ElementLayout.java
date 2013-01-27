@@ -56,7 +56,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * {@link #getSizeScaledX()} and {@link #getSizeScaledY()}
  * </p>
  * <p>
- * An ElementLayout also holds the {@link LayoutRenderer}s which define its appearance.
+ * An ElementLayout also holds the {@link ALayoutRenderer}s which define its appearance.
  * </p>
  *
  * @author Alexander Lex
@@ -68,9 +68,9 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	 */
 	protected LayoutManager layoutManager;
 
-	private LayoutRenderer renderer;
-	private List<LayoutRenderer> backgroundRenderers = new ArrayList<>(1);
-	private List<LayoutRenderer> foregroundRenderers = new ArrayList<>(1);
+	private ALayoutRenderer renderer;
+	private List<ALayoutRenderer> backgroundRenderers = new ArrayList<>(1);
+	private List<ALayoutRenderer> foregroundRenderers = new ArrayList<>(1);
 
 	/** specifies how much this element is translated in x absolutely */
 	protected float translateX = 0;
@@ -165,7 +165,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	}
 
 	/**
-	 * Destroys the element layout, associated {@link LayoutRenderer}s.
+	 * Destroys the element layout, associated {@link ALayoutRenderer}s.
 	 *
 	 * @param gl
 	 */
@@ -179,7 +179,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		renderer = null;
 
 		if (foregroundRenderers != null) {
-			for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
+			for (ALayoutRenderer foregroundRenderer : foregroundRenderers) {
 				foregroundRenderer.destroy(gl);
 			}
 			foregroundRenderers.clear();
@@ -188,7 +188,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 
 
 		if (backgroundRenderers != null) {
-			for (LayoutRenderer foregroundRenderer : backgroundRenderers) {
+			for (ALayoutRenderer foregroundRenderer : backgroundRenderers) {
 				foregroundRenderer.destroy(gl);
 			}
 			backgroundRenderers.clear();
@@ -225,7 +225,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	 *
 	 * @return
 	 */
-	public LayoutRenderer getRenderer() {
+	public ALayoutRenderer getRenderer() {
 		return renderer;
 	}
 
@@ -433,28 +433,28 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		return translateY;
 	}
 
-	public void setRenderer(LayoutRenderer renderer) {
+	public void setRenderer(ALayoutRenderer renderer) {
 		this.renderer = renderer;
 		if (this.renderer != null) {
 			this.renderer.setElementLayout(this);
 		}
 	}
 
-	public void addBackgroundRenderer(LayoutRenderer renderer) {
+	public void addBackgroundRenderer(ALayoutRenderer renderer) {
 		backgroundRenderers.add(renderer);
 		renderer.setElementLayout(this);
 	}
 
-	public List<LayoutRenderer> getBackgroundRenderer() {
+	public List<ALayoutRenderer> getBackgroundRenderer() {
 		return Collections.unmodifiableList(backgroundRenderers);
 	}
 
-	public void addForeGroundRenderer(LayoutRenderer renderer) {
+	public void addForeGroundRenderer(ALayoutRenderer renderer) {
 		foregroundRenderers.add(renderer);
 		renderer.setElementLayout(this);
 	}
 
-	public List<LayoutRenderer> getForegroundRenderer() {
+	public List<ALayoutRenderer> getForegroundRenderer() {
 		return Collections.unmodifiableList(foregroundRenderers);
 	}
 
@@ -564,12 +564,12 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		if (zoomer != null)
 			zoomer.beginZoom(gl);
 
-		for (LayoutRenderer backgroundRenderer : backgroundRenderers) {
+		for (ALayoutRenderer backgroundRenderer : backgroundRenderers) {
 			backgroundRenderer.render(gl);
 		}
 		if (renderer != null)
 			renderer.render(gl);
-		for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
+		for (ALayoutRenderer foregroundRenderer : foregroundRenderers) {
 			foregroundRenderer.render(gl);
 		}
 		if (zoomer != null)
@@ -620,12 +620,12 @@ public class ElementLayout implements Comparable<ElementLayout> {
 			return;
 
 		if (foregroundRenderers != null) {
-			for (LayoutRenderer renderer : foregroundRenderers) {
+			for (ALayoutRenderer renderer : foregroundRenderers) {
 				renderer.setDisplayListDirty();
 			}
 		}
 		if (backgroundRenderers != null) {
-			for (LayoutRenderer renderer : backgroundRenderers) {
+			for (ALayoutRenderer renderer : backgroundRenderers) {
 				renderer.setDisplayListDirty();
 			}
 		}
@@ -638,17 +638,17 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	protected void updateSpacings() {
 		if (isHidden)
 			return;
-		// LayoutRenderer renderer = ((RenderableLayoutElement)
+		// ALayoutRenderer renderer = ((RenderableLayoutElement)
 		// layout).getRenderer();
 
 		if (foregroundRenderers != null) {
-			for (LayoutRenderer renderer : foregroundRenderers) {
+			for (ALayoutRenderer renderer : foregroundRenderers) {
 				renderer.setElementLayout(this);
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 			}
 		}
 		if (backgroundRenderers != null) {
-			for (LayoutRenderer renderer : backgroundRenderers) {
+			for (ALayoutRenderer renderer : backgroundRenderers) {
 				renderer.setElementLayout(this);
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 			}
@@ -663,14 +663,14 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		if (renderer != null)
 			renderer.updateSpacing();
 		// if (backgroundRenderers != null) {
-		// for (LayoutRenderer renderer : backgroundRenderers) {
+		// for (ALayoutRenderer renderer : backgroundRenderers) {
 		// renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 		// }
 		// }
 		// if (foregroundRenderers != null)
 		//
 		// {
-		// for (LayoutRenderer renderer : foregroundRenderers) {
+		// for (ALayoutRenderer renderer : foregroundRenderers) {
 		// renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 		// }
 		// }

@@ -22,22 +22,22 @@ package org.caleydo.core.view.opengl.layout;
 import javax.media.opengl.GL2;
 
 /**
- * Forwarding renderer that can be used as base class for wrappers/decorators of {@link LayoutRenderer}.
+ * Forwarding renderer that can be used as base class for wrappers/decorators of {@link ALayoutRenderer}.
  *
  * @author Christian Partl
  *
  */
-public class AForwardingRenderer extends LayoutRenderer {
+public class AForwardingRenderer extends ALayoutRenderer {
 
 	/**
 	 * Renderer that is forwarded to.
 	 */
-	protected LayoutRenderer currentRenderer;
+	protected ALayoutRenderer currentRenderer;
 
 	public AForwardingRenderer() {
 	}
 
-	public AForwardingRenderer(LayoutRenderer renderer) {
+	public AForwardingRenderer(ALayoutRenderer renderer) {
 		this.currentRenderer = renderer;
 	}
 
@@ -96,14 +96,14 @@ public class AForwardingRenderer extends LayoutRenderer {
 	 * @param renderer
 	 *            setter, see {@link renderer}
 	 */
-	public void setRenderer(LayoutRenderer renderer) {
+	public void setRenderer(ALayoutRenderer renderer) {
 		this.currentRenderer = renderer;
 	}
 
 	/**
 	 * @return the renderer, see {@link #currentRenderer}
 	 */
-	public LayoutRenderer getRenderer() {
+	public ALayoutRenderer getRenderer() {
 		return currentRenderer;
 	}
 

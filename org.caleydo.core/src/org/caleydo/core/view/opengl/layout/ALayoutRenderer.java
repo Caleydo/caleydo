@@ -43,12 +43,12 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
  * class.
  * </p>
  * <p>
- * Every LayoutRenderer renders from (0, 0) to (x, y). An LayoutRenderer does not take care of any spacings on the
+ * Every ALayoutRenderer renders from (0, 0) to (x, y). An ALayoutRenderer does not take care of any spacings on the
  * sides.
  * </p>
  *
  * <p>
- * If a specific LayoutRenderer wants its content to be rendered in a display list, {@link #permitsWrappingDisplayLists()} must
+ * If a specific ALayoutRenderer wants its content to be rendered in a display list, {@link #permitsWrappingDisplayLists()} must
  * return true. However, the use of display lists also depends on whether the {@link LayoutManager} of the associated
  * <code>ElementLayout</code> permits display lists.
  * </p>
@@ -56,7 +56,7 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
  * @author Alexander Lex
  * @author Christian Partl
  */
-public abstract class LayoutRenderer {
+public abstract class ALayoutRenderer {
 	protected float x; // width would be a better name
 	protected float y;
 
@@ -77,7 +77,7 @@ public abstract class LayoutRenderer {
 
 	// protected PixelGLConverter pixelGLConverter;
 
-	public LayoutRenderer() {
+	public ALayoutRenderer() {
 
 	}
 

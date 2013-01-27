@@ -45,12 +45,12 @@ public class LayoutManager {
 
 	/**
 	 * List of display list indices that refer to display lists of @link
-	 * {@link LayoutRenderer}s that have been destroyed.
+	 * {@link ALayoutRenderer}s that have been destroyed.
 	 */
 	private Queue<Integer> displayListsToDelete = new ConcurrentLinkedQueue<Integer>();
 
 	/**
-	 * Determines whether the {@link LayoutRenderer}s called by this
+	 * Determines whether the {@link ALayoutRenderer}s called by this
 	 * {@link LayoutManager} should make use of display lists (if implemented).
 	 * Note that if {@link #useDisplayLists} is set to true, the
 	 * {@link #render(GL2)} method must not be part of any external display
@@ -116,7 +116,7 @@ public class LayoutManager {
 	}
 
 	/**
-	 * Sets the display lists of all associated {@link LayoutRenderer}s dirty.
+	 * Sets the display lists of all associated {@link ALayoutRenderer}s dirty.
 	 */
 	public void setRenderingDirty() {
 		baseElementLayout.setRenderingDirty();
@@ -148,7 +148,7 @@ public class LayoutManager {
 	}
 
 	/**
-	 * Deletes the display lists of all {@link LayoutRenderer}s of this
+	 * Deletes the display lists of all {@link ALayoutRenderer}s of this
 	 * LayoutManager. This method must be called when the
 	 * <code>LayoutManager</code> is no longer used.
 	 *
@@ -208,7 +208,7 @@ public class LayoutManager {
 
 	/**
 	 * Adds the index of a display list that shall be deleted in the next render
-	 * cycle. This method is intended to be used by {@link LayoutRenderer}s that
+	 * cycle. This method is intended to be used by {@link ALayoutRenderer}s that
 	 * will be destroyed only.
 	 *
 	 * @param displayListIndex

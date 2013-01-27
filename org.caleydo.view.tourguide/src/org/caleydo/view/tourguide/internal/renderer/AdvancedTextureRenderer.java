@@ -23,7 +23,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Padding;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  *
  * @author Partl
  */
-public class AdvancedTextureRenderer extends LayoutRenderer {
+public class AdvancedTextureRenderer extends ALayoutRenderer {
 	private final TextureManager textureManager;
 	private final Padding padding;
 	private String imagePath;

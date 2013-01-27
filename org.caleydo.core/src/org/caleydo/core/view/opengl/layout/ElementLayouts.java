@@ -83,7 +83,7 @@ public final class ElementLayouts {
 				.render(new ButtonRenderer.Builder(view, button).zCoordinate(z).build()).build();
 	}
 
-	public static ElementLayout wrap(LayoutRenderer renderer, int width) {
+	public static ElementLayout wrap(ALayoutRenderer renderer, int width) {
 		return create().width(width).render(renderer).build();
 	}
 

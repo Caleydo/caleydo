@@ -43,7 +43,7 @@ import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -212,7 +212,7 @@ public class ScoreQueryUI extends Row {
 				ElementLayout l = tcol.getTd(selectedRow);
 				if (l == null)
 					continue;
-				List<LayoutRenderer> renderers = l.getBackgroundRenderer();
+				List<ALayoutRenderer> renderers = l.getBackgroundRenderer();
 				if (renderers.isEmpty() || !(renderers.get(0) instanceof PickingRenderer))
 					continue;
 				((PickingRenderer) renderers.get(0)).setColor(Colors.TRANSPARENT);
@@ -227,7 +227,7 @@ public class ScoreQueryUI extends Row {
 				ElementLayout l = tcol.getTd(selectedRow);
 				if (l == null)
 					continue;
-				List<LayoutRenderer> renderers = l.getBackgroundRenderer();
+				List<ALayoutRenderer> renderers = l.getBackgroundRenderer();
 				if (renderers.isEmpty() || !(renderers.get(0) instanceof PickingRenderer))
 					continue;
 				((PickingRenderer) renderers.get(0)).setColor(SELECTED_COLOR);

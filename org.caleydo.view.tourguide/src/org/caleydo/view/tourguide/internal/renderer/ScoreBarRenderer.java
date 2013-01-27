@@ -26,11 +26,11 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 
-public class ScoreBarRenderer extends LayoutRenderer {
+public class ScoreBarRenderer extends ALayoutRenderer {
 	private final float score;
 
 	private final IColor color;

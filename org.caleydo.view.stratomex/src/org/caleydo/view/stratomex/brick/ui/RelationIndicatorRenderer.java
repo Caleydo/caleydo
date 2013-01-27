@@ -31,7 +31,7 @@ import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -50,7 +50,7 @@ import org.caleydo.view.stratomex.column.BrickColumn;
  * @author Alexander Lex
  *
  */
-public class RelationIndicatorRenderer extends LayoutRenderer {
+public class RelationIndicatorRenderer extends ALayoutRenderer {
 
 	// private ASetBasedDataDomain dataDomain;
 	private RelationAnalyzer relationAnalyzer;

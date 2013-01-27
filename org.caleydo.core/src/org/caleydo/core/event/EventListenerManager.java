@@ -32,10 +32,10 @@ import java.util.Set;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * utility class to hold a list of event listeners to register and remove them all in an convenient way
- *
+ * Utility class to hold a list of event listeners to register and remove them all in an convenient way.
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class EventListenerManager {
 	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();

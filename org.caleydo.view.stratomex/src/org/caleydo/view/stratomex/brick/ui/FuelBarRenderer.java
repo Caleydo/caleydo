@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex.brick.ui;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -33,7 +33,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
  * @author Christian Partl
  * 
  */
-public class FuelBarRenderer extends LayoutRenderer {
+public class FuelBarRenderer extends ALayoutRenderer {
 
 	private GLBrick brick;
 

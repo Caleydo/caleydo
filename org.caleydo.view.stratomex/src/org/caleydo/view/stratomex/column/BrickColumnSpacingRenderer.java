@@ -42,7 +42,7 @@ import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -66,7 +66,7 @@ import org.eclipse.core.runtime.Status;
  *
  */
 public class BrickColumnSpacingRenderer
-	extends LayoutRenderer
+	extends ALayoutRenderer
 	implements IDropArea {
 
 	public static float[] DRAG_AND_DROP_MARKER_COLOR = { 0.5f, 0.5f, 0.5f };

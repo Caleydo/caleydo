@@ -23,7 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
  * @author Partl
  */
 public class ScrollBarRenderer
-	extends LayoutRenderer
+	extends ALayoutRenderer
 	implements IDraggable {
 
 	private AGLView view;

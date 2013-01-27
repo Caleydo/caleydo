@@ -23,7 +23,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * Renders the dimension bar, which indicates, which dimensions are currently
@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * @author Christian Partl
  * 
  */
-public class DimensionBarRenderer extends LayoutRenderer {
+public class DimensionBarRenderer extends ALayoutRenderer {
 
 	private VirtualArray overallDimensionVA;
 	private VirtualArray dimensionVA;

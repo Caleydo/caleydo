@@ -32,9 +32,10 @@ import java.util.Set;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * utility to handle events and their registration / deregistration
+ * Utility to handle events and their registration / deregistration.
  * 
  * @author Samuel Gratzl
+ * @author Alexander Lex
  * 
  */
 public final class EventListeners {
@@ -42,6 +43,13 @@ public final class EventListeners {
 
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
+	/**
+	 * Register the listener to the event type.
+	 *
+	 * @param event
+	 *            class of event
+	 * @param listener
+	 */
 	public final void register(Class<? extends AEvent> event, AEventListener<?> listener) {
 		listeners.add(listener);
 		EVENT_PUBLISHER.addListener(event, listener);

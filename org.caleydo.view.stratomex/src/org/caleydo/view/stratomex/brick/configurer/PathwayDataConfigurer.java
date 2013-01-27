@@ -29,7 +29,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
@@ -210,7 +210,7 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 
 		int compactRendererID = -1;
 		if (brick.isHeaderBrick()) {
-			LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(brick, label,
+			ALayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(brick, label,
 					EPickingType.BRICK.name(), brick.getID());
 			compactRendererID = multiFormRenderer.addLayoutRenderer(pathwaysSummaryCompactRenderer, null, visInfo,
 					false);
@@ -226,7 +226,7 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 					} else {
 						texture = EIconTextures.CM_BIOCARTA;
 					}
-					LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick, brick
+					ALayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick, brick
 							.getTablePerspective().getLabel(), EPickingType.BRICK.name(), brick.getID(),
 							brick.getTextureManager(), texture);
 					compactRendererID = multiFormRenderer.addLayoutRenderer(compactPathwayRenderer, null, visInfo,

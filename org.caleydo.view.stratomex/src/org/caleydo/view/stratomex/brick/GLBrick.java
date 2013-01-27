@@ -616,7 +616,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				brickWidthMode = null;
 		}
 		// currentViewType = viewType;
-		// // LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
+		// // ALayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
 		//
 		// if (viewRenderer == null)
 		// return;

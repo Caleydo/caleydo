@@ -22,7 +22,7 @@ package org.caleydo.view.enroute.mappeddataview;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * Renders the background of a row
@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * @author Alexander Lex
  * 
  */
-public class RowBackgroundRenderer extends LayoutRenderer {
+public class RowBackgroundRenderer extends ALayoutRenderer {
 
 	private float[] backgroundColor;
 

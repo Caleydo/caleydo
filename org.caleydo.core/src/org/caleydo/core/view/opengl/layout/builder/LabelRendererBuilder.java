@@ -4,7 +4,7 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Dims;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Padding;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer.LabelAlignment;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer2;
@@ -23,7 +23,7 @@ public class LabelRendererBuilder implements ILayoutRendererBuilder {
 	}
 
 	@Override
-	public LayoutRenderer build() {
+	public ALayoutRenderer build() {
 		return new LabelRenderer2(label, padding, textColor, alignment, textRenderer);
 	}
 

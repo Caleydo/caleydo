@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -44,7 +44,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	protected static final int DEFAULT_GUI_ELEMENT_SIZE_PIXELS = 16;
 
 	protected GLBrick brick;
-	protected LayoutRenderer viewRenderer;
+	protected ALayoutRenderer viewRenderer;
 	protected ElementLayout viewLayout;
 	protected BrickColumn brickColumn;
 	protected GLStratomex stratomex;
@@ -86,7 +86,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 *
 	 * @param viewRenderer
 	 */
-	public void setViewRenderer(LayoutRenderer viewRenderer) {
+	public void setViewRenderer(ALayoutRenderer viewRenderer) {
 		this.viewRenderer = viewRenderer;
 	}
 
@@ -95,7 +95,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 *
 	 * @return viewRenderer
 	 */
-	public LayoutRenderer getViewRenderer() {
+	public ALayoutRenderer getViewRenderer() {
 		return viewRenderer;
 	}
 

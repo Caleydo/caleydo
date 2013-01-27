@@ -24,7 +24,7 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.BrickColors;
@@ -36,7 +36,7 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
  * @author Alexander Lex
  *
  */
-public class ToolBarBackgroundRenderer extends LayoutRenderer {
+public class ToolBarBackgroundRenderer extends ALayoutRenderer {
 
 	private GLBrick brick;
 

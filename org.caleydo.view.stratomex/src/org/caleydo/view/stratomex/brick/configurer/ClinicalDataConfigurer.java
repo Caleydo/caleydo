@@ -29,7 +29,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
@@ -184,7 +184,7 @@ public class ClinicalDataConfigurer extends ABrickConfigurer {
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 
-		LayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick, brick.getLabel(),
+		ALayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick, brick.getLabel(),
 				EPickingType.BRICK.name(), brick.getID());
 
 		IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {

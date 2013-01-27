@@ -21,7 +21,7 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * Dummy renderer that only requires some minimal space.
@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * @author Partl
  * 
  */
-public class DummyRenderer extends LayoutRenderer {
+public class DummyRenderer extends ALayoutRenderer {
 
 	@Override
 	public int getMinHeightPixels() {

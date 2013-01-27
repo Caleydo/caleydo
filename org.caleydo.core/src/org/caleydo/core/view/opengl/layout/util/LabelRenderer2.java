@@ -23,7 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.IColor;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Padding;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer.LabelAlignment;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -34,7 +34,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  *
  * @author Partl
  */
-public class LabelRenderer2 extends LayoutRenderer {
+public class LabelRenderer2 extends ALayoutRenderer {
 	private final ILabelProvider labelProvider;
 
 	private String label = "Not set";

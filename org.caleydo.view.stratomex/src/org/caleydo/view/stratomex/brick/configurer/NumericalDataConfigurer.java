@@ -27,7 +27,7 @@ import java.util.Set;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -151,10 +151,10 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 
-		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
+		ALayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
 				.getDataDomain().getTable(), true);
 
-		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
+		ALayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(brick.getTablePerspective(), brick
 				.getDataDomain().getTable(), false);
 
 		IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {

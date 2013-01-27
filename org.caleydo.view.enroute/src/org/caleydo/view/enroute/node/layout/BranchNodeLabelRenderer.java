@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.ALinearizableNode;
@@ -21,7 +21,7 @@ import org.caleydo.view.enroute.node.BranchSummaryNode;
  * @author Christian
  * 
  */
-public class BranchNodeLabelRenderer extends LayoutRenderer {
+public class BranchNodeLabelRenderer extends ALayoutRenderer {
 
 	private static final String DOTS = " ...";
 	private static final String SEPARATOR = ", ";

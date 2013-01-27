@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.layout.builder;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 
 public class ElementLayoutBuilder {
@@ -34,7 +34,7 @@ public class ElementLayoutBuilder {
 		return this;
 	}
 
-	public ElementLayoutBuilder render(LayoutRenderer renderer) {
+	public ElementLayoutBuilder render(ALayoutRenderer renderer) {
 		l.setRenderer(renderer);
 		return this;
 	}

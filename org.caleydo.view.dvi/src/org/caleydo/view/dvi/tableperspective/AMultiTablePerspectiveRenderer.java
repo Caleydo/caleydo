@@ -27,12 +27,12 @@ import java.util.Map;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.node.IDVINode;
 
-public abstract class AMultiTablePerspectiveRenderer extends LayoutRenderer {
+public abstract class AMultiTablePerspectiveRenderer extends ALayoutRenderer {
 
 	protected IDVINode node;
 	protected GLDataViewIntegrator view;
