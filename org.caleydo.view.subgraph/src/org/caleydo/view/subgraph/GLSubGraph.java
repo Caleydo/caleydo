@@ -24,7 +24,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
@@ -221,7 +221,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			for (String viewID : remoteRenderedViewIDs) {
 				currentRendererID = multiFormRenderer.addView(viewID, "test", tablePerspectives);
 			}
-			LayoutRenderer customRenderer = new BorderedAreaRenderer();
+			ALayoutRenderer customRenderer = new BorderedAreaRenderer();
 			IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
 
 				@Override

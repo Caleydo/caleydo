@@ -27,7 +27,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -39,7 +39,7 @@ import com.jogamp.opengl.util.texture.Texture;
  * @author Christian Partl
  *
  */
-public class TissueRenderer extends LayoutRenderer {
+public class TissueRenderer extends ALayoutRenderer {
 
 	/**
 	 * View that displays this renderer.
