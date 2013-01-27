@@ -248,7 +248,6 @@ public class GLEnRoutePathway
 		layoutDisplayListIndex = gl.glGenLists(1);
 		textRenderer = new CaleydoTextRenderer(24);
 
-		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
 		path = new ArrayList<PathwayVertexRep>();

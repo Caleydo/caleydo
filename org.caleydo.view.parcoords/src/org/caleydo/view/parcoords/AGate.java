@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.parcoords;
 
@@ -25,7 +22,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -43,12 +39,12 @@ public abstract class AGate extends AGLGUIElement {
 	protected float top;
 	protected float bottom;
 
-	public abstract void draw(GL2 gl, PickingManager pickingManager,
-			TextureManager textureManager, CaleydoTextRenderer textRenderer, int viewID);
+	public abstract void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
+			CaleydoTextRenderer textRenderer, int viewID);
 
 	/**
 	 * Sets the current position (x coordinate) of the gate.
-	 * 
+	 *
 	 * @param currentPosition
 	 *            Position of the gate.
 	 */
@@ -65,7 +61,7 @@ public abstract class AGate extends AGLGUIElement {
 
 	/**
 	 * Handles the dragging of the current gate.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param mousePositionX
@@ -77,8 +73,8 @@ public abstract class AGate extends AGLGUIElement {
 	 * @param isGateDraggingFirstTime
 	 *            Specifies whether the gate is dragged the first time or not.
 	 */
-	public void handleDragging(GL2 gl, float mousePositionX, float mousePositionY,
-			PickingType draggedObject, boolean isGateDraggingFirstTime) {
+	public void handleDragging(GL2 gl, float mousePositionX, float mousePositionY, EPickingType draggedObject,
+			boolean isGateDraggingFirstTime) {
 
 		if (isGateDraggingFirstTime) {
 			mouseTopSpacing = top - mousePositionY;
@@ -127,7 +123,7 @@ public abstract class AGate extends AGLGUIElement {
 
 	/**
 	 * Sets the bottom of the gate.
-	 * 
+	 *
 	 * @param bottom
 	 *            Value the bottom of the gate shall be set to.
 	 */
@@ -145,7 +141,7 @@ public abstract class AGate extends AGLGUIElement {
 
 	/**
 	 * Sets the top of the gate.
-	 * 
+	 *
 	 * @param top
 	 *            Value the top of the gate shall be set to.
 	 */
@@ -177,7 +173,7 @@ public abstract class AGate extends AGLGUIElement {
 
 	/**
 	 * This returns false unless is it is overwritten in sub-classes.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isMasterGate() {

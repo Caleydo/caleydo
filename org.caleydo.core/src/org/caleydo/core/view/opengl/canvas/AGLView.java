@@ -159,8 +159,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	protected boolean hasFrustumChanged = false;
 
-	protected GeneralRenderStyle renderStyle;
-
 	protected TextureManager textureManager;
 
 	private int frameCounter = 0;

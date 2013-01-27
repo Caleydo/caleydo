@@ -73,6 +73,7 @@ public class EventBasedSelectionManager extends SelectionManager implements
 
 	@Override
 	public synchronized void registerEventListeners() {
+		eventListeners = new EventListeners();
 		SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventListeners.register(SelectionUpdateEvent.class, selectionUpdateListener);

@@ -101,8 +101,6 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		renderStyle = new HistogramRenderStyle(this, viewFrustum);
-
 		// registerEventListeners();
 
 		detailLevel = EDetailLevel.HIGH;

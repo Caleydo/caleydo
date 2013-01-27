@@ -126,7 +126,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		selectionTransformer = new StandardTransformer(uniqueID);
 
-		super.renderStyle = renderStyle;
 
 		textRenderer = new CaleydoTextRenderer(24);
 

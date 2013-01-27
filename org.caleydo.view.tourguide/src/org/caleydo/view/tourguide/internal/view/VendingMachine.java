@@ -151,7 +151,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
 
-		super.renderStyle = renderStyle;
+
 		detailLevel = EDetailLevel.HIGH;
 
 		textRenderer = new CaleydoTextRenderer(12);

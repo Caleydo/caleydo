@@ -130,7 +130,6 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TreeMapRenderStyle(viewFrustum);
 
-		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
 		// mainTreeMapView = createEmbeddedTreeMap();

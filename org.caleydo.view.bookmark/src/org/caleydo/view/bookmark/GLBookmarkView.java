@@ -120,7 +120,6 @@ public class GLBookmarkView extends ATableBasedView {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
 		bookmarkContainers = new ArrayList<ABookmarkContainer>();
 		hashCategoryToBookmarkContainer = new HashMap<IDCategory, ABookmarkContainer>();

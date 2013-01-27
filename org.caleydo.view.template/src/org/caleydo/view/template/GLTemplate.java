@@ -68,6 +68,8 @@ public class GLTemplate extends AGLView {
 
 	private TemplateRenderer templateRenderer = new TemplateRenderer(this);
 
+	private TemplateRenderStyle renderStyle;
+
 	/**
 	 * Constructor.
 	 *
@@ -89,7 +91,6 @@ public class GLTemplate extends AGLView {
 		rendererLayout.addForeGroundRenderer(templateRenderer);
 		layoutManager.setBaseElementLayout(rendererLayout);
 
-		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 	}
 

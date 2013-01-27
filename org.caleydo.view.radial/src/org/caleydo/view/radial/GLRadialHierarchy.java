@@ -133,6 +133,8 @@ public class GLRadialHierarchy extends ATableBasedView {
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
 
+	private RadialHierarchyRenderStyle renderStyle;
+
 	/**
 	 * Constructor.
 	 */

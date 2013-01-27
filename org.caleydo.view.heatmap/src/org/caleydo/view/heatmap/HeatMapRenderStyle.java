@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,11 +22,10 @@ package org.caleydo.view.heatmap;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 
 /**
  * Heat Map render styles
- * 
+ *
  * @author Alexander Lex
  */
 
@@ -70,7 +69,6 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	// private HashMap<Integer, Float> hashLevelToWidth;
 
 	GLHeatMap heatMap;
-	GLHierarchicalHeatMap hierarchicalHeatMap;
 
 	// private boolean useFishEye = true;
 
@@ -106,14 +104,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	}
 
-	public HeatMapRenderStyle(GLHierarchicalHeatMap hierarchicalHeatMap,
-			ViewFrustum viewFrustum) {
 
-		super(viewFrustum);
-
-		this.hierarchicalHeatMap = hierarchicalHeatMap;
-
-	}
 
 	// /**
 	// * Initializes or updates field sizes based on selections, virtual arrays
@@ -172,24 +163,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		return fWidthClusterVisualization;
 	}
 
-	public float getWidthLevel1() {
-		return fWidthLevel1;
-	}
 
-	public float getWidthLevel2() {
-		fWidthLevel2 = hierarchicalHeatMap.getViewFrustum().getWidth() / 5;
-
-		return fWidthLevel2;
-	}
-
-	public float getWidthLevel3() {
-		return fWidthLevel3;
-	}
-
-	// function called by HHM to set width of embedded HM
-	public void setWidthLevel3(float fWidthLevel3) {
-		this.fWidthLevel3 = fWidthLevel3;
-	}
 
 	// public float getYCenter() {
 	//

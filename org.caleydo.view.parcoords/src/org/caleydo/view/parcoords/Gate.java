@@ -28,7 +28,6 @@ import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -112,7 +111,7 @@ public class Gate extends AGate {
 		beginGUIElement(gl, scalingPivot);
 
 		gl.glColor4f(1, 1, 1, 0f);
-		int PickingID = pickingManager.getPickingID(viewID, PickingType.REMOVE_GATE, gateID);
+		int PickingID = pickingManager.getPickingID(viewID, EPickingType.REMOVE_GATE.name(), gateID);
 		gl.glPushName(PickingID);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
@@ -129,7 +128,7 @@ public class Gate extends AGate {
 		Vec3f upperRightCorner = new Vec3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop, GATE_Z);
 		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop, GATE_Z);
 
-		gl.glPushName(pickingManager.getPickingID(viewID, PickingType.GATE_TIP_SELECTION, gateID));
+		gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.GATE_TIP_SELECTION.name(), gateID));
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner, lowerRightCorner, upperRightCorner,
 				upperLeftCorner, 1, 1, 1, 1);
@@ -161,7 +160,7 @@ public class Gate extends AGate {
 		// // TODO dimension based acces
 		// }
 
-		gl.glPushName(pickingManager.getPickingID(viewID, PickingType.GATE_BODY_SELECTION, gateID));
+		gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.GATE_BODY_SELECTION.name(), gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom + PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom + PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
@@ -173,7 +172,7 @@ public class Gate extends AGate {
 
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(viewID, PickingType.GATE_BOTTOM_SELECTION, gateID));
+		gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.GATE_BOTTOM_SELECTION.name(), gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom, GATE_Z);
 		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);

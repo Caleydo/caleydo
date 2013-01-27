@@ -28,25 +28,7 @@ package org.caleydo.core.view.opengl.picking;
 @Deprecated
 public enum PickingType {
 
-	// parallel coordinates
-	POLYLINE_SELECTION,
-	X_AXIS_SELECTION,
-	Y_AXIS_SELECTION,
-	GATE_TIP_SELECTION,
-	GATE_BODY_SELECTION,
-	GATE_BOTTOM_SELECTION,
-	ADD_GATE,
-	ADD_MASTER_GATE,
-	REMOVE_GATE,
-	PC_ICON_SELECTION,
-	MOVE_AXIS,
-	REMOVE_AXIS,
-	DUPLICATE_AXIS,
-	ANGULAR_UPPER,
-	ANGULAR_LOWER,
-	/** Type for selection of views in the parallel coordinates, currently the heat map */
-	PCS_VIEW_SELECTION,
-	REMOVE_NAN,
+
 
 	// heat map
 	HEAT_MAP_RECORD_SELECTION,

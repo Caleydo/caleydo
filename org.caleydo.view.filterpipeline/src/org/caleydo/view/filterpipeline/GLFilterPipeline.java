@@ -154,7 +154,6 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		selectionManager = new SelectionManager(IDType.registerType("filter_" + hashCode(),
 				IDCategory.registerCategory("filter"), EDataType.INTEGER));
 
-		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
 		background = new Background(uniqueID, pickingManager, renderStyle);

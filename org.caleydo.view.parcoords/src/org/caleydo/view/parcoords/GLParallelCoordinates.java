@@ -70,7 +70,6 @@ import org.caleydo.core.event.view.UseRandomSamplingEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
@@ -86,9 +85,8 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -118,7 +116,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	public static String VIEW_TYPE = "org.caleydo.view.parcoords";
 	public static String VIEW_NAME = "Parallel Coordinates";
 
-	private PickingType draggedObject;
+	private EPickingType draggedObject;
 
 	/**
 	 * Hashes a gate id, which is made up of an axis id + the last three digits a gate counter (per axis) to a pair of
@@ -210,7 +208,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	public GLParallelCoordinates(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		renderStyle = new PCRenderStyle(this, viewFrustum);
-		super.renderStyle = this.renderStyle;
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -243,7 +240,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		displayListIndex = gl.glGenLists(1);
 		selectionTransformer = new StandardTransformer(uniqueID);
 		initData();
-
+		registerPickingListeners();
 		updateSpacings();
 	}
 
@@ -522,7 +519,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		float currentY = 0;
 
 		if (selectionType != SelectionType.DESELECTED) {
-			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.POLYLINE_SELECTION, recordID));
+			gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.POLYLINE_SELECTION.name(), recordID));
 		}
 
 		if (!renderCaption) {
@@ -561,7 +558,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				EDataType rawDataType = table.getRawDataType(dimensionID, recordID);
 				if (rawDataType == EDataType.FLOAT) {
 
-					rawValueString = Formatter.formatNumber((float) table.getRaw(recordID, dimensionID));
+					rawValueString = Formatter.formatNumber((float) table.getRaw(dimensionID, recordID));
 
 				} else if (rawDataType == EDataType.STRING) {
 					rawValueString = table.getRaw(dimensionID, recordID);
@@ -602,7 +599,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.X_AXIS_SELECTION, 1));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.X_AXIS_SELECTION.name(), 1));
 		gl.glBegin(GL.GL_LINES);
 
 		gl.glVertex3f(renderStyle.getXAxisStart(), 0.0f, 0.0f);
@@ -635,7 +632,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
 
-			int axisPickingID = pickingManager.getPickingID(uniqueID, PickingType.Y_AXIS_SELECTION,
+			int axisPickingID = pickingManager.getPickingID(uniqueID, EPickingType.Y_AXIS_SELECTION.name(),
 					dimensionVA.get(count));
 			gl.glPushName(axisPickingID);
 			gl.glBegin(GL.GL_LINES);
@@ -659,8 +656,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					if (count == 0) {
 						if (dataDomain.getTable() instanceof NumericalTable) {
 							float fNumber = (float) ((NumericalTable) dataDomain.getTable())
-									.getRawForNormalized(
-									fCurrentHeight / renderStyle.getAxisHeight());
+									.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
 
 							Rectangle2D bounds = textRenderer.getScaledBounds(gl, Formatter.formatNumber(fNumber),
 									renderStyle.getSmallFontScalingFactor(), PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
@@ -733,7 +729,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 						PCRenderStyle.NAN_Z);
 				Vec3f scalingPivot = new Vec3f(fXButtonOrigin, PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
 
-				int iPickingID = pickingManager.getPickingID(uniqueID, PickingType.REMOVE_NAN, dimensionVA.get(count));
+				int iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_NAN.name(),
+						dimensionVA.get(count));
 				gl.glPushName(iPickingID);
 
 				textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner, lowerRightCorner,
@@ -750,7 +747,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 				// the gate add button
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
-				iPickingID = pickingManager.getPickingID(uniqueID, PickingType.ADD_GATE, dimensionVA.get(count));
+				iPickingID = pickingManager
+						.getPickingID(uniqueID, EPickingType.ADD_GATE.name(), dimensionVA.get(count));
 
 				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
 				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
@@ -788,7 +786,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 								lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 					}
 
-					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.MOVE_AXIS, count);
+					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
 					gl.glColor4f(0, 0, 0, 0f);
 					gl.glPushName(iPickingID);
 					gl.glBegin(GL.GL_TRIANGLES);
@@ -798,7 +796,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					gl.glEnd();
 					gl.glPopName();
 
-					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.DUPLICATE_AXIS, count);
+					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.DUPLICATE_AXIS.name(), count);
 					// gl.glColor4f(0, 1, 0, 0.5f);
 					gl.glPushName(iPickingID);
 					gl.glBegin(GL.GL_TRIANGLES);
@@ -808,7 +806,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					gl.glEnd();
 					gl.glPopName();
 
-					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.REMOVE_AXIS, count);
+					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_AXIS.name(), count);
 					// gl.glColor4f(0, 0, 1, 0.5f);
 					gl.glPushName(iPickingID);
 					gl.glBegin(GL.GL_TRIANGLES);
@@ -819,7 +817,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					gl.glPopName();
 
 				} else {
-					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.MOVE_AXIS, count);
+					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
 
 					gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 					gl.glPushName(iPickingID);
@@ -901,7 +899,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		// the gate add button
 		float fYGateAddOrigin = renderStyle.getAxisHeight();
-		int iPickingID = pickingManager.getPickingID(uniqueID, PickingType.ADD_MASTER_GATE, 1);
+		int iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_MASTER_GATE.name(), 1);
 		gl.glPushName(iPickingID);
 
 		Vec3f lowerLeftCorner = new Vec3f(fXOrigin - 0.05f, fYGateAddOrigin, AXIS_Z);
@@ -1193,209 +1191,127 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
 
-	@Override
-	protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
-			final int pickingID, final Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
-			return;
-		}
+	protected void registerPickingListeners() {
 
-		SelectionType selectionType;
-		switch (pickingType) {
-		case PCS_VIEW_SELECTION:
-			break;
-		case POLYLINE_SELECTION:
-			switch (pickingMode) {
 
-			case CLICKED:
-				selectionType = SelectionType.SELECTION;
+		addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+
 				if (bAngularBrushingSelectPolyline) {
 					bAngularBrushingSelectPolyline = false;
 					bIsAngularBrushingActive = true;
-					iSelectedLineID = pickingID;
+					iSelectedLineID = pick.getObjectID();
 					linePick = pick;
 					bIsAngularBrushingFirstTime = true;
 				}
 
-				break;
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				break;
+				handleSelection(SelectionType.SELECTION, pick.getObjectID());
+			}
 
-			case RIGHT_CLICKED:
-				selectionType = SelectionType.SELECTION;
+			@Override
+			public void mouseOver(Pick pick) {
+				handleSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
+			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+				handleSelection(SelectionType.SELECTION, pick.getObjectID());
 
 				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 				contexMenuItemContainer.setDataDomain(dataDomain);
-				contexMenuItemContainer.setData(recordIDType, pickingID);
+				contexMenuItemContainer.setData(recordIDType, pick.getObjectID());
 				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-
-				break;
-
-			default:
-				return;
-
 			}
 
-			if (recordSelectionManager.checkStatus(selectionType, pickingID)) {
-				break;
+		}, EPickingType.POLYLINE_SELECTION.name());
+
+		addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				handleDimensionSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
 
-			connectedElementRepresentationManager.clear(recordSelectionManager.getIDType(), selectionType);
-
-			recordSelectionManager.clearSelection(selectionType);
-
-			recordSelectionManager.addToType(selectionType, pickingID);
-			recordSelectionManager.addConnectionID(
-					generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION), pickingID);
-
-			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX &&
-			// !bAngularBrushingSelectPolyline) {
-			if (!bAngularBrushingSelectPolyline) {
-				// //
-				// SelectionCommand command = new SelectionCommand(
-				// ESelectionCommandType.CLEAR, selectionType);
-				// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX,
-				// command);
-
-				SelectionDelta selectionDelta = recordSelectionManager.getDelta();
-				prepareVisualLinkingInformation(selectionDelta);
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setDataDomainID(dataDomain.getDataDomainID());
-				event.setSelectionDelta(selectionDelta);
-				eventPublisher.triggerEvent(event);
+			@Override
+			public void mouseOver(Pick pick) {
+				handleDimensionSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
 			}
 
-			setDisplayListDirty();
-			break;
-
-		case X_AXIS_SELECTION:
-			break;
-		case Y_AXIS_SELECTION:
-
-			switch (pickingMode) {
-			case CLICKED:
-				selectionType = SelectionType.SELECTION;
-				break;
-
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				break;
-			case RIGHT_CLICKED:
-				selectionType = SelectionType.SELECTION;
-
+			@Override
+			public void rightClicked(Pick pick) {
+				handleDimensionSelection(SelectionType.SELECTION, pick.getObjectID());
 				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID,
-						dataDomain.getDataDomainID());
+						+ dataDomain.getDimensionLabel(dimensionIDType, pick.getObjectID()), dimensionIDType,
+						pick.getObjectID(), dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
-			default:
-				return;
-
 			}
 
-			dimensionSelectionManager.clearSelection(selectionType);
-			dimensionSelectionManager.addToType(selectionType, pickingID);
+		}, EPickingType.Y_AXIS_SELECTION.name());
 
-			dimensionSelectionManager.addConnectionID(
-					generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION), pickingID);
+		addTypePickingListener(new APickingListener() {
 
-			connectedElementRepresentationManager.clear(dimensionSelectionManager.getIDType(), selectionType);
-
-			// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-			// axisSelectionManager
-			// .getDelta(), null);
-
-			// SelectionCommand command = new SelectionCommand(
-			// ESelectionCommandType.CLEAR, selectionType);
-			// sendSelectionCommandEvent(eAxisDataType, command);
-
-			SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
-			// if (dimensionSelectionManager.getIDType() ==
-			// EIDType.EXPERIMENT_INDEX) {
-			prepareVisualLinkingInformation(selectionDelta);
-			// }
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setDataDomainID(dataDomain.getDataDomainID());
-			event.setSelectionDelta(selectionDelta);
-			eventPublisher.triggerEvent(event);
-
-			setDisplayListDirty();
-			break;
-		case GATE_TIP_SELECTION:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-				iDraggedGateNumber = pickingID;
-				draggedObject = PickingType.GATE_TIP_SELECTION;
-				setDisplayListDirty();
-				break;
-			case CLICKED:
+			@Override
+			public void clicked(Pick pick) {
 				bIsDraggingActive = true;
-				draggedObject = PickingType.GATE_TIP_SELECTION;
-				iDraggedGateNumber = pickingID;
-				break;
-			// case DRAGGED:
-			// bIsDraggingActive = true;
-			// draggedObject = EPickingType.GATE_TIP_SELECTION;
-			// iDraggedGateNumber = externalID;
-			// break;
-			default:
-				break;
+				draggedObject = EPickingType.GATE_TIP_SELECTION;
+				iDraggedGateNumber = pick.getObjectID();
 
 			}
-			break;
-		case GATE_BOTTOM_SELECTION:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-				iDraggedGateNumber = pickingID;
-				draggedObject = PickingType.GATE_BOTTOM_SELECTION;
+
+			@Override
+			public void mouseOver(Pick pick) {
+				iDraggedGateNumber = pick.getObjectID();
+				draggedObject = EPickingType.GATE_TIP_SELECTION;
 				setDisplayListDirty();
-				break;
-			case CLICKED:
+			}
+
+		}, EPickingType.GATE_TIP_SELECTION.name());
+
+		addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
 				bIsDraggingActive = true;
-				draggedObject = PickingType.GATE_BOTTOM_SELECTION;
-				iDraggedGateNumber = pickingID;
-				break;
-			default:
-				break;
+				draggedObject = EPickingType.GATE_BOTTOM_SELECTION;
+				iDraggedGateNumber = pick.getObjectID();
 			}
-			break;
 
-		case GATE_BODY_SELECTION:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-				iDraggedGateNumber = pickingID;
-				draggedObject = PickingType.GATE_BODY_SELECTION;
+			@Override
+			public void mouseOver(Pick pick) {
+				iDraggedGateNumber = pick.getObjectID();
+				draggedObject = EPickingType.GATE_BOTTOM_SELECTION;
 				setDisplayListDirty();
-				break;
-			case CLICKED:
+			}
+		}, EPickingType.GATE_BODY_SELECTION.name());
+
+		addTypePickingListener(new APickingListener(
+
+		) {
+
+			@Override
+			public void clicked(Pick pick) {
 				bIsDraggingActive = true;
 				bIsGateDraggingFirstTime = true;
-				draggedObject = PickingType.GATE_BODY_SELECTION;
-				iDraggedGateNumber = pickingID;
-				break;
-			default:
-				break;
+				draggedObject = EPickingType.GATE_BODY_SELECTION;
+				iDraggedGateNumber = pick.getObjectID();
 			}
-			break;
-		case PC_ICON_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
 
-				break;
-			default:
-				break;
+			@Override
+			public void mouseOver(Pick pick) {
+				iDraggedGateNumber = pick.getObjectID();
+				draggedObject = EPickingType.GATE_BODY_SELECTION;
+				setDisplayListDirty();
+
 			}
-			break;
-		case REMOVE_AXIS:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-				dropTexture = EIconTextures.DROP_DELETE;
-				iChangeDropOnAxisNumber = pickingID;
-				break;
-			case CLICKED:
+		}, EPickingType.GATE_BODY_SELECTION.name());
+
+		addTypePickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				int pickingID = pick.getObjectID();
 				VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 				if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
 					removeGate(dimensionVA.get(pickingID));
@@ -1409,36 +1325,40 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				triggerDimensionFilterEvent(vaDelta, "Removed " + dataDomain.getDimensionLabel(dimensionID));
 				setDisplayListDirty();
 				resetAxisSpacing();
-				break;
-			default:
-				break;
-			}
-			break;
 
-		case MOVE_AXIS:
-			switch (pickingMode) {
-			case CLICKED:
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+				dropTexture = EIconTextures.DROP_DELETE;
+				iChangeDropOnAxisNumber = pick.getObjectID();
+
+			}
+		}, EPickingType.REMOVE_AXIS.name());
+
+		addTypePickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
 				bWasAxisMoved = true;
 				bWasAxisDraggedFirstTime = true;
-				iMovedAxisPosition = pickingID;
+				iMovedAxisPosition = pick.getObjectID();
 				setDisplayListDirty();
-			case MOUSE_OVER:
-				dropTexture = EIconTextures.DROP_MOVE;
-				iChangeDropOnAxisNumber = pickingID;
-				setDisplayListDirty();
-				break;
-			default:
-				break;
 			}
-			break;
 
-		case DUPLICATE_AXIS:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-				dropTexture = EIconTextures.DROP_DUPLICATE;
-				iChangeDropOnAxisNumber = pickingID;
-				break;
-			case CLICKED:
+			@Override
+			public void mouseOver(Pick pick) {
+				dropTexture = EIconTextures.DROP_MOVE;
+				iChangeDropOnAxisNumber = pick.getObjectID();
+				setDisplayListDirty();
+
+			}
+		}, EPickingType.MOVE_AXIS.name());
+
+		addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				int pickingID = pick.getObjectID();
 				if (pickingID >= 0) {
 					// dimensionVA.copy(pickingID);
 					VirtualArrayDelta vaDelta = new VirtualArrayDelta(tablePerspective.getDimensionPerspective()
@@ -1454,38 +1374,47 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					// resetSelections();
 					// initGates();
 					resetAxisSpacing();
-					break;
 				}
-			default:
-				break;
+
 			}
-			break;
-		case ADD_GATE:
-			switch (pickingMode) {
-			case CLICKED:
+
+			@Override
+			public void mouseOver(Pick pick) {
+				dropTexture = EIconTextures.DROP_DUPLICATE;
+				iChangeDropOnAxisNumber = pick.getObjectID();
+			}
+		}, EPickingType.DUPLICATE_AXIS.name());
+
+		addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
 				hasFilterChanged = true;
 				AGate gate;
 				Table table = dataDomain.getTable();
 				if (table.isDataHomogeneous()) {
-					gate = new Gate(++iGateCounter, pickingID, (float) ((NumericalTable) table).getRawForNormalized(0),
+					gate = new Gate(++iGateCounter, pick.getObjectID(),
+							(float) ((NumericalTable) table).getRawForNormalized(0),
 							(float) ((NumericalTable) table).getRawForNormalized(0.5f), table, renderStyle);
 				} else {
-					gate = new NominalGate(++iGateCounter, pickingID, 0, 0.5f, table, renderStyle);
+					gate = new NominalGate(++iGateCounter, pick.getObjectID(), 0, 0.5f, table, renderStyle);
 				}
-				hashGates.put(this.iGateCounter, gate);
-				hashIsGateBlocking.put(this.iGateCounter, new ArrayList<Integer>());
+				hashGates.put(iGateCounter, gate);
+				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
 				handleUnselection();
 				triggerSelectionUpdate();
 				setDisplayListDirty();
 
-				break;
-			default:
-				break;
 			}
-			break;
-		case ADD_MASTER_GATE:
-			switch (pickingMode) {
-			case CLICKED:
+
+		}, EPickingType.DUPLICATE_AXIS.name());
+
+		addTypePickingListener(new APickingListener() {
+		}, EPickingType.ADD_GATE.name());
+
+		addTypePickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
 				hasFilterChanged = true;
 				Table table = dataDomain.getTable();
 				Gate gate = new Gate(++iGateCounter, -1, (float) ((NumericalTable) table).getRawForNormalized(0),
@@ -1496,15 +1425,13 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				handleUnselection();
 				triggerSelectionUpdate();
 				setDisplayListDirty();
-				break;
-			default:
-				break;
 			}
-			break;
+		}, EPickingType.ADD_MASTER_GATE.name());
 
-		case REMOVE_GATE:
-			switch (pickingMode) {
-			case CLICKED:
+		addTypePickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				int pickingID = pick.getObjectID();
 				hasFilterChanged = true;
 				// either the gate belongs to the normal or to the
 				// master gates
@@ -1516,35 +1443,32 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				handleUnselection();
 				triggerSelectionUpdate();
 				setDisplayListDirty();
-				break;
-			default:
-				break;
 			}
-			break;
-		case ANGULAR_UPPER:
-			switch (pickingMode) {
-			case CLICKED:
-				bIsAngularDraggingActive = true;
-			case DRAGGED:
-				bIsAngularDraggingActive = true;
-			default:
-				break;
-			}
-			break;
 
-		case ANGULAR_LOWER:
-			switch (pickingMode) {
-			case CLICKED:
+		}, EPickingType.REMOVE_GATE.name());
+
+		APickingListener angularPickingListener = new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
 				bIsAngularDraggingActive = true;
-			case DRAGGED:
-				bIsAngularDraggingActive = true;
-			default:
-				break;
 			}
-			break;
-		case REMOVE_NAN:
-			switch (pickingMode) {
-			case CLICKED:
+
+			@Override
+			public void mouseOver(Pick pick) {
+				bIsAngularDraggingActive = true;
+			}
+		};
+
+		addTypePickingListener(angularPickingListener, EPickingType.ANGULAR_UPPER.name());
+
+		addTypePickingListener(angularPickingListener, EPickingType.ANGULAR_LOWER.name());
+
+		addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				int pickingID = pick.getObjectID();
 				hasFilterChanged = true;
 				if (hashExcludeNAN.containsKey(pickingID)) {
 					hashExcludeNAN.remove(pickingID);
@@ -1552,15 +1476,56 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					hashExcludeNAN.put(pickingID, null);
 				}
 				setDisplayListDirty();
-				break;
-			default:
-				break;
-
 			}
-			break;
-		default:
-			break;
+		}, EPickingType.REMOVE_NAN.name());
+	}
+
+	private void handleSelection(SelectionType selectionType, Integer id) {
+		if (recordSelectionManager.checkStatus(selectionType, id)) {
+			return;
 		}
+
+		connectedElementRepresentationManager.clear(recordSelectionManager.getIDType(), selectionType);
+
+		recordSelectionManager.clearSelection(selectionType);
+
+		recordSelectionManager.addToType(selectionType, id);
+		// recordSelectionManager
+		// .addConnectionID(generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION), id);
+
+		if (!bAngularBrushingSelectPolyline) {
+			SelectionDelta selectionDelta = recordSelectionManager.getDelta();
+			prepareVisualLinkingInformation(selectionDelta);
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setDataDomainID(dataDomain.getDataDomainID());
+			event.setSelectionDelta(selectionDelta);
+			eventPublisher.triggerEvent(event);
+		}
+
+		setDisplayListDirty();
+	}
+
+	private void handleDimensionSelection(SelectionType selectionType, Integer id) {
+		dimensionSelectionManager.clearSelection(selectionType);
+		dimensionSelectionManager.addToType(selectionType, id);
+
+		// dimensionSelectionManager.addConnectionID(generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION),
+		// id);
+
+		connectedElementRepresentationManager.clear(dimensionSelectionManager.getIDType(), selectionType);
+
+		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
+		// if (dimensionSelectionManager.getIDType() ==
+		// EIDType.EXPERIMENT_INDEX) {
+		prepareVisualLinkingInformation(selectionDelta);
+		// }
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setSelectionDelta(selectionDelta);
+		eventPublisher.triggerEvent(event);
+		setDisplayListDirty();
 	}
 
 	private void triggerDimensionFilterEvent(VirtualArrayDelta delta, String label) {
@@ -1719,14 +1684,14 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		gl.glColor4fv(ANGULAR_COLOR, 0);
 		gl.glLineWidth(ANGLUAR_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.ANGULAR_UPPER, iPosition));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.ANGULAR_UPPER.name(), iPosition));
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(), vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecUpperPoint.x(), vecUpperPoint.y(), vecUpperPoint.z() + 0.02f);
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.ANGULAR_UPPER, iPosition));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, EPickingType.ANGULAR_UPPER.name(), iPosition));
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(), vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecLowerPoint.x(), vecLowerPoint.y(), vecLowerPoint.z() + 0.02f);

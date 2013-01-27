@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -83,11 +82,6 @@ public class Activator extends Plugin {
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLHeatMap.VIEW_TYPE);
 
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLHierarchicalHeatMap.VIEW_TYPE);
 
 
 		DataDomainManager
@@ -96,10 +90,5 @@ public class Activator extends Plugin {
 				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
 						GLDendrogram.VIEW_TYPE);
 
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDendrogram.VIEW_TYPE);
 	}
 }
