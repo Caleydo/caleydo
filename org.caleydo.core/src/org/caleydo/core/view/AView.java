@@ -122,7 +122,7 @@ public abstract class AView extends AUniqueObject implements IView {
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSender(this);
 		event.setSelectionCommand(command);
-		event.tableIDCategory(genomeType.getIDCategory());
+		event.setIDCategory(genomeType.getIDCategory());
 		eventPublisher.triggerEvent(event);
 	}
 

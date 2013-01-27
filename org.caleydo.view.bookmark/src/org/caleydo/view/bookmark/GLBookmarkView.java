@@ -70,9 +70,9 @@ public class GLBookmarkView extends ATableBasedView {
 	// private ColorMapping colorMapper;
 
 	/** A hash map that associated the Category with the container */
-	private HashMap<IDCategory, ABookmarkContainer<?>> hashCategoryToBookmarkContainer;
+	private HashMap<IDCategory, ABookmarkContainer> hashCategoryToBookmarkContainer;
 	/** A list of bookmark containers, to preserve the ordering */
-	private ArrayList<ABookmarkContainer<?>> bookmarkContainers;
+	private ArrayList<ABookmarkContainer> bookmarkContainers;
 
 	private BookmarkListener bookmarkListener;
 
@@ -95,7 +95,7 @@ public class GLBookmarkView extends ATableBasedView {
 			pickingIDToBookmarkContainer = new HashMap<Integer, Pair<IDCategory, Integer>>();
 		}
 
-		public int getPickingID(ABookmarkContainer<?> container, int privateID) {
+		public int getPickingID(ABookmarkContainer container, int privateID) {
 
 			int pickingID = pickingManager.getPickingID(uniqueID, PickingType.BOOKMARK_ELEMENT, idCount);
 			pickingIDToBookmarkContainer.put(idCount++, new Pair<IDCategory, Integer>(container.getCategory(),
@@ -122,8 +122,8 @@ public class GLBookmarkView extends ATableBasedView {
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
-		bookmarkContainers = new ArrayList<ABookmarkContainer<?>>();
-		hashCategoryToBookmarkContainer = new HashMap<IDCategory, ABookmarkContainer<?>>();
+		bookmarkContainers = new ArrayList<ABookmarkContainer>();
+		hashCategoryToBookmarkContainer = new HashMap<IDCategory, ABookmarkContainer>();
 
 		pickingIDManager = new PickingIDManager();
 
@@ -243,7 +243,7 @@ public class GLBookmarkView extends ATableBasedView {
 		if (dataDomain.getDataDomainID() != event.getDataDomainID())
 			return;
 
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event.getIDType().getIDCategory());
+		ABookmarkContainer container = hashCategoryToBookmarkContainer.get(event.getIDType().getIDCategory());
 		if (container == null)
 			throw new IllegalStateException("Can not handle bookmarks of type " + event.getIDType().getIDCategory());
 
@@ -253,7 +253,7 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	public <IDDataType> void handleRemoveBookmarkEvent(RemoveBookmarkEvent<IDDataType> event) {
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event.getIDType().getIDCategory());
+		ABookmarkContainer container = hashCategoryToBookmarkContainer.get(event.getIDType().getIDCategory());
 		if (container == null)
 			throw new IllegalStateException("Can not handle bookmarks of type " + event.getIDType().getIDCategory());
 
@@ -288,7 +288,7 @@ public class GLBookmarkView extends ATableBasedView {
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		// EIDCategory category = ;
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(selectionDelta.getIDType()
+		ABookmarkContainer container = hashCategoryToBookmarkContainer.get(selectionDelta.getIDType()
 				.getIDCategory());
 		if (container != null)
 			container.handleSelectionUpdate(selectionDelta);
@@ -298,7 +298,7 @@ public class GLBookmarkView extends ATableBasedView {
 
 	@Override
 	public void handleSelectionCommand(IDCategory category, SelectionCommand selectionCommand) {
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(category);
+		ABookmarkContainer container = hashCategoryToBookmarkContainer.get(category);
 		if (container != null)
 			container.handleSelectionCommand(selectionCommand);
 

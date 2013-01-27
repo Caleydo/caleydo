@@ -39,17 +39,17 @@ import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.EventListeners;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
@@ -120,7 +120,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 
 public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
-		IViewCommandHandler, ISelectionUpdateHandler {
+		IViewCommandHandler, IEventBasedSelectionManagerUser {
 
 	public static String VIEW_TYPE = "org.caleydo.view.stratomex";
 	public static String VIEW_NAME = "StratomeX";
@@ -136,7 +136,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public final static float[] ARCH_COLOR = { 0f, 0f, 0f, 0.1f };
 
 	private AddGroupsToStratomexListener addGroupsToStratomexListener;
-	private ClearSelectionsListener clearSelectionsListener;
+	private SelectionCommandListener selectionCommandListener;
 	private ConnectionsModeListener trendHighlightModeListener;
 	private SplitBrickListener splitBrickListener;
 	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
@@ -190,7 +190,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/**
 	 * The selection manager for the records, used for highlighting the visual links
 	 */
-	private RecordSelectionManager recordSelectionManager;
+	private EventBasedSelectionManager recordSelectionManager;
 
 	private boolean connectionsOn = true;
 	private boolean connectionsHighlightDynamic = false;
@@ -957,10 +957,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
 		eventPublisher.addListener(AddKaplanMaiertoStratomexEvent.class, addGroupsToStratomexListener);
 
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-
 		trendHighlightModeListener = new ConnectionsModeListener();
 		trendHighlightModeListener.setHandler(this);
 		eventPublisher.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
@@ -992,9 +988,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			addGroupsToStratomexListener = null;
 		}
 
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 
 		if (trendHighlightModeListener != null) {
@@ -1019,11 +1015,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		listeners.unregisterAll();
 	}
 
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void handleRedrawView() {
@@ -1031,11 +1023,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	}
 
-	@Override
-	public void handleClearSelections() {
-		clearAllSelections();
-
-	}
+	// @Override
+	// public void handleClearSelections() {
+	// clearAllSelections();
+	//
+	// }
 
 	public void clearAllSelections() {
 		if (recordSelectionManager != null)
@@ -1250,7 +1242,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
 		recordIDCategory = dataDomain.getRecordIDCategory();
 		IDType mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
-		recordSelectionManager = new RecordSelectionManager(mappingRecordIDType);
+		recordSelectionManager = new EventBasedSelectionManager(this, mappingRecordIDType);
 	}
 
 	@Override
@@ -1417,7 +1409,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		return archBottomY;
 	}
 
-	public RecordSelectionManager getRecordSelectionManager() {
+	public SelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;
 	}
 
@@ -1685,6 +1677,12 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
 		return DataSupportDefinitions.all;
+	}
+
+	@Override
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

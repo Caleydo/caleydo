@@ -22,7 +22,6 @@ package org.caleydo.core.gui.toolbar.action;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
@@ -40,9 +39,7 @@ public class ClearSelectionsAction extends SimpleAction {
 	public void run() {
 		super.run();
 
-		ClearSelectionsEvent event = new ClearSelectionsEvent();
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
 
 		// Was needed for matchmaker that created the selection types
 		// dynamically

@@ -20,7 +20,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -40,7 +40,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 		int nrRecordElements = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray().size();
 
-		RecordSelectionManager selectionManager = heatMap.getRecordSelectionManager();
+		SelectionManager selectionManager = heatMap.getRecordSelectionManager();
 		if (heatMap.isHideElements()) {
 
 			nrRecordElements -= selectionManager.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);

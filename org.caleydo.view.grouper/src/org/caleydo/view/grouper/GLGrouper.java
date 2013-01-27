@@ -125,7 +125,6 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	private DrawingStrategyManager drawingStrategyManager = null;
 	private DragAndDropController dragAndDropController = null;
-	protected RedrawViewListener redrawViewListener = null;
 	protected ClusterNodeSelectionListener clusterNodeSelectionListener = null;
 
 	private CreateGroupListener createGroupListener = null;
@@ -794,10 +793,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
 		}
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
-		}
+
 		if (createGroupListener != null) {
 			eventPublisher.removeListener(createGroupListener);
 			createGroupListener = null;

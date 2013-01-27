@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.vislink;
 
@@ -32,15 +29,18 @@ import java.util.HashSet;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.ISelectionHandler;
+import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
+import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
@@ -58,15 +58,13 @@ import org.eclipse.swt.widgets.Display;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class VisLinkManager
-	extends ADisplayLoopEventHandler
-	implements IViewCommandHandler, ISelectionUpdateHandler {
+public class VisLinkManager extends ADisplayLoopEventHandler implements IViewCommandHandler, ISelectionHandler {
 
 	private static VisLinkManager visLinkManager = null;
 
 	// FIXME
 	ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType(
-		"org.caleydo.datadomain.genetic");
+			"org.caleydo.datadomain.genetic");
 
 	private Display display;
 
@@ -80,7 +78,7 @@ public class VisLinkManager
 	private EventPublisher eventPublisher;
 	private VisLinkSelectionListener visLinkSelectionListener;
 	private SelectionUpdateListener selectionUpdateListener;
-	private ClearSelectionsListener clearSelectionsListener;
+	private SelectionCommandListener selectionCommandListener;
 
 	public static VisLinkManager get() {
 		if (visLinkManager == null) {
@@ -140,12 +138,11 @@ public class VisLinkManager
 
 	public void handleVisLinkSelection(String selectionId) {
 		System.out.println(this.getClass() + " got selectionId: " + selectionId);
-		ClearSelectionsEvent cse = new ClearSelectionsEvent();
+		SelectionCommandEvent cse = new SelectionCommandEvent(new SelectionCommand(ESelectionCommandType.CLEAR_ALL));
 		cse.setSender(this);
 		eventPublisher.triggerEvent(cse);
 
-		GeneralManager.get().getViewManager().getConnectedElementRepresentationManager()
-			.clearTransformedConnections();
+		GeneralManager.get().getViewManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 
 		caleydoSelectionId = null;
 
@@ -154,11 +151,10 @@ public class VisLinkManager
 
 		try {
 			destId = idmm.getID(IDType.getIDType("UNSPECIFIED"), dataDomain.getRecordIDType(), selectionId);
-		}
-		catch (NullPointerException e) {
-			HashSet<Integer> table =
-				idmm.getID(IDType.getIDType("GENE_SYMBOL"), dataDomain.getRecordIDType(), selectionId);
-			destId = (Integer) table.iterator().next();
+		} catch (NullPointerException e) {
+			HashSet<Integer> table = idmm.getID(IDType.getIDType("GENE_SYMBOL"), dataDomain.getRecordIDType(),
+					selectionId);
+			destId = table.iterator().next();
 		}
 		SelectionDelta sd = new SelectionDelta(dataDomain.getRecordIDType());
 		SelectionDeltaItem sdi = sd.addSelection(destId, SelectionType.MOUSE_OVER);
@@ -176,11 +172,7 @@ public class VisLinkManager
 		// doVisdaemonRequest("reportVisualLinks?name=" + appName + "&xml=" + bbl);
 	}
 
-	@Override
-	public void handleClearSelections() {
-		System.out.println("VisLinkManager: handleClearSelections");
-		// doVisdaemonRequest("clearVisualLinks?name=" + appName);
-	}
+
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
@@ -194,12 +186,11 @@ public class VisLinkManager
 
 			IDMappingManager idmm = dataDomain.getRecordIDMappingManager();
 			//
-			caleydoSelectionId =
-				idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"), deltaItem.getID());
+			caleydoSelectionId = idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"),
+					deltaItem.getID());
 			if (caleydoSelectionId == null) {
-				java.util.Set<String> geneSymbols =
-					idmm.getIDAsSet(selectionDelta.getIDType(), IDType.getIDType("GENE_SYMBOL"),
-						deltaItem.getID());
+				java.util.Set<String> geneSymbols = idmm.getIDAsSet(selectionDelta.getIDType(),
+						IDType.getIDType("GENE_SYMBOL"), deltaItem.getID());
 
 				if (geneSymbols == null)
 					continue;
@@ -213,8 +204,7 @@ public class VisLinkManager
 	private String urlEncode(String s) {
 		try {
 			return URLEncoder.encode(s, "UTF-8");
-		}
-		catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -237,12 +227,10 @@ public class VisLinkManager
 				responseBuf.append(line);
 			}
 			in.close();
-		}
-		catch (MalformedURLException e) {
+		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -251,11 +239,11 @@ public class VisLinkManager
 
 	@Override
 	public void run() {
-		ConnectedElementRepresentationManager cerm =
-			GeneralManager.get().getViewManager().getConnectedElementRepresentationManager();
+		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewManager()
+				.getConnectedElementRepresentationManager();
 		if (cerm.isNewCanvasVertices()) {
-			final CanvasConnectionMap canvasConnectionMap =
-				cerm.getCanvasConnectionsByType().get(dataDomain.getRecordIDType());
+			final CanvasConnectionMap canvasConnectionMap = cerm.getCanvasConnectionsByType().get(
+					dataDomain.getRecordIDType());
 			if (canvasConnectionMap != null) {
 				cerm.setNewCanvasVertices(false);
 				display.asyncExec(new Runnable() {
@@ -267,8 +255,7 @@ public class VisLinkManager
 						}
 						String boundingBoxList = "<boundingBoxList>";
 						for (SelectionPoint2D point : screenPoints) {
-							boundingBoxList +=
-								createBoundingBoxXML(point.getX(), point.getY(), 0, 0,
+							boundingBoxList += createBoundingBoxXML(point.getX(), point.getY(), 0, 0,
 									caleydoSelectionId != null);
 						}
 						boundingBoxList += "</boundingBoxList>";
@@ -279,8 +266,7 @@ public class VisLinkManager
 							requrl = "selection?name=" + appName;
 							requrl += "&id=" + urlEncode(caleydoSelectionId);
 							requrl += "&xml=" + urlEncode(boundingBoxList);
-						}
-						else {
+						} else {
 							requrl = "reportVisualLinks?name=" + appName;
 							requrl += "&xml=" + urlEncode(boundingBoxList);
 						}
@@ -294,7 +280,7 @@ public class VisLinkManager
 
 	/**
 	 * Transforms the given list of selection vertices from canvas coordinates to display coordinates
-	 * 
+	 *
 	 * @param canvasPoints
 	 *            list of canvas-vertices of connection lines
 	 * @return list of selection vertices in display coordinates
@@ -318,9 +304,9 @@ public class VisLinkManager
 		visLinkSelectionListener.setHandler(this);
 		eventPublisher.addListener(VisLinkSelectionEvent.class, visLinkSelectionListener);
 
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -333,9 +319,9 @@ public class VisLinkManager
 			eventPublisher.removeListener(visLinkSelectionListener);
 			visLinkSelectionListener = null;
 		}
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
@@ -351,6 +337,11 @@ public class VisLinkManager
 
 	public String getAppName() {
 		return appName;
+	}
+
+	@Override
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
+
 	}
 
 }

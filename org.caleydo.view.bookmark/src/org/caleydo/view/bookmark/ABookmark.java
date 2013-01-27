@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -27,14 +27,14 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Abstract base class for a single bookmark
- * 
+ *
  * @author Alexander Lex
  */
 public abstract class ABookmark extends ALayoutRenderer implements ILayoutedElement {
@@ -46,7 +46,7 @@ public abstract class ABookmark extends ALayoutRenderer implements ILayoutedElem
 
 	protected GLBookmarkView manager;
 
-	protected ABookmarkContainer<?> parentContainer;
+	protected ABookmarkContainer parentContainer;
 
 	protected final static int Y_SPACING_PIXEL = 4;
 	protected final static int X_SPACING_PIXEL = 5;
@@ -61,10 +61,10 @@ public abstract class ABookmark extends ALayoutRenderer implements ILayoutedElem
 
 	/**
 	 * The constructor takes a TextRenderer which is used to render all text
-	 * 
+	 *
 	 * @param textRenderer
 	 */
-	public ABookmark(GLBookmarkView manager, ABookmarkContainer<?> parentContainer,
+	public ABookmark(GLBookmarkView manager, ABookmarkContainer parentContainer,
 			IDType idType, CaleydoTextRenderer textRenderer) {
 		this.textRenderer = textRenderer;
 		this.manager = manager;

@@ -208,7 +208,7 @@ public class RcpSelectionInfoView
 	}
 
 	@Override
-	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		updateSubTree(selectionManager);
 	}
 }

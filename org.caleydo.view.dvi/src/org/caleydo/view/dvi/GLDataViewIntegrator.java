@@ -521,9 +521,6 @@ public class GLDataViewIntegrator
 		listeners.unregisterAll();
 	}
 
-	@Override
-	public void handleClearSelections() {
-	}
 
 	@Override
 	public void handleRedrawView() {

@@ -38,8 +38,8 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
+import org.caleydo.core.data.selection.events.SelectionCommandListener;
+import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -122,14 +122,13 @@ public class GLRadialHierarchy extends ATableBasedView {
 	private OneWaySlider upwardNavigationSlider;
 	private Rectangle controlBox;
 
-	private RedrawViewListener redrawViewListener;
 	private GoBackInHistoryListener goBackInHistoryListener;
 	private GoForthInHistoryListener goForthInHistoryListener;
 	private ChangeColorModeListener changeColorModeListener;
 	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
 	private DetailOutsideListener detailOutsideListener;
 	private UpdateColorMappingListener updateViewListener;
-	private ClearSelectionsListener clearSelectionsListener;
+	private SelectionCommandListener clearSelectionsListener;
 
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
@@ -942,9 +941,9 @@ public class GLRadialHierarchy extends ATableBasedView {
 		detailOutsideListener.setHandler(this);
 		eventPublisher.addListener(DetailOutsideEvent.class, detailOutsideListener);
 
-		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener = new SelectionCommandListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, clearSelectionsListener);
 
 		if (dataEventManager != null)
 			dataEventManager.registerEventListeners();
@@ -991,10 +990,6 @@ public class GLRadialHierarchy extends ATableBasedView {
 			dataEventManager.unregisterEventListeners();
 	}
 
-	@Override
-	public void handleClearSelections() {
-		selectionManager.clearSelections();
-	}
 
 	@Override
 	public void handleRedrawView() {

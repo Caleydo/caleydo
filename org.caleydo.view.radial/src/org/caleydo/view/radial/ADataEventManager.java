@@ -20,7 +20,7 @@
 package org.caleydo.view.radial;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.ISelectionHandler;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
@@ -36,7 +36,7 @@ import org.caleydo.core.manager.GeneralManager;
  * 
  * @author Christian Partl
  */
-public abstract class ADataEventManager implements ISelectionUpdateHandler {
+public abstract class ADataEventManager implements ISelectionHandler {
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected GLRadialHierarchy radialHierarchy;
 	protected EventPublisher eventPublisher;

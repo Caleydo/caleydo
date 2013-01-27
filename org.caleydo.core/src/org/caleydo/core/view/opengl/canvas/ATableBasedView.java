@@ -30,16 +30,13 @@ import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.ISelectionHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -49,7 +46,6 @@ import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.RedrawViewEvent;
@@ -74,8 +70,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class ATableBasedView extends AGLView implements
-		ISingleTablePerspectiveBasedView, ISelectionUpdateHandler,
-		IRecordVAUpdateHandler, IDimensionVAUpdateHandler, ISelectionCommandHandler,
+		ISingleTablePerspectiveBasedView, ISelectionHandler,
+		IRecordVAUpdateHandler, IDimensionVAUpdateHandler,
 		IViewCommandHandler {
 
 	protected ATableBasedDataDomain dataDomain;
@@ -87,12 +83,12 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * This manager is responsible for the selection states of the records.
 	 */
-	protected RecordSelectionManager recordSelectionManager;
+	protected SelectionManager recordSelectionManager;
 
 	/**
 	 * This manager is responsible for the selection states of the dimensions.
 	 */
-	protected DimensionSelectionManager dimensionSelectionManager;
+	protected SelectionManager dimensionSelectionManager;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -107,7 +103,6 @@ public abstract class ATableBasedView extends AGLView implements
 	protected SelectionCommandListener selectionCommandListener;
 
 	protected RedrawViewListener redrawViewListener;
-	protected ClearSelectionsListener clearSelectionsListener;
 
 	protected RecordVAUpdateListener recordVAUpdateListener;
 	protected DimensionVAUpdateListener dimensionVAUpdateListener;
@@ -292,16 +287,6 @@ public abstract class ATableBasedView extends AGLView implements
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void handleClearSelections() {
-		connectedElementRepresentationManager.clear(recordIDType);
-		connectedElementRepresentationManager.clear(dimensionIDType);
-		recordSelectionManager.clearSelections();
-		dimensionSelectionManager.clearSelections();
-
-		setDisplayListDirty();
-		setDisplayListDirty();
-	}
 
 	@Override
 	public void handleSelectionCommand(IDCategory idCategory,
@@ -442,9 +427,7 @@ public abstract class ATableBasedView extends AGLView implements
 		redrawViewListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
 
 	}
 
@@ -465,10 +448,7 @@ public abstract class ATableBasedView extends AGLView implements
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
 		}
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
-		}
+
 
 		if (recordVAUpdateListener != null) {
 			eventPublisher.removeListener(recordVAUpdateListener);
@@ -489,11 +469,11 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 
-	public RecordSelectionManager getRecordSelectionManager() {
+	public SelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;
 	}
 
-	public DimensionSelectionManager getDimensionSelectionManager() {
+	public SelectionManager getDimensionSelectionManager() {
 		return dimensionSelectionManager;
 	}
 

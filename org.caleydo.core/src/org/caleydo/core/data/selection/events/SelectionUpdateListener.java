@@ -27,12 +27,12 @@ import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
 /**
  * Listener for selection update events. This listener gets the payload from a SelectionUpdateEvent and calls
- * a related {@link ISelectionUpdateHandler}.
+ * a related {@link ISelectionHandler}.
  * 
  * @author Werner Puff
  */
 public class SelectionUpdateListener
-	extends AEventListener<ISelectionUpdateHandler> {
+	extends AEventListener<ISelectionHandler> {
 
 	/**
 	 * Handles {@link SelectionUdpateEvent}s by extracting the event's payload and calling the related handler

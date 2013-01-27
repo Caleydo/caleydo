@@ -24,10 +24,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
-import org.caleydo.core.data.selection.events.SelectionUpdateListener;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
@@ -38,7 +35,6 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -52,13 +48,13 @@ import org.caleydo.view.template.renderstyle.TemplateRenderStyle;
  *
  */
 public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePerspectiveBasedView, IListenerOwner,
-		IRecordVAUpdateHandler, IDimensionVAUpdateHandler, ISelectionUpdateHandler {
+		IRecordVAUpdateHandler, IDimensionVAUpdateHandler {
 
 	private TemplateRenderStyle renderStyle;
 
 	private EventListeners listeners = new EventListeners();
 
-	private SelectionManager recordSelectionManager;
+	private EventBasedSelectionManager recordSelectionManager;
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -175,11 +171,7 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 		return dataDomain;
 	}
 
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
@@ -201,10 +193,6 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 
 	@Override
 	public void registerEventListeners() {
-		SelectionUpdateListener selectionListener = new SelectionUpdateListener();
-		selectionListener.setHandler(this);
-		listeners.register(SelectionUpdateEvent.class, selectionListener);
-
 		RecordVAUpdateListener recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
 		listeners.register(RecordVAUpdateEvent.class, recordVAUpdateListener);

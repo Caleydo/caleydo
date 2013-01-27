@@ -27,7 +27,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -41,8 +41,8 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -261,7 +261,7 @@ public class BrickColumnSpacingRenderer
 		if (recordVA.size() == 0)
 			return;
 
-		RecordSelectionManager recordSelectionManager = stratomex.getRecordSelectionManager();
+		SelectionManager recordSelectionManager = stratomex.getRecordSelectionManager();
 
 		float ratio = 0;
 

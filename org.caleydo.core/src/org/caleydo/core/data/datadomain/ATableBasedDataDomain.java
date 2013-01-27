@@ -41,16 +41,13 @@ import org.caleydo.core.data.datadomain.listener.LoadGroupingEventListener;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.selection.DimensionSelectionManager;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ForeignSelectionCommandListener;
 import org.caleydo.core.data.selection.events.ForeignSelectionUpdateListener;
-import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.ISelectionHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -99,8 +96,7 @@ import org.caleydo.core.util.color.mapping.ColorMapper;
  */
 @XmlType
 @XmlRootElement
-public abstract class ATableBasedDataDomain extends ADataDomain implements IVADeltaHandler, ISelectionUpdateHandler,
-		ISelectionCommandHandler {
+public abstract class ATableBasedDataDomain extends ADataDomain implements IVADeltaHandler, ISelectionHandler {
 
 	/** The raw data for this data domain. */
 	protected Table table;
@@ -132,8 +128,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	/** same as {@link #recordGroupIDType} for dimensions */
 	protected IDType dimensionGroupIDType;
 
-	protected RecordSelectionManager recordSelectionManager;
-	protected DimensionSelectionManager dimensionSelectionManager;
+	protected SelectionManager recordSelectionManager;
+	protected SelectionManager dimensionSelectionManager;
 	protected SelectionManager recordGroupSelectionManager;
 
 	/** central {@link EventPublisher} to receive and send events */
@@ -228,8 +224,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
 		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
 
-		recordSelectionManager = new RecordSelectionManager(recordIDType);
-		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDType);
+		recordSelectionManager = new SelectionManager(recordIDType);
+		dimensionSelectionManager = new SelectionManager(dimensionIDType);
 		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
 
 		addIDCategory(dimensionIDCategory);
@@ -418,8 +414,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 *
 	 * @return a clone of the record selection manager
 	 */
-	public RecordSelectionManager getRecordSelectionManager() {
-		return (RecordSelectionManager) recordSelectionManager.clone();
+	public SelectionManager getRecordSelectionManager() {
+		return recordSelectionManager.clone();
 	}
 
 	/**
@@ -427,8 +423,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 *
 	 * @return a clone of the dimension selection manager
 	 */
-	public DimensionSelectionManager getDimensionSelectionManager() {
-		return (DimensionSelectionManager) dimensionSelectionManager.clone();
+	public SelectionManager getDimensionSelectionManager() {
+		return dimensionSelectionManager.clone();
 	}
 
 	/**

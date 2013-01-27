@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.virtualarray.events.VADeltaListener;
 import org.caleydo.core.event.IListenerOwner;
 
@@ -37,11 +36,5 @@ public interface IViewCommandHandler
 	 * {@link RedrawViewListener}.
 	 */
 	public void handleRedrawView();
-
-	/**
-	 * Handler method to be called when a clear selections view update event is is caught by a related
-	 * {@link ClearSelectionsListener}.
-	 */
-	public void handleClearSelections();
 
 }

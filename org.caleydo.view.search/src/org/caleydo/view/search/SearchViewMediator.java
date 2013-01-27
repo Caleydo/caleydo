@@ -19,10 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.search;
 
+import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
+import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
@@ -64,7 +66,8 @@ public class SearchViewMediator {
 
 		IDType davidIDType = IDType.getIDType("DAVID");
 		// First the current selections need to be cleared
-		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
+		SelectionCommandEvent clearSelectionsEvent = new SelectionCommandEvent(new SelectionCommand(
+				ESelectionCommandType.CLEAR_ALL));
 		clearSelectionsEvent.setSender(this);
 		eventPublisher.triggerEvent(clearSelectionsEvent);
 

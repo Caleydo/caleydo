@@ -18,7 +18,7 @@ package org.caleydo.view.template;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.ISelectionHandler;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
 import org.caleydo.core.serialize.ASerializedView;
@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  * </p>
  * <p>
  * In addition the very common interfaces {@link IRecordVAUpdateHandler}, {@link IDimensionVAUpdateHandler} and
- * {@link ISelectionUpdateHandler} are implemented but may not be necessary depending on the type of view.
+ * {@link ISelectionHandler} are implemented but may not be necessary depending on the type of view.
  * </p>
  *
  * @author Marc Streit

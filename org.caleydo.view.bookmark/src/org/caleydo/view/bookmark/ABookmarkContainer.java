@@ -72,7 +72,7 @@ import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
  *
  * @author Alexander Lex
  */
-abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
+abstract class ABookmarkContainer
 		implements ILayoutedElement {
 
 	/** The category of the container */
@@ -104,7 +104,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 	 * selected in the bookmark list. It is a member of the abstract base class,
 	 * but has to be created by the implementing instance.
 	 */
-	SelectionManagerType selectionManager;
+	SelectionManager selectionManager;
 
 	/**
 	 * The creating and managing instance of this class. We need access to it

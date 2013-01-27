@@ -374,7 +374,6 @@ public class Perspective implements IDefaultLabelHolder {
 	 *
 	 * @param data
 	 */
-	@SuppressWarnings("unchecked")
 	public void init(PerspectiveInitializationData data) {
 
 		if (data != null && data.getLabel() != null) {
@@ -444,7 +443,7 @@ public class Perspective implements IDefaultLabelHolder {
 		int groupCounter = 0;
 		isTreeDefaultTree = true;
 		// tree = new ClusterTree(idType, data.getIndices().size());
-		int clusterNr = 0;
+		// int clusterNr = 0;
 		// ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true,
 		// -1);
 		// tree.setRootNode(root);

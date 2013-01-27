@@ -135,10 +135,6 @@ public class CategoryView extends ATableBasedView {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
 		}
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
-		}
 	}
 
 	@Override

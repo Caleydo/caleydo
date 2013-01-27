@@ -37,7 +37,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -380,7 +379,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 		// Select all elements in group with special type
 
-		RecordSelectionManager recordSelectionManager = stratomex.getRecordSelectionManager();
+		SelectionManager recordSelectionManager = stratomex.getRecordSelectionManager();
 		SelectionType selectedByGroupSelectionType = recordSelectionManager.getSelectionType();
 
 		if (!stratomex.getKeyListener().isCtrlDown()) {

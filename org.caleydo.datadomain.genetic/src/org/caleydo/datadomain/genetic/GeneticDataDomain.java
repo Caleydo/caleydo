@@ -299,7 +299,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
-			newCommandEvent.tableIDCategory(idCategory);
+			newCommandEvent.setIDCategory(idCategory);
 			newCommandEvent.setDataDomainID(dataDomainType);
 			eventPublisher.triggerEvent(newCommandEvent);
 		}

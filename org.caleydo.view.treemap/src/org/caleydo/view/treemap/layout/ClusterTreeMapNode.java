@@ -21,7 +21,7 @@ import java.util.Set;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.DimensionSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.mapping.ColorMapper;
 
@@ -119,7 +119,7 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 	public float[] getColorAttribute() {
 		// TODO check how to handle when node is not leave
 		if (referenzData.bUseExpressionValues && data.getLeafID() >= 0) {
-			DimensionSelectionManager dimensionSelectionManager = referenzData.dataDomain
+			SelectionManager dimensionSelectionManager = referenzData.dataDomain
 					.getDimensionSelectionManager();
 			Set<Integer> dimensionIDs = dimensionSelectionManager.getElements(SelectionType.SELECTION);
 			if (dimensionIDs != null && dimensionIDs.size() > 0) {

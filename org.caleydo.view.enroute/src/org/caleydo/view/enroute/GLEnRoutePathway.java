@@ -1535,7 +1535,7 @@ public class GLEnRoutePathway
 	}
 
 	@Override
-	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		setDisplayListDirty();
 
 	}

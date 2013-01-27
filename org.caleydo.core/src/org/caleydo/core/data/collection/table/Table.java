@@ -39,7 +39,7 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * A table is the main container for matrix data in Caleydo. It is made up of {@link AColumn}, where each column
+ * A table is the main container for matrix data in Caleydo. It is made up of {@link AColumn}s, where each column
  * corresponds to a column in an input file.
  * </p>
  * <p>
@@ -61,7 +61,7 @@ import org.eclipse.core.runtime.Status;
  * <p>
  * A data table is created using the {@link TableUtils} implementation.
  * </p>
- *
+ * 
  * @author Alexander Lex
  */
 public class Table {

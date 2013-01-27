@@ -21,15 +21,12 @@ package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.selection.DimensionSelectionManager;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.ISelectionHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
@@ -37,9 +34,7 @@ import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.RedrawViewEvent;
@@ -70,8 +65,9 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHandler,
-		IRecordVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
+public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
+ IRecordVAUpdateHandler,
+		IViewCommandHandler {
 
 	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
 	private final static String SELECTION_TYPE_NAME_2 = "Selected by group 2";
@@ -89,11 +85,9 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255,
 			40f / 255, 1 };
 
-	GeneralManager generalManager = null;
-	EventPublisher eventPublisher = null;
 
-	RecordSelectionManager recordSelectionManager;
-	DimensionSelectionManager dimensionSelectionManager;
+	SelectionManager recordSelectionManager;
+	SelectionManager dimensionSelectionManager;
 
 	private Tree selectionTree;
 	private TreeItem contentTree;
@@ -107,7 +101,6 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 	private SelectionCommandListener selectionCommandListener;
 
 	private RedrawViewListener redrawViewListener;
-	private ClearSelectionsListener clearSelectionsListener;
 
 	/**
 	 * Constructor.
@@ -118,7 +111,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();
-		recordSelectionManager = new RecordSelectionManager(IDType.getIDType("SAMPLE"));
+		recordSelectionManager = new SelectionManager(IDType.getIDType("SAMPLE"));
 		initSelectedByGroupSelectionTypes();
 	}
 
@@ -384,10 +377,6 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 		// nothing to do here
 	}
 
-	@Override
-	public void handleClearSelections() {
-
-	}
 
 	/**
 	 * handling method for updates about the info text displayed in the this
@@ -427,9 +416,6 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 
 	/**
@@ -453,10 +439,6 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
-		}
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
 		}
 	}
 

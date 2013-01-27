@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "SelectionCommand")
 public class SelectionCommand {
+
 	private ESelectionCommandType selectionCommandType;
 	private SelectionType selectionType;
 

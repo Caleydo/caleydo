@@ -27,7 +27,7 @@ import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -48,7 +48,7 @@ public class HeatMapUtil {
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
 	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, Table table,VirtualArray recordVA,
-			VirtualArray dimensionVA, RecordSelectionManager contentSelectionManager) {
+			VirtualArray dimensionVA, SelectionManager contentSelectionManager) {
 
 		int numSamples = recordVA.size();
 		int numDimensions = dimensionVA.size();
@@ -77,7 +77,7 @@ public class HeatMapUtil {
 						&& contentSelectionManager.checkStatus(SelectionType.DESELECTED, recordIndex)) {
 					fOpacity = 0.3f;
 				}
-				;
+
 				float fLookupValue = table.getNormalizedValue(dimensionIndex, recordIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
@@ -90,7 +90,7 @@ public class HeatMapUtil {
 
 					TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
 							numDimensions /* height */, numSamplesInTexture /* width */, 0 /* border */,
-							GL.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
+							GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, false /* mipmap */,
 							false /* dataIsCompressed */, false /* mustFlipVertically */, textureBuffer, null);
 
 					Texture texture = TextureIO.newTexture(0);

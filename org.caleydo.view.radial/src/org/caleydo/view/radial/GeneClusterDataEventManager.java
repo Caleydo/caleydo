@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,21 +23,24 @@ import java.util.Collection;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
+import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
-import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.ClusterNodeSelectionEvent;
+import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 
 /**
  * The GeneClusterDataEventManager is responsible for handling and triggering
  * events specific to gene cluster data when represented by the radial hierarchy
  * view.
- * 
+ *
  * @author Christian Partl
  */
 public class GeneClusterDataEventManager extends ADataEventManager implements
@@ -126,7 +129,9 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 	public void triggerDataSelectionEvents(SelectionType selectionType,
 			PartialDisc pdSelected) {
 
-		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
+		SelectionCommandEvent clearSelectionsEvent = new SelectionCommandEvent(new SelectionCommand(
+				ESelectionCommandType.CLEAR_ALL));
+
 		// here we want to avoid circular events within the radial hierarchy,
 		// therefore we need to set the sender to be the RH
 		clearSelectionsEvent.setSender(radialHierarchy);
@@ -171,6 +176,12 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 			event.setNewSelection(selectionType == SelectionType.SELECTION);
 			eventPublisher.triggerEvent(event);
 		}
+
+	}
+
+	@Override
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
+		// TODO Auto-generated method stub
 
 	}
 

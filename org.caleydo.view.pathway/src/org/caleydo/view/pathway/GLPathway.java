@@ -1618,7 +1618,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	@Override
-	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
+	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		setDisplayListDirty();
 	}
 
@@ -1655,13 +1655,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void handleClearSelections() {
-		vertexSelectionManager.clearSelections();
-		sampleSelectionManager.clearSelections();
-		metaboliteSelectionManager.clearSelections();
-
-	}
+	// @Override
+	// public void handleClearSelections() {
+	// vertexSelectionManager.clearSelections();
+	// sampleSelectionManager.clearSelections();
+	// metaboliteSelectionManager.clearSelections();
+	// }
 
 	@Override
 	public TablePerspective getTablePerspective() {

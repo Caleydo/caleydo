@@ -164,11 +164,6 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 		colorMappingPreview.update();
 	}
 
-	@Override
-	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void registerEventListeners() {
