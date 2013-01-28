@@ -82,6 +82,7 @@ public class LayoutManager {
 	 * which is set as the {@link #baseElementLayout} of this
 	 * {@link LayoutManager}.
 	 */
+	@Deprecated
 	public void setStaticLayoutConfiguration(LayoutConfiguration layoutConfiguration) {
 		layoutConfiguration.setStaticLayouts();
 		setBaseElementLayout(layoutConfiguration.getBaseElementLayout());

@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.caleydo.data.pathway.wikipathways;singleton:=true
 Bundle-Version: 2.2
 Bundle-Activator: org.caleydo.data.pathway.wikipathways.Activator
 Require-Bundle: org.caleydo.core;bundle-version="2.2",
- org.caleydo.datadomain.pathway;bundle-version="2.2"
+ org.caleydo.datadomain.pathway;bundle-version="2.2",
+ org.caleydo.lib.pathvisio;bundle-version="31.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.wikipathways.org

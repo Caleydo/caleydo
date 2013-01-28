@@ -50,6 +50,7 @@ public class WikiPathwaysParser implements IPathwayParser {
 		dbNameMap.put("Ensembl Mouse", "ENSEMBL_GENE_ID");
 		dbNameMap.put("Entrez Gene", "ENTREZ_GENE_ID");
 		dbNameMap.put("RefSeq", "REFSEQ_MRNA");
+		org.pathvisio.core.debug.Logger.log.setLogLevel(false, false, false, false, false, false);
 		// dbNameMap.put("EC Number", "EC_NUMBER");
 	}
 
@@ -74,6 +75,7 @@ public class WikiPathwaysParser implements IPathwayParser {
 
 		BufferedReader pathwayListFile = resourceLoader.getResource(pathwayListFileName);
 		String line = null;
+
 
 		try {
 			File tmpPathwayFile = File.createTempFile("tmppathway", "gpml");
