@@ -1,13 +1,11 @@
 package org.caleydo.view.subgraph;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.bridgedb.Xref;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
@@ -38,12 +36,6 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.swt.widgets.Composite;
-import org.pathvisio.core.model.ConverterException;
-import org.pathvisio.core.model.GpmlFormat;
-import org.pathvisio.core.model.ObjectType;
-import org.pathvisio.core.model.Pathway;
-import org.pathvisio.core.model.PathwayElement;
-import org.pathvisio.core.model.PathwayImporter;
 
 public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView {
 
@@ -77,26 +69,26 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 
 	@Override
 	public void init(GL2 gl) {
-		PathwayImporter importer = new GpmlFormat();
-		try {
-			Pathway pathway = importer
-					.doImport(new File(
-							"D:\\Downloads\\wikipathways_Homo_sapiens_Curation-Tutorial_gpml\\Hs_BMP_signalling_and_regulation_WP1425_44981.gpml"));
-			List<Xref> refs = pathway.getDataNodeXrefs();
-			List<PathwayElement> elements = pathway.getDataObjects();
-			for (PathwayElement element : elements) {
-				if (element.getObjectType() == ObjectType.LINE) {
-					System.out.println(pathway.getElementById(element.getStartGraphRef()).getTextLabel() + "->"
-							+ pathway.getElementById(element.getEndGraphRef()).getTextLabel());
-				}
-			}
-			// for (Xref ref : refs) {
-			// System.out.println("DB: " + ref.getDataSource().getFullName() + ", id: " + ref.getId());
-			// }
-		} catch (ConverterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// PathwayImporter importer = new GpmlFormat();
+		// try {
+		// Pathway pathway = importer
+		// .doImport(new File(
+		// "D:\\Downloads\\wikipathways_Homo_sapiens_Curation-Tutorial_gpml\\Hs_BMP_signalling_and_regulation_WP1425_44981.gpml"));
+		// List<Xref> refs = pathway.getDataNodeXrefs();
+		// List<PathwayElement> elements = pathway.getDataObjects();
+		// for (PathwayElement element : elements) {
+		// if (element.getObjectType() == ObjectType.LINE) {
+		// System.out.println(pathway.getElementById(element.getStartGraphRef()).getTextLabel() + "->"
+		// + pathway.getElementById(element.getEndGraphRef()).getTextLabel());
+		// }
+		// }
+		// // for (Xref ref : refs) {
+		// // System.out.println("DB: " + ref.getDataSource().getFullName() + ", id: " + ref.getId());
+		// // }
+		// } catch (ConverterException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		displayListIndex = gl.glGenLists(1);
 		detailLevel = EDetailLevel.HIGH;
 		multiFormRenderer = new MultiFormRenderer(this, true);
