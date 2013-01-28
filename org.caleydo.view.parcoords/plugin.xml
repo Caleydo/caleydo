@@ -78,9 +78,9 @@
                viewID="org.caleydo.view.subgraph">
             <Embedding
                   ID="test"
-                  embeddingID="test"
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
                   icon="resources/icons/parcoords.png"
-                  isDefaultView="true"
+                  isDefaultView="false"
                   viewCreator="org.caleydo.view.parcoords.ParCoordsRemoteViewCreator"
                   visInfo="org.caleydo.view.parcoords.ParCoordsVisInfo">
             </Embedding>

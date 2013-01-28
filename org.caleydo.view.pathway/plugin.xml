@@ -83,6 +83,16 @@
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
             </Embedding>
          </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.subgraph">
+            <Embedding
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
+                  icon="resources/icons/pathway.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.pathway.PathwayRemoteViewCreator"
+                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+            </Embedding>
+         </ParentView>
       </EmbeddingInfo>
    </extension>
 </plugin>
