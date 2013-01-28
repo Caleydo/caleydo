@@ -8,9 +8,12 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.bridgedb.Xref;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
@@ -21,16 +24,19 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.swt.widgets.Composite;
 import org.pathvisio.core.model.ConverterException;
 import org.pathvisio.core.model.GpmlFormat;
@@ -216,10 +222,44 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 
 	private void createRemoteRenderedViews() {
 		if (remoteRenderedViewIDs == null) {
-			remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, "test");
+			remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE,
+					EEmbeddingID.PATHWAY_MULTIFORM.id());
+
+			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+					PathwayDataDomain.DATA_DOMAIN_TYPE);
+
+			TablePerspective tablePerspective = tablePerspectives.get(0);
+
+			Perspective oldRecordPerspective = tablePerspective.getRecordPerspective();
+			Perspective newRecordPerspective = new Perspective(tablePerspective.getDataDomain(),
+					oldRecordPerspective.getIdType());
+
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(oldRecordPerspective.getVirtualArray());
+
+			newRecordPerspective.init(data);
+
+			Perspective oldDimensionPerspective = tablePerspective.getDimensionPerspective();
+			Perspective newDimensionPerspective = new Perspective(tablePerspective.getDataDomain(),
+					oldDimensionPerspective.getIdType());
+			data = new PerspectiveInitializationData();
+			data.setData(oldDimensionPerspective.getVirtualArray());
+
+			newDimensionPerspective.init(data);
+
+			PathwayTablePerspective pathwayPathwayTablePerspective = new PathwayTablePerspective(
+					tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective, newDimensionPerspective,
+					PathwayManager.get().getAllItems().iterator().next());
+
+			pathwayDataDomain.addTablePerspective(pathwayPathwayTablePerspective);
+
+			List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
+			pathwayTablePerspectives.add(pathwayPathwayTablePerspective);
+
 			int currentRendererID = -1;
 			for (String viewID : remoteRenderedViewIDs) {
-				currentRendererID = multiFormRenderer.addView(viewID, "test", tablePerspectives);
+				currentRendererID = multiFormRenderer.addView(viewID, EEmbeddingID.PATHWAY_MULTIFORM.id(),
+						pathwayTablePerspectives);
 			}
 			ALayoutRenderer customRenderer = new BorderedAreaRenderer();
 			IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
@@ -239,15 +279,15 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 
 			// TextureRenderer textureRenderer = new TextureRenderer("resources/tissue_images/ebene_0.bmp",
 			// textureManager);
-			List<String> areaImagePaths = new ArrayList<>(2);
-			areaImagePaths.add("resources/tissue_images/ebene_1.bmp");
-			areaImagePaths.add("resources/tissue_images/ebene_2.bmp");
-			areaImagePaths.add("resources/tissue_images/ebene_3.bmp");
-			areaImagePaths.add("resources/tissue_images/ebene_4.bmp");
-			TissueRenderer textureRenderer = new TissueRenderer(this, "resources/tissue_images/ebene_0.bmp",
-					areaImagePaths);
-			multiFormRenderer
-					.addLayoutRenderer(textureRenderer, EIconTextures.ARROW_DOWN.getFileName(), visInfo, false);
+			// List<String> areaImagePaths = new ArrayList<>(2);
+			// areaImagePaths.add("resources/tissue_images/ebene_1.bmp");
+			// areaImagePaths.add("resources/tissue_images/ebene_2.bmp");
+			// areaImagePaths.add("resources/tissue_images/ebene_3.bmp");
+			// areaImagePaths.add("resources/tissue_images/ebene_4.bmp");
+			// TissueRenderer textureRenderer = new TissueRenderer(this, "resources/tissue_images/ebene_0.bmp",
+			// areaImagePaths);
+			// multiFormRenderer
+			// .addLayoutRenderer(textureRenderer, EIconTextures.ARROW_DOWN.getFileName(), visInfo, false);
 
 			MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, this);
 			baseColumn.add(viewSwitchingBar);
