@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -106,14 +105,7 @@ public class TableUtils {
 				nTable.setMax(numericalProperties.getMax());
 			}
 
-			if (numericalProperties.getMathFilterMode().equalsIgnoreCase("None")) {
-				nTable.setDataTransformation(EDataTransformation.NONE);
-			} else if (numericalProperties.getMathFilterMode().equalsIgnoreCase("Log10")) {
-				nTable.setDataTransformation(EDataTransformation.LOG10);
-			} else if (numericalProperties.getMathFilterMode().equalsIgnoreCase("Log2")) {
-				nTable.setDataTransformation(EDataTransformation.LOG2);
-			} else
-				throw new IllegalStateException("Unknown data representation type");
+			nTable.setDefaultDataTransformation(numericalProperties.getDataTransformation());
 
 		}
 		table.normalize();
@@ -142,10 +134,9 @@ public class TableUtils {
 	 *
 	 * @return true if export was successful, else false.
 	 */
-	public static boolean export(ATableBasedDataDomain dataDomain, String fileName,
-			Perspective recordPerspective, Perspective dimensionPerspective,
-			IDType targetRecordIDType,
-			IDType targetDimensionIDType, boolean includeClusterInfo) {
+	public static boolean export(ATableBasedDataDomain dataDomain, String fileName, Perspective recordPerspective,
+			Perspective dimensionPerspective, IDType targetRecordIDType, IDType targetDimensionIDType,
+			boolean includeClusterInfo) {
 
 		if (targetRecordIDType == null)
 			targetRecordIDType = dataDomain.getRecordIDCategory().getHumanReadableIDType();

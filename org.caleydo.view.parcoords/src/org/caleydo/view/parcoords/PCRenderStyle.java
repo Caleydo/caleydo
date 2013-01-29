@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.parcoords;
 
@@ -28,7 +25,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * Render styles for the parallel coordinates
- * 
+ *
  * @author Alexander Lex
  */
 
@@ -43,8 +40,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		PolyLineState(SelectionType selectionType, int nrElements) {
 			this.selectionType = selectionType;
 			this.lineWidth = selectionType.getLineWidth();
-			this.zDepth = POLYLINE_NORMAL_Z + selectionType.getPriority()
-					* (POLYLINE_SELECTED_Z - POLYLINE_NORMAL_Z);
+			this.zDepth = POLYLINE_NORMAL_Z + selectionType.getPriority() * (POLYLINE_SELECTED_Z - POLYLINE_NORMAL_Z);
 			this.color = selectionType.getColor();
 			updateOcclusionPrev(nrElements);
 		}
@@ -77,8 +73,6 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	public static final float Y_AXIS_MOUSE_OVER_LINE_WIDTH = 4.0f;
 
-	public static final float[] CANVAS_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
-
 	public static final float[] GATE_BODY_COLOR = { 0.61f, 0.705f, 1.0f, 0.8f };
 
 	public static final float[] ANGULAR_COLOR = { 0.17f, 0.45f, 0.84f, 1 };
@@ -88,7 +82,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	public static final int NUMBER_AXIS_MARKERS = 9;
 
-	public static final float NAN_Y_OFFSET = -0.08f;
+	public static final int NAN_Y_OFFSET = 3;
 
 	protected float fOcclusionPrevAlpha = 0.1f;
 
@@ -100,42 +94,19 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	// coordinate system
 	private static final float COORDINATE_TOP_SPACING = 0.07f;
 
-	// private static final float COORDINATE_SIDE_SPACING = 0.05f;
-
 	private static final float COORDINATE_BOTTOM_SPACING = 0.06f;
 
-	public static final float Y_AXIS_LOW = -0.25f;
-
-	public static final float AXIS_MARKER_WIDTH = 0.01f;
-
-	// gates
-	public static final float GATE_WIDTH = 0.05f;
-	public static final float GATE_BOTTOM_HEIGHT = 0.01f;
-	// private static final float GATE_NEGATIVE_Y_OFFSET = 0;
-	public static final float GATE_TIP_HEIGHT = 0.08f;
-
-	// buttons below axis
-	public static final float AXIS_BUTTONS_Y_OFFSET = 0.12f;
-
-	// private static final float fAxisSpacingLowerLimit = 0.001f;
+	public static final int AXIS_MARKER_WIDTH = 4;
 
 	private static final float fMinAxisSpacingForText = 0.1f;
 
-	// private static final float fXAxisOverlap = 0.1f;
-
-	// minimum text sizes
-
-	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
-	public static final int MIN_NUMBER_TEXT_SIZE = 55;
-
-	public final PolyLineState normalState = new PolyLineState(SelectionType.NORMAL,
-			(1000));
+	public final PolyLineState normalState = new PolyLineState(SelectionType.NORMAL, (1000));
 
 	private GLParallelCoordinates pcs;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param viewFrustum
 	 */
 	public PCRenderStyle(GLParallelCoordinates pcs, ViewFrustum viewFrustum) {
@@ -181,8 +152,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	}
 
 	public float getAxisHeight() {
-		return viewFrustum.getHeight()
-				- (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING) * getScaling();
+		return viewFrustum.getHeight() - (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING) * getScaling();
 	}
 
 	public float getXSpacing() {

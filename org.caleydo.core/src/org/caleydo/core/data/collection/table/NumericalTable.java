@@ -18,11 +18,11 @@ package org.caleydo.core.data.collection.table;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.util.Math.MathHelper;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -35,7 +35,10 @@ import org.eclipse.core.runtime.Status;
  */
 public class NumericalTable extends Table {
 
-	private EDataTransformation dataTransformation;
+	public class Transformation extends Table.Transformation {
+		public static final String LOG2 = "Log2";
+		public static final String LOG10 = "Log10";
+	}
 
 	private boolean artificialMin = false;
 	private double min = Double.POSITIVE_INFINITY;
@@ -60,23 +63,51 @@ public class NumericalTable extends Table {
 	 *            a value between 0 and 1
 	 * @return a value between min and max
 	 */
-	public double getRawForNormalized(double normalized) {
+	public double getRawForNormalized(String dataTransformation, double normalized) {
 
-		double result;
-		if (normalized == 0)
-			result = getMin();
-		// if(getMin() > 0)
-		result = getMin() + normalized * (getMax() - getMin());
-		// return (dNormalized) * (getMax() + getMin());
-		if (dataTransformation == EDataTransformation.NONE) {
-			return result;
-		} else if (dataTransformation == EDataTransformation.LOG2) {
-			return Math.pow(2, result);
-		} else if (dataTransformation == EDataTransformation.LOG10) {
-			return Math.pow(10, result);
+		if (dataTransformation.equals(Table.Transformation.NONE)) {
+			return getMin() + normalized * (getMax() - getMin());
+		} else if (dataTransformation.equals(Transformation.LOG2)) {
+			double logMin = MathHelper.log(getMin(), 2);
+			double logMax = MathHelper.log(getMax(), 2);
+			double spread = logMax - logMin;
+
+			double logRaw = logMin + normalized * spread;
+			double raw = Math.pow(2, logRaw);
+			return raw;
+			// normalized = Math.pow(2, normalized);
+		} else if (dataTransformation.equals(Transformation.LOG10)) {
+			return Math.pow(10, normalized);
+		} else {
+			throw new IllegalStateException("Unknown transformation" + dataTransformation);
 		}
-		throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
-				+ dataTransformation);
+
+	}
+
+	/**
+	 * Calculates a normalized value based on min and max.
+	 *
+	 * @param raw
+	 *            the raw value
+	 * @return a value between 0 and 1
+	 */
+	public double getNormalizedForRaw(String dataTransformation, double raw) {
+		double result;
+
+		if (dataTransformation == org.caleydo.core.data.collection.table.Table.Transformation.NONE) {
+			result = raw;
+		} else if (dataTransformation == Transformation.LOG2) {
+			result = Math.log(raw) / Math.log(2);
+		} else if (dataTransformation == Transformation.LOG10) {
+			result = Math.log10(raw);
+		} else {
+			throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
+					+ dataTransformation);
+		}
+
+		result = (result - getMin()) / (getMax() - getMin());
+
+		return result;
 	}
 
 	/**
@@ -149,16 +180,15 @@ public class NumericalTable extends Table {
 	 *             when executed on nominal data
 	 * @return The absolute minimum value in the set in the specified data representation.
 	 */
-	public double getMinAs(EDataTransformation dataRepresentation) {
-		if (min == Double.MAX_VALUE) {
-			calculateGlobalExtrema();
-		}
-		if (dataRepresentation == dataTransformation)
-			return min;
-		double result = getRawFromExternalDataRep(min);
-
-		return getDataRepFromRaw(result, dataRepresentation);
-	}
+	// public double getMinAs(String dataRepresentation) {
+	// if (min == Double.MAX_VALUE) {
+	// calculateGlobalExtrema();
+	// }
+	//
+	// double result = getRawFromExternalDataRep(min);
+	//
+	// return getDataRepFromRaw(result, dataRepresentation);
+	// }
 
 	/**
 	 * Gets the maximum value in the set in the specified data representation.
@@ -169,38 +199,44 @@ public class NumericalTable extends Table {
 	 *             when executed on nominal data
 	 * @return The absolute maximum value in the set in the specified data representation.
 	 */
-	public double getMaxAs(EDataTransformation dataRepresentation) {
-		if (max == Double.MIN_VALUE) {
-			calculateGlobalExtrema();
-		}
-		if (dataRepresentation == dataTransformation)
-			return max;
-		double result = getRawFromExternalDataRep(max);
-
-		return getDataRepFromRaw(result, dataRepresentation);
-	}
+	// public double getMaxAs(EDataTransformation dataRepresentation) {
+	// if (max == Double.MIN_VALUE) {
+	// calculateGlobalExtrema();
+	// }
+	// if (dataRepresentation == dataTransformation)
+	// return max;
+	// double result = getRawFromExternalDataRep(max);
+	//
+	// return getDataRepFromRaw(result, dataRepresentation);
+	// }
 
 	/**
 	 * Converts a raw value to the specified data representation.
 	 *
-	 * @param dRaw
+	 * @param raw
 	 *            Raw value that shall be converted
 	 * @param dataRepresentation
 	 *            Data representation the raw value shall be converted to.
 	 * @return Value in the specified data representation converted from the raw value.
 	 */
-	private double getDataRepFromRaw(double dRaw, EDataTransformation dataRepresentation) {
-		switch (dataRepresentation) {
-		case NONE:
-			return dRaw;
-		case LOG2:
-			return Math.log(dRaw) / Math.log(2);
-		case LOG10:
-			return Math.log10(dRaw);
-		default:
-			throw new IllegalStateException("Conversion to data rep not implemented for data rep" + dataRepresentation);
-		}
-	}
+	// private double getDataRepFromRaw(double raw, String dataRepresentation) {
+	// switch (dataRepresentation) {
+	// case org.caleydo.core.data.collection.table.Table.Transformation.NONE:
+	// return raw;
+	// case Transformation.LOG2:
+	// return Math.log(raw) / Math.log(2);
+	// case Transformation.LOG10:
+	// return Math.log10(raw);
+	// default:
+	// throw new IllegalStateException("Conversion to data rep not implemented for data rep" + dataRepresentation);
+	// }
+	// }
+	//
+	// public double getRawForTransfomed(String dataTransformation, double raw)
+	// {
+	// getRawForNormalized(dataTransfomation, normalized)
+	//
+	// }
 
 	/**
 	 * Converts the specified value into raw using the current external data representation.
@@ -209,18 +245,18 @@ public class NumericalTable extends Table {
 	 *            Value in the current external data representation.
 	 * @return Raw value converted from the specified value.
 	 */
-	private double getRawFromExternalDataRep(double dNumber) {
-		switch (dataTransformation) {
-		case NONE:
-			return dNumber;
-		case LOG2:
-			return Math.pow(2, dNumber);
-		case LOG10:
-			return Math.pow(10, dNumber);
-		default:
-			throw new IllegalStateException("Conversion to raw not implemented for data rep" + dataTransformation);
-		}
-	}
+	// private double getRawFromExternalDataRep(double dNumber) {
+	// switch (dataTransformation) {
+	// case NONE:
+	// return dNumber;
+	// case LOG2:
+	// return Math.pow(2, dNumber);
+	// case LOG10:
+	// return Math.pow(10, dNumber);
+	// default:
+	// throw new IllegalStateException("Conversion to raw not implemented for data rep" + dataTransformation);
+	// }
+	// }
 
 	private void calculateGlobalExtrema() {
 		double temp = 1.0;
@@ -274,37 +310,39 @@ public class NumericalTable extends Table {
 
 	}
 
-	/**
-	 * Calculates log10 on all dimensions in the table. Take care that the set contains only numerical dimensions, since
-	 * nominal dimensions will cause a runtime exception. If you have mixed data you have to call log10 on all the
-	 * dimensions that support it manually.
-	 */
-	void log10() {
-		for (AColumn<?, ?> dimension : columns) {
-			if (dimension instanceof NumericalColumn) {
-				NumericalColumn<?, ?> nDimension = (NumericalColumn<?, ?>) dimension;
-				nDimension.log10();
-			} else
-				throw new UnsupportedOperationException(
-						"Tried to calcualte log values on a set wich contains nominal dimensions. This is not possible!");
-		}
-	}
-
-	/**
-	 * Calculates log2 on all dimensions in the table. Take care that the set contains only numerical dimensions, since
-	 * nominal dimensions will cause a runtime exception. If you have mixed data you have to call log2 on all the
-	 * dimensions that support it manually.
-	 */
-	void log2() {
-		for (AColumn<?, ?> dimension : columns) {
-			if (dimension instanceof NumericalColumn) {
-				NumericalColumn<?, ?> nDimension = (NumericalColumn<?, ?>) dimension;
-				nDimension.log2();
-			} else
-				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
-						+ "contains nominal dimensions. This is not possible!");
-		}
-	}
+	// /**
+	// * Calculates log10 on all dimensions in the table. Take care that the set contains only numerical dimensions,
+	// since
+	// * nominal dimensions will cause a runtime exception. If you have mixed data you have to call log10 on all the
+	// * dimensions that support it manually.
+	// */
+	// void log10() {
+	// for (AColumn<?, ?> dimension : columns) {
+	// if (dimension instanceof NumericalColumn) {
+	// NumericalColumn<?, ?> nDimension = (NumericalColumn<?, ?>) dimension;
+	// nDimension.log10();
+	// } else
+	// throw new UnsupportedOperationException(
+	// "Tried to calcualte log values on a set wich contains nominal dimensions. This is not possible!");
+	// }
+	// }
+	//
+	// /**
+	// * Calculates log2 on all dimensions in the table. Take care that the set contains only numerical dimensions,
+	// since
+	// * nominal dimensions will cause a runtime exception. If you have mixed data you have to call log2 on all the
+	// * dimensions that support it manually.
+	// */
+	// void log2() {
+	// for (AColumn<?, ?> dimension : columns) {
+	// if (dimension instanceof NumericalColumn) {
+	// NumericalColumn<?, ?> nDimension = (NumericalColumn<?, ?>) dimension;
+	// nDimension.log2();
+	// } else
+	// throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
+	// + "contains nominal dimensions. This is not possible!");
+	// }
+	// }
 
 	/**
 	 * Normalize all columns in the tablet, based on values of all dimensions. For a numerical dimension, this would
@@ -318,83 +356,49 @@ public class NumericalTable extends Table {
 		for (AColumn<?, ?> column : columns) {
 			if (column instanceof NumericalColumn) {
 				NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
-				nColumn.normalizeWithExternalExtrema(getMin(), getMax());
+				nColumn.setExternalMin(getMin());
+				nColumn.setExternalMax(getMax());
+				nColumn.normalize();
 
 			} else
 				throw new IllegalStateException("Non numerical dimension in numerical table: " + column);
 		}
 	}
 
-	/**
-	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
-	 * calculated from the mode specified.
-	 *
-	 * @param dataTransformation
-	 *            Determines how the data is visualized. For options see {@link EDataTransformation}.
-	 */
-	void setDataTransformation(EDataTransformation dataTransformation) {
-		if (dataTransformation == this.dataTransformation)
-			return;
-
-		this.dataTransformation = dataTransformation;
-
-		for (AColumn<?, ?> dimension : columns) {
-			if (dimension instanceof NumericalColumn) {
-				((NumericalColumn<?, ?>) dimension).setDataTransformation(dataTransformation);
-			}
-		}
-
-		switch (dataTransformation) {
-		case NONE:
-			break;
-		case LOG10:
-			log10();
-			break;
-		case LOG2:
-			log2();
-			break;
-		}
-	}
-
-	/**
-	 * Calculates a normalized value based on min and max.
-	 *
-	 * @param raw
-	 *            the raw value
-	 * @return a value between 0 and 1
-	 */
-	public double getNormalizedForRaw(double raw) {
-		double result;
-
-		if (dataTransformation == EDataTransformation.NONE) {
-			result = raw;
-		} else if (dataTransformation == EDataTransformation.LOG2) {
-			result = Math.log(raw) / Math.log(2);
-		} else if (dataTransformation == EDataTransformation.LOG10) {
-			result = Math.log10(raw);
-		} else {
-			throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
-					+ dataTransformation);
-		}
-
-		result = (result - getMin()) / (getMax() - getMin());
-
-		return result;
-	}
-
-	/**
-	 * Returns the current {@link EDataTransformation}, which tells which was the input source before normalization.
-	 * E.g., if this tells you {@link EDataTransformation#LOG2} that means that the normalized data used for rendering
-	 * is based on data that has been logarithmized by the base 2 before.
-	 *
-	 * @return
-	 */
-	public EDataTransformation getDataTransformation() {
-		return dataTransformation;
-	}
+	// /**
+	// * Switch the representation of the data. When this is called the data in normalized is replaced with data
+	// * calculated from the mode specified.
+	// *
+	// * @param dataTransformation
+	// * Determines how the data is visualized. For options see {@link EDataTransformation}.
+	// */
+	// void setDataTransformation(EDataTransformation dataTransformation) {
+	// if (dataTransformation == this.dataTransformation)
+	// return;
+	//
+	// this.dataTransformation = dataTransformation;
+	//
+	// for (AColumn<?, ?> dimension : columns) {
+	// if (dimension instanceof NumericalColumn) {
+	// ((NumericalColumn<?, ?>) dimension).setDataTransformation(dataTransformation);
+	// }
+	// }
+	//
+	// switch (dataTransformation) {
+	// case NONE:
+	// break;
+	// case LOG10:
+	// log10();
+	// break;
+	// case LOG2:
+	// log2();
+	// break;
+	// }
+	// }
 
 	@Override
 	public boolean isDataHomogeneous() {
 		return true;
 	}
+
 }

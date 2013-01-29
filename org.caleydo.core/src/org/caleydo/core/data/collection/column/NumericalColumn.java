@@ -16,9 +16,11 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column;
 
-import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.INumericalContainer;
+import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.util.Math.MathHelper;
 
 /**
  * INumericalDimension is a specialization of IDimension. It is meant for numerical data of a continuous range,
@@ -31,16 +33,14 @@ import org.caleydo.core.data.collection.column.container.INumericalContainer;
 public class NumericalColumn<RawContainerType extends INumericalContainer<DataType>, DataType extends Number> extends
 		AColumn<RawContainerType, DataType> {
 
-	EDataTransformation dataTransformation = EDataTransformation.NONE;
+	private double externalMin = Double.NaN;
+	private double externalMax = Double.NaN;
 
 	/**
 	 * Constructor
 	 */
 	public NumericalColumn() {
 	}
-
-
-
 
 	/**
 	 * Same as {@link #normalizeWithExternalExtrema(double, double)}, but with an additional parameter letting you
@@ -50,14 +50,28 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 * @param min
 	 * @param max
 	 */
-	public void normalizeWithExternalExtrema(String sourceRep, double externalMin, double externalMax) {
 
-		if (sourceRep.equals(DataRepresentation.RAW)) {
-			normalizedContainer = rawContainer.normalizeWithAtrificalExtrema(externalMin, externalMax);
-		} else {
-			normalizedContainer = dataRepToContainerMap.get(sourceRep).normalize();
-		}
+	// private void normalize() {
+	//
+	// dataRepToContainerMap.put(EDataTransformation.NONE,
+	// rawContainer.normalizeWithAtrificalExtrema(externalMin, externalMax));
+	//
+	// }
 
+	/**
+	 * @param externalMin
+	 *            setter, see {@link externalMin}
+	 */
+	public void setExternalMin(double externalMin) {
+		this.externalMin = externalMin;
+	}
+
+	/**
+	 * @param externalMax
+	 *            setter, see {@link externalMax}
+	 */
+	public void setExternalMax(double externalMax) {
+		this.externalMax = externalMax;
 	}
 
 	/**
@@ -78,26 +92,36 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 * @throws IlleagalAttributeStateException
 	 *             if min >= max
 	 */
-	public void normalizeWithExternalExtrema(double min, double max) {
-		normalizeWithExternalExtrema(DataRepresentation.RAW, min, max);
+	@Override
+	public void normalize() {
+		dataRepToContainerMap.put(Table.Transformation.NONE,
+				rawContainer.normalizeWithAtrificalExtrema(getMin(), getMax()));
+		log2();
+		log10();
 	}
 
 	/**
-	 * Get the minimum of the raw data, respectively the logarithmized data if log was applied
+	 * Get the minimum of the raw data
 	 *
 	 * @return the minimum - a double since it can contain all values
 	 */
 	public double getMin() {
-		return rawContainer.getMin();
+		if (Double.isNaN(externalMin))
+			return rawContainer.getMin();
+		else
+			return externalMin;
 	}
 
 	/**
-	 * Get the maximum of the raw data, respectively the logarithmized data if log was applied
+	 * Get the maximum of the raw data
 	 *
 	 * @return the maximum - a double since it can contain all values
 	 */
 	public double getMax() {
-		return rawContainer.getMax();
+		if (Double.isNaN(externalMax))
+			return rawContainer.getMax();
+		else
+			return externalMax;
 	}
 
 	/**
@@ -116,8 +140,10 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 * EDataRepresentation.LOG10. Call normalize after this operation if you want to display the result Normalize then
 	 * uses the log data instead of the raw data
 	 */
-	public void log10() {
-		dataRepToContainerMap.put(DataRepresentation.LOG10, rawContainer.log(10));
+	private void log10() {
+		FloatContainer logContainer = rawContainer.log(10);
+		dataRepToContainerMap.put(NumericalTable.Transformation.LOG10,
+				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 10), MathHelper.log(getMax(), 10)));
 	}
 
 	/**
@@ -125,17 +151,10 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 * EDataRepresentation.LOG10. Call normalize after this operation if you want to display the result Normalize then
 	 * uses the log data instead of the raw data
 	 */
-	public void log2() {
-		dataRepToContainerMap.put(DataRepresentation.LOG2, rawContainer.log(2));
-	}
-
-	/**
-	 * Remove log and normalized data. Normalize has to be called again.
-	 */
-	public void reset() {
-		dataRepToContainerMap.remove(DataRepresentation.LOG2);
-		dataRepToContainerMap.remove(DataRepresentation.LOG10);
-		dataRepToContainerMap.remove(DataRepresentation.NORMALIZED);
+	private void log2() {
+		FloatContainer logContainer = rawContainer.log(2);
+		dataRepToContainerMap.put(NumericalTable.Transformation.LOG2,
+				logContainer.normalizeWithAtrificalExtrema(MathHelper.log(getMin(), 2), MathHelper.log(getMax(), 2)));
 	}
 
 	/**
@@ -143,16 +162,16 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 *
 	 * @param dataRepresentation
 	 */
-	public void setNewRepresentation(String dataRepresentation, float[] representation) {
-		if (representation.length != size())
-			throw new IllegalArgumentException("The size of the dimension (" + size()
-					+ ") is not equal the size of the given new representation (" + representation.length + ")");
-		if (dataRepToContainerMap.containsKey(dataRepresentation))
-			throw new IllegalStateException("The data representation " + dataRepresentation + " already exists in "
-					+ this);
-		FloatContainer container = new FloatContainer(representation);
-		dataRepToContainerMap.put(dataRepresentation, container);
-	}
+	// public void setNewRepresentation(String dataRepresentation, float[] representation) {
+	// if (representation.length != size())
+	// throw new IllegalArgumentException("The size of the dimension (" + size()
+	// + ") is not equal the size of the given new representation (" + representation.length + ")");
+	// if (dataRepToContainerMap.containsKey(dataRepresentation))
+	// throw new IllegalStateException("The data representation " + dataRepresentation + " already exists in "
+	// + this);
+	// FloatContainer container = new FloatContainer(representation);
+	// dataRepToContainerMap.put(dataRepresentation, container);
+	// }
 
 	/**
 	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
@@ -160,7 +179,8 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 *
 	 * @param dataRep
 	 */
-	public void setDataTransformation(EDataTransformation dataTransformation) {
-		this.dataTransformation = dataTransformation;
-	}
+	// public void setDataTransformation(EDataTransformation dataTransformation) {
+	// this.dataTransformation = dataTransformation;
+	// }
+
 }

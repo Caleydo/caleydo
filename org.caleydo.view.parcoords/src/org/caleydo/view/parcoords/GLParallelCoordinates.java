@@ -34,7 +34,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -61,6 +60,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.BookmarkButtonEvent;
@@ -118,11 +118,13 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 	private EPickingType draggedObject;
 
+	private EventListeners listeners;
+
 	/**
 	 * Hashes a gate id, which is made up of an axis id + the last three digits a gate counter (per axis) to a pair of
 	 * values which make up the upper and lower gate tip
 	 */
-	private HashMap<Integer, AGate> hashGates;
+	private HashMap<Integer, Gate> hashGates;
 	/**
 	 * Hash of blocking gates
 	 */
@@ -153,7 +155,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	/** the spacing on the sides of the coordinates system */
 	private float xSideSpacing = 0;
 
-	private float fYTranslation = 0;
+	protected float fYTranslation = 0;
 
 	private boolean bAngularBrushingSelectPolyline = false;
 	private boolean bIsAngularBrushingActive = false;
@@ -186,21 +188,10 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	private int displayEveryNthPolyline = 1;
 
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
-	int iChangeDropOnAxisNumber = -1;
+	int changeDropOnAxisNumber = -1;
 
 	/** Utility object for coordinate transformation and projection */
 	protected StandardTransformer selectionTransformer;
-
-	// listeners
-	private ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener;
-	private ResetAxisSpacingListener resetAxisSpacingListener;
-	private BookmarkButtonListener bookmarkListener;
-	private ResetViewListener resetViewListener;
-	private UseRandomSamplingListener useRandomSamplingListener;
-	private AngularBrushingListener angularBrushingListener;
-	private AddTablePerspectivesListener addTablePerspectivesListener;
-
-	protected int[] vertexBufferIndices = new int[] { -1 };
 
 	/**
 	 * Constructor.
@@ -407,7 +398,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	 * Initialize the gates. The gate heights are saved in two lists, which contain the rendering height of the gate
 	 */
 	private void initGates() {
-		hashGates = new HashMap<Integer, AGate>();
+		hashGates = new HashMap<Integer, Gate>();
 		hashIsGateBlocking = new HashMap<Integer, ArrayList<Integer>>();
 		if (dataDomain != null
 				&& (dataDomain.getTable() instanceof NumericalTable || dataDomain.getTable() instanceof CategoricalTable)) {
@@ -616,7 +607,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		while (count < numberOfAxis) {
-			float fXPosition = axisSpacings.get(count);
+			float xPosition = axisSpacings.get(count);
 			if (selectedSet.contains(dimensionVA.get(count))) {
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
@@ -636,12 +627,13 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					dimensionVA.get(count));
 			gl.glPushName(axisPickingID);
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(fXPosition, 0, AXIS_Z);
-			gl.glVertex3f(fXPosition, renderStyle.getAxisHeight(), AXIS_Z);
+			gl.glVertex3f(xPosition, 0, AXIS_Z);
+			gl.glVertex3f(xPosition, renderStyle.getAxisHeight(), AXIS_Z);
 
+			float axisMarkerWidth = pixelGLConverter.getGLWidthForPixelWidth(AXIS_MARKER_WIDTH);
 			// Top marker
-			gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
-			gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
+			gl.glVertex3f(xPosition - axisMarkerWidth, renderStyle.getAxisHeight(), AXIS_Z);
+			gl.glVertex3f(xPosition + axisMarkerWidth, renderStyle.getAxisHeight(), AXIS_Z);
 
 			gl.glEnd();
 			gl.glDisable(GL2.GL_LINE_STIPPLE);
@@ -652,184 +644,202 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
 				for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS; iInnerCount++) {
-					float fCurrentHeight = fMarkerSpacing * iInnerCount;
+					float currentHeight = fMarkerSpacing * iInnerCount;
 					if (count == 0) {
 						if (dataDomain.getTable() instanceof NumericalTable) {
-							float fNumber = (float) ((NumericalTable) dataDomain.getTable())
-									.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
+							float fNumber = (float) ((NumericalTable) dataDomain.getTable()).getRawForNormalized(
+									dataTransformation, currentHeight / renderStyle.getAxisHeight());
 
-							Rectangle2D bounds = textRenderer.getScaledBounds(gl, Formatter.formatNumber(fNumber),
-									renderStyle.getSmallFontScalingFactor(), PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
-							float fWidth = (float) bounds.getWidth();
-							float fHeightHalf = (float) bounds.getHeight() / 3.0f;
+							float width = pixelGLConverter.getGLWidthForPixelWidth(40);
+							float height = pixelGLConverter.getGLHeightForPixelHeight(12);
 
-							renderNumber(gl, Formatter.formatNumber(fNumber), fXPosition - fWidth - AXIS_MARKER_WIDTH,
-									fCurrentHeight - fHeightHalf);
+							float xOrigin = xPosition - width - axisMarkerWidth;
+
+							float yOrigin = currentHeight - height / 2;
+
+							textRenderer.renderTextInBounds(gl, Formatter.formatNumber(fNumber), xOrigin, yOrigin,
+									PCRenderStyle.TEXT_ON_LABEL_Z, width, height);
+
 						} else {
 							// TODO: dimension based access
 						}
 					}
 					gl.glColor3fv(Y_AXIS_COLOR, 0);
 					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
-					gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
+					gl.glVertex3f(xPosition - axisMarkerWidth, currentHeight, AXIS_Z);
+					gl.glVertex3f(xPosition + axisMarkerWidth, currentHeight, AXIS_Z);
 					gl.glEnd();
 
 				}
 			}
 
-			String sAxisLabel = null;
+			String axisLabel = null;
 
-			sAxisLabel = dataDomain.getDimensionLabel(dimensionVA.get(count));
+			axisLabel = dataDomain.getDimensionLabel(dimensionVA.get(count));
 
-			gl.glTranslatef(fXPosition, renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
+			gl.glTranslatef(xPosition, renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
 
 			float width = renderStyle.getAxisSpacing(dimensionVA.size());
 			if (count == numberOfAxis - 1)
 				width = fYTranslation;
-			textRenderer.renderTextInBounds(gl, sAxisLabel, 0, 0, 0.02f, width,
+
+			textRenderer.renderTextInBounds(gl, axisLabel, 0, 0, 0.02f, width,
 					pixelGLConverter.getGLHeightForPixelHeight(10));
 
-			gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()), 0);
-
-			// if (table.isDataHomogeneous()) {
-			// textRenderer.begin3DRendering();
-			//
-			// // render values on top and bottom of axis
-			//
-			// // top
-			// String text =
-			// getDecimalFormat().format(table.getMax());
-			// textRenderer.draw3D(text, fXPosition + 2 *
-			// AXIS_MARKER_WIDTH, renderStyle
-			// .getAxisHeight(), 0,
-			// renderStyle.getSmallFontScalingFactor());
-			//
-			// // bottom
-			// text = getDecimalFormat().format(table.getMin());
-			// textRenderer.draw3D(text, fXPosition + 2 *
-			// AXIS_MARKER_WIDTH, 0, 0,
-			// renderStyle.getSmallFontScalingFactor());
-			// textRenderer.end3DRendering();
-			// } else {
-			// // TODO
-			// }
+			gl.glTranslatef(-xPosition, -(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()), 0);
 
 			if (!isRenderedRemote()) {
 
-				float fXButtonOrigin = axisSpacings.get(count);
+				float xOrigin = axisSpacings.get(count);
+				float nanYOrigin = -pixelGLConverter.getGLHeightForPixelHeight(15);
 
-				Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f, PCRenderStyle.NAN_Y_OFFSET - 0.03f,
-						PCRenderStyle.NAN_Z);
-				Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f, PCRenderStyle.NAN_Y_OFFSET - 0.03f,
-						PCRenderStyle.NAN_Z);
-				Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f, PCRenderStyle.NAN_Y_OFFSET + 0.03f,
-						PCRenderStyle.NAN_Z);
-				Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f, PCRenderStyle.NAN_Y_OFFSET + 0.03f,
-						PCRenderStyle.NAN_Z);
-				Vec3f scalingPivot = new Vec3f(fXButtonOrigin, PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
+				// nan texture is 16x16 - set half of that
+				float buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(6);
+				float buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(6);
 
-				int iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_NAN.name(),
+				// float nan
+
+				Vec3f lowerLeftCorner = new Vec3f(xOrigin - buttonWidht, nanYOrigin - buttonHeight, PCRenderStyle.NAN_Z);
+				Vec3f lowerRightCorner = new Vec3f(xOrigin + buttonWidht, nanYOrigin - buttonHeight,
+						PCRenderStyle.NAN_Z);
+				Vec3f upperRightCorner = new Vec3f(xOrigin + buttonWidht, nanYOrigin + buttonHeight,
+						PCRenderStyle.NAN_Z);
+				Vec3f upperLeftCorner = new Vec3f(xOrigin - buttonWidht, nanYOrigin + buttonHeight, PCRenderStyle.NAN_Z);
+
+				int pickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_NAN.name(),
 						dimensionVA.get(count));
-				gl.glPushName(iPickingID);
+				gl.glPushName(pickingID);
 
-				textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner, lowerRightCorner,
-						upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+				textureManager.renderTexture(gl, EIconTextures.NAN, lowerLeftCorner, lowerRightCorner,
+						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 				gl.glPopName();
 
 				// render Buttons
 
-				iPickingID = -1;
-				float fYDropOrigin = -PCRenderStyle.AXIS_BUTTONS_Y_OFFSET;
+				pickingID = -1;
 
 				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-				// the gate add button
-				float fYGateAddOrigin = renderStyle.getAxisHeight();
-				iPickingID = pickingManager
-						.getPickingID(uniqueID, EPickingType.ADD_GATE.name(), dimensionVA.get(count));
+				// the gate add button on upperBound
 
-				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
-				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
-				upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-				upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-				scalingPivot.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
+				float yGateAddOrigin = renderStyle.getAxisHeight();
+				pickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_GATE.name(), dimensionVA.get(count));
 
-				gl.glPushName(iPickingID);
+				// gate add texture - 16 x 32
+				// half width, full height
+				buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(8);
+				buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(32);
 
-				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner,
-						upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+				lowerLeftCorner.set(xOrigin - buttonWidht, yGateAddOrigin, AXIS_Z);
+				lowerRightCorner.set(xOrigin + buttonWidht, yGateAddOrigin, AXIS_Z);
+				upperRightCorner.set(xOrigin + buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
+				upperLeftCorner.set(xOrigin - buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
+
+				gl.glPushName(pickingID);
+
+				textureManager.renderTexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner,
+						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 				gl.glPopName();
 
+				float fYDropOrigin = -pixelGLConverter.getGLHeightForPixelHeight(20);
+
 				if (selectedSet.contains(dimensionVA.get(count)) || mouseOverSet.contains(dimensionVA.get(count))) {
 
-					lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-					lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-					upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-					upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
+					// the mouse over drops
+					// texture is 63x62
 
-					// the mouse over drop
-					if (iChangeDropOnAxisNumber == count) {
+					buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(31);
+					buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(63);
+
+					lowerLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.005f);
+					lowerRightCorner.set(xOrigin + buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.005f);
+					upperRightCorner.set(xOrigin + buttonWidht, fYDropOrigin, AXIS_Z + 0.005f);
+					upperLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin, AXIS_Z + 0.005f);
+
+					if (changeDropOnAxisNumber == count) {
 						// tempTexture = textureManager.getIconTexture(gl,
 						// dropTexture);
-						textureManager.renderGUITexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner,
-								upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+						textureManager.renderTexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner,
+								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 						if (!bWasAxisMoved) {
 							dropTexture = EIconTextures.DROP_NORMAL;
 						}
 					} else {
-						textureManager.renderGUITexture(gl, EIconTextures.DROP_NORMAL, lowerLeftCorner,
-								lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+						textureManager.renderTexture(gl, EIconTextures.DROP_NORMAL, lowerLeftCorner, lowerRightCorner,
+								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 					}
 
-					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
+					// picking for the sub-parts of the drop texture
+
+					// center drop has width of 30 starts at position 16
+					buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(15);
+					buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(63);
+
+					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
 					gl.glColor4f(0, 0, 0, 0f);
-					gl.glPushName(iPickingID);
+					gl.glPushName(pickingID);
 					gl.glBegin(GL.GL_TRIANGLES);
-					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.3f, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.3f, AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin + buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin - buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
 					gl.glEnd();
 					gl.glPopName();
 
-					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.DUPLICATE_AXIS.name(), count);
+					// left drop
+					buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(63 - 14);
+					float buttonOuterBorder = pixelGLConverter.getGLWidthForPixelWidth(31);
+					buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(16);
+
+					float buttonOuterHight = pixelGLConverter.getGLHeightForPixelHeight(16);
+
+					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.DUPLICATE_AXIS.name(), count);
 					// gl.glColor4f(0, 1, 0, 0.5f);
-					gl.glPushName(iPickingID);
-					gl.glBegin(GL.GL_TRIANGLES);
-					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin - 0.23f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
+					gl.glPushName(pickingID);
+					gl.glBegin(GL2.GL_POLYGON);
+					gl.glVertex3f(xOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin - buttonOuterBorder, fYDropOrigin - buttonHeight + buttonOuterHight,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin - buttonOuterBorder, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin - buttonOuterBorder + buttonWidht, fYDropOrigin - buttonHeight,
+							AXIS_Z + 0.01f);
 					gl.glEnd();
 					gl.glPopName();
 
-					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_AXIS.name(), count);
+					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.REMOVE_AXIS.name(), count);
 					// gl.glColor4f(0, 0, 1, 0.5f);
-					gl.glPushName(iPickingID);
-					gl.glBegin(GL.GL_TRIANGLES);
-					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
-					gl.glVertex3f(fXButtonOrigin + 0.23f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
+					gl.glPushName(pickingID);
+					gl.glBegin(GL2.GL_POLYGON);
+					gl.glVertex3f(xOrigin, fYDropOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin + buttonOuterBorder, fYDropOrigin - buttonHeight + buttonOuterHight,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin + buttonOuterBorder, fYDropOrigin - buttonHeight, AXIS_Z + 0.01f);
+					gl.glVertex3f(xOrigin + buttonOuterBorder - buttonWidht, fYDropOrigin - buttonHeight,
+							AXIS_Z + 0.01f);
 					gl.glEnd();
 					gl.glPopName();
 
 				} else {
-					iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
+
+					// standard lowerBound drop texture - 16 x 32
+					// half width, full height
+					buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(8);
+					buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(32);
+
+					pickingID = pickingManager.getPickingID(uniqueID, EPickingType.MOVE_AXIS.name(), count);
 
 					gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-					gl.glPushName(iPickingID);
+					gl.glPushName(pickingID);
 
-					lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
-					lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
-					upperRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
-					upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
-					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
+					lowerLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z);
+					lowerRightCorner.set(xOrigin + buttonWidht, fYDropOrigin - buttonHeight, AXIS_Z);
+					upperRightCorner.set(xOrigin + buttonWidht, fYDropOrigin, AXIS_Z);
+					upperLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin, AXIS_Z);
 
-					textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
-							upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+					textureManager.renderTexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
+							upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 					gl.glPopName();
 					gl.glPopAttrib();
@@ -856,7 +866,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		for (Integer iGateID : hashGates.keySet()) {
 			// Gate ID / 1000 is axis ID
 
-			AGate gate = hashGates.get(iGateID);
+			Gate gate = hashGates.get(iGateID);
 			int axisID = gate.getAxisID();
 			// Pair<Float, Float> gate = hashGates.get(iGateID);
 			// TODO for all indices
@@ -865,10 +875,10 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					.indicesOf(axisID);
 			for (int axisIndex : axesIndices) {
 				float currentPosition = axisSpacings.get(axisIndex);
-				gate.setCurrentPosition(currentPosition);
+				gate.setxPosition(currentPosition);
 				// String label = table.get(iAxisID).getLabel();
 
-				gate.draw(gl, pickingManager, textureManager, textRenderer, uniqueID);
+				gate.draw(gl);
 				// renderSingleGate(gl, gate, iAxisID, iGateID,
 				// fCurrentPosition);
 			}
@@ -881,35 +891,43 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			return;
 
 		gl.glColor4f(0, 0, 0, 1f);
+
 		gl.glLineWidth(PCRenderStyle.Y_AXIS_LINE_WIDTH);
 		// gl.glPushName(iPickingID);
 
-		float fXOrigin = pixelGLConverter.getGLWidthForPixelWidth(0);
+		float xOrigin = -pixelGLConverter.getGLWidthForPixelWidth(40);
+		float axisMarkerWidth = pixelGLConverter.getGLWidthForPixelWidth(AXIS_MARKER_WIDTH);
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(fXOrigin, 0, AXIS_Z);
-		gl.glVertex3f(fXOrigin, renderStyle.getAxisHeight(), AXIS_Z);
-		gl.glVertex3f(fXOrigin - AXIS_MARKER_WIDTH, 0, AXIS_Z);
-		gl.glVertex3f(fXOrigin + AXIS_MARKER_WIDTH, 0, AXIS_Z);
-		gl.glVertex3f(fXOrigin - AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
-		gl.glVertex3f(fXOrigin + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
+		gl.glVertex3f(xOrigin, 0, AXIS_Z);
+		gl.glVertex3f(xOrigin, renderStyle.getAxisHeight(), AXIS_Z);
+		gl.glVertex3f(xOrigin - axisMarkerWidth, 0, AXIS_Z);
+		gl.glVertex3f(xOrigin + axisMarkerWidth, 0, AXIS_Z);
+		gl.glVertex3f(xOrigin - axisMarkerWidth, renderStyle.getAxisHeight(), AXIS_Z);
+		gl.glVertex3f(xOrigin + axisMarkerWidth, renderStyle.getAxisHeight(), AXIS_Z);
 		gl.glEnd();
 
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		// the gate add button
-		float fYGateAddOrigin = renderStyle.getAxisHeight();
-		int iPickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_MASTER_GATE.name(), 1);
-		gl.glPushName(iPickingID);
+		float yGateAddOrigin = renderStyle.getAxisHeight();
+		int pickingID = pickingManager.getPickingID(uniqueID, EPickingType.ADD_MASTER_GATE.name(), 1);
 
-		Vec3f lowerLeftCorner = new Vec3f(fXOrigin - 0.05f, fYGateAddOrigin, AXIS_Z);
-		Vec3f lowerRightCorner = new Vec3f(fXOrigin + 0.05f, fYGateAddOrigin, AXIS_Z);
-		Vec3f upperRightCorner = new Vec3f(fXOrigin + 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
-		Vec3f upperLeftCorner = new Vec3f(fXOrigin - 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
-		Vec3f scalingPivot = new Vec3f(fXOrigin, fYGateAddOrigin, AXIS_Z);
+		gl.glPushName(pickingID);
+		// the gate add button on upperBound
 
-		textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+		// gate add texture - 16 x 32
+		// half width, full height
+		float buttonWidht = pixelGLConverter.getGLWidthForPixelWidth(8);
+		float buttonHeight = pixelGLConverter.getGLHeightForPixelHeight(32);
+
+		Vec3f lowerLeftCorner = new Vec3f(xOrigin - buttonWidht, yGateAddOrigin, AXIS_Z);
+		Vec3f lowerRightCorner = new Vec3f(xOrigin + buttonWidht, yGateAddOrigin, AXIS_Z);
+		Vec3f upperRightCorner = new Vec3f(xOrigin + buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
+		Vec3f upperLeftCorner = new Vec3f(xOrigin - buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
+
+		textureManager.renderTexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1, 1, 1, 1);
 
 		gl.glPopName();
 
@@ -918,23 +936,23 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		for (Integer iGateID : hashMasterGates.keySet()) {
 			Gate gate = hashMasterGates.get(iGateID);
 
-			Float fBottom = gate.getBottom();
-			Float fTop = gate.getTop();
+			Float fBottom = gate.getLowerBound();
+			Float fTop = gate.getUpperBound();
 
 			gl.glColor4fv(PCRenderStyle.GATE_BODY_COLOR, 0);
 			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(fXOrigin, fBottom, 0);
+			gl.glVertex3f(xOrigin, fBottom, 0);
 			gl.glVertex3f(viewFrustum.getWidth() - 1, fBottom, 0);
 			gl.glVertex3f(viewFrustum.getWidth() - 1, fTop, 0);
 			// TODO eurovis hacke
 			// gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
 			// gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
 			//
-			gl.glVertex3f(fXOrigin - 0.05f, fTop, 0);
+			gl.glVertex3f(xOrigin - 0.05f, fTop, 0);
 			gl.glEnd();
 
-			gate.setCurrentPosition(fXOrigin);
-			gate.draw(gl, pickingManager, textureManager, textRenderer, uniqueID);
+			gate.setxPosition(xOrigin);
+			gate.draw(gl);
 			// renderSingleGate(gl, gate, -1, iGateID, fXOrigin);
 		}
 
@@ -945,54 +963,43 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	 * Render the captions on the axis
 	 *
 	 * @param gl
-	 * @param fXOrigin
-	 * @param fYOrigin
+	 * @param xOrigin
+	 * @param yOrigin
 	 * @param renderMode
 	 */
-	private void renderBoxedYValues(GL2 gl, float fXOrigin, float fYOrigin, String sRawValue, SelectionType renderMode) {
-
-		float fScaling = renderStyle.getSmallFontScalingFactor();
+	private void renderBoxedYValues(GL2 gl, float xOrigin, float yOrigin, String string, SelectionType renderMode) {
 
 		// don't render values that are below the y axis
-		if (fYOrigin < 0)
+		if (yOrigin < 0)
 			return;
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 
-		Rectangle2D tempRectangle = textRenderer.getScaledBounds(gl, sRawValue, fScaling,
-				PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
-		float fSmallSpacing = renderStyle.getVerySmallSpacing();
-		float fBackPlaneWidth = (float) tempRectangle.getWidth();
-		float maxWidth = renderStyle.getAxisSpacing(tablePerspective.getNrDimensions());
-		if (fBackPlaneWidth > maxWidth)
-			fBackPlaneWidth = maxWidth;
+		float widthSpacing = pixelGLConverter.getGLWidthForPixelWidth(2);
+		float heightSpacing = pixelGLConverter.getGLWidthForPixelWidth(2);
 
-		float fBackPlaneHeight = (float) tempRectangle.getHeight();
-		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
-		float fYTextOrigin = fYOrigin;
+		float backPlaneWidth = pixelGLConverter.getGLWidthForPixelWidth(40);
+		float maxWidth = renderStyle.getAxisSpacing(tablePerspective.getNrDimensions());
+		if (backPlaneWidth > maxWidth)
+			backPlaneWidth = maxWidth;
+
+		float fBackPlaneHeight = pixelGLConverter.getGLHeightForPixelHeight(12);
+		float xTextOrigin = xOrigin + 2 * pixelGLConverter.getGLWidthForPixelWidth(AXIS_MARKER_WIDTH);
+		float yTextOrigin = yOrigin;
 
 		gl.glColor4f(1f, 1f, 1f, 0.8f);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing, LABEL_Z);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin - fSmallSpacing, LABEL_Z);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, LABEL_Z);
-		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, LABEL_Z);
+		gl.glVertex3f(xTextOrigin - widthSpacing, yTextOrigin - heightSpacing, LABEL_Z);
+		gl.glVertex3f(xTextOrigin + backPlaneWidth, yTextOrigin - heightSpacing, LABEL_Z);
+		gl.glVertex3f(xTextOrigin + backPlaneWidth, yTextOrigin + fBackPlaneHeight, LABEL_Z);
+		gl.glVertex3f(xTextOrigin - widthSpacing, yTextOrigin + fBackPlaneHeight, LABEL_Z);
 		gl.glEnd();
 
-		textRenderer.renderTextInBounds(gl, sRawValue, fXTextOrigin, fYTextOrigin, PCRenderStyle.TEXT_ON_LABEL_Z,
-				fBackPlaneWidth, fBackPlaneHeight);
-		// renderNumber(gl, sRawValue, fXTextOrigin, fYTextOrigin);
+		textRenderer.renderTextInBounds(gl, string, xTextOrigin, yTextOrigin, PCRenderStyle.TEXT_ON_LABEL_Z,
+				backPlaneWidth, fBackPlaneHeight);
 		gl.glPopAttrib();
-	}
-
-	private void renderNumber(GL2 gl, String sRawValue, float fXOrigin, float fYOrigin) {
-
-		float fScaling = renderStyle.getSmallFontScalingFactor();
-
-		textRenderer.renderText(gl, sRawValue, fXOrigin, fYOrigin, PCRenderStyle.TEXT_ON_LABEL_Z, fScaling,
-				PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 	}
 
 	/**
@@ -1006,21 +1013,23 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		// bIsDisplayListDirtyRemote = true;
 		Point currentPoint = glMouseListener.getPickedPoint();
 
-		float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-				currentPoint.x, currentPoint.y);
+		int pixelHeight = parentGLCanvas.getHeight() - currentPoint.y;
+
+		float x = pixelGLConverter.getGLWidthForPixelWidth(currentPoint.x);
+		float y = pixelGLConverter.getGLHeightForPixelHeight(pixelHeight);
+
+		// float[] fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
+		// currentPoint.x, currentPoint.y);
 
 		// todo only valid for one gate
-		AGate gate = null;
-
-		gate = hashGates.get(iDraggedGateNumber);
+		Gate gate = hashGates.get(iDraggedGateNumber);
 
 		if (gate == null) {
 			gate = hashMasterGates.get(iDraggedGateNumber);
 			if (gate == null)
 				return;
 		}
-		gate.handleDragging(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], draggedObject,
-				bIsGateDraggingFirstTime);
+		gate.handleDragging(gl, x, y, draggedObject, bIsGateDraggingFirstTime);
 		bIsGateDraggingFirstTime = false;
 
 		isDisplayListDirty = true;
@@ -1035,7 +1044,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	/**
 	 * Unselect all lines that are deselected with the gates
 	 *
-	 * @param iChangeDropOnAxisNumber
+	 * @param changeDropOnAxisNumber
 	 */
 	// TODO revise
 	private void handleGateUnselection() {
@@ -1047,24 +1056,21 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			if (alCurrentGateBlocks == null)
 				return;
 			alCurrentGateBlocks.clear();
-			AGate gate = hashGates.get(iGateID);
+			Gate gate = hashGates.get(iGateID);
 			int axisID = gate.getAxisID();
 			if (axisID == -1)
 				continue;
+			int dimensionID = tablePerspective.getDimensionPerspective().getVirtualArray().get(axisID);
+
 			for (int recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
 
-				if (!dataDomain.getTable().isDataHomogeneous()) {
-
-					currentValue = dataDomain.getTable().getNormalizedValue(axisID, recordID);
-				}
-
-				currentValue = dataDomain.getTable().getRaw(recordID, axisID);
+				currentValue = dataDomain.getTable().getNormalizedValue(dimensionID, recordID);
 
 				if (Float.isNaN(currentValue)) {
 					continue;
 				}
 
-				if (currentValue <= gate.getUpperValue() && currentValue >= gate.getLowerValue()) {
+				if (currentValue <= gate.getUpperBound() && currentValue >= gate.getLowerBound()) {
 					alCurrentGateBlocks.add(recordID);
 				}
 			}
@@ -1109,7 +1115,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 						continue;
 					}
 
-					if (currentValue <= gate.getUpperValue() && currentValue >= gate.getLowerValue()) {
+					if (currentValue <= gate.getUpperBound() && currentValue >= gate.getLowerBound()) {
 						bIsBlocking = true;
 					} else {
 						bIsBlocking = false;
@@ -1192,7 +1198,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	}
 
 	protected void registerPickingListeners() {
-
 
 		addTypePickingListener(new APickingListener() {
 
@@ -1285,7 +1290,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				draggedObject = EPickingType.GATE_BOTTOM_SELECTION;
 				setDisplayListDirty();
 			}
-		}, EPickingType.GATE_BODY_SELECTION.name());
+		}, EPickingType.GATE_BOTTOM_SELECTION.name());
 
 		addTypePickingListener(new APickingListener(
 
@@ -1331,7 +1336,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			@Override
 			public void mouseOver(Pick pick) {
 				dropTexture = EIconTextures.DROP_DELETE;
-				iChangeDropOnAxisNumber = pick.getObjectID();
+				changeDropOnAxisNumber = pick.getObjectID();
+				setDisplayListDirty();
 
 			}
 		}, EPickingType.REMOVE_AXIS.name());
@@ -1348,7 +1354,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			@Override
 			public void mouseOver(Pick pick) {
 				dropTexture = EIconTextures.DROP_MOVE;
-				iChangeDropOnAxisNumber = pick.getObjectID();
+				changeDropOnAxisNumber = pick.getObjectID();
 				setDisplayListDirty();
 
 			}
@@ -1381,7 +1387,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			@Override
 			public void mouseOver(Pick pick) {
 				dropTexture = EIconTextures.DROP_DUPLICATE;
-				iChangeDropOnAxisNumber = pick.getObjectID();
+				changeDropOnAxisNumber = pick.getObjectID();
+				setDisplayListDirty();
 			}
 		}, EPickingType.DUPLICATE_AXIS.name());
 
@@ -1390,15 +1397,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			@Override
 			public void clicked(Pick pick) {
 				hasFilterChanged = true;
-				AGate gate;
-				Table table = dataDomain.getTable();
-				if (table.isDataHomogeneous()) {
-					gate = new Gate(++iGateCounter, pick.getObjectID(),
-							(float) ((NumericalTable) table).getRawForNormalized(0),
-							(float) ((NumericalTable) table).getRawForNormalized(0.5f), table, renderStyle);
-				} else {
-					gate = new NominalGate(++iGateCounter, pick.getObjectID(), 0, 0.5f, table, renderStyle);
-				}
+				Gate gate = new Gate(getSelf(), ++iGateCounter, pick.getObjectID(), 0, 0.5f);
 				hashGates.put(iGateCounter, gate);
 				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
 				handleUnselection();
@@ -1407,18 +1406,13 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 			}
 
-		}, EPickingType.DUPLICATE_AXIS.name());
-
-		addTypePickingListener(new APickingListener() {
 		}, EPickingType.ADD_GATE.name());
 
 		addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
 				hasFilterChanged = true;
-				Table table = dataDomain.getTable();
-				Gate gate = new Gate(++iGateCounter, -1, (float) ((NumericalTable) table).getRawForNormalized(0),
-						(float) ((NumericalTable) table).getRawForNormalized(0.5f), table, renderStyle);
+				Gate gate = new Gate(getSelf(), ++iGateCounter, -1, 0, 0.5f);
 				gate.setMasterGate(true);
 				hashMasterGates.put(iGateCounter, gate);
 				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
@@ -1478,6 +1472,10 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				setDisplayListDirty();
 			}
 		}, EPickingType.REMOVE_NAN.name());
+	}
+
+	private GLParallelCoordinates getSelf() {
+		return this;
 	}
 
 	private void handleSelection(SelectionType selectionType, Integer id) {
@@ -1873,70 +1871,44 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		applyCurrentSelectionToVirtualArrayListener = new ApplyCurrentSelectionToVirtualArrayListener();
+
+		listeners = new EventListeners();
+
+		ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener = new ApplyCurrentSelectionToVirtualArrayListener();
 		applyCurrentSelectionToVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ApplyCurrentSelectionToVirtualArrayEvent.class,
-				applyCurrentSelectionToVirtualArrayListener);
+		listeners.register(ApplyCurrentSelectionToVirtualArrayEvent.class, applyCurrentSelectionToVirtualArrayListener);
 
-		resetAxisSpacingListener = new ResetAxisSpacingListener();
+		ResetAxisSpacingListener resetAxisSpacingListener = new ResetAxisSpacingListener();
 		resetAxisSpacingListener.setHandler(this);
-		eventPublisher.addListener(ResetAxisSpacingEvent.class, resetAxisSpacingListener);
+		listeners.register(ResetAxisSpacingEvent.class, resetAxisSpacingListener);
 
-		bookmarkListener = new BookmarkButtonListener();
+		BookmarkButtonListener bookmarkListener = new BookmarkButtonListener();
 		bookmarkListener.setHandler(this);
-		eventPublisher.addListener(BookmarkButtonEvent.class, bookmarkListener);
+		listeners.register(BookmarkButtonEvent.class, bookmarkListener);
 
-		resetViewListener = new ResetViewListener();
+		ResetViewListener resetViewListener = new ResetViewListener();
 		resetViewListener.setHandler(this);
-		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
+		listeners.register(ResetAllViewsEvent.class, resetViewListener);
 		// second event for same listener
-		eventPublisher.addListener(ResetParallelCoordinatesEvent.class, resetViewListener);
+		listeners.register(ResetParallelCoordinatesEvent.class, resetViewListener);
 
-		useRandomSamplingListener = new UseRandomSamplingListener();
+		UseRandomSamplingListener useRandomSamplingListener = new UseRandomSamplingListener();
 		useRandomSamplingListener.setHandler(this);
-		eventPublisher.addListener(UseRandomSamplingEvent.class, useRandomSamplingListener);
+		listeners.register(UseRandomSamplingEvent.class, useRandomSamplingListener);
 
-		angularBrushingListener = new AngularBrushingListener();
+		AngularBrushingListener angularBrushingListener = new AngularBrushingListener();
 		angularBrushingListener.setHandler(this);
-		eventPublisher.addListener(AngularBrushingEvent.class, angularBrushingListener);
+		listeners.register(AngularBrushingEvent.class, angularBrushingListener);
 
-		addTablePerspectivesListener = new AddTablePerspectivesListener();
+		AddTablePerspectivesListener addTablePerspectivesListener = new AddTablePerspectivesListener();
 		addTablePerspectivesListener.setHandler(this);
-		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
+		listeners.register(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-		if (applyCurrentSelectionToVirtualArrayListener != null) {
-			eventPublisher.removeListener(applyCurrentSelectionToVirtualArrayListener);
-			applyCurrentSelectionToVirtualArrayListener = null;
-		}
-
-		if (resetAxisSpacingListener != null) {
-			eventPublisher.removeListener(resetAxisSpacingListener);
-			resetAxisSpacingListener = null;
-		}
-
-		if (bookmarkListener != null) {
-			eventPublisher.removeListener(bookmarkListener);
-			bookmarkListener = null;
-		}
-		if (resetViewListener != null) {
-			eventPublisher.removeListener(resetViewListener);
-			resetViewListener = null;
-		}
-
-		if (angularBrushingListener != null) {
-			eventPublisher.removeListener(angularBrushingListener);
-			angularBrushingListener = null;
-		}
-
-		if (addTablePerspectivesListener != null) {
-			eventPublisher.removeListener(addTablePerspectivesListener);
-			addTablePerspectivesListener = null;
-		}
+		listeners.unregisterAll();
 	}
 
 	@Override
@@ -1975,149 +1947,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		// TODO: Calculate depending on content
 		return 100;
 	}
-
-	// private float[] generateVertexBuffer() {
-	// int numberOfVertices = table.getMetaData().depth() *
-	// table.getMetaData().size()
-	// * 2;
-	//
-	// float vertices[] = new float[numberOfVertices];
-	// int vertexCounter = 0;
-	//
-	// for (int index = 0; index < table.getMetaData().depth(); index++) {
-	// int dimensionCounter = 0;
-	// for (Integer dimensionID : dimensionVA) {
-	// float xValue = 0.2f * dimensionCounter++;
-	//
-	// float yValue = table.getFloat(DataRepresentation.NORMALIZED, dimensionID,
-	// index);
-	// vertices[vertexCounter++] = xValue;
-	// vertices[vertexCounter++] = yValue;
-	// }
-	// }
-	//
-	// return vertices;
-	// }
-	//
-	// private void displayVBO(GL2 gl) {
-	// // GLHelperFunctions.drawPointAt(gl, 0.5f, 0.5f, 0f);
-	//
-	// gl.glColor3f(0, 0, 1);
-	// // int[] indices = { 0, 1, 1, 2, 2, 3, 3};
-	// int size = 100000;
-	// int[] indices = new int[size];
-	// for (int count = 0; count < size - 1;) {
-	// if (count - 1 >= 0) {
-	// indices[count] = indices[count - 1];
-	// indices[count + 1] = count;
-	// } else {
-	// indices[count] = 0;
-	// indices[count + 1] = 1;
-	// }
-	// count += 2;
-	//
-	// }
-	// IntBuffer indexBuffer = Buffers.newDirectIntBuffer(indices);
-	// indexBuffer.rewind();
-	//
-	// if (vertexBufferIndices[0] == -1) {
-	// // float vertices[] = new float[] { 0.0f, 0.0f, 0.5f, 0.5f, 2, 1, 4,
-	// // 2, 5, 6};
-	//
-	// float vertices[] = generateVertexBuffer();
-	//
-	// FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertices);
-	//
-	// vertexBuffer.rewind();
-	//
-	// if (!gl.isFunctionAvailable("glGenBuffers")
-	// || !gl.isFunctionAvailable("glBindBuffer")
-	// || !gl.isFunctionAvailable("glBufferData")
-	// || !gl.isFunctionAvailable("glDeleteBuffers")) {
-	// throw new IllegalStateException("Vertex Buffer Objects not supported");
-	// }
-	// gl.glGenBuffers(1, vertexBufferIndices, 0);
-	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-	// gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length *
-	// Buffers.SIZEOF_FLOAT,
-	// vertexBuffer, GL2.GL_DYNAMIC_DRAW);
-	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-	// // ByteBuffer bytebuffer = gl.glMapBuffer(GL.GL_ARRAY_BUFFER,
-	// // GL2.GL_WRITE_ONLY);
-	// // FloatBuffer floatBuffer =
-	// // bytebuffer.order(ByteOrder.nativeOrder())
-	// // .asFloatBuffer();
-	//
-	// // for (float vertex : vertices) {
-	// // floatBuffer.put(vertex);
-	// // }
-	// gl.glUnmapBuffer(GL.GL_ARRAY_BUFFER);
-	//
-	// }
-	//
-	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-	// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-	// // gl.glEnableClientState( GL2.GL_COLOR_ARRAY )
-	// gl.glVertexPointer(2, GL2.GL_FLOAT, 0, 0);
-	// gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexBufferIndices[0]);
-	// gl.glDrawElements(GL.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT,
-	// indexBuffer);
-	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
-	// gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-	// // gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
-	// // gl.glDisable(GL2.GL_COLOR_MATERIAL);
-	//
-	// // glcanvas.swapBuffers();
-	//
-	// // FloatBuffer colorBuffer = BufferUtil.newFloatBuffer(colors.length);
-	// // colorBuffer.put(colors);
-	// // colorBuffer.rewind();
-	//
-	// // gl.glLineWidth(4);
-	// // gl.glColor3f(0, 1, 1);
-	// //
-	// // // gl.glGenBuffersARB(vertices.length, )
-	// // gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-	// //
-	// // // gl.glColorPointer(3, GL2.GL_FLOAT, 0, colorBuffer);
-	// // gl.glDrawElements(GL.GL_LINE_STRIP, indices.length,
-	// // GL2.GL_UNSIGNED_INT,
-	// // indexBuffer);
-	// // gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-	// // gl.glFlush();
-	//
-	// // int vertices[] = new int[] { 1, 1, 3, 2, 5, 1, 3, 5, 5, 1, 1,
-	// // 5 };
-	// // float colors[] = new float[] { 1.0f, 0.2f, 0.2f, 0.2f, 0.2f, 1.0f,
-	// // 0.8f, 1.0f,
-	// // 0.2f, 0.75f, 0.75f, 0.75f, 0.35f, 0.35f, 0.35f, 0.5f, 0.5f, 0.5f };
-	// // IntBuffer tmpVerticesBuf = BufferUtil.newIntBuffer(vertices.length);
-	// // FloatBuffer tmpColorsBuf = BufferUtil.newFloatBuffer(colors.length);
-	// // for (int i = 0; i < vertices.length; i++)
-	// // tmpVerticesBuf.put(vertices[i]);
-	// // for (int j = 0; j < colors.length; j++)
-	// // tmpColorsBuf.put(colors[j]);
-	// // tmpVerticesBuf.rewind();
-	// // tmpColorsBuf.rewind();
-	// // //
-	// // gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-	// // gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
-	// // //
-	// // gl.glVertexPointer(2, GL2.GL_INT, 0, tmpVerticesBuf);
-	// // gl.glColorPointer(3, GL2.GL_FLOAT, 0, tmpColorsBuf);
-	// // // this.verticesBuf = tmpVerticesBuf;
-	// // // this.colorsBuf = tmpColorsBuf;
-	// //
-	// // int indices[] = new int[] { 0, 1, 3, 4 };
-	// // IntBuffer indicesBuf = BufferUtil.newIntBuffer(indices.length);
-	// // for (int i = 0; i < indices.length; i++)
-	// // indicesBuf.put(indices[i]);
-	// // indicesBuf.rewind();
-	// // gl.glDrawElements(GL.GL_LINE_STRIP, 4, GL2.GL_UNSIGNED_INT,
-	// // indicesBuf);
-	// //
-	// // gl.glFlush();
-	// }
 
 	@Override
 	public int getMinPixelHeight(EDetailLevel detailLevel) {

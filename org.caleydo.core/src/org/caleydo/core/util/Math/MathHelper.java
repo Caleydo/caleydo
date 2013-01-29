@@ -14,24 +14,14 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.column;
-
-import org.caleydo.core.data.collection.column.container.GenericContainer;
+package org.caleydo.core.util.Math;
 
 /**
- *
- * Column for generic, unstructured data.
- *
  * @author Alexander Lex
+ *
  */
-
-public class GenericColumn<T> extends AColumn<GenericContainer<T>, T> {
-
-	/**
-	 * @param uniqueID
-	 */
-	public GenericColumn() {
+public class MathHelper {
+	public static double log(double value, double base) {
+		return Math.log(value) / Math.log(base);
 	}
-
-
 }

@@ -21,11 +21,9 @@ package org.caleydo.core.view.opengl.util.texture;
 
 import gleem.linalg.Vec3f;
 
-import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
@@ -118,81 +116,7 @@ public final class TextureManager {
 				color[0], color[1], color[2], color[3]);
 	}
 
-	/**
-	 * Renders a texture on a rectangle with the specified minimum size.
-	 *
-	 * @param gl
-	 *            GL2 Context.
-	 * @param eIconTextures
-	 *            Texture that should be rendered.
-	 * @param lowerLeftCorner
-	 *            Lower left corner of the texture.
-	 * @param lowerRightCorner
-	 *            Lower right corner of the texture.
-	 * @param upperRightCorner
-	 *            Upper right corner of the texture.
-	 * @param upperLeftCorner
-	 *            Upper left corner of the texture.
-	 * @param scalingPivot
-	 *            Pivot that is used when scaling the texture to the minimum size.
-	 * @param colorR
-	 *            Red portion of the color the Polygon should have where the texture is drawn on.
-	 * @param colorG
-	 *            Green portion of the color the Polygon should have where the texture is drawn on.
-	 * @param colorB
-	 *            Blue portion of the color the Polygon should have where the texture is drawn on.
-	 * @param alpha
-	 *            Alpha value the Polygon should have where the texture is drawn on.
-	 * @param minSize
-	 *            Minimum size the texture should have.
-	 */
-	public void renderGUITexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
-			Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, Vec3f scalingPivot, float colorR,
-			float colorG, float colorB, float alpha, int minSize) {
 
-		try {
-
-			Texture tempTexture = getIconTexture(eIconTextures.getFileName());
-			tempTexture.enable(gl);
-			tempTexture.bind(gl);
-
-			IntBuffer buffer = IntBuffer.allocate(4);
-			gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-			int currentWidth = buffer.get(2);
-
-			float referenceWidth = minSize * 10.0f;
-			float scaling = 1;
-
-			if (referenceWidth > currentWidth)
-				scaling = referenceWidth / currentWidth;
-
-			gl.glPushMatrix();
-			gl.glTranslatef(scalingPivot.x(), scalingPivot.y(), scalingPivot.z());
-			gl.glScalef(scaling, scaling, scaling);
-			gl.glTranslatef(-scalingPivot.x(), -scalingPivot.y(), -scalingPivot.z());
-
-			TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-			gl.glColor4f(colorR, colorG, colorB, alpha);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
-			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), lowerRightCorner.z());
-			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(upperRightCorner.x(), upperLeftCorner.y(), upperRightCorner.z());
-			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(upperLeftCorner.x(), upperLeftCorner.y(), upperLeftCorner.z());
-
-			gl.glEnd();
-
-			tempTexture.disable(gl);
-
-			gl.glPopMatrix();
-		} catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, this.toString(), "Unable to load texture " + eIconTextures));
-		}
-	}
 
 	/**
 	 * Convenience method for rendering textures on a rectangle.

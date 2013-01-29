@@ -134,7 +134,7 @@ public class FloatContainer implements INumericalContainer<Float> {
 		for (int index = 0; index < container.length; index++) {
 			tmp = container[index];
 
-			target[index] = (float) Math.log(tmp) / (float) Math.log(base);
+			target[index] = (float) (Math.log(tmp) / Math.log(base));
 
 			if (target[index] == Float.NEGATIVE_INFINITY) {
 				target[index] = 0;

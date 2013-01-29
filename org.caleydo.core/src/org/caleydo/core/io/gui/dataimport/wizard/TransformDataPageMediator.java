@@ -21,7 +21,7 @@ public class TransformDataPageMediator {
 	/**
 	 * Mode that specifies how the data is scaled.
 	 */
-	private String scalingMode = "None";
+	private String dataTransformation = "None";
 
 	private DataSetDescription dataSetDescription;
 
@@ -53,7 +53,7 @@ public class TransformDataPageMediator {
 			dataSetDescription.setNumericalProperties(numericalProperties);
 		}
 
-		String previousMathFiltermode = numericalProperties.getMathFilterMode();
+		String previousMathFiltermode = numericalProperties.getDataTransformation();
 		String[] scalingOptions = { "None", "Log10", "Log2" };
 		page.scalingCombo.setItems(scalingOptions);
 		page.scalingCombo.setEnabled(true);
@@ -67,7 +67,7 @@ public class TransformDataPageMediator {
 		else
 			page.scalingCombo.select(0);
 
-		scalingMode = page.scalingCombo.getText();
+		dataTransformation = page.scalingCombo.getText();
 
 		boolean maxDefined = numericalProperties.getMax() != null;
 		page.maxButton.setEnabled(true);
@@ -107,10 +107,10 @@ public class TransformDataPageMediator {
 	}
 
 	/**
-	 * Sets the {@link #scalingMode}.
+	 * Sets the {@link #dataTransformation}.
 	 */
 	public void scalingComboSelected() {
-		scalingMode = page.scalingCombo.getText();
+		dataTransformation = page.scalingCombo.getText();
 	}
 
 	/**
@@ -221,7 +221,7 @@ public class TransformDataPageMediator {
 					.getText()));
 		}
 
-		numericalProperties.setMathFilterMode(scalingMode);
+		numericalProperties.setDataTransformation(dataTransformation);
 		dataSetDescription.setTransposeMatrix(page.swapRowsWithColumnsButton
 				.getSelection());
 	}

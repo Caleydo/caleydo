@@ -84,7 +84,7 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 
 		mrnaData.setDataSourcePath(MRNA);
 		mrnaData.setNumberOfHeaderLines(1);
-		mrnaData.getNumericalProperties().setMathFilterMode("LOG2");
+		mrnaData.getNumericalProperties().setDataTransformation("LOG2");
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
@@ -117,7 +117,7 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 
 		mrnaData.setDataSourcePath(SEQUENCED_MRNA);
 		mrnaData.setNumberOfHeaderLines(1);
-		mrnaData.getNumericalProperties().setMathFilterMode("LOG2");
+		mrnaData.getNumericalProperties().setDataTransformation("LOG2");
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(5);

@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -61,10 +60,17 @@ import org.eclipse.core.runtime.Status;
  * <p>
  * A data table is created using the {@link TableUtils} implementation.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 public class Table {
+
+	public class Transformation {
+		/** Untransformed data */
+		public static final String NONE = "NONE";
+	}
+
+	private String defaultDataTransformation = Table.Transformation.NONE;
 
 	/** The data domain holding this table */
 	private ATableBasedDataDomain dataDomain;
@@ -92,7 +98,7 @@ public class Table {
 	 * Flag telling whether the columns correspond to dimensions (false) or whether the columns correspond to records
 	 * (true)
 	 */
-	private boolean isColumnDimension = false;
+	protected boolean isColumnDimension = false;
 
 	/** The number of columns in the table */
 	protected int nrColumns = 0;
@@ -165,13 +171,20 @@ public class Table {
 		return dataDomain;
 	}
 
+	/**
+	 * Returns the normalized value using the dataTransformation set in {@link #defaultDataTransformation}
+	 *
+	 * @param dimensionID
+	 * @param recordID
+	 * @return
+	 */
 	public Float getNormalizedValue(Integer dimensionID, Integer recordID) {
 		try {
 			if (isColumnDimension) {
-				return columns.get(dimensionID).getNormalizedValue(recordID);
+				return columns.get(dimensionID).getNormalizedValue(defaultDataTransformation, recordID);
 			} else {
 				AColumn<?, ?> column = columns.get(recordID);
-				return column.getNormalizedValue(dimensionID);
+				return column.getNormalizedValue(defaultDataTransformation, dimensionID);
 			}
 		} catch (NullPointerException npe) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(), "Data table does not contain a value for record: "
@@ -179,6 +192,27 @@ public class Table {
 			return null;
 		}
 
+	}
+
+	public Float getNormalizedValue(String dataTransformation, Integer dimensionID, Integer recordID) {
+		try {
+			int colID;
+			int rowID;
+			if (isColumnDimension) {
+				colID = dimensionID;
+				rowID = recordID;
+			} else {
+				rowID = dimensionID;
+				colID = recordID;
+			}
+
+			AColumn<?, ?> col = columns.get(colID);
+			return col.getNormalizedValue(dataTransformation, rowID);
+		} catch (NullPointerException npe) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Data table does not contain a value for record: "
+					+ recordID + " and dimension " + dimensionID, npe));
+			return null;
+		}
 	}
 
 	public String getRawAsString(Integer dimensionID, Integer recordID) {
@@ -191,15 +225,15 @@ public class Table {
 		return columns.get(columnID).getRawAsString(rowID);
 	}
 
-	public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID,
-			Integer recordID) {
-		Integer columnID = dimensionID;
-
-		if (!isColumnDimension)
-			columnID = recordID;
-
-		return columns.get(columnID).containsDataRepresentation(dataRepresentation);
-	}
+	// public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID,
+	// Integer recordID) {
+	// Integer columnID = dimensionID;
+	//
+	// if (!isColumnDimension)
+	// columnID = recordID;
+	//
+	// return columns.get(columnID).containsDataRepresentation(dataRepresentation);
+	// }
 
 	public EDataType getRawDataType(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
@@ -542,5 +576,20 @@ public class Table {
 
 		return columns.get(columnID).getDataClassSpecificDescription();
 
+	}
+
+	/**
+	 * @param defaultDataTransformation
+	 *            setter, see {@link defaultDataTransformation}
+	 */
+	public void setDefaultDataTransformation(String defaultDataTransformation) {
+		this.defaultDataTransformation = defaultDataTransformation;
+	}
+
+	/**
+	 * @return the defaultDataTransformation, see {@link #defaultDataTransformation}
+	 */
+	public String getDefaultDataTransformation() {
+		return defaultDataTransformation;
 	}
 }

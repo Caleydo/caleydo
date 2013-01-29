@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
@@ -69,10 +66,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public abstract class ATableBasedView extends AGLView implements
-		ISingleTablePerspectiveBasedView, ISelectionHandler,
-		IRecordVAUpdateHandler, IDimensionVAUpdateHandler,
-		IViewCommandHandler {
+public abstract class ATableBasedView extends AGLView implements ISingleTablePerspectiveBasedView, ISelectionHandler,
+		IRecordVAUpdateHandler, IDimensionVAUpdateHandler, IViewCommandHandler {
 
 	protected ATableBasedDataDomain dataDomain;
 
@@ -107,15 +102,17 @@ public abstract class ATableBasedView extends AGLView implements
 	protected RecordVAUpdateListener recordVAUpdateListener;
 	protected DimensionVAUpdateListener dimensionVAUpdateListener;
 
-
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
 	/**
-	 * Flag that tells the view whether visual linking is used for it's element
-	 * so it must create {@link ElementConnectionInformation}
+	 * Flag that tells the view whether visual linking is used for it's element so it must create
+	 * {@link ElementConnectionInformation}
 	 */
 	private boolean isVisualLinkingActive = false;
+
+	/** The transformation used for rendering. Initialized with the default transformation of the table. */
+	protected String dataTransformation;
 
 	/**
 	 * Constructor for dimension based views
@@ -128,8 +125,8 @@ public abstract class ATableBasedView extends AGLView implements
 	 *            TODO
 	 * @param label
 	 */
-	protected ATableBasedView(IGLCanvas glCanvas, Composite parentComposite,
-			final ViewFrustum viewFrustum, String viewType, String viewName) {
+	protected ATableBasedView(IGLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum,
+			String viewType, String viewName) {
 		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
 
 		connectedElementRepresentationManager = generalManager.getViewManager()
@@ -142,6 +139,7 @@ public abstract class ATableBasedView extends AGLView implements
 		if (this.dataDomain == dataDomain)
 			return;
 
+		dataTransformation = dataDomain.getTable().getDefaultDataTransformation();
 		this.dataDomain = dataDomain;
 
 		setDisplayListDirty();
@@ -190,8 +188,7 @@ public abstract class ATableBasedView extends AGLView implements
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
 		if (serialzedView instanceof ASerializedSingleTablePerspectiveBasedView) {
 			ASerializedSingleTablePerspectiveBasedView topSerializedView = (ASerializedSingleTablePerspectiveBasedView) serialzedView;
-			tablePerspective = dataDomain.getTablePerspective(topSerializedView
-					.getTablePerspectiveKey());
+			tablePerspective = dataDomain.getTablePerspective(topSerializedView.getTablePerspectiveKey());
 		}
 	}
 
@@ -204,29 +201,26 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	/**
-	 * Create {@link ElementConnectionInformation}, which basically describes
-	 * anchor points for visual links for the element specified through the id
+	 * Create {@link ElementConnectionInformation}, which basically describes anchor points for visual links for the
+	 * element specified through the id
 	 *
 	 * @param iDType
 	 *            the type of the id - for possible conversion
 	 * @param the
 	 *            id of the element
 	 * @throws InvalidAttributeValueException
-	 *             when the selectionDelta does not contain a valid type for
-	 *             this view
+	 *             when the selectionDelta does not contain a valid type for this view
 	 */
-	protected abstract ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException;
+	protected abstract ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
+			throws InvalidAttributeValueException;
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 
-		if (selectionDelta.getIDType().getIDCategory()
-				.equals(recordIDType.getIDCategory())) {
+		if (selectionDelta.getIDType().getIDCategory().equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
 			if (selectionDelta.getIDType() != recordIDType) {
-				selectionDelta = DeltaConverter.convertDelta(
-						dataDomain.getRecordIDMappingManager(), recordIDType,
+				selectionDelta = DeltaConverter.convertDelta(dataDomain.getRecordIDMappingManager(), recordIDType,
 						selectionDelta);
 			}
 
@@ -248,8 +242,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (tablePerspective != null
-				&& tablePerspective.hasRecordPerspective(recordPerspectiveID)) {
+		if (tablePerspective != null && tablePerspective.hasRecordPerspective(recordPerspectiveID)) {
 
 			reactOnRecordVAChanges();
 			// reactOnExternalSelection();
@@ -265,16 +258,14 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	/**
-	 * Is called any time a update is triggered externally. Should be
-	 * implemented by inheriting views.
+	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
 	protected void reactOnExternalSelection(SelectionDelta selectionDelta) {
 
 	}
 
 	/**
-	 * Is called any time a virtual array is changed. Can be implemented by
-	 * inheriting views if some action is necessary
+	 * Is called any time a virtual array is changed. Can be implemented by inheriting views if some action is necessary
 	 *
 	 * @param delta
 	 */
@@ -287,10 +278,8 @@ public abstract class ATableBasedView extends AGLView implements
 		setDisplayListDirty();
 	}
 
-
 	@Override
-	public void handleSelectionCommand(IDCategory idCategory,
-			SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
 		if (idCategory == dataDomain.getRecordIDCategory())
 			recordSelectionManager.executeSelectionCommand(selectionCommand);
 		else if (idCategory == dataDomain.getDimensionIDCategory())
@@ -301,8 +290,7 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	/**
-	 * Handles the creation of {@link ElementConnectionInformation} according to
-	 * the data in a selectionDelta
+	 * Handles the creation of {@link ElementConnectionInformation} according to the data in a selectionDelta
 	 *
 	 * @param selectionDelta
 	 *            the selection data that should be handled
@@ -315,39 +303,32 @@ public abstract class ATableBasedView extends AGLView implements
 
 			if (selectionDelta.size() > 0) {
 				for (SelectionDeltaItem item : selectionDelta) {
-					if (!connectedElementRepresentationManager
-							.isSelectionTypeRenderedWithVisuaLinks(item
-									.getSelectionType())
-							|| item.isRemove())
+					if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(item
+							.getSelectionType()) || item.isRemove())
 						continue;
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
 						if (tablePerspective == null) {
-							Logger.log(new Status(IStatus.ERROR, this.toString(),
-									"tablePerspective was null"));
+							Logger.log(new Status(IStatus.ERROR, this.toString(), "tablePerspective was null"));
 							return;
 						}
-						if (!tablePerspective.getRecordPerspective().getVirtualArray()
-								.contains(id))
+						if (!tablePerspective.getRecordPerspective().getVirtualArray().contains(id))
 							return;
 
 					} else if (selectionDelta.getIDType() == dimensionIDType) {
 						id = item.getID();
 						idType = dimensionIDType;
-						if (!tablePerspective.getDimensionPerspective().getVirtualArray()
-								.contains(id))
+						if (!tablePerspective.getDimensionPerspective().getVirtualArray().contains(id))
 							return;
 					} else
-						throw new InvalidAttributeValueException(
-								"Can not handle data type: " + selectionDelta.getIDType());
+						throw new InvalidAttributeValueException("Can not handle data type: "
+								+ selectionDelta.getIDType());
 
 					if (id == -1)
-						throw new IllegalArgumentException(
-								"No internal ID in selection delta");
+						throw new IllegalArgumentException("No internal ID in selection delta");
 
-					ArrayList<ElementConnectionInformation> alRep = createElementConnectionInformation(
-							idType, id);
+					ArrayList<ElementConnectionInformation> alRep = createElementConnectionInformation(idType, id);
 					if (alRep == null) {
 						continue;
 					}
@@ -357,8 +338,8 @@ public abstract class ATableBasedView extends AGLView implements
 						}
 
 						for (Integer iConnectionID : item.getConnectionIDs()) {
-							connectedElementRepresentationManager.addSelection(
-									iConnectionID, rep, item.getSelectionType());
+							connectedElementRepresentationManager.addSelection(iConnectionID, rep,
+									item.getSelectionType());
 						}
 					}
 				}
@@ -382,8 +363,7 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	/**
-	 * Set the number of samples which are shown in the view. The distribution
-	 * is purely random
+	 * Set the number of samples which are shown in the view. The distribution is purely random
 	 *
 	 * @param numberOfRandomElements
 	 *            the number
@@ -414,8 +394,7 @@ public abstract class ATableBasedView extends AGLView implements
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
 		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(DimensionVAUpdateEvent.class,
-				dimensionVAUpdateListener);
+		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -426,8 +405,6 @@ public abstract class ATableBasedView extends AGLView implements
 		redrawViewListener.setHandler(this);
 		redrawViewListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
-
-
 
 	}
 
@@ -449,7 +426,6 @@ public abstract class ATableBasedView extends AGLView implements
 			redrawViewListener = null;
 		}
 
-
 		if (recordVAUpdateListener != null) {
 			eventPublisher.removeListener(recordVAUpdateListener);
 			recordVAUpdateListener = null;
@@ -460,14 +436,12 @@ public abstract class ATableBasedView extends AGLView implements
 			dimensionVAUpdateListener = null;
 		}
 
-
 	}
 
 	@Override
 	public boolean isDataView() {
 		return true;
 	}
-
 
 	public SelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;
@@ -485,23 +459,20 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	/**
-	 * Calculates how many pixels are required per element for a given detail
-	 * level.
+	 * Calculates how many pixels are required per element for a given detail level.
 	 *
 	 * @param forRecord
-	 *            flag telling whether this is for the records (true) or for
-	 *            dimensions (false)
+	 *            flag telling whether this is for the records (true) or for dimensions (false)
 	 * @param detailLevel
 	 *            the detail level for which this should be calcualted
 	 * @param pixelPerElementMedium
-	 *            the number of pixels this view requires in medium mode for a
-	 *            single element
+	 *            the number of pixels this view requires in medium mode for a single element
 	 * @param pixelPerElementHigh
 	 *            same as previous for high mode
 	 * @return the number of pixels for the detail level
 	 */
-	protected int getPixelPerElement(boolean forRecord, EDetailLevel detailLevel,
-			int pixelPerElementMedium, int pixelPerElementHigh) {
+	protected int getPixelPerElement(boolean forRecord, EDetailLevel detailLevel, int pixelPerElementMedium,
+			int pixelPerElementHigh) {
 		int pixelPerElement = 0;
 		switch (detailLevel) {
 		case HIGH:
@@ -527,6 +498,21 @@ public abstract class ATableBasedView extends AGLView implements
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
 		return DataSupportDefinitions.all;
+	}
+
+	/**
+	 * @param dataTransformation
+	 *            setter, see {@link dataTransformation}
+	 */
+	public void setDataTransformation(String dataTransformation) {
+		this.dataTransformation = dataTransformation;
+	}
+
+	/**
+	 * @return the dataTransformation, see {@link #dataTransformation}
+	 */
+	public String getDataTransformation() {
+		return dataTransformation;
 	}
 
 }

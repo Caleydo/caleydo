@@ -16,7 +16,6 @@
  *******************************************************************************/
 package org.caleydo.core.io;
 
-import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.table.Table;
 
 /**
@@ -65,7 +64,7 @@ public class NumericalProperties {
 	 * Determines whether and if so which transformation should be applied to the data (e.g. log2 transformation). This
 	 * is mapped to values of {@link EDataTransformation}.
 	 */
-	private String mathFilterMode = "None";
+	private String dataTransformation = "None";
 
 	/**
 	 *
@@ -119,18 +118,18 @@ public class NumericalProperties {
 	}
 
 	/**
-	 * @return the mathFilterMode, see {@link #mathFilterMode}
+	 * @return the dataTransformation, see {@link #dataTransformation}
 	 */
-	public String getMathFilterMode() {
-		return mathFilterMode;
+	public String getDataTransformation() {
+		return dataTransformation;
 	}
 
 	/**
-	 * @param mathFilterMode
-	 *            setter, see {@link #mathFilterMode}
+	 * @param dataTransformation
+	 *            setter, see {@link #dataTransformation}
 	 */
-	public void setMathFilterMode(String mathFilterMode) {
-		this.mathFilterMode = mathFilterMode;
+	public void setDataTransformation(String mathFilterMode) {
+		this.dataTransformation = mathFilterMode;
 	}
 
 }

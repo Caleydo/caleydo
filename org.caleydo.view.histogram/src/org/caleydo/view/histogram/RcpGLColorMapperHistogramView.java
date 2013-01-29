@@ -142,8 +142,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 			float normalizedValue = markerPoints.get(count - 1).getMappingValue();
 
 			if (dataDomain.getTable() instanceof NumericalTable) {
-				double correspondingValue = ((NumericalTable) dataDomain.getTable())
-						.getRawForNormalized(normalizedValue);
+				double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain
+						.getTable().getDefaultDataTransformation(), normalizedValue);
 
 				if (labels != null)
 					labels.get(count - 1).setText(Formatter.formatNumber(correspondingValue));
@@ -163,7 +163,6 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
 		colorMappingPreview.update();
 	}
-
 
 	@Override
 	public void registerEventListeners() {

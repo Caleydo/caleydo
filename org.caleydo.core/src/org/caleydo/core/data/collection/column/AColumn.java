@@ -42,19 +42,20 @@ import org.caleydo.core.data.collection.table.Table;
 
 public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawType> {
 
+	private String defaultDataTransformation = Table.Transformation.NONE;
+
 	/** The id of this column, corresponds to the index of the column in the table */
 	private int id;
 
 	protected RawContainerType rawContainer;
-	protected FloatContainer normalizedContainer;
 
-	protected HashMap<String, IContainer<?>> dataRepToContainerMap;
+	protected HashMap<String, FloatContainer> dataRepToContainerMap;
 
 	/**
 	 * Constructor Initializes objects
 	 */
 	public AColumn() {
-		dataRepToContainerMap = new HashMap<String, IContainer<?>>();
+		dataRepToContainerMap = new HashMap<>();
 	}
 
 	/**
@@ -93,19 +94,21 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 		this.rawContainer = rawContainer;
 	}
 
-	public boolean containsDataRepresentation(DataRepresentation dataRepresentation) {
-		return dataRepToContainerMap.containsKey(dataRepresentation);
-	}
+	// public boolean containsDataRepresentation(DataRepresentation dataRepresentation) {
+	// return dataRepToContainerMap.containsKey(dataRepresentation);
+	// }
 
 	/**
 	 * Returns the normalized float value from the index in this column.
 	 *
+	 * @param dataTransformation
+	 *            the transformation that should be used
 	 * @param index
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public float getNormalizedValue(int index) {
-		return normalizedContainer.getPrimitive(index);
+	public float getNormalizedValue(String dataTransformation, int index) {
+		return dataRepToContainerMap.get(dataTransformation).getPrimitive(index);
 	}
 
 	public RawType getRaw(int index) {
@@ -136,7 +139,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 * this is used (only applies to numerical data). For nominal data the first value is 0, the last value is 1
 	 */
 	public void normalize() {
-		normalizedContainer = rawContainer.normalize();
+		dataRepToContainerMap.put(Table.Transformation.NONE, rawContainer.normalize());
 	}
 
 	public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription() {

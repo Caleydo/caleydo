@@ -83,7 +83,7 @@ public class HCCConfigurationGenerator extends DataSetDescriptionSerializer {
 
 		mrnaData.setDataSourcePath(MRNA);
 		mrnaData.setNumberOfHeaderLines(1);
-		mrnaData.getNumericalProperties().setMathFilterMode("LOG2");
+		mrnaData.getNumericalProperties().setDataTransformation("LOG2");
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);

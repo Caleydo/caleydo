@@ -131,25 +131,24 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	@Override
 	public void initData() {
 		super.initData();
-		if (tablePerspective != null && histogram == null)
-		{
-			if(tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
+		if (tablePerspective != null && histogram == null) {
+			if (tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
 				histogram = tablePerspective.getContainerStatistics().getHistogram();
 			}
-//				// FIXME Bad hack
-//				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-//					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-//							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-//							.getVirtualArray(), 5);
-//				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-//					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-//							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-//							.getVirtualArray(), 2);
-//				} else {
-//
-//				}
-//			}
-//			}
+			// // FIXME Bad hack
+			// if (dataDomain.getLabel().toLowerCase().contains("copy")) {
+			// histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+			// .getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+			// .getVirtualArray(), 5);
+			// } else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
+			// histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+			// .getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+			// .getVirtualArray(), 2);
+			// } else {
+			//
+			// }
+			// }
+			// }
 		}
 
 	}
@@ -431,7 +430,8 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		if (detailLevel != EDetailLevel.HIGH || !(dataDomain.getTable() instanceof NumericalTable))
 			return;
 
-		double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(normalizedValue);
+		double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(dataDomain.getTable()
+				.getDefaultDataTransformation(), normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);
 		textRenderer.renderTextInBounds(gl, text, sideSpacing + normalizedValue * fRenderWidth

@@ -16,7 +16,7 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import org.caleydo.core.data.collection.EDataTransformation;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.DataSetDescription;
@@ -70,8 +70,7 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 			DataSetDescription dataSetDescription = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 			dataSetDescription.setDataSourcePath(REAL_DATA_SAMPLE_FILE);
 
-			dataSetDescription.getNumericalProperties().setMathFilterMode(
-					EDataTransformation.LOG2.getHumanReadableRep());
+			dataSetDescription.getNumericalProperties().setDataTransformation(NumericalTable.Transformation.LOG2);
 			dataImportWizard = new DataImportWizard(dataSetDescription);
 		} else {
 			dataImportWizard = new DataImportWizard();

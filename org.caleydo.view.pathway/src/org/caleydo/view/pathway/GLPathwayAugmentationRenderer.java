@@ -24,7 +24,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -74,7 +74,7 @@ public class GLPathwayAugmentationRenderer {
 
 	private PathwayItemManager pathwayItemManager;
 
-	private String dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+	private String dataTransformation = Table.Transformation.NONE;
 
 	/**
 	 * The virtual array containing the samples that are currently mapped onto the nodes

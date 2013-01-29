@@ -372,7 +372,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	 * @param tablePerspectiveID
 	 */
 	@ListenTo
-	void onStratomexRemoveBrick(RemoveTablePerspectiveEvent event) {
+	private void onStratomexRemoveBrick(RemoveTablePerspectiveEvent event) {
 		if (!stratomex.is(event.getReceiver()))
 			return;
 		stratomex.removeBrick(event.getTablePerspectiveID());
@@ -398,10 +398,6 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			return;
 		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
 	}
-
-
-
-
 
 
 	public ScoreQuery getScoreQuery() {

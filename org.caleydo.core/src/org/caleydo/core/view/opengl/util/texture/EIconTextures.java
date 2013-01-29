@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.util.texture;
 
+@Deprecated
 public enum EIconTextures {
 
 	NO_ICON_AVAILABLE("resources/icons/general/no_icon_available.png"),

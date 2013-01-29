@@ -16,21 +16,16 @@
  *******************************************************************************/
 package org.caleydo.view.parcoords;
 
-import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
-import static org.caleydo.view.parcoords.PCRenderStyle.GATE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_Z;
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 /**
  * Represents a gate for {@link GLParallelCoordinates}.
@@ -38,18 +33,35 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class Gate extends AGate {
+public class Gate {
 
-	private float upperValue;
-	private float lowerValue;
+	protected int axisID;
+	protected int gateID;
+	protected float xPosition;
 
-	/** Table holding numerical data, shadowing {@link AGate#table} */
-	@SuppressWarnings("hiding")
-	private NumericalTable table;
+	protected Table table;
+	protected float mouseTopSpacing;
+	protected float mouseBottomSpacing;
+
+	/** the upper value of the gate in normalized (0-1) range */
+	protected float upperBound;
+	/** the lower value of the gate in normalized (0-1) range */
+	protected float lowerBound;
+
+	// /** Table holding numerical data, shadowing {@link AGate#table} */
+	// @SuppressWarnings("hiding")
+	// private NumericalTable table;
 	/**
 	 * Flag determining whether this gate is a master gate or not, defaults to false
 	 */
 	private boolean isMasterGate = false;
+
+	/** The data transformation used by the PCs */
+	private String dataTransformation;
+
+	private PixelGLConverter pixelGLConverter;
+
+	private GLParallelCoordinates pcs;
 
 	/**
 	 * Constructor.
@@ -65,23 +77,25 @@ public class Gate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public Gate(int gateID, int axisID, float lowerValue, float upperValue, Table table, PCRenderStyle renderStyle) {
+	public Gate(GLParallelCoordinates pcs, int gateID, int axisID, float lowerBound, float upperBound) {
+		this.pcs = pcs;
 		this.gateID = gateID;
 		this.axisID = axisID;
-		this.upperValue = upperValue;
-		this.lowerValue = lowerValue;
-		this.table = (NumericalTable) table;
-		super.table = table;
-		this.renderStyle = renderStyle;
-		// top = upperValue;
-		// bottom = lowerValue;
-		top = (float) this.table.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-		bottom = (float) this.table.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
-		minSize = 100;
+		this.upperBound = upperBound;
+		this.lowerBound = lowerBound;
+		pixelGLConverter = pcs.getPixelGLConverter();
+		table = pcs.getDataDomain().getTable();
+		dataTransformation = pcs.getDataTransformation();
+
+		// this.table = table;
+		// this.renderStyle = renderStyle;
+		// this.dataTransformation = dataTransformation;
+		// this.pixelGLConverter = pixelGLConverter;
+
 	}
 
 	/**
-	 * Draws the gate using the upper and lower cutoff values to calculate the top and bottom of the gate.
+	 * Draws the gate using the upper and lower cutoff values to calculate the upperBound and lowerBound of the gate.
 	 *
 	 * @param gl
 	 *            GL2 context.
@@ -94,58 +108,71 @@ public class Gate extends AGate {
 	 * @param viewID
 	 *            Unique ID of the view.
 	 */
-	@Override
-	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
-			CaleydoTextRenderer textRenderer, int viewID) {
+	public void draw(GL2 gl) {
 
-		top = (float) table.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-		// top = upperValue;
+		float top = upperBound * pcs.renderStyle.getAxisHeight();
+		// upperBound = upperValue;
 
-		// Scaled bottom = unscaled bottom !
-		bottom = (float) table.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
-		// bottom = upperValue;
-		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top, bottom);
+		// Scaled lowerBound = unscaled lowerBound !
+		float bottom = lowerBound * pcs.renderStyle.getAxisHeight();
+		// lowerBound = upperValue;
 
-		Vec3f scalingPivot = new Vec3f(currentPosition, bottom, GATE_Z);
+		// gate body texture has width 18, use half
+		float width = pixelGLConverter.getGLWidthForPixelWidth(9);
 
-		beginGUIElement(gl, scalingPivot);
+		// gate top texture is 32x14
+		float gateTopWidth = pixelGLConverter.getGLWidthForPixelWidth(32);
+		float gateTopHeight = pixelGLConverter.getGLHeightForPixelHeight(14);
 
 		gl.glColor4f(1, 1, 1, 0f);
-		int PickingID = pickingManager.getPickingID(viewID, EPickingType.REMOVE_GATE.name(), gateID);
+		int PickingID = pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.REMOVE_GATE.name(), gateID);
 		gl.glPushName(PickingID);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glVertex3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glVertex3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop, GATE_Z);
-		gl.glVertex3f(currentPosition + GATE_WIDTH, unscaledTop, GATE_Z);
+		gl.glVertex3f(xPosition + width, top - gateTopHeight, GATE_Z);
+		gl.glVertex3f(xPosition - width, top - gateTopHeight, GATE_Z);
+		gl.glVertex3f(xPosition - width, top, GATE_Z);
+		gl.glVertex3f(xPosition + width, top, GATE_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		// The tip of the gate
-		Vec3f lowerLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
-		Vec3f lowerRightCorner = new Vec3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT,
-				GATE_Z);
-		Vec3f upperRightCorner = new Vec3f(currentPosition + 0.1828f - GATE_WIDTH, unscaledTop, GATE_Z);
-		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop, GATE_Z);
+		Vec3f lowerLeftCorner = new Vec3f(xPosition - width, top - gateTopHeight, GATE_Z);
+		Vec3f lowerRightCorner = new Vec3f(xPosition + gateTopWidth - width, top - gateTopHeight, GATE_Z);
+		Vec3f upperRightCorner = new Vec3f(xPosition + gateTopWidth - width, top, GATE_Z);
+		Vec3f upperLeftCorner = new Vec3f(xPosition - width, top, GATE_Z);
 
-		gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.GATE_TIP_SELECTION.name(), gateID));
+		gl.glPushName(pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.GATE_TIP_SELECTION.name(), gateID));
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
-		float menuHeight = 8 * GATE_WIDTH / 3.5f;
+		// gate_menu texture is 77x22
+		float menuWidth = pixelGLConverter.getGLWidthForPixelWidth(77);
+		float menuHeight = pixelGLConverter.getGLHeightForPixelHeight(22);
 
-		lowerLeftCorner.set(currentPosition - 7 * GATE_WIDTH, unscaledTop + menuHeight, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop + menuHeight, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop, GATE_Z);
-		upperLeftCorner.set(currentPosition - 7 * GATE_WIDTH, unscaledTop, GATE_Z);
+		lowerLeftCorner.set(xPosition - menuWidth + width, top + menuHeight, GATE_Z);
+		lowerRightCorner.set(xPosition, top + menuHeight, GATE_Z);
+		upperRightCorner.set(xPosition, top, GATE_Z);
+		upperLeftCorner.set(xPosition - menuWidth + width, top, GATE_Z);
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
-		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer, Formatter.formatNumber(upperValue), currentPosition - 5 * GATE_WIDTH,
-				unscaledTop + 0.02f);
+		pcs.getTextRenderer().setColor(1, 1, 1, 1);
+
+		float textWidth = pixelGLConverter.getGLWidthForPixelWidth(40);
+		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(12);
+		float textBottomSpacing = pixelGLConverter.getGLHeightForPixelHeight(6);
+
+		if (table instanceof NumericalTable) {
+
+			String caption = Formatter.formatNumber(((NumericalTable) table).getRawForNormalized(dataTransformation,
+					upperBound));
+			pcs.getTextRenderer().renderTextInBounds(gl, caption, xPosition - menuWidth + 3 * width,
+					top + textBottomSpacing,
+					PCRenderStyle.TEXT_ON_LABEL_Z, textWidth, textHeight);
+
+		}
 		gl.glPopName();
 
 		// if (table.isSetHomogeneous())
@@ -160,66 +187,52 @@ public class Gate extends AGate {
 		// // TODO dimension based acces
 		// }
 
-		gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.GATE_BODY_SELECTION.name(), gateID));
+		gl.glPushName(pcs.getPickingManager()
+				.getPickingID(pcs.getID(), EPickingType.GATE_BODY_SELECTION.name(), gateID));
 
-		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom + PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom + PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
-		upperLeftCorner.set(currentPosition - GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
+		// gate bottom texture is as wide as gate body and 3 px high
+		float gateBottomHeight = pixelGLConverter.getGLHeightForPixelHeight(3);
 
-		textureManager.renderTexture(gl, EIconTextures.GATE_BODY, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		lowerLeftCorner.set(xPosition - width, bottom + gateBottomHeight, GATE_Z);
+		lowerRightCorner.set(xPosition + width, bottom + gateBottomHeight, GATE_Z);
+		upperRightCorner.set(xPosition + width, top - gateTopHeight, GATE_Z);
+		upperLeftCorner.set(xPosition - width, top - gateTopHeight, GATE_Z);
 
-		gl.glPopName();
-
-		gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.GATE_BOTTOM_SELECTION.name(), gateID));
-
-		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom + PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		upperLeftCorner.set(currentPosition - GATE_WIDTH, bottom + PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-
-		textureManager.renderTexture(gl, EIconTextures.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
+		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_BODY, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
-		lowerLeftCorner.set(currentPosition - 7 * GATE_WIDTH, bottom - menuHeight, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom - menuHeight, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);
-		upperLeftCorner.set(currentPosition - 7 * GATE_WIDTH, bottom, GATE_Z);
-
-		textureManager.renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
-
-		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer, Formatter.formatNumber(lowerValue), currentPosition - 5 * GATE_WIDTH, bottom
-				- menuHeight + 0.02f);
 		gl.glPopName();
 
-		endGUIElement(gl);
+		gl.glPushName(pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.GATE_BOTTOM_SELECTION.name(),
+				gateID));
 
-	}
+		lowerLeftCorner.set(xPosition - width, bottom, GATE_Z);
+		lowerRightCorner.set(xPosition + width, bottom, GATE_Z);
+		upperRightCorner.set(xPosition + width, bottom + gateBottomHeight, GATE_Z);
+		upperLeftCorner.set(xPosition - width, bottom + gateBottomHeight, GATE_Z);
 
-	/**
-	 * Renders a specified number.
-	 *
-	 * @param textRenderer
-	 *            TextRenderer that shall be used.
-	 * @param rawValue
-	 *            Number to render.
-	 * @param xOrigin
-	 *            X coordinate of the position where the number shall be rendered.
-	 * @param yOrigin
-	 *            Y coordinate of the position where the number shall be rendered.
-	 */
-	private void renderNumber(CaleydoTextRenderer textRenderer, String rawValue, float xOrigin, float yOrigin) {
+		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
-		textRenderer.begin3DRendering();
+		lowerLeftCorner.set(xPosition - menuWidth + width, bottom - menuHeight, GATE_Z);
+		lowerRightCorner.set(xPosition + width, bottom - menuHeight, GATE_Z);
+		upperRightCorner.set(xPosition + width, bottom, GATE_Z);
+		upperLeftCorner.set(xPosition - menuWidth + width, bottom, GATE_Z);
 
-		float scaling = 0.0035f;
-		if (rawValue.length() > 4)
-			scaling = 0.003f;
-		textRenderer.draw3D(rawValue, xOrigin, yOrigin, PCRenderStyle.TEXT_ON_LABEL_Z, scaling);
-		textRenderer.end3DRendering();
+		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+
+		if (table instanceof NumericalTable) {
+
+			String caption = Formatter.formatNumber(((NumericalTable) table).getRawForNormalized(dataTransformation,
+					lowerBound));
+			pcs.getTextRenderer().renderTextInBounds(gl, caption,xPosition - menuWidth + 3 * width,
+					bottom - menuHeight + textBottomSpacing,
+					PCRenderStyle.TEXT_ON_LABEL_Z, textWidth, textHeight);
+
+		}
+		gl.glPopName();
+
 	}
 
 	public int getGateID() {
@@ -242,119 +255,133 @@ public class Gate extends AGate {
 	}
 
 	/**
-	 * True if this gate is a master gate, else false
-	 *
-	 * @return
-	 */
-	@Override
-	public boolean isMasterGate() {
-		return isMasterGate;
-	}
-
-	/**
 	 * @return The current position (x coordinate) of the gate.
 	 */
 	public float getCurrentPosition() {
-		return currentPosition;
+		return xPosition;
 	}
 
 	/**
-	 * Sets the current position (x coordinate) of the gate.
+	 * Sets the upperBound of the gate.
 	 *
-	 * @param currentPosition
-	 *            Position of the gate.
+	 * @param upperBound
+	 *            Value the upperBound of the gate shall be set to.
 	 */
-	@Override
-	public void setCurrentPosition(float currentPosition) {
-		this.currentPosition = currentPosition;
-	}
 
-	/**
-	 * Sets the bottom of the gate.
-	 *
-	 * @param bottom
-	 *            Value the bottom of the gate shall be set to.
-	 */
-	@Override
-	public void setBottom(float bottom) {
-		this.bottom = bottom;
-		lowerValue = (float) table.getRawForNormalized(bottom / renderStyle.getAxisHeight());
-
-		double setMin = table.getMinAs(EDataTransformation.NONE);
-
-		if (lowerValue < setMin) {
-			lowerValue = (float) setMin;
-		}
-	}
-
-	/**
-	 * Sets the top of the gate.
-	 *
-	 * @param top
-	 *            Value the top of the gate shall be set to.
-	 */
-	@Override
-	public void setTop(float top) {
-		this.top = top;
-		upperValue = (float) table.getRawForNormalized(top / renderStyle.getAxisHeight());
-
-		double setMax = table.getMaxAs(EDataTransformation.NONE);
-
-		if (upperValue > setMax) {
-			upperValue = (float) setMax;
-		}
-	}
-
-	/**
-	 * Sets the upper cutoff value of the gate.
-	 *
-	 * @param upperValue
-	 *            Value the upper cutoff value shall be set to.
-	 */
-	public void setUpperValue(float upperValue) {
-		this.upperValue = upperValue;
-		top = (float) table.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-	}
-
-	/**
-	 * @return Upper cutoff value of the gate.
-	 */
-	@Override
-	public float getUpperValue() {
-		return upperValue;
-	}
-
-	/**
-	 * Sets the lower cutoff value of the gate.
-	 *
-	 * @param lowerValue
-	 *            Value the lower cutoff value shall be set to.
-	 */
-	public void setLowerValue(float lowerValue) {
-		this.lowerValue = lowerValue;
-		bottom = (float) table.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
-	}
-
-	/**
-	 * @return Lower cutoff value of the gate.
-	 */
-	@Override
-	public float getLowerValue() {
-		return lowerValue;
+	public void setUpperBound(float upperBound) {
+		this.upperBound = upperBound;
 	}
 
 	/**
 	 * @return Top of the gate.
 	 */
-	public float getTop() {
-		return top;
+	public float getUpperBound() {
+		return upperBound;
+	}
+
+	/**
+	 * @param lowerBound
+	 *            setter, see {@link lowerBound}
+	 */
+	public void setLowerBound(float lowerBound) {
+		this.lowerBound = lowerBound;
 	}
 
 	/**
 	 * @return Bottom of the gate.
 	 */
-	public float getBottom() {
-		return bottom;
+	public float getLowerBound() {
+		return lowerBound;
+	}
+
+	/**
+	 * Returns the ID of the associated axis
+	 */
+	public int getAxisID() {
+		return axisID;
+	}
+
+	/**
+	 * Handles the dragging of the current gate.
+	 *
+	 * @param gl
+	 *            GL2 context.
+	 * @param mousePositionX
+	 *            X coordinate of the mouse position.
+	 * @param mousePositionY
+	 *            Y coordinate of the mouse position.
+	 * @param draggedObject
+	 *            Specifies the part of the gate that has been dragged.
+	 * @param isGateDraggingFirstTime
+	 *            Specifies whether the gate is dragged the first time or not.
+	 */
+	public void handleDragging(GL2 gl, float mousePositionX, float mousePositionY, EPickingType draggedObject,
+			boolean isGateDraggingFirstTime) {
+
+		float bottomSpacing = pcs.fYTranslation;
+		float bound = (mousePositionY - bottomSpacing) / pcs.renderStyle.getAxisHeight();
+
+		if (isGateDraggingFirstTime) {
+			mouseTopSpacing = upperBound - bound;
+			mouseBottomSpacing = bound - lowerBound;
+			isGateDraggingFirstTime = false;
+		}
+
+
+		float tipUpperLimit = 1;
+		float tipLowerLimit = 0.01f;
+		float bottomLowerLimit = 0;
+		float bottomUpperLimit = 0.99f;
+
+		switch (draggedObject) {
+
+		case GATE_TIP_SELECTION:
+			setUpperBound(bound);
+			break;
+
+		case GATE_BOTTOM_SELECTION:
+			setLowerBound(bound);
+			break;
+
+		case GATE_BODY_SELECTION:
+			setLowerBound(bound - mouseBottomSpacing);
+			setUpperBound(bound + mouseTopSpacing);
+
+			break;
+
+		default:
+			return;
+		}
+
+		if (upperBound > tipUpperLimit) {
+			setUpperBound(tipUpperLimit);
+		}
+		if (upperBound < tipLowerLimit) {
+			setUpperBound(tipLowerLimit);
+		}
+		if (lowerBound > bottomUpperLimit) {
+			setLowerBound(bottomUpperLimit);
+		}
+		if (lowerBound < bottomLowerLimit) {
+			setLowerBound(bottomLowerLimit);
+		}
+	}
+
+	/**
+	 * This returns false unless is it is overwritten in sub-classes.
+	 *
+	 * @return
+	 */
+	public boolean isMasterGate() {
+		return false;
+	}
+
+	/**
+	 * @param xPosition
+	 *            setter, see {@link xPosition}
+	 */
+	public void setxPosition(float xPosition) {
+		this.xPosition = xPosition;
 	}
 
 }
