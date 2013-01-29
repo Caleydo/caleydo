@@ -70,5 +70,14 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.caleydo.view.ViewEmbeddingProvider">
+      <Provider
+            id="org.caleydo.view.subgraph">
+         <Embedding
+               id="org.caleydo.view.subgraph.pathway.multiform">
+         </Embedding>
+      </Provider>
+   </extension>
 
 </plugin>
