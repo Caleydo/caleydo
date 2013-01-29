@@ -69,8 +69,10 @@
                   embeddingID="org.caleydo.view.stratomex.pathway.segment.brick"
                   icon="resources/icons/pathway.png"
                   isDefaultView="true"
-                  viewCreator="org.caleydo.view.pathway.PathwayRemoteViewCreator"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.pathway.PathwayRemoteViewCreator">
+               </ViewCreator>
             </Embedding>
          </ParentView>
          <ParentView
@@ -79,8 +81,10 @@
                   embeddingID="org.caleydo.view.stratomex.pathway.header.brick"
                   icon="resources/icons/pathway.png"
                   isDefaultView="true"
-                  viewCreator="org.caleydo.view.pathway.PathwayRemoteViewCreator"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.pathway.PathwayRemoteViewCreator">
+               </ViewCreator>
             </Embedding>
          </ParentView>
          <ParentView
@@ -89,8 +93,10 @@
                   embeddingID="org.caleydo.view.subgraph.pathway.multiform"
                   icon="resources/icons/pathway.png"
                   isDefaultView="true"
-                  viewCreator="org.caleydo.view.pathway.PathwayRemoteViewCreator"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.pathway.PathwayRemoteViewCreator">
+               </ViewCreator>
             </Embedding>
          </ParentView>
       </EmbeddingInfo>

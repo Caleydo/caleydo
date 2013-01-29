@@ -48,6 +48,7 @@ import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.awt.AWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.newt.NEWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
@@ -102,7 +103,6 @@ public class ViewManager extends AManager<IView> {
 
 	private ConnectedElementRepresentationManager connectedElementRepManager = ConnectedElementRepresentationManager
 			.get();
-
 
 	private Set<Object> busyRequests = new HashSet<Object>();
 
@@ -490,7 +490,6 @@ public class ViewManager extends AManager<IView> {
 		return connectedElementRepManager;
 	}
 
-
 	public void startAnimator() {
 
 		if (fpsAnimator == null)
@@ -646,14 +645,80 @@ public class ViewManager extends AManager<IView> {
 							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
 							for (IConfigurationElement embedding : embeddings) {
 								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
-									IRemoteViewCreator viewCreator;
-									try {
-										viewCreator = (IRemoteViewCreator) embedding
-												.createExecutableExtension("viewCreator");
-										return viewCreator.createRemoteView(parentView, tablePerspectives);
-									} catch (CoreException e) {
+									IConfigurationElement[] creators = embedding.getChildren("ViewCreator");
+									if (creators.length > 0) {
+										IRemoteViewCreator viewCreator;
+										try {
+											// only one creator is allowed
+											viewCreator = (IRemoteViewCreator) creators[0]
+													.createExecutableExtension("class");
+											return viewCreator.createRemoteView(parentView, tablePerspectives);
+										} catch (CoreException e) {
+											Logger.log(new Status(IStatus.WARNING, "ViewManager",
+													"Could not create view " + viewID));
+										}
+									} else {
 										Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create view "
-												+ viewID));
+												+ viewID + ", no creator found."));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Creates a new view for remote rendering from a plug-in (extension point
+	 * <code>org.caleydo.view.EmbeddedView</code>).
+	 *
+	 * @param viewID
+	 *            ID of the view to be remotely rendered
+	 * @param embeddingID
+	 *            ID that specifies the embedding in the parent view. This ID is used to determine the appropriate
+	 *            {@link IRemoteViewCreator} for the embedded view.
+	 * @param parentView
+	 *            View that renders the view to be created.
+	 * @param tablePerspectives
+	 *            {@link TablePerspective}s that shall be shown by the created view.
+	 * @return Instance of the view type specified by the parameters. NULL, if the view could not be created.
+	 */
+	public ALayoutRenderer createRemotePlugInRenderer(String viewID, String embeddingID, AGLView parentView,
+			List<TablePerspective> tablePerspectives) {
+
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
+		IExtension[] extensions = point.getExtensions();
+
+		for (IExtension extension : extensions) {
+			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
+			for (IConfigurationElement embeddingInfo : embeddingInfos) {
+				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
+					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
+					for (IConfigurationElement parent : parentViews) {
+						if (parent.getAttribute("viewID").equals(parentView.getViewType())) {
+							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
+							for (IConfigurationElement embedding : embeddings) {
+								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
+									IConfigurationElement[] creators = embedding.getChildren("RendererCreator");
+									if (creators.length > 0) {
+										IRemoteRendererCreator viewCreator;
+										try {
+											// only one creator is allowed
+											viewCreator = (IRemoteRendererCreator) creators[0]
+													.createExecutableExtension("class");
+											return viewCreator.createRemoteView(parentView, tablePerspectives);
+										} catch (CoreException e) {
+											Logger.log(new Status(IStatus.WARNING, "ViewManager",
+													"Could not create view " + viewID));
+										}
+									} else {
+										Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create view "
+												+ viewID + ", no creator found."));
 									}
 								}
 							}

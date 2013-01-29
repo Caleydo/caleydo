@@ -21,7 +21,7 @@
       </annotation>
       <complexType>
          <choice>
-            <element ref="EmbeddingInfo"/>
+            <element ref="EmbeddingInfo" minOccurs="1" maxOccurs="unbounded"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -58,11 +58,8 @@
          <attribute name="viewID" type="string" use="required">
             <annotation>
                <documentation>
-                  ID of the view that shall be embedded.
+                  ID of the view or renderer that shall be embedded.
                </documentation>
-               <appInfo>
-                  <meta.attribute kind="identifier" basedOn="org.eclipse.ui.views/view/@id"/>
-               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -79,7 +76,7 @@
                   ID of the parent view this view should be embedded in.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="identifier" basedOn="org.eclipse.ui.views/view/@id"/>
+                  <meta.attribute kind="identifier" basedOn="org.caleydo.view.ViewEmbeddingProvider/Provider/@id"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -88,20 +85,17 @@
 
    <element name="Embedding">
       <complexType>
+         <choice>
+            <element ref="ViewCreator"/>
+            <element ref="RendererCreator"/>
+         </choice>
          <attribute name="embeddingID" type="string" use="required">
             <annotation>
                <documentation>
-                  ID that specifies for which case, circumstance, location etc. the view is embedded in the parent view. Valid IDs are specified by the individual parent views.
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="viewCreator" type="string" use="required">
-            <annotation>
-               <documentation>
-                  View creator class that should be used for the embedding.
+                  ID that specifies for which case, circumstance, location etc. the view is embedded in the parent view.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.caleydo.core.view.IRemoteViewCreator"/>
+                  <meta.attribute kind="identifier" basedOn="org.caleydo.view.ViewEmbeddingProvider/Provider/Embedding/@id"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -130,6 +124,36 @@
                <documentation>
                   
                </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="ViewCreator">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class that instantiates the view that shall be embedded.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.core.view.IRemoteViewCreator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="RendererCreator">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class that instantiates the renderer that shall be embedded.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.core.view.IRemoteRendererCreator"/>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>

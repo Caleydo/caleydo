@@ -61,4 +61,52 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.caleydo.view.ViewEmbeddingProvider">
+      <Provider
+            id="org.caleydo.view.stratomex">
+         <Embedding
+               id="org.caleydo.view.stratomex.numerical.segment.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.numerical.header.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.categorical.segment.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.categorical.header.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.pathway.segment.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.pathway.header.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.clinical.segment.brick">
+         </Embedding>
+         <Embedding
+               id="org.caleydo.view.stratomex.clinical.header.brick">
+         </Embedding>
+      </Provider>
+   </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.stratomex.OverviewHeatmap">
+         <ParentView
+               viewID="org.caleydo.view.subgraph">
+            <Embedding
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.stratomex.brick.ui.OverviewHeatMapVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.stratomex.brick.ui.OverviewHeatMapCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
 </plugin>

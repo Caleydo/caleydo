@@ -88,8 +88,10 @@
                      embeddingID="org.caleydo.view.stratomex.numerical.segment.brick"
                      icon="resources/icons/heatmap.png"
                      isDefaultView="true"
-                     viewCreator="org.caleydo.view.heatmap.heatmap.HeatMapRemoteViewCreator"
                      visInfo="org.caleydo.view.heatmap.heatmap.HeatMapVisInfo">
+                  <ViewCreator
+                        class="org.caleydo.view.heatmap.heatmap.HeatMapRemoteViewCreator">
+                  </ViewCreator>
                </Embedding>
             </ParentView>
             <ParentView
@@ -98,8 +100,10 @@
                      embeddingID="org.caleydo.view.stratomex.categorical.segment.brick"
                      icon="resources/icons/heatmap.png"
                      isDefaultView="true"
-                     viewCreator="org.caleydo.view.heatmap.heatmap.HeatMapRemoteViewCreator"
                      visInfo="org.caleydo.view.heatmap.heatmap.HeatMapVisInfo">
+                  <ViewCreator
+                        class="org.caleydo.view.heatmap.heatmap.HeatMapRemoteViewCreator">
+                  </ViewCreator>
                </Embedding>
             </ParentView>
          </EmbeddingInfo>
