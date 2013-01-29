@@ -27,7 +27,7 @@ import org.eclipse.ui.PlatformUI;
 public class AngularBrushingAction extends Action {
 
 	public static final String LABEL = "Set angular brush";
-	public static final String ICON = "resources/icons/view/tablebased/parcoords/angular_brush.png";
+	public static final String ICON = "resources/icons/angular_brush.png";
 
 	/**
 	 * Constructor.

@@ -25,7 +25,7 @@ import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayEv
 public class SaveSelectionsAction extends SimpleEventAction {
 
 	private static final String LABEL = "Save Selections";
-	private static final String ICON = "resources/icons/view/tablebased/parcoords/save_selections.png";
+	private static final String ICON = "resources/icons/save_selections.png";
 
 	public SaveSelectionsAction() {
 		super(LABEL, ICON, new ApplyCurrentSelectionToVirtualArrayEvent());

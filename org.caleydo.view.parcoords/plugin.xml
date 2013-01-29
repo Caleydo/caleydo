@@ -20,8 +20,8 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.experimental"
-                  label="Experimental">
+                  id="org.caleydo.menu.view.visualizations"
+                  label="Visualizations">
                <command
                      commandId="org.caleydo.view.parcoords.command.openparcoords"
                      icon="resources/icons/parcoords.png"
@@ -52,7 +52,7 @@
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="true"
-            isReleaseView="false"
+            isReleaseView="true"
             viewID="org.caleydo.view.parcoords">
       </ViewCategory>
    </extension>

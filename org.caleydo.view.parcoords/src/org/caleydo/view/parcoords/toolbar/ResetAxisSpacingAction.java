@@ -29,9 +29,9 @@ import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
  */
 public class ResetAxisSpacingAction extends SimpleEventAction {
 	private static final String LABEL = "Reset Axis Spacing";
-	private static final String ICON = "resources/icons/view/tablebased/parcoords/reset_axis_spacing.png";
+	private static final String ICON = "resources/icons/reset_axis_spacing.png";
 
 	public ResetAxisSpacingAction() {
-		super(LABEL, ICON, new ResetAxisSpacingEvent());
+		super(LABEL, ICON, new ResetAxisSpacingEvent());		
 	}
 }

@@ -187,7 +187,9 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 	private int displayEveryNthPolyline = 1;
 
-	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
+	/** The currently used drop-texture */
+	private String dropTexture = PCRenderStyle.DROP_NORMAL;
+
 	int changeDropOnAxisNumber = -1;
 
 	/** Utility object for coordinate transformation and projection */
@@ -210,7 +212,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		// glSelectionHeatMap =
 		// ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
 
-		icon = EIconTextures.PAR_COORDS_ICON;
+		icon = PCRenderStyle.PC_LARGE_TEXTURE;
 	}
 
 	@Override
@@ -710,7 +712,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 						dimensionVA.get(count));
 				gl.glPushName(pickingID);
 
-				textureManager.renderTexture(gl, EIconTextures.NAN, lowerLeftCorner, lowerRightCorner,
+				textureManager.renderTexture(gl, PCRenderStyle.NAN, lowerLeftCorner, lowerRightCorner,
 						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 				gl.glPopName();
@@ -738,7 +740,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 				gl.glPushName(pickingID);
 
-				textureManager.renderTexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner,
+				textureManager.renderTexture(gl, PCRenderStyle.ADD_GATE, lowerLeftCorner, lowerRightCorner,
 						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 				gl.glPopName();
@@ -765,10 +767,10 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 						if (!bWasAxisMoved) {
-							dropTexture = EIconTextures.DROP_NORMAL;
+							dropTexture = PCRenderStyle.DROP_NORMAL;
 						}
 					} else {
-						textureManager.renderTexture(gl, EIconTextures.DROP_NORMAL, lowerLeftCorner, lowerRightCorner,
+						textureManager.renderTexture(gl, PCRenderStyle.DROP_NORMAL, lowerLeftCorner, lowerRightCorner,
 								upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 					}
 
@@ -838,7 +840,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					upperRightCorner.set(xOrigin + buttonWidht, fYDropOrigin, AXIS_Z);
 					upperLeftCorner.set(xOrigin - buttonWidht, fYDropOrigin, AXIS_Z);
 
-					textureManager.renderTexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
+					textureManager.renderTexture(gl, PCRenderStyle.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
 							upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 					gl.glPopName();
@@ -926,7 +928,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		Vec3f upperRightCorner = new Vec3f(xOrigin + buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
 		Vec3f upperLeftCorner = new Vec3f(xOrigin - buttonWidht, yGateAddOrigin + buttonHeight, AXIS_Z);
 
-		textureManager.renderTexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
+		textureManager.renderTexture(gl, PCRenderStyle.ADD_GATE, lowerLeftCorner, lowerRightCorner, upperRightCorner,
 				upperLeftCorner, 1, 1, 1, 1);
 
 		gl.glPopName();
@@ -1335,7 +1337,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 			@Override
 			public void mouseOver(Pick pick) {
-				dropTexture = EIconTextures.DROP_DELETE;
+				dropTexture = PCRenderStyle.DROP_DELETE;
 				changeDropOnAxisNumber = pick.getObjectID();
 				setDisplayListDirty();
 
@@ -1353,7 +1355,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 			@Override
 			public void mouseOver(Pick pick) {
-				dropTexture = EIconTextures.DROP_MOVE;
+				dropTexture = PCRenderStyle.DROP_MOVE;
 				changeDropOnAxisNumber = pick.getObjectID();
 				setDisplayListDirty();
 
@@ -1386,7 +1388,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 			@Override
 			public void mouseOver(Pick pick) {
-				dropTexture = EIconTextures.DROP_DUPLICATE;
+				dropTexture = PCRenderStyle.DROP_DUPLICATE;
 				changeDropOnAxisNumber = pick.getObjectID();
 				setDisplayListDirty();
 			}

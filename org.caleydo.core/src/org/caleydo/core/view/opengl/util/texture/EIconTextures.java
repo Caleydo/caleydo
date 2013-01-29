@@ -31,20 +31,7 @@ public enum EIconTextures {
 
 	LOCK("resources/icons/view/remote/lock.png"),
 
-	// Parallel Coordinates
-	DROP_NORMAL("resources/icons/view/tablebased/parcoords/drop_normal.png"),
-	DROP_DELETE("resources/icons/view/tablebased/parcoords/drop_delete.png"),
-	DROP_DUPLICATE("resources/icons/view/tablebased/parcoords/drop_duplicate.png"),
-	DROP_MOVE("resources/icons/view/tablebased/parcoords/drop_move.png"),
-	SMALL_DROP("resources/icons/view/tablebased/parcoords/drop_small.png"),
-	SMALL_DROP_ROTATED("resources/icons/view/tablebased/parcoords/drop_small_rotated.png"),
-	ADD_GATE("resources/icons/view/tablebased/parcoords/add_gate.png"),
-	NAN("resources/icons/view/tablebased/parcoords/nan.png"),
 
-	GATE_BOTTOM("resources/icons/view/tablebased/parcoords/gate_bottom.png"),
-	GATE_TOP("resources/icons/view/tablebased/parcoords/gate_top.png"),
-	GATE_MENUE("resources/icons/view/tablebased/parcoords/gate_menue.png"),
-	GATE_BODY("resources/icons/view/tablebased/parcoords/gate_body.png"),
 
 	REMOVE("resources/icons/general/remove.png"),
 
@@ -162,7 +149,6 @@ public enum EIconTextures {
 	/** Linearized Pathway */
 	ABSTRACT_BAR_ICON("resources/icons/view/enroute/abstract_mode.png"),
 
-	TAGCLOUD_ICON("resources/icons/view/tagclouds/icon.png"),
 	NAVIGATION_BACKGROUND("resources/icons/general/navigation.png"),
 	PIN("resources/icons/general/pin.png");
 

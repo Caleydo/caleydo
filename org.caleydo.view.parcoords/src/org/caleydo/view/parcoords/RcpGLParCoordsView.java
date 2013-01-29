@@ -22,13 +22,7 @@ package org.caleydo.view.parcoords;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.gui.toolbar.action.PropagateSelectionsAction;
-import org.caleydo.core.gui.toolbar.action.ResetViewAction;
-import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.view.parcoords.toolbar.AngularBrushingAction;
-import org.caleydo.view.parcoords.toolbar.ResetAxisSpacingAction;
-import org.caleydo.view.parcoords.toolbar.SaveSelectionsAction;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLParCoordsView extends ARcpGLViewPart {
@@ -71,11 +65,11 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 	@Override
 	public void addToolBarContent() {
 
-		toolBarManager.add(new AngularBrushingAction());
-		toolBarManager.add(new ResetAxisSpacingAction());
-		toolBarManager.add(new SaveSelectionsAction());
-		toolBarManager.add(new ResetViewAction());
-		toolBarManager.add(new PropagateSelectionsAction());
-		toolBarManager.add(new TakeSnapshotAction(view.getParentComposite()));
+		// toolBarManager.add(new AngularBrushingAction());
+		// toolBarManager.add(new ResetAxisSpacingAction());
+		// toolBarManager.add(new SaveSelectionsAction());
+		// toolBarManager.add(new ResetViewAction());
+		// toolBarManager.add(new PropagateSelectionsAction());
+		// toolBarManager.add(new TakeSnapshotAction(view.getParentComposite()));
 	}
 }

@@ -31,6 +31,7 @@ import javax.media.opengl.GL2;
  *
  * @author Christian Partl
  */
+@Deprecated
 public abstract class AGLGUIElement {
 
 	protected float minSize;

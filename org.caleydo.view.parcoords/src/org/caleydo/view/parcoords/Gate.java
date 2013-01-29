@@ -25,7 +25,6 @@ import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Represents a gate for {@link GLParallelCoordinates}.
@@ -143,7 +142,7 @@ public class Gate {
 
 		gl.glPushName(pcs.getPickingManager().getPickingID(pcs.getID(), EPickingType.GATE_TIP_SELECTION.name(), gateID));
 
-		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner, lowerRightCorner,
+		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_TOP, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		// gate_menu texture is 77x22
@@ -155,7 +154,7 @@ public class Gate {
 		upperRightCorner.set(xPosition, top, GATE_Z);
 		upperLeftCorner.set(xPosition - menuWidth + width, top, GATE_Z);
 
-		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
+		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		pcs.getTextRenderer().setColor(1, 1, 1, 1);
@@ -169,8 +168,7 @@ public class Gate {
 			String caption = Formatter.formatNumber(((NumericalTable) table).getRawForNormalized(dataTransformation,
 					upperBound));
 			pcs.getTextRenderer().renderTextInBounds(gl, caption, xPosition - menuWidth + 3 * width,
-					top + textBottomSpacing,
-					PCRenderStyle.TEXT_ON_LABEL_Z, textWidth, textHeight);
+					top + textBottomSpacing, PCRenderStyle.TEXT_ON_LABEL_Z, textWidth, textHeight);
 
 		}
 		gl.glPopName();
@@ -198,7 +196,7 @@ public class Gate {
 		upperRightCorner.set(xPosition + width, top - gateTopHeight, GATE_Z);
 		upperLeftCorner.set(xPosition - width, top - gateTopHeight, GATE_Z);
 
-		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_BODY, lowerLeftCorner, lowerRightCorner,
+		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_BODY, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		gl.glPopName();
@@ -211,7 +209,7 @@ public class Gate {
 		upperRightCorner.set(xPosition + width, bottom + gateBottomHeight, GATE_Z);
 		upperLeftCorner.set(xPosition - width, bottom + gateBottomHeight, GATE_Z);
 
-		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
+		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		lowerLeftCorner.set(xPosition - menuWidth + width, bottom - menuHeight, GATE_Z);
@@ -219,16 +217,15 @@ public class Gate {
 		upperRightCorner.set(xPosition + width, bottom, GATE_Z);
 		upperLeftCorner.set(xPosition - menuWidth + width, bottom, GATE_Z);
 
-		pcs.getTextureManager().renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
+		pcs.getTextureManager().renderTexture(gl, PCRenderStyle.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		if (table instanceof NumericalTable) {
 
 			String caption = Formatter.formatNumber(((NumericalTable) table).getRawForNormalized(dataTransformation,
 					lowerBound));
-			pcs.getTextRenderer().renderTextInBounds(gl, caption,xPosition - menuWidth + 3 * width,
-					bottom - menuHeight + textBottomSpacing,
-					PCRenderStyle.TEXT_ON_LABEL_Z, textWidth, textHeight);
+			pcs.getTextRenderer().renderTextInBounds(gl, caption, xPosition - menuWidth + 3 * width,
+					bottom - menuHeight + textBottomSpacing, PCRenderStyle.TEXT_ON_LABEL_Z, textWidth, textHeight);
 
 		}
 		gl.glPopName();
@@ -326,7 +323,6 @@ public class Gate {
 			mouseBottomSpacing = bound - lowerBound;
 			isGateDraggingFirstTime = false;
 		}
-
 
 		float tipUpperLimit = 1;
 		float tipLowerLimit = 0.01f;

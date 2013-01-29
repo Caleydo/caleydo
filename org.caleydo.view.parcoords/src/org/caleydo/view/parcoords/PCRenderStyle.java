@@ -52,6 +52,24 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	private HashMap<SelectionType, PolyLineState> hashSelectionTypeToPolylineState;
 
+	// textures
+	public static String ICON_PATH = "resources/icons/";
+
+	public static String PC_LARGE_TEXTURE = ICON_PATH + "parcoords128x128.png";
+
+	public static String DROP_NORMAL = ICON_PATH + "drop_normal.png";
+	public static String DROP_DELETE = ICON_PATH + "drop_delete.png";
+	public static String DROP_DUPLICATE = ICON_PATH + "drop_duplicate.png";
+	public static String DROP_MOVE = ICON_PATH + "drop_move.png";
+	public static String SMALL_DROP = ICON_PATH + "drop_small.png";
+	public static String SMALL_DROP_ROTATED = ICON_PATH + "drop_small_rotated.png";
+	public static String ADD_GATE = ICON_PATH + "add_gate.png";
+	public static String NAN = ICON_PATH + "nan.png";
+	public static String GATE_BOTTOM = ICON_PATH + "gate_bottom.png";
+	public static String GATE_TOP = ICON_PATH + "gate_top.png";
+	public static String GATE_MENUE = ICON_PATH + "gate_menue.png";
+	public static String GATE_BODY = ICON_PATH + "gate_body.png";
+
 	// Z Values
 	private static final float POLYLINE_NORMAL_Z = 0.001f;
 	private static final float POLYLINE_SELECTED_Z = 0.002f;

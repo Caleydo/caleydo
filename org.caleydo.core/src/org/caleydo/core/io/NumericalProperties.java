@@ -32,9 +32,9 @@ import org.caleydo.core.data.collection.table.Table;
  * <p>
  * See also {@link CategoricalProperties}, this classes pendant for categorical data.
  * </p>
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class NumericalProperties {
 	/**
@@ -64,7 +64,7 @@ public class NumericalProperties {
 	 * Determines whether and if so which transformation should be applied to the data (e.g. log2 transformation). This
 	 * is mapped to values of {@link EDataTransformation}.
 	 */
-	private String dataTransformation = "None";
+	private String dataTransformation = Table.Transformation.NONE;
 
 	/**
 	 *

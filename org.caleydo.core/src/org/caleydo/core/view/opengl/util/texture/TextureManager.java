@@ -75,6 +75,7 @@ public final class TextureManager {
 		cache.put(texturePath, tmpTexture);
 	}
 
+	@Deprecated
 	public Texture getIconTexture(final EIconTextures eIconTexture) {
 		return getIconTexture(eIconTexture.getFileName());
 	}
@@ -103,6 +104,7 @@ public final class TextureManager {
 	 * @param alpha
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
+	@Deprecated
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
 			Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
 
@@ -110,6 +112,7 @@ public final class TextureManager {
 				upperLeftCorner, colorR, colorG, colorB, alpha);
 	}
 
+	@Deprecated
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
 			Vec3f upperRightCorner, Vec3f upperLeftCorner, float[] color) {
 		renderTexture(gl, eIconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
