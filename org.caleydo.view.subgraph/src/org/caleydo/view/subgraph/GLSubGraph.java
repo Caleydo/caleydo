@@ -217,10 +217,6 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE,
 					EEmbeddingID.PATHWAY_MULTIFORM.id());
 
-			ALayoutRenderer overviewHeatMapRenderer = ViewManager.get().createRemotePlugInRenderer(
-					"org.caleydo.view.stratomex.OverviewHeatmap", EEmbeddingID.PATHWAY_MULTIFORM.id(), this,
-					tablePerspectives);
-
 			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 					PathwayDataDomain.DATA_DOMAIN_TYPE);
 
@@ -254,8 +250,8 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 
 			int currentRendererID = -1;
 			for (String viewID : remoteRenderedViewIDs) {
-				currentRendererID = multiFormRenderer.addView(viewID, EEmbeddingID.PATHWAY_MULTIFORM.id(),
-						pathwayTablePerspectives);
+				currentRendererID = multiFormRenderer.addPluginVisualization(viewID, getViewType(),
+						EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayTablePerspectives);
 			}
 			ALayoutRenderer customRenderer = new BorderedAreaRenderer();
 			IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
@@ -271,8 +267,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 				}
 			};
 
-			multiFormRenderer.addLayoutRenderer(overviewHeatMapRenderer, EIconTextures.ARROW_DOWN.getFileName(),
-					visInfo, false);
+			multiFormRenderer.addLayoutRenderer(customRenderer, EIconTextures.ARROW_DOWN.getFileName(), visInfo, false);
 
 			// TextureRenderer textureRenderer = new TextureRenderer("resources/tissue_images/ebene_0.bmp",
 			// textureManager);
