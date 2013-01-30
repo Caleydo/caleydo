@@ -26,10 +26,18 @@ import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 
 /**
+ * basic abstraction of a score
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IScore extends ILabelProvider {
+	/**
+	 * determines whether the current score support the given {@link EDataDomainQueryMode} mode
+	 * 
+	 * @param mode
+	 * @return
+	 */
 	public boolean supports(EDataDomainQueryMode mode);
 
 	public EScoreType getScoreType();

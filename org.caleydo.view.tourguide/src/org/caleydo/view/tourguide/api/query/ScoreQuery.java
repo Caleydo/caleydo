@@ -70,7 +70,7 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable {
+public class ScoreQuery implements SafeCallable<RankedList>, Cloneable {
 	public static final String PROP_ORDER_BY = "orderBy";
 	public static final String PROP_SELECTION = "selection";
 	public static final String PROP_TOP = "top";
@@ -161,7 +161,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 	 * executes this query and returns the resulting scoring element list
 	 */
 	@Override
-	public List<ScoringElement> call() {
+	public RankedList call() {
 		final Pair<List<CollapseScore>, Integer> pair = filterCollapseScore(Scores.flatten(selection));
 		final List<CollapseScore> collapseScores = pair.getFirst();
 		final int factor = pair.getSecond();
@@ -175,11 +175,11 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 			Multimap<Perspective, Group> stratNGroups = query.apply(Collections2.transform(stratifications,
 					mapFirst));
 			final int numberOfElements = stratNGroups.size() * factor;
-			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy);
+			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy, selection);
 			buildAll2(builder, 0, collapseScores, selections, stratNGroups, stratifications);
 		} else { // just stratifications
 			final int numberOfElements = stratifications.size() * factor;
-			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy);
+			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy, selection);
 			buildAll(builder, 0, collapseScores, selections, stratifications);
 		}
 		return builder.build();

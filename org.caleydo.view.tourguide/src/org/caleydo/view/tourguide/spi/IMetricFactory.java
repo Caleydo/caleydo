@@ -23,14 +23,32 @@ import java.util.Set;
 
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
+ * a factory of a metric score, which have a defined number of possibilities and no "real" parameter
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IMetricFactory {
+	/**
+	 * add the adder context menu entries for the provided metrics
+	 * 
+	 * @param creator
+	 * @param visible
+	 *            the currently visible columns, i.e. to avoid duplicates
+	 * @param receiver
+	 *            the receiver to use for the {@link AddScoreColumnEvent} events
+	 */
 	void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver);
 
+	/**
+	 * determines whether the given {@link EDataDomainQueryMode} mode is supported
+	 *
+	 * @param mode
+	 * @return
+	 */
 	boolean supports(EDataDomainQueryMode mode);
 }

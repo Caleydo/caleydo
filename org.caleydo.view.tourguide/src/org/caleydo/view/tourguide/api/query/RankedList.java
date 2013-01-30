@@ -17,17 +17,50 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.score;
+package org.caleydo.view.tourguide.api.query;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
+import java.util.AbstractList;
+import java.util.List;
+import java.util.RandomAccess;
 
+import org.caleydo.view.tourguide.api.util.SimpleStatistics;
+import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
- * score based on a stratification
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IStratificationScore extends IScore {
-	Perspective getStratification();
+public class RankedList extends AbstractList<ScoringElement> implements RandomAccess {
+	private final List<IScore> scores;
+	private final List<SimpleStatistics> scoreStatistics;
+	private final List<ScoringElement> values;
+
+	public RankedList(List<IScore> scores, List<SimpleStatistics> scoreStatistics, List<ScoringElement> values) {
+		this.scores = scores;
+		this.scoreStatistics = scoreStatistics;
+		this.values = values;
+	}
+
+	public int columnSize() {
+		return scores.size();
+	}
+
+	public SimpleStatistics getColumnStatistics(int index) {
+		return scoreStatistics.get(index);
+	}
+
+	public IScore getColumn(int index) {
+		return scores.get(index);
+	}
+
+	@Override
+	public ScoringElement get(int index) {
+		return values.get(index);
+	}
+
+	@Override
+	public int size() {
+		return values.size();
+	}
+
 }

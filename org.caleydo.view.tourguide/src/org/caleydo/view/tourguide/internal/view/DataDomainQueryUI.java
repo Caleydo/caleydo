@@ -35,7 +35,7 @@ import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.EventListeners.ListenTo;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.util.collection.Pair;

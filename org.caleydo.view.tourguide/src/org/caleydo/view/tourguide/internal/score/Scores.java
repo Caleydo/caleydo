@@ -30,6 +30,7 @@ import java.util.WeakHashMap;
 
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.spi.compute.ICompositeScore;
+import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -56,6 +57,12 @@ public final class Scores {
 
 	}
 
+	/**
+	 * adds a persistent score that will be serialized if it is not already there
+	 *
+	 * @param score
+	 * @return the new added one or the existing one
+	 */
 	public synchronized ISerializeableScore addPersistentScoreIfAbsent(ISerializeableScore score) {
 		this.persistentScores.add(score);
 		return addIfAbsent(score);
@@ -65,6 +72,12 @@ public final class Scores {
 		return persistentScores;
 	}
 
+	/**
+	 * adds a new temporary score, if it does not already exists
+	 *
+	 * @param score
+	 * @return the new added one or the existing one
+	 */
 	@SuppressWarnings("unchecked")
 	public synchronized <T extends IRegisteredScore> T addIfAbsent(T score) {
 		if (this.scores.add(score)) {
@@ -79,6 +92,9 @@ public final class Scores {
 		}
 	}
 
+	/**
+	 * function that should be applied to a {@link ICompositeScore} for registing its children
+	 */
 	public final Function<IScore, IScore> registerScores = new Function<IScore, IScore>() {
 		@Override
 		public IScore apply(IScore in) {
@@ -105,6 +121,12 @@ public final class Scores {
 		return new ArrayList<>(scores);
 	}
 
+	/**
+	 * flatten the given scores, {@link ICompositeScore} and {@link IDecoratedScore} will be flattened
+	 * 
+	 * @param scores
+	 * @return
+	 */
 	public static Collection<IScore> flatten(IScore... scores) {
 		return flatten(Arrays.asList(scores));
 	}
@@ -120,8 +142,13 @@ public final class Scores {
 		Deque<IScore> queue = Lists.newLinkedList(scores);
 		while (!queue.isEmpty()) {
 			IScore s = queue.pollFirst();
-			if (result.add(s) && s instanceof ICompositeScore)
+			if (!result.add(s))
+				continue;
+			if (s instanceof ICompositeScore)
 				queue.addAll(((ICompositeScore) s).getChildren());
+			else if (s instanceof IDecoratedScore) {
+				queue.add(((IDecoratedScore) s).getUnderlying());
+			}
 		}
 		return result;
 

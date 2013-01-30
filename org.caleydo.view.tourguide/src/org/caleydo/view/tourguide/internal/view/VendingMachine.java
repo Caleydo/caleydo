@@ -27,8 +27,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.event.EventListeners;
-import org.caleydo.core.event.EventListeners.ListenTo;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -85,7 +86,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	private DataDomainQueryUI dataDomainQueryUI;
 	private final DragAndDropController dndController;
 
-	private final EventListeners listeners = new EventListeners();
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private StratomexAdapter stratomex = new StratomexAdapter();
 	private DataDomainQuery dataDomainQuery;
@@ -198,9 +199,13 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		if (scoreQuery == null)
 			setQuery(new ScoreQuery(new DataDomainQuery()));
 
+		// mainColumn.append(ElementLayouts.create().height(300).width(200)
+		// .render(new LayoutRendererAdapter(this, StackedBarRankedListUI.demo())).build());
+
+
 		dataDomainQueryUI = new DataDomainQueryUI(this);
 		dataDomainQueryUI.setQuery(dataDomainQuery);
-		listeners.register(this, dataDomainQueryUI);
+		listeners.register(dataDomainQueryUI);
 
 		mainColumn.append(dataDomainQueryUI);
 
@@ -208,7 +213,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		scoreQueryUI = new ScoreQueryUI(this, this.stratomex, dndController);
 		scoreQueryUI.setQuery(scoreQuery);
-		listeners.register(this, scoreQueryUI);
+		listeners.register(scoreQueryUI);
 
 		mainColumn.append(ElementLayouts.scrollAlbe(this, scoreQueryUI));
 		// mainColumn.append(scoreQueryUI);
@@ -260,7 +265,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		listeners.register(this);
-		listeners.register(this, stratomex);
+		listeners.register(stratomex);
 	}
 
 	@Override

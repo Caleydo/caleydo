@@ -22,8 +22,10 @@ package org.caleydo.view.tourguide.spi.score;
 import org.caleydo.core.data.virtualarray.group.Group;
 
 /**
+ * a kind of a score that is based on a stratification and a group
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface IGroupScore extends IStratificationScore {
 	Group getGroup();

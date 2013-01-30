@@ -41,6 +41,7 @@ import org.caleydo.view.tourguide.spi.IMetricFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
@@ -111,7 +112,7 @@ public class LogRankMetricFactory implements IMetricFactory {
 		}
 	}
 
-	public static class LogRankPValue extends DefaultLabelProvider implements IRegisteredScore {
+	public static class LogRankPValue extends DefaultLabelProvider implements IRegisteredScore, IDecoratedScore {
 		private final LogRankMetric logRankScore;
 
 		public LogRankPValue(String label, LogRankMetric logRankScore) {
@@ -142,6 +143,11 @@ public class LogRankMetricFactory implements IMetricFactory {
 		@Override
 		public EScoreType getScoreType() {
 			return logRankScore.getScoreType();
+		}
+
+		@Override
+		public IScore getUnderlying() {
+			return logRankScore;
 		}
 
 		@Override

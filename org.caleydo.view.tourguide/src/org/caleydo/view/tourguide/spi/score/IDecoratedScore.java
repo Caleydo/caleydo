@@ -19,15 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.score;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
-
-
 /**
- * score based on a stratification
+ * special kind of {@link IScore} that wraps / transforms another one
  * 
  * @author Samuel Gratzl
  * 
  */
-public interface IStratificationScore extends IScore {
-	Perspective getStratification();
+public interface IDecoratedScore extends IScore{
+	IScore getUnderlying();
 }

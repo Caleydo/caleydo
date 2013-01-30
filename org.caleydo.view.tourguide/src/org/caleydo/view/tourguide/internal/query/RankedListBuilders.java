@@ -26,10 +26,11 @@ import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
+import org.caleydo.view.tourguide.api.query.RankedList;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
+import org.caleydo.view.tourguide.api.util.SimpleStatistics;
 import org.caleydo.view.tourguide.spi.query.filter.IScoreFilter;
-
-
+import org.caleydo.view.tourguide.spi.score.IScore;
 /**
  * utility factory class which wraps the algorithm to create the final sorted list with a fixed size
  *
@@ -47,31 +48,62 @@ public class RankedListBuilders {
 	public interface IRankedListBuilder {
 		public void add(ScoringElement e);
 
-		public List<ScoringElement> build();
+		public RankedList build();
 	}
 
 	public static IRankedListBuilder create(int maxSize, int numberOfElements, IScoreFilter filter,
-			Comparator<ScoringElement> comparator) {
+			Comparator<ScoringElement> comparator, List<IScore> columns) {
 		if (maxSize * 5 < numberOfElements) // TODO better strategy
-			return new InsertionRankedListBuilder(maxSize, comparator, filter);
+			return new InsertionRankedListBuilder(maxSize, comparator, filter, columns);
 		else
-			return new QuickSortRankedListBuilder(numberOfElements, maxSize, comparator, filter);
+			return new QuickSortRankedListBuilder(numberOfElements, maxSize, comparator, filter, columns);
 	}
 
-	private static class InsertionRankedListBuilder implements IRankedListBuilder {
-		private final NavigableSet<ScoringElement> list;
-		private final int maxSize;
+	private static abstract class ARankedListBuilder implements IRankedListBuilder {
+		private final List<IScore> columns;
+		private final List<SimpleStatistics.Builder> stats;
 		private final IScoreFilter filter;
 
-		public InsertionRankedListBuilder(int maxSize, Comparator<ScoringElement> comparator, IScoreFilter filter) {
+		public ARankedListBuilder(IScoreFilter filter, List<IScore> columns) {
+			this.filter = filter;
+			this.columns = new ArrayList<>(columns);
+			this.stats = new ArrayList<>(columns.size());
+			for(int i = 0; i < columns.size(); ++i)
+				stats.add(new SimpleStatistics.Builder());
+		}
+
+		protected boolean preAdd(ScoringElement e) {
+			if (!filter.apply(e))
+				return false;
+			for(int i = 0; i < columns.size(); ++i)
+				stats.get(i).add(columns.get(i).getScore(e));
+			return true;
+		}
+
+		protected abstract List<ScoringElement> buildValues();
+
+		@Override
+		public RankedList build() {
+			List<SimpleStatistics> s = new ArrayList<>(columns.size());
+			for(SimpleStatistics.Builder b : stats)
+				s.add(b.build());
+			return new RankedList(columns, s, buildValues());
+		}
+	}
+
+	private static class InsertionRankedListBuilder extends ARankedListBuilder {
+		private final NavigableSet<ScoringElement> list;
+		private final int maxSize;
+
+		public InsertionRankedListBuilder(int maxSize, Comparator<ScoringElement> comparator, IScoreFilter filter, List<IScore> columns) {
+			super(filter, columns);
 			this.maxSize = maxSize;
 			this.list = new TreeSet<>(comparator);
-			this.filter = filter;
 		}
 
 		@Override
 		public void add(ScoringElement e) {
-			if (!filter.apply(e))
+			if (!preAdd(e))
 				return;
 			list.add(e);
 			if (list.size() > maxSize)
@@ -79,34 +111,33 @@ public class RankedListBuilders {
 		}
 
 		@Override
-		public List<ScoringElement> build() {
+		protected List<ScoringElement> buildValues() {
 			return new ArrayList<>(list);
 		}
 	}
 
-	private static class QuickSortRankedListBuilder implements IRankedListBuilder {
+	private static class QuickSortRankedListBuilder extends ARankedListBuilder {
 		private final List<ScoringElement> list;
 		private final int maxSize;
 		private final Comparator<ScoringElement> comparator;
-		private final IScoreFilter filter;
 
 		public QuickSortRankedListBuilder(int numberOfElements, int maxSize, Comparator<ScoringElement> comparator,
-				IScoreFilter filter) {
+				IScoreFilter filter, List<IScore> columns) {
+			super(filter, columns);
 			this.maxSize = maxSize;
 			this.list = new ArrayList<>(numberOfElements);
 			this.comparator = comparator;
-			this.filter = filter;
 		}
 
 		@Override
 		public void add(ScoringElement e) {
-			if (!filter.apply(e))
+			if (!preAdd(e))
 				return;
 			list.add(e);
 		}
 
 		@Override
-		public List<ScoringElement> build() {
+		protected List<ScoringElement> buildValues() {
 			Collections.sort(list, comparator);
 			return new ArrayList<>(list.subList(0, Math.min(maxSize, list.size())));
 		}

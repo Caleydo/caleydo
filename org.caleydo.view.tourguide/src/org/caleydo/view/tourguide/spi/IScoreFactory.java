@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Shell;
 public interface IScoreFactory {
 	/**
 	 * creates a dialog for creating a new score of this type
-	 * 
+	 *
 	 * @param shell
 	 * @param receiver
 	 *            the receiver to use for the {@link AddScoreColumnEvent} event
@@ -66,6 +66,12 @@ public interface IScoreFactory {
 	 */
 	Iterable<ScoreEntry> createStratEntries(TablePerspective strat);
 
+	/**
+	 * determines, whether the current factory supports this {@link EDataDomainQueryMode} mode
+	 * 
+	 * @param mode
+	 * @return
+	 */
 	boolean supports(EDataDomainQueryMode mode);
 
 	public static final class ScoreEntry implements Iterable<IScore> {
@@ -78,11 +84,6 @@ public interface IScoreFactory {
 			this.scores = Arrays.asList(scores);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see java.lang.Iterable#iterator()
-		 */
 		@Override
 		public Iterator<IScore> iterator() {
 			return scores.iterator();

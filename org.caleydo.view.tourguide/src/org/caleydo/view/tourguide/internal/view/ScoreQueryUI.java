@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.event.EventListeners.ListenTo;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.base.ILabelHolder;
@@ -42,8 +42,8 @@ import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -245,10 +245,6 @@ public class ScoreQueryUI extends Row {
 
 	public ScoreQuery getQuery() {
 		return query;
-	}
-
-	public List<ScoringElement> getData() {
-		return Collections.unmodifiableList(data);
 	}
 
 	public ScoringElement getSelected() {
