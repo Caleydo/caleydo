@@ -20,7 +20,7 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.visualizations"
+                  id="org.caleydo.menu.view.visualization"
                   label="Visualizations">
                <command
                      commandId="org.caleydo.view.parcoords.command.openparcoords"
