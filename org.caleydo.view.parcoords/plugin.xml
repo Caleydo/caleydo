@@ -25,16 +25,7 @@
                <command
                      commandId="org.caleydo.view.parcoords.command.openparcoords"
                      icon="resources/icons/parcoords.png"
-                     style="push">
-                  <visibleWhen
-                        checkEnabled="false">
-                     <with
-                           variable="org.caleydo.core.isReleaseState">
-                        <equals
-                              value="releaseVersion">
-                        </equals>
-                     </with>
-                  </visibleWhen>                     
+                     style="push">                  
                </command>
             </menu>
          </menu>

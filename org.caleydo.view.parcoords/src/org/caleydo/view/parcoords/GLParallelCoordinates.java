@@ -64,7 +64,6 @@ import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.core.event.view.BookmarkButtonEvent;
 import org.caleydo.core.event.view.ResetAllViewsEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
@@ -100,7 +99,6 @@ import org.caleydo.view.parcoords.listener.AngularBrushingEvent;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
-import org.caleydo.view.parcoords.listener.BookmarkButtonListener;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.ResetParallelCoordinatesEvent;
@@ -353,38 +351,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		setDisplayListDirty();
 	}
 
-	/**
-	 * Sends a bookmark event containing all elements which are currently visible in the pcs, if the number of elements
-	 * is less than 20. If it's more than 20 an error message is displayed.
-	 */
-	public void bookmarkElements() {
 
-		// RecordVADelta delta = recordSelectionManager.getBroadcastVADelta();
-		// if (delta.size() > 20) {
-		// parentComposite.getDisplay().asyncExec(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// MessageDialog.openError(parentComposite.getShell(), "Bookmark Limit",
-		// "Can not bookmark more than 20 elements - reduce polylines to less than 20 first");
-		//
-		// return;
-		// }
-		// });
-		// return;
-		// }
-		//
-		// if (!isRenderedRemote()) {
-		// BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
-		// recordIDType);
-		// for (VADeltaItem item : delta.getAllItems()) {
-		// bookmarkEvent.addBookmark(item.getID());
-		// }
-		// eventPublisher.triggerEvent(bookmarkEvent);
-		// resetAxisSpacing();
-		// setDisplayListDirty();
-		// }
-	}
 
 	public void saveSelection() {
 
@@ -1887,10 +1854,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		ResetAxisSpacingListener resetAxisSpacingListener = new ResetAxisSpacingListener();
 		resetAxisSpacingListener.setHandler(this);
 		listeners.register(ResetAxisSpacingEvent.class, resetAxisSpacingListener);
-
-		BookmarkButtonListener bookmarkListener = new BookmarkButtonListener();
-		bookmarkListener.setHandler(this);
-		listeners.register(BookmarkButtonEvent.class, bookmarkListener);
 
 		ResetViewListener resetViewListener = new ResetViewListener();
 		resetViewListener.setHandler(this);

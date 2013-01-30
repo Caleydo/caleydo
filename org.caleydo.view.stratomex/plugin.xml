@@ -43,7 +43,7 @@
    <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
-            isDataView="false"
+            isDataView="true"
             isReleaseView="true"
             viewID="org.caleydo.view.stratomex">
       </ViewCategory>

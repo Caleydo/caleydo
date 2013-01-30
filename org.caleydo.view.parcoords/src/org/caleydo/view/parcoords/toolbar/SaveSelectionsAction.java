@@ -20,14 +20,15 @@
 package org.caleydo.view.parcoords.toolbar;
 
 import org.caleydo.core.gui.SimpleEventAction;
+import org.caleydo.view.parcoords.Activator;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayEvent;
 
 public class SaveSelectionsAction extends SimpleEventAction {
 
 	private static final String LABEL = "Save Selections";
-	private static final String ICON = "resources/icons/save_selections.png";
+	private static final String ICON = "resources/icons/save_selections_16.png";
 
 	public SaveSelectionsAction() {
-		super(LABEL, ICON, new ApplyCurrentSelectionToVirtualArrayEvent());
+		super(LABEL, ICON, Activator.getResourceLoader(), new ApplyCurrentSelectionToVirtualArrayEvent());
 	}
 }
