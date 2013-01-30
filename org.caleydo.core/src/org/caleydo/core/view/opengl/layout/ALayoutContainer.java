@@ -26,12 +26,16 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
+
 /**
  * BaseClass for layouts which contain nested {@link ElementLayout}s.
  *
  * @author Alexander Lex
  */
-public abstract class ALayoutContainer extends ElementLayout implements Iterable<ElementLayout> {
+public class ALayoutContainer extends ElementLayout implements Iterable<ElementLayout> {
+	protected final ILayout layout;
 
 	/**
 	 * Flag signaling whether the x-size of the container should be calculated as the sum of it's parts (true), or if
@@ -44,9 +48,6 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 	 * some size indication (either scaled or not scaled) is given (false)
 	 */
 	protected boolean isYDynamic = false;
-
-	protected boolean isBottomUp = true;
-	protected boolean isLeftToRight = true;
 
 	private final List<ElementLayout> elements = new ArrayList<ElementLayout>();
 
@@ -72,12 +73,21 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 	 */
 	protected boolean isPriorityRendereing = false;
 
-	public ALayoutContainer() {
+	public ALayoutContainer(ILayout layout) {
 		super();
+		this.layout = layout;
 	}
 
-	public ALayoutContainer(String layoutName) {
+	public ALayoutContainer(String layoutName, ILayout layout) {
 		super(layoutName);
+		this.layout = layout;
+	}
+
+	/**
+	 * @return the layout, see {@link #layout}
+	 */
+	public ILayout getLayout() {
+		return layout;
 	}
 
 	@Override
@@ -199,14 +209,55 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 
 	// --------------------- End of Public Interface ---------------------
 
-	protected abstract void calculateSubElementScales(float availableWidth, float availableHeight,
-			Integer numberOfDynamicSizeUnitsX, Integer numberOfDynamicSizeUnitsY);
-
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
 		this.bottom = bottom;
 		this.left = left;
 		this.top = top;
 		this.right = right;
+		layout.calculateTransforms(this, bottom, left, top, right);
+	}
+
+	@Override
+	public float getUnscalableElementWidth() {
+		if (isHidden)
+			return 0;
+		if (!isXDynamic)
+			return super.getUnscalableElementWidth();
+		return layout.getUnscalableElementWidth(this);
+	}
+
+	@Override
+	public float getUnscalableElementHeight() {
+		if (isHidden)
+			return 0;
+		if (!isYDynamic)
+			return super.getUnscalableElementHeight();
+		return layout.getUnscalableElementHeight(this);
+	}
+
+	@Override
+	void calculateScales(float totalWidth, float totalHeight, Integer numberOfDynamicSizeUnitsX,
+			Integer numberOfDynamicSizeUnitsY) {
+		if (isHidden)
+			return;
+		super.calculateScales(totalWidth, totalHeight, numberOfDynamicSizeUnitsX, numberOfDynamicSizeUnitsY);
+		layout.calculateScales(this, totalWidth, totalHeight, numberOfDynamicSizeUnitsX, numberOfDynamicSizeUnitsY);
+	}
+
+	/**
+	 * @return the dynamicSizeUnitsX, see {@link #dynamicSizeUnitsX}
+	 */
+	@Override
+	int getDynamicSizeUnitsX() {
+		return layout.getDynamicSizeUnitsX(this);
+	}
+
+	/**
+	 * @return the dynamicSizeUnitsY, see {@link #dynamicSizeUnitsY}
+	 */
+	@Override
+	int getDynamicSizeUnitsY() {
+		return layout.getDynamicSizeUnitsY(this);
 	}
 
 	@Override
@@ -263,5 +314,17 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 	 */
 	public void setPriorityRendereing(boolean isPriorityRendereing) {
 		this.isPriorityRendereing = isPriorityRendereing;
+	}
+
+	/**
+	 * @param abs
+	 */
+	public void triggerLayoutCollision(float toBigBy) {
+		if (managingClassID != -1 && layoutID != -1) {
+			LayoutSizeCollisionEvent event = new LayoutSizeCollisionEvent();
+			event.setToBigBy(toBigBy);
+			event.tableIDs(managingClassID, layoutID);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+		}
 	}
 }
