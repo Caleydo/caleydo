@@ -44,7 +44,8 @@ public class KaplanMeierRemoteViewCreator implements IRemoteViewCreator {
 	 * java.util.List)
 	 */
 	@Override
-	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives) {
+	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace) {
 
 		GLKaplanMeier kaplanMeier = (GLKaplanMeier) GeneralManager
 				.get()

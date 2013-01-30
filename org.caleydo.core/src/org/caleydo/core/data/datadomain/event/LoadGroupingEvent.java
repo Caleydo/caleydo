@@ -26,7 +26,7 @@ public class LoadGroupingEvent extends AEvent {
 	}
 
 	public LoadGroupingEvent(ATableBasedDataDomain dataDomain, IDCategory idCategory) {
-		setDataDomainID(dataDomain.getDataDomainID());
+		setEventSpace(dataDomain.getDataDomainID());
 		this.idCategory = idCategory;
 	}
 

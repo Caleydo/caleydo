@@ -29,7 +29,7 @@ public class DataDomainEventListener extends AEventListener<GLStratomex> {
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof RemoveDataDomainEvent) {
-			handler.removeDataDomain(((RemoveDataDomainEvent) event).getDataDomainID());
+			handler.removeDataDomain(((RemoveDataDomainEvent) event).getEventSpace());
 		}
 
 	}

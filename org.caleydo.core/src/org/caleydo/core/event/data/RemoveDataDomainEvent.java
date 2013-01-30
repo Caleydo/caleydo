@@ -25,7 +25,7 @@ import org.caleydo.core.event.AEvent;
 public class RemoveDataDomainEvent extends AEvent {
 	public RemoveDataDomainEvent(Object sender, IDataDomain dataDomain) {
 		this.setSender(sender);
-		this.setDataDomainID(dataDomain.getDataDomainID());
+		this.setEventSpace(dataDomain.getDataDomainID());
 	}
 
 	@Override

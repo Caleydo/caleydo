@@ -30,7 +30,7 @@ public class PasteGroupsItem extends AContextMenuItem {
 
 		PasteGroupsEvent event = new PasteGroupsEvent(parentGroupID);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		registerEvent(event);
 	}
 }

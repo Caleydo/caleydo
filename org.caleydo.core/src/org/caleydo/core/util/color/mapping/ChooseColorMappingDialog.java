@@ -86,11 +86,11 @@ public class ChooseColorMappingDialog extends Dialog implements IDataOKListener 
 							.getEventPublisher();
 
 					RedrawViewEvent redrawEvent = new RedrawViewEvent();
-					redrawEvent.setDataDomainID(dataDomain.getDataDomainID());
+					redrawEvent.setEventSpace(dataDomain.getDataDomainID());
 					eventPublisher.triggerEvent(redrawEvent);
 
 					UpdateColorMappingEvent event = new UpdateColorMappingEvent();
-					event.setDataDomainID(dataDomain.getDataDomainID());
+					event.setEventSpace(dataDomain.getDataDomainID());
 					// event.setSender(this);
 					eventPublisher.triggerEvent(event);
 				}

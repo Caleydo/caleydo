@@ -431,7 +431,7 @@ public class StratomexAdapter {
 		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), strat
 				.getIdType(),
 				this.previewSelectionType, receiver, this);
-		event.setDataDomainID(strat.getDataDomain().getDataDomainID());
+		event.setEventSpace(strat.getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
 
@@ -440,7 +440,7 @@ public class StratomexAdapter {
 
 		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
 				this.previewSelectionType, receiver, this);
-		event.setDataDomainID(new_.getDataDomain().getDataDomainID());
+		event.setEventSpace(new_.getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
 

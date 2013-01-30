@@ -15,7 +15,7 @@ public class CreateClusteringEvent extends AEvent {
 	}
 
 	public CreateClusteringEvent(ATableBasedDataDomain dataDomain, boolean isDimensionClustering) {
-		this.setDataDomainID(dataDomain.getDataDomainID());
+		this.setEventSpace(dataDomain.getDataDomainID());
 		this.isDimensionClustering = isDimensionClustering;
 	}
 

@@ -33,7 +33,7 @@ public class ReplacePerspectiveListener
 		if (event instanceof ReplacePerspectiveEvent) {
 			ReplacePerspectiveEvent replaceEvent = ((ReplacePerspectiveEvent) event);
 
-			handler.replacePerspective(replaceEvent.getDataDomainID(), replaceEvent.getPerspectiveID(),
+			handler.replacePerspective(replaceEvent.getEventSpace(), replaceEvent.getPerspectiveID(),
 				replaceEvent.getPerspectiveInitializationData());
 		}
 	}

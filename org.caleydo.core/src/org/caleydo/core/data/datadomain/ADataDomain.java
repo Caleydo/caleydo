@@ -206,10 +206,10 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 		AEventListener<ADataDomain> removeListener = new AEventListener<ADataDomain>() {
 			@Override
 			public void handleEvent(AEvent event) {
-				if (event instanceof RemoveDataDomainEvent && event.getDataDomainID().equals(this.getDataDomainID()))
+				if (event instanceof RemoveDataDomainEvent && event.getEventSpace().equals(this.getEventSpace()))
 					removeMe();
 			}
-		}.setExclusiveDataDomainID(dataDomainID).setHandler(this);
+		}.setExclusiveEventSpace(dataDomainID).setHandler(this);
 		listeners.register(RemoveDataDomainEvent.class, removeListener);
 		listeners.register(AskRemoveDataDomainEvent.class, new AskRemoveDataDomainEventListener(this));
 	}

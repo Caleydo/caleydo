@@ -24,7 +24,8 @@ public class PathwayRemoteViewCreator implements IRemoteViewCreator {
 	}
 
 	@Override
-	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives) {
+	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace) {
 
 		GLPathway pathwayView = (GLPathway) GeneralManager
 				.get()
@@ -44,6 +45,7 @@ public class PathwayRemoteViewCreator implements IRemoteViewCreator {
 			pathwayView.setDataDomain(tablePerspective.getDataDomain());
 			pathwayView.setTablePerspective(tablePerspective);
 		}
+		pathwayView.setPathwayPathEventSpace(embeddingEventSpace);
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
 

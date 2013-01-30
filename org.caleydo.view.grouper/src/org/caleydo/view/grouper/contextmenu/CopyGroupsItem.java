@@ -32,7 +32,7 @@ public class CopyGroupsItem extends AContextMenuItem {
 
 		CopyGroupsEvent event = new CopyGroupsEvent(setGroupsToCopy);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		registerEvent(event);
 	}
 }

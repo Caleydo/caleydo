@@ -354,7 +354,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
 			event.setSender(this);
-			event.setDataDomainID(dataDomain.getDataDomainID());
+			event.setEventSpace(dataDomain.getDataDomainID());
 			eventPublisher.triggerEvent(event);
 
 			setDisplayListDirty();
@@ -429,7 +429,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setEventSpace(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 

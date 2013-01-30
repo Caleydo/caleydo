@@ -37,7 +37,7 @@ public class DimensionVAUpdateEvent
 	}
 
 	public DimensionVAUpdateEvent(String dataDomainID, String perspectiveID, Object sender) {
-		setDataDomainID(dataDomainID);
+		setEventSpace(dataDomainID);
 		setPerspectiveID(perspectiveID);
 		setSender(sender);
 	}

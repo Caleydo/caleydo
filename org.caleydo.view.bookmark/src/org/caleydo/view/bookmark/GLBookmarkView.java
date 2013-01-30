@@ -239,7 +239,7 @@ public class GLBookmarkView extends ATableBasedView {
 	 */
 	public <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
 
-		if (dataDomain.getDataDomainID() != event.getDataDomainID())
+		if (dataDomain.getDataDomainID() != event.getEventSpace())
 			return;
 
 		ABookmarkContainer container = hashCategoryToBookmarkContainer.get(event.getIDType().getIDCategory());

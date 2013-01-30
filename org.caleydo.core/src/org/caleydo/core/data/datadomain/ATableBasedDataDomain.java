@@ -612,14 +612,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 			RecordVAUpdateEvent event = new RecordVAUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainID(dataDomainID);
+			event.setEventSpace(dataDomainID);
 			event.setPerspectiveID(perspectiveID);
 			eventPublisher.triggerEvent(event);
 		} else if (table.getDimensionPerspective(perspectiveID) != null) {
 			table.getDimensionPerspective(perspectiveID).init(data);
 
 			DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
-			event.setDataDomainID(dataDomainID);
+			event.setEventSpace(dataDomainID);
 			event.setSender(this);
 			event.setPerspectiveID(perspectiveID);
 			eventPublisher.triggerEvent(event);
@@ -826,27 +826,27 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		super.registerEventListeners();
 		SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomainID);
+		selectionUpdateListener.setExclusiveEventSpace(dataDomainID);
 		listeners.register(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		SelectionCommandListener selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainID(dataDomainID);
+		selectionCommandListener.setEventSpace(dataDomainID);
 		listeners.register(SelectionCommandEvent.class, selectionCommandListener);
 
 		StartClusteringListener startClusteringListener = new StartClusteringListener();
 		startClusteringListener.setHandler(this);
-		startClusteringListener.setDataDomainID(dataDomainID);
+		startClusteringListener.setEventSpace(dataDomainID);
 		listeners.register(StartClusteringEvent.class, startClusteringListener);
 
 		VADeltaListener vADeltaListener = new VADeltaListener();
 		vADeltaListener.setHandler(this);
-		vADeltaListener.setDataDomainID(dataDomainID);
+		vADeltaListener.setEventSpace(dataDomainID);
 		listeners.register(VADeltaEvent.class, vADeltaListener);
 
 		ReplacePerspectiveListener replacePerspectiveListener = new ReplacePerspectiveListener();
 		replacePerspectiveListener.setHandler(this);
-		replacePerspectiveListener.setDataDomainID(dataDomainID);
+		replacePerspectiveListener.setEventSpace(dataDomainID);
 		listeners.register(ReplacePerspectiveEvent.class, replacePerspectiveListener);
 
 		AggregateGroupListener aggregateGroupListener = new AggregateGroupListener();

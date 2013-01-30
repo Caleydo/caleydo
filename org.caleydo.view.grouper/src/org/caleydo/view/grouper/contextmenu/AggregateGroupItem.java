@@ -38,7 +38,7 @@ public class AggregateGroupItem extends AContextMenuItem {
 
 		AggregateGroupEvent event = new AggregateGroupEvent(groups);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		registerEvent(event);
 	}
 }

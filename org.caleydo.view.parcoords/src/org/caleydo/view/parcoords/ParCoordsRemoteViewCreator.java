@@ -22,7 +22,8 @@ public class ParCoordsRemoteViewCreator implements IRemoteViewCreator {
 	}
 
 	@Override
-	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives) {
+	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace) {
 
 		GLParallelCoordinates parCoords = (GLParallelCoordinates) GeneralManager
 				.get()

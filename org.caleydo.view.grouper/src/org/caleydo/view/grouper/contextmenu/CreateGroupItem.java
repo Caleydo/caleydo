@@ -31,7 +31,7 @@ public class CreateGroupItem extends AContextMenuItem {
 
 		CreateGroupEvent event = new CreateGroupEvent(setContainedGroups);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		registerEvent(event);
 	}
 }

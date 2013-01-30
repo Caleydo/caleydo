@@ -167,7 +167,7 @@ public class FilterItem implements IRenderable, IDropArea {
 		filterEvent.setFilter(filter);
 
 		if (filterEvent != null) {
-			filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
+			filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 		}
 	}
@@ -178,7 +178,7 @@ public class FilterItem implements IRenderable, IDropArea {
 		filterEvent = new MoveFilterEvent();
 		filterEvent.setFilter(filter);
 
-		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
+		filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 		filterEvent.setOffset(offset);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 
@@ -224,7 +224,7 @@ public class FilterItem implements IRenderable, IDropArea {
 		filterEvent.addCombineFilter(getFilterRepresentation(draggables).getFilter().filter);
 
 		if (filterEvent != null) {
-			filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
+			filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 		}
 	}

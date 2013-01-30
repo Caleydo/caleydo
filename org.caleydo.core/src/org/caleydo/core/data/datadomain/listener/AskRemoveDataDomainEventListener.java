@@ -22,7 +22,7 @@ public class AskRemoveDataDomainEventListener extends AEventListener<ADataDomain
 
 	public AskRemoveDataDomainEventListener(ADataDomain dataDomain) {
 		setHandler(dataDomain);
-		setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		setExclusiveEventSpace(dataDomain.getDataDomainID());
 	}
 	@Override
 	public void handleEvent(AEvent event) {

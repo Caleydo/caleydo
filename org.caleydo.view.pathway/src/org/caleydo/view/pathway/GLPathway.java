@@ -132,6 +132,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	public static String VIEW_NAME = "Pathway";
 
+	public static final String DEFAULT_PATHWAY_PATH_EVENT_SPACE = "pathwayPath";
+
 	private GeneticDataDomain dataDomain;
 
 	private TablePerspective tablePerspective;
@@ -215,6 +217,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	private boolean isPathSelectionMode = false;
 	private SelectPathAction selectPathAction = null;
+
+	/**
+	 * Event space for events that synchronize a pathway path.
+	 */
+	private String pathwayPathEventSpace = DEFAULT_PATHWAY_PATH_EVENT_SPACE;
 
 	/**
 	 * Constructor.
@@ -428,7 +435,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 						LoadPathwayEvent event = new LoadPathwayEvent();
 						event.setSender(this);
 						event.setPathwayID(pathway.getID());
-						event.setDataDomainID(dataDomain.getDataDomainID());
+						event.setEventSpace(dataDomain.getDataDomainID());
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
 				} else {
@@ -604,7 +611,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	@Override
 	public void displayRemote(final GL2 gl) {
-
+		processEvents();
 		display(gl);
 
 	}
@@ -1139,7 +1146,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		VADeltaEvent virtualArrayDeltaEvent = new VADeltaEvent();
 		virtualArrayDeltaEvent.setSender(this);
-		virtualArrayDeltaEvent.setDataDomainID(dataDomain.getDataDomainID());
+		virtualArrayDeltaEvent.setEventSpace(dataDomain.getDataDomainID());
 		virtualArrayDeltaEvent.setVirtualArrayDelta(delta);
 		virtualArrayDeltaEvent.setInfo(VIEW_NAME);
 		eventPublisher.triggerEvent(virtualArrayDeltaEvent);
@@ -1171,8 +1178,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		enableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
 
-
 		enRoutePathEventListener = new EnRoutePathEventListener();
+		enRoutePathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
 		enRoutePathEventListener.setHandler(this);
 		eventPublisher.addListener(EnRoutePathEvent.class, enRoutePathEventListener);
 
@@ -1210,7 +1217,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			eventPublisher.removeListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
 			enableGeneMappingListener = null;
 		}
-
 
 		if (enRoutePathEventListener != null) {
 			eventPublisher.removeListener(enRoutePathEventListener);
@@ -1290,8 +1296,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public boolean isDataView() {
 		return true;
 	}
-
-
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
@@ -1580,6 +1584,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		EnRoutePathEvent pathEvent = new EnRoutePathEvent();
 		pathEvent.setPath(new PathwayPath(selectedPath));
 		pathEvent.setSender(this);
+		pathEvent.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.triggerEvent(pathEvent);
 	}
 
@@ -1702,6 +1707,21 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	@Override
 	public void updateColorMapping() {
 		setDisplayListDirty();
+	}
+
+	/**
+	 * @param pathwayPathEventSpace
+	 *            setter, see {@link pathwayPathEventSpace}
+	 */
+	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
+		this.pathwayPathEventSpace = pathwayPathEventSpace;
+	}
+
+	/**
+	 * @return the pathwayPathEventSpace, see {@link #pathwayPathEventSpace}
+	 */
+	public String getPathwayPathEventSpace() {
+		return pathwayPathEventSpace;
 	}
 
 }

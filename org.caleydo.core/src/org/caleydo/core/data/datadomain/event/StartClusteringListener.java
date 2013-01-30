@@ -31,7 +31,7 @@ public class StartClusteringListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof StartClusteringEvent) {
 			StartClusteringEvent startClusteringEvent = (StartClusteringEvent) event;
-			if (handler.getDataDomainID() == startClusteringEvent.getDataDomainID())
+			if (handler.getDataDomainID() == startClusteringEvent.getEventSpace())
 				handler.startClustering(startClusteringEvent.getClusteConfiguration());
 		}
 	}

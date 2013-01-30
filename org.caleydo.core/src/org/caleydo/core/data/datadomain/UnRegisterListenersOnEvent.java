@@ -32,7 +32,7 @@ import org.caleydo.core.event.IListenerOwner;
 public class UnRegisterListenersOnEvent extends AEventListener<IListenerOwner> {
 	public UnRegisterListenersOnEvent(IListenerOwner handler, IDataDomain dataDomain) {
 		setHandler(handler);
-		setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		setExclusiveEventSpace(dataDomain.getDataDomainID());
 	}
 	@Override
 	public void handleEvent(AEvent event) {

@@ -225,7 +225,7 @@ abstract class ABookmarkContainer
 			SelectionDelta selectionDelta = selectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainID(manager.getDataDomain().getDataDomainID());
+			event.setEventSpace(manager.getDataDomain().getDataDomainID());
 			event.setSelectionDelta(selectionDelta);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 			break;

@@ -297,7 +297,7 @@ public class DataDomainQueryUI extends Column {
 
 	@ListenTo
 	void onRemoveDataDomain(final RemoveDataDomainEvent event) {
-		final String id = event.getDataDomainID();
+		final String id = event.getEventSpace();
 		// remove selection
 		query.removeSelection(id);
 		// remove filter

@@ -40,7 +40,7 @@ public class RecordVAUpdateEvent
 	}
 
 	public RecordVAUpdateEvent(String dataDomainID, String perspectiveID, Object sender) {
-		setDataDomainID(dataDomainID);
+		setEventSpace(dataDomainID);
 		setPerspectiveID(perspectiveID);
 		setSender(sender);
 	}

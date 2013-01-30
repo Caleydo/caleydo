@@ -72,7 +72,7 @@ public class ActivateViewListener
 						continue;
 					ASerializedView serView = ((CaleydoRCPViewPart) viewPart).getSerializedView();
 
-					if (event.getDataDomainID().equals(
+					if (event.getEventSpace().equals(
 						((ASerializedSingleTablePerspectiveBasedView) serView).getDataDomainID())
 						&& serView.getViewType().equals(viewType)) {
 						viewExists = true;

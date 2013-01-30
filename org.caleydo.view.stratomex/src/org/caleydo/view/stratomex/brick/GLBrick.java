@@ -399,7 +399,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setDataDomainID(getDataDomain().getDataDomainID());
+		event.setEventSpace(getDataDomain().getDataDomainID());
 		event.setSender(this);
 		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
@@ -814,7 +814,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				tablePerspectiveSelectionManager.addToType(currentSelectionType, tablePerspective.getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setDataDomainID(getDataDomain().getDataDomainID());
+				event.setEventSpace(getDataDomain().getDataDomainID());
 				event.setSender(this);
 				SelectionDelta delta = tablePerspectiveSelectionManager.getDelta();
 				event.setSelectionDelta(delta);
@@ -828,7 +828,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 							.getRecordGroup().getID());
 
 					event = new SelectionUpdateEvent();
-					event.setDataDomainID(getDataDomain().getDataDomainID());
+					event.setEventSpace(getDataDomain().getDataDomainID());
 					event.setSender(this);
 					delta = recordGroupSelectionManager.getDelta();
 					event.setSelectionDelta(delta);

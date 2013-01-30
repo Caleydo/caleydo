@@ -74,5 +74,23 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.enroute">
+         <ParentView
+               viewID="org.caleydo.view.subgraph">
+            <Embedding
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
+                  icon="resources/icons/enroute.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.enroute.enRouteVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.enroute.enRouteViewCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
 
 </plugin>

@@ -307,7 +307,7 @@ public class GLTreeMap extends ATableBasedView {
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setEventSpace(dataDomain.getDataDomainID());
 		event.setSelectionDelta(delta);
 		eventPublisher.triggerEvent(event);
 
@@ -324,7 +324,7 @@ public class GLTreeMap extends ATableBasedView {
 		}
 		SelectionUpdateEvent leafEvent = new SelectionUpdateEvent();
 		leafEvent.setSender(this);
-		leafEvent.setDataDomainID(dataDomain.getDataDomainID());
+		leafEvent.setEventSpace(dataDomain.getDataDomainID());
 
 		leafEvent.setSelectionDelta(newDelta);
 		eventPublisher.triggerEvent(leafEvent);
@@ -496,7 +496,7 @@ public class GLTreeMap extends ATableBasedView {
 				levelHighlightingListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
+		selectionUpdateListener.setEventSpace(dataDomain.getDataDomainID());
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 

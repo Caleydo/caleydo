@@ -120,12 +120,19 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		protected final String embeddingID;
 
 		/**
+		 * Event space that shall be used for events that only a restricted set of receivers in the embedding should
+		 * get.
+		 */
+		protected final String embeddingEventSpace;
+
+		/**
 		 * Table perspectives that shall be displayed by the view or renderer.
 		 */
 		protected final List<TablePerspective> tablePerspectives;
 
 		protected ARendererInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo,
-				String pluginViewID, String parentID, String embeddingID, List<TablePerspective> tablePerspectives) {
+				String pluginViewID, String parentID, String embeddingID, List<TablePerspective> tablePerspectives,
+				String embeddingEventSpace) {
 			this.rendererID = rendererID;
 			this.iconPath = iconPath;
 			this.visInfo = visInfo;
@@ -133,6 +140,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			this.parentID = parentID;
 			this.embeddingID = embeddingID;
 			this.tablePerspectives = tablePerspectives;
+			this.embeddingEventSpace = embeddingEventSpace;
 		}
 
 		/**
@@ -167,12 +175,14 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		private boolean isInitialized = false;
 
 		protected ViewInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo, String pluginViewID,
-				String parentID, String embeddingID, List<TablePerspective> tablePerspectives) {
-			super(rendererID, iconPath, visInfo, pluginViewID, parentID, embeddingID, tablePerspectives);
+				String parentID, String embeddingID, List<TablePerspective> tablePerspectives,
+				String embeddingEventSpace) {
+			super(rendererID, iconPath, visInfo, pluginViewID, parentID, embeddingID, tablePerspectives,
+					embeddingEventSpace);
 		}
 
 		protected ViewInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo, AGLView view) {
-			super(rendererID, iconPath, visInfo, null, null, null, null);
+			super(rendererID, iconPath, visInfo, null, null, null, null, null);
 			this.view = view;
 		}
 
@@ -197,7 +207,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		@Override
 		void create() {
 			view = ViewManager.get().createRemotePlugInView(pluginViewID, parentID, embeddingID, remoteRenderingView,
-					tablePerspectives);
+					tablePerspectives, embeddingEventSpace);
 		}
 
 	}
@@ -216,13 +226,15 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 
 		protected LayoutRendererInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo,
 				ALayoutRenderer renderer) {
-			super(rendererID, iconPath, visInfo, null, null, null, null);
+			super(rendererID, iconPath, visInfo, null, null, null, null, null);
 			this.renderer = renderer;
 		}
 
 		protected LayoutRendererInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo,
-				String pluginViewID, String parentID, String embeddingID, List<TablePerspective> tablePerspectives) {
-			super(rendererID, iconPath, visInfo, pluginViewID, parentID, embeddingID, tablePerspectives);
+				String pluginViewID, String parentID, String embeddingID, List<TablePerspective> tablePerspectives,
+				String embeddingEventSpace) {
+			super(rendererID, iconPath, visInfo, pluginViewID, parentID, embeddingID, tablePerspectives,
+					embeddingEventSpace);
 		}
 
 		@Override
@@ -240,7 +252,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		@Override
 		void create() {
 			renderer = ViewManager.get().createRemotePlugInRenderer(pluginViewID, parentID, embeddingID,
-					remoteRenderingView, tablePerspectives);
+					remoteRenderingView, tablePerspectives, embeddingEventSpace);
 		}
 	}
 
@@ -264,11 +276,15 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	 *            List of tablePerspectives that shall be displayed in the renderer. If the renderer only supports a
 	 *            single table perspective, only one, typically the first of the list is used (this depends on the
 	 *            implementation of {@link IRemoteViewCreator} and {@link IRemoteRendererCreator}).
+	 * @param embeddingEventSpace
+	 *            Event space that shall be used by the renderer to send events that should only be got by a restricted
+	 *            set of receivers. For example, adding all renderers to this {@link MultiFormRenderer} using the same
+	 *            event space can be used to synchronize only these renderers.
 	 * @return Identifier for the currently added renderer that can be used to set it active ({@link #setActive(int)})
 	 *         or remove.
 	 */
 	public int addPluginVisualization(String id, String parentID, String embeddingID,
-			List<TablePerspective> tablePerspectives) {
+			List<TablePerspective> tablePerspectives, String embeddingEventSpace) {
 
 		String iconPath = ViewManager.get().getRemotePlugInViewIcon(id, remoteRenderingView.getViewType(), embeddingID);
 		if (iconPath == null) {
@@ -283,9 +299,11 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 		ARendererInfo info = null;
 
 		if (isView) {
-			info = new ViewInfo(rendererID, iconPath, visInfo, id, parentID, embeddingID, tablePerspectives);
+			info = new ViewInfo(rendererID, iconPath, visInfo, id, parentID, embeddingID, tablePerspectives,
+					embeddingEventSpace);
 		} else {
-			info = new LayoutRendererInfo(rendererID, iconPath, visInfo, id, parentID, embeddingID, tablePerspectives);
+			info = new LayoutRendererInfo(rendererID, iconPath, visInfo, id, parentID, embeddingID, tablePerspectives,
+					embeddingEventSpace);
 		}
 
 		if (!isLazyViewCreation) {

@@ -32,7 +32,7 @@ public class DeleteGroupsItem extends AContextMenuItem {
 
 		DeleteGroupsEvent event = new DeleteGroupsEvent(setGroupsToDelete);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		registerEvent(event);
 	}
 }

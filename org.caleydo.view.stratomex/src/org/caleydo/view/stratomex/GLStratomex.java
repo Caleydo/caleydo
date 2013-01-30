@@ -1498,7 +1498,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		// however, if we don't send it, we don't see the selection in the
 		// selection info view. to fix this, we need to redesign the selection
 		// info view.
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		eventPublisher.triggerEvent(event);
 
 		updateConnectionLinesBetweenColumns();

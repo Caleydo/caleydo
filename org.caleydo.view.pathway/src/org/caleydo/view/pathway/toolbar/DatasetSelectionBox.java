@@ -99,7 +99,7 @@ public class DatasetSelectionBox
 						TablePerspective tablePerspective = null;
 						if (dataSetChooser.getSelectionIndex() != 0) {
 							GeneticDataDomain dataDomain = candidateDataDomains.get(dataSetChooser.getSelectionIndex() - 1);
-							addTablePerspectivesEvent.setDataDomainID(dataDomain.getDataDomainID());
+							addTablePerspectivesEvent.setEventSpace(dataDomain.getDataDomainID());
 							tablePerspective = dataDomain.getDefaultTablePerspective();
 							tablePerspective.setPrivate(false);
 

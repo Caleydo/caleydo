@@ -23,7 +23,7 @@ public class CreateClusteringEventListener extends AEventListener<ATableBasedDat
 
 	public CreateClusteringEventListener(ATableBasedDataDomain dataDomain) {
 		setHandler(dataDomain);
-		setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		setExclusiveEventSpace(dataDomain.getDataDomainID());
 	}
 
 	@Override

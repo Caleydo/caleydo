@@ -20,7 +20,7 @@ public class LoadGroupingEventListener extends AEventListener<ATableBasedDataDom
 
 	public LoadGroupingEventListener(ATableBasedDataDomain dataDomain) {
 		setHandler(dataDomain);
-		setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		setExclusiveEventSpace(dataDomain.getDataDomainID());
 	}
 	@Override
 	public void handleEvent(AEvent event) {

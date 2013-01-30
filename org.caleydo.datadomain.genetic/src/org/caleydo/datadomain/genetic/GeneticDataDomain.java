@@ -172,17 +172,17 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		clinicalReplaceContentVirtualArrayListener = new ReplacePerspectiveListener();
 		clinicalReplaceContentVirtualArrayListener.setHandler(this);
-		clinicalReplaceContentVirtualArrayListener.setExclusiveDataDomainID(clinicalDataDomainID);
+		clinicalReplaceContentVirtualArrayListener.setExclusiveEventSpace(clinicalDataDomainID);
 		eventPublisher.addListener(ReplacePerspectiveEvent.class, clinicalReplaceContentVirtualArrayListener);
 
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
 		clinicalSelectionUpdateListener.setHandler(this);
-		clinicalSelectionUpdateListener.setExclusiveDataDomainID(clinicalDataDomainID);
+		clinicalSelectionUpdateListener.setExclusiveEventSpace(clinicalDataDomainID);
 		eventPublisher.addListener(SelectionUpdateEvent.class, clinicalSelectionUpdateListener);
 
 		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
 		clinicalSelectionCommandListener.setHandler(this);
-		clinicalSelectionCommandListener.setDataDomainID(clinicalDataDomainID);
+		clinicalSelectionCommandListener.setEventSpace(clinicalDataDomainID);
 		eventPublisher.addListener(SelectionCommandEvent.class, clinicalSelectionCommandListener);
 	}
 
@@ -216,7 +216,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		if (delta.getIDType() == dimensionIDType) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
-			resendEvent.setDataDomainID(this.dataDomainID);
+			resendEvent.setEventSpace(this.dataDomainID);
 
 			SelectionDelta convertedDelta = new SelectionDelta(delta.getIDType());
 			for (SelectionDeltaItem item : delta) {
@@ -300,7 +300,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.setIDCategory(idCategory);
-			newCommandEvent.setDataDomainID(dataDomainType);
+			newCommandEvent.setEventSpace(dataDomainType);
 			eventPublisher.triggerEvent(newCommandEvent);
 		}
 	}

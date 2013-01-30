@@ -43,7 +43,7 @@ public class BookmarkMenuItem
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
 		event.addBookmark(id);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		registerEvent(event);
 	}
 
@@ -55,7 +55,7 @@ public class BookmarkMenuItem
 
 		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		for (Integer id : ids)
 			event.addBookmark(id);
 		registerEvent(event);

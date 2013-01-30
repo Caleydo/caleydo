@@ -163,7 +163,7 @@ public class PathwaySearchBox extends ControlContribution {
 		event.setPathwayID(pathway.getID());
 
 		if (glPathwayView.getDataDomain() != null)
-			event.setDataDomainID(glPathwayView.getDataDomain().getDataDomainID());
+			event.setEventSpace(glPathwayView.getDataDomain().getDataDomainID());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		ChangeURLEvent changeURLEvent = new ChangeURLEvent();

@@ -1199,7 +1199,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 	private void triggerSelectionUpdate() {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
+		selectionUpdateEvent.setEventSpace(dataDomain.getDataDomainID());
 		selectionUpdateEvent.setSelectionDelta(recordSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
@@ -1504,7 +1504,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			prepareVisualLinkingInformation(selectionDelta);
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainID(dataDomain.getDataDomainID());
+			event.setEventSpace(dataDomain.getDataDomainID());
 			event.setSelectionDelta(selectionDelta);
 			eventPublisher.triggerEvent(event);
 		}
@@ -1528,7 +1528,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		// }
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setEventSpace(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 		setDisplayListDirty();
@@ -1545,7 +1545,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		NewFilterEvent filterEvent = new NewFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
-		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
+		filterEvent.setEventSpace(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(filterEvent);
 	}
@@ -1560,7 +1560,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		NewFilterEvent filterEvent = new NewFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
-		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
+		filterEvent.setEventSpace(dataDomain.getDataDomainID());
 
 		eventPublisher.triggerEvent(filterEvent);
 	}

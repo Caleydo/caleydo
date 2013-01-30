@@ -356,7 +356,7 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 		// if (clusterState != null && set != null)
 
 		event = new StartClusteringEvent(clusterConfiguration);
-		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setEventSpace(dataDomain.getDataDomainID());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		super.okPressed();

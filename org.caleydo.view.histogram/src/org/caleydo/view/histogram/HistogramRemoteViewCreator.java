@@ -20,7 +20,8 @@ public class HistogramRemoteViewCreator implements IRemoteViewCreator {
 	}
 
 	@Override
-	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives) {
+	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace) {
 		GLHistogram histogramView = (GLHistogram) GeneralManager
 				.get()
 				.getViewManager()

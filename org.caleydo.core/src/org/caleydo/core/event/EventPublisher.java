@@ -23,12 +23,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * EventPublishers are the central event distributing entities. {@link IEventListener}s with their related
- * {@link AEvent}s are registered to instances of this class. When an event is triggered, the handleEvent()
- * method to registered listeners are invoked.
+ * {@link AEvent}s are registered to instances of this class. When an event is triggered, the handleEvent() method to
+ * registered listeners are invoked.
  *
  * @author Marc Streit
  * @author Alexander Lex
@@ -38,6 +40,16 @@ public class EventPublisher {
 
 	/** map of events (=key) to the listeners (=value, a collection of listeners) registered to it */
 	private final ListenerMap listenerMap = new ListenerMap();
+
+	/**
+	 * Set that contains all event spaces that have ever been created or used by listeners.
+	 */
+	private final Set<String> eventSpaces = new HashSet<>();
+
+	/**
+	 * Number of the last event space that was created using {@link #createUniqueEventSpace()}.
+	 */
+	private int lastCreatedEventSpaceNumber = 0;
 
 	/**
 	 * adds a receiver to the list of event handlers
@@ -54,13 +66,26 @@ public class EventPublisher {
 			allListeners = new HashMap<String, Collection<AEventListener<?>>>();
 			listenerMap.put(eventClass, allListeners);
 		}
-		Collection<AEventListener<?>> domainSpecificListeners = allListeners.get(listener.getDataDomainID());
-		if (domainSpecificListeners == null) {
-			domainSpecificListeners = new ArrayList<AEventListener<?>>();
-			allListeners.put(listener.getDataDomainID(), domainSpecificListeners);
+		String eventSpace = listener.getEventSpace();
+		eventSpaces.add(eventSpace);
+		Collection<AEventListener<?>> eventSpaceSpecificListeners = allListeners.get(eventSpace);
+		if (eventSpaceSpecificListeners == null) {
+			eventSpaceSpecificListeners = new ArrayList<AEventListener<?>>();
+			allListeners.put(eventSpace, eventSpaceSpecificListeners);
 		}
 
-		domainSpecificListeners.add(listener);
+		eventSpaceSpecificListeners.add(listener);
+	}
+
+	/**
+	 * @return A event space that has not been created or used by a listener before.
+	 */
+	public synchronized String createUniqueEventSpace() {
+		String eventSpace;
+		do {
+			eventSpace = "eventspace_" + lastCreatedEventSpaceNumber++;
+		} while (eventSpaces.contains(eventSpace));
+		return eventSpace;
 	}
 
 	/**
@@ -72,7 +97,7 @@ public class EventPublisher {
 	 *            IMediatorReceiver to handle events
 	 */
 	public synchronized void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
-		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass).get(listener.getDataDomainID());
+		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass).get(listener.getEventSpace());
 		listeners.remove(listener);
 	}
 
@@ -85,7 +110,7 @@ public class EventPublisher {
 	public synchronized void removeListener(AEventListener<?> listener) {
 		for (HashMap<String, Collection<AEventListener<?>>> allListeners : listenerMap.values()) {
 
-			Collection<AEventListener<?>> listeners = allListeners.get(listener.getDataDomainID());
+			Collection<AEventListener<?>> listeners = allListeners.get(listener.getEventSpace());
 			if (listeners == null)
 				continue;
 			listeners.remove(listener);
@@ -93,8 +118,8 @@ public class EventPublisher {
 	}
 
 	/**
-	 * Central event handling and distribution method. The prohibition of sending events back to its sender is
-	 * done within {@link AEventListener}. Furthermore an integrity check is performed.
+	 * Central event handling and distribution method. The prohibition of sending events back to its sender is done
+	 * within {@link AEventListener}. Furthermore an integrity check is performed.
 	 *
 	 * @param event
 	 *            event to distribute to the listeners
@@ -104,16 +129,15 @@ public class EventPublisher {
 			throw new IllegalStateException("Event " + event + " has failed integrity check");
 		}
 
-		HashMap<String, Collection<AEventListener<?>>> dataDomainToListenersMap =
-			listenerMap.get(event.getClass());
-		if (dataDomainToListenersMap == null)
+		HashMap<String, Collection<AEventListener<?>>> eventSpaceToListenersMap = listenerMap.get(event.getClass());
+		if (eventSpaceToListenersMap == null)
 			return;
-		// we also want to notify those listeners that did not register for a dataDomain
-		triggerEvents(event, dataDomainToListenersMap.get(null));
-		// if the data domain is specified in the event we call those listeners now
-		String dataDomainID = event.getDataDomainID();
-		if (dataDomainID != null)
-			triggerEvents(event, dataDomainToListenersMap.get(dataDomainID));
+		// we also want to notify those listeners that did not register for an event space
+		triggerEvents(event, eventSpaceToListenersMap.get(null));
+		// if the event space is specified in the event we call those listeners now
+		String eventSpace = event.getEventSpace();
+		if (eventSpace != null)
+			triggerEvents(event, eventSpaceToListenersMap.get(eventSpace));
 		// Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass()).get();
 
 	}
@@ -127,7 +151,7 @@ public class EventPublisher {
 		while (!tmp.isEmpty()) {
 			AEventListener<?> receiver = tmp.pollFirst();
 			// check if a receiver wants events that are not if his data domain
-			if (event.getDataDomainID() == null && receiver.isExclusiveDataDomain()) {
+			if (event.getEventSpace() == null && receiver.isExclusiveEventSpace()) {
 			} else
 				receiver.queueEvent(event);
 		}

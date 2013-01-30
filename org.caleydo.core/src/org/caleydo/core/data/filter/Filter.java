@@ -139,7 +139,7 @@ public class Filter {
 			NewFilterEvent filterEvent = new NewFilterEvent();
 			filterEvent.setFilter(this);
 			filterEvent.setSender(this);
-			filterEvent.setDataDomainID(dataDomain.getDataDomainID());
+			filterEvent.setEventSpace(dataDomain.getDataDomainID());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 
@@ -149,7 +149,7 @@ public class Filter {
 			ReEvaluateFilterListEvent reevaluateEvent = new ReEvaluateFilterListEvent();
 			// reevaluateEvent.addFilter(filter);
 			reevaluateEvent.setSender(this);
-			reevaluateEvent.setDataDomainID(dataDomain.getDataDomainID());
+			reevaluateEvent.setEventSpace(dataDomain.getDataDomainID());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(reevaluateEvent);
 		}

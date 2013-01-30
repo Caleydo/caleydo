@@ -160,7 +160,7 @@ public class VisLinkManager extends ADisplayLoopEventHandler implements IViewCom
 		SelectionDeltaItem sdi = sd.addSelection(destId, SelectionType.MOUSE_OVER);
 		sdi.addConnectionID(885);
 		SelectionUpdateEvent sue = new SelectionUpdateEvent();
-		sue.setDataDomainID(dataDomain.getDataDomainID());
+		sue.setEventSpace(dataDomain.getDataDomainID());
 		sue.setSelectionDelta(sd);
 		sue.setSender(this);
 		eventPublisher.triggerEvent(sue);

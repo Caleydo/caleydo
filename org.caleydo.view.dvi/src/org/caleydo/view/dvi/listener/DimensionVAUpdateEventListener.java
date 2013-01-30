@@ -25,7 +25,7 @@ public class DimensionVAUpdateEventListener extends AEventListener<GLDataViewInt
 		if (event instanceof DimensionVAUpdateEvent) {
 			DimensionVAUpdateEvent virtualArrayUpdateEvent = (DimensionVAUpdateEvent) event;
 			IDataDomain datadomain = DataDomainManager.get().getDataDomainByID(
-					virtualArrayUpdateEvent.getDataDomainID());
+					virtualArrayUpdateEvent.getEventSpace());
 			handler.updateDataDomain(datadomain);
 		}
 

@@ -83,11 +83,11 @@ public class EventListenerManager {
 	 *           and register an event listener for calling this method
 	 *
 	 * @param listener
-	 * @param dataDomainID
-	 *            if {@link ListenTo#restrictToDataDomain()} or {@link ListenTo#restrictExclusiveToDataDomain()} is used
+	 * @param eventSpace
+	 *            if {@link ListenTo#restrictToEventSpace()} or {@link ListenTo#restrictExclusiveToEventSpace()} is used
 	 *            the dataDomainID to set
 	 */
-	public final void register(Object listener, String dataDomainID) {
+	public final void register(Object listener, String eventSpace) {
 		Class<?> clazz = listener.getClass();
 		while (clazz != null) {
 			for (Method m : clazz.getDeclaredMethods()) {
@@ -100,11 +100,11 @@ public class EventListenerManager {
 
 				final AnnotationBasedEventListener l = new AnnotationBasedEventListener(owner, listener, m, toMe);
 
-				if (dataDomainID != null && (a.restrictExclusiveToDataDomain() || a.restrictToDataDomain())) {
-					if (a.restrictExclusiveToDataDomain())
-						l.setExclusiveDataDomainID(dataDomainID);
+				if (eventSpace != null && (a.restrictExclusiveToEventSpace() || a.restrictToEventSpace())) {
+					if (a.restrictExclusiveToEventSpace())
+						l.setExclusiveEventSpace(eventSpace);
 					else
-						l.setDataDomainID(dataDomainID);
+						l.setEventSpace(eventSpace);
 				}
 
 				register(event, l);
@@ -160,9 +160,9 @@ public class EventListenerManager {
 		 */
 		boolean sendToMe() default false;
 
-		boolean restrictToDataDomain() default false;
+		boolean restrictToEventSpace() default false;
 
-		boolean restrictExclusiveToDataDomain() default false;
+		boolean restrictExclusiveToEventSpace() default false;
 	}
 
 	private static class AnnotationBasedEventListener extends AEventListener<IListenerOwner> {

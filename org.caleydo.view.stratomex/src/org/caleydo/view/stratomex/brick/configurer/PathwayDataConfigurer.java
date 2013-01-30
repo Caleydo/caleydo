@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -189,9 +190,10 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 
 		int globalRendererID = 0;
 		int localRendererID = -1;
+		String brickEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 		for (String viewID : remoteRenderedViewIDs) {
 			localRendererID = multiFormRenderer.addPluginVisualization(viewID, brick.getStratomex().getViewType(),
-					embeddingID.id(), tablePerspectives);
+					embeddingID.id(), tablePerspectives, brickEventSpace);
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 

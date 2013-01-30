@@ -120,22 +120,22 @@ public class FilterManager implements IListenerOwner {
 
 		removeDimensionFilterListener = new RemoveFilterListener();
 		removeDimensionFilterListener.setHandler(this);
-		removeDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		removeDimensionFilterListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RemoveFilterEvent.class, removeDimensionFilterListener);
 
 		moveDimensionFilterListener = new MoveFilterListener();
 		moveDimensionFilterListener.setHandler(this);
-		moveDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		moveDimensionFilterListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(MoveFilterEvent.class, moveDimensionFilterListener);
 
 		newDimensionFilterListener = new NewFilterListener();
 		newDimensionFilterListener.setHandler(this);
-		newDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		newDimensionFilterListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(NewFilterEvent.class, newDimensionFilterListener);
 
 		reEvaluateDimensionFilterListListener = new ReEvaluateFilterListListener();
 		reEvaluateDimensionFilterListListener.setHandler(this);
-		reEvaluateDimensionFilterListListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		reEvaluateDimensionFilterListListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(ReEvaluateFilterListEvent.class, reEvaluateDimensionFilterListListener);
 
 	}
@@ -244,7 +244,7 @@ public class FilterManager implements IListenerOwner {
 
 	private void triggerFilterUpdatedEvent() {
 		FilterUpdatedEvent event = new FilterUpdatedEvent();
-		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -266,7 +266,7 @@ public class FilterManager implements IListenerOwner {
 	protected void triggerVADeltaEvent(VirtualArrayDelta delta) {
 		VADeltaEvent event = new VADeltaEvent();
 		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setEventSpace(dataDomain.getDataDomainID());
 		event.setVirtualArrayDelta(delta);
 		eventPublisher.triggerEvent(event);
 	}

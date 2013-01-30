@@ -42,7 +42,8 @@ public class HeatMapRemoteViewCreator implements IRemoteViewCreator {
 	}
 
 	@Override
-	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives) {
+	public AGLView createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace) {
 		GLHeatMap heatMap = (GLHeatMap) GeneralManager
 				.get()
 				.getViewManager()

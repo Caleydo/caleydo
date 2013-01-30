@@ -80,12 +80,14 @@ import org.caleydo.view.enroute.node.BranchSummaryNode;
 import org.caleydo.view.enroute.node.ComplexNode;
 import org.caleydo.view.enroute.node.CompoundNode;
 import org.caleydo.view.enroute.node.GeneNode;
+import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
+
 /**
  * Main view class for the linearized pathway view.
  *
@@ -93,9 +95,8 @@ import org.jgrapht.graph.GraphPathImpl;
  * @author Alexander Lex
  */
 
-public class GLEnRoutePathway
-	extends AGLView
-	implements IMultiTablePerspectiveBasedView, IEventBasedSelectionManagerUser {
+public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveBasedView,
+		IEventBasedSelectionManagerUser {
 
 	public static String VIEW_TYPE = "org.caleydo.view.enroute";
 	public static String VIEW_NAME = "enRoute";
@@ -220,6 +221,8 @@ public class GLEnRoutePathway
 	private FitToViewWidthEventListener fitToViewWidthEventListener;
 
 	private int layoutDisplayListIndex = -1;
+
+	private String pathwayPathEventSpace = GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE;
 
 	/**
 	 * Constructor.
@@ -367,15 +370,13 @@ public class GLEnRoutePathway
 				}
 				complexNode.setPathwayVertexRep(currentVertexRep);
 				node = complexNode;
-			}
-			else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
+			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
 				CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this, lastNodeId++);
 
 				compoundNode.setPathwayVertexRep(currentVertexRep);
 				node = compoundNode;
 
-			}
-			else {
+			} else {
 
 				// TODO: Verify that this is also the right approach for
 				// enzymes and ortholog
@@ -383,8 +384,7 @@ public class GLEnRoutePathway
 				int commaIndex = currentVertexRep.getName().indexOf(',');
 				if (commaIndex > 0) {
 					geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
-				}
-				else {
+				} else {
 					geneNode.setLabel(currentVertexRep.getName());
 				}
 				geneNode.setPathwayVertexRep(currentVertexRep);
@@ -406,13 +406,12 @@ public class GLEnRoutePathway
 			for (ALinearizableNode groupedNode : complexNode.getNodes()) {
 				mappedDavidIds.addAll(setMappedDavidIds(groupedNode));
 			}
-		}
-		else {
+		} else {
 			// TODO: This is only true if the davidID maps to one id of the
 			// genetic
 			for (Integer davidID : node.getPathwayVertexRep().getDavidIDs()) {
 				// if (doesDavidMapToData(davidID))
-					mappedDavidIds.add(davidID);
+				mappedDavidIds.add(davidID);
 			}
 		}
 
@@ -454,6 +453,7 @@ public class GLEnRoutePathway
 
 	@Override
 	public void displayRemote(GL2 gl) {
+		processEvents();
 		display(gl);
 	}
 
@@ -468,8 +468,7 @@ public class GLEnRoutePathway
 			}
 
 			gl.glCallList(displayListIndex);
-		}
-		else {
+		} else {
 
 			if (isLayoutDirty) {
 				updateLayout();
@@ -651,9 +650,12 @@ public class GLEnRoutePathway
 	/**
 	 * Adapts the view height to the maximum of the specified minimum view heights, if necessary.
 	 *
-	 * @param minViewWidth Minimum width required.
-	 * @param minViewHeightRequiredByPath View height in pixels required by the linearized path and its rows.
-	 * @param minViewHeightRequiredByBranchNodes View height in pixels required by branch nodes.
+	 * @param minViewWidth
+	 *            Minimum width required.
+	 * @param minViewHeightRequiredByPath
+	 *            View height in pixels required by the linearized path and its rows.
+	 * @param minViewHeightRequiredByBranchNodes
+	 *            View height in pixels required by branch nodes.
 	 */
 	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath, int minViewHeightRequiredByBranchNodes) {
 		int minViewHeightPixels = 0;
@@ -662,8 +664,7 @@ public class GLEnRoutePathway
 		if (minViewHeightRequiredByBranchNodes > minViewHeightRequiredByPath) {
 			minViewHeightPixels = minViewHeightRequiredByBranchNodes;
 			isViewHeightCurrentlyDeterminedByPath = false;
-		}
-		else {
+		} else {
 			minViewHeightPixels = minViewHeightRequiredByPath;
 			isViewHeightCurrentlyDeterminedByPath = true;
 		}
@@ -687,8 +688,7 @@ public class GLEnRoutePathway
 			// System.out.println("setting min width:" + minViewWidth);
 			if (fitToViewWidth) {
 				currentMinWidth = BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
-			}
-			else {
+			} else {
 				currentMinWidth = updateWidth ? minViewWidth + 3 : BRANCH_COLUMN_WIDTH_PIXELS
 						+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
 			}
@@ -726,8 +726,7 @@ public class GLEnRoutePathway
 			if (numAssociatedRows == 0) {
 				unmappedNodes.add(node);
 
-			}
-			else {
+			} else {
 				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, node, unmappedNodes,
 						currentAnchorNode == null, false);
 
@@ -773,8 +772,8 @@ public class GLEnRoutePathway
 		if (isLastSpacing)
 			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
 
-		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * (numSpacingAnchorNodeRows)
-				/ 2.0f + additionalSpacing,
+		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * (numSpacingAnchorNodeRows) / 2.0f
+				+ additionalSpacing,
 				minNodeSpacing * (nodesInbetween.size() + 1) + anchorNodeSpacing.getTotalNodeHeight()));
 
 		return anchorNodeSpacing;
@@ -830,7 +829,8 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * @param node The node for which the positions of associated branch nodes shall be calculated
+	 * @param node
+	 *            The node for which the positions of associated branch nodes shall be calculated
 	 * @return the minimum view height in pixels that would be required by the nodes to be displayed.
 	 */
 	private int calculatePositionsOfBranchNodes(ANode node) {
@@ -951,8 +951,7 @@ public class GLEnRoutePathway
 				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
 			}
 
-		}
-		else {
+		} else {
 			if (edge instanceof PathwayRelationEdgeRep) {
 				PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
 
@@ -961,82 +960,80 @@ public class GLEnRoutePathway
 
 				for (EPathwayRelationEdgeSubType subtype : subtypes) {
 					switch (subtype) {
-						case compound:
-							// TODO:
-							break;
-						case hidden_compound:
-							// TODO:
-							break;
-						case activation:
-							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-							break;
-						case inhibition:
-							connectionRenderer
-									.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
-							if (isVerticalConnection) {
-								targetConnectionPoint.setY(targetConnectionPoint.y()
-										+ ((isNode1Target) ? -spacing : spacing));
-							}
-							else {
-								targetConnectionPoint.setX(targetConnectionPoint.x()
-										+ ((isNode1Target) ? spacing : -spacing));
-							}
-							break;
-						case expression:
-							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-							if (vertexRep1.getType() == EPathwayVertexType.gene
-									&& vertexRep1.getType() == EPathwayVertexType.gene) {
-								connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
-							}
-							break;
-						case repression:
-							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-							connectionRenderer
-									.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
+					case compound:
+						// TODO:
+						break;
+					case hidden_compound:
+						// TODO:
+						break;
+					case activation:
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						break;
+					case inhibition:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
+						if (isVerticalConnection) {
 							targetConnectionPoint.setY(targetConnectionPoint.y()
 									+ ((isNode1Target) ? -spacing : spacing));
-							break;
-						case indirect_effect:
-							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-							connectionRenderer.setLineStippled(true);
-							break;
-						case state_change:
-							connectionRenderer.setLineStippled(true);
-							break;
-						case binding_association:
-							// Nothing to do
-							break;
-						case dissociation:
-							connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
-							break;
-						case missing_interaction:
-							connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer());
-							break;
-						case phosphorylation:
-							connectionRenderer
-									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
-											.getSymbol()));
-							break;
-						case dephosphorylation:
-							connectionRenderer
-									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
-											.getSymbol()));
-							break;
-						case glycosylation:
-							connectionRenderer
-									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
-											.getSymbol()));
-							break;
-						case ubiquitination:
-							connectionRenderer
-									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
-											.getSymbol()));
-							break;
-						case methylation:
-							connectionRenderer
-									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
-											.getSymbol()));
-							break;
+						} else {
+							targetConnectionPoint.setX(targetConnectionPoint.x()
+									+ ((isNode1Target) ? spacing : -spacing));
+						}
+						break;
+					case expression:
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						if (vertexRep1.getType() == EPathwayVertexType.gene
+								&& vertexRep1.getType() == EPathwayVertexType.gene) {
+							connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
+						}
+						break;
+					case repression:
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
+						targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
+						break;
+					case indirect_effect:
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						connectionRenderer.setLineStippled(true);
+						break;
+					case state_change:
+						connectionRenderer.setLineStippled(true);
+						break;
+					case binding_association:
+						// Nothing to do
+						break;
+					case dissociation:
+						connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
+						break;
+					case missing_interaction:
+						connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer());
+						break;
+					case phosphorylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
+										.getSymbol()));
+						break;
+					case dephosphorylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
+										.getSymbol()));
+						break;
+					case glycosylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
+										.getSymbol()));
+						break;
+					case ubiquitination:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
+										.getSymbol()));
+						break;
+					case methylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
+										.getSymbol()));
+						break;
 					}
 				}
 			}
@@ -1100,6 +1097,7 @@ public class GLEnRoutePathway
 		super.registerEventListeners();
 
 		linearizePathwayPathEventListener = new EnRoutePathEventListener();
+		linearizePathwayPathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
 		linearizePathwayPathEventListener.setHandler(this);
 		eventPublisher.addListener(EnRoutePathEvent.class, linearizePathwayPathEventListener);
 
@@ -1157,8 +1155,10 @@ public class GLEnRoutePathway
 	/**
 	 * Sets a new path to be linearized.
 	 *
-	 * @param pathway The pathway the path corresponds to.
-	 * @param path List of {@link PathwayVertexRep}s that represents a path. If multiple <code>PathwayVertexRep</code>s
+	 * @param pathway
+	 *            The pathway the path corresponds to.
+	 * @param path
+	 *            List of {@link PathwayVertexRep}s that represents a path. If multiple <code>PathwayVertexRep</code>s
 	 *            represent a complex node, they must occur in a sequence.
 	 */
 	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
@@ -1181,7 +1181,8 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * @param currentExpandedBranchNode setter, see {@link #expandedBranchSummaryNode}
+	 * @param currentExpandedBranchNode
+	 *            setter, see {@link #expandedBranchSummaryNode}
 	 */
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
@@ -1236,8 +1237,7 @@ public class GLEnRoutePathway
 
 			newPath.addAll(0, branchPath);
 
-		}
-		else {
+		} else {
 			// insert below linearized node
 			newPath = path.subList(0, linearizedNodeIndex + 1);
 			newPath.addAll(branchPath);
@@ -1254,10 +1254,13 @@ public class GLEnRoutePathway
 	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
 	 * start of the path is added at the beginning of the path.
 	 *
-	 * @param branchVertexRep The <code>PathwayVertexRep</code> that represents the start of the branch path.
-	 * @param linearizedVertexRep The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
-	 * @param isIncomingBranchPath Determines whether the branch path is incoming or outgoing. This is especially
-	 *            important for bidirectional edges.
+	 * @param branchVertexRep
+	 *            The <code>PathwayVertexRep</code> that represents the start of the branch path.
+	 * @param linearizedVertexRep
+	 *            The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
+	 * @param isIncomingBranchPath
+	 *            Determines whether the branch path is incoming or outgoing. This is especially important for
+	 *            bidirectional edges.
 	 * @return
 	 */
 	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(PathwayVertexRep branchVertexRep,
@@ -1275,15 +1278,13 @@ public class GLEnRoutePathway
 			List<PathwayVertexRep> nextVertices = null;
 			if (isIncomingBranchPath) {
 				nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
-			}
-			else {
+			} else {
 				nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
 			}
 
 			if (nextVertices.size() == 0 || nextVertices.size() > 1) {
 				return vertexReps;
-			}
-			else {
+			} else {
 				currentVertexRep = nextVertices.get(0);
 				vertexReps.add(currentVertexRep);
 			}
@@ -1311,12 +1312,10 @@ public class GLEnRoutePathway
 
 		if (linearizedNodeIndex == 0) {
 			path.remove(0);
-		}
-		else if (linearizedNodeIndex == path.size() - 1) {
+		} else if (linearizedNodeIndex == path.size() - 1) {
 			path.remove(path.size() - 1);
 
-		}
-		else {
+		} else {
 			return;
 		}
 
@@ -1349,6 +1348,7 @@ public class GLEnRoutePathway
 			pathwayPath = new PathwayPath(graphPath);
 		}
 		EnRoutePathEvent event = new EnRoutePathEvent();
+		event.setEventSpace(pathwayPathEventSpace);
 		event.setPath(pathwayPath);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -1365,7 +1365,8 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * @param dataRowHeight setter, see {@link #dataRowHeight}
+	 * @param dataRowHeight
+	 *            setter, see {@link #dataRowHeight}
 	 */
 	public void setDataRowHeight(float dataRowHeight) {
 		this.dataRowHeight = dataRowHeight;
@@ -1525,7 +1526,8 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * @param fitToViewWidth setter, see {@link #fitToViewWidth}
+	 * @param fitToViewWidth
+	 *            setter, see {@link #fitToViewWidth}
 	 */
 	public void setFitToViewWidth(boolean fitToViewWidth) {
 		this.fitToViewWidth = fitToViewWidth;
@@ -1542,6 +1544,21 @@ public class GLEnRoutePathway
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
 		return new GeneticDataSupportDefinition();
+	}
+
+	/**
+	 * @param pathwayPathEventSpace
+	 *            setter, see {@link pathwayPathEventSpace}
+	 */
+	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
+		this.pathwayPathEventSpace = pathwayPathEventSpace;
+	}
+
+	/**
+	 * @return the pathwayPathEventSpace, see {@link #pathwayPathEventSpace}
+	 */
+	public String getPathwayPathEventSpace() {
+		return pathwayPathEventSpace;
 	}
 
 }

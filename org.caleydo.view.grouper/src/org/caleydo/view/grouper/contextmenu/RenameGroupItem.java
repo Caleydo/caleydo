@@ -30,7 +30,7 @@ public class RenameGroupItem extends AContextMenuItem {
 
 		RenameGroupEvent event = new RenameGroupEvent(groupID);
 		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
+		event.setEventSpace(dataDomainID);
 		registerEvent(event);
 	}
 }

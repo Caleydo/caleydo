@@ -55,7 +55,7 @@ public class ExtendedSelectionUpdateListener
 		if (event instanceof SelectionUpdateEvent) {
 			SelectionUpdateEvent selectioUpdateEvent = (SelectionUpdateEvent) event;
 			SelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
-			handler.handleSelectionUpdate(delta, event.getDataDomainID());
+			handler.handleSelectionUpdate(delta, event.getEventSpace());
 			VisLinkScene.resetAnimation(System.currentTimeMillis());
 		}
 	}

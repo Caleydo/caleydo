@@ -41,7 +41,7 @@ public abstract class AEvent {
 	@XmlTransient
 	private Object sender;
 
-	protected String dataDomainID = null;
+	protected String eventSpace = null;
 
 	/**
 	 * Basic constructor
@@ -93,7 +93,7 @@ public abstract class AEvent {
 
 	/**
 	 * chaining version of {@link #setSender(Object)}
-	 * 
+	 *
 	 * @param sender
 	 * @return
 	 */
@@ -103,23 +103,23 @@ public abstract class AEvent {
 	}
 
 	/**
-	 * Set a dataDomainID string so that only those receivers which either have the same or no registered
-	 * domain receive the event
-	 *
-	 * @param dataDomainID
+	 * Set an event space string so that only those receivers which either have the same or no registered event space
+	 * receive the event
+	 * 
+	 * @param eventSpace
 	 */
-	public void setDataDomainID(String dataDomainID) {
-		this.dataDomainID = dataDomainID;
+	public void setEventSpace(String eventSpace) {
+		this.eventSpace = eventSpace;
 	}
 
 	/**
-	 * Get the dataDomainID for the event
-	 *
+	 * Get the event space for the event
+	 * 
 	 * @return
 	 */
-	public String getDataDomainID() {
+	public String getEventSpace() {
 
-		return dataDomainID;
+		return eventSpace;
 	}
 
 	/**

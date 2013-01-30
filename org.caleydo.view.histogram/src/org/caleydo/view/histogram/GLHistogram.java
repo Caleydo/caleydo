@@ -543,7 +543,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 		RedrawViewEvent event = new RedrawViewEvent();
 		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.triggerEvent(event);
 	}
 

@@ -55,7 +55,7 @@ public class ReplacePerspectiveEvent
 	 */
 	public ReplacePerspectiveEvent(String dataDomainID, String perspectiveID,
 		PerspectiveInitializationData data) {
-		this.dataDomainID = dataDomainID;
+		this.eventSpace = dataDomainID;
 		this.perspectiveID = perspectiveID;
 		this.data = data;
 	}
@@ -66,7 +66,7 @@ public class ReplacePerspectiveEvent
 
 	@Override
 	public boolean checkIntegrity() {
-		if (dataDomainID == null || perspectiveID == null)
+		if (eventSpace == null || perspectiveID == null)
 			return false;
 
 		return true;

@@ -72,7 +72,7 @@ public class LoadPathwaysByPathwayItem extends AContextMenuItem {
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
 		loadPathwayEvent.setSender(this);
 		loadPathwayEvent.setPathwayID(pathway.getID());
-		loadPathwayEvent.setDataDomainID(dataDomainID);
+		loadPathwayEvent.setEventSpace(dataDomainID);
 		registerEvent(loadPathwayEvent);
 	}
 }

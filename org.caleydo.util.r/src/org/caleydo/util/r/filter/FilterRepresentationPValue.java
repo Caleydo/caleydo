@@ -215,7 +215,7 @@ public class FilterRepresentationPValue extends
 	@Override
 	protected void triggerRemoveFilterEvent() {
 		RemoveFilterEvent filterEvent = new RemoveFilterEvent();
-		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
+		filterEvent.setEventSpace(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}

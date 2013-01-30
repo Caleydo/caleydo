@@ -388,22 +388,22 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		recordVAUpdateListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
-		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		dimensionVAUpdateListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainID(dataDomain.getDataDomainID());
+		selectionCommandListener.setEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
-		redrawViewListener.setDataDomainID(dataDomain.getDataDomainID());
+		redrawViewListener.setEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
 	}

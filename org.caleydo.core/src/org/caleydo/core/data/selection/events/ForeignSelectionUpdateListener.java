@@ -46,7 +46,7 @@ public class ForeignSelectionUpdateListener
 		if (event instanceof SelectionUpdateEvent) {
 			SelectionUpdateEvent selectioUpdateEvent = (SelectionUpdateEvent) event;
 			SelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
-			handler.handleForeignSelectionUpdate(selectioUpdateEvent.getDataDomainID(), delta);
+			handler.handleForeignSelectionUpdate(selectioUpdateEvent.getEventSpace(), delta);
 			VisLinkScene.resetAnimation(System.currentTimeMillis());
 		}
 	}

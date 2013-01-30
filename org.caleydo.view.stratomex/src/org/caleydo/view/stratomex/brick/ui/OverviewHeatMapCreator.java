@@ -10,7 +10,7 @@ import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
  * @author Christian
- * 
+ *
  */
 public class OverviewHeatMapCreator implements IRemoteRendererCreator {
 
@@ -19,7 +19,8 @@ public class OverviewHeatMapCreator implements IRemoteRendererCreator {
 	}
 
 	@Override
-	public ALayoutRenderer createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives) {
+	public ALayoutRenderer createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
+			String embeddingEventSpace) {
 		TablePerspective tablePerspective = tablePerspectives.get(0);
 		Table table = tablePerspective.getDataDomain().getTable();
 

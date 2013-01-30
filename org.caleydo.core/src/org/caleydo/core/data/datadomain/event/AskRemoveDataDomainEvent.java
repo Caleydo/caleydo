@@ -11,7 +11,7 @@ public class AskRemoveDataDomainEvent extends AEvent {
 	}
 
 	public AskRemoveDataDomainEvent(IDataDomain dataDomain) {
-		setDataDomainID(dataDomain.getDataDomainID());
+		setEventSpace(dataDomain.getDataDomainID());
 	}
 
 	@Override

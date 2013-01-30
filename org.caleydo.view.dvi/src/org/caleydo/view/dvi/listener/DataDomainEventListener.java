@@ -33,7 +33,7 @@ public class DataDomainEventListener extends AEventListener<GLDataViewIntegrator
 			NewDataDomainEvent newDataDomainEvent = (NewDataDomainEvent) event;
 			handler.addDataDomain(newDataDomainEvent.getDataDomain());
 		} else if (event instanceof RemoveDataDomainEvent) {
-			handler.removeDataDomain(((RemoveDataDomainEvent) event).getDataDomainID());
+			handler.removeDataDomain(((RemoveDataDomainEvent) event).getEventSpace());
 		}
 
 	}

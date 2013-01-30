@@ -629,10 +629,13 @@ public class ViewManager extends AManager<IView> {
 	 *            View that renders the view to be created.
 	 * @param tablePerspectives
 	 *            {@link TablePerspective}s that shall be shown by the created view.
+	 * @param embeddingEventSpace
+	 *            Event space that shall be used for events that only a restricted set of receivers in the embedding
+	 *            should get.
 	 * @return Instance of the view type specified by the parameters. Null, if the view could not be created.
 	 */
 	public AGLView createRemotePlugInView(String viewID, String parentID, String embeddingID, AGLView parentView,
-			List<TablePerspective> tablePerspectives) {
+			List<TablePerspective> tablePerspectives, String embeddingEventSpace) {
 
 		IConfigurationElement embedding = getEmbedding(viewID, parentID, embeddingID);
 		if (embedding != null) {
@@ -642,7 +645,7 @@ public class ViewManager extends AManager<IView> {
 				try {
 					// only one creator is allowed
 					viewCreator = (IRemoteViewCreator) creators[0].createExecutableExtension("class");
-					return viewCreator.createRemoteView(parentView, tablePerspectives);
+					return viewCreator.createRemoteView(parentView, tablePerspectives, embeddingEventSpace);
 				} catch (CoreException e) {
 					Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create view " + viewID));
 				}
@@ -708,10 +711,13 @@ public class ViewManager extends AManager<IView> {
 	 *            View that renders the renderer to be created.
 	 * @param tablePerspectives
 	 *            {@link TablePerspective}s that shall be shown by the created view.
+	 * @param embeddingEventSpace
+	 *            Event space that shall be used for events that only a restricted set of receivers in the embedding
+	 *            should get.
 	 * @return Instance of the view type specified by the parameters. NULL, if the view could not be created.
 	 */
 	public ALayoutRenderer createRemotePlugInRenderer(String rendererID, String parentID, String embeddingID,
-			AGLView parentView, List<TablePerspective> tablePerspectives) {
+			AGLView parentView, List<TablePerspective> tablePerspectives, String embeddingEventSpace) {
 
 		IConfigurationElement embedding = getEmbedding(rendererID, parentID, embeddingID);
 
@@ -722,7 +728,7 @@ public class ViewManager extends AManager<IView> {
 				try {
 					// only one creator is allowed
 					viewCreator = (IRemoteRendererCreator) creators[0].createExecutableExtension("class");
-					return viewCreator.createRemoteView(parentView, tablePerspectives);
+					return viewCreator.createRemoteView(parentView, tablePerspectives, embeddingEventSpace);
 				} catch (CoreException e) {
 					Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create renderer " + rendererID));
 				}

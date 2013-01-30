@@ -21,19 +21,18 @@ package org.caleydo.core.event;
 
 /**
  * <p>
- * General event listener interface for classes that handle events. Inherited classes should usually handle
- * exactly one type of event. Related views or mediators should register one listener to exactly one event
- * within the event system.
+ * General event listener interface for classes that handle events. Inherited classes should usually handle exactly one
+ * type of event. Related views or mediators should register one listener to exactly one event within the event system.
  * </p>
  * <p>
- * Optionally, a listener can have a dataDomainID table. As a consequence, it will receive only those events
- * that are of the same dataDomainID or have no dataDomainID specified.
+ * Optionally, a listener can have an associated event space. As a consequence, it will receive only those events that
+ * are of the same event space or have no event space specified.
  * </p>
  * <p>
- * It is also possible to set a listener to receive exclusively events for the designated dataDomain, using
- * the method {@link #setExclusiveDataDomainType(String)} instead of {@link #setDataDomainID(String)}.
+ * It is also possible to set a listener to receive exclusively events for the designated event space, using the method
+ * {@link #setExclusiveEventSpace(String)} instead of {@link #setEventSpace(String)}.
  * </p>
- *
+ * 
  * @author Werner Puff
  * @author Alexander Lex
  */
@@ -42,13 +41,13 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	/** related handling object, usually a view or manager-type class */
 	protected T handler = null;
 
-	/** the dataDomainID string that decides whether a listener listens for events for this data domain */
-	protected String dataDomainID = null;
+	/** the event space string that decides whether a listener listens for events for this event space */
+	protected String eventSpace = null;
 	/**
-	 * flag determining whether a listener is listening to both it's dataDomain events and events where no
-	 * dataDomain is specified (false), or only to events with the dataDomain specified
+	 * flag determining whether a listener is listening to both it's event space's events and events where no event
+	 * space is specified (false), or only to events with the event space specified
 	 */
-	protected boolean isExclusiveDataDomain = false;
+	protected boolean isExclusiveEventSpace = false;
 
 	public AEventListener() {
 
@@ -79,47 +78,46 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	}
 
 	/**
-	 * Set the dataDomainID - if this is set the listener will receive only events that have this or no
-	 * dataDomainID. Notice that this has to be set before the listener is registered with the event
-	 * publisher.
-	 *
-	 * @param dataDomainID
+	 * Set the event space - if this is set the listener will receive only events that have this or no event space.
+	 * Notice that this has to be set before the listener is registered with the event publisher.
+	 * 
+	 * @param eventSpace
 	 */
-	public AEventListener<T> setDataDomainID(String dataDomainID) {
-		this.dataDomainID = dataDomainID;
+	public AEventListener<T> setEventSpace(String eventSpace) {
+		this.eventSpace = eventSpace;
 		return this;
 	}
 
 	/**
-	 * Returns the dataDomainType or null if none is specified
-	 *
+	 * Returns the event space or null if none is specified
+	 * 
 	 * @return
 	 */
-	public String getDataDomainID() {
-		return dataDomainID;
+	public String getEventSpace() {
+		return eventSpace;
 	}
 
 	/**
-	 * Behaves similar to {@link #setDataDomainID(String)} in that it set's the dataDomainID, however, for
-	 * setDataDomainID, the listener receives events with not dataDomain specified, while, when using this
-	 * method, only events specifying a matching dataDomain are forwarded.
-	 *
-	 * @param dataDomainID
+	 * Behaves similar to {@link #setEventSpace(String)} in that it set's the event space, however, for setEventSpace,
+	 * the listener receives events with no event space specified, while, when using this method, only events specifying
+	 * a matching event space are forwarded.
+	 * 
+	 * @param eventSpace
 	 */
-	public AEventListener<T> setExclusiveDataDomainID(String dataDomainID) {
-		this.dataDomainID = dataDomainID;
-		isExclusiveDataDomain = true;
+	public AEventListener<T> setExclusiveEventSpace(String eventSpace) {
+		this.eventSpace = eventSpace;
+		isExclusiveEventSpace = true;
 		return this;
 	}
 
 	/**
-	 * Check whether a listener is set to listen exclusively on it's datadomain (excluding events where the
-	 * datadomain is not set).
-	 *
+	 * Check whether a listener is set to listen exclusively on it's event space (excluding events where the event space
+	 * is not set).
+	 * 
 	 * @return
 	 */
-	public boolean isExclusiveDataDomain() {
-		return isExclusiveDataDomain;
+	public boolean isExclusiveEventSpace() {
+		return isExclusiveEventSpace;
 	}
 
 	/**

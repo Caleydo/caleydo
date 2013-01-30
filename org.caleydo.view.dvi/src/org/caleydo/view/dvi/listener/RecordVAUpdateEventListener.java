@@ -24,7 +24,7 @@ public class RecordVAUpdateEventListener extends AEventListener<GLDataViewIntegr
 		if (event instanceof RecordVAUpdateEvent) {
 			RecordVAUpdateEvent virtualArrayUpdateEvent = (RecordVAUpdateEvent) event;
 			IDataDomain datadomain = DataDomainManager.get().getDataDomainByID(
-					virtualArrayUpdateEvent.getDataDomainID());
+					virtualArrayUpdateEvent.getEventSpace());
 			handler.updateDataDomain(datadomain);
 		}
 

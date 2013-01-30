@@ -732,7 +732,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
-		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
+		selectionUpdateEvent.setEventSpace(dataDomain.getDataDomainID());
 		selectionUpdateEvent.setSelectionDelta(delta);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
@@ -757,22 +757,22 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		createGroupListener = new CreateGroupListener();
 		createGroupListener.setHandler(this);
-		createGroupListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		createGroupListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(CreateGroupEvent.class, createGroupListener);
 
 		copyGroupsListener = new CopyGroupsListener();
 		copyGroupsListener.setHandler(this);
-		copyGroupsListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		copyGroupsListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(CopyGroupsEvent.class, copyGroupsListener);
 
 		pasteGroupsListener = new PasteGroupsListener();
 		pasteGroupsListener.setHandler(this);
-		pasteGroupsListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		pasteGroupsListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(PasteGroupsEvent.class, pasteGroupsListener);
 
 		deleteGroupsListener = new DeleteGroupsListener();
 		deleteGroupsListener.setHandler(this);
-		deleteGroupsListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		deleteGroupsListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(DeleteGroupsEvent.class, deleteGroupsListener);
 
 		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
@@ -781,7 +781,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		renameGroupListener = new RenameGroupListener();
 		renameGroupListener.setHandler(this);
-		renameGroupListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		renameGroupListener.setExclusiveEventSpace(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RenameGroupEvent.class, renameGroupListener);
 
 	}
