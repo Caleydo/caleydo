@@ -16,6 +16,9 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column.container;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.logging.Logger;
@@ -31,16 +34,16 @@ import org.eclipse.core.runtime.Status;
 public class FloatContainer implements INumericalContainer<Float> {
 
 	/** The actual data */
-	private float[] container;
+	private final float[] container;
 
 	/** Keeps track of the next free index for adding data */
 	private int nextIndex = 0;
 
 	/** The smallest value in this container */
-	private Float min = Float.NaN;
+	private float min = Float.NaN;
 
 	/** The biggest value in this container */
-	private Float max = Float.NaN;
+	private float max = Float.NaN;
 
 	/**
 	 * Constructor initializing the container without data. The length can not be changed.
@@ -64,6 +67,11 @@ public class FloatContainer implements INumericalContainer<Float> {
 	@Override
 	public int size() {
 		return container.length;
+	}
+
+	@Override
+	public Iterator<Float> iterator() {
+		return new ContainerIterator<>(this);
 	}
 
 	@Override
@@ -140,7 +148,6 @@ public class FloatContainer implements INumericalContainer<Float> {
 				target[index] = 0;
 			}
 		}
-
 		return new FloatContainer(target);
 	}
 
@@ -181,9 +188,6 @@ public class FloatContainer implements INumericalContainer<Float> {
 
 	@Override
 	public String toString() {
-		String string = "[";
-		for (float value : container)
-			string += value + ", ";
-		return string + "]";
+		return Arrays.toString(container);
 	}
 }

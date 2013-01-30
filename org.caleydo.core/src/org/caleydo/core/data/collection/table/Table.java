@@ -100,9 +100,6 @@ public class Table {
 	 */
 	protected boolean isColumnDimension = false;
 
-	/** The number of columns in the table */
-	protected int nrColumns = 0;
-
 	/** The number of records in the table */
 	protected int depth = 0;
 
@@ -243,7 +240,7 @@ public class Table {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <RawDataType> RawDataType getRaw(Integer dimensionID, Integer recordID) {
+	public <RAW_DATA_TYPE> RAW_DATA_TYPE getRaw(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
 		Integer rowID = recordID;
 		if (!isColumnDimension) {
@@ -251,18 +248,7 @@ public class Table {
 			rowID = dimensionID;
 		}
 
-		return (RawDataType) columns.get(columnID).getRaw(rowID);
-	}
-
-	/**
-	 * alias for {@link #getRaw(Integer, Integer)} with dedidacted hint what is first argument and what the second
-	 *
-	 * @param dimensionID
-	 * @param recordID
-	 * @return
-	 */
-	public <RawDataType> RawDataType getRawDxR(Integer dimensionID, Integer recordID) {
-		return getRaw(dimensionID, recordID);
+		return (RAW_DATA_TYPE) columns.get(columnID).getRaw(rowID);
 	}
 
 	/**
@@ -277,9 +263,10 @@ public class Table {
 	 * @return Returns a new list of all record IDs in the order they were initialized
 	 */
 	public List<Integer> getRowIDList() {
-		ArrayList<Integer> list = new ArrayList<Integer>(nrColumns);
-		for (int count = 0; count < getNrRows(); count++) {
-			list.add(count);
+		int rowCount = getNrRows();
+		ArrayList<Integer> list = new ArrayList<Integer>(rowCount);
+		for (int i = 0; i < rowCount; i++) {
+			list.add(i);
 		}
 		return list;
 	}
@@ -568,7 +555,7 @@ public class Table {
 		}
 	}
 
-	public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription(
+	public <DATA_CLASS_SPECIFIC_DESCRIPTION> DATA_CLASS_SPECIFIC_DESCRIPTION getDataClassSpecificDescription(
 			Integer dimensionID, Integer recordID) {
 		Integer columnID = recordID;
 		if (isColumnDimension)

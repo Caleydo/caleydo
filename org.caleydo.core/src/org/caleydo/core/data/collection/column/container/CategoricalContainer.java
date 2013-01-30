@@ -18,6 +18,7 @@ package org.caleydo.core.data.collection.column.container;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -41,7 +42,7 @@ import com.google.common.collect.HashBiMap;
  *
  * @author Alexander Lex
  */
-public class CategoricalContainer<CategoryType extends Comparable<CategoryType>> implements IContainer<CategoryType> {
+public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> implements IContainer<CATEGORY_TYPE> {
 
 	/** The data type corresponding to CategoryType */
 	private EDataType dataType;
@@ -58,10 +59,10 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	private short[] container;
 
 	/** BiMap that maps category names to identifiers. */
-	private BiMap<CategoryType, Short> hashCategoryToIdentifier = HashBiMap.create();
+	private BiMap<CATEGORY_TYPE, Short> hashCategoryToIdentifier = HashBiMap.create();
 
 	/** Maps every category to the number of elements it contains */
-	private HashMap<CategoryType, Integer> hashCategoryToNumberOfMatches = new HashMap<>();
+	private HashMap<CATEGORY_TYPE, Integer> hashCategoryToNumberOfMatches = new HashMap<>();
 
 	private HashMap<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
 
@@ -70,7 +71,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * {@link #setPossibleCategories(ArrayList)} to include categories which are not in the dataset itself, or is set
 	 * automatically once {@link #normalize()} is called.
 	 */
-	private CategoricalClassDescription<CategoryType> categoricalClassDescription;
+	private CategoricalClassDescription<CATEGORY_TYPE> categoricalClassDescription;
 
 	public CategoricalContainer(int size, EDataType dataType) {
 		container = new short[size];
@@ -83,7 +84,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @param categoryName
 	 */
 	@Override
-	public void add(CategoryType categoryName) {
+	public void add(CATEGORY_TYPE categoryName) {
 
 		Short identifier = hashCategoryToIdentifier.get(categoryName);
 		if (identifier == null) {
@@ -93,7 +94,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 						+ " in description " + categoricalClassDescription));
 
 				// FIXME - hack to avoid problem with NAN etc
-				Entry<CategoryType, Short> entry = hashCategoryToIdentifier.entrySet().iterator().next();
+				Entry<CATEGORY_TYPE, Short> entry = hashCategoryToIdentifier.entrySet().iterator().next();
 				identifier = entry.getValue();
 				categoryName = entry.getKey();
 			} else {
@@ -111,7 +112,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @param category
 	 * @return
 	 */
-	private short initCategory(CategoryType category) {
+	private short initCategory(CATEGORY_TYPE category) {
 		if (hashCategoryToIdentifier.containsKey(category))
 			return hashCategoryToIdentifier.get(category);
 
@@ -127,6 +128,11 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 		return container.length;
 	}
 
+	@Override
+	public Iterator<CATEGORY_TYPE> iterator() {
+		return new ContainerIterator<>(this);
+	}
+
 	/**
 	 * Returns the value associated with the index at the variable
 	 *
@@ -137,7 +143,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @return the variable associated with the index or null if no such index exists
 	 */
 	@Override
-	public CategoryType get(int index) {
+	public CATEGORY_TYPE get(int index) {
 		try {
 			return hashCategoryToIdentifier.inverse().get(container[index]);
 		} catch (NullPointerException npe) {
@@ -168,7 +174,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 		}
 
 		for (int i = 0; i < categoricalClassDescription.size(); i++) {
-			List<CategoryProperty<CategoryType>> c = categoricalClassDescription.getCategoryProperties();
+			List<CategoryProperty<CATEGORY_TYPE>> c = categoricalClassDescription.getCategoryProperties();
 
 			short key = hashCategoryToIdentifier.get(c.get(i).getCategory());
 			hashCategoryKeyToNormalizedValue.put(key, i * normalizedDistance);
@@ -196,9 +202,9 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @param possibleCategories
 	 *            the List
 	 */
-	public void setCategoryDescritions(CategoricalClassDescription<CategoryType> categoryDescriptions) {
+	public void setCategoryDescritions(CategoricalClassDescription<CATEGORY_TYPE> categoryDescriptions) {
 		this.categoricalClassDescription = categoryDescriptions;
-		for (CategoryProperty<CategoryType> category : categoryDescriptions) {
+		for (CategoryProperty<CATEGORY_TYPE> category : categoryDescriptions) {
 			initCategory(category.getCategory());
 		}
 	}
@@ -206,7 +212,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	/**
 	 * @return the categoricalClassDescription, see {@link #categoricalClassDescription}
 	 */
-	public CategoricalClassDescription<CategoryType> getCategoryDescriptions() {
+	public CategoricalClassDescription<CATEGORY_TYPE> getCategoryDescriptions() {
 		return categoricalClassDescription;
 	}
 
@@ -216,7 +222,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	}
 
 	/** Returns a set of all registered categories */
-	public Set<CategoryType> getCategories() {
+	public Set<CATEGORY_TYPE> getCategories() {
 		return hashCategoryToIdentifier.keySet();
 	}
 

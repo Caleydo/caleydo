@@ -33,7 +33,7 @@ import org.caleydo.core.data.collection.EDataType;
  *
  * @author Alexander Lex
  */
-public interface IContainer<DataType> {
+public interface IContainer<DATA_TYPE> extends Iterable<DATA_TYPE> {
 
 	/**
 	 * @return the size of the container
@@ -60,7 +60,7 @@ public interface IContainer<DataType> {
 	 *
 	 * @param index
 	 */
-	public DataType get(int index);
+	public DATA_TYPE get(int index);
 
 	/**
 	 * <p>
@@ -74,6 +74,6 @@ public interface IContainer<DataType> {
 	 * @param value
 	 *            the value to be appended.
 	 */
-	public void add(DataType value);
+	public void add(DATA_TYPE value);
 
 }

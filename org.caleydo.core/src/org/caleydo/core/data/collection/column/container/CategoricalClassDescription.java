@@ -58,8 +58,8 @@ import org.caleydo.core.util.color.ColorManager;
  *
  */
 @XmlType
-public class CategoricalClassDescription<CategoryType extends Comparable<CategoryType>> implements
-		Iterable<CategoryProperty<CategoryType>> {
+public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> implements
+		Iterable<CategoryProperty<CATEGORY_TYPE>> {
 
 	/** The type of the category */
 	public enum ECategoryType {
@@ -71,10 +71,10 @@ public class CategoricalClassDescription<CategoryType extends Comparable<Categor
 	private ECategoryType categoryType = ECategoryType.NOMINAL;
 
 	/** The properties of the categories that are part of this class */
-	private List<CategoryProperty<CategoryType>> categoryProperties = new ArrayList<>();
+	private List<CategoryProperty<CATEGORY_TYPE>> categoryProperties = new ArrayList<>();
 
 	@XmlTransient
-	private HashMap<CategoryType, CategoryProperty<CategoryType>> hashCategoryToProperties = new HashMap<>();
+	private HashMap<CATEGORY_TYPE, CategoryProperty<CATEGORY_TYPE>> hashCategoryToProperties = new HashMap<>();
 
 	/**
 	 * @param categoryType
@@ -111,15 +111,15 @@ public class CategoricalClassDescription<CategoryType extends Comparable<Categor
 	 *
 	 * @param categoryProperty
 	 */
-	public void addCategoryProperty(CategoryProperty<CategoryType> categoryProperty) {
+	public void addCategoryProperty(CategoryProperty<CATEGORY_TYPE> categoryProperty) {
 		categoryProperties.add(categoryProperty);
 		hashCategoryToProperties.put(categoryProperty.getCategory(), categoryProperty);
 
 	}
 
 	/** Shorthand for {@link #addCategoryProperty(CategoryProperty)} */
-	public void addCategoryProperty(CategoryType category, String categoryName, Color color) {
-		CategoryProperty<CategoryType> property = new CategoryProperty<>(category, categoryName, color);
+	public void addCategoryProperty(CATEGORY_TYPE category, String categoryName, Color color) {
+		CategoryProperty<CATEGORY_TYPE> property = new CategoryProperty<>(category, categoryName, color);
 		addCategoryProperty(property);
 	}
 
@@ -127,9 +127,9 @@ public class CategoricalClassDescription<CategoryType extends Comparable<Categor
 	 * @param categoryProperties
 	 *            setter, see {@link categoryProperties}
 	 */
-	public void setCategoryProperties(List<CategoryProperty<CategoryType>> categoryProperties) {
+	public void setCategoryProperties(List<CategoryProperty<CATEGORY_TYPE>> categoryProperties) {
 		this.categoryProperties = categoryProperties;
-		for (CategoryProperty<CategoryType> property : categoryProperties) {
+		for (CategoryProperty<CATEGORY_TYPE> property : categoryProperties) {
 			hashCategoryToProperties.put(property.getCategory(), property);
 		}
 	}
@@ -137,12 +137,12 @@ public class CategoricalClassDescription<CategoryType extends Comparable<Categor
 	/**
 	 * @return the categoryProperties, see {@link #categoryProperties}
 	 */
-	public List<CategoryProperty<CategoryType>> getCategoryProperties() {
+	public List<CategoryProperty<CATEGORY_TYPE>> getCategoryProperties() {
 		return categoryProperties;
 	}
 
 	@Override
-	public Iterator<CategoryProperty<CategoryType>> iterator() {
+	public Iterator<CategoryProperty<CATEGORY_TYPE>> iterator() {
 		return categoryProperties.iterator();
 	}
 
@@ -156,8 +156,8 @@ public class CategoricalClassDescription<CategoryType extends Comparable<Categor
 	 *
 	 * @param unsortedCategories
 	 */
-	public void autoInitialize(Collection<CategoryType> unsortedCategories) {
-		ArrayList<CategoryType> categories = new ArrayList<>(unsortedCategories);
+	public void autoInitialize(Collection<CATEGORY_TYPE> unsortedCategories) {
+		List<CATEGORY_TYPE> categories = new ArrayList<>(unsortedCategories);
 		Collections.sort(categories);
 
 		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
@@ -172,19 +172,19 @@ public class CategoricalClassDescription<CategoryType extends Comparable<Categor
 	 * @param category
 	 * @return
 	 */
-	public CategoryProperty<CategoryType> getCategoryProperty(Object category) {
+	public CategoryProperty<CATEGORY_TYPE> getCategoryProperty(Object category) {
 		return hashCategoryToProperties.get(category);
 	}
 
 	@Override
 	public String toString() {
-		String categories = "Description [";
-		for (CategoryProperty<CategoryType> categoryProperty : categoryProperties) {
-			categories += categoryProperty.toString() + ",";
+		StringBuilder b = new StringBuilder("Description [");
+		for (CategoryProperty<CATEGORY_TYPE> categoryProperty : categoryProperties) {
+			b.append(categoryProperty).append(',');
 		}
-		categories = categories.substring(0, categories.length() - 1);
-		categories += "]";
-		return categories;
+		b.setLength(b.length() - 1);
+		b.append(']');
+		return b.toString();
 	}
 
 }

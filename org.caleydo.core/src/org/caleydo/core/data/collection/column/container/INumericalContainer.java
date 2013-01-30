@@ -21,7 +21,7 @@ package org.caleydo.core.data.collection.column.container;
  *
  * @author Alexander Lex
  */
-public interface INumericalContainer<DataType extends Number> extends IContainer<DataType> {
+public interface INumericalContainer<DATA_TYPE extends Number> extends IContainer<DATA_TYPE> {
 
 	/**
 	 * <p>

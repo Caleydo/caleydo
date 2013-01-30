@@ -16,6 +16,8 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column.container;
 
+import java.util.Iterator;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -30,7 +32,7 @@ import org.eclipse.core.runtime.Status;
 public class IntContainer implements INumericalContainer<Integer> {
 
 	/** The actual data */
-	private int[] container;
+	private final int[] container;
 	/** Keeps track of the next free index for adding data */
 	private int nextIndex = 0;
 	/** The smalles value in the ccontainer */
@@ -55,8 +57,12 @@ public class IntContainer implements INumericalContainer<Integer> {
 
 	@Override
 	public int size() {
-
 		return container.length;
+	}
+
+	@Override
+	public Iterator<Integer> iterator() {
+		return new ContainerIterator<>(this);
 	}
 
 	@Override
@@ -151,11 +157,9 @@ public class IntContainer implements INumericalContainer<Integer> {
 	@Override
 	public FloatContainer log(int base) {
 		float[] target = new float[container.length];
-
-		float tmp;
+		final float lbase = 1.f / (float) Math.log(base);
 		for (int index = 0; index < container.length; index++) {
-			tmp = container[index];
-			target[index] = (float) Math.log(tmp) / (float) Math.log(base);
+			target[index] = (float) Math.log(container[index]) * lbase;
 		}
 		return new FloatContainer(target);
 	}

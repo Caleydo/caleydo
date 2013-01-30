@@ -22,16 +22,16 @@ import org.caleydo.core.util.color.Color;
  * @author Alexander Lex
  *
  */
-public class CategoryProperty<CategoryType> {
+public class CategoryProperty<CATEGORY_TYPE> {
 
 	/** The unique identifier of the category as found in the source data file */
-	CategoryType category;
+	private CATEGORY_TYPE category;
 
 	/** An optional string representation of the category */
-	String categoryName;
+	private String categoryName;
 
 	/** The color used to represent the category */
-	Color color;
+	private Color color;
 
 	/**
 	 *
@@ -45,13 +45,13 @@ public class CategoryProperty<CategoryType> {
 	 * @param category
 	 * @param color
 	 */
-	public CategoryProperty(CategoryType category, Color color) {
+	public CategoryProperty(CATEGORY_TYPE category, Color color) {
 		this.category = category;
 		this.color = color;
 		this.categoryName = category.toString();
 	}
 
-	public CategoryProperty(CategoryType category, String categoryName, Color color) {
+	public CategoryProperty(CATEGORY_TYPE category, String categoryName, Color color) {
 		this.category = category;
 		this.color = color;
 		this.categoryName = categoryName;
@@ -66,14 +66,14 @@ public class CategoryProperty<CategoryType> {
 	 * @param category
 	 *            setter, see {@link category}
 	 */
-	public void setCategory(CategoryType category) {
+	public void setCategory(CATEGORY_TYPE category) {
 		this.category = category;
 	}
 
 	/**
 	 * @return the category, see {@link #category}
 	 */
-	public CategoryType getCategory() {
+	public CATEGORY_TYPE getCategory() {
 		return category;
 	}
 
