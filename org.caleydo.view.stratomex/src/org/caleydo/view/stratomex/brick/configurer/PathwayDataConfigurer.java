@@ -28,8 +28,8 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
@@ -190,7 +190,8 @@ public class PathwayDataConfigurer extends ABrickConfigurer {
 		int globalRendererID = 0;
 		int localRendererID = -1;
 		for (String viewID : remoteRenderedViewIDs) {
-			localRendererID = multiFormRenderer.addView(viewID, embeddingID.id(), tablePerspectives);
+			localRendererID = multiFormRenderer.addPluginVisualization(viewID, brick.getStratomex().getViewType(),
+					embeddingID.id(), tablePerspectives);
 			brick.associateIDs(globalRendererID++, localRendererID);
 		}
 

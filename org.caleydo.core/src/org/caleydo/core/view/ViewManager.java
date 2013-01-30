@@ -619,18 +619,54 @@ public class ViewManager extends AManager<IView> {
 	 *
 	 * @param viewID
 	 *            ID of the view to be remotely rendered
+	 * @param parentID
+	 *            ID of the parent that renders the view remotely. Note that this ID can refer to a different entity
+	 *            than the parentView.
 	 * @param embeddingID
-	 *            ID that specifies the embedding in the parent view. This ID is used to determine the appropriate
+	 *            ID that specifies the embedding in the parent. This ID is used to determine the appropriate
 	 *            {@link IRemoteViewCreator} for the embedded view.
 	 * @param parentView
 	 *            View that renders the view to be created.
 	 * @param tablePerspectives
 	 *            {@link TablePerspective}s that shall be shown by the created view.
-	 * @return Instance of the view type specified by the parameters. NULL, if the view could not be created.
+	 * @return Instance of the view type specified by the parameters. Null, if the view could not be created.
 	 */
-	public AGLView createRemotePlugInView(String viewID, String embeddingID, AGLView parentView,
+	public AGLView createRemotePlugInView(String viewID, String parentID, String embeddingID, AGLView parentView,
 			List<TablePerspective> tablePerspectives) {
 
+		IConfigurationElement embedding = getEmbedding(viewID, parentID, embeddingID);
+		if (embedding != null) {
+			IConfigurationElement[] creators = embedding.getChildren("ViewCreator");
+			if (creators.length > 0) {
+				IRemoteViewCreator viewCreator;
+				try {
+					// only one creator is allowed
+					viewCreator = (IRemoteViewCreator) creators[0].createExecutableExtension("class");
+					return viewCreator.createRemoteView(parentView, tablePerspectives);
+				} catch (CoreException e) {
+					Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create view " + viewID));
+				}
+			} else {
+				Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create view " + viewID
+						+ ", no creator found."));
+			}
+		} else {
+			Logger.log(new Status(IStatus.WARNING, "ViewManager", "No view found! ID: " + viewID + ", Parent: "
+					+ parentView.getViewType() + ", Embedding: " + embeddingID));
+		}
+
+		return null;
+	}
+
+	/**
+	 * Convenience method for getting a specified embedding.
+	 *
+	 * @param id
+	 * @param embeddingID
+	 * @param parentID
+	 * @return The embedding as {@link IConfigurationElement}, or null if no embedding was found.
+	 */
+	private IConfigurationElement getEmbedding(String id, String parentID, String embeddingID) {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
 		IExtension[] extensions = point.getExtensions();
@@ -638,29 +674,14 @@ public class ViewManager extends AManager<IView> {
 		for (IExtension extension : extensions) {
 			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
 			for (IConfigurationElement embeddingInfo : embeddingInfos) {
-				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
+				if (embeddingInfo.getAttribute("viewID").equals(id)) {
 					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
 					for (IConfigurationElement parent : parentViews) {
-						if (parent.getAttribute("viewID").equals(parentView.getViewType())) {
+						if (parent.getAttribute("viewID").equals(parentID)) {
 							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
 							for (IConfigurationElement embedding : embeddings) {
 								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
-									IConfigurationElement[] creators = embedding.getChildren("ViewCreator");
-									if (creators.length > 0) {
-										IRemoteViewCreator viewCreator;
-										try {
-											// only one creator is allowed
-											viewCreator = (IRemoteViewCreator) creators[0]
-													.createExecutableExtension("class");
-											return viewCreator.createRemoteView(parentView, tablePerspectives);
-										} catch (CoreException e) {
-											Logger.log(new Status(IStatus.WARNING, "ViewManager",
-													"Could not create view " + viewID));
-										}
-									} else {
-										Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create view "
-												+ viewID + ", no creator found."));
-									}
+									return embedding;
 								}
 							}
 						}
@@ -668,7 +689,6 @@ public class ViewManager extends AManager<IView> {
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -676,56 +696,45 @@ public class ViewManager extends AManager<IView> {
 	 * Creates a new view for remote rendering from a plug-in (extension point
 	 * <code>org.caleydo.view.EmbeddedView</code>).
 	 *
-	 * @param viewID
-	 *            ID of the view to be remotely rendered
+	 * @param rendererID
+	 *            ID of the renderer to be remotely rendered.
+	 * @param parentID
+	 *            ID of the parent that renders the renderer remotely. Note that this ID can refer to a different entity
+	 *            than the parentView.
 	 * @param embeddingID
-	 *            ID that specifies the embedding in the parent view. This ID is used to determine the appropriate
-	 *            {@link IRemoteViewCreator} for the embedded view.
+	 *            ID that specifies the embedding in the parent. This ID is used to determine the appropriate
+	 *            {@link IRemoteRendererCreator} for the embedded renderer.
 	 * @param parentView
-	 *            View that renders the view to be created.
+	 *            View that renders the renderer to be created.
 	 * @param tablePerspectives
 	 *            {@link TablePerspective}s that shall be shown by the created view.
 	 * @return Instance of the view type specified by the parameters. NULL, if the view could not be created.
 	 */
-	public ALayoutRenderer createRemotePlugInRenderer(String viewID, String embeddingID, AGLView parentView,
-			List<TablePerspective> tablePerspectives) {
+	public ALayoutRenderer createRemotePlugInRenderer(String rendererID, String parentID, String embeddingID,
+			AGLView parentView, List<TablePerspective> tablePerspectives) {
 
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
-		IExtension[] extensions = point.getExtensions();
+		IConfigurationElement embedding = getEmbedding(rendererID, parentID, embeddingID);
 
-		for (IExtension extension : extensions) {
-			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
-			for (IConfigurationElement embeddingInfo : embeddingInfos) {
-				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
-					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
-					for (IConfigurationElement parent : parentViews) {
-						if (parent.getAttribute("viewID").equals(parentView.getViewType())) {
-							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
-							for (IConfigurationElement embedding : embeddings) {
-								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
-									IConfigurationElement[] creators = embedding.getChildren("RendererCreator");
-									if (creators.length > 0) {
-										IRemoteRendererCreator viewCreator;
-										try {
-											// only one creator is allowed
-											viewCreator = (IRemoteRendererCreator) creators[0]
-													.createExecutableExtension("class");
-											return viewCreator.createRemoteView(parentView, tablePerspectives);
-										} catch (CoreException e) {
-											Logger.log(new Status(IStatus.WARNING, "ViewManager",
-													"Could not create view " + viewID));
-										}
-									} else {
-										Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create view "
-												+ viewID + ", no creator found."));
-									}
-								}
-							}
-						}
-					}
+		if (embedding != null) {
+			IConfigurationElement[] creators = embedding.getChildren("RendererCreator");
+			if (creators.length > 0) {
+				IRemoteRendererCreator viewCreator;
+				try {
+					// only one creator is allowed
+					viewCreator = (IRemoteRendererCreator) creators[0].createExecutableExtension("class");
+					return viewCreator.createRemoteView(parentView, tablePerspectives);
+				} catch (CoreException e) {
+					Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create renderer " + rendererID));
 				}
+			} else {
+				Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create renderer " + rendererID
+						+ ", no creator found."));
 			}
+		} else {
+
+			Logger.log(new Status(IStatus.WARNING, "ViewManager", "No renderer found! ID: " + rendererID + ", Parent: "
+					+ parentView.getViewType() + ", Embedding: " + embeddingID));
+
 		}
 
 		return null;
@@ -735,43 +744,23 @@ public class ViewManager extends AManager<IView> {
 	 * Gets an {@link IEmbeddedVisualizationInfo} for a specified plugin view (extension point
 	 * <code>org.caleydo.view.EmbeddedView</code>).
 	 *
-	 * @param viewID
-	 *            ID of the plugin view that is rendered remotely.
+	 * @param id
+	 *            ID of the plugin view or renderer that is rendered remotely.
+	 * @param parentID
+	 *            ID of the remote rendering parent.
 	 * @param embeddingID
-	 *            ID that specifies the embedding in the parent view.
-	 * @param parentViewID
-	 *            ID of the remote rendering parent view.
-	 * @return Instance of the view type specified by the parameters. NULL, if the view could not be created.
+	 *            ID that specifies the embedding in the parent.
+	 * @return Instance of the visualization info specified by the parameters. Null, if it could not be created.
 	 */
-	public IEmbeddedVisualizationInfo getEmbeddedVisualizationInfoOfPluginView(String viewID, String embeddingID,
-			String parentViewID) {
+	public IEmbeddedVisualizationInfo getEmbeddedVisualizationInfoOfPluginView(String id, String parentID,
+			String embeddingID) {
 
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
-		IExtension[] extensions = point.getExtensions();
-
-		for (IExtension extension : extensions) {
-			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
-			for (IConfigurationElement embeddingInfo : embeddingInfos) {
-				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
-					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
-					for (IConfigurationElement parent : parentViews) {
-						if (parent.getAttribute("viewID").equals(parentViewID)) {
-							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
-							for (IConfigurationElement embedding : embeddings) {
-								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
-									try {
-										return (IEmbeddedVisualizationInfo) embedding
-												.createExecutableExtension("visInfo");
-									} catch (CoreException e) {
-										Logger.log(new Status(IStatus.WARNING, "ViewManager",
-												"Could not create vis info for " + viewID));
-									}
-								}
-							}
-						}
-					}
-				}
+		IConfigurationElement embedding = getEmbedding(id, parentID, embeddingID);
+		if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
+			try {
+				return (IEmbeddedVisualizationInfo) embedding.createExecutableExtension("visInfo");
+			} catch (CoreException e) {
+				Logger.log(new Status(IStatus.WARNING, "ViewManager", "Could not create vis info for " + id));
 			}
 		}
 
@@ -779,16 +768,16 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	/**
-	 * Retrieves IDs of all views that have defined via plug-in mechanism to be remote rendered with the specified
-	 * parameters (extension point <code>org.caleydo.view.EmbeddedView</code>).
+	 * Retrieves IDs of all views and renderers that have defined via plug-in mechanism to be remote rendered with the
+	 * specified parameters (extension point <code>org.caleydo.view.EmbeddedView</code>).
 	 *
-	 * @param parentViewID
-	 *            ID of the remote rendering parent view.
+	 * @param parentID
+	 *            ID of the remote rendering parent.
 	 * @param embeddingID
-	 *            ID that specifies the embedding in the parent view.
-	 * @return List of all viewIDs that shall be rendered remote according to the specified parameters.
+	 *            ID that specifies the embedding in the parent.
+	 * @return ID list of all views and renderers that shall be rendered remote according to the specified parameters.
 	 */
-	public Set<String> getRemotePlugInViewIDs(String parentViewID, String embeddingID) {
+	public Set<String> getRemotePlugInViewIDs(String parentID, String embeddingID) {
 		Set<String> viewIDs = new HashSet<>();
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -800,7 +789,7 @@ public class ViewManager extends AManager<IView> {
 			for (IConfigurationElement embeddingInfo : embeddingInfos) {
 				IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
 				for (IConfigurationElement parent : parentViews) {
-					if (parent.getAttribute("viewID").equals(parentViewID)) {
+					if (parent.getAttribute("viewID").equals(parentID)) {
 						IConfigurationElement[] embeddings = parent.getChildren("Embedding");
 						for (IConfigurationElement embedding : embeddings) {
 							if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
@@ -816,95 +805,84 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	/**
-	 * Gets the path of the icon that is associated with the specified plugin view (extension point
+	 * Gets the path of the icon that is associated with the specified plugin view or renderer (extension point
 	 * <code>org.caleydo.view.EmbeddedView</code>).
 	 *
-	 * @param viewID
-	 *            ID of the view.
-	 * @param parentViewID
-	 *            ID of the remote rendering parent view.
+	 * @param id
+	 *            ID of the view or renderer.
+	 * @param parentID
+	 *            ID of the remote rendering parent.
 	 * @param embeddingID
-	 *            ID that specifies the embedding in the parent view.
+	 *            ID that specifies the embedding in the parent.
 	 * @return File path to the icon. Null, if no icon was specified or could be found.
 	 */
-	public String getRemotePlugInViewIcon(String viewID, String parentViewID, String embeddingID) {
+	public String getRemotePlugInViewIcon(String id, String parentID, String embeddingID) {
 
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
-		IExtension[] extensions = point.getExtensions();
-
-		for (IExtension extension : extensions) {
-			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
-			for (IConfigurationElement embeddingInfo : embeddingInfos) {
-				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
-					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
-					for (IConfigurationElement parent : parentViews) {
-						if (parent.getAttribute("viewID").equals(parentViewID)) {
-							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
-							for (IConfigurationElement embedding : embeddings) {
-								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
-									String iconPath = embedding.getAttribute("icon");
-									if (iconPath == null || iconPath == "") {
-										return null;
-									}
-
-									Bundle viewPlugin = Platform.getBundle(embedding.getContributor().getName());
-
-									URL iconURL = viewPlugin.getEntry(iconPath);
-									try {
-										iconPath = FileLocator.toFileURL(iconURL).getPath();
-									} catch (IOException e) {
-										return null;
-									}
-									return iconPath;
-								}
-							}
-						}
-					}
-				}
+		IConfigurationElement embedding = getEmbedding(id, parentID, embeddingID);
+		if (embedding != null) {
+			String iconPath = embedding.getAttribute("icon");
+			if (iconPath == null || iconPath == "") {
+				return null;
 			}
+
+			Bundle viewPlugin = Platform.getBundle(embedding.getContributor().getName());
+
+			URL iconURL = viewPlugin.getEntry(iconPath);
+			try {
+				iconPath = FileLocator.toFileURL(iconURL).getPath();
+			} catch (IOException e) {
+				return null;
+			}
+			return iconPath;
 		}
 
 		return null;
 	}
 
 	/**
-	 * Determines whether the plugin view is a default view for the specified embedding (extension point
+	 * Determines whether the plugin view ore renderer is a default view for the specified embedding (extension point
 	 * <code>org.caleydo.view.EmbeddedView</code>).
 	 *
 	 * @param viewID
-	 *            ID of the view.
-	 * @param parentViewID
-	 *            ID of the remote rendering parent view.
+	 *            ID of the view or renderer.
+	 * @param parentID
+	 *            ID of the remote rendering parent.
 	 * @param embeddingID
-	 *            ID that specifies the embedding in the parent view.
-	 * @return True, if the view was specified as default, false otherwise.
+	 *            ID that specifies the embedding in the parent.
+	 * @return True, if the view or renderer was specified as default, false otherwise.
 	 */
-	public boolean isPlugInViewDefault(String viewID, String parentViewID, String embeddingID) {
+	public boolean isPlugInViewDefault(String viewID, String parentID, String embeddingID) {
 
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
-		IExtension[] extensions = point.getExtensions();
-
-		for (IExtension extension : extensions) {
-			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
-			for (IConfigurationElement embeddingInfo : embeddingInfos) {
-				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
-					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
-					for (IConfigurationElement parent : parentViews) {
-						if (parent.getAttribute("viewID").equals(parentViewID)) {
-							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
-							for (IConfigurationElement embedding : embeddings) {
-								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
-									return Boolean.valueOf(embedding.getAttribute("isDefaultView"));
-								}
-							}
-						}
-					}
-				}
+		IConfigurationElement embedding = getEmbedding(viewID, parentID, embeddingID);
+		if (embedding != null) {
+			if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
+				return Boolean.valueOf(embedding.getAttribute("isDefaultView"));
 			}
 		}
 
+		return false;
+	}
+
+	/**
+	 * Determines whether the embedding specifies a {@link AGLView} or a {@link ALayoutRenderer} (extension point
+	 * <code>org.caleydo.view.EmbeddedView</code>).
+	 *
+	 * @param id
+	 *            ID of the view or renderer.
+	 * @param parentID
+	 *            ID of the remote rendering parent.
+	 * @param embeddingID
+	 *            ID that specifies the embedding in the parent.
+	 * @return True, if the embedding specifies a view, false otherwise.
+	 */
+	public boolean isPluginView(String id, String parentID, String embeddingID) {
+		IConfigurationElement embedding = getEmbedding(id, parentID, embeddingID);
+		if (embedding != null) {
+			IConfigurationElement[] creators = embedding.getChildren("ViewCreator");
+			if (creators.length > 0) {
+				return true;
+			}
+		}
 		return false;
 	}
 
