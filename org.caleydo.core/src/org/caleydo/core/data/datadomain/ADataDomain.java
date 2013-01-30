@@ -31,7 +31,8 @@ import org.caleydo.core.data.datadomain.listener.AskRemoveDataDomainEventListene
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventHandler;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
@@ -84,7 +85,7 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	protected boolean isLabelDefault = false;
 
 	@XmlTransient
-	protected final EventListeners listeners = new EventListeners();
+	protected final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 
 	/**

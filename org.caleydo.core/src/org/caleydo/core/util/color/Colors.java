@@ -39,8 +39,7 @@ public final class Colors {
 	public static final Color NOT_A_NUMBER_COLOR = new Color(0.3f, 0.3f, 0.3f);
 
 	public static IColor of(java.awt.Color color) {
-		return new Color(color.getRed() / 255.f, color.getGreen() / 255.f, color.getBlue() / 255.f,
-				color.getAlpha() / 255.f);
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 	}
 
 	public static float[] rgba(java.awt.Color color) {
@@ -52,6 +51,6 @@ public final class Colors {
 	 * @return
 	 */
 	public static IColor of(int grey) {
-		return new Color(grey / 255.f, grey / 255.f, grey / 255.f);
+		return new Color(grey, grey, grey);
 	}
 }

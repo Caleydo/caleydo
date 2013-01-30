@@ -40,7 +40,7 @@ public enum EDataClass {
 	UNIQUE_OBJECT(EDataType.STRING);
 
 	/** List of supported data types */
-	List<EDataType> supportedDataTypes;
+	private final List<EDataType> supportedDataTypes;
 
 	/**
 	 * Constructor setting the supported data types

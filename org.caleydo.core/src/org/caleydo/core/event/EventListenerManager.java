@@ -26,16 +26,17 @@ import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * Utility class to hold a list of event listeners to register and remove them all in an convenient way.
- * 
+ * utility class to hold a list of event listeners to register and remove them all in an convenient way.
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class EventListenerManager {
 	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
@@ -48,6 +49,13 @@ public class EventListenerManager {
 		this.owner = owner;
 	}
 
+	/**
+	 * Register the listener to the event type.
+	 *
+	 * @param event
+	 *            class of event
+	 * @param listener
+	 */
 	public void register(Class<? extends AEvent> event, AEventListener<?> listener) {
 		assert listener.getHandler() == owner;
 		listeners.add(listener);
@@ -105,7 +113,7 @@ public class EventListenerManager {
 		}
 	}
 
-	private boolean matches(Method m) {
+	private static boolean matches(Method m) {
 		return m.isAnnotationPresent(ListenTo.class) && m.getParameterTypes().length == 1
 				&& AEvent.class.isAssignableFrom(m.getParameterTypes()[0]) && m.getReturnType() == void.class;
 	}
@@ -116,6 +124,22 @@ public class EventListenerManager {
 	public final void unregisterAll() {
 		for (AEventListener<?> listener : listeners) {
 			EVENT_PUBLISHER.removeListener(listener);
+		}
+		listeners.clear();
+	}
+
+	/**
+	 * unregister all registered listeners for a given object
+	 *
+	 * @param listener
+	 */
+	public final void unregisterMe(Object listener) {
+		for (Iterator<AEventListener<?>> it = listeners.iterator(); it.hasNext();) {
+			AEventListener<?> e = it.next();
+			if (e instanceof AnnotationBasedEventListener && ((AnnotationBasedEventListener) e).listener == listener) {
+				EVENT_PUBLISHER.removeListener(e);
+				it.remove();
+			}
 		}
 		listeners.clear();
 	}

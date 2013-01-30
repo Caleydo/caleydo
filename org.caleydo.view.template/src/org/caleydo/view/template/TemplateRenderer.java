@@ -33,7 +33,8 @@ import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
@@ -52,7 +53,7 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 
 	private TemplateRenderStyle renderStyle;
 
-	private EventListeners listeners = new EventListeners();
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private EventBasedSelectionManager recordSelectionManager;
 

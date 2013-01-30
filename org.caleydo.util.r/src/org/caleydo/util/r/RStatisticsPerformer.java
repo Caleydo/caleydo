@@ -27,7 +27,8 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.event.data.StatisticsPValueReductionEvent;
@@ -50,7 +51,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	private Rengine engine;
 
-	private final EventListeners listeners = new EventListeners();
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	public RStatisticsPerformer() {
 

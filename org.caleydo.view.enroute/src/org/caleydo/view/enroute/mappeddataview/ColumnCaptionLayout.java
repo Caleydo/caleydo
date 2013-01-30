@@ -50,7 +50,7 @@ public class ColumnCaptionLayout extends Column {
 	public ColumnCaptionLayout(AGLView parentView, MappedDataRenderer parent) {
 		this.parentView = parentView;
 		this.parent = parent;
-		this.isBottomUp = false;
+		super.setBottomUp(false);
 		// dymanicWidth = ratioSizeX;
 
 	}

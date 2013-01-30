@@ -181,7 +181,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordVA) {
-			float rawValue = table.getRawDxR(dimensionID, recordID);
+			float rawValue = table.getRaw(dimensionID, recordID);
 			if (rawValue > 0)
 				containsPositiveValues = true;
 			if (rawValue < 0)

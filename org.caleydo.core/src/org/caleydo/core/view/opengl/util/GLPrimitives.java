@@ -163,9 +163,9 @@ public class GLPrimitives {
 	public static void drawRect(GL2 gl, float x, float y, float w, float h) {
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, 0);
-		gl.glVertex3f(w, y, 0);
-		gl.glVertex3f(w, h, 0);
-		gl.glVertex3f(x, h, 0);
+		gl.glVertex3f(x + w, y, 0);
+		gl.glVertex3f(x + w, y + h, 0);
+		gl.glVertex3f(x, y + h, 0);
 		gl.glEnd();
 	}
 

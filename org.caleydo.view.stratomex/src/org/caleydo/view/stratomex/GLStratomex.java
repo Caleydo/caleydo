@@ -49,7 +49,8 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
-import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
@@ -141,7 +142,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private SplitBrickListener splitBrickListener;
 	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
 	private ReplaceTablePerspectiveListener replaceTablePerspectiveListener;
-	private EventListeners listeners = new EventListeners();
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private BrickColumnManager brickColumnManager;
 

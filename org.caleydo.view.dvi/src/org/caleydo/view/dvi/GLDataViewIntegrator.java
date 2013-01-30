@@ -46,7 +46,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -151,7 +152,7 @@ public class GLDataViewIntegrator
 
 	private int maxDataAmount = Integer.MIN_VALUE;
 
-	private final EventListeners listeners = new EventListeners();
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private IDVINode currentMouseOverNode;
 

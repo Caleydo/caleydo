@@ -25,7 +25,8 @@ import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
@@ -43,7 +44,7 @@ import org.caleydo.core.manager.GeneralManager;
 public class EventBasedSelectionManager extends SelectionManager implements
  ISelectionHandler {
 
-	private EventListeners eventListeners;
+	private EventListenerManager eventListeners;
 
 	protected IEventBasedSelectionManagerUser parent;
 
@@ -73,7 +74,7 @@ public class EventBasedSelectionManager extends SelectionManager implements
 
 	@Override
 	public synchronized void registerEventListeners() {
-		eventListeners = new EventListeners();
+		eventListeners = EventListenerManagers.wrap(this);
 		SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventListeners.register(SelectionUpdateEvent.class, selectionUpdateListener);

@@ -22,8 +22,9 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.event.EventListeners;
-import org.caleydo.core.event.EventListeners.ListenTo;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
@@ -64,7 +65,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private boolean isGUIInitialized = false;
 
-	private final EventListeners listeners = new EventListeners();
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private ExpandBar histogramExpandBar;
 
@@ -232,7 +233,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 	}
 
 	@ListenTo
-	void onDataDomainUpdate(DataDomainUpdateEvent event) {
+	private void onDataDomainUpdate(DataDomainUpdateEvent event) {
 		setDataDomain(event.getDataDomain());
 	}
 

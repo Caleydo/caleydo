@@ -49,6 +49,21 @@ public final class EventListenerManagers {
 	}
 
 	/**
+	 * creates a new {@link EventListenerManager}, which queues the event in the SWT {@link Display} loop
+	 * 
+	 * @return
+	 */
+	public static EventListenerManager createSynchronizedDirect() {
+		return new EventListenerManager(new DirectListenerOwner() {
+			@Override
+			public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+					final AEvent event) {
+				super.queueEvent(listener, event);
+			}
+		});
+	}
+
+	/**
 	 * creates a new {@link QueuedEventListenerManager}, which queues the events and can either be manually processed
 	 * using {@link QueuedEventListenerManager#processEvents()} or within an own thread using by using the
 	 * {@link QueuedEventListenerManager#run()} method
