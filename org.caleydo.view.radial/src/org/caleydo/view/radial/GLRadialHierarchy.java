@@ -413,7 +413,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 			} else
 				gl.glCallList(displayListIndex);
 		} else {
-			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL, 0.5f);
+			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL.getFileName(), 0.5f);
 		}
 		if (!lazyMode)
 			checkForHits(gl);
@@ -451,7 +451,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 			gl.glEndList();
 		} else {
-			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL, 0.5f);
+			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL.getFileName(), 0.5f);
 		}
 	}
 

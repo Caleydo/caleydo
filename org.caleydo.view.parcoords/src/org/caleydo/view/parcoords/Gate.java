@@ -53,7 +53,7 @@ public class Gate {
 	/**
 	 * Flag determining whether this gate is a master gate or not, defaults to false
 	 */
-	private boolean isMasterGate = false;
+	// private boolean isMasterGate = false;
 
 	/** The data transformation used by the PCs */
 	private String dataTransformation;
@@ -128,8 +128,8 @@ public class Gate {
 		gl.glPushName(PickingID);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(xPosition + width, top - gateTopHeight, GATE_Z);
-		gl.glVertex3f(xPosition - width, top - gateTopHeight, GATE_Z);
-		gl.glVertex3f(xPosition - width, top, GATE_Z);
+		gl.glVertex3f(xPosition + gateTopWidth - width, top - gateTopHeight, GATE_Z);
+		gl.glVertex3f(xPosition + gateTopWidth - width, top, GATE_Z);
 		gl.glVertex3f(xPosition + width, top, GATE_Z);
 		gl.glEnd();
 		gl.glPopName();
@@ -247,9 +247,9 @@ public class Gate {
 	 * @param isMasterGate
 	 *            true if this should be a master gate
 	 */
-	public void setMasterGate(boolean isMasterGate) {
-		this.isMasterGate = isMasterGate;
-	}
+	// public void setMasterGate(boolean isMasterGate) {
+	// this.isMasterGate = isMasterGate;
+	// }
 
 	/**
 	 * @return The current position (x coordinate) of the gate.

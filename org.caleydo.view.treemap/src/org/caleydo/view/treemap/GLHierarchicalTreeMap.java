@@ -212,7 +212,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 				displayMainTreeMap(gl, thumbnailTreemapViews.size() > 0);
 			}
 		} else {
-			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL, 0.5f);
+			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL.getFileName(), 0.5f);
 		}
 
 	}
@@ -306,7 +306,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 	 * Displays a symbol when no data is available. Code from GLRadialHierarchy.
 	 */
 	@Override
-	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
+	protected void renderSymbol(GL2 gl, String texture, float buttonSize) {
 
 		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
 		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2 - buttonSize / 2;

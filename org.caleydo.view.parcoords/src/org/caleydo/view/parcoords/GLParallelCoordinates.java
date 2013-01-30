@@ -89,7 +89,6 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.StandardTransformer;
@@ -321,20 +320,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	}
 
 	/**
-	 * Reset all selections and deselections
-	 */
-	// @Override
-	// public void clearAllSelections() {
-	//
-	// recordSelectionManager.clearSelections();
-	// dimensionSelectionManager.clearSelections();
-	//
-	// clearFilters();
-	// setDisplayListDirty();
-	// connectedElementRepresentationManager.clear(recordIDType);
-	// }
-
-	/**
 	 * Clears gates and angluar filter
 	 */
 	private void clearFilters() {
@@ -350,8 +335,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		}
 		setDisplayListDirty();
 	}
-
-
 
 	public void saveSelection() {
 
@@ -396,7 +379,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
 			gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
-			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
+			renderSymbol(gl, PCRenderStyle.PC_LARGE_TEXTURE, 2);
 			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
 		} else {
 
@@ -868,7 +851,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		gl.glColor4f(0, 0, 0, 1f);
 
 		gl.glLineWidth(PCRenderStyle.Y_AXIS_LINE_WIDTH);
-		// gl.glPushName(iPickingID);
 
 		float xOrigin = -pixelGLConverter.getGLWidthForPixelWidth(40);
 		float axisMarkerWidth = pixelGLConverter.getGLWidthForPixelWidth(AXIS_MARKER_WIDTH);
@@ -911,27 +893,24 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		for (Integer iGateID : hashMasterGates.keySet()) {
 			Gate gate = hashMasterGates.get(iGateID);
 
-			Float fBottom = gate.getLowerBound();
-			Float fTop = gate.getUpperBound();
+			float bottom = gate.getLowerBound() * renderStyle.getAxisHeight();
+			float top = gate.getUpperBound() * renderStyle.getAxisHeight();
 
 			gl.glColor4fv(PCRenderStyle.GATE_BODY_COLOR, 0);
 			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(xOrigin, fBottom, 0);
-			gl.glVertex3f(viewFrustum.getWidth() - 1, fBottom, 0);
-			gl.glVertex3f(viewFrustum.getWidth() - 1, fTop, 0);
-			// TODO eurovis hacke
-			// gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
-			// gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
-			//
-			gl.glVertex3f(xOrigin - 0.05f, fTop, 0);
+			gl.glVertex3f(xOrigin, bottom, 0);
+			gl.glVertex3f(viewFrustum.getWidth(), bottom, 0);
+			gl.glVertex3f(viewFrustum.getWidth(), top, 0);
+
+			gl.glVertex3f(xOrigin, top, 0);
 			gl.glEnd();
 
 			gate.setxPosition(xOrigin);
 			gate.draw(gl);
-			// renderSingleGate(gl, gate, -1, iGateID, fXOrigin);
+
 		}
 
-		// gl.glPopName();
+
 	}
 
 	/**
@@ -1084,7 +1063,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				boolean bIsBlocking = true;
 				for (int dimensionID : tablePerspective.getDimensionPerspective().getVirtualArray()) {
 
-					currentValue = dataDomain.getTable().getRaw(recordID, dimensionID);
+					currentValue = dataDomain.getTable().getNormalizedValue(dataTransformation, dimensionID, recordID);
 
 					if (Float.isNaN(currentValue)) {
 						continue;
@@ -1388,7 +1367,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			public void clicked(Pick pick) {
 				hasFilterChanged = true;
 				Gate gate = new Gate(getSelf(), ++iGateCounter, -1, 0, 0.5f);
-				gate.setMasterGate(true);
+				// gate.setMasterGate(true);
 				hashMasterGates.put(iGateCounter, gate);
 				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
 				handleUnselection();

@@ -253,7 +253,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
 		if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
-			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
+			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL.getFileName(), 2);
 		} else {
 			layoutManager.render(gl);
 		}
