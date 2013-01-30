@@ -60,7 +60,8 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.BookmarkButtonEvent;
@@ -90,6 +91,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.StandardTransformer;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
@@ -118,7 +120,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 	private EPickingType draggedObject;
 
-	private EventListeners listeners;
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	/**
 	 * Hashes a gate id, which is made up of an axis id + the last three digits a gate counter (per axis) to a pair of
@@ -200,6 +202,10 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	 */
 	public GLParallelCoordinates(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+
+		// custom one
+		this.textureManager = new TextureManager(Activator.getResourceLoader());
+
 		renderStyle = new PCRenderStyle(this, viewFrustum);
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
@@ -1873,8 +1879,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-
-		listeners = new EventListeners();
 
 		ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener = new ApplyCurrentSelectionToVirtualArrayListener();
 		applyCurrentSelectionToVirtualArrayListener.setHandler(this);
