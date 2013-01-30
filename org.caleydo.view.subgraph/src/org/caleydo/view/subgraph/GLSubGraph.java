@@ -12,6 +12,7 @@ import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ViewManager;
@@ -249,9 +250,10 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			pathwayTablePerspectives.add(pathwayPathwayTablePerspective);
 
 			int currentRendererID = -1;
+			String eventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 			for (String viewID : remoteRenderedViewIDs) {
 				currentRendererID = multiFormRenderer.addPluginVisualization(viewID, getViewType(),
-						EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayTablePerspectives);
+						EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayTablePerspectives, eventSpace);
 			}
 			ALayoutRenderer customRenderer = new BorderedAreaRenderer();
 			IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
