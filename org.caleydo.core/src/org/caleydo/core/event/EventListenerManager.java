@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.event;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -31,6 +32,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.ClassUtils;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 /**
  * utility class to hold a list of event listeners to register and remove them all in an convenient way.
@@ -77,46 +82,55 @@ public class EventListenerManager {
 
 	/**
 	 * filter all methods of the listener object for <code>
-	 *
+	 * 
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 *
+	 * 
 	 *           and register an event listener for calling this method
-	 *
+	 * 
 	 * @param listener
 	 * @param eventSpace
 	 *            if {@link ListenTo#restrictToEventSpace()} or {@link ListenTo#restrictExclusiveToEventSpace()} is used
-	 *            the dataDomainID to set
+	 *            the eventSpace to set
 	 */
 	public final void register(Object listener, String eventSpace) {
+		register(listener, eventSpace, Object.class);
+	}
+
+	/**
+	 * see {@link #register(Object, String)} but with an additional speedup criteria to support early stopping of
+	 * scanning
+	 *
+	 * @param listener
+	 * @param eventSpace
+	 * @param stopAtClass
+	 */
+	public final void register(Object listener, String eventSpace, Class<?> stopAtClass) {
 		Class<?> clazz = listener.getClass();
-		while (clazz != null) {
-			for (Method m : clazz.getDeclaredMethods()) {
-				if (!matches(m))
-					continue;
-				Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
-				final ListenTo a = m.getAnnotation(ListenTo.class);
-				boolean toMe = a.sendToMe()
-						&& ADirectedEvent.class.isAssignableFrom(event);
+		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, stopAtClass), matches)) {
+			Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
+			final ListenTo a = m.getAnnotation(ListenTo.class);
+			boolean toMe = a.sendToMe() && ADirectedEvent.class.isAssignableFrom(event);
 
-				final AnnotationBasedEventListener l = new AnnotationBasedEventListener(owner, listener, m, toMe);
+			final AnnotationBasedEventListener l = new AnnotationBasedEventListener(owner, listener, m, toMe);
 
-				if (eventSpace != null && (a.restrictExclusiveToEventSpace() || a.restrictToEventSpace())) {
-					if (a.restrictExclusiveToEventSpace())
-						l.setExclusiveEventSpace(eventSpace);
-					else
-						l.setEventSpace(eventSpace);
-				}
-
-				register(event, l);
+			if (eventSpace != null && (a.restrictExclusiveToEventSpace() || a.restrictToEventSpace())) {
+				if (a.restrictExclusiveToEventSpace())
+					l.setExclusiveEventSpace(eventSpace);
+				else
+					l.setEventSpace(eventSpace);
 			}
-			clazz = clazz.getSuperclass();
+
+			register(event, l);
 		}
 	}
 
-	private static boolean matches(Method m) {
-		return m.isAnnotationPresent(ListenTo.class) && m.getParameterTypes().length == 1
-				&& AEvent.class.isAssignableFrom(m.getParameterTypes()[0]) && m.getReturnType() == void.class;
-	}
+	private static final Predicate<Method> matches = new Predicate<Method>() {
+		@Override
+		public boolean apply(Method m) {
+			return m.isAnnotationPresent(ListenTo.class) && m.getParameterTypes().length == 1
+					&& AEvent.class.isAssignableFrom(m.getParameterTypes()[0]) && m.getReturnType() == void.class;
+		}
+	};
 
 	/**
 	 * unregister all registered listeners by this listener container
@@ -133,7 +147,7 @@ public class EventListenerManager {
 	 *
 	 * @param listener
 	 */
-	public final void unregisterMe(Object listener) {
+	public final void unregister(Object listener) {
 		for (Iterator<AEventListener<?>> it = listeners.iterator(); it.hasNext();) {
 			AEventListener<?> e = it.next();
 			if (e instanceof AnnotationBasedEventListener && ((AnnotationBasedEventListener) e).listener == listener) {
@@ -150,6 +164,7 @@ public class EventListenerManager {
 	 * @author Samuel Gratzl
 	 *
 	 */
+	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
 	public @interface ListenTo {

@@ -32,12 +32,27 @@ import org.eclipse.core.runtime.RegistryFactory;
 import com.google.common.collect.Maps;
 
 /**
+ *
  * @author Samuel Gratzl
  *
  */
-public class ExtensionUtils {
+public final class ExtensionUtils {
 	private static final Logger log = Logger.create(ExtensionUtils.class);
 
+	private ExtensionUtils() {
+
+	}
+
+	/**
+	 * simple wrapper for creating all implementation instances of a given extension point
+	 *
+	 * @param extensionPoint
+	 * @param property
+	 *            the property which holds the class name, e.g. class
+	 * @param type
+	 *            the expected class type
+	 * @return
+	 */
 	public static <T> Collection<T> findImplementation(String extensionPoint, String property, Class<T> type) {
 		Collection<T> factories = new ArrayList<>();
 		try {
@@ -52,6 +67,18 @@ public class ExtensionUtils {
 		return Collections.unmodifiableCollection(factories);
 	}
 
+	/**
+	 * see {@link #findImplementation(String, String, Class)} but this time a label and a class
+	 *
+	 * @param extensionPoint
+	 * @param labelAttr
+	 *            the attribute holding the label
+	 * @param classAttr
+	 *            the attribute holding the classname
+	 * @param type
+	 *            expected type
+	 * @return
+	 */
 	public static <T> Map<String, T> findImplementation(String extensionPoint, String labelAttr, String classAttr,
 			Class<T> type) {
 		Map<String, T> factories = Maps.newLinkedHashMap();
