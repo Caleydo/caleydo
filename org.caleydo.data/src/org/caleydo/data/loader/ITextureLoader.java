@@ -22,8 +22,9 @@ package org.caleydo.data.loader;
 import com.jogamp.opengl.util.texture.Texture;
 
 /**
+ * @see ResourceLoader
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface ITextureLoader {
 	Texture getTexture(String fileName);

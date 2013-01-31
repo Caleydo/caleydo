@@ -70,6 +70,12 @@ public class ResourceLocators {
 	 */
 	public static final IResourceLocator DATA_CLASSLOADER = classLoader(ResourceLocators.class.getClassLoader());
 
+	/**
+	 * class loader for loading resources using a class loader instance
+	 *
+	 * @param loader
+	 * @return
+	 */
 	public static IResourceLocator classLoader(final ClassLoader loader) {
 		return new IResourceLocator() {
 			@Override
@@ -79,6 +85,12 @@ public class ResourceLocators {
 		};
 	}
 
+	/**
+	 * combines the given {@link IResourceLocator}s in a first found first returned style
+	 * 
+	 * @param childs
+	 * @return
+	 */
 	public static IResourceLocator chain(final IResourceLocator... childs) {
 		return new IResourceLocator() {
 			@Override
