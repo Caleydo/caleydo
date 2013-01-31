@@ -18,42 +18,32 @@ package org.caleydo.core.data.collection.column;
 
 import java.util.Set;
 
-import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 
 /**
  * @author Alexander Lex
  *
  */
-public class CategoricalColumn<CategoryType extends Comparable<CategoryType>> extends
-		AColumn<CategoricalContainer<CategoryType>, CategoryType> {
+public class CategoricalColumn<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
+		AColumn<CategoricalContainer<CATEGORY_TYPE>, CATEGORY_TYPE> {
 
-
-
-	/**
-	 *
-	 */
 	public CategoricalColumn() {
 		super();
 	}
 
-	public void setCategoryDescritions(CategoricalClassDescription<CategoryType> categoryDescriptions) {
+	public void setCategoryDescriptions(CategoricalClassDescription<CATEGORY_TYPE> categoryDescriptions) {
 		rawContainer.setCategoryDescritions(categoryDescriptions);
 	}
 
-	// @Override
-	// public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription() {
-	// return rawContainer.getCategoryDescriptions();
-	// }
-
 	@SuppressWarnings("unchecked")
 	@Override
-	public CategoricalClassDescription<CategoryType> getDataClassSpecificDescription() {
+	public CategoricalClassDescription<CATEGORY_TYPE> getDataClassSpecificDescription() {
 		return rawContainer.getCategoryDescriptions();
 	}
 
 	/** Returns a set of all registered categories */
-	public Set<CategoryType> getCategories() {
+	public Set<CATEGORY_TYPE> getCategories() {
 		return rawContainer.getCategories();
 	}
 }

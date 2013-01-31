@@ -25,11 +25,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 
-import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.FirehoseProvider;
 import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
+import org.caleydo.data.importer.tcga.model.TCGADataSet;
+import org.caleydo.data.importer.tcga.model.TCGADataSets;
+import org.caleydo.data.importer.tcga.model.TumorType;
 
 
 /**
@@ -39,37 +40,38 @@ import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TCGAXMLGenerator extends RecursiveTask<ProjectDescription> {
+public class TCGADataSetGenerator extends RecursiveTask<TCGADataSets> {
 	private static final long serialVersionUID = 7866075803605970224L;
 
-	private final boolean loadSampledGenes;
+	private final TCGASettings settings;
 	private final FirehoseProvider fileProvider;
 
-	private final String tumorAbbreviation;
+	private final TumorType tumorAbbreviation;
 
-	public TCGAXMLGenerator(String tumorAbbreviation, FirehoseProvider fileProvider, TCGASettings settings) {
+	public TCGADataSetGenerator(TumorType tumorAbbreviation, FirehoseProvider fileProvider, TCGASettings settings) {
 		this.tumorAbbreviation = tumorAbbreviation;
 		this.fileProvider = fileProvider;
-		this.loadSampledGenes = settings.isSampleGenes();
+		this.settings = settings;
 	}
 
 	@Override
-	protected ProjectDescription compute() {
-		Collection<ForkJoinTask<DataSetDescription>> tasks = new ArrayList<>();
+	protected TCGADataSets compute() {
+		Collection<ForkJoinTask<TCGADataSet>> tasks = new ArrayList<>();
 
 		for (EDataSetType type : EDataSetType.values()) {
-			tasks.add(TCGADataSetBuilder.create(tumorAbbreviation, type, fileProvider, loadSampledGenes));
+			tasks.add(TCGADataSetBuilder.create(tumorAbbreviation, type, fileProvider, settings.isSampleGenes(),
+					settings));
 		}
 
 		invokeAll(tasks); // fork and wait
 
-		ProjectDescription projectDescription = new ProjectDescription();
-		for (ForkJoinTask<DataSetDescription> task : tasks) {
+		TCGADataSets result = new TCGADataSets(tumorAbbreviation.getLabel());
+		for (ForkJoinTask<TCGADataSet> task : tasks) {
 			try {
-				DataSetDescription ds = task.get();
+				TCGADataSet ds = task.get();
 				if (ds == null)
 					continue;
-				projectDescription.add(ds);
+				result.add(ds);
 			} catch (InterruptedException e) {
 				System.err.println(e.getMessage());
 			} catch (ExecutionException e) {
@@ -77,6 +79,6 @@ public class TCGAXMLGenerator extends RecursiveTask<ProjectDescription> {
 			}
 		}
 
-		return projectDescription;
+		return result;
 	}
 }

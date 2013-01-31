@@ -5,12 +5,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.data.importer.tcga.model.TumorType;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+/**
+ * container for all settings of the TCGA generator
+ *
+ * @author Samuel Gratzl
+ *
+ */
 public class Settings {
 	private static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
 			+ GeneralManager.VERSION + "/";
@@ -21,6 +33,9 @@ public class Settings {
 
 	@Option(name = "-t", required = false, aliases = { "--tumortypes" }, usage = "the tumor types to export default: \"all known\"")
 	private List<String> tumorTypes = null;
+
+	@Option(name = "-cl", required = false, aliases = { "--clinical" }, usage = "the clinical variables to export default: \"all known\"")
+	private List<String> clinicalVariables = null;
 
 	@Argument(required = true, usage = "the dates on the analysis runs as argument list separated by spaces")
 	private List<String> analysisRuns = null;
@@ -58,15 +73,13 @@ public class Settings {
 			+ REPORT_PATTERN + "\"")
 	private String reportPattern = REPORT_PATTERN;
 
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+
 
 	public boolean validate() {
 		if (dataRuns == null)
 			dataRuns = analysisRuns;
-		if (tumorTypes == null) {
-			tumorTypes = new ArrayList<>();
-			for (ETumorType type : ETumorType.values())
-				tumorTypes.add(type.name());
-		}
 		if (dataRuns.size() != analysisRuns.size()) {
 			System.err
 					.println("Error during parsing of program arguments. You need to provide a corresponding data run for each analysis run. Closing program.");
@@ -124,12 +137,35 @@ public class Settings {
 	/**
 	 * @return the tumorTypes
 	 */
-	public List<String> getTumorTypes() {
-		return tumorTypes;
+	public Collection<TumorType> getTumorTypes() {
+		if (this.tumorTypes == null || this.tumorTypes.isEmpty())
+			return TumorType.values();
+		List<TumorType> types = new ArrayList<>();
+		for(String t : tumorTypes) {
+			TumorType type = TumorType.byName(t);
+			if (type == null) {
+				System.err.println("unknown tumor type: "+t);
+			} else
+				types.add(type);
+		}
+		return types;
 	}
 
-	public FirehoseProvider createFirehoseProvider(String tumorAbbreviation, String analysisRunIdentifier, String dataRunIdentifier) {
-		return new FirehoseProvider(tumorAbbreviation, analysisRunIdentifier, dataRunIdentifier, this);
+	/**
+	 * @return the clinicalVariables, see {@link #clinicalVariables}
+	 */
+	public Collection<String> getClinicalVariables() {
+		if (this.clinicalVariables == null || this.clinicalVariables.isEmpty())
+			return Collections.emptyList();
+		List<String> r = new ArrayList<>();
+		for (String c : this.clinicalVariables)
+			r.add(c.toLowerCase());
+		return r;
+	}
+
+	public FirehoseProvider createFirehoseProvider(TumorType tumor, String analysisRunIdentifier,
+			String dataRunIdentifier) {
+		return new FirehoseProvider(tumor, analysisRunIdentifier, dataRunIdentifier, this);
 	}
 
 	public int getNumThreads() {
@@ -148,19 +184,19 @@ public class Settings {
 		return id == null ? null : id.replace("_", "");
 	}
 
-	public URL getDataURL(String runId, String tumorAbbreviation, String pipelineName, int level)
+	public URL getDataURL(String runId, TumorType tumor, String pipelineName, int level)
 			throws MalformedURLException {
-		return new URL(MessageFormat.format(dataPattern, runId, clean(runId), tumorAbbreviation, pipelineName, level));
+		return new URL(MessageFormat.format(dataPattern, runId, clean(runId), tumor, pipelineName, level));
 	}
 
-	public URL getAnalysisURL(String runId, String tumorAbbreviation, String pipelineName, int level)
+	public URL getAnalysisURL(String runId, TumorType tumor, String pipelineName, int level)
 			throws MalformedURLException {
-		return new URL(MessageFormat.format(analysisPattern, runId, clean(runId), tumorAbbreviation, pipelineName,
+		return new URL(MessageFormat.format(analysisPattern, runId, clean(runId), tumor, pipelineName,
 				level));
 	}
 
-	public String getReportUrl(String analysisRun, String tumorAbbreviation) {
-		return MessageFormat.format(reportPattern, analysisRun, clean(analysisRun), tumorAbbreviation);
+	public String getReportUrl(String analysisRun, TumorType tumor) {
+		return MessageFormat.format(reportPattern, analysisRun, clean(analysisRun), tumor);
 	}
 
 	/**
@@ -168,5 +204,12 @@ public class Settings {
 	 */
 	public int getBatchSize() {
 		return batchSize;
+	}
+
+	/**
+	 * @return the gson, see {@link #gson}
+	 */
+	public Gson getGson() {
+		return gson;
 	}
 }

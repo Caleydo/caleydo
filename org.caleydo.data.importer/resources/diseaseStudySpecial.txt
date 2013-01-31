@@ -1,0 +1,5 @@
+Study Abbreviation	Study Name
+COADREAD	Colon adenocarcinoma / Rectum adenocarcinoma
+PANCAN8	All samples from: BRCA, COAD, GBM, KIRC, LUSC, OV, READ, UCEC
+PANCAN12	All samples from: BRCA, COAD, GBM, KIRC, LUSC, OV, READ, UCEC, ?
+PANCAN18	All samples from: BRCA, COAD, GBM, KIRC, LUSC, OV, READ, UCEC, ?

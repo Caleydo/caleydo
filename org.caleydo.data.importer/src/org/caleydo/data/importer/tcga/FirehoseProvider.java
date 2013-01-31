@@ -14,12 +14,13 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
+import org.caleydo.data.importer.tcga.model.TumorType;
 
 public final class FirehoseProvider {
 	private static final Logger log = Logger.getLogger(FirehoseProvider.class.getSimpleName());
 	protected static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
 
-	protected final String tumorAbbreviation;
+	protected final TumorType tumor;
 
 	protected final String analysisRunId;
 	protected final String dataRunId;
@@ -28,21 +29,20 @@ public final class FirehoseProvider {
 	protected final File tmpDataDir;
 	protected final Settings settings;
 
-	FirehoseProvider(String tumorAbbreviation, String analysisRunId, String dataRunId, Settings settings) {
-		this.tumorAbbreviation = tumorAbbreviation;
+	FirehoseProvider(TumorType tumor, String analysisRunId, String dataRunId, Settings settings) {
+		this.tumor = tumor;
 		this.analysisRunId = analysisRunId;
 		this.dataRunId = dataRunId;
 		this.settings = settings;
 		String tmpDir = settings.getTemporaryDirectory();
-		this.tmpAnalysisDir = createTempDirectory(tmpDir, analysisRunId, tumorAbbreviation);
-		this.tmpDataDir = createTempDirectory(tmpDir, dataRunId, tumorAbbreviation);
+		this.tmpAnalysisDir = createTempDirectory(tmpDir, analysisRunId, tumor.getName());
+		this.tmpDataDir = createTempDirectory(tmpDir, dataRunId, tumor.getName());
 	}
 
-	private File createTempDirectory(String tmpOutputDirectory, String runId, String tumor) {
+	private static File createTempDirectory(String tmpOutputDirectory, String runId, String tumor) {
 		if (runId == null)
 			runId = "unknown";
-		return new File(tmpOutputDirectory + Settings.clean(runId) + System.getProperty("file.separator")
-				+ tumorAbbreviation + System.getProperty("file.separator"));
+		return new File(tmpOutputDirectory + Settings.clean(runId) + File.separator + tumor + File.separator);
 	}
 
 	public File extractAnalysisRunFile(String fileName, String pipelineName, int level) {
@@ -56,7 +56,7 @@ public final class FirehoseProvider {
 	protected final String getArchiveName(String pipelineName, int level, boolean analysisRun) {
 		// up to now the real name, to use the existing cache
 		String id = analysisRun ? analysisRunId : dataRunId;
-		return FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName + ".Level_" + level + "."
+		return FIREHOSE_TAR_NAME_PREFIX + tumor + "." + pipelineName + ".Level_" + level + "."
 				+ Settings.clean(id)
 				+ "00.0.0.tar.gz";
 	}
@@ -72,9 +72,9 @@ public final class FirehoseProvider {
 		URL url;
 		try {
 			if (analysisRun)
-				url = settings.getAnalysisURL(id, tumorAbbreviation, pipelineName, level);
+				url = settings.getAnalysisURL(id, tumor, pipelineName, level);
 			else
-				url = settings.getDataURL(id, tumorAbbreviation, pipelineName, level);
+				url = settings.getDataURL(id, tumor, pipelineName, level);
 			return extractFileFromTarGzArchive(url, fileName, outputDir);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("can't extract " + fileName + " from " + label, e);

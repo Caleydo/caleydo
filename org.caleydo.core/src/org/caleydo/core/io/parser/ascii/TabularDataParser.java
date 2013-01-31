@@ -27,6 +27,7 @@ import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
+import org.caleydo.core.data.collection.column.container.IntContainer;
 import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -147,7 +148,7 @@ public class TabularDataParser extends ATextParser {
 
 		for (ColumnDescription parsingDetail : parsingPattern) {
 			switch (parsingDetail.getDataClass()) {
-			case REAL_NUMBER:
+			case REAL_NUMBER: {
 				FloatContainer container = new FloatContainer(numberOfDataLines);
 				targetColumns.add(container);
 				NumericalColumn<FloatContainer, Float> column;
@@ -158,6 +159,19 @@ public class TabularDataParser extends ATextParser {
 
 				columnID = table.addColumn(column);
 				break;
+			}
+			case NATURAL_NUMBER: {
+				IntContainer container = new IntContainer(numberOfDataLines);
+				targetColumns.add(container);
+				NumericalColumn<IntContainer, Integer> column;
+
+				column = new NumericalColumn<>();
+
+				column.setRawData(container);
+
+				columnID = table.addColumn(column);
+				break;
+			}
 			case CATEGORICAL:
 				switch (parsingDetail.getDataType()) {
 				case STRING:
@@ -170,8 +184,11 @@ public class TabularDataParser extends ATextParser {
 					categoricalColumn.setRawData(categoricalContainer);
 
 					if (table instanceof CategoricalTable<?>) {
-						categoricalColumn.setCategoryDescritions(((CategoricalTable<String>) table)
+						categoricalColumn.setCategoryDescriptions(((CategoricalTable<String>) table)
 								.getCategoryDescriptions());
+					} else {
+						// TODO support per column samples
+						// categoricalColumn.setCategoryDescriptions(parsingDetail.getCategoricalDescription());
 					}
 					columnID = table.addColumn(categoricalColumn);
 					break;
@@ -185,7 +202,7 @@ public class TabularDataParser extends ATextParser {
 					categoricalIntColumn.setRawData(categoricalIntContainer);
 
 					if (table instanceof CategoricalTable<?>) {
-						categoricalIntColumn.setCategoryDescritions(((CategoricalTable<Integer>) table)
+						categoricalIntColumn.setCategoryDescriptions(((CategoricalTable<Integer>) table)
 								.getCategoryDescriptions());
 					}
 					columnID = table.addColumn(categoricalIntColumn);

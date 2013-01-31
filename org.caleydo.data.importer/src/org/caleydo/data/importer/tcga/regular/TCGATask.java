@@ -20,15 +20,21 @@
 package org.caleydo.data.importer.tcga.regular;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.io.ProjectDescription;
-import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.caleydo.data.importer.tcga.ATCGATask;
-import org.caleydo.data.importer.tcga.ETumorType;
+import org.caleydo.data.importer.tcga.model.TCGADataSet;
+import org.caleydo.data.importer.tcga.model.TCGADataSets;
+import org.caleydo.data.importer.tcga.model.TumorType;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * This class handles the whole workflow of creating a Caleydo project from TCGA
@@ -41,12 +47,12 @@ public class TCGATask extends ATCGATask {
 	private static final Logger log = Logger.getLogger(TCGATask.class.getSimpleName());
 	private static final long serialVersionUID = 7378867458430247164L;
 
-	private final String tumorType;
+	private final TumorType tumorType;
 	private final String analysisRun;
 	private final String dataRun;
 	private TCGASettings settings;
 
-	public TCGATask(String tumorType, String analysisRun, String dataRun, TCGASettings settings) {
+	public TCGATask(TumorType tumorType, String analysisRun, String dataRun, TCGASettings settings) {
 		this.tumorType = tumorType;
 		this.analysisRun = analysisRun;
 		this.dataRun = dataRun;
@@ -54,21 +60,37 @@ public class TCGATask extends ATCGATask {
 	}
 
 	@Override
-	protected String compute() {
+	protected JsonElement compute() {
 		log.info("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
 
 		String runSpecificOutputPath = settings.getDataDirectory(analysisRun);
 
-		ProjectDescription project = new TCGAXMLGenerator(tumorType, settings.createFirehoseProvider(tumorType,
+		TCGADataSets project = new TCGADataSetGenerator(tumorType, settings.createFirehoseProvider(tumorType,
 				analysisRun, dataRun), settings).invoke();
 
-		if (project.getDataSetDescriptionCollection().isEmpty())
+		if (project.isEmpty())
 			return null;
 
 		log.info("Building project file for tumor type " + tumorType + " for analysis run " + analysisRun);
-		String projectOutputPath = runSpecificOutputPath + analysisRun + "_" + tumorType + ".cal";
-		Collection<ATableBasedDataDomain> dataDomains = new XMLToProjectBuilder().buildProject(project,
-				projectOutputPath);
+
+		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
+		if (dataDomains.isEmpty()) {
+			log.warning("No Data Domains loaded for tumor type " + tumorType + " for analysis run " + analysisRun
+					+ " -> skipping rest");
+			return null;
+		}
+
+		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + analysisRun);
+		for (TCGADataSet set : project) {
+			new TCGAPostprocessingTask(set, settings).invoke();
+		}
+
+		final String projectOutputPath = runSpecificOutputPath + analysisRun + "_" + tumorType + ".cal";
+		if (!saveProject(dataDomains, projectOutputPath)) {
+			log.severe("Saving Project failed for tumor type " + tumorType + " for analysis run " + analysisRun);
+			return null;
+		}
+
 		log.info("Built project file for tumor type " + tumorType + " for analysis run " + analysisRun);
 
 		project = null;
@@ -76,107 +98,119 @@ public class TCGATask extends ATCGATask {
 		String projectRemoteOutputURL = settings.getTcgaServerURL() + analysisRun + "/" + analysisRun + "_" + tumorType
 				+ ".cal";
 
-		StringBuilder report = new StringBuilder();
-
 		String jnlpFileName = analysisRun + "_" + tumorType + ".jnlp";
 
-		generateTumorReportLine(report, dataDomains, tumorType, analysisRun, jnlpFileName, projectRemoteOutputURL);
+		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, jnlpFileName,
+				projectRemoteOutputURL);
 
 		generateJNLP(new File(settings.getJNLPOutputDirectory(), jnlpFileName), projectRemoteOutputURL);
 
 		cleanUp(dataDomains);
 
-		return report.toString();
+		return report;
 	}
 
-	protected void generateTumorReportLine(StringBuilder report, Collection<ATableBasedDataDomain> dataDomains,
-			String tumorAbbreviation, String analysisRun,
+
+
+	protected JsonObject generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
+			TumorType tumor, String analysisRun,
 			String jnlpFileName, String projectOutputPath) {
 
-		String addInfoMRNA = "null";
-		String addInfoMRNASeq = "null";
-		String addInfoMicroRNA = "null";
-		String addInfoMicroRNASeq = "null";
-		String addInfoClinical = "null";
-		String addInfoMutations = "null";
-		String addInfoCopyNumber = "null";
-		String addInfoMethylation = "null";
-		String addInfoRPPA = "null";
+		AdditionalInfo addInfoMRNA = null;
+		AdditionalInfo addInfoMRNASeq = null;
+		AdditionalInfo addInfoMicroRNA = null;
+		AdditionalInfo addInfoMicroRNASeq = null;
+		ClinicalInfos addInfoClinical = null;
+		AdditionalInfo addInfoMutations = null;
+		AdditionalInfo addInfoCopyNumber = null;
+		AdditionalInfo addInfoMethylation = null;
+		AdditionalInfo addInfoRPPA = null;
 
 		String jnlpURL = settings.getJNLPURL(jnlpFileName);
 
-		String firehoseReportURL = settings.getReportUrl(analysisRun, tumorAbbreviation);
-
-		String tumorName = ETumorType.valueOf(tumorAbbreviation).getTumorName();
+		String firehoseReportURL = settings.getReportUrl(analysisRun, tumor);
 
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
 
 			String dataSetName = dataDomain.getDataSetDescription().getDataSetName();
 
 			if (dataSetName.equals("mRNA")) {
-				addInfoMRNA = getAdditionalInfo(dataDomain);
+				addInfoMRNA = new AdditionalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("mRNA-seq")) {
-				addInfoMRNASeq = getAdditionalInfo(dataDomain);
+				addInfoMRNASeq = new AdditionalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("microRNA")) {
-				addInfoMicroRNA = getAdditionalInfo(dataDomain);
+				addInfoMicroRNA = new AdditionalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("microRNA-seq")) {
-				addInfoMicroRNASeq = getAdditionalInfo(dataDomain);
+				addInfoMicroRNASeq = new AdditionalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("Clinical")) {
-				addInfoClinical = getClinicalInfo(dataDomain);
+				addInfoClinical = new ClinicalInfos(dataDomain);
 			}
 			else if (dataSetName.equals("Mutations")) {
-				addInfoMutations = getAdditionalInfo(dataDomain);
+				addInfoMutations = new AdditionalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("Copy Number")) {
-				addInfoCopyNumber = getAdditionalInfo(dataDomain);
+				addInfoCopyNumber = new AdditionalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("Methylation")) {
-				addInfoMethylation = getAdditionalInfo(dataDomain);
+				addInfoMethylation = new AdditionalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("RPPA")) {
-				addInfoRPPA = getAdditionalInfo(dataDomain);
+				addInfoRPPA = new AdditionalInfo(dataDomain);
+			}
+		}
+		Gson gson = settings.getGson();
+
+		JsonObject report = new JsonObject();
+		report.addProperty("tumorAbbreviation", tumor.getName());
+		report.addProperty("tumorName", tumor.getLabel());
+		{
+			JsonObject genomic = new JsonObject();
+			report.add("genomic", genomic);
+			genomic.add("mRNA", gson.toJsonTree(addInfoMRNA));
+			genomic.add("mRNA-seq", gson.toJsonTree(addInfoMRNASeq));
+			genomic.add("microRNA", gson.toJsonTree(addInfoMicroRNA));
+			genomic.add("microRNA-seq", gson.toJsonTree(addInfoMicroRNASeq));
+			genomic.add("Mutations", gson.toJsonTree(addInfoMutations));
+			genomic.add("Copy Number", gson.toJsonTree(addInfoCopyNumber));
+			genomic.add("Methylation", gson.toJsonTree(addInfoMethylation));
+			genomic.add("RPPA", gson.toJsonTree(addInfoRPPA));
+		}
+		{
+			JsonObject nonGenomic = new JsonObject();
+			report.add("nonGenomic", nonGenomic);
+			nonGenomic.add("Clinical", gson.toJsonTree(addInfoClinical));
+		}
+
+		report.addProperty("Caleydo JNLP", jnlpURL);
+		report.addProperty("Caleydo Project", projectOutputPath);
+		report.addProperty("Firehose Report", firehoseReportURL);
+
+		return report;
+	}
+
+	public static class ClinicalInfos {
+		private int count;
+		private List<String> parameters = new ArrayList<>();
+
+		public ClinicalInfos(ATableBasedDataDomain dataDomain) {
+			count = dataDomain.getTable().depth();
+			VirtualArray dimensionVA = dataDomain.getTable().getDefaultDimensionPerspective().getVirtualArray();
+			for (int dimensionID : dimensionVA) {
+				parameters.add(dataDomain.getDimensionLabel(dimensionID));
 			}
 		}
 
-
-		report.append("{\"tumorAbbreviation\":\"").append(tumorAbbreviation);
-		report.append("\",\"tumorName\":\"").append(tumorName);
-		report.append("\",\"genomic\":{");
-		report.append("\"mRNA\":").append(addInfoMRNA);
-		report.append(",\"mRNA-seq\":").append(addInfoMRNASeq);
-		report.append(",\"microRNA\":").append(addInfoMicroRNA);
-		report.append(",\"microRNA-seq\":").append(addInfoMicroRNASeq);
-		report.append(",\"Mutations\":" + addInfoMutations);
-		report.append(",\"Copy Number\":").append(addInfoCopyNumber);
-		report.append(",\"Methylation\":" + addInfoMethylation);
-		report.append(",\"RPPA\":").append(addInfoRPPA);
-		report.append("},\"nonGenomic\":");
-		report.append("{\"Clinical\":").append(addInfoClinical);
-		report.append("},\"Caleydo JNLP\":\"").append(jnlpURL);
-		report.append("\",\"Caleydo Project\":\"").append(projectOutputPath);
-		report.append("\",\"Firehose Report\":\"").append(firehoseReportURL).append("\"}\n");
-	}
-
-
-	private String getClinicalInfo(ATableBasedDataDomain dataDomain) {
-		String clinicalParameters = "";
-		VirtualArray dimensionVA = dataDomain.getTable()
-				.getDefaultDimensionPerspective().getVirtualArray();
-		for (int dimensionID : dimensionVA) {
-			clinicalParameters += "\"" + dataDomain.getDimensionLabel(dimensionID) + "\",";
+		public int getCount() {
+			return count;
 		}
 
-		// remove last comma
-		if (clinicalParameters.length() > 1)
-			clinicalParameters = clinicalParameters.substring(0,
-					clinicalParameters.length() - 1);
-
-		return "{\"count\":\"" + dataDomain.getTable().depth()
-				+ "\",\"parameters\":[" + clinicalParameters + "]}";
+		public List<String> getParameters() {
+			return parameters;
+		}
 	}
 
 }

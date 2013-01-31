@@ -63,7 +63,7 @@ public class CategoricalTable<CategoryType extends Comparable<CategoryType>> ext
 			for (AColumn<?, ?> column : columns) {
 				@SuppressWarnings("unchecked")
 				CategoricalColumn<CategoryType> catCol = (CategoricalColumn<CategoryType>) column;
-				catCol.setCategoryDescritions(categoricalClassDescription);
+				catCol.setCategoryDescriptions(categoricalClassDescription);
 			}
 
 		}

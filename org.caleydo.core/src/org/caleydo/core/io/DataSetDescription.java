@@ -335,6 +335,12 @@ public class DataSetDescription extends MatrixDefinition {
 		this.parsingPattern = parsingPattern;
 	}
 
+	public void addParsingPattern(ColumnDescription desc) {
+		if (this.parsingPattern == null)
+			this.parsingPattern = new ArrayList<>();
+		this.parsingPattern.add(desc);
+	}
+
 	public ArrayList<ColumnDescription> getOrCreateParsingPattern() {
 
 		if (parsingPattern != null && !(parsingPattern.size() == 0))

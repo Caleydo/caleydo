@@ -26,6 +26,7 @@ import java.util.concurrent.RecursiveAction;
 
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.kohsuke.args4j.CmdLineException;
@@ -44,6 +45,8 @@ public abstract class AProjectBuilderApplication<S extends Settings>
 	@Override
 	public final Object start(IApplicationContext context) throws Exception {
 		S settings = parseArgs(context);
+
+		GeneralManager.get().setDryMode(true);
 
 		generateTCGAProjectFiles(settings);
 

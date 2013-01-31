@@ -50,6 +50,10 @@ public class IntContainer implements INumericalContainer<Integer> {
 		this.container = container;
 	}
 
+	public IntContainer(int size) {
+		this(new int[size]);
+	}
+
 	@Override
 	public EDataType getDataType() {
 		return EDataType.INTEGER;

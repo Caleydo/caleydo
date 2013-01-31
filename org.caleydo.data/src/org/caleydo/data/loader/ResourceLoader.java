@@ -65,6 +65,10 @@ public class ResourceLoader implements ITextureLoader {
 			return new IllegalStateException("Cannot load resource: " + res);
 	}
 
+	public final InputStream get(String res) {
+		return getChecked(res);
+	}
+
 	public final BufferedReader getResource(String fileName) {
 		return new BufferedReader(new InputStreamReader(getChecked(fileName)));
 	}

@@ -23,11 +23,14 @@ import java.io.File;
 import java.util.Collection;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.io.ProjectDescription;
-import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.EDataSetType;
-import org.caleydo.data.importer.tcga.ETumorType;
+import org.caleydo.data.importer.tcga.model.TCGADataSets;
+import org.caleydo.data.importer.tcga.model.TumorType;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * This class handles the whole workflow of creating a Caleydo project from TCGA
@@ -39,70 +42,76 @@ import org.caleydo.data.importer.tcga.ETumorType;
 public class TCGAQCTask extends ATCGATask {
 	private static final long serialVersionUID = -3231766030581533359L;
 
-	private final String tumorType;
+	private final TumorType tumor;
 	private final TCGAQCSettings settings;
 	private final EDataSetType dataSetType;
 
-	public TCGAQCTask(String tumorType, EDataSetType dataSetType, TCGAQCSettings settings) {
-		this.tumorType = tumorType;
+	public TCGAQCTask(TumorType tumor, EDataSetType dataSetType, TCGAQCSettings settings) {
+		this.tumor = tumor;
 		this.dataSetType = dataSetType;
 		this.settings = settings;
 	}
 
 	@Override
-	public String compute() {
+	public JsonElement compute() {
 		String jnlpOutputFolder = settings.getJNLPOutputDirectory();
-		String jnlpFileName = dataSetType + "_" + tumorType + ".jnlp";
+		String jnlpFileName = dataSetType + "_" + tumor + ".jnlp";
 
-		String projectOutputPath = settings.getDataDirectory(dataSetType.name()) + dataSetType + "_" + tumorType
+		String projectOutputPath = settings.getDataDirectory(dataSetType.name()) + dataSetType + "_" + tumor
 				+ ".cal";
 
-		System.out.println("Downloading " + dataSetType + " data for tumor type " + tumorType);
+		System.out.println("Downloading " + dataSetType + " data for tumor type " + tumor);
 
-		ProjectDescription project = new TCGAInterAnalysisRunXMLGenerator(tumorType, dataSetType, settings).invoke();
+		TCGADataSets project = new TCGAInterAnalysisRunXMLGenerator(tumor, dataSetType, settings).invoke();
 
-		if (project.getDataSetDescriptionCollection().isEmpty())
+		if (project.isEmpty())
 			return null;
 
-		Collection<ATableBasedDataDomain> dataDomains = new XMLToProjectBuilder().buildProject(project,
-				projectOutputPath);
+		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
+		project = null;
 
-		String projectRemoteOutputURL = settings.getTcgaServerURL() + dataSetType + "/" + dataSetType + "_" + tumorType
+		if (dataDomains.isEmpty()) {
+			return null;
+		}
+
+		if (!saveProject(dataDomains, projectOutputPath)) {
+			return null;
+		}
+
+		String projectRemoteOutputURL = settings.getTcgaServerURL() + dataSetType + "/" + dataSetType + "_" + tumor
 				+ ".cal";
 
-		StringBuilder report = new StringBuilder();
-		generateTumorReportLine(report, dataDomains, tumorType, jnlpFileName, projectRemoteOutputURL);
+		JsonElement report = generateTumorReportLine(dataDomains, tumor, jnlpFileName, projectRemoteOutputURL);
 
 		generateJNLP(new File(jnlpOutputFolder, jnlpFileName), projectRemoteOutputURL);
 
 		cleanUp(dataDomains);
 
-		return report.toString();
+		return report;
 	}
 
-	protected void generateTumorReportLine(StringBuilder report, Collection<ATableBasedDataDomain> dataDomains,
-			String tumorAbbreviation, String jnlpFileName, String projectOutputPath) {
+	protected JsonElement generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
+			TumorType tumor, String jnlpFileName, String projectOutputPath) {
 
 		String jnlpURL = settings.getJNLPURL(jnlpFileName);
 
-		String tumorName = ETumorType.valueOf(tumorAbbreviation).getTumorName();
+		JsonObject report = new JsonObject();
+		report.addProperty("tumorAbbreviation", tumor.getName());
+		report.addProperty("tumorName", tumor.getLabel());
 
-		report.append("{\"tumorAbbreviation\":\"").append(tumorAbbreviation)
-				.append("\",\"tumorName\":\"").append(tumorName).append("\",\"genomic\":{");
-
-		for (ATableBasedDataDomain dataDomain : dataDomains) {
-
-			String analysisRunName = dataDomain.getDataSetDescription().getDataSetName();
-
-			report.append("\"").append(analysisRunName).append("\":")
-					.append(getAdditionalInfo(dataDomain)).append(",");
+		Gson gson = settings.getGson();
+		{
+			JsonObject genomic = new JsonObject();
+			report.add("genomic", genomic);
+			for (ATableBasedDataDomain dataDomain : dataDomains) {
+				String analysisRunName = dataDomain.getDataSetDescription().getDataSetName();
+				report.add(analysisRunName, gson.toJsonTree(new AdditionalInfo(dataDomain)));
+			}
 		}
 
-		// remove last comma
-		if (!dataDomains.isEmpty())
-			report.setLength(report.length() - 1);
+		report.addProperty("Caleydo JNLP", jnlpURL);
+		report.addProperty("Caleydo Project", projectOutputPath);
 
-		report.append("},\"Caleydo JNLP\":\"").append(jnlpURL).append("\",\"Caleydo Project\":\"");
-		report.append(projectOutputPath).append("\"}\n");
+		return report;
 	}
 }

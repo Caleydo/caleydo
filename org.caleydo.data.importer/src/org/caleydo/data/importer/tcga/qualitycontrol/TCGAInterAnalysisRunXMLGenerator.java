@@ -26,11 +26,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 
-import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.FirehoseProvider;
 import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
+import org.caleydo.data.importer.tcga.model.TCGADataSet;
+import org.caleydo.data.importer.tcga.model.TCGADataSets;
+import org.caleydo.data.importer.tcga.model.TumorType;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -40,41 +41,41 @@ import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TCGAInterAnalysisRunXMLGenerator extends RecursiveTask<ProjectDescription> {
+public class TCGAInterAnalysisRunXMLGenerator extends RecursiveTask<TCGADataSets> {
 	private static final long serialVersionUID = -7056378841113169134L;
 
 	private final EDataSetType dataSetType;
 	private final TCGAQCSettings settings;
 	private final boolean loadSampledGenes = true;
 
-	private final String tumorAbbreviation;
+	private final TumorType tumor;
 
-	public TCGAInterAnalysisRunXMLGenerator(String tumorAbbreviation, EDataSetType dataSetType, TCGAQCSettings settings) {
+	public TCGAInterAnalysisRunXMLGenerator(TumorType tumor, EDataSetType dataSetType, TCGAQCSettings settings) {
 		this.settings = settings;
-		this.tumorAbbreviation = tumorAbbreviation;
+		this.tumor = tumor;
 		this.dataSetType = dataSetType;
 	}
 
 	@Override
-	public ProjectDescription compute() {
-		Collection<ForkJoinTask<DataSetDescription>> tasks = new ArrayList<>();
+	public TCGADataSets compute() {
+		Collection<ForkJoinTask<TCGADataSet>> tasks = new ArrayList<>();
 
 		List<String> analysisRuns = settings.getAnalysisRuns();
 		List<String> dataRuns = settings.getDataRuns();
 		for (int i = 0; i < analysisRuns.size(); i++) {
 			String analysisRun = analysisRuns.get(i);
 			String dataRun = dataRuns.get(i);
-			FirehoseProvider fileProvider = settings.createFirehoseProvider(tumorAbbreviation, analysisRun, dataRun);
+			FirehoseProvider fileProvider = settings.createFirehoseProvider(tumor, analysisRun, dataRun);
 
-			tasks.add(TCGADataSetBuilder.create(tumorAbbreviation, dataSetType, analysisRun, fileProvider,
-					loadSampledGenes));
+			tasks.add(TCGADataSetBuilder.create(tumor, dataSetType, analysisRun, fileProvider, loadSampledGenes,
+					settings));
 		}
 
-		ProjectDescription projectDescription = new ProjectDescription();
+		TCGADataSets projectDescription = new TCGADataSets(dataSetType.getName());
 
-		for (ForkJoinTask<DataSetDescription> task : invokeAll(tasks)) {
+		for (ForkJoinTask<TCGADataSet> task : invokeAll(tasks)) {
 			try {
-				DataSetDescription ds = task.get();
+				TCGADataSet ds = task.get();
 				if (ds == null)
 					continue;
 				projectDescription.add(ds);
