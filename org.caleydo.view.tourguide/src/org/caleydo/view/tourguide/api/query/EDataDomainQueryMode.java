@@ -28,7 +28,6 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -61,7 +60,7 @@ public enum EDataDomainQueryMode {
 			List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class));
 
 			for (Iterator<ATableBasedDataDomain> it = dataDomains.iterator(); it.hasNext();)
-				if (DataDomainOracle.isClinical(it.next()))
+				if (!it.next().getTable().isDataHomogeneous()) // remove inhomogenous
 					it.remove();
 
 			// Sort data domains alphabetically

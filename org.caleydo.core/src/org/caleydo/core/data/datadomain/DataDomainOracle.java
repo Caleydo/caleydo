@@ -22,13 +22,13 @@ package org.caleydo.core.data.datadomain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.util.collection.Pair;
 
 /**
  * helper class for encapsulating magic meta data information about a data domain
@@ -40,12 +40,7 @@ public final class DataDomainOracle {
 	private final static CategoricalTablePerspectiveCreator perspectiveCreator = new CategoricalTablePerspectiveCreator();
 
 	public static boolean isCategoricalDataDomain(IDataDomain dataDomain) {
-		if (dataDomain == null)
-			return false;
-		String label = dataDomain.getLabel();
-		if (dataDomain.getLabel() == null)
-			return false;
-		return label.toLowerCase().contains("mutation") || label.toLowerCase().contains("copy");
+		return DataSupportDefinitions.categoricalTables.isDataDomainSupported(dataDomain);
 	}
 
 	public synchronized static void initDataDomain(ATableBasedDataDomain dataDomain) {
@@ -64,18 +59,62 @@ public final class DataDomainOracle {
 		return null;
 	}
 
-	public static Collection<Pair<Integer,String>> getClinicalVariables() {
+	/**
+	 * returns a list of clinical variables that are natural numbers
+	 *
+	 * @return pair with id,label
+	 */
+	public static Collection<ClinicalVariable> getClinicalVariables() {
 		ATableBasedDataDomain clinical = getClinicalDataDomain();
 		if (clinical == null)
 			return Collections.emptyList();
-		VirtualArray va = clinical.getTable().getDefaultDimensionPerspective().getVirtualArray();
-		IDMappingManager manager = IDMappingManagerRegistry.get().getIDMappingManager(va.getIdType());
-		IIDTypeMapper<Integer,String> mapper = manager.getIDTypeMapper(va.getIdType(), va.getIdType().getIDCategory().getHumanReadableIDType());
+		List<Integer> va = clinical.getTable().getColumnIDList();
+		IDType dimId = clinical.getDimensionIDType();
+		Integer row = clinical.getTable().getRowIDList().get(0);
+		IDMappingManager manager = clinical.getDimensionIDMappingManager();
+		IIDTypeMapper<Integer, String> mapper = manager.getIDTypeMapper(dimId, dimId.getIDCategory()
+				.getHumanReadableIDType());
 
-		Collection<Pair<Integer,String>> result = new ArrayList<>();
+		Collection<ClinicalVariable> result = new ArrayList<>();
 		for(Integer id : va) {
-			result.add(Pair.make(id, mapper.apply(id).iterator().next()));
+			EDataClass dataClass = clinical.getTable().getDataClass(id, row);
+			result.add(new ClinicalVariable(mapper.apply(id).iterator().next(), id, dataClass));
 		}
 		return result;
+	}
+
+	public static class ClinicalVariable {
+		private final String label;
+		private final int dimId;
+		private final EDataClass dataClass;
+
+		public ClinicalVariable(String label, int dimId, EDataClass dataClass) {
+			super();
+			this.label = label;
+			this.dimId = dimId;
+			this.dataClass = dataClass;
+		}
+
+		/**
+		 * @return the label, see {@link #label}
+		 */
+		public String getLabel() {
+			return label;
+		}
+
+		/**
+		 * @return the dimId, see {@link #dimId}
+		 */
+		public int getDimId() {
+			return dimId;
+		}
+
+		/**
+		 * @return the dataClass, see {@link #dataClass}
+		 */
+		public EDataClass getDataClass() {
+			return dataClass;
+		}
+
 	}
 }

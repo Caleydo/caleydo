@@ -21,12 +21,13 @@ package org.caleydo.view.tourguide.impl;
 
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
+import org.caleydo.core.data.datadomain.DataDomainOracle.ClinicalVariable;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
@@ -39,13 +40,10 @@ import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IMetricFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
+import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
 /**
@@ -55,17 +53,14 @@ import com.google.common.collect.Sets;
 public class LogRankMetricFactory implements IMetricFactory {
 	@Override
 	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver) {
-		Iterable<LogRankMetric> logRankScores = Iterables.filter(Iterables.transform(
-				DataDomainOracle.getClinicalVariables(), new Function<Pair<Integer, String>, LogRankMetric>() {
-					@Override
-					public LogRankMetric apply(Pair<Integer, String> p) {
-						return new LogRankMetric(p.getSecond(), p.getFirst());
-					}
-				}), Predicates.not(Predicates.in(visible)));
-
 		GroupContextMenuItem logRanks = new GroupContextMenuItem("Create LogRank of");
 		boolean hasOne = false;
-		for (LogRankMetric score : logRankScores) {
+		for (ClinicalVariable var : DataDomainOracle.getClinicalVariables()) {
+			if (var.getDataClass() != EDataClass.NATURAL_NUMBER)
+				continue;
+			LogRankMetric score = new LogRankMetric(var.getLabel(), var.getDimId());
+			if (visible.contains(score))
+				continue;
 			hasOne = true;
 			IScore logRankPValue = new LogRankPValue(score.getLabel() + " (P-V)", score);
 			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(score, logRankPValue)

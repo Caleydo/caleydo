@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
+import org.caleydo.core.data.collection.table.CategoricalTable;
+import org.caleydo.core.data.collection.table.NumericalTable;
+
 /**
  * factory class for {@link IDataSupportDefinition}s
  *
@@ -38,6 +41,31 @@ public final class DataSupportDefinitions {
 			return dataDomain instanceof ATableBasedDataDomain;
 		}
 	};
+
+	public static final IDataSupportDefinition homogenousTables = new IDataSupportDefinition() {
+		@Override
+		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+			return (dataDomain instanceof ATableBasedDataDomain)
+					&& ((ATableBasedDataDomain) dataDomain).getTable().isDataHomogeneous();
+		}
+	};
+
+	public static final IDataSupportDefinition numericalTables = new IDataSupportDefinition() {
+		@Override
+		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+			return (dataDomain instanceof ATableBasedDataDomain)
+					&& (((ATableBasedDataDomain) dataDomain).getTable() instanceof NumericalTable);
+		}
+	};
+
+	public static final IDataSupportDefinition categoricalTables = new IDataSupportDefinition() {
+		@Override
+		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+			return (dataDomain instanceof ATableBasedDataDomain)
+					&& (((ATableBasedDataDomain) dataDomain).getTable() instanceof CategoricalTable);
+		}
+	};
+
 	/**
 	 * Default definition that can be used if all {@link DataDomain}s are supported.
 	 */
@@ -47,4 +75,13 @@ public final class DataSupportDefinitions {
 			return true;
 		}
 	};
+
+	public static IDataSupportDefinition not(final IDataSupportDefinition toNegate) {
+		return new IDataSupportDefinition() {
+			@Override
+			public boolean isDataDomainSupported(IDataDomain dataDomain) {
+				return !toNegate.isDataDomainSupported(dataDomain);
+			}
+		};
+	}
 }

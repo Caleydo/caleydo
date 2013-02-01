@@ -48,6 +48,8 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.core.view.opengl.picking.SpacePickingManager.OnPick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ESorting;
@@ -317,6 +319,12 @@ public class ScoreQueryUI extends Row {
 			public void clicked(Pick pick) {
 				onEditFilter();
 			}
+
+			@Override
+			public void pick(Pick pick) {
+				super.pick(pick);
+				System.out.println(pick.getPickingMode());
+			}
 		}, EDIT_FILTER);
 		view.addTypePickingTooltipListener("Edit Score Filters", EDIT_FILTER);
 
@@ -334,6 +342,10 @@ public class ScoreQueryUI extends Row {
 		}, DROP_SEPARATOR);
 	}
 
+	@OnPick(value = EDIT_FILTER, mode = PickingMode.CLICKED)
+	private void onEditFilter2() {
+
+	}
 
 	/**
 	 * @param pick
