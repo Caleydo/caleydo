@@ -1122,7 +1122,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 		pickingManager.removeViewSpecificData(uniqueID);
-		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
 		unregisterEventListeners();
 		destroyViewSpecificContent(gl);
 		parentGLCanvas.removeFocusListener(focusListener);

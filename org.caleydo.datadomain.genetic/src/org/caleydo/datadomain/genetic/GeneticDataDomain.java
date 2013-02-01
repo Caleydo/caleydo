@@ -29,10 +29,6 @@ import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.events.ForeignSelectionCommandListener;
-import org.caleydo.core.data.selection.events.ForeignSelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveEvent;
-import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveListener;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
@@ -59,9 +55,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 */
 	private static final AtomicInteger extensionID = new AtomicInteger();
 
-	private ReplacePerspectiveListener clinicalReplaceContentVirtualArrayListener;
-	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
-	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
 	/**
 	 * Constructor. Do not create a {@link GeneticDataDomain} yourself, use
@@ -164,47 +157,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		if (DataDomainManager.get().getDataDomainByType(CLINICAL_DATADOMAIN_TYPE) == null)
-			return;
-
-		String clinicalDataDomainID = DataDomainManager.get().getDataDomainByType(CLINICAL_DATADOMAIN_TYPE)
-				.getDataDomainID();
-
-		clinicalReplaceContentVirtualArrayListener = new ReplacePerspectiveListener();
-		clinicalReplaceContentVirtualArrayListener.setHandler(this);
-		clinicalReplaceContentVirtualArrayListener.setExclusiveEventSpace(clinicalDataDomainID);
-		eventPublisher.addListener(ReplacePerspectiveEvent.class, clinicalReplaceContentVirtualArrayListener);
-
-		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
-		clinicalSelectionUpdateListener.setHandler(this);
-		clinicalSelectionUpdateListener.setExclusiveEventSpace(clinicalDataDomainID);
-		eventPublisher.addListener(SelectionUpdateEvent.class, clinicalSelectionUpdateListener);
-
-		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
-		clinicalSelectionCommandListener.setHandler(this);
-		clinicalSelectionCommandListener.setEventSpace(clinicalDataDomainID);
-		eventPublisher.addListener(SelectionCommandEvent.class, clinicalSelectionCommandListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-
 		super.unregisterEventListeners();
-
-		if (clinicalReplaceContentVirtualArrayListener != null) {
-			eventPublisher.removeListener(clinicalReplaceContentVirtualArrayListener);
-			clinicalReplaceContentVirtualArrayListener = null;
-		}
-
-		if (clinicalSelectionUpdateListener != null) {
-			eventPublisher.removeListener(clinicalSelectionUpdateListener);
-			clinicalSelectionUpdateListener = null;
-		}
-
-		if (clinicalSelectionCommandListener != null) {
-			eventPublisher.removeListener(clinicalSelectionCommandListener);
-			clinicalSelectionCommandListener = null;
-		}
 	}
 
 	@Override

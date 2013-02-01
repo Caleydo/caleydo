@@ -70,7 +70,6 @@ import org.caleydo.core.event.view.UseRandomSamplingEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -90,8 +89,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
-import org.caleydo.core.view.vislink.StandardTransformer;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingEvent;
@@ -191,9 +188,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 	int changeDropOnAxisNumber = -1;
 
-	/** Utility object for coordinate transformation and projection */
-	protected StandardTransformer selectionTransformer;
-
 	/**
 	 * Constructor.
 	 */
@@ -234,7 +228,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	public void init(final GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);
 		displayListIndex = gl.glGenLists(1);
-		selectionTransformer = new StandardTransformer(uniqueID);
 		initData();
 		registerPickingListeners();
 		updateSpacings();
@@ -260,10 +253,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			pickingManager.handlePicking(this, gl);
 
 		display(gl);
-
-		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewManager()
-				.getConnectedElementRepresentationManager();
-		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
@@ -910,7 +899,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		}
 
-
 	}
 
 	/**
@@ -1437,8 +1425,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			return;
 		}
 
-		connectedElementRepresentationManager.clear(recordSelectionManager.getIDType(), selectionType);
-
 		recordSelectionManager.clearSelection(selectionType);
 
 		recordSelectionManager.addToType(selectionType, id);
@@ -1447,7 +1433,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		if (!bAngularBrushingSelectPolyline) {
 			SelectionDelta selectionDelta = recordSelectionManager.getDelta();
-			prepareVisualLinkingInformation(selectionDelta);
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setEventSpace(dataDomain.getDataDomainID());
@@ -1462,16 +1447,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		dimensionSelectionManager.clearSelection(selectionType);
 		dimensionSelectionManager.addToType(selectionType, id);
 
-		// dimensionSelectionManager.addConnectionID(generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION),
-		// id);
-
-		connectedElementRepresentationManager.clear(dimensionSelectionManager.getIDType(), selectionType);
-
 		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
-		// if (dimensionSelectionManager.getIDType() ==
-		// EIDType.EXPERIMENT_INDEX) {
-		prepareVisualLinkingInformation(selectionDelta);
-		// }
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setEventSpace(dataDomain.getDataDomainID());

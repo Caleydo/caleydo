@@ -23,7 +23,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
 /**
  * Listener for selection update events. This listener gets the payload from a SelectionUpdateEvent and calls
@@ -46,7 +45,6 @@ public class SelectionUpdateListener
 			SelectionUpdateEvent selectioUpdateEvent = (SelectionUpdateEvent) event;
 			SelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
 			handler.handleSelectionUpdate(delta);
-			VisLinkScene.resetAnimation(System.currentTimeMillis());
 		}
 	}
 

@@ -72,7 +72,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
@@ -168,7 +167,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
-	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
 	 * Own texture manager is needed for each GL2 context, because textures cannot be bound to multiple GL2 contexts.
@@ -240,8 +238,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
-		connectedElementRepresentationManager = generalManager.getViewManager()
-				.getConnectedElementRepresentationManager();
+
 
 		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
 				.name()));
@@ -1082,52 +1079,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		gLPathwayAugmentationRenderer.enableNeighborhood(bEnableNeighborhood);
 	}
 
-	private void createConnectionLines(SelectionType selectionType, int iConnectionID) {
-		// // check in preferences if we should draw connection lines for mouse
-		// // over
-		// if
-		// (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(selectionType))
-		// return;
-		// // check for selections
-		// if
-		// (!generalManager.getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS)
-		// && selectionType == SelectionType.SELECTION)
-		// return;
-		//
-		// PathwayVertexRep tmpPathwayVertexRep;
-		// int pathwayHeight = pathway.getHeight();
-		//
-		// int viewID = uniqueID;
-		// // If rendered remote (hierarchical heat map) - use the remote view
-		// ID
-		// // if (glRemoteRenderingView != null && glRemoteRenderingView
-		// instanceof
-		// // AGLViewBrowser)
-		// // viewID = glRemoteRenderingView.getID();
-		//
-		// for (int vertexRepID :
-		// vertexSelectionManager.getElements(selectionType)) {
-		// tmpPathwayVertexRep =
-		// pathwayItemManager.getPathwayVertexRep(vertexRepID);
-		//
-		// ElementConnectionInformation elementRep = new
-		// ElementConnectionInformation(dataDomain.getRecordIDType(),
-		// viewID, tmpPathwayVertexRep.getLowerLeftCornerX() *
-		// PathwayRenderStyle.SCALING_FACTOR_X
-		// * vecScaling.x() + vecTranslation.x(),
-		// (pathwayHeight - tmpPathwayVertexRep.getLowerLeftCornerY()) *
-		// PathwayRenderStyle.SCALING_FACTOR_Y
-		// * vecScaling.y() + vecTranslation.y(), 0);
-		//
-		// // for (Integer iConnectionID : selectionManager
-		// // .getConnectionForElementID(iVertexRepID))
-		// // {
-		// connectedElementRepresentationManager.addSelection(iConnectionID,
-		// elementRep, selectionType);
-		// // }
-		// }
-		// // }
-	}
+
 
 	@Override
 	public void broadcastElements(EVAOperation type) {
@@ -1161,7 +1113,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	@Override
 	public void initData() {
-		connectedElementRepresentationManager.clear(dataDomain.getRecordIDType());
 		super.initData();
 	}
 
@@ -1386,10 +1337,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			vertexSelectionManager.addToType(SelectionType.SELECTION, selectedPath.getEndVertex().getID());
 			int connectionID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
 			vertexSelectionManager.addConnectionID(connectionID, selectedPath.getEndVertex().getID());
-			connectedElementRepresentationManager.clear(vertexSelectionManager.getIDType(), SelectionType.SELECTION);
-			createConnectionLines(SelectionType.SELECTION, connectionID);
-			// SelectionDelta selectionDelta =
-			// createExternalSelectionDelta(vertexSelectionManager.getDelta());
 			SelectionDelta selectionDelta = vertexSelectionManager.getDelta();
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1566,12 +1513,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		int iConnectionID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
 		vertexSelectionManager.addConnectionID(iConnectionID, vertexRep.getID());
-		connectedElementRepresentationManager.clear(vertexSelectionManager.getIDType(), selectionType);
 
-		createConnectionLines(selectionType, iConnectionID);
-
-		// SelectionDelta selectionDelta =
-		// createExternalSelectionDelta(vertexSelectionManager.getDelta());
 		SelectionDelta selectionDelta = vertexSelectionManager.getDelta();
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();

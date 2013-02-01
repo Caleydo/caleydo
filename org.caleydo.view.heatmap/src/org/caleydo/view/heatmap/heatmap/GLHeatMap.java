@@ -32,7 +32,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
@@ -52,8 +51,6 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
-import org.caleydo.core.view.vislink.StandardTransformer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
@@ -98,8 +95,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	boolean bClusterVisualizationExperimentsActive = false;
 
-	/** Utility object for coordinate transformation and projection */
-	protected StandardTransformer selectionTransformer;
 
 	/** Signals that the heat map is currently active */
 	private boolean isActive = false;
@@ -124,7 +119,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
 
-		selectionTransformer = new StandardTransformer(uniqueID);
+
 
 
 		textRenderer = new CaleydoTextRenderer(24);
@@ -238,10 +233,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		if (!lazyMode)
 			checkForHits(gl);
-
-		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewManager()
-				.getConnectedElementRepresentationManager();
-		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 	}
 
@@ -389,8 +380,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 				&& recordSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
-		connectedElementRepresentationManager.clear(recordIDType, selectionType);
-
 		recordSelectionManager.clearSelection(selectionType);
 
 		// TODO: Integrate multi spotting support again
@@ -401,7 +390,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 
-		prepareVisualLinkingInformation(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		// event.setDataDomainID(dataDomain.getDataDomainID());
@@ -620,7 +608,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	@Override
 	public void destroyViewSpecificContent(GL2 gl) {
-		selectionTransformer.destroy();
+
 	}
 
 	public void setRenderTemplate(AHeatMapLayoutConfiguration template) {

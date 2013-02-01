@@ -37,19 +37,15 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.listener.ExtendedSelectionUpdateListener;
-import org.caleydo.core.view.listener.IExtendedSelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -71,7 +67,7 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOwner, IExtendedSelectionUpdateHandler {
+public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOwner {
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView serializedView;
@@ -92,7 +88,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 	protected Composite parentComposite;
 
-	protected ExtendedSelectionUpdateListener selectionUpdateListener;
+
 
 	protected IToolBarManager toolBarManager;
 
@@ -430,36 +426,37 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	@Override
 	public void registerEventListeners() {
 
-		selectionUpdateListener = new ExtendedSelectionUpdateListener();
-		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		// selectionUpdateListener = new ExtendedSelectionUpdateListener();
+		// selectionUpdateListener.setHandler(this);
+		// eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
-		}
+		// if (selectionUpdateListener != null) {
+		// eventPublisher.removeListener(selectionUpdateListener);
+		// selectionUpdateListener = null;
+		// }
 	}
 
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta, String dataDomainID) {
-
-		if (!isSupportView())
-			return;
-
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-				dataDomainID);
-		if (dataDomain == null)
-			return;
-
-		if (this instanceof IDataDomainBasedView) {
-			((IDataDomainBasedView) this).setDataDomain(dataDomain);
-		} else if (this.getView() instanceof IDataDomainBasedView) {
-			((IDataDomainBasedView) (this)).setDataDomain(dataDomain);
-		}
-	}
+	//
+	// @Override
+	// public void handleSelectionUpdate(SelectionDelta selectionDelta, String dataDomainID) {
+	//
+	// if (!isSupportView())
+	// return;
+	//
+	// ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+	// dataDomainID);
+	// if (dataDomain == null)
+	// return;
+	//
+	// if (this instanceof IDataDomainBasedView) {
+	// ((IDataDomainBasedView) this).setDataDomain(dataDomain);
+	// } else if (this.getView() instanceof IDataDomainBasedView) {
+	// ((IDataDomainBasedView) (this)).setDataDomain(dataDomain);
+	// }
+	// }
 
 	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {

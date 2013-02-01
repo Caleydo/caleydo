@@ -32,7 +32,6 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ISelectionHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
@@ -50,14 +49,10 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -73,7 +68,6 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 
 	protected TablePerspective tablePerspective;
 
-	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
 	 * This manager is responsible for the selection states of the records.
@@ -105,11 +99,6 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
-	/**
-	 * Flag that tells the view whether visual linking is used for it's element so it must create
-	 * {@link ElementConnectionInformation}
-	 */
-	private boolean isVisualLinkingActive = false;
 
 	/** The transformation used for rendering. Initialized with the default transformation of the table. */
 	protected String dataTransformation;
@@ -129,8 +118,7 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 			String viewType, String viewName) {
 		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
 
-		connectedElementRepresentationManager = generalManager.getViewManager()
-				.getConnectedElementRepresentationManager();
+
 	}
 
 	@Override
@@ -192,13 +180,6 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 		}
 	}
 
-	/**
-	 * @param isVisualLinkingActive
-	 *            setter, see {@link #isVisualLinkingActive}
-	 */
-	public void setVisualLinkingActive(boolean isVisualLinkingActive) {
-		this.isVisualLinkingActive = isVisualLinkingActive;
-	}
 
 	/**
 	 * Create {@link ElementConnectionInformation}, which basically describes anchor points for visual links for the
@@ -225,15 +206,13 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);
-			if (isVisualLinkingActive)
-				prepareVisualLinkingInformation(selectionDelta);
+
 			reactOnExternalSelection(selectionDelta);
 			setDisplayListDirty();
 		} else if (selectionDelta.getIDType() == dimensionIDType) {
 
 			dimensionSelectionManager.setDelta(selectionDelta);
-			if (isVisualLinkingActive)
-				prepareVisualLinkingInformation(selectionDelta);
+
 			reactOnExternalSelection(selectionDelta);
 			setDisplayListDirty();
 		}
@@ -295,60 +274,60 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 	 * @param selectionDelta
 	 *            the selection data that should be handled
 	 */
-	protected void prepareVisualLinkingInformation(SelectionDelta selectionDelta) {
-		try {
-			int id = -1;
-
-			IDType idType;
-
-			if (selectionDelta.size() > 0) {
-				for (SelectionDeltaItem item : selectionDelta) {
-					if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(item
-							.getSelectionType()) || item.isRemove())
-						continue;
-					if (selectionDelta.getIDType() == recordIDType) {
-						id = item.getID();
-						idType = recordIDType;
-						if (tablePerspective == null) {
-							Logger.log(new Status(IStatus.ERROR, this.toString(), "tablePerspective was null"));
-							return;
-						}
-						if (!tablePerspective.getRecordPerspective().getVirtualArray().contains(id))
-							return;
-
-					} else if (selectionDelta.getIDType() == dimensionIDType) {
-						id = item.getID();
-						idType = dimensionIDType;
-						if (!tablePerspective.getDimensionPerspective().getVirtualArray().contains(id))
-							return;
-					} else
-						throw new InvalidAttributeValueException("Can not handle data type: "
-								+ selectionDelta.getIDType());
-
-					if (id == -1)
-						throw new IllegalArgumentException("No internal ID in selection delta");
-
-					ArrayList<ElementConnectionInformation> alRep = createElementConnectionInformation(idType, id);
-					if (alRep == null) {
-						continue;
-					}
-					for (ElementConnectionInformation rep : alRep) {
-						if (rep == null) {
-							continue;
-						}
-
-						for (Integer iConnectionID : item.getConnectionIDs()) {
-							connectedElementRepresentationManager.addSelection(iConnectionID, rep,
-									item.getSelectionType());
-						}
-					}
-				}
-			}
-		} catch (InvalidAttributeValueException e) {
-			Logger.log(new Status(IStatus.WARNING, this.toString(),
-					"Can not handle data type of update in selectionDelta", e));
-		}
-	}
+	// protected void prepareVisualLinkingInformation(SelectionDelta selectionDelta) {
+	// try {
+	// int id = -1;
+	//
+	// IDType idType;
+	//
+	// if (selectionDelta.size() > 0) {
+	// for (SelectionDeltaItem item : selectionDelta) {
+	// if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(item
+	// .getSelectionType()) || item.isRemove())
+	// continue;
+	// if (selectionDelta.getIDType() == recordIDType) {
+	// id = item.getID();
+	// idType = recordIDType;
+	// if (tablePerspective == null) {
+	// Logger.log(new Status(IStatus.ERROR, this.toString(), "tablePerspective was null"));
+	// return;
+	// }
+	// if (!tablePerspective.getRecordPerspective().getVirtualArray().contains(id))
+	// return;
+	//
+	// } else if (selectionDelta.getIDType() == dimensionIDType) {
+	// id = item.getID();
+	// idType = dimensionIDType;
+	// if (!tablePerspective.getDimensionPerspective().getVirtualArray().contains(id))
+	// return;
+	// } else
+	// throw new InvalidAttributeValueException("Can not handle data type: "
+	// + selectionDelta.getIDType());
+	//
+	// if (id == -1)
+	// throw new IllegalArgumentException("No internal ID in selection delta");
+	//
+	// ArrayList<ElementConnectionInformation> alRep = createElementConnectionInformation(idType, id);
+	// if (alRep == null) {
+	// continue;
+	// }
+	// for (ElementConnectionInformation rep : alRep) {
+	// if (rep == null) {
+	// continue;
+	// }
+	//
+	// for (Integer iConnectionID : item.getConnectionIDs()) {
+	// connectedElementRepresentationManager.addSelection(iConnectionID, rep,
+	// item.getSelectionType());
+	// }
+	// }
+	// }
+	// }
+	// } catch (InvalidAttributeValueException e) {
+	// Logger.log(new Status(IStatus.WARNING, this.toString(),
+	// "Can not handle data type of update in selectionDelta", e));
+	// }
+	// }
 
 	/**
 	 * Set whether to use random sampling or not, synchronized

@@ -51,7 +51,6 @@ import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -100,9 +99,6 @@ public class ViewManager extends AManager<IView> {
 	private FPSAnimator fpsAnimator;
 
 	private PickingManager pickingManager = new PickingManager();
-
-	private ConnectedElementRepresentationManager connectedElementRepManager = ConnectedElementRepresentationManager
-			.get();
 
 	private Set<Object> busyRequests = new HashSet<Object>();
 
@@ -486,9 +482,6 @@ public class ViewManager extends AManager<IView> {
 		return pickingManager;
 	}
 
-	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager() {
-		return connectedElementRepManager;
-	}
 
 	public void startAnimator() {
 
