@@ -21,16 +21,13 @@ package org.caleydo.core.id.object;
 
 /**
  * Types of managed objects
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  * @deprecated should be phased out / Alex
  */
 @Deprecated
 public enum ManagedObjectType {
-	COLUMN_NUMERICAL(11),
-	COLUMN_NOMINAL(12),
-
 
 	VIEW_SWT_BROWSER_GENERAL(26),
 	VIEW_SWT_BROWSER_GENOME(23),
@@ -44,12 +41,8 @@ public enum ManagedObjectType {
 
 	REMOTE_LEVEL_ELEMENT(66),
 
-	DIMENSION_GROUP_SPACER(70),
+	DIMENSION_GROUP_SPACER(70);
 
-	/**
-	 * Type for ids used to connect different elements that have different ids.
-	 */
-	CONNECTION(85);
 
 	private int iIdPrefix;
 

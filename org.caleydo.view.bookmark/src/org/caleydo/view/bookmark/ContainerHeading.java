@@ -22,9 +22,9 @@ package org.caleydo.view.bookmark;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 public class ContainerHeading extends ALayoutRenderer implements ILayoutedElement {
 

@@ -1,25 +1,21 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * 
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ * 
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
-import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -27,6 +23,7 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.awt.Point;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -42,16 +39,16 @@ import com.jogamp.common.nio.Buffers;
 
 /**
  * simpler version of {@link PickingManager} for a view specific setup
- *
+ * 
  * registration: {@link #addPickingListener(Object, int, IPickingListener)} or
  * {@link #addTypePickingListener(Object, IPickingListener)} or {@link #register(Object)} using annotation
- *
+ * 
  * querying: {@link #getPickingID(Object, int)}
- *
+ * 
  * executing: {@link #doPicking(GL2, AGLView)}
- *
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class PickingManager2 {
 	private static final int PICKING_SIZE = 1024;
@@ -84,7 +81,7 @@ public class PickingManager2 {
 
 	/**
 	 * see {@link #doPicking(GL2, PickingMode, Point, IRenderable)} but simpler version for a {@link AGLView}
-	 *
+	 * 
 	 * @param gl
 	 * @param view
 	 */
@@ -102,7 +99,7 @@ public class PickingManager2 {
 
 	/**
 	 * performs picking on the given view and calls all the registered picking listeners
-	 *
+	 * 
 	 * @param gl
 	 *            the gl context to use
 	 * @param mode
@@ -136,7 +133,7 @@ public class PickingManager2 {
 
 	/**
 	 * uses the given {@link GLMouseListener} to convert the current state to a {@link PickingMode}
-	 *
+	 * 
 	 * @param glMouseListener
 	 * @return
 	 */
@@ -158,7 +155,7 @@ public class PickingManager2 {
 
 	/**
 	 * picking implementation
-	 *
+	 * 
 	 * @param x
 	 *            mouse x coordinate
 	 * @param y
@@ -214,7 +211,7 @@ public class PickingManager2 {
 	/**
 	 * Extracts the nearest hit from the provided iArPickingBuffer Stores it internally Can process only one hit at at
 	 * time at the moment
-	 *
+	 * 
 	 * @param hitCount
 	 * @param pickingBuffer
 	 */
@@ -268,6 +265,5 @@ public class PickingManager2 {
 		// return as a float between 0 and 1
 		return (1.0f + ((float) depth / 0x7fffffff));
 	}
-
 
 }

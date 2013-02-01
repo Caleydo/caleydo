@@ -17,20 +17,52 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.datadomain.pathway.listener;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.group.ExportContentGroupsEvent;
-import org.caleydo.core.view.opengl.canvas.remote.receiver.IDimensionGroupsActionHandler;
+import org.caleydo.core.id.IDType;
 
-public class DimensionGroupExportingListener
-	extends AEventListener<IDimensionGroupsActionHandler> {
+/**
+ * Event to signal that pathways should be added to the bucket in which a certain gene is contained.
+ * 
+ * @author Marc Streit
+ */
+@XmlRootElement
+@XmlType
+public class LoadPathwaysByGeneEvent
+	extends AEvent {
+
+	/** gene ID of the idType */
+	private int geneID = -1;
+
+	private IDType idType;
+
+	public int getGeneID() {
+		return geneID;
+	}
+
+	public void setGeneID(int geneId) {
+		geneID = geneId;
+	}
+
+	public IDType getIdType() {
+		return idType;
+	}
+
+	public void setTableIDType(IDType idType) {
+		this.idType = idType;
+	}
 
 	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof ExportContentGroupsEvent) {
-			handler.handleExportDimensionGroups();
-		}
+	public boolean checkIntegrity() {
+		if (geneID == -1)
+			throw new IllegalStateException("geneID was not set");
+		if (idType == null)
+			throw new NullPointerException("idType is null");
+		return true;
 	}
+
 }

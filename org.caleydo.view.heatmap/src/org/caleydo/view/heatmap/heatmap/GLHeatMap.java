@@ -31,7 +31,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
@@ -75,7 +74,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	public static String VIEW_NAME = "Heatmap";
 
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden", new float[] { 0f, 0f, 0f, 1f }, 1,
-			false, false, 0.2f);
+			false, 0.2f);
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -384,9 +383,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		// TODO: Integrate multi spotting support again
 
-		Integer iMappingID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
 		recordSelectionManager.addToType(selectionType, recordID);
-		recordSelectionManager.addConnectionID(iMappingID, recordID);
 
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 

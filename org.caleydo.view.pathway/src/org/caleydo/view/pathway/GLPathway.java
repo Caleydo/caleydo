@@ -48,9 +48,7 @@ import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
-import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.ColorManager;
@@ -84,6 +82,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -167,7 +166,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
-
 	/**
 	 * Own texture manager is needed for each GL2 context, because textures cannot be bound to multiple GL2 contexts.
 	 */
@@ -237,8 +235,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				"org.caleydo.datadomain.pathway");
 
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
-
-
 
 		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
 				.name()));
@@ -1079,8 +1075,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		gLPathwayAugmentationRenderer.enableNeighborhood(bEnableNeighborhood);
 	}
 
-
-
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
@@ -1335,8 +1329,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 			// Add new vertex to internal selection manager
 			vertexSelectionManager.addToType(SelectionType.SELECTION, selectedPath.getEndVertex().getID());
-			int connectionID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
-			vertexSelectionManager.addConnectionID(connectionID, selectedPath.getEndVertex().getID());
 			SelectionDelta selectionDelta = vertexSelectionManager.getDelta();
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1503,16 +1495,13 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			metaboliteSelectionManager.addToType(selectionType, vertexRep.getName().hashCode());
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
-		// //////////////////////////////////////
+
 		if (isPathSelectionMode) {
 			selectPath(vertexRep, selectionType);
 		}
-		// //////////////////////////////////////
+
 		// Add new vertex to internal selection manager
 		vertexSelectionManager.addToType(selectionType, vertexRep.getID());
-
-		int iConnectionID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
-		vertexSelectionManager.addConnectionID(iConnectionID, vertexRep.getID());
 
 		SelectionDelta selectionDelta = vertexSelectionManager.getDelta();
 

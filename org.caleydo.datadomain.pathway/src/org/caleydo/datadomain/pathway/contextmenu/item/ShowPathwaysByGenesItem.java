@@ -25,12 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.event.view.pathway.LoadPathwaysByGeneEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**

@@ -99,7 +99,7 @@ public class StratomexAdapter {
 	public StratomexAdapter() {
 		// Create volatile selection type
 		previewSelectionType = new SelectionType("Tour Guide preview selection type",
-				STRATOMEX_SELECTED_ELEMENTS.getRGBA(), 1, true, true, 1);
+				STRATOMEX_SELECTED_ELEMENTS.getRGBA(), 1, true, 1);
 		previewSelectionType.setManaged(false);
 
 		triggerEvent(new SelectionTypeEvent(previewSelectionType));

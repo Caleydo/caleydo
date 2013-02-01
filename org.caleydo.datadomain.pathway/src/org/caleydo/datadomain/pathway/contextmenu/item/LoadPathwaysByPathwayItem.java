@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway.contextmenu.item;
 
-import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 
 /**
  * Implementation of ContextMenuItem for loading pathways by pathway IDs.

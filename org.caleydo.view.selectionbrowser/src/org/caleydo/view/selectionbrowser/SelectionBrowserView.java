@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.selectionbrowser;
 
@@ -65,8 +62,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
- IRecordVAUpdateHandler,
+public class SelectionBrowserView extends ASWTView implements ISelectionHandler, IRecordVAUpdateHandler,
 		IViewCommandHandler {
 
 	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
@@ -75,16 +71,12 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	private final static String SELECTION_TYPE_NAME_4 = "Selected by group 4";
 
 	/** Colors taken from color brewer qualitative "Set 1" with 8 colors */
-	private final static float[] SELECTION_COLOR_1 = new float[] { 152f / 255, 78f / 255,
-			163f / 255, 1 };
+	private final static float[] SELECTION_COLOR_1 = new float[] { 152f / 255, 78f / 255, 163f / 255, 1 };
 	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f / 255, 0, 1 }; // yellow
-	private final static float[] SELECTION_COLOR_3 = new float[] { 247f / 255,
-			129f / 255, 191f / 255, 1 };
+	private final static float[] SELECTION_COLOR_3 = new float[] { 247f / 255, 129f / 255, 191f / 255, 1 };
 	// private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1,
 	// 51f/255, 1 };
-	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255,
-			40f / 255, 1 };
-
+	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255, 40f / 255, 1 };
 
 	SelectionManager recordSelectionManager;
 	SelectionManager dimensionSelectionManager;
@@ -131,17 +123,13 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 
 		ArrayList<SelectionType> selectedByGroupSelectionTypes = new ArrayList<SelectionType>();
 
-		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_1,
-				SELECTION_COLOR_1, 1, isVisible, true, 1));
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_1, SELECTION_COLOR_1, 1, isVisible, 1));
 
-		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_2,
-				SELECTION_COLOR_2, 1, isVisible, true, 1));
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_2, SELECTION_COLOR_2, 1, isVisible, 1));
 
-		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_3,
-				SELECTION_COLOR_3, 1, isVisible, true, 1));
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_3, SELECTION_COLOR_3, 1, isVisible, 1));
 
-		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_4,
-				SELECTION_COLOR_4, 1, isVisible, true, 1));
+		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_4, SELECTION_COLOR_4, 1, isVisible, 1));
 
 		for (SelectionType selectionType : selectedByGroupSelectionTypes) {
 
@@ -245,8 +233,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 			@Override
 			public void handleEvent(Event event) {
 
-				SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-						(SelectionType) event.item.getData());
+				SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent((SelectionType) event.item.getData());
 				selectionTypeEvent.setCurrent(true);
 				GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 			}
@@ -331,16 +318,15 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 		contentTree.removeAll();
 		for (SelectionType tmpSelectionType : sTypes) {
 
-			if (SelectionType.isDefaultType(tmpSelectionType)
-					|| !tmpSelectionType.isManaged())
+			if (SelectionType.isDefaultType(tmpSelectionType) || !tmpSelectionType.isManaged())
 				continue;
 
 			TreeItem item = new TreeItem(contentTree, SWT.NONE);
 
 			float[] fArColor = tmpSelectionType.getColor();
 
-			color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
-					(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
+			color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255), (int) (fArColor[1] * 255),
+					(int) (fArColor[2] * 255));
 
 			item.setText(tmpSelectionType.toString() + " ("
 					+ recordSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
@@ -353,8 +339,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 
 	@Override
 	public void handleSelectionUpdate(final SelectionDelta selectionDelta) {
-		if (!selectionDelta.getIDType().getIDCategory()
-				.equals(recordSelectionManager.getIDType().getIDCategory()))
+		if (!selectionDelta.getIDType().getIDCategory().equals(recordSelectionManager.getIDType().getIDCategory()))
 			return;
 		recordSelectionManager.setDelta(selectionDelta);
 		parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -366,8 +351,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory category,
-			final SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory category, final SelectionCommand selectionCommand) {
 
 		// nothing to do here
 	}
@@ -377,10 +361,8 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 		// nothing to do here
 	}
 
-
 	/**
-	 * handling method for updates about the info text displayed in the this
-	 * info-area
+	 * handling method for updates about the info text displayed in the this info-area
 	 *
 	 * @param info
 	 *            short-info of the sender to display
@@ -395,8 +377,8 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	}
 
 	/**
-	 * Registers the listeners for this view to the event system. To release the
-	 * allocated resources unregisterEventListeners() has to be called.
+	 * Registers the listeners for this view to the event system. To release the allocated resources
+	 * unregisterEventListeners() has to be called.
 	 */
 	@Override
 	public void registerEventListeners() {
@@ -419,8 +401,8 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system. To release
-	 * the allocated resources unregisterEventListenrs() has to be called.
+	 * Unregisters the listeners for this view from the event system. To release the allocated resources
+	 * unregisterEventListenrs() has to be called.
 	 */
 	@Override
 	public void unregisterEventListeners() {
@@ -447,8 +429,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionHandler,
 	}
 
 	@Override
-	public synchronized void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {

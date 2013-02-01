@@ -19,10 +19,10 @@ package org.caleydo.view.pathway.toolbar;
 import java.util.Collection;
 
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.gui.util.SearchBox;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.GLPathway;
