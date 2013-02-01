@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -237,6 +238,15 @@ public class Table {
 		if (!isColumnDimension)
 			columnID = recordID;
 		return columns.get(columnID).getRawDataType();
+	}
+
+	/** Returns the {@link EDataClass} associated with the value specified through dimension and record ID */
+	public EDataClass getDataClass(Integer dimensionID, Integer recordID) {
+		Integer columnID = dimensionID;
+		if (!isColumnDimension)
+			columnID = recordID;
+		return columns.get(columnID).getDataClass();
+
 	}
 
 	@SuppressWarnings("unchecked")

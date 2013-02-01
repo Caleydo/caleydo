@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.INumericalContainer;
 import org.caleydo.core.data.collection.table.NumericalTable;
@@ -39,7 +40,8 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	/**
 	 * Constructor
 	 */
-	public NumericalColumn() {
+	public NumericalColumn(EDataClass dataClass) {
+		super(dataClass);
 	}
 
 	/**

@@ -151,9 +151,7 @@ public class TabularDataParser extends ATextParser {
 			case REAL_NUMBER: {
 				FloatContainer container = new FloatContainer(numberOfDataLines);
 				targetColumns.add(container);
-				NumericalColumn<FloatContainer, Float> column;
-
-				column = new NumericalColumn<>();
+				NumericalColumn<FloatContainer, Float> column = new NumericalColumn<>(parsingDetail.getDataClass());
 
 				column.setRawData(container);
 
@@ -165,7 +163,7 @@ public class TabularDataParser extends ATextParser {
 				targetColumns.add(container);
 				NumericalColumn<IntContainer, Integer> column;
 
-				column = new NumericalColumn<>();
+				column = new NumericalColumn<>(parsingDetail.getDataClass());
 
 				column.setRawData(container);
 
@@ -180,7 +178,7 @@ public class TabularDataParser extends ATextParser {
 					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines, EDataType.STRING);
 					targetColumns.add(categoricalContainer);
 
-					categoricalColumn = new CategoricalColumn<String>();
+					categoricalColumn = new CategoricalColumn<String>(parsingDetail.getDataClass());
 					categoricalColumn.setRawData(categoricalContainer);
 
 					if (table instanceof CategoricalTable<?>) {
@@ -198,7 +196,7 @@ public class TabularDataParser extends ATextParser {
 					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines, EDataType.INTEGER);
 					targetColumns.add(categoricalIntContainer);
 
-					categoricalIntColumn = new CategoricalColumn<Integer>();
+					categoricalIntColumn = new CategoricalColumn<Integer>(parsingDetail.getDataClass());
 					categoricalIntColumn.setRawData(categoricalIntContainer);
 
 					if (table instanceof CategoricalTable<?>) {

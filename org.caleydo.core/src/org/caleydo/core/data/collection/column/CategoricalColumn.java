@@ -18,6 +18,7 @@ package org.caleydo.core.data.collection.column;
 
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 
@@ -28,8 +29,8 @@ import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 public class CategoricalColumn<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> extends
 		AColumn<CategoricalContainer<CATEGORY_TYPE>, CATEGORY_TYPE> {
 
-	public CategoricalColumn() {
-		super();
+	public CategoricalColumn(EDataClass dataClass) {
+		super(dataClass);
 	}
 
 	public void setCategoryDescriptions(CategoricalClassDescription<CATEGORY_TYPE> categoryDescriptions) {

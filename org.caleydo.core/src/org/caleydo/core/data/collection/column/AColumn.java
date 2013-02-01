@@ -18,6 +18,7 @@ package org.caleydo.core.data.collection.column;
 
 import java.util.HashMap;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
@@ -42,6 +43,9 @@ import org.caleydo.core.data.collection.table.Table;
 
 public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawType> {
 
+	/** The class of data stored in this column */
+	private EDataClass dataClass;
+
 	private String defaultDataTransformation = Table.Transformation.NONE;
 
 	/** The id of this column, corresponds to the index of the column in the table */
@@ -54,7 +58,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AColumn() {
+	public AColumn(EDataClass dataClass) {
 		dataRepToContainerMap = new HashMap<>();
 	}
 
@@ -144,5 +148,12 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 
 	public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription() {
 		return null;
+	}
+
+	/**
+	 * @return the dataClass, see {@link #dataClass}
+	 */
+	public EDataClass getDataClass() {
+		return dataClass;
 	}
 }

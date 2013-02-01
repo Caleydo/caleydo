@@ -150,20 +150,6 @@ public class ColumnDescription {
 		return dataType;
 	}
 
-	// /**
-	// * @param columnID
-	// * setter, see {@link #columnID}
-	// */
-	// public void setColumnID(Integer columnID) {
-	// this.columnID = columnID;
-	// }
-	//
-	// /**
-	// * @return the columnID, see {@link #columnID}
-	// */
-	// public Integer getColumnID() {
-	// return columnID;
-	// }
 
 	@Override
 	public String toString() {
