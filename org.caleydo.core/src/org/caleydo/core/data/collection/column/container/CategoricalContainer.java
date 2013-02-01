@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,6 +43,10 @@ import com.google.common.collect.HashBiMap;
  * @author Alexander Lex
  */
 public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> implements IContainer<CATEGORY_TYPE> {
+
+	public static final String UNKNOWN_CATEOGRY_STRING = "UNKN@WN";
+
+	public static final Integer UNKNOWN_CATEGORY_INT = Integer.MIN_VALUE;
 
 	/** The data type corresponding to CategoryType */
 	private EDataType dataType;
@@ -67,43 +71,69 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 	private HashMap<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
 
 	/**
+	 * Category for values where the category is not known, typically because of parsing errors or a missing definition
+	 * in the file.
+	 */
+	private CATEGORY_TYPE unknownCategoryType;
+
+	/**
 	 * An ordered list of categories for this container. Can either be set using
 	 * {@link #setPossibleCategories(ArrayList)} to include categories which are not in the dataset itself, or is set
 	 * automatically once {@link #normalize()} is called.
 	 */
 	private CategoricalClassDescription<CATEGORY_TYPE> categoricalClassDescription;
 
-	public CategoricalContainer(int size, EDataType dataType) {
+	/**
+	 * Initializes the container.
+	 *
+	 * @param size
+	 * @param dataType
+	 * @param unknownCategoryType
+	 *            The value used for the unknown value. Use {@link #UNKNOWN_CATEGORY_INT} and
+	 *            {@link #UNKNOWN_CATEOGRY_STRING} unless there is a good reason not to do so.
+	 */
+	public CategoricalContainer(int size, EDataType dataType, CATEGORY_TYPE unknownCategoryType) {
 		container = new short[size];
+		this.unknownCategoryType = unknownCategoryType;
+		add(unknownCategoryType);
 	}
 
 	/**
-	 * Adds the value of categoryName to the container at position index
+	 * Appends the category to the container.
 	 *
 	 * @param index
-	 * @param categoryName
+	 * @param category
 	 */
 	@Override
-	public void add(CATEGORY_TYPE categoryName) {
-
-		Short identifier = hashCategoryToIdentifier.get(categoryName);
+	public void add(CATEGORY_TYPE category) throws IndexOutOfBoundsException {
+		if (nextIndex == container.length) {
+			throw new IndexOutOfBoundsException(nextIndex + " - cannot add " + category);
+		}
+		Short identifier = hashCategoryToIdentifier.get(category);
 		if (identifier == null) {
 			if (categoricalClassDescription != null) {
 				// we have encountered a category which is not available in the class description
-				Logger.log(new Status(IStatus.WARNING, this.toString(), "No category for " + categoryName
+				Logger.log(new Status(IStatus.WARNING, this.toString(), "No category for " + category
 						+ " in description " + categoricalClassDescription));
+				identifier = hashCategoryToIdentifier.get(unknownCategoryType);
+				category = unknownCategoryType;
 
-				// FIXME - hack to avoid problem with NAN etc
-				Entry<CATEGORY_TYPE, Short> entry = hashCategoryToIdentifier.entrySet().iterator().next();
-				identifier = entry.getValue();
-				categoryName = entry.getKey();
 			} else {
-				identifier = initCategory(categoryName);
+				identifier = initCategory(category);
 			}
 		}
 		container[nextIndex++] = identifier;
-		Integer numberOfMatches = hashCategoryToNumberOfMatches.get(categoryName);
-		hashCategoryToNumberOfMatches.put(categoryName, numberOfMatches);
+		Integer numberOfMatches = hashCategoryToNumberOfMatches.get(category);
+		hashCategoryToNumberOfMatches.put(category, numberOfMatches);
+	}
+
+	@Override
+	public void addUnknown() {
+		add(unknownCategoryType);
+		if (categoricalClassDescription.getUnknownCategory() == null) {
+			categoricalClassDescription.setUnknownCategory(new CategoryProperty<CATEGORY_TYPE>(unknownCategoryType,
+					"Unknown", Colors.NOT_A_NUMBER_COLOR));
+		}
 	}
 
 	/**
@@ -170,15 +200,21 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		float normalizedDistance = 0;
 
 		if (categoricalClassDescription.size() > 1) {
-			normalizedDistance = 1f / (categoricalClassDescription.size() - 1);
+			int numCategories = categoricalClassDescription.size() - 1;
+			if (categoricalClassDescription.getCategoryProperty(unknownCategoryType) != null) {
+				numCategories--;
+			}
+			normalizedDistance = 1f / numCategories;
 		}
 
 		for (int i = 0; i < categoricalClassDescription.size(); i++) {
 			List<CategoryProperty<CATEGORY_TYPE>> c = categoricalClassDescription.getCategoryProperties();
-
 			short key = hashCategoryToIdentifier.get(c.get(i).getCategory());
 			hashCategoryKeyToNormalizedValue.put(key, i * normalizedDistance);
 		}
+
+		short key = hashCategoryToIdentifier.get(unknownCategoryType);
+		hashCategoryKeyToNormalizedValue.put(key, Float.NaN);
 
 		float[] target = new float[container.length];
 

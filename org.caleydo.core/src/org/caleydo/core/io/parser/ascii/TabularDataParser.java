@@ -175,7 +175,8 @@ public class TabularDataParser extends ATextParser {
 				case STRING:
 					CategoricalColumn<String> categoricalColumn;
 					CategoricalContainer<String> categoricalContainer;
-					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines, EDataType.STRING);
+					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines, EDataType.STRING,
+							CategoricalContainer.UNKNOWN_CATEOGRY_STRING);
 					targetColumns.add(categoricalContainer);
 
 					categoricalColumn = new CategoricalColumn<String>(parsingDetail.getDataClass());
@@ -193,7 +194,8 @@ public class TabularDataParser extends ATextParser {
 				case INTEGER:
 					CategoricalColumn<Integer> categoricalIntColumn;
 					CategoricalContainer<Integer> categoricalIntContainer;
-					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines, EDataType.INTEGER);
+					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines, EDataType.INTEGER,
+							CategoricalContainer.UNKNOWN_CATEGORY_INT);
 					targetColumns.add(categoricalIntContainer);
 
 					categoricalIntColumn = new CategoricalColumn<Integer>(parsingDetail.getDataClass());
@@ -286,92 +288,64 @@ public class TabularDataParser extends ATextParser {
 				ColumnDescription columnDescription = parsingPattern.get(count);
 				String cellContent = splitLine[columnDescription.getColumn()];
 
-				switch (columnDescription.getDataType())
+				try {
+					switch (columnDescription.getDataType())
 
-				{
-				case FLOAT:
-					float floatValue;
-					try {
-						floatValue = Float.parseFloat(cellContent);
-					} catch (NumberFormatException nfe) {
-						parsingErrorOccured = true;
-						numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
-								+ (lineCounter + dataSetDescription.getNumberOfHeaderLines()) + ". Cell content was: "
-								+ cellContent + "\n";
+					{
+					case FLOAT:
+						float floatValue;
+						FloatContainer targetColumn = (FloatContainer) targetColumns.get(count);
+						try {
+							floatValue = Float.parseFloat(cellContent);
+							targetColumn.add(floatValue);
+						} catch (NumberFormatException nfe) {
+							parsingErrorOccured = true;
+							numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
+									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
+									+ ". Cell content was: " + cellContent + "\n";
+							targetColumn.addUnknown();
+						}
 
-						floatValue = Float.NaN;
-					}
-					FloatContainer targetColumn = (FloatContainer) targetColumns.get(count);
-					if (lineCounter < targetColumn.size()) {
-						targetColumn.add(floatValue);
-					} else {
-						Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: "
-								+ lineCounter + " for column " + count));
-					}
-					break;
-				case INTEGER:
-					Integer intValue;
-					try {
-						if (cellContent.trim().equalsIgnoreCase("NA"))
-							intValue = Integer.MIN_VALUE;
-						else
+						break;
+					case INTEGER:
+						Integer intValue;
+						@SuppressWarnings("unchecked")
+						IContainer<Integer> targetIntColumn = (IContainer<Integer>) targetColumns.get(count);
+						try {
 							intValue = Integer.parseInt(cellContent);
-					} catch (NumberFormatException nfe) {
-						parsingErrorOccured = true;
-						numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
-								+ (lineCounter + dataSetDescription.getNumberOfHeaderLines()) + ". Cell content was: "
-								+ cellContent + "\n";
+							targetIntColumn.add(intValue);
 
-						intValue = Integer.MIN_VALUE;
-					}
-					@SuppressWarnings("unchecked")
-					IContainer<Integer> targetIntColumn = (IContainer<Integer>) targetColumns.get(count);
-					if (lineCounter < targetIntColumn.size()) {
-						targetIntColumn.add(intValue);
-					} else {
-						Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: "
-								+ lineCounter + " for column " + count));
-					}
-					break;
-				case STRING:
-					String stringValue = cellContent.trim();
+						} catch (NumberFormatException nfe) {
+							parsingErrorOccured = true;
+							numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
+									+ (lineCounter + dataSetDescription.getNumberOfHeaderLines())
+									+ ". Cell content was: " + cellContent + "\n";
+							targetIntColumn.addUnknown();
+						}
 
-					@SuppressWarnings("unchecked")
-					IContainer<String> targetStringColumn = (IContainer<String>) targetColumns.get(count);
-					if (lineCounter < targetStringColumn.size()) {
-						targetStringColumn.add(stringValue);
-					} else {
-						Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: "
-								+ lineCounter + " for column " + count));
-					}
-					break;
-				default:
-					throw new IllegalStateException("Unknown data type: " + columnDescription.getDataType());
+						break;
+					case STRING:
+						String stringValue = cellContent.trim();
 
+						@SuppressWarnings("unchecked")
+						IContainer<String> targetStringColumn = (IContainer<String>) targetColumns.get(count);
+						if (stringValue.length() == 0) {
+							targetStringColumn.addUnknown();
+							parsingErrorOccured = true;
+						} else {
+							targetStringColumn.add(stringValue);
+						}
+						break;
+					default:
+						throw new IllegalStateException("Unknown data type: " + columnDescription.getDataType());
+
+					}
+				} catch (IndexOutOfBoundsException ioobe) {
+					// TODO this may be a little lenient - we should be stricter.
+					Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: " + lineCounter
+							+ " for column " + count));
 				}
-				// if (columnDescription.getDataClass().equals(EDataClass.REAL_NUMBER)) {
-				// FloatContainer targetColumn = (FloatContainer) targetColumns.get(count);
-				// float value;
-				// try {
-				// value = Float.parseFloat(cellContent);
-				// } catch (NumberFormatException nfe) {
-				// parsingErrorOccured = true;
-				// numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
-				// + (lineCounter + dataSetDescription.getNumberOfHeaderLines()) + ". Cell content was: "
-				// + cellContent + "\n";
-				//
-				// value = Float.NaN;
-				// }
-				// if (lineCounter < targetColumn.size()) {
-				// targetColumn.addValue(value);
-				// } else {
-				// System.out.println("Index out of bounds at line: " + lineCounter + " for column " + count);
-				// }
-				// } else if (columnDescription.getDataType().equals(EDataClass.NOMINAL)) {
-				// @SuppressWarnings("unchecked")
-				// CategoricalContainer<String> targetColumn = (CategoricalContainer<String>) targetColumns.get(count);
-				// targetColumn.addValue(splitLine[columnDescription.getColumn()]);
-				// }
+
 			}
 			if (lineCounter % 100 == 0) {
 				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * lineCounter));

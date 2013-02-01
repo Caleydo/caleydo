@@ -33,6 +33,9 @@ import org.eclipse.core.runtime.Status;
  */
 public class FloatContainer implements INumericalContainer<Float> {
 
+	/** The value used for unknown values */
+	private static final float UNKNOWN_VALUE = Float.NaN;
+
 	/** The actual data */
 	private final float[] container;
 
@@ -189,5 +192,10 @@ public class FloatContainer implements INumericalContainer<Float> {
 	@Override
 	public String toString() {
 		return Arrays.toString(container);
+	}
+
+	@Override
+	public void addUnknown() {
+		add(UNKNOWN_VALUE);
 	}
 }

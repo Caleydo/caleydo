@@ -24,6 +24,7 @@ import org.caleydo.core.util.color.Color;
  */
 public class CategoryProperty<CATEGORY_TYPE> {
 
+
 	/** The unique identifier of the category as found in the source data file */
 	private CATEGORY_TYPE category;
 

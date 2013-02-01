@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,7 +30,7 @@ import org.caleydo.core.data.collection.EDataType;
  * The generic DataType argument either directly defines the used data type, or, in the case where primitive equivalents
  * exist (int, float, double) provides boxed access to the primitive underlying data types. Generally, it is encouraged
  * to use the primitive equivalents if a concrete implementation is available. *
- *
+ * 
  * @author Alexander Lex
  */
 public interface IContainer<DATA_TYPE> extends Iterable<DATA_TYPE> {
@@ -57,7 +57,7 @@ public interface IContainer<DATA_TYPE> extends Iterable<DATA_TYPE> {
 	 * Primitive data type implementations should provide an overridden version returning the primitive type (e.g.,
 	 * public float getValue(int index)) to avoid boxing.
 	 * </p>
-	 *
+	 * 
 	 * @param index
 	 */
 	public DATA_TYPE get(int index);
@@ -70,10 +70,22 @@ public interface IContainer<DATA_TYPE> extends Iterable<DATA_TYPE> {
 	 * Primitive data type implementations should provide an overridden version using the primitive type (e.g., public
 	 * float addValue(float value)) to avoid boxing.
 	 * </p>
-	 *
+	 * 
+	 * @see {@link #addUnknown()} for adding an entry of an unknown type, e.g., due to a parsing error
+	 * 
 	 * @param value
 	 *            the value to be appended.
+	 * @throws IndexOutOfBoundsException
+	 *             if next index of container is larger then {@link #size()}
 	 */
-	public void add(DATA_TYPE value);
+	public void add(DATA_TYPE value) throws IndexOutOfBoundsException;
+
+	/**
+	 * Add an entry of unknown value, e.g., due to a parsing error or a missing entry.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             if next index of container is larger then {@link #size()}
+	 */
+	public void addUnknown() throws IndexOutOfBoundsException;
 
 }

@@ -51,6 +51,11 @@ import org.caleydo.core.util.color.ColorManager;
  * the {@link DataSetDescription}.
  * </p>
  * <p>
+ * Elements that are either not in a pre-defined category or that cause a parsing error are collected in a
+ * {@link #unknownCategory}. This category is dynamically created, but you cal also set it manually if you want to
+ * influence e.g., its label or color.
+ * </p>
+ * <p>
  * See also {@link NumericalProperties}, this classes pendant for numerical data.
  * </p>
  *
@@ -66,15 +71,26 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 		ORDINAL, NOMINAL;
 	}
 
+	/** The data type of the category. Defaults to Integer. */
 	private EDataType rawDataType = EDataType.INTEGER;
 
+	/** The category type of the category class. Defaults to nominal */
 	private ECategoryType categoryType = ECategoryType.NOMINAL;
 
 	/** The properties of the categories that are part of this class */
 	private List<CategoryProperty<CATEGORY_TYPE>> categoryProperties = new ArrayList<>();
 
+	/** Category used for things that can't be parsed or that are not within the defined categories */
+	private CategoryProperty<CATEGORY_TYPE> unknownCategory;
+
 	@XmlTransient
 	private HashMap<CATEGORY_TYPE, CategoryProperty<CATEGORY_TYPE>> hashCategoryToProperties = new HashMap<>();
+
+	/**
+	 *
+	 */
+	public CategoricalClassDescription() {
+	}
 
 	/**
 	 * @param categoryType
@@ -135,6 +151,21 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	}
 
 	/**
+	 * @param unknownCategory
+	 *            setter, see {@link unknownCategory}
+	 */
+	public void setUnknownCategory(CategoryProperty<CATEGORY_TYPE> unknownCategory) {
+		this.unknownCategory = unknownCategory;
+	}
+
+	/**
+	 * @return the unknownCategory, see {@link #unknownCategory}
+	 */
+	public CategoryProperty<CATEGORY_TYPE> getUnknownCategory() {
+		return unknownCategory;
+	}
+
+	/**
 	 * @return the categoryProperties, see {@link #categoryProperties}
 	 */
 	public List<CategoryProperty<CATEGORY_TYPE>> getCategoryProperties() {
@@ -151,16 +182,28 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	}
 
 	/**
+	 * <p>
 	 * Initializes the Description as nominal with automatic qualitative colors. Sorts categories based on the
 	 * comparable implementation of CategoryType.
+	 * </p>
+	 * <p>
+	 * The number of categories auto initialization can handle is limited to the number of qualitative colors available.
+	 * Typically this is around 10. More doesn't make sense.
+	 * </p>
 	 *
 	 * @param unsortedCategories
 	 */
 	public void autoInitialize(Collection<CATEGORY_TYPE> unsortedCategories) {
+		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
+
+		if (unsortedCategories.size() > colors.size()) {
+			throw new IllegalArgumentException(
+					"Cannot auto-initialize more nominal categories then colors are available.");
+		}
+
 		List<CATEGORY_TYPE> categories = new ArrayList<>(unsortedCategories);
 		Collections.sort(categories);
 
-		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
 		for (int i = 0; i < categories.size(); i++) {
 			addCategoryProperty(new CategoryProperty<>(categories.get(i), colors.get(i)));
 		}

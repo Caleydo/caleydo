@@ -88,4 +88,9 @@ public class GenericContainer<DATA_TYPE> implements IContainer<DATA_TYPE> {
 
 	}
 
+	@Override
+	public void addUnknown() {
+		container.add(null);
+	}
+
 }
