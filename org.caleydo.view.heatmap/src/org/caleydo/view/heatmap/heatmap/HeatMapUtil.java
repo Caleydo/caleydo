@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.heatmap.hierarchical;
+package org.caleydo.view.heatmap.heatmap;
 
 import gleem.linalg.Vec3f;
 
