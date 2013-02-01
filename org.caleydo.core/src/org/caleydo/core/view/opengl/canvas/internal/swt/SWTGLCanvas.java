@@ -167,6 +167,7 @@ final class SWTGLCanvas implements IGLCanvas {
 				canvas.addMouseListener(a);
 				canvas.addMouseMoveListener(a);
 				canvas.addMouseWheelListener(a);
+				canvas.addMouseTrackListener(a);
 			}
 		});
 	}
@@ -190,6 +191,7 @@ final class SWTGLCanvas implements IGLCanvas {
 				canvas.removeMouseListener(a);
 				canvas.removeMouseMoveListener(a);
 				canvas.removeMouseWheelListener(a);
+				canvas.removeMouseTrackListener(a);
 			}
 		});
 	}

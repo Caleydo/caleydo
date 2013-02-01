@@ -29,6 +29,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Control;
 
@@ -36,7 +37,7 @@ import org.eclipse.swt.widgets.Control;
  * @author Samuel Gratzl
  *
  */
-final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWheelListener {
+final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWheelListener, MouseTrackListener {
 
 	private final IGLMouseListener listener;
 	private boolean mouseDown = false;
@@ -52,53 +53,28 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 		return listener;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.swt.events.MouseWheelListener#mouseScrolled(org.eclipse.swt.events.MouseEvent)
-	 */
 	@Override
 	public void mouseScrolled(MouseEvent e) {
 		listener.mouseWheelMoved(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
-	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		listener.mousePressed(wrap(e)); // FIXME
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
-	 */
 	@Override
 	public void mouseDown(MouseEvent e) {
 		mouseDown = true;
 		listener.mousePressed(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
-	 */
 	@Override
 	public void mouseUp(MouseEvent e) {
 		mouseDown = false;
 		listener.mouseReleased(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
-	 */
 	@Override
 	public void mouseMove(MouseEvent e) {
 		if ((e.stateMask & SWT.BUTTON_MASK) != 0) // any button
@@ -107,10 +83,21 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 			listener.mouseMoved(wrap(e));
 	}
 
-	/**
-	 * @param e
-	 * @return
-	 */
+	@Override
+	public void mouseEnter(MouseEvent e) {
+		listener.mouseEntered(wrap(e));
+	}
+
+	@Override
+	public void mouseExit(MouseEvent e) {
+		listener.mouseExited(wrap(e));
+	}
+
+	@Override
+	public void mouseHover(MouseEvent e) {
+		//
+	}
+
 	private static IMouseEvent wrap(MouseEvent e) {
 		return new SWTMouseEventAdapter(e);
 	}
