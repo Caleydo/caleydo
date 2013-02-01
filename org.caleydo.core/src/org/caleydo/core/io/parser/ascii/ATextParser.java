@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.io.parser.ascii;
 
@@ -52,20 +49,19 @@ public abstract class ATextParser {
 	protected final ResourceLoader loader;
 
 	/**
-	 * Contains the number of lines of the number of lines in the file to be
-	 * parsed, after {@link #calculateNumberOfLinesInFile()} was called.
+	 * Contains the number of lines of the number of lines in the file to be parsed, after
+	 * {@link #calculateNumberOfLinesInFile()} was called.
 	 */
 	protected int numberOfLinesInFile = -1;
 
 	/**
-	 * Defines at which line to start the parsing. This is, e.g., useful to
-	 * ignore headers. Must be positive. Defaults to 0, the first line.
+	 * Defines at which line to start the parsing. This is, e.g., useful to ignore headers. Must be positive. Defaults
+	 * to 0, the first line.
 	 */
 	protected int startParsingAtLine = 0;
 
 	/**
-	 * Defines at which line to stop parsing. Is set to parse all lines by
-	 * default.
+	 * Defines at which line to stop parsing. Is set to parse all lines by default.
 	 */
 	protected int stopParsingAtLine = Integer.MAX_VALUE;
 
@@ -73,7 +69,6 @@ public abstract class ATextParser {
 	 * GUI manager used to update the progress bar.
 	 */
 	protected SWTGUIManager swtGuiManager;
-
 
 	/**
 	 * Constructor.
@@ -94,14 +89,12 @@ public abstract class ATextParser {
 	 */
 	public void setStartParsingAtLine(int startParsingAtLine) {
 		if (startParsingAtLine < 0)
-			throw new IllegalArgumentException(
-					"Can not start parsing at a negative line: " + startParsingAtLine);
+			throw new IllegalArgumentException("Can not start parsing at a negative line: " + startParsingAtLine);
 		this.startParsingAtLine = startParsingAtLine;
 	}
 
 	/**
-	 * Setter for the line at which to stop parsing. If attribute is <0, all
-	 * lines in the file are parsed.
+	 * Setter for the line at which to stop parsing. If attribute is <0, all lines in the file are parsed.
 	 *
 	 * @param stopParsingAtLine
 	 *            setter, see {@link #stopParsingAtLine}
@@ -139,8 +132,7 @@ public abstract class ATextParser {
 	public boolean loadData() {
 		try {
 
-			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-					"Start loading file " + filePath + "..."));
+			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + filePath + "..."));
 
 			BufferedReader reader = loader.getResource(filePath);
 
@@ -150,14 +142,11 @@ public abstract class ATextParser {
 				reader.close();
 			}
 		} catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, this.toString(),
-					"Could not read data file.", e));
-			throw new IllegalStateException(
-					"Could not read data file '" + filePath + "'", e);
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Could not read data file.", e));
+			throw new IllegalStateException("Could not read data file '" + filePath + "'", e);
 		}
 
-		Logger.log(new Status(IStatus.INFO, toString(), "File " + filePath
-				+ " successfully loaded."));
+		Logger.log(new Status(IStatus.INFO, toString(), "File " + filePath + " successfully loaded."));
 
 		return true;
 	}
@@ -166,8 +155,8 @@ public abstract class ATextParser {
 	}
 
 	/**
-	 * Converts a sourceID based on the {@link IDTypeParsingRules} specified and
-	 * returns a new string with the converted ID
+	 * Converts a sourceID based on the {@link IDTypeParsingRules} specified and returns a new string with the converted
+	 * ID
 	 *
 	 * @param sourceID
 	 * @param idTypeParsingRules
@@ -178,16 +167,15 @@ public abstract class ATextParser {
 			return sourceID;
 		if (idTypeParsingRules.isToLowerCase())
 			sourceID = sourceID.toLowerCase();
+		else if (idTypeParsingRules.isToUpperCase())
+			sourceID = sourceID.toUpperCase();
 		if (idTypeParsingRules.getReplacingExpressions() != null) {
-			for (String replacingExpression : idTypeParsingRules
-					.getReplacingExpressions()) {
-				sourceID = sourceID.replaceAll(replacingExpression,
-						idTypeParsingRules.getReplacementString());
+			for (String replacingExpression : idTypeParsingRules.getReplacingExpressions()) {
+				sourceID = sourceID.replaceAll(replacingExpression, idTypeParsingRules.getReplacementString());
 			}
 		}
 		if (idTypeParsingRules.getSubStringExpression() != null) {
-			String[] splitID = sourceID
-					.split(idTypeParsingRules.getSubStringExpression());
+			String[] splitID = sourceID.split(idTypeParsingRules.getSubStringExpression());
 			for (String result : splitID) {
 				if (!result.isEmpty()) {
 					sourceID = result;
