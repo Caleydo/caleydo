@@ -314,7 +314,10 @@ public class TabularDataParser extends ATextParser {
 				case INTEGER:
 					Integer intValue;
 					try {
-						intValue = Integer.parseInt(cellContent);
+						if (cellContent.trim().equalsIgnoreCase("NA"))
+							intValue = Integer.MIN_VALUE;
+						else
+							intValue = Integer.parseInt(cellContent);
 					} catch (NumberFormatException nfe) {
 						parsingErrorOccured = true;
 						numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "

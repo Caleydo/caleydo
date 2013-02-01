@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
@@ -33,6 +34,8 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
@@ -44,10 +47,14 @@ import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.data.importer.tcga.model.ClinicalMapping;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TumorType;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
+
+import com.google.common.collect.Table;
+import com.google.common.collect.TreeBasedTable;
 
 public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 	private static final Logger log = Logger.getLogger(TCGADataSetBuilder.class.getSimpleName());
@@ -244,30 +251,50 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		return dataSet;
 	}
 
-	private DataSetDescription setUpMutationData(IDSpecification rowIDSpecification,
+	private DataSetDescription setUpMutationData(IDSpecification geneIDSpecification,
 			IDSpecification sampleIDSpecification) {
+		int startColumn = 8;
 		File mutationFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".per_gene.mutation_counts.txt",
 				"Mutation_Significance", LEVEL);
-
 		if (mutationFile == null)
 			mutationFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".per_gene.mutation_counts.txt",
 					"MutSigRun2.0", LEVEL);
 
-		if (mutationFile == null)
-			return null;
-		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
-		dataSet.setDataSetName(dataSetName);
-		dataSet.setColor(dataSetType.getColor());
-		dataSet.setDataSourcePath(mutationFile.getPath());
-		dataSet.setNumberOfHeaderLines(1);
+		if (mutationFile == null) {
+			File maf = fileProvider.extractAnalysisRunFile(tumorAbbreviation + "-TP.final_analysis_set.maf",
+					"MutSigNozzleReport2.0", LEVEL);
+			if (maf != null) {
+				mutationFile = parseMAF(maf);
+				startColumn = 1;
+			}
+		}
+		if (mutationFile != null) {
+			DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
+			dataSet.setDataSetName(dataSetName);
+			dataSet.setColor(dataSetType.getColor());
 
-		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(8);
-		parsingRule.setParseUntilEnd(true);
-		// TODO: review ordinale/integer
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
-		dataSet.addParsingRule(parsingRule);
-		dataSet.setTransposeMatrix(true);
+			dataSet.setDataSourcePath(mutationFile.getPath());
+			dataSet.setNumberOfHeaderLines(1);
+			ParsingRule parsingRule = new ParsingRule();
+			parsingRule.setFromColumn(startColumn);
+			parsingRule.setParseUntilEnd(true);
+			// TODO: review ordinale/integer
+			parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
+			dataSet.addParsingRule(parsingRule);
+			dataSet.setTransposeMatrix(true);
+			dataSet.setColumnIDSpecification(sampleIDSpecification);
+			dataSet.setRowIDSpecification(geneIDSpecification);
+
+			CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet
+					.getCategoricalClassDescription();
+			cats.setCategoryType(ECategoryType.ORDINAL);
+			cats.setRawDataType(EDataType.INTEGER);
+			cats.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
+			cats.addCategoryProperty(1, "Mutated", Colors.RED);
+			return dataSet;
+		}
+		return null;
+
 
 		// IDSpecification mutationSampleIDSpecification = new
 		// IDSpecification();
@@ -284,10 +311,45 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		// mutationSampleIDTypeParsingRules.setToLowerCase(true);
 		// mutationSampleIDSpecification
 		// .setIdTypeParsingRules(mutationSampleIDTypeParsingRules);
-		dataSet.setColumnIDSpecification(sampleIDSpecification);
-		dataSet.setRowIDSpecification(rowIDSpecification);
+	}
 
-		return dataSet;
+	private File parseMAF(File maf) {
+		final String TAB = "\t";
+
+		try {
+			List<String> lines = Files.readAllLines(maf.toPath(), Charset.defaultCharset());
+			List<String> header = Arrays.asList(lines.get(0).split(TAB));
+			lines = lines.subList(1, lines.size());
+			int geneIndex = header.indexOf("Hugo_Symbol");
+			int sampleIndex = header.indexOf("Tumor_Sample_Barcode");
+			// gene x sample x mutated
+			Table<String, String, Boolean> mutated = TreeBasedTable.create();
+			for (String line : lines) {
+				String[] columns = line.split(TAB);
+				mutated.put(columns[geneIndex], columns[sampleIndex], Boolean.TRUE);
+			}
+
+			File out = new File(maf.getParentFile(), "P" + maf.getName());
+			PrintWriter w = new PrintWriter(out);
+			w.append("Hugo_Symbol");
+			for (String sample : mutated.columnKeySet()) {
+				w.append(TAB).append(sample);
+			}
+			w.println();
+			for (String gene : mutated.rowKeySet()) {
+				w.append(gene);
+				for (String sample : mutated.columnKeySet()) {
+					w.append(TAB).append(mutated.contains(gene, sample) ? "1" : "0");
+				}
+				w.println();
+			}
+			w.close();
+			return out;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private DataSetDescription setUpCopyNumberData(IDSpecification rwoIDSpecification,
@@ -312,6 +374,16 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 
 		dataSet.setRowIDSpecification(rwoIDSpecification);
 		dataSet.setColumnIDSpecification(sampleIDSpecification);
+
+		CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet
+				.getCategoricalClassDescription();
+		cats.setCategoryType(ECategoryType.ORDINAL);
+		cats.setRawDataType(EDataType.INTEGER);
+		cats.addCategoryProperty(-2, "Homozygous deletion", Colors.BLUE);
+		cats.addCategoryProperty(-1, "Heterozygous deletion", Colors.BLUE.getColorWithSpecificBrighness(0.5f));
+		cats.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
+		cats.addCategoryProperty(1, "Low level amplification", Colors.RED.getColorWithSpecificBrighness(0.5f));
+		cats.addCategoryProperty(2, "High level amplification", Colors.RED);
 
 		// File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt",
 		// "CopyNumber_Clustering_CNMF", LEVEL);

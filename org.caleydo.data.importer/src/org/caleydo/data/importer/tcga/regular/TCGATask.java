@@ -50,7 +50,7 @@ public class TCGATask extends ATCGATask {
 	private final TumorType tumorType;
 	private final String analysisRun;
 	private final String dataRun;
-	private TCGASettings settings;
+	private final TCGASettings settings;
 
 	public TCGATask(TumorType tumorType, String analysisRun, String dataRun, TCGASettings settings) {
 		this.tumorType = tumorType;
