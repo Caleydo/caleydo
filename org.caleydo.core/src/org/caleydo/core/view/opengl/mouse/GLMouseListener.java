@@ -54,6 +54,7 @@ public class GLMouseListener implements IGLMouseListener {
 	private boolean mouseDragged = false;
 	private boolean mouseMoved = false;
 	private boolean mouseDoubleClick = false;
+	private boolean mouseInCanvas = false;
 
 	private int prevMouseX, prevMouseY;
 
@@ -226,6 +227,7 @@ public class GLMouseListener implements IGLMouseListener {
 		while (iterGLCanvas.hasNext()) {
 			iterGLCanvas.next().setLazyMode(false);
 		}
+		mouseInCanvas = true;
 	}
 
 	@Override
@@ -235,6 +237,14 @@ public class GLMouseListener implements IGLMouseListener {
 		while (iterGLCanvas.hasNext()) {
 			iterGLCanvas.next().setLazyMode(true);
 		}
+		mouseInCanvas = false;
+	}
+
+	/**
+	 * @return the mouseInCanvas, see {@link #mouseInCanvas}
+	 */
+	public boolean isMouseInCanvas() {
+		return mouseInCanvas;
 	}
 
 	public final boolean wasLeftMouseButtonPressed() {

@@ -674,27 +674,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	private void notifyPickingListener(IPickingListener pickingListener, PickingMode pickingMode, Pick pick) {
 		if (pickingListener == null)
 			return;
-
-		switch (pickingMode) {
-		case CLICKED:
-			pickingListener.clicked(pick);
-			break;
-		case DOUBLE_CLICKED:
-			pickingListener.doubleClicked(pick);
-			break;
-		case RIGHT_CLICKED:
-			pickingListener.rightClicked(pick);
-			break;
-		case MOUSE_OVER:
-			pickingListener.mouseOver(pick);
-			break;
-		case DRAGGED:
-			pickingListener.dragged(pick);
-			break;
-		case MOUSE_OUT:
-			pickingListener.mouseOut(pick);
-			break;
-		}
+		pickingListener.pick(pick);
 	}
 
 	/**
