@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.treemap;
 
@@ -23,13 +20,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -37,7 +32,6 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.mapping.ColorMapper;
@@ -69,8 +63,7 @@ import org.caleydo.view.treemap.listener.ToggleLabelListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Control Class for a single treemap. Handles interaction and events. Calls
- * TreemapRenderer to display the treemap.
+ * Control Class for a single treemap. Handles interaction and events. Calls TreemapRenderer to display the treemap.
  *
  * @author Michael Lafer
  *
@@ -127,16 +120,14 @@ public class GLTreeMap extends ATableBasedView {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		renderer = new TreeMapRenderer();
 		renderer.setNodeFrame(
-				GeneralManager.get().getPreferenceStore()
-						.getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME),
+				GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME),
 				Color.WHITE);
 
 		loadLayoutAlgorithmClass();
 	}
 
 	private void loadLayoutAlgorithmClass() {
-		int algoID = GeneralManager.get().getPreferenceStore()
-				.getInt(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM);
+		int algoID = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM);
 		switch (algoID) {
 		case ILayoutAlgorithm.SQUARIFIED_LAYOUT_ALGORITHM:
 			layoutAlgorithm = new SquarifiedLayoutAlgorithm();
@@ -180,8 +171,7 @@ public class GLTreeMap extends ATableBasedView {
 		tree = tablePerspective.getRecordPerspective().getTree();
 		colorMapper = dataDomain.getColorMapper();
 		int maxDepth = Integer.MAX_VALUE;
-		maxDepth = GeneralManager.get().getPreferenceStore()
-				.getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
+		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
 		if (maxDepth == 0)
 			maxDepth = Integer.MAX_VALUE;
 		// maxDepth=10;
@@ -193,11 +183,9 @@ public class GLTreeMap extends ATableBasedView {
 			ClusterNode dataRoot = tree.getNodeByNumber(rootClusterID);
 			if (dataRoot == null)
 				throw new IllegalStateException("selected wrong cluster id for zooming");
-			root = ClusterTreeMapNode.createFromClusterNodeTree(dataRoot, colorMapper,
-					maxDepth);
+			root = ClusterTreeMapNode.createFromClusterNodeTree(dataRoot, colorMapper, maxDepth);
 		} else
-			root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper,
-					maxDepth);
+			root = ClusterTreeMapNode.createFromClusterNodeTree(tree, colorMapper, maxDepth);
 
 		root.setColorData(bCalculateColor, dataDomain);
 
@@ -214,8 +202,8 @@ public class GLTreeMap extends ATableBasedView {
 	public void display(GL2 gl) {
 		if (isDisplayListDirty) {
 			renderer.initCache(gl);
-			renderer.initRenderer(viewFrustum, getActivePickingManager(),
-					getPickingViewID(), treeSelectionManager, textRenderer);
+			renderer.initRenderer(viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager,
+					textRenderer);
 			renderer.renderTreeMap(gl, treeMapModel.getRoot());
 			isDisplayListDirty = false;
 			setHighLightingListDirty();
@@ -249,15 +237,14 @@ public class GLTreeMap extends ATableBasedView {
 		display(gl);
 	}
 
-	public void handleRemotePickingEvents(PickingType ePickingType,
-			PickingMode ePickingMode, int externalPickingID, Pick pick) {
+	public void handleRemotePickingEvents(PickingType ePickingType, PickingMode ePickingMode, int externalPickingID,
+			Pick pick) {
 		if (bIsInteractive)
 			handlePickingEvents(ePickingType, ePickingMode, externalPickingID, pick);
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
@@ -270,8 +257,7 @@ public class GLTreeMap extends ATableBasedView {
 			case CLICKED:
 				mouseWheeleSelectionId = pickingID;
 				treeSelectionManager.clearSelection(SelectionType.SELECTION);
-				treeSelectionManager.addToType(SelectionType.SELECTION,
-						mouseWheeleSelectionId);
+				treeSelectionManager.addToType(SelectionType.SELECTION, mouseWheeleSelectionId);
 				bIsMouseWheeleUsed = true;
 				mouseWheeleSelectionHeight = 0;
 				break;
@@ -316,8 +302,7 @@ public class GLTreeMap extends ATableBasedView {
 		for (SelectionDeltaItem item : delta) {
 			ClusterNode node = tree.getNodeByNumber(item.getID());
 			if (node.getLeafID() >= 0) {
-				SelectionDeltaItem newItem = new SelectionDeltaItem(node.getLeafID(),
-						item.getSelectionType());
+				SelectionDeltaItem newItem = new SelectionDeltaItem(node.getLeafID(), item.getSelectionType());
 				newItem.setRemove(item.isRemove());
 				newDelta.add(newItem);
 			}
@@ -344,12 +329,10 @@ public class GLTreeMap extends ATableBasedView {
 				mouseWheeleSelectionHeight++;
 				// System.out.println("selectionlevel: " +
 				// node.selectionLevel);
-				ATreeMapNode parent = node.getParentWithLevel(node.getHierarchyLevel()
-						- mouseWheeleSelectionHeight);
+				ATreeMapNode parent = node.getParentWithLevel(node.getHierarchyLevel() - mouseWheeleSelectionHeight);
 				if (parent != null) {
 					treeSelectionManager.clearSelection(SelectionType.SELECTION);
-					treeSelectionManager.addToType(SelectionType.SELECTION,
-							parent.getID());
+					treeSelectionManager.addToType(SelectionType.SELECTION, parent.getID());
 				} else {
 					mouseWheeleSelectionHeight--;
 				}
@@ -362,11 +345,9 @@ public class GLTreeMap extends ATableBasedView {
 					if (mouseWheeleSelectionHeight == 0)
 						parent = node;
 					else
-						parent = node.getParentWithLevel(node.getHierarchyLevel()
-								- mouseWheeleSelectionHeight);
+						parent = node.getParentWithLevel(node.getHierarchyLevel() - mouseWheeleSelectionHeight);
 					treeSelectionManager.clearSelection(SelectionType.SELECTION);
-					treeSelectionManager.addToType(SelectionType.SELECTION,
-							parent.getID());
+					treeSelectionManager.addToType(SelectionType.SELECTION, parent.getID());
 				}
 
 			}
@@ -469,8 +450,7 @@ public class GLTreeMap extends ATableBasedView {
 			}
 
 			for (ClusterNode node : nodes) {
-				treeSelectionManager.addToType(SelectionType.LEVEL_HIGHLIGHTING,
-						node.getID());
+				treeSelectionManager.addToType(SelectionType.LEVEL_HIGHLIGHTING, node.getID());
 			}
 		}
 
@@ -492,8 +472,7 @@ public class GLTreeMap extends ATableBasedView {
 
 		levelHighlightingListener = new LevelHighlightingListener();
 		levelHighlightingListener.setHandler(this);
-		eventPublisher.addListener(LevelHighlightingEvent.class,
-				levelHighlightingListener);
+		eventPublisher.addListener(LevelHighlightingEvent.class, levelHighlightingListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setEventSpace(dataDomain.getDataDomainID());
@@ -536,13 +515,11 @@ public class GLTreeMap extends ATableBasedView {
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (bIsInteractive) {
 			if (dataDomain.getRecordIDType() == selectionDelta.getIDType()) {
-				SelectionDelta newDelta = new SelectionDelta(
-						treeSelectionManager.getIDType());
+				SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
 				for (SelectionDeltaItem item : selectionDelta) {
 					ArrayList<Integer> nodeIDs = tree.getNodeIDsFromLeafID(item.getID());
 					if (nodeIDs != null && nodeIDs.size() > 0) {
-						SelectionDeltaItem newItem = new SelectionDeltaItem(
-								nodeIDs.get(0), item.getSelectionType());
+						SelectionDeltaItem newItem = new SelectionDeltaItem(nodeIDs.get(0), item.getSelectionType());
 						newItem.setRemove(item.isRemove());
 						newDelta.add(newItem);
 					}
@@ -565,8 +542,7 @@ public class GLTreeMap extends ATableBasedView {
 	public float[] getSelectedArea() {
 		float[] rect = new float[4];
 
-		int id = treeSelectionManager.getElements(SelectionType.SELECTION).iterator()
-				.next();
+		int id = treeSelectionManager.getElements(SelectionType.SELECTION).iterator().next();
 		ATreeMapNode node = treeMapModel.getNodeByNumber(id);
 
 		rect[0] = node.getMinX();
@@ -575,13 +551,6 @@ public class GLTreeMap extends ATableBasedView {
 		rect[3] = node.getMaxY();
 
 		return rect;
-	}
-
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -19,15 +19,12 @@ package org.caleydo.core.view.opengl.canvas;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.InvalidAttributeValueException;
-
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
@@ -181,19 +178,7 @@ public abstract class ATableBasedView extends AGLView implements ISingleTablePer
 	}
 
 
-	/**
-	 * Create {@link ElementConnectionInformation}, which basically describes anchor points for visual links for the
-	 * element specified through the id
-	 *
-	 * @param iDType
-	 *            the type of the id - for possible conversion
-	 * @param the
-	 *            id of the element
-	 * @throws InvalidAttributeValueException
-	 *             when the selectionDelta does not contain a valid type for this view
-	 */
-	protected abstract ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException;
+
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {

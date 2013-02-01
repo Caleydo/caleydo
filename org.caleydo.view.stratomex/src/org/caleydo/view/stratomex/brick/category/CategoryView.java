@@ -19,14 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.brick.category;
 
-import java.util.ArrayList;
-
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.event.view.RedrawViewEvent;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -177,12 +172,6 @@ public class CategoryView extends ATableBasedView {
 		}
 	}
 
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {

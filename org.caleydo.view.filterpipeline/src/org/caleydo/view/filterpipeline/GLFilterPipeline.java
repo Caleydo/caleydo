@@ -27,7 +27,6 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -40,7 +39,6 @@ import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateFilterListEvent;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -687,12 +685,6 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		bControlPressed = state;
 	}
 
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean isDataView() {

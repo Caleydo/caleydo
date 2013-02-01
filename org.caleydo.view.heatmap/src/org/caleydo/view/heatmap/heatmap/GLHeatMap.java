@@ -16,21 +16,17 @@
  *******************************************************************************/
 package org.caleydo.view.heatmap.heatmap;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
@@ -493,30 +489,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		return -1;
 	}
 
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
-		ElementConnectionInformation elementRep;
-		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(4);
-
-		for (int recordIndex : tablePerspective.getRecordPerspective().getVirtualArray().indicesOf(id)) {
-			if (recordIndex == -1) {
-				continue;
-			}
-
-			float xValue = renderStyle.getXCenter();
-
-			float yValue = 0;
-
-			yValue = getYCoordinateOfRecord(recordIndex);
-			yValue = viewFrustum.getHeight() - yValue;
-			elementRep = new ElementConnectionInformation(recordIDType, uniqueID, xValue, yValue, 0);
-
-			alElementReps.add(elementRep);
-		}
-
-		return alElementReps;
-	}
 
 	/**
 	 * Returns the y coordinate of the element rendered at recordIndex, or null if the current element is hidden

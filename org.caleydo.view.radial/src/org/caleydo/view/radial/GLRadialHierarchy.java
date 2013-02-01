@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
@@ -35,7 +34,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
@@ -1157,13 +1155,6 @@ public class GLRadialHierarchy extends ATableBasedView {
 		// partialDiscTree.setLeafIDType(tree.getLeaveIDType());
 		// partialDiscTree.setNodeIDType(tree.getNodeIDType());
 
-	}
-
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

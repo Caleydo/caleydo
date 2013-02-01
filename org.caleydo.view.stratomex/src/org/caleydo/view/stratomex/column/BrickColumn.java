@@ -26,14 +26,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ViewManager;
@@ -1135,12 +1132,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		return mainColumn;
 	}
 
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * @param isVerticalMoveDraggingActive

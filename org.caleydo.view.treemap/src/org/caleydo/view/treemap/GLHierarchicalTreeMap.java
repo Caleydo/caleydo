@@ -26,14 +26,11 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -516,12 +513,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		mainTreeMapView.setInteractive(true);
 	}
 
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {

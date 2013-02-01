@@ -41,7 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
@@ -53,7 +52,6 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.event.NewFilterEvent;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -69,7 +67,6 @@ import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -1487,53 +1484,9 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		eventPublisher.triggerEvent(filterEvent);
 	}
 
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
 
-		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>();
 
-		float x = 0;
-		float y = 0;
 
-		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		if (idType.equals(dimensionIDType)) {
-
-			int axisCount = dimensionVA.indexOf(id);
-			// for (int iAxisID : dimensionVA) {
-			x = axisCount * renderStyle.getAxisSpacing(dimensionVA.size());
-			axisCount++;
-			x = x + renderStyle.getXSpacing();
-			y = renderStyle.getBottomSpacing();
-			// y =table.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
-			// EDataRepresentation.NORMALIZED, iAxisID);
-			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
-
-		} else if (idType.equals(recordIDType)) {
-
-			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = dataDomain.getTable().getNormalizedValue(dimensionVA.get(0), id);
-
-			// // get the value on the leftmost axis
-			// fYValue =
-			// table.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
-			// iDimensionIndex);
-
-			if (Float.isNaN(y)) {
-				y = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
-			} else {
-				y = y * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
-			}
-			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
-		}
-
-		else {
-			throw new IllegalStateException("Unkown ID Type: " + idType);
-		}
-		return alElementReps;
-	}
-
-	// TODO
 	private void handleAngularBrushing(final GL2 gl) {
 		hasFilterChanged = true;
 		if (bIsAngularBrushingFirstTime) {
