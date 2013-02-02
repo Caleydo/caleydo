@@ -26,11 +26,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
-
 
 /**
  * <p>
@@ -75,7 +76,14 @@ public class DataSetDescription extends MatrixDefinition {
 	 * should be created.
 	 */
 	public enum ECreateDefaultProperties {
-		NUMERICAL, CATEGORICAL
+		/**
+		 * Sets {@link EDataClass#REAL_NUMBER} {@link EDataType#FLOAT}
+		 */
+		NUMERICAL,
+		/**
+		 * Sets {@link EDataClass#CATEGORICAL} {@link EDataType#INTEGER}
+		 */
+		CATEGORICAL
 	}
 
 	/** A human readable name of the dataset. Optional. */
@@ -120,20 +128,6 @@ public class DataSetDescription extends MatrixDefinition {
 	private boolean transposeMatrix = false;
 
 	/**
-	 * Set this if your data is homogeneous (i.e. all the columns in the file are of the same semantic data type, i.e.
-	 * they have the same value ranges, etc.) and numerical. If this is set, the data scale used is the same for all
-	 * columns. This member can not be set at the same time as {@link #categoricalClassDescription}. Defaults to null.
-	 */
-	private NumericalProperties numericalProperties = null;
-
-	/**
-	 * Set this if your data is homogeneous (i.e. all the columns in the file are of the same semantic data type, i.e.
-	 * they have the same value ranges, etc.) and categorical. If this is set, the data scale used is the same for all
-	 * columns. This member can not be set at the same time as {@link #numericalProperties}. Defaults to null.
-	 */
-	private CategoricalClassDescription<?> categoricalClassDescription = null;
-
-	/**
 	 * A list of path to grouping files for the columns of the file specified in {@link #dataSourcePath}. Optional.
 	 */
 	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications;
@@ -150,24 +144,32 @@ public class DataSetDescription extends MatrixDefinition {
 	private Color color;
 
 	/**
+	 * Meta-data about the data used when dealing with homogeneous datasets. This must be set before adding columns in
+	 * the homogeneous case.
+	 */
+	private DataDescription dataDescription = null;
+
+	/**
 	 *
 	 */
 	public DataSetDescription() {
 	}
 
 	/**
-	 * Creates a {@link DataSetDescription} as a homogeneous dataset. The parameter determines whether a default
-	 * {@link #numericalProperties} or {@link #categoricalClassDescription} object is created.
+	 * Creates a {@link DataSetDescription} as a homogeneous dataset by setting {@link #dataDescription}. The parameter
+	 * determines whether the {@link DataDescription} gets a default {@link #numericalProperties} or
+	 * {@link #categoricalClassDescription} object.
 	 *
 	 * @param createDefaultProperties
 	 */
 	public DataSetDescription(ECreateDefaultProperties createDefaultProperties) {
 		switch (createDefaultProperties) {
 		case NUMERICAL:
-			numericalProperties = new NumericalProperties();
+			dataDescription = new DataDescription(EDataClass.REAL_NUMBER, EDataType.FLOAT, new NumericalProperties());
 			break;
 		case CATEGORICAL:
-			categoricalClassDescription = new CategoricalClassDescription<Integer>();
+			dataDescription = new DataDescription(EDataClass.CATEGORICAL, EDataType.INTEGER,
+					new CategoricalClassDescription<Integer>());
 			break;
 
 		default:
@@ -204,43 +206,6 @@ public class DataSetDescription extends MatrixDefinition {
 	 */
 	public String getDataSetName() {
 		return dataSetName;
-	}
-
-	/**
-	 * @param numericalProperties
-	 *            setter, see {@link numericalProperties}
-	 */
-	public void setNumericalProperties(NumericalProperties numericalProperties) {
-		if (categoricalClassDescription != null)
-			throw new IllegalStateException(
-					"Cannot set both numerical and categorical data set description at the same time");
-		this.numericalProperties = numericalProperties;
-	}
-
-	/**
-	 * @return the numericalProperties, see {@link #numericalProperties}
-	 */
-	public NumericalProperties getNumericalProperties() {
-		return numericalProperties;
-	}
-
-
-	/**
-	 * @param categoricalClassDescription
-	 *            setter, see {@link categoricalClassDescription}
-	 */
-	public void setCategoricalClassDescription(CategoricalClassDescription<?> categoricalClassDescription) {
-		if (numericalProperties != null)
-			throw new IllegalStateException(
-					"Cannot set both numerical and categorical data set description at the same time");
-		this.categoricalClassDescription = categoricalClassDescription;
-	}
-
-	/**
-	 * @return the categoricalClassDescription, see {@link #categoricalClassDescription}
-	 */
-	public CategoricalClassDescription<?> getCategoricalClassDescription() {
-		return categoricalClassDescription;
 	}
 
 	/**
@@ -305,6 +270,9 @@ public class DataSetDescription extends MatrixDefinition {
 	 *            setter, see {@link #parsingRules}
 	 */
 	public void setParsingRules(ArrayList<ParsingRule> parsingRules) {
+		for (ParsingRule rule : parsingRules) {
+			checkAndDataDescritptionForColumn(rule.getColumnDescripton());
+		}
 		this.parsingRules = parsingRules;
 	}
 
@@ -314,6 +282,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * @param parsingRule
 	 */
 	public void addParsingRule(ParsingRule parsingRule) {
+		checkAndDataDescritptionForColumn(parsingRule.getColumnDescripton());
 		if (parsingRules == null)
 			parsingRules = new ArrayList<ParsingRule>();
 
@@ -332,13 +301,29 @@ public class DataSetDescription extends MatrixDefinition {
 	 *            setter, see {@link #parsingPattern}
 	 */
 	public void setParsingPattern(ArrayList<ColumnDescription> parsingPattern) {
+		for (ColumnDescription desc : parsingPattern) {
+			checkAndDataDescritptionForColumn(desc);
+		}
 		this.parsingPattern = parsingPattern;
 	}
 
 	public void addParsingPattern(ColumnDescription desc) {
+		checkAndDataDescritptionForColumn(desc);
 		if (this.parsingPattern == null)
 			this.parsingPattern = new ArrayList<>();
 		this.parsingPattern.add(desc);
+	}
+
+	private void checkAndDataDescritptionForColumn(ColumnDescription desc) {
+		if (desc.getDataDescription() == null && dataDescription != null) {
+			// desc.setDataDescription(dataDescription);
+		} else if (desc.getDataDescription() != null && dataDescription != null
+				&& !(desc.getDataDescription().equals(dataDescription))) {
+			throw new IllegalStateException("DataDescription was defined for both table and column in "
+					+ this.toString());
+		} else if (desc.getDataDescription() == null && dataDescription == null) {
+			throw new IllegalStateException("DataDescription was not defined." + this.toString());
+		}
 	}
 
 	public ArrayList<ColumnDescription> getOrCreateParsingPattern() {
@@ -408,22 +393,23 @@ public class DataSetDescription extends MatrixDefinition {
 				// if only a single from column is specified we write that and
 				// continue with the next parsing rule
 				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule.getColumnDescripton()
-						.getDataClass(), currentParsingRule.getColumnDescripton().getDataType()));
+						.getDataDescription()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
 				continue;
 			}
+
 			if (columnCount < currentParsingRule.getToColumn() || currentParsingRule.isParseUntilEnd()) {
 				// we write the data type between the from and to column, or
 				// between the from and end
 				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule.getColumnDescripton()
-						.getDataClass(), currentParsingRule.getColumnDescripton().getDataType()));
+						.getDataDescription()));
 				continue;
 			}
 			if (columnCount == currentParsingRule.getToColumn()) {
 				// we reach the end of a parsing rule
 				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule.getColumnDescripton()
-						.getDataClass(), currentParsingRule.getColumnDescripton().getDataType()));
+						.getDataDescription()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
 				continue;
@@ -435,6 +421,21 @@ public class DataSetDescription extends MatrixDefinition {
 					"Failed to create parsing pattern based on the parsing rule / input file / header line information.");
 		}
 		return parsingPattern;
+	}
+
+	/**
+	 * @param dataDescription
+	 *            setter, see {@link dataDescription}
+	 */
+	public void setDataDescription(DataDescription dataDescription) {
+		this.dataDescription = dataDescription;
+	}
+
+	/**
+	 * @return the dataDescription, see {@link #dataDescription}
+	 */
+	public DataDescription getDataDescription() {
+		return dataDescription;
 	}
 
 	/**
@@ -451,19 +452,6 @@ public class DataSetDescription extends MatrixDefinition {
 	public DataProcessingDescription getDataProcessingDescription() {
 		return dataProcessingDescription;
 	}
-
-	// /**
-	// * Check whether all columns in the dataset to be loaded are continuous and
-	// * numerical.
-	// */
-	// public boolean areAllColumnTypesContinuous() {
-	// for (ColumnDescription columnDescription : getParsingPattern()) {
-	// if (!columnDescription.getColumnType().equalsIgnoreCase(
-	// ColumnDescription.CONTINUOUS))
-	// return false;
-	// }
-	// return true;
-	// }
 
 	/**
 	 * @return the color, see {@link #color}
@@ -488,13 +476,9 @@ public class DataSetDescription extends MatrixDefinition {
 		else
 			data += dataSourcePath;
 
-		if (numericalProperties != null)
-			data += "(numerical)";
-		else if (categoricalClassDescription != null)
-			data += "(categorical)";
-		else
-			data += "(hybrid/inhomogeneous)";
+		if (dataDescription != null)
+			return data + dataDescription.toString();
 
-		return data;
+		return data + "(hybrid/inhomogeneous)";
 	}
 }

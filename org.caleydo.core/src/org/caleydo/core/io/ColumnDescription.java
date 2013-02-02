@@ -37,70 +37,47 @@ public class ColumnDescription {
 	/** The number of the column to be parsed, starting with 0 */
 	private int column;
 
-	/**
-	 * The dataClass of the column, must be one equivalent to those listed in {@link EDataClass}. Defaults to real
-	 * numbers.
-	 */
-	private EDataClass dataClass = EDataClass.REAL_NUMBER;
+	/** The meta-data of the column. Can be either different for every column or the same for all columns in a table */
+	private DataDescription dataDescription;
 
 	/**
-	 * The data type of the {@link #dataClass}. If the dataClass has only one possible dataType (see {@link EDataClass})
-	 * this is automatically set. Defaults to float.
-	 */
-	private EDataType dataType = EDataType.FLOAT;
-
-	/**
-	 * An integer ID of the column. For newly loaded data this needs not be set. After serializing the data however,
-	 * this is the way we re-assign the same columnID to the same column again.
-	 */
-	// private Integer columnID = null;
-
-	/**
-	 * Default Constructor, creates a ColumnDescripton with float dataClass and continuous columnType and no column
-	 * number for parsing.
+	 * Default Constructor used for columns that are part of homogeneous datasets.
 	 */
 	public ColumnDescription() {
 	}
 
 	/**
-	 * Constructor fully initializing the object.
+	 * Constructor for columns that are part of homogeneous datasets.
 	 *
 	 * @param column
-	 *            see {@link #column}
-	 * @param dataClass
-	 *            see {@link #dataClass}
+	 *            sets {@link #column}.
 	 */
-	public ColumnDescription(int column, EDataClass dataClass, EDataType dataType) {
+	public ColumnDescription(int column) {
 		this.column = column;
-		this.dataClass = dataClass;
-		if (!dataClass.supports(dataType))
-			throw new IllegalArgumentException("DataClass " + dataClass + " doesn't support dataType " + dataType);
-		this.dataType = dataType;
 	}
 
 	/**
-	 * Constructor specifying the types of the column but not the parsing information
+	 * Constructor for inhomogeneous tables.
 	 *
 	 * @param dataClass
-	 * @param columnType
+	 *            sets {@link #dataDescription}
 	 */
-	public ColumnDescription(EDataClass dataClass, EDataType dataType) {
-		this.dataClass = dataClass;
-		this.dataType = dataType;
+	public ColumnDescription(DataDescription dataDescription) {
+		this.dataDescription = dataDescription;
+
 	}
 
 	/**
-	 * Constructor specifying the class of column and infers the data type from the class if possible. *
+	 * Constructor fully initializing the object, for inhomogeneous tables.
 	 *
+	 * @param column
+	 *            sets {@link #column}
 	 * @param dataClass
-	 * @throws IllegalArgumentException
-	 *             if inference is not obvious.
+	 *            sets {@link #dataDescription}
 	 */
-	public ColumnDescription(EDataClass dataClass) {
-		if (dataClass.getSupportedDataType() == null)
-			throw new IllegalArgumentException("Cannot infer data type for data class " + dataClass);
-		this.dataClass = dataClass;
-		this.dataType = dataClass.getSupportedDataType();
+	public ColumnDescription(int column, DataDescription dataDescription) {
+		this.column = column;
+		this.dataDescription = dataDescription;
 	}
 
 	/**
@@ -119,40 +96,22 @@ public class ColumnDescription {
 	}
 
 	/**
-	 * @param dataClass
-	 *            setter, see {@link dataClass}
+	 * @param dataDescription
+	 *            setter, see {@link dataDescription}
 	 */
-	public void setDataClass(EDataClass dataClass) {
-		this.dataClass = dataClass;
-		if (dataClass.getSupportedDataType() != null)
-			dataType = dataClass.getSupportedDataType();
+	public void setDataDescription(DataDescription dataDescription) {
+		this.dataDescription = dataDescription;
 	}
 
 	/**
-	 * @return the dataClass, see {@link #dataClass}
+	 * @return the dataDescription, see {@link #dataDescription}
 	 */
-	public EDataClass getDataClass() {
-		return dataClass;
+	public DataDescription getDataDescription() {
+		return dataDescription;
 	}
-
-	/**
-	 * @param dataType
-	 *            setter, see {@link dataType}
-	 */
-	public void setDataType(EDataType dataType) {
-		this.dataType = dataType;
-	}
-
-	/**
-	 * @return the dataType, see {@link #dataType}
-	 */
-	public EDataType getDataType() {
-		return dataType;
-	}
-
 
 	@Override
 	public String toString() {
-		return "[" + column + ", " + dataClass + "]";
+		return "[" + column + ", " + dataDescription + "]";
 	}
 }

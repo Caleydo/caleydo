@@ -74,8 +74,8 @@ public class CategoricalClassDescription<CATEGORY_TYPE extends Comparable<CATEGO
 	/** The data type of the category. Defaults to Integer. */
 	private EDataType rawDataType = EDataType.INTEGER;
 
-	/** The category type of the category class. Defaults to nominal */
-	private ECategoryType categoryType = ECategoryType.NOMINAL;
+	/** The category type of the category class. Defaults to ordinal */
+	private ECategoryType categoryType = ECategoryType.ORDINAL;
 
 	/** The properties of the categories that are part of this class */
 	private List<CategoryProperty<CATEGORY_TYPE>> categoryProperties = new ArrayList<>();

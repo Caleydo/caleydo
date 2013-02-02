@@ -70,7 +70,8 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 			DataSetDescription dataSetDescription = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 			dataSetDescription.setDataSourcePath(REAL_DATA_SAMPLE_FILE);
 
-			dataSetDescription.getNumericalProperties().setDataTransformation(NumericalTable.Transformation.LOG2);
+			dataSetDescription.getDataDescription().getNumericalProperties()
+					.setDataTransformation(NumericalTable.Transformation.LOG2);
 			dataImportWizard = new DataImportWizard(dataSetDescription);
 		} else {
 			dataImportWizard = new DataImportWizard();

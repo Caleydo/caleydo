@@ -30,6 +30,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
@@ -60,54 +61,57 @@ public class TableUtils {
 		// --------- data loading ---------------
 		Table table;
 
-		if (dataSetDescription.getNumericalProperties() != null) {
-			NumericalTable nTable = new NumericalTable(dataDomain);
-			table = nTable;
-
-		} else if (dataSetDescription.getCategoricalClassDescription() != null) {
-			CategoricalClassDescription<?> catClassDescr = dataSetDescription.getCategoricalClassDescription();
-
-			CategoricalTable cTable;
-			switch (catClassDescr.getRawDataType()) {
-			case INTEGER:
-				cTable = new CategoricalTable<Integer>(dataDomain);
-				break;
-			case STRING:
-				cTable = new CategoricalTable<String>(dataDomain);
-				break;
-			case FLOAT:
-			default:
-				throw new UnsupportedOperationException("Float not supported for categorical data");
-
-			}
-			cTable.setCategoryDescritions(catClassDescr);
-
-			table = cTable;
-		} else {
+		if (dataSetDescription.getDataDescription() == null) {
 			table = new Table(dataDomain);
-		}
+		} else {
+			DataDescription dataDescription = dataSetDescription.getDataDescription();
+			if (dataDescription.getNumericalProperties() != null) {
 
+				NumericalTable nTable = new NumericalTable(dataDomain);
+				table = nTable;
+
+				NumericalProperties numericalProperties = dataDescription.getNumericalProperties();
+
+				nTable.setDataCenter(numericalProperties.getDataCenter());
+
+				if (numericalProperties.getMin() != null) {
+					nTable.setMin(numericalProperties.getMin());
+				}
+				if (numericalProperties.getMax() != null) {
+					nTable.setMax(numericalProperties.getMax());
+				}
+
+				nTable.setDefaultDataTransformation(numericalProperties.getDataTransformation());
+
+			} else if (dataDescription.getCategoricalClassDescription() != null) {
+				CategoricalClassDescription<?> catClassDescr = dataDescription.getCategoricalClassDescription();
+
+				CategoricalTable cTable;
+				switch (catClassDescr.getRawDataType()) {
+				case INTEGER:
+					cTable = new CategoricalTable<Integer>(dataDomain);
+					break;
+				case STRING:
+					cTable = new CategoricalTable<String>(dataDomain);
+					break;
+				case FLOAT:
+				default:
+					throw new UnsupportedOperationException("Float not supported for categorical data");
+
+				}
+				cTable.setCategoryDescritions(catClassDescr);
+
+				table = cTable;
+			} else {
+				throw new IllegalStateException("DataDescription must contain categorical or numerical definitions"
+						+ dataDescription);
+			}
+		}
 		dataDomain.setTable(table);
 
 		TabularDataParser parser = new TabularDataParser(dataDomain, dataSetDescription);
 		parser.loadData();
 
-		if (table instanceof NumericalTable) {
-			NumericalTable nTable = (NumericalTable) table;
-			NumericalProperties numericalProperties = dataSetDescription.getNumericalProperties();
-
-			nTable.setDataCenter(numericalProperties.getDataCenter());
-
-			if (numericalProperties.getMin() != null) {
-				nTable.setMin(numericalProperties.getMin());
-			}
-			if (numericalProperties.getMax() != null) {
-				nTable.setMax(numericalProperties.getMax());
-			}
-
-			nTable.setDefaultDataTransformation(numericalProperties.getDataTransformation());
-
-		}
 		table.normalize();
 
 		if (createDefaultDimensionPerspectives)

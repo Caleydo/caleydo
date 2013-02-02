@@ -23,6 +23,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.io.DataDescription;
 
 /**
  * <p>
@@ -46,7 +47,12 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	/** The class of data stored in this column */
 	private EDataClass dataClass;
 
+	/** The data type of the raw data of this column */
+	private EDataType rawDataType;
+
+	/** The default transformation of this column */
 	private String defaultDataTransformation = Table.Transformation.NONE;
+
 
 	/** The id of this column, corresponds to the index of the column in the table */
 	private int id;
@@ -58,8 +64,11 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AColumn(EDataClass dataClass) {
+	public AColumn(DataDescription dataDescription) {
 		dataRepToContainerMap = new HashMap<>();
+		this.dataClass = dataDescription.getDataClass();
+		this.defaultDataTransformation = dataDescription.getDefaultDataTransformation();
+		this.rawDataType = dataDescription.getRawDataType();
 	}
 
 	/**

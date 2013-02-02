@@ -16,8 +16,8 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column;
 
-import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.column.container.GenericContainer;
+import org.caleydo.core.io.DataDescription;
 
 /**
  *
@@ -31,8 +31,8 @@ public class GenericColumn<T> extends AColumn<GenericContainer<T>, T> {
 	/**
 	 * @param uniqueID
 	 */
-	public GenericColumn(EDataClass dataClass) {
-		super(dataClass);
+	public GenericColumn(DataDescription dataDescription) {
+		super(dataDescription);
 	}
 
 

@@ -21,12 +21,14 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
@@ -114,10 +116,11 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
-		mrnaData.getNumericalProperties().setDataCenter(0d);
+
+		mrnaData.getDataDescription().getNumericalProperties().setDataCenter(0d);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);
@@ -168,7 +171,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		mirnaData.addParsingRule(parsingRule);
 
 		// IDSpecification mirnaIDSpecification = new IDSpecification();
@@ -204,7 +207,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
 
@@ -237,7 +240,9 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		copyNumberData.setDataSourcePath(COPY_NUMBER);
 		copyNumberData.setNumberOfHeaderLines(1);
 
-		CategoricalClassDescription<Integer> categoricalClassDescription = new CategoricalClassDescription<>();
+		@SuppressWarnings("unchecked")
+		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) copyNumberData
+				.getDataDescription().getCategoricalClassDescription();
 		categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
 		categoricalClassDescription.setRawDataType(EDataType.INTEGER);
 		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", Colors.BLUE);
@@ -248,7 +253,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 				Colors.RED.getColorWithSpecificBrighness(0.5f));
 		categoricalClassDescription.addCategoryProperty(2, "High level amplification", Colors.RED);
 
-		copyNumberData.setCategoricalClassDescription(categoricalClassDescription);
 
 		// groupLabels.add("Homozygous deletion");
 		// groupLabels.add("Heterozygous deletion");
@@ -259,7 +263,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
@@ -283,15 +287,17 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		clinicalData.setDataSourcePath(CLINICAL);
 		clinicalData.setNumberOfHeaderLines(1);
 
+		DataDescription dataDescription = new DataDescription(EDataClass.NATURAL_NUMBER, EDataType.INTEGER,
+				new NumericalProperties());
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(10);
 		parsingRule.setToColumn(11);
-		parsingRule.setColumnDescripton(new ColumnDescription());
+		parsingRule.setColumnDescripton(new ColumnDescription(dataDescription));
 		clinicalData.addParsingRule(parsingRule);
 		parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(13);
 		parsingRule.setToColumn(15);
-		parsingRule.setColumnDescripton(new ColumnDescription());
+		parsingRule.setColumnDescripton(new ColumnDescription(dataDescription));
 		clinicalData.addParsingRule(parsingRule);
 
 		IDSpecification clinicalIdSpecification = new IDSpecification();
@@ -314,17 +320,18 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		mutationDataMetaInfo.setDataSetName("Mutation Status");
 		mutationDataMetaInfo.setDataSourcePath(MUTATION);
 
-		CategoricalClassDescription<Integer> categoricalClassDescription = new CategoricalClassDescription<>();
+		@SuppressWarnings("unchecked")
+		CategoricalClassDescription<Integer> categoricalClassDescription = (CategoricalClassDescription<Integer>) mutationDataMetaInfo
+				.getDataDescription().getCategoricalClassDescription();
 		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
 		categoricalClassDescription.addCategoryProperty(1, "Mutated", Colors.RED);
-		mutationDataMetaInfo.setCategoricalClassDescription(categoricalClassDescription);
 
 		mutationDataMetaInfo.setNumberOfHeaderLines(1);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		mutationDataMetaInfo.addParsingRule(parsingRule);
 		mutationDataMetaInfo.setTransposeMatrix(true);
 

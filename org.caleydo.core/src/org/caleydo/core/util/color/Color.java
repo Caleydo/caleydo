@@ -112,6 +112,12 @@ public final class Color implements IColor {
 		return hexColor;
 	}
 
+	/**
+	 *
+	 * @param brightness
+	 *            1 is bright, 0 is black
+	 * @return
+	 */
 	public Color getColorWithSpecificBrighness(float brightness) {
 
 		float[] hsb = new float[3];

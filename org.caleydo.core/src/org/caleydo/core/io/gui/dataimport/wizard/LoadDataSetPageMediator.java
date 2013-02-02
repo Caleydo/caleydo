@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.collection.EDataClass;
-import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
@@ -127,6 +127,11 @@ public class LoadDataSetPageMediator {
 			if (!idCategory.isInternaltCategory())
 				registeredIDCategories.add(idCategory);
 		}
+
+		// FIXME here I statically set the DataDescription for numerical data. This needs to be adapted to deal with (a)
+		// other data classes/types and (b) to be different on a per-column level.
+		dataSetDescription.setDataDescription(new DataDescription(EDataClass.REAL_NUMBER));
+
 	}
 
 	/**
@@ -777,13 +782,14 @@ public class LoadDataSetPageMediator {
 				try {
 					if (!testString.isEmpty()) {
 						Float.parseFloat(testString);
-						return new ColumnDescription(columnIndex, EDataClass.REAL_NUMBER, EDataType.FLOAT);
+						return new ColumnDescription(columnIndex, dataSetDescription.getDataDescription());
 					}
 				} catch (NumberFormatException nfe) {
 				}
 			}
 		}
-		return new ColumnDescription(columnIndex, EDataClass.CATEGORICAL, EDataType.STRING);
+		throw new UnsupportedOperationException("Not implemented for non-numerica data");
+		// return new ColumnDescription(columnIndex, EDataClass.CATEGORICAL, EDataType.STRING);
 	}
 
 	/**

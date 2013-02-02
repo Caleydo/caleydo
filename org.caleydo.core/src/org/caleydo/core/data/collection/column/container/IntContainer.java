@@ -135,9 +135,13 @@ public class IntContainer implements INumericalContainer<Integer> {
 					+ "). This is not very interesting to visualize."));
 		float[] target = new float[container.length];
 
-		for (int iCount = 0; iCount < container.length; iCount++) {
-			target[iCount] = ((float) container[iCount] - min) / (max - min);
-			target[iCount] = target[iCount] > 1 ? 1 : target[iCount];
+		for (int count = 0; count < container.length; count++) {
+			if (container[count] == UNKNOWN_VALUE) {
+				target[count] = FloatContainer.UNKNOWN_VALUE;
+				continue;
+			}
+			target[count] = ((float) container[count] - min) / (max - min);
+			target[count] = target[count] > 1 ? 1 : target[count];
 		}
 		return new FloatContainer(target);
 	}

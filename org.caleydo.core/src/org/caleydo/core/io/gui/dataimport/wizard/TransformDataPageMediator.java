@@ -47,10 +47,10 @@ public class TransformDataPageMediator {
 	 */
 	public void guiCreated() {
 
-		NumericalProperties numericalProperties = dataSetDescription.getNumericalProperties();
+		NumericalProperties numericalProperties = dataSetDescription.getDataDescription().getNumericalProperties();
 		if (numericalProperties == null) {
 			numericalProperties = new NumericalProperties();
-			dataSetDescription.setNumericalProperties(numericalProperties);
+			dataSetDescription.getDataDescription().setNumericalProperties(numericalProperties);
 		}
 
 		String previousMathFiltermode = numericalProperties.getDataTransformation();
@@ -203,7 +203,7 @@ public class TransformDataPageMediator {
 	 * Fills the {@link #dataSetDescription} according to the widgets.
 	 */
 	public void fillDataSetDescription() {
-		NumericalProperties numericalProperties = dataSetDescription.getNumericalProperties();
+		NumericalProperties numericalProperties = dataSetDescription.getDataDescription().getNumericalProperties();
 		if (page.minTextField.getEnabled() && !page.minTextField.getText().isEmpty()) {
 			float min = Float.parseFloat(page.minTextField.getText());
 			if (!Float.isNaN(min)) {

@@ -37,6 +37,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.MappingType;
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -62,7 +63,7 @@ public class TabularDataParser extends ATextParser {
 	/**
 	 * Imports data from file to this table. uses first dimension and overwrites first selection.
 	 */
-	protected ArrayList<IContainer<?>> targetColumns;
+	protected ArrayList<IContainer<?>> targetRawContainer;
 
 	/** The {@link ATableBasedDataDomain} for which the file is loaded */
 	private ATableBasedDataDomain dataDomain;
@@ -78,20 +79,20 @@ public class TabularDataParser extends ATextParser {
 
 		this.dataDomain = dataDomain;
 		this.dataSetDescription = dataSetDescription;
-		targetColumns = new ArrayList<>();
+		targetRawContainer = new ArrayList<>();
 	}
 
 	/**
 	 * <p>
 	 * Creates the {@link Table} and the {@link AColumn}s for the {@link Table}, as well as the raw data columns to be
-	 * set into the columns, which are also stored in {@link #targetColumns}.
+	 * set into the columns, which are also stored in {@link #targetRawContainer}.
 	 * </p>
 	 * <p>
 	 * Also creates the mapping of columnIDs to column labels in the {@link IDMappingManager}
 	 * </p>
 	 */
 	@SuppressWarnings("unchecked")
-	private void initializeTablePerspectives() {
+	private void initializTables() {
 
 		Table table = dataDomain.getTable();
 
@@ -142,16 +143,20 @@ public class TabularDataParser extends ATextParser {
 		}
 
 		MappingType mappingType = columnIDMappingManager.createMap(targetColumnIDType, sourceColumnIDType, false, true);
-		// Map<Integer, String> columnIDMap =
-		// columnIDMappingManager.getMap(mappingType);
-		int columnID;
 
-		for (ColumnDescription parsingDetail : parsingPattern) {
-			switch (parsingDetail.getDataClass()) {
+		int columnID;
+		// this is null for inhomogeneous talbes.
+		DataDescription dataDescription = dataSetDescription.getDataDescription();
+
+		for (ColumnDescription columnDescription : parsingPattern) {
+			if (columnDescription.getDataDescription() != null) {
+				dataDescription = columnDescription.getDataDescription();
+			}
+			switch (dataDescription.getDataClass()) {
 			case REAL_NUMBER: {
 				FloatContainer container = new FloatContainer(numberOfDataLines);
-				targetColumns.add(container);
-				NumericalColumn<FloatContainer, Float> column = new NumericalColumn<>(parsingDetail.getDataClass());
+				targetRawContainer.add(container);
+				NumericalColumn<FloatContainer, Float> column = new NumericalColumn<>(dataDescription);
 
 				column.setRawData(container);
 
@@ -160,10 +165,10 @@ public class TabularDataParser extends ATextParser {
 			}
 			case NATURAL_NUMBER: {
 				IntContainer container = new IntContainer(numberOfDataLines);
-				targetColumns.add(container);
+				targetRawContainer.add(container);
 				NumericalColumn<IntContainer, Integer> column;
 
-				column = new NumericalColumn<>(parsingDetail.getDataClass());
+				column = new NumericalColumn<>(dataDescription);
 
 				column.setRawData(container);
 
@@ -171,15 +176,15 @@ public class TabularDataParser extends ATextParser {
 				break;
 			}
 			case CATEGORICAL:
-				switch (parsingDetail.getDataType()) {
+				switch (dataDescription.getRawDataType()) {
 				case STRING:
 					CategoricalColumn<String> categoricalColumn;
 					CategoricalContainer<String> categoricalContainer;
 					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines, EDataType.STRING,
 							CategoricalContainer.UNKNOWN_CATEOGRY_STRING);
-					targetColumns.add(categoricalContainer);
+					targetRawContainer.add(categoricalContainer);
 
-					categoricalColumn = new CategoricalColumn<String>(parsingDetail.getDataClass());
+					categoricalColumn = new CategoricalColumn<String>(dataDescription);
 					categoricalColumn.setRawData(categoricalContainer);
 
 					if (table instanceof CategoricalTable<?>) {
@@ -196,9 +201,9 @@ public class TabularDataParser extends ATextParser {
 					CategoricalContainer<Integer> categoricalIntContainer;
 					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines, EDataType.INTEGER,
 							CategoricalContainer.UNKNOWN_CATEGORY_INT);
-					targetColumns.add(categoricalIntContainer);
+					targetRawContainer.add(categoricalIntContainer);
 
-					categoricalIntColumn = new CategoricalColumn<Integer>(parsingDetail.getDataClass());
+					categoricalIntColumn = new CategoricalColumn<Integer>(dataDescription);
 					categoricalIntColumn.setRawData(categoricalIntContainer);
 
 					if (table instanceof CategoricalTable<?>) {
@@ -209,20 +214,20 @@ public class TabularDataParser extends ATextParser {
 					break;
 				case FLOAT:
 				default:
-					throw new IllegalStateException("DataType " + parsingDetail.getDataType()
-							+ " not supported for class " + parsingDetail.getDataClass());
+					throw new IllegalStateException("DataType " + dataDescription.getRawDataType()
+							+ " not supported for class " + dataDescription.getDataClass());
 
 				}
 
 				break;
 			case UNIQUE_OBJECT:
 			default:
-				throw new IllegalStateException("Unknown or unimplemented column data type: " + parsingDetail + " in "
-						+ parsingPattern);
+				throw new IllegalStateException("Unknown or unimplemented column data type: " + columnDescription
+						+ " in " + parsingPattern);
 
 			}
 			if (headers != null) {
-				String idString = headers[parsingDetail.getColumn()];
+				String idString = headers[columnDescription.getColumn()];
 				idString = convertID(idString, parsingRules);
 				columnIDMappingManager.addMapping(mappingType, columnID, idString);
 			} else {
@@ -233,7 +238,7 @@ public class TabularDataParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-		initializeTablePerspectives();
+		initializTables();
 
 		// Init progress bar
 		swtGuiManager.setProgressBarText("Loading data for: " + dataSetDescription.getDataSetName());
@@ -273,6 +278,8 @@ public class TabularDataParser extends ATextParser {
 			parsingRules = fromIDType.getIdTypeParsingRules();
 
 		String line;
+		// this is null for inhomogeneous data
+		DataDescription dataDescription = dataSetDescription.getDataDescription();
 		while ((line = reader.readLine()) != null) {
 			// && lineInFile <= stopParsingAtLine) {
 
@@ -286,15 +293,18 @@ public class TabularDataParser extends ATextParser {
 			for (int count = 0; count < parsingPattern.size(); count++) {
 
 				ColumnDescription columnDescription = parsingPattern.get(count);
+				if (columnDescription.getDataDescription() != null) {
+					dataDescription = columnDescription.getDataDescription();
+				}
 				String cellContent = splitLine[columnDescription.getColumn()];
 
 				try {
-					switch (columnDescription.getDataType())
+					switch (dataDescription.getRawDataType())
 
 					{
 					case FLOAT:
 						float floatValue;
-						FloatContainer targetColumn = (FloatContainer) targetColumns.get(count);
+						FloatContainer targetColumn = (FloatContainer) targetRawContainer.get(count);
 						try {
 							floatValue = Float.parseFloat(cellContent);
 							targetColumn.add(floatValue);
@@ -310,7 +320,7 @@ public class TabularDataParser extends ATextParser {
 					case INTEGER:
 						Integer intValue;
 						@SuppressWarnings("unchecked")
-						IContainer<Integer> targetIntColumn = (IContainer<Integer>) targetColumns.get(count);
+						IContainer<Integer> targetIntColumn = (IContainer<Integer>) targetRawContainer.get(count);
 						try {
 							intValue = Integer.parseInt(cellContent);
 							targetIntColumn.add(intValue);
@@ -328,7 +338,7 @@ public class TabularDataParser extends ATextParser {
 						String stringValue = cellContent.trim();
 
 						@SuppressWarnings("unchecked")
-						IContainer<String> targetStringColumn = (IContainer<String>) targetColumns.get(count);
+						IContainer<String> targetStringColumn = (IContainer<String>) targetRawContainer.get(count);
 						if (stringValue.length() == 0) {
 							targetStringColumn.addUnknown();
 							parsingErrorOccured = true;
@@ -337,7 +347,7 @@ public class TabularDataParser extends ATextParser {
 						}
 						break;
 					default:
-						throw new IllegalStateException("Unknown data type: " + columnDescription.getDataType());
+						throw new IllegalStateException("Unknown data type: " + dataDescription.getRawDataType());
 
 					}
 				} catch (IndexOutOfBoundsException ioobe) {

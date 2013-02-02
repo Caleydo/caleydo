@@ -19,7 +19,7 @@ package org.caleydo.view.kaplanmeier;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -166,19 +166,24 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	}
 
-	public static float calculateMaxAxisTime(TablePerspective tablePerspective) {
+	public static int calculateMaxAxisTime(TablePerspective tablePerspective) {
 		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
-		float maxAxisTime = 0;
+		int maxAxisTime = 0;
 		boolean containsNegativeValues = false;
 		boolean containsPositiveValues = false;
 
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordVA) {
-			float rawValue = table.getRaw(dimensionID, recordID);
+			int rawValue = table.getRaw(dimensionID, recordID);
+
+			// check for invalid data
+			if (rawValue == Integer.MIN_VALUE)
+				continue;
+
 			if (rawValue > 0)
 				containsPositiveValues = true;
 			if (rawValue < 0)
@@ -188,7 +193,7 @@ public class GLKaplanMeier extends ATableBasedView {
 				throw new IllegalStateException(
 						"Data contains positive and negative values. KM plot cannot handle this data.");
 			}
-			if (rawValue != Float.NaN && Math.abs(rawValue) > Math.abs(maxAxisTime))
+			if (Math.abs(rawValue) > Math.abs(maxAxisTime))
 				maxAxisTime = rawValue;
 		}
 
@@ -262,8 +267,7 @@ public class GLKaplanMeier extends ATableBasedView {
 					|| (group.getID() == mouseOverGroupID)) {
 				lineWidth = 2;
 			}
-			// else
-			// fillCurve = false;
+
 
 			if (detailLevel == EDetailLevel.HIGH)
 				lineWidth *= 2;
@@ -350,50 +354,38 @@ public class GLKaplanMeier extends ATableBasedView {
 	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, Color color, boolean fillCurve,
 			int groupID) {
 
-		// if (recordIDs.size() == 0)
-		// return;
 		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
-		// Float maxValue = Float.MIN_VALUE;
-		// maxAxisTime = Float.MIN_VALUE;
 
 		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordIDs) {
 			float normalizedValue = table.getNormalizedValue(dimensionID, recordID);
+			if (Float.isNaN(normalizedValue)) {
+				// we assume that those who don't have an entry are still alive.
+				dataVector.add(1f);
+			}
 			dataVector.add(normalizedValue);
 		}
-		Float[] sortedDataVector = new Float[dataVector.size()];
-		dataVector.toArray(sortedDataVector);
-		Arrays.sort(sortedDataVector);
-		dataVector.clear();
 
-		// move sorted data back to array list so that we can use it as a stack
-		for (int index = 0; index < recordIDs.size(); index++) {
-			dataVector.add(sortedDataVector[index]);
-		}
+		Collections.sort(dataVector);
 
 		if (fillCurve) {
-			// We cannot use transparency here because of artifacts. Hence, we
-			// need
-			// to brighten the color by multiplying it with a factor
-			// TODO: Use correct brightening of HSV color model in the future.
-			gl.glColor3f(color.r * 1.3f, color.g * 1.3f, color.b * 1.3f);
-			drawFilledCurve(gl, dataVector);
 
-			dataVector.clear();
-			// move sorted data back to array list so that we can use it as a
-			// stack
-			for (int index = 0; index < recordIDs.size(); index++) {
-				dataVector.add(sortedDataVector[index]);
-			}
+			gl.glColor3fv(color.getColorWithSpecificBrighness(0.9f).getRGB(), 0);
+			@SuppressWarnings("unchecked")
+			ArrayList<Float> clone = (ArrayList<Float>) dataVector.clone();
+			drawFilledCurve(gl, clone);
+
+
+
 		}
 
 		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
 			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
 		}
-		gl.glColor3fv(color.getRGB(), 0);
+		gl.glColor3fv(color.getColorWithSpecificBrighness(0.7f).getRGB(), 0);
 		drawCurve(gl, dataVector);
 		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
 			gl.glPopName();
@@ -444,9 +436,7 @@ public class GLKaplanMeier extends ATableBasedView {
 				.getGLWidthForPixelWidth(BOTTOM_AXIS_SPACING_PIXELS) : 0);
 		float leftAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS) : 0);
-		// float TIME_BINS = 20;
-		// float TIME_BINS = (float) tablePerspective.getDataDomain().getTable()
-		// .getRawForNormalized(1);
+
 
 		float timeBinStepSize = 1 / Math.abs(maxAxisTime);
 		float currentTimeBin = 0;
@@ -499,7 +489,6 @@ public class GLKaplanMeier extends ATableBasedView {
 			recordGroupSelectionManager.setDelta(selectionDelta);
 		}
 	}
-
 
 	@Override
 	public int getMinPixelHeight(EDetailLevel detailLevel) {

@@ -37,6 +37,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
@@ -194,7 +195,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		if (loadSampledGenes) {
 			// the gct files have 3 header lines and are centered<
 			dataSet.setNumberOfHeaderLines(3);
-			dataSet.getNumericalProperties().setDataCenter(0d);
+			dataSet.getDataDescription().getNumericalProperties().setDataCenter(0d);
 		} else {
 			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
 			dataSet.setNumberOfHeaderLines(2);
@@ -205,7 +206,7 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 
@@ -279,14 +280,15 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 			parsingRule.setFromColumn(startColumn);
 			parsingRule.setParseUntilEnd(true);
 			// TODO: review ordinale/integer
-			parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
+			parsingRule.setColumnDescripton(new ColumnDescription());
 			dataSet.addParsingRule(parsingRule);
 			dataSet.setTransposeMatrix(true);
 			dataSet.setColumnIDSpecification(sampleIDSpecification);
 			dataSet.setRowIDSpecification(geneIDSpecification);
 
+			@SuppressWarnings("unchecked")
 			CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet
-					.getCategoricalClassDescription();
+					.getDataDescription().getCategoricalClassDescription();
 			cats.setCategoryType(ECategoryType.ORDINAL);
 			cats.setRawDataType(EDataType.INTEGER);
 			cats.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
@@ -368,14 +370,15 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 
 		dataSet.setRowIDSpecification(rwoIDSpecification);
 		dataSet.setColumnIDSpecification(sampleIDSpecification);
 
-		CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet
+		@SuppressWarnings("unchecked")
+		CategoricalClassDescription<Integer> cats = (CategoricalClassDescription<Integer>) dataSet.getDataDescription()
 				.getCategoricalClassDescription();
 		cats.setCategoryType(ECategoryType.ORDINAL);
 		cats.setRawDataType(EDataType.INTEGER);
@@ -435,9 +438,11 @@ public class TCGADataSetBuilder extends RecursiveTask<TCGADataSet> {
 				ClinicalMapping mapping = ClinicalMapping.byName(name);
 				if (mapping == null && !toInclude.isEmpty()) {
 					log.warning("activly selected clinicial variable: " + name + " is not known using default");
-					dataSet.addParsingPattern(new ColumnDescription(i, EDataClass.CATEGORICAL, EDataType.STRING));
+					dataSet.addParsingPattern(new ColumnDescription(i, new DataDescription(EDataClass.CATEGORICAL,
+							EDataType.STRING)));
 				} else if (mapping != null) {
-					dataSet.addParsingPattern(new ColumnDescription(i, mapping.getDataClass(), mapping.getDataType()));
+					dataSet.addParsingPattern(new ColumnDescription(i, new DataDescription(mapping.getDataClass(),
+							mapping.getDataType())));
 				} else {
 					continue;
 				}

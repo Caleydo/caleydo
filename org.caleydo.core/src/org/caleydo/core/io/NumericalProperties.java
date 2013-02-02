@@ -66,6 +66,7 @@ public class NumericalProperties {
 	 */
 	private String dataTransformation = Table.Transformation.NONE;
 
+
 	/**
 	 *
 	 */

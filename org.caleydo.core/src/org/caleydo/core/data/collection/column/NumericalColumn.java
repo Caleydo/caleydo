@@ -16,11 +16,11 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column;
 
-import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.INumericalContainer;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.io.DataDescription;
 import org.caleydo.core.util.Math.MathHelper;
 
 /**
@@ -40,8 +40,8 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	/**
 	 * Constructor
 	 */
-	public NumericalColumn(EDataClass dataClass) {
-		super(dataClass);
+	public NumericalColumn(DataDescription dataDescription) {
+		super(dataDescription);
 	}
 
 	/**

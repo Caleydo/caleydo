@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.data.importer.jkubioinfo;
 
-import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
@@ -96,14 +95,14 @@ public class JJDataXMLGeneratorScreenOnco extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 		//mrnaData.setMathFilterMode("LOG2");
 		NumericalProperties numericalProperties = new NumericalProperties();
 		numericalProperties.setMin(-1.5f);
 		numericalProperties.setMax(1.5f);
-		mrnaData.setNumericalProperties(numericalProperties);
+		mrnaData.getDataDescription().setNumericalProperties(numericalProperties);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);

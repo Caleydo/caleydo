@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.data.importer.mug;
 
-import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
@@ -83,12 +83,13 @@ public class HCCConfigurationGenerator extends DataSetDescriptionSerializer {
 
 		mrnaData.setDataSourcePath(MRNA);
 		mrnaData.setNumberOfHeaderLines(1);
-		mrnaData.getNumericalProperties().setDataTransformation("LOG2");
+		mrnaData.getDataDescription().getNumericalProperties()
+				.setDataTransformation(NumericalTable.Transformation.LOG2);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription());
 		mrnaData.addParsingRule(parsingRule);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
