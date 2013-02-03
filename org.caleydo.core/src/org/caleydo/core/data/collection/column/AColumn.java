@@ -29,8 +29,8 @@ import org.caleydo.core.io.DataDescription;
  * <p>
  * Base implementation for columns of data stored in a {@link Table}. A column is a container that holds various
  * representations of a raw data column as read from a source file. Most importantly it contains the raw data as well as
- * a normalized version of the raw data, but other representations are supported as well. It uses {@link IContainer}
- * implementations to store this data.
+ * as transformed and normalized version(s) of the raw data. It uses {@link IContainer} implementations to store this
+ * data.
  * </p>
  * <p>
  * Only the raw data and some metadata can be specified manually, the rest is computed on on demand.
@@ -38,7 +38,7 @@ import org.caleydo.core.io.DataDescription;
  * <p>
  * This class provides only the base functionality. Data type specific implementations such as {@link NumericalColumn},
  * {@link CategoricalColumn} and {@link GenericColum} exist.
- *
+ * 
  * @author Alexander Lex
  */
 
@@ -53,12 +53,13 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	/** The default transformation of this column */
 	private String defaultDataTransformation = Table.Transformation.NONE;
 
-
 	/** The id of this column, corresponds to the index of the column in the table */
 	private int id;
 
+	/** The container holding the raw data */
 	protected RawContainerType rawContainer;
 
+	/** A map of the string identifying a transformation to the transformed and normalized */
 	protected HashMap<String, FloatContainer> dataRepToContainerMap;
 
 	/**
@@ -92,7 +93,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 * @return a value of ERawDataType
 	 */
 	public EDataType getRawDataType() {
-		return rawContainer.getDataType();
+		return rawDataType;
 	}
 
 	/**
@@ -102,14 +103,38 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 *            a float array containing the raw data
 	 */
 	public void setRawData(RawContainerType rawContainer) {
-		if (this.rawContainer != null)
-			throw new IllegalStateException("Raw data was already set in column " + id + " , tried to set again.");
+		assert this.rawContainer != null : "Raw data was already set in column " + id + " , tried to set again.";
+		assert rawContainer.getDataType().equals(rawDataType) : "Raw data in container and in column don't match";
+
 		this.rawContainer = rawContainer;
 	}
 
-	// public boolean containsDataRepresentation(DataRepresentation dataRepresentation) {
-	// return dataRepToContainerMap.containsKey(dataRepresentation);
-	// }
+	/**
+	 * @param defaultDataTransformation
+	 *            setter, see {@link defaultDataTransformation}
+	 */
+	public void setDefaultDataTransformation(String defaultDataTransformation) {
+		this.defaultDataTransformation = defaultDataTransformation;
+	}
+
+	/**
+	 * @return the defaultDataTransformation, see {@link #defaultDataTransformation}
+	 */
+	public String getDefaultDataTransformation() {
+		return defaultDataTransformation;
+	}
+
+	/**
+	 * Same as {@link #getNormalizedValue(String, int)} but uses the {@link #defaultDataTransformation} instead of a
+	 * parameter.
+	 *
+	 * @param index
+	 *            The index of the requested Element
+	 * @return The associated value
+	 */
+	public float getNormalizedValue(int index) {
+		return getNormalizedValue(defaultDataTransformation, index);
+	}
 
 	/**
 	 * Returns the normalized float value from the index in this column.
@@ -147,15 +172,18 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	}
 
 	/**
-	 * Brings any dataset into a format between 0 and 1. This is used for drawing. Works for nominal and numerical data.
-	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the dimension
-	 * this is used (only applies to numerical data). For nominal data the first value is 0, the last value is 1
+	 * Creates all transformations and normalizes them into a format between 0 and 1
 	 */
 	public void normalize() {
 		dataRepToContainerMap.put(Table.Transformation.NONE, rawContainer.normalize());
 	}
 
-	public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription() {
+	/**
+	 * Returns meta-data on the column if it is defined for the column type.
+	 *
+	 * @return
+	 */
+	public Object getDataClassSpecificDescription() {
 		return null;
 	}
 

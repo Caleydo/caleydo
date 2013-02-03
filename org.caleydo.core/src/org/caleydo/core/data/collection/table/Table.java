@@ -24,6 +24,7 @@ import java.util.Set;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -31,6 +32,7 @@ import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.logging.Logger;
@@ -71,10 +73,14 @@ public class Table {
 		public static final String NONE = "NONE";
 	}
 
-	private String defaultDataTransformation = Table.Transformation.NONE;
-
 	/** The data domain holding this table */
 	private ATableBasedDataDomain dataDomain;
+
+	/**
+	 * The transformation delivered when calling the {@link #getNormalizedValue(Integer, Integer)} method without and
+	 * explicit transformation
+	 */
+	private String defaultDataTransformation = Table.Transformation.NONE;
 
 	/** The columns of the table hashed by their column ID */
 	protected List<AColumn<?, ?>> columns;
@@ -92,6 +98,7 @@ public class Table {
 	 * filters, clusterings etc. are always applied to this perspective
 	 */
 	private Perspective defaultRecordPerspective;
+
 	/** Same as {@link #defaultRecordPerspective} for dimensions */
 	private Perspective defaultDimensionPerspective;
 
@@ -118,8 +125,8 @@ public class Table {
 	}
 
 	/**
-	 * Checks if the data is homogenous (i.e. all columns have the same data type and value ranges. False for base
-	 * class. Implementing classes may override this
+	 * Returns a boolean specifying whether the data is homogenous (i.e. all columns have the same data type and value
+	 * ranges. False for base class. Implementing classes may override this
 	 */
 	public boolean isDataHomogeneous() {
 		return false;
@@ -135,7 +142,6 @@ public class Table {
 			return getNrColumns();
 		else
 			return getNrRows();
-
 	}
 
 	/**
@@ -148,16 +154,6 @@ public class Table {
 			return getNrRows();
 		else
 			return getNrColumns();
-	}
-
-	/** Get the number of columns in the table */
-	int getNrColumns() {
-		return columns.size();
-	}
-
-	/** Get the number of rows in the table */
-	int getNrRows() {
-		return columns.iterator().next().size();
 	}
 
 	/**
@@ -473,6 +469,37 @@ public class Table {
 		return id;
 	}
 
+	/**
+	 * Returns a description of the meta data of the element. Examples are {@link NumericalProperties} for numerical
+	 * data and {@link CategoricalClassDescription} for categorical data.
+	 *
+	 * @param dimensionID
+	 * @param recordID
+	 * @return
+	 */
+	public Object getDataClassSpecificDescription(Integer dimensionID, Integer recordID) {
+		Integer columnID = recordID;
+		if (isColumnDimension)
+			columnID = dimensionID;
+
+		return columns.get(columnID).getDataClassSpecificDescription();
+	}
+
+	/**
+	 * @param defaultDataTransformation
+	 *            setter, see {@link defaultDataTransformation}
+	 */
+	public void setDefaultDataTransformation(String defaultDataTransformation) {
+		this.defaultDataTransformation = defaultDataTransformation;
+	}
+
+	/**
+	 * @return the defaultDataTransformation, see {@link #defaultDataTransformation}
+	 */
+	public String getDefaultDataTransformation() {
+		return defaultDataTransformation;
+	}
+
 	// ----------------------------------------------------------------------------
 	// END OF PUBLIC INTERFACE
 	// ----------------------------------------------------------------------------
@@ -565,28 +592,13 @@ public class Table {
 		}
 	}
 
-	public <DATA_CLASS_SPECIFIC_DESCRIPTION> DATA_CLASS_SPECIFIC_DESCRIPTION getDataClassSpecificDescription(
-			Integer dimensionID, Integer recordID) {
-		Integer columnID = recordID;
-		if (isColumnDimension)
-			columnID = dimensionID;
-
-		return columns.get(columnID).getDataClassSpecificDescription();
-
+	/** Get the number of columns in the table */
+	private int getNrColumns() {
+		return columns.size();
 	}
 
-	/**
-	 * @param defaultDataTransformation
-	 *            setter, see {@link defaultDataTransformation}
-	 */
-	public void setDefaultDataTransformation(String defaultDataTransformation) {
-		this.defaultDataTransformation = defaultDataTransformation;
-	}
-
-	/**
-	 * @return the defaultDataTransformation, see {@link #defaultDataTransformation}
-	 */
-	public String getDefaultDataTransformation() {
-		return defaultDataTransformation;
+	/** Get the number of rows in the table */
+	private int getNrRows() {
+		return columns.iterator().next().size();
 	}
 }

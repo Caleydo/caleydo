@@ -37,7 +37,7 @@ public class CategoricalColumn<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE>> 
 		rawContainer.setCategoryDescritions(categoryDescriptions);
 	}
 
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public CategoricalClassDescription<CATEGORY_TYPE> getDataClassSpecificDescription() {
 		return rawContainer.getCategoryDescriptions();

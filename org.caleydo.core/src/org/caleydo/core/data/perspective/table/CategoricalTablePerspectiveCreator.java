@@ -191,7 +191,9 @@ public class CategoricalTablePerspectiveCreator {
 	private static Perspective binCategorical(Integer dimensionID, Perspective recordPerspective,
 			ATableBasedDataDomain dataDomain, String label, boolean isTablePerspectivePrivate) {
 
-		CategoricalClassDescription<?> categoryDescriptions = dataDomain.getTable().getDataClassSpecificDescription(
+
+		CategoricalClassDescription<?> categoryDescriptions = (CategoricalClassDescription<?>) dataDomain.getTable()
+				.getDataClassSpecificDescription(
 				dimensionID, 0);
 		int nrBins = categoryDescriptions.size();
 
