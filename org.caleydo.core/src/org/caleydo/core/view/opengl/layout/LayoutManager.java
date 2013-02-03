@@ -101,12 +101,7 @@ public class LayoutManager {
 		float totalWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		float totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 
-		// template.getBaseLayoutElement().destroy();
 
-		// if (layoutConfiguration != null) {
-		// layoutConfiguration.setStaticLayouts();
-		// setBaseElementLayout(layoutConfiguration.getBaseElementLayout());
-		// }
 		// should we do this here? we could integrate this with another
 		// traversal
 		baseElementLayout.setLayoutManager(this);

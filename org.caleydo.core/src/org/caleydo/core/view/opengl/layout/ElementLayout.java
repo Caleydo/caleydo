@@ -23,6 +23,7 @@ import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -44,6 +45,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * {@link #setPixelGLConverter(PixelGLConverter)}.</li>
  * <li>setting the element to grab the remaining available space in the container (see {@link #setGrabX(boolean)} and
  * {@link #grabY(boolean)}</li>
+ * <li>Setting dynamic size units, where the non-static size is equally distributed among all size units using
+ * {@link #setDynamicSizeUnitsX(int)} and {@link #setDynamicSizeUnitsY(int)}</li>
  * </ol>
  * <p>
  * This can be done independently for X and Y
@@ -63,6 +66,10 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  */
 public class ElementLayout implements Comparable<ElementLayout> {
 
+	private static AtomicInteger idCounter = new AtomicInteger();
+
+	private Integer id;
+
 	/**
 	 * The manager for this layout, this element is, or is a sub-element of {@link LayoutManager#baseElementLayout}
 	 */
@@ -76,6 +83,13 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	protected float translateX = 0;
 	/** specifies how much this element is translated in y absolutely */
 	protected float translateY = 0;
+
+	/** The width in actual OpenGL coordinates */
+	protected float sizeScaledX = 0;
+	/** The height in actual OpenGL coordinates */
+	protected float sizeScaledY = 0;
+
+	// sizes at the various scales
 
 	/** use the remaining space in X, invalidates absoluteSizeX */
 	protected boolean grabX = false;
@@ -94,8 +108,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	protected int dynamicSizeUnitsX = Integer.MIN_VALUE;
 	protected int dynamicSizeUnitsY = Integer.MIN_VALUE;
 
-	protected float sizeScaledX = 0;
-	protected float sizeScaledY = 0;
+
 
 	private String layoutName = "";
 
@@ -141,6 +154,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	}
 
 	public ElementLayout(String layoutName) {
+		id = idCounter.incrementAndGet();
 		this.layoutName = layoutName == null ? "" : layoutName;
 	}
 
@@ -504,6 +518,45 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		return isHidden;
 	}
 
+	/**
+	 * @return Width of the ElementLayout in Pixels. Note, that the returned value is only valid, if the pixel size has
+	 *         been set explicitly.
+	 */
+	public int getPixelSizeX() {
+		return pixelSizeX;
+	}
+
+	/**
+	 * @return Height of the ElementLayout in Pixels. Note, that the returned value is only valid, if the pixel size has
+	 *         been set explicitly.
+	 */
+	public int getPixelSizeY() {
+		return pixelSizeY;
+	}
+
+	/**
+	 * @return GL-Width of the ElementLayout. Note, that the returned value is only valid, if the absolute size has been
+	 *         set explicitly.
+	 */
+	public float getAbsoluteSizeX() {
+		return absoluteSizeX;
+	}
+
+	/**
+	 * @return GL-Height of the ElementLayout. Note, that the returned value is only valid, if the absolute size has
+	 *         been set explicitly.
+	 */
+	public float getAbsoluteSizeY() {
+		return absoluteSizeY;
+	}
+
+	@Override
+	public String toString() {
+		if (!layoutName.isEmpty())
+			return layoutName;
+		return super.toString();
+	}
+
 	// ---------------------------- END OF PUBLIC INTERFACE
 	// -----------------------------------
 
@@ -662,19 +715,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 
 		if (renderer != null)
 			renderer.updateSpacing();
-		// if (backgroundRenderers != null) {
-		// for (ALayoutRenderer renderer : backgroundRenderers) {
-		// renderer.setLimits(getSizeScaledX(), getSizeScaledY());
-		// }
-		// }
-		// if (foregroundRenderers != null)
-		//
-		// {
-		// for (ALayoutRenderer renderer : foregroundRenderers) {
-		// renderer.setLimits(getSizeScaledX(), getSizeScaledY());
-		// }
-		// }
-
 	}
 
 	/**
@@ -732,61 +772,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 			return dynamicSizeUnitsY;
 		else
 			return 0;
-	}
-
-	@Override
-	public String toString() {
-		if (!layoutName.isEmpty())
-			return layoutName;
-		return super.toString();
-	}
-
-	/**
-	 * @return Width of the ElementLayout in Pixels. Note, that the returned value is only valid, if the pixel size has
-	 *         been set explicitly.
-	 */
-	public int getPixelSizeX() {
-		return pixelSizeX;
-	}
-
-	/**
-	 * @return Height of the ElementLayout in Pixels. Note, that the returned value is only valid, if the pixel size has
-	 *         been set explicitly.
-	 */
-	public int getPixelSizeY() {
-		return pixelSizeY;
-	}
-
-	/**
-	 * @return GL-Width of the ElementLayout. Note, that the returned value is only valid, if the absolute size has been
-	 *         set explicitly.
-	 */
-	public float getAbsoluteSizeX() {
-		return absoluteSizeX;
-	}
-
-	/**
-	 * @return GL-Height of the ElementLayout. Note, that the returned value is only valid, if the absolute size has
-	 *         been set explicitly.
-	 */
-	public float getAbsoluteSizeY() {
-		return absoluteSizeY;
-	}
-
-	/**
-	 * @return Ratio width of the ElementLayout. Note, that the returned value is only valid, if the ratio size has been
-	 *         set explicitly.
-	 */
-	public float getRatioSizeX() {
-		return ratioSizeX;
-	}
-
-	/**
-	 * @return Ratio height of the ElementLayout. Note, that the returned value is only valid, if the ratio size has
-	 *         been set explicitly.
-	 */
-	public float getRatioSizeY() {
-		return ratioSizeY;
 	}
 
 }

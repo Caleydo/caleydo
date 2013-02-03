@@ -31,8 +31,10 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 
 /**
- * @author Samuel Gratzl
+ * Utility for creating the most common forms of layouts/renderers.
  *
+ * @author Samuel Gratzl
+ * 
  */
 public final class ElementLayouts {
 	private ElementLayouts() {
