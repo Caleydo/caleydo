@@ -106,6 +106,18 @@
                   </ViewCreator>
                </Embedding>
             </ParentView>
+            <ParentView
+                  viewID="org.caleydo.view.bicluster">
+               <Embedding
+                     embeddingID="org.caleydo.view.bicluster.cluster"
+                     icon="resources/icons/heatmap.png"
+                     isDefaultView="true"
+                     visInfo="org.caleydo.view.heatmap.heatmap.HeatMapVisInfo">
+                  <ViewCreator
+                        class="org.caleydo.view.heatmap.heatmap.HeatMapRemoteViewCreator">
+                  </ViewCreator>
+               </Embedding>
+            </ParentView>
          </EmbeddingInfo>
       </extension>
 </plugin>
