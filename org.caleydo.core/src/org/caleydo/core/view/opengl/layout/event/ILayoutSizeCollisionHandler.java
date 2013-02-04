@@ -34,7 +34,7 @@ public interface ILayoutSizeCollisionHandler
 	 * 
 	 * @param managingClassID
 	 *            the identifier for the class managing the calling layout
-	 * @param layoutID
+	 * @param externalID
 	 *            the id of the layout (arbitrarily chose by the managing class)
 	 * @param toBigBy
 	 *            how much the layouts are to big by

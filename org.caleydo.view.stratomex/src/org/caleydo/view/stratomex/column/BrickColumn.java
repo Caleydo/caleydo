@@ -882,7 +882,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		// return;
 		//
 		// System.out.println("handling layout collision");
-		// // if (layoutID == TOP_COLUMN_ID) {
+		// // if (externalID == TOP_COLUMN_ID) {
 		// // boolean changeMade = false;
 		// // for (int count = topBricks.size() - 1; count >= 0; count--) {
 		// // GLBrick brick = topBricks.get(count);
@@ -896,7 +896,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		// // if (changeMade)
 		// // topCol.updateSubLayout();
 		// // }
-		// if (layoutID == BOTTOM_COLUMN_ID) {
+		// if (externalID == BOTTOM_COLUMN_ID) {
 		// boolean changeMade = false;
 		//
 		// for (int count = clusterBricks.size() - 1; count >= 0; count--) {

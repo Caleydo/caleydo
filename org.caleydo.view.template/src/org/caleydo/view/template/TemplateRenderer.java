@@ -40,8 +40,13 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.ElementLayouts;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.template.renderstyle.TemplateRenderStyle;
 
 /**
@@ -61,13 +66,31 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 
 	private TablePerspective tablePerspective;
 
+	private Row baseRow;
+
 	private AGLView view;
+
+	private ElementLayout el1;
+	private ElementLayout el2;
+	private ElementLayout el3;
+	private ElementLayout spacing;
 
 	/**
 	 *
 	 */
-	public TemplateRenderer(AGLView view) {
+	public TemplateRenderer(AGLView view, Row baseRow) {
 		this.view = view;
+		this.baseRow = baseRow;
+		el1 = ElementLayouts.createButton(view, new Button(EPickingType.TEMPLATE.name(), 1, EIconTextures.ARROW_UP));
+		baseRow.add(el1);
+
+		spacing = ElementLayouts.createXSpacer(100);
+		baseRow.add(spacing);
+
+		el2 = ElementLayouts.createButton(view, new Button("TATA", 1, EIconTextures.BROWSER_HOME_IMAGE));
+
+		baseRow.add(el2);
+
 		initialize();
 	}
 
@@ -80,18 +103,18 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 		int pickingID = view.getPickingManager().getPickingID(view.getID(), EPickingType.TEMPLATE.name(), objectID);
 
 		// here you push the id to OpenGL's picking system
-		gl.glPushName(pickingID);
-
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3f(1, 0, 0);
-
-		gl.glVertex3f(0.2f, 0.2f, 0);
-		gl.glVertex3f(0.2f, 0.4f, 0);
-		gl.glVertex3f(0.4f, 0.4f, 0);
-		gl.glVertex3f(0.4f, 0.2f, 0);
-		gl.glEnd();
-
-		gl.glPopName();
+		// gl.glPushName(pickingID);
+		//
+		// gl.glBegin(GL2.GL_QUADS);
+		// gl.glColor3f(1, 0, 0);
+		//
+		// gl.glVertex3f(0.2f, 0.2f, 0);
+		// gl.glVertex3f(0.2f, 0.4f, 0);
+		// gl.glVertex3f(0.4f, 0.4f, 0);
+		// gl.glVertex3f(0.4f, 0.2f, 0);
+		// gl.glEnd();
+		//
+		// gl.glPopName();
 
 	}
 
@@ -113,9 +136,44 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
+				layoutManager.recordPreTransitionState();
+				baseRow.clear();
+				baseRow.add(el2);
+				baseRow.add(spacing);
+				el1.setPixelSizeX(40);
+				el1.setPixelSizeY(40);
+				baseRow.add(el1);
+				layoutManager.updateLayout();
+				layoutManager.recordPostTranslationState();
+
 				System.out.println("Registered pick");
 			}
 		}, EPickingType.TEMPLATE.name());
+
+		view.addTypePickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				layoutManager.recordPreTransitionState();
+				baseRow.clear();
+
+				el3 = ElementLayouts.createButton(view, new Button("TATA", 1, EIconTextures.BROWSER_REFRESH_IMAGE));
+				el3.setPixelSizeX(50);
+				el3.setPixelSizeY(50);
+
+				el1.setPixelSizeX(16);
+				el1.setPixelSizeY(16);
+				baseRow.add(el1);
+				baseRow.add(spacing);
+				baseRow.add(el2);
+				baseRow.add(spacing);
+				baseRow.add(el3);
+
+				layoutManager.updateLayout();
+				layoutManager.recordPostTranslationState();
+
+				System.out.println("Registered pick");
+			}
+		}, "TATA");
 
 	}
 
@@ -171,8 +229,6 @@ public class TemplateRenderer extends ALayoutRenderer implements ISingleTablePer
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
-
-
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {

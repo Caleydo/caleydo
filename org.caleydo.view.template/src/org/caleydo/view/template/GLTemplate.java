@@ -29,8 +29,8 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.template.renderstyle.TemplateRenderStyle;
 import org.eclipse.swt.widgets.Composite;
@@ -64,9 +64,9 @@ public class GLTemplate extends AGLView {
 
 	private LayoutManager layoutManager;
 
-	private ElementLayout rendererLayout = new ElementLayout("Templaterenderer base layout");
+	private Row rendererLayout = new Row("Templaterenderer base layout");
 
-	private TemplateRenderer templateRenderer = new TemplateRenderer(this);
+	private TemplateRenderer templateRenderer = new TemplateRenderer(this, rendererLayout);
 
 	private TemplateRenderStyle renderStyle;
 
@@ -91,6 +91,7 @@ public class GLTemplate extends AGLView {
 		rendererLayout.addForeGroundRenderer(templateRenderer);
 		layoutManager.setBaseElementLayout(rendererLayout);
 
+		layoutManager.updateLayout();
 		detailLevel = EDetailLevel.HIGH;
 	}
 

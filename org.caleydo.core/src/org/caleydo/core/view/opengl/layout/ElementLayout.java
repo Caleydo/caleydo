@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
@@ -80,14 +77,14 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	private List<ALayoutRenderer> foregroundRenderers = new ArrayList<>(1);
 
 	/** specifies how much this element is translated in x absolutely */
-	protected float translateX = 0;
+	float translateX = 0;
 	/** specifies how much this element is translated in y absolutely */
-	protected float translateY = 0;
+	float translateY = 0;
 
 	/** The width in actual OpenGL coordinates */
-	protected float sizeScaledX = 0;
+	float sizeScaledX = 0;
 	/** The height in actual OpenGL coordinates */
-	protected float sizeScaledY = 0;
+	float sizeScaledY = 0;
 
 	// sizes at the various scales
 
@@ -108,8 +105,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	protected int dynamicSizeUnitsX = Integer.MIN_VALUE;
 	protected int dynamicSizeUnitsY = Integer.MIN_VALUE;
 
-
-
 	private String layoutName = "";
 
 	protected float[] frameColor = null;
@@ -126,7 +121,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	 */
 	protected int managingClassID = -1;
 	/** An id to identify the layout. */
-	protected int layoutID = -1;
+	protected int externalID = -1;
 
 	/**
 	 * The currently available width for the layout. Used if only this sub-part of the layout is updated via
@@ -139,6 +134,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	 */
 	protected float totalHeight = 0;
 
+	/** Flag for rendering in debug mode, which shows a frame around the renderer */
 	protected boolean debug = false;
 
 	protected Zoomer zoomer;
@@ -149,6 +145,14 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	 */
 	protected int renderingPriority = 0;
 
+	/** Handler for transitions */
+	private TransitionSpecification transitionSpecification;
+
+	boolean isTransitionActive = false;
+
+	ETransitionDirection appearanceDirection = ETransitionDirection.VERTICAL;
+	ETransitionDirection removalDirection = ETransitionDirection.VERTICAL;
+
 	public ElementLayout() {
 		this("");
 	}
@@ -156,6 +160,13 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	public ElementLayout(String layoutName) {
 		id = idCounter.incrementAndGet();
 		this.layoutName = layoutName == null ? "" : layoutName;
+	}
+
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public Integer getID() {
+		return id;
 	}
 
 	@Override
@@ -200,7 +211,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 			backgroundRenderers = null;
 		}
 
-
 		if (backgroundRenderers != null) {
 			for (ALayoutRenderer foregroundRenderer : backgroundRenderers) {
 				foregroundRenderer.destroy(gl);
@@ -208,7 +218,6 @@ public class ElementLayout implements Comparable<ElementLayout> {
 			backgroundRenderers.clear();
 			backgroundRenderers = null;
 		}
-
 
 	}
 
@@ -222,7 +231,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	 */
 	public void setIDs(int managingClassID, int layoutID) {
 		this.managingClassID = managingClassID;
-		this.layoutID = layoutID;
+		this.externalID = layoutID;
 	}
 
 	/**
@@ -575,6 +584,10 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	}
 
 	void render(GL2 gl) {
+		if (isTransitionActive && transitionSpecification != null) {
+			isTransitionActive = transitionSpecification.nextStep();
+		}
+
 		if (isHidden)
 			return;
 		gl.glTranslatef(getTranslateX(), getTranslateY(), 0);
@@ -652,7 +665,7 @@ public class ElementLayout implements Comparable<ElementLayout> {
 		else if (!Float.isNaN(absoluteSizeY))
 			sizeScaledY = absoluteSizeY;
 		else if (numberOfDynamicSizeUnitsY > 0 && dynamicSizeUnitsY > 0)
-			sizeScaledX = (float) dynamicSizeUnitsY / numberOfDynamicSizeUnitsY * totalHeight;
+			sizeScaledY = (float) dynamicSizeUnitsY / numberOfDynamicSizeUnitsY * totalHeight;
 		else
 			sizeScaledY = ratioSizeY * totalHeight;
 	}
@@ -772,6 +785,27 @@ public class ElementLayout implements Comparable<ElementLayout> {
 			return dynamicSizeUnitsY;
 		else
 			return 0;
+	}
+
+	protected void recordPreTransitionState() {
+		transitionSpecification = new TransitionSpecification(this, translateX, translateY, sizeScaledX, sizeScaledY);
+		layoutManager.registerTransitionSpecification(transitionSpecification);
+
+	}
+
+	protected void recordPostTranslationState() {
+		if (transitionSpecification == null) {
+			// we are a new element!
+			transitionSpecification = new TransitionSpecification(this, translateX, translateY, sizeScaledX,
+					sizeScaledY);
+			transitionSpecification.setToAppear(appearanceDirection);
+		} else {
+			// here we remove ourselves from the transition manager so that only those that were deleted remain
+			layoutManager.unRegisterTransitionSpecification(transitionSpecification);
+		}
+		transitionSpecification.setPostTransitionValues(translateX, translateY, sizeScaledX, sizeScaledY);
+		isTransitionActive = true;
+
 	}
 
 }

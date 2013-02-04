@@ -46,6 +46,7 @@ public class Button {
 	 * @param iconTexture
 	 *            Texture for the button.
 	 */
+	@Deprecated
 	public Button(String pickingType, int buttonID, EIconTextures iconTexture) {
 		isSelected = false;
 		setVisible(true);
