@@ -16,7 +16,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
@@ -42,10 +42,6 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 
 	public static final int NUM_ROWS = 6;
 
-	public MutationStatusMatrixRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor);
-	}
-
 	public MutationStatusMatrixRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
 			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
@@ -68,7 +64,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 	}
 
 	@Override
-	protected void renderAllBars(GL2 gl, ArrayList<SelectionType> geneSelectionTypes) {
+	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
 
 		if (geneID == null)
 			return;
@@ -102,9 +98,9 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 
 	@SuppressWarnings("unchecked")
 	private void renderMatrixCell(GL2 gl, int rowIndex, int columnIndex, float rowHeight, float columnWidth,
-			int sampleID, float value, ArrayList<SelectionType> geneSelectionTypes) {
-		ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
-				sampleIDType, sampleID);
+			int sampleID, float value, List<SelectionType> geneSelectionTypes) {
+		List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(sampleIDType,
+				sampleID);
 
 		float[] mappedColor = dataDomain.getColorMapper().getColor(value);
 		float[] baseColor = new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
@@ -112,7 +108,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		float[] topBarColor = baseColor;
 		float[] bottomBarColor = baseColor;
 
-		ArrayList<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
+		List<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
 				geneSelectionTypes);
 
 		if (isHighlightMode

@@ -16,7 +16,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
@@ -44,16 +44,18 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 	private String label;
 	Perspective samplePerspective;
 	APickingListener groupPickingListener;
+	protected MappedDataRenderer parent;
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent, Group group,
 			Perspective samplePerspective, ATableBasedDataDomain dataDomain) {
 
-		super(parentView, parent, dataDomain.getColor());
+		super(parentView, dataDomain.getColor());
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
 		this.group = group;
 		this.label = group.getLabel();
 		this.samplePerspective = samplePerspective;
+		this.parent = parent;
 
 		registerPickingListener();
 
@@ -73,7 +75,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 
 		float backgroundZ = 0;
 
-		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
+		List<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
 		colorCalculator.calculateColors(selectionTypes);
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGB();
 		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
@@ -165,7 +167,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 		// Set<Integer> selectedElementIDs = parent.sampleGroupSelectionManager.getElements(SelectionType.SELECTION);
 		int numSelectedElementsInGroup = 0;
 		for (Integer id : samplePerspective.getVirtualArray()) {
-			ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+			List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 					samplePerspective.getIdType(), id);
 			if (experimentSelectionTypes.contains(SelectionType.SELECTION))
 				numSelectedElementsInGroup++;

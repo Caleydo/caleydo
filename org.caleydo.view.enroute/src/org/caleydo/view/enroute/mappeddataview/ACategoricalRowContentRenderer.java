@@ -16,7 +16,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -42,6 +42,8 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 
 	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
 
+	protected MappedDataRenderer parent;
+
 	Histogram histogram;
 	boolean useShading = true;
 
@@ -49,24 +51,20 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 	 *
 	 */
 	public ACategoricalRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective,
-			AGLView parentView, MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
-				isHighlightMode);
-	}
-
-	public ACategoricalRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor);
+		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, group, isHighlightMode);
+		this.parent = parent;
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
 		if (geneID == null)
 			return;
-		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
+		List<SelectionType> geneSelectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
 
-		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
+		List<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
 		if (selectionTypes.size() > 0 && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
 			// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 			// bottomBarColor = topBarColor;
@@ -78,10 +76,10 @@ public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 
 	}
 
-	protected abstract void renderAllBars(GL2 gl, ArrayList<SelectionType> geneSelectionTypes);
+	protected abstract void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes);
 
 	@SuppressWarnings("unchecked")
-	public void renderAverageBar(GL2 gl, ArrayList<SelectionType> selectionTypes) {
+	public void renderAverageBar(GL2 gl, List<SelectionType> selectionTypes) {
 		int bucketCount = 0;
 		float barWidth = y / histogram.size();
 		float maxBarWidth = parentView.getPixelGLConverter().getGLHeightForPixelHeight(MAX_HISTOGRAM_BAR_WIDTH_PIXELS);

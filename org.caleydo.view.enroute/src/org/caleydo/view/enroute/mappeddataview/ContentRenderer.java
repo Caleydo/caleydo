@@ -55,10 +55,9 @@ public abstract class ContentRenderer extends SelectableRenderer {
 	IDMappingManager sampleIDMappingManager;
 
 	public ContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective,
- Perspective experimentPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
-		super(parentView, parent, new Color(MappedDataRenderer.BAR_COLOR));
+			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView, Group group,
+			boolean isHighlightMode) {
+		super(parentView, new Color(MappedDataRenderer.BAR_COLOR));
 		this.davidID = davidID;
 		this.geneID = geneID;
 
@@ -67,26 +66,8 @@ public abstract class ContentRenderer extends SelectableRenderer {
 		this.experimentPerspective = experimentPerspective;
 		this.group = group;
 		this.isHighlightMode = isHighlightMode;
-		sampleIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-				parent.sampleIDType.getIDCategory());
 		sampleIDType = experimentPerspective.getIdType();
-		init();
-	}
-
-	public ContentRenderer(IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor.getView(), contentRendererInitializor
-				.getMappedDataRenderer(), new Color(MappedDataRenderer.BAR_COLOR));
-		this.davidID = contentRendererInitializor.getDavidID();
-		this.geneID = contentRendererInitializor.getGeneID();
-
-		this.dataDomain = contentRendererInitializor.getDataDomain();
-		this.tablePerspective = contentRendererInitializor.getTablePerspective();
-		this.experimentPerspective = contentRendererInitializor
-				.getExperimentPerspective();
-		this.group = contentRendererInitializor.getGroup();
-		sampleIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-				parent.sampleIDType.getIDCategory());
-		sampleIDType = experimentPerspective.getIdType();
+		sampleIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(sampleIDType);
 		init();
 	}
 

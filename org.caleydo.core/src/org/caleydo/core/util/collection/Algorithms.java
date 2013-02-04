@@ -45,8 +45,7 @@ public class Algorithms {
 	 *            varargs for lists
 	 * @return the sorted, unique list
 	 */
-	public static <T extends Comparable<T>> ArrayList<T> mergeListsToUniqueList(
-			ArrayList<T>... inputArray) {
+	public static <T extends Comparable<T>> List<T> mergeListsToUniqueList(List<T>... inputArray) {
 		return mergeListsToUniqueList(Arrays.asList(inputArray));
 
 	}
@@ -58,10 +57,10 @@ public class Algorithms {
 	 * @param inputLists
 	 * @return
 	 */
-	public static <T extends Comparable<T>> ArrayList<T> mergeListsToUniqueList(
+	public static <T extends Comparable<T>> List<T> mergeListsToUniqueList(
 			Collection<? extends Collection<T>> inputLists) {
 
-		ArrayList<T> resultList = new ArrayList<T>();
+		List<T> resultList = new ArrayList<T>();
 		HashSet<T> hs = new HashSet<T>();
 		for (Collection<T> selectionList : inputLists) {
 			hs.addAll(selectionList);

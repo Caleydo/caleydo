@@ -4,12 +4,15 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
@@ -20,46 +23,38 @@ import org.caleydo.core.util.color.Color;
  * @author Christian
  *
  */
-public class ContinuousContentPreviewRenderer extends ContentRenderer {
+public class ContinuousContentPreviewRenderer extends AContentPreviewRenderer {
 
 	private Average average;
 
 	/**
-	 * @param contentRendererInitializor
+	 * @param initializer
 	 */
-	public ContinuousContentPreviewRenderer(
-			IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor);
+	public ContinuousContentPreviewRenderer(int davidID, TablePerspective tablePerspective,
+			EventBasedSelectionManager geneSelectionManager, EventBasedSelectionManager sampleSelectionManager) {
+		super(davidID, tablePerspective, geneSelectionManager, sampleSelectionManager);
 		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
-	}
-
-	@Override
-	public void init() {
 		if (geneID == null)
 			return;
-		average = TablePerspectiveStatistics.calculateAverage(
-				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
-		// if (experimentPerspective.getVirtualArray().size() > 100) {
-		//
-		// useShading = false;
-		// }
+		average = TablePerspectiveStatistics.calculateAverage(experimentPerspective.getVirtualArray(),
+				dataDomain.getTable(), geneID);
+
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
 		if (geneID == null)
 			return;
-		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager
-				.getSelectionTypes(davidID);
-//		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
-//				.getSelectionTypes(group.getID());
+		List<SelectionType> geneSelectionTypes = geneSelectionManager.getSelectionTypes(davidID);
+		// ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
+		// .getSelectionTypes(group.getID());
 		// if (selectionTypes.size() > 0
 		// && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
-//		topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-//		bottomBarColor = topBarColor;
+		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
+		// bottomBarColor = topBarColor;
 		// }
 
-		ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
+		List<List<SelectionType>> selectionLists = new ArrayList<List<SelectionType>>();
 		selectionLists.add(geneSelectionTypes);
 
 		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
@@ -67,8 +62,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 			// dataDomain.getSampleIDType(), parent.sampleIDType,
 			// experimentID);
 
-			selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
-					sampleIDType, sampleID));
+			selectionLists.add(sampleSelectionManager.getSelectionTypes(experimentPerspective.getIdType(), sampleID));
 		}
 
 		colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
@@ -105,8 +99,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 		gl.glVertex3f(0, 0, z);
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(x, 0, z);
-		gl.glColor3f(bottomBarColor[0] * 0.8f, bottomBarColor[1] * 0.8f,
-				bottomBarColor[2] * 0.8f);
+		gl.glColor3f(bottomBarColor[0] * 0.8f, bottomBarColor[1] * 0.8f, bottomBarColor[2] * 0.8f);
 		gl.glVertex3d(x, average.getArithmeticMean() * 0.8f * y, z);
 		gl.glColor3f(topBarColor[0] * 0.8f, topBarColor[1] * 0.8f, topBarColor[2] * 0.8f);
 		gl.glVertex3d(0, average.getArithmeticMean() * 0.8f * y, z);

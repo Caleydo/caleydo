@@ -1,6 +1,6 @@
 package org.caleydo.view.enroute.mappeddataview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
@@ -16,16 +16,11 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
-public class MutationStatusRowContentRenderer
-	extends ACategoricalRowContentRenderer {
-
-	public MutationStatusRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor);
-	}
+public class MutationStatusRowContentRenderer extends ACategoricalRowContentRenderer {
 
 	public MutationStatusRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective,
-			AGLView parentView, MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 
 		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
 				isHighlightMode);
@@ -36,10 +31,9 @@ public class MutationStatusRowContentRenderer
 		if (geneID == null)
 			return;
 
-
-			VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getGeneIDType());
-			dimensionVirtualArray.append(geneID);
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
+		VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getGeneIDType());
+		dimensionVirtualArray.append(geneID);
+		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 				experimentPerspective.getVirtualArray(), dimensionVirtualArray, 2);
 
 		registerPickingListener();
@@ -48,7 +42,7 @@ public class MutationStatusRowContentRenderer
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void renderAllBars(GL2 gl, ArrayList<SelectionType> geneSelectionTypes) {
+	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
 		float xIncrement = x / experimentPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
@@ -58,16 +52,16 @@ public class MutationStatusRowContentRenderer
 			if (geneID != null) {
 				value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
 
-				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						sampleIDType, sampleID);
 
 				float[] mappedColor = dataDomain.getColorMapper().getColor(value);
-				float[] baseColor = new float[] {mappedColor[0], mappedColor[1], mappedColor[2], 1f};
+				float[] baseColor = new float[] { mappedColor[0], mappedColor[1], mappedColor[2], 1f };
 
 				float[] topBarColor = baseColor;
 				float[] bottomBarColor = baseColor;
 
-				ArrayList<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
+				List<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
 						geneSelectionTypes);
 
 				if (isHighlightMode
@@ -110,8 +104,7 @@ public class MutationStatusRowContentRenderer
 				gl.glVertex3f(leftEdge + xIncrement, 0, z);
 				if (useShading) {
 					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-				}
-				else {
+				} else {
 					gl.glColor4fv(topBarColor, 0);
 				}
 

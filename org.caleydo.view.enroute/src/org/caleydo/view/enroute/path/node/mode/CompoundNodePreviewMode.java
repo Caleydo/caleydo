@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.caleydo.view.enroute.node.mode;
+package org.caleydo.view.enroute.path.node.mode;
 
 import gleem.linalg.Vec3f;
 
@@ -11,13 +11,14 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.node.ALinearizableNode;
-import org.caleydo.view.enroute.node.ANodeAttributeRenderer;
-import org.caleydo.view.enroute.node.CompoundNode;
+import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
+import org.caleydo.view.enroute.path.node.CompoundNode;
 
 /**
  * The preview mode for {@link CompoundNode}s.
@@ -34,8 +35,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 	/**
 	 * @param view
 	 */
-	public CompoundNodePreviewMode(GLEnRoutePathway view) {
-		super(view);
+	public CompoundNodePreviewMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+		super(view, pathwayPathRenderer);
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		float leftX = nodePosition.x() - width / 2.0f;
 		float bottomY = nodePosition.y() - height / 2.0f;
 
-		determineBackgroundColor(view.getMetaboliteSelectionManager());
+		determineBackgroundColor(pathwayPathRenderer.getMetaboliteSelectionManager());
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
 		gl.glColor4fv(backgroundColor, 0);
@@ -97,23 +98,23 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				view.setExpandedBranchSummaryNode(null);
+				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
 				}
-				EventBasedSelectionManager selectionManager = view.getMetaboliteSelectionManager();
-				EventBasedSelectionManager geneSelectionManager = view.getGeneSelectionManager();
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
+				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 
-				view.selectBranch(branchNode);
+				pathwayPathRenderer.selectBranch(branchNode);
 			}
 
 			@Override
 			public void mouseOver(Pick pick) {
 
-				EventBasedSelectionManager selectionManager = view.getMetaboliteSelectionManager();
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPathwayVertexRep().getName().hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
@@ -126,7 +127,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 			@Override
 			public void mouseOut(Pick pick) {
 
-				EventBasedSelectionManager selectionManager = view.getMetaboliteSelectionManager();
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPathwayVertexRep().getName()
 						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();

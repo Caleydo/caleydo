@@ -4,33 +4,34 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 
 /**
  * @author Christian
  *
  */
-public class CategoricalContentPreviewRenderer extends ContentRenderer {
+public class CategoricalContentPreviewRenderer extends AContentPreviewRenderer {
 
 	private Histogram histogram;
 
 	/**
-	 * @param contentRendererInitializor
+	 * @param initializor
 	 */
-	public CategoricalContentPreviewRenderer(IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor);
-	}
-
-	@Override
-	public void init() {
+	public CategoricalContentPreviewRenderer(int davidID, TablePerspective tablePerspective,
+			EventBasedSelectionManager geneSelectionManager, EventBasedSelectionManager sampleSelectionManager) {
+		super(davidID, tablePerspective, geneSelectionManager, sampleSelectionManager);
 		if (geneID == null)
 			return;
 
@@ -39,7 +40,6 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 		// FIXME: Bad Hack for determination of bucket count
 		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), experimentPerspective
 				.getVirtualArray(), geneVA, dataDomain.getLabel().toLowerCase().contains("copy") ? 5 : 2);
-
 	}
 
 	@Override
@@ -47,7 +47,29 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 		if (geneID == null)
 			return;
 
-		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
+		List<SelectionType> geneSelectionTypes = geneSelectionManager.getSelectionTypes(davidID);
+
+		// ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
+		// .getSelectionTypes(group.getID());
+		// if (selectionTypes.size() > 0
+		// && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
+		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
+		// bottomBarColor = topBarColor;
+		// }
+
+		List<List<SelectionType>> selectionLists = new ArrayList<List<SelectionType>>();
+		selectionLists.add(geneSelectionTypes);
+
+		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+			// Integer resolvedSampleID = sampleIDMappingManager.getID(
+			// dataDomain.getSampleIDType(), parent.sampleIDType,
+			// experimentID);
+
+			selectionLists.add(sampleSelectionManager.getSelectionTypes(experimentPerspective.getIdType(), sampleID));
+		}
+
+		// ArrayList<SelectionType> selectionTypes =
+		// parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
 		// if (selectionTypes.size() > 0
 		// && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
 		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
@@ -72,10 +94,20 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 		float currentPositionY = 0;
 
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
-			ArrayList<SelectionType> sampleSelectionTypes = new ArrayList<SelectionType>();
-			for (Integer sampleID : histogram.getIDsForBucket(bucketNumber)) {
-				sampleSelectionTypes.addAll(parent.sampleSelectionManager.getSelectionTypes(sampleIDType, sampleID));
-			}
+			// Set<SelectionType> sampleSelectionTypes = new HashSet<>();
+			// for (Integer id : experimentPerspective.getVirtualArray()) {
+			// List<SelectionType> selectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+			// experimentPerspective.getIdType(), id);
+			// if (selectionTypes != null) {
+			// sampleSelectionTypes.addAll(selectionTypes);
+			// }
+			// }
+			//
+			// List<SelectionType> selectionTypes = new ArrayList<>(sampleSelectionTypes);
+			// Collections.sort(selectionTypes);
+			// for (Integer sampleID : histogram.getIDsForBucket(bucketNumber)) {
+			// sampleSelectionTypes.addAll(parent.sampleSelectionManager.getSelectionTypes(sampleIDType, sampleID));
+			// }
 			float[] baseColor = dataDomain.getColorMapper().getColor((float) bucketCount / (histogram.size() - 1));
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
 
@@ -84,7 +116,7 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 
 			float currentBarHeight = histogram.get(bucketNumber) * step;
 
-			colorCalculator.calculateColors(selectionTypes);
+			colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
 
 			float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
 			float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();

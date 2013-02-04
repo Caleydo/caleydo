@@ -1,6 +1,6 @@
 package org.caleydo.view.enroute.mappeddataview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -19,13 +19,10 @@ import org.caleydo.view.enroute.EPickingType;
 
 public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer {
 
-	public CopyNumberRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor);
-	}
 
 	public CopyNumberRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, Perspective experimentPerspective,
-			AGLView parentView, MappedDataRenderer parent, Group group, boolean isHighlightMode) {
+			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
+			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 
 		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
 				isHighlightMode);
@@ -47,7 +44,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void renderAllBars(GL2 gl, ArrayList<SelectionType> geneSelectionTypes) {
+	protected void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
 		if (x / experimentPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
 				.getGLWidthForPixelWidth(3)) {
 			useShading = false;
@@ -75,7 +72,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 					continue;
 				}
 
-				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						sampleIDType, sampleID);
 
 				float[] baseColor = dataDomain.getColorMapper().getColor(value);
@@ -85,7 +82,7 @@ public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer
 				colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
 						geneSelectionTypes));
 
-				ArrayList<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
+				List<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
 						geneSelectionTypes);
 
 				if (isHighlightMode

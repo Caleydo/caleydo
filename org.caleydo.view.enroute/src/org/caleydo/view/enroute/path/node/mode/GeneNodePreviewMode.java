@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.caleydo.view.enroute.node.mode;
+package org.caleydo.view.enroute.path.node.mode;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -19,11 +20,11 @@ import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.mappeddataview.CategoricalContentPreviewRenderer;
 import org.caleydo.view.enroute.mappeddataview.ContinuousContentPreviewRenderer;
-import org.caleydo.view.enroute.node.ALinearizableNode;
-import org.caleydo.view.enroute.node.GeneNode;
+import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.GeneNode;
 
 /**
  * Preview mode for gene {@link GeneNode}s.
@@ -48,8 +49,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	/**
 	 * @param view
 	 */
-	public GeneNodePreviewMode(GLEnRoutePathway view) {
-		super(view);
+	public GeneNodePreviewMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+		super(view, pathwayPathRenderer);
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		heightPixels = 0;
 		Column previewRow = null;
 
-		if (node.getNumAssociatedRows() > 0) {
+		if (node.getMappedDavidIDs().size() > 0) {
 			previewRow = createPreviewRow(horizontalSpacing, verticalSpacing);
 		}
 
@@ -106,7 +107,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 	private Column createPreviewRow(ElementLayout horizontalSpacing, ElementLayout verticalSpacing) {
 
-		List<TablePerspective> tablePerspectives = view.getResolvedTablePerspectives();
+		List<TablePerspective> tablePerspectives = pathwayPathRenderer.getTablePerspectives();
 		List<Integer> davidIds = node.getMappedDavidIDs();
 
 		Column geneColumn = new Column("geneColumn");
@@ -148,15 +149,18 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				ALayoutRenderer tablePerspectivePreviewRenderer = null;
 				// PreviewContentRendererInitializor initializor = new
 				// PreviewContentRendererInitializor(tablePerspective,
-				// davidId, view, view.getGeneSelectionManager(), view.getSampleSelectionManager());
+				// davidId, view, pathwayPathRenderer.getGeneSelectionManager(),
+				// pathwayPathRenderer.getGeneSelectionManager());
 				// FIXME: Bad hack to determine categorical data
 				if (currentDataDomain.getLabel().toLowerCase().contains("copy")
 						|| currentDataDomain.getLabel().toLowerCase().contains("mutation")) {
 					tablePerspectivePreviewRenderer = new CategoricalContentPreviewRenderer(davidId, tablePerspective,
-							view.getGeneSelectionManager(), view.getSampleSelectionManager());
+							pathwayPathRenderer.getGeneSelectionManager(),
+							pathwayPathRenderer.getSampleSelectionManager());
 				} else {
 					tablePerspectivePreviewRenderer = new ContinuousContentPreviewRenderer(davidId, tablePerspective,
-							view.getGeneSelectionManager(), view.getSampleSelectionManager());
+							pathwayPathRenderer.getGeneSelectionManager(),
+							pathwayPathRenderer.getSampleSelectionManager());
 				}
 
 				ElementLayout previewRendererLayout = new ElementLayout("prev");
@@ -192,25 +196,25 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 			@Override
 			public void clicked(Pick pick) {
-				view.setExpandedBranchSummaryNode(null);
+				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
 				}
-				EventBasedSelectionManager selectionManager = view.getGeneSelectionManager();
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
-
-				view.selectBranch(branchNode);
+				pathwayPathRenderer.selectBranch(branchNode);
 
 			}
 
 			@Override
 			public void mouseOver(Pick pick) {
-				EventBasedSelectionManager selectionManager = view.getGeneSelectionManager();
-				EventBasedSelectionManager metaboliteSelectionManager = view.getMetaboliteSelectionManager();
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
+				EventBasedSelectionManager metaboliteSelectionManager = pathwayPathRenderer
+						.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
@@ -223,7 +227,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 			@Override
 			public void mouseOut(Pick pick) {
-				EventBasedSelectionManager selectionManager = view.getGeneSelectionManager();
+				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}

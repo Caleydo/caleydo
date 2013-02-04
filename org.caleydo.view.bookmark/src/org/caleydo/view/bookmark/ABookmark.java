@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.bookmark;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -84,7 +84,7 @@ public abstract class ABookmark extends ALayoutRenderer implements ILayoutedElem
 		xSpacing = pixelGLConverter.getGLWidthForPixelWidth(X_SPACING_PIXEL);
 		float[] highlightColor = null;
 
-		ArrayList<SelectionType> selectionTypes = parentContainer.selectionManager
+		List<SelectionType> selectionTypes = parentContainer.selectionManager
 				.getSelectionTypes(this.id);
 
 		if (selectionTypes == null)

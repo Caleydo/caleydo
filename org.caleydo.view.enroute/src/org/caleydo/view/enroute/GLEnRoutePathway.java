@@ -30,6 +30,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -213,6 +214,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
+	private EventBasedSelectionManager sampleSelectionManager;
 
 	private EnRoutePathEventListener linearizePathwayPathEventListener;
 	private AddTablePerspectivesListener addTablePerspectivesListener;
@@ -235,13 +237,19 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		mappedDataRenderer = new MappedDataRenderer(this);
-
 		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
 
 		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
 		metaboliteSelectionManager.registerEventListeners();
+
+		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
+		if (dataDomains.size() != 0) {
+			IDType sampleIDType = dataDomains.get(0).getSampleIDType().getIDCategory().getPrimaryMappingType();
+			sampleSelectionManager = new EventBasedSelectionManager(this, sampleIDType);
+		}
+
+		mappedDataRenderer = new MappedDataRenderer(this);
 
 	}
 
@@ -1559,6 +1567,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	public String getPathwayPathEventSpace() {
 		return pathwayPathEventSpace;
+	}
+
+	/**
+	 * @return the sampleSelectionManager, see {@link #sampleSelectionManager}
+	 */
+	public EventBasedSelectionManager getSampleSelectionManager() {
+		return sampleSelectionManager;
 	}
 
 }

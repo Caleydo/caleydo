@@ -154,13 +154,12 @@ public class MappedDataRenderer {
 		highlightLayoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
 		usedTablePerspectives = resolvedTablePerspectives;
 
-		geneSelectionManager = new EventBasedSelectionManager(parentView, IDType.getIDType("DAVID"));
-		geneSelectionManager.registerEventListeners();
+		geneSelectionManager = parentView.getGeneSelectionManager();
 
 		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
 			sampleIDType = dataDomains.get(0).getSampleIDType().getIDCategory().getPrimaryMappingType();
-			sampleSelectionManager = new EventBasedSelectionManager(parentView, sampleIDType);
+			sampleSelectionManager = parentView.getSampleSelectionManager();
 
 			sampleGroupSelectionManager = new EventBasedSelectionManager(parentView, dataDomains.get(0)
 					.getSampleGroupIDType());

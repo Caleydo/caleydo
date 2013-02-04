@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.caleydo.view.enroute.node.mode;
+package org.caleydo.view.enroute.path.node.mode;
 
 import gleem.linalg.Vec3f;
 
@@ -14,13 +14,14 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.SelectionColorCalculator;
 import org.caleydo.view.enroute.node.ANode;
 import org.caleydo.view.enroute.node.CompoundNode;
+import org.caleydo.view.enroute.path.PathwayPathRenderer;
 
 /**
  * Base class for modes of a {@link CompoundNode}.
@@ -37,16 +38,15 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 	/**
 	 * @param view
 	 */
-	public ACompoundNodeMode(GLEnRoutePathway view) {
-		super(view);
+	public ACompoundNodeMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+		super(view, pathwayPathRenderer);
 		this.pixelGLConverter = view.getPixelGLConverter();
 		colorCalculator = new SelectionColorCalculator(new Color(DEFAULT_BACKGROUND_COLOR));
 	}
 
 	protected void renderCircle(GL2 gl, GLU glu, Vec3f position, float radius) {
 
-		gl.glPushName(pickingManager.getPickingID(view.getID(),
-				EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
+		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
 		gl.glColor4fv(backgroundColor, 0);
@@ -59,8 +59,8 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 
 	@Override
 	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
-		List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node
-				.getPathwayVertexRep().getName().hashCode());
+		List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node.getPathwayVertexRep()
+				.getName().hashCode());
 		Collections.sort(selectionTypes);
 		Collections.reverse(selectionTypes);
 		colorCalculator.calculateColors(selectionTypes);

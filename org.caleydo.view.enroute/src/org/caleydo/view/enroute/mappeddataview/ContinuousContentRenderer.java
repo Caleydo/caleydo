@@ -20,6 +20,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -51,11 +52,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	boolean useShading = true;
 	private int rendererID;
 
+	protected MappedDataRenderer parent;
+
 	public ContinuousContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
 			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
-				isHighlightMode);
+		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, group, isHighlightMode);
+		this.parent = parent;
 		synchronized (rendererIDCounter) {
 			rendererID = rendererIDCounter++;
 		}
@@ -63,9 +66,6 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		init();
 	}
 
-	public ContinuousContentRenderer(IContentRendererInitializor contentRendererInitializor) {
-		super(contentRendererInitializor);
-	}
 
 	@Override
 	public void init() {
@@ -86,9 +86,9 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		if (geneID == null)
 			return;
-		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
+		List<SelectionType> geneSelectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
 
-		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
+		List<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
 		if (selectionTypes.size() > 0 && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
 
 			renderAverageBar(gl, geneSelectionTypes);
@@ -99,7 +99,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void renderAllBars(GL2 gl, ArrayList<SelectionType> geneSelectionTypes) {
+	private void renderAllBars(GL2 gl, List<SelectionType> geneSelectionTypes) {
 		float xIncrement = x / experimentPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
@@ -110,13 +110,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 				value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
 
-				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+				List<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						sampleIDType, sampleID);
 
 				float[] topBarColor = MappedDataRenderer.BAR_COLOR;
 				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR;
 
-				ArrayList<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
+				List<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
 						geneSelectionTypes);
 
 				if (isHighlightMode
@@ -182,13 +182,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		}
 	}
 
-	public void renderAverageBar(GL2 gl, ArrayList<SelectionType> geneSelectionTypes) {
+	public void renderAverageBar(GL2 gl, List<SelectionType> geneSelectionTypes) {
 		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 		// bottomBarColor = topBarColor;
 
 		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
 
-		ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
+		List<List<SelectionType>> selectionLists = new ArrayList<List<SelectionType>>();
 		selectionLists.add(geneSelectionTypes);
 
 		// for (Integer sampleID : experimentPerspective.getVirtualArray()) {

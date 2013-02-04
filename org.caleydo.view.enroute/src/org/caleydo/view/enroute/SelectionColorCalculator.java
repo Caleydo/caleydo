@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute;
 
@@ -11,9 +11,9 @@ import org.caleydo.core.util.color.Color;
 /**
  * Determines the colors for objects of that want to encode more than one
  * selection type in their color.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class SelectionColorCalculator {
 
@@ -35,14 +35,18 @@ public class SelectionColorCalculator {
 	private Color baseColor;
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param baseColor
 	 */
 	public SelectionColorCalculator(Color baseColor) {
 		this.baseColor = baseColor;
 		primaryColor = new Color();
 		secondaryColor = new Color();
+	}
+
+	public SelectionColorCalculator() {
+		this(new Color());
 	}
 
 	public void calculateColors(List<SelectionType> selectionTypes) {

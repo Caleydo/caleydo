@@ -1,8 +1,9 @@
 /**
  *
  */
-package org.caleydo.view.enroute.node.mode;
+package org.caleydo.view.enroute.path.node.mode;
 
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -11,10 +12,10 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.node.ALinearizableNode;
-import org.caleydo.view.enroute.node.ANode;
-import org.caleydo.view.enroute.node.ComplexNode;
+import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.ANode;
+import org.caleydo.view.enroute.path.node.ComplexNode;
 
 /**
  * The preview mode for {@link ComplexNode}s.
@@ -29,8 +30,8 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 	/**
 	 * @param view
 	 */
-	public ComplexNodePreviewMode(GLEnRoutePathway view) {
-		super(view);
+	public ComplexNodePreviewMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+		super(view, pathwayPathRenderer);
 	}
 
 	@Override
@@ -87,12 +88,13 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				view.setExpandedBranchSummaryNode(null);
+				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
 				}
-				view.selectBranch(branchNode);
+
+				pathwayPathRenderer.selectBranch(branchNode);
 			}
 		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 

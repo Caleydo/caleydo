@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -46,6 +46,8 @@ public class RowCaptionRenderer extends SelectableRenderer {
 	private CaleydoTextRenderer textRenderer;
 	private PixelGLConverter pixelGLConverter;
 
+	protected MappedDataRenderer parent;
+
 	private Integer davidID;
 
 	/**
@@ -56,15 +58,15 @@ public class RowCaptionRenderer extends SelectableRenderer {
 	 * @param pixelGLConverter
 	 *            the <code>PixelGLConverter</code> of the parent GL view
 	 * @param davidID
-	 *            the id used for the resolution of the human readable id type
-	 *            that is rendered
+	 *            the id used for the resolution of the human readable id type that is rendered
 	 * @param backgroundColor
 	 *            RGBA value of the background color.
 	 */
-	public RowCaptionRenderer(Integer davidID, AGLView parentView,
-			MappedDataRenderer parent, float[] backgroundColor) {
-		super(parentView, parent, new Color(backgroundColor));
+	public RowCaptionRenderer(Integer davidID, AGLView parentView, MappedDataRenderer parent, float[] backgroundColor) {
+		super(parentView, new Color(backgroundColor));
 		this.davidID = davidID;
+		this.parent = parent;
+
 		textRenderer = parentView.getTextRenderer();
 		pixelGLConverter = parentView.getPixelGLConverter();
 
@@ -72,8 +74,7 @@ public class RowCaptionRenderer extends SelectableRenderer {
 
 	@Override
 	public void renderContent(GL2 gl) {
-		ArrayList<SelectionType> selectionTypes = parent.geneSelectionManager
-				.getSelectionTypes(davidID);
+		List<SelectionType> selectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
 
 		colorCalculator.calculateColors(selectionTypes);
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
@@ -81,16 +82,15 @@ public class RowCaptionRenderer extends SelectableRenderer {
 		float backgroundZ = 0;
 		float frameZ = 0.3f;
 
-		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-				EPickingType.GENE.name(), davidID));
+		gl.glPushName(parentView.getPickingManager()
+				.getPickingID(parentView.getID(), EPickingType.GENE.name(), davidID));
 
 		gl.glBegin(GL2.GL_QUADS);
 
 		gl.glColor3f(bottomBarColor[0], bottomBarColor[1], bottomBarColor[2]);
 
 		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-				bottomBarColor[2] * 0.9f);
+		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
 		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
 
@@ -112,13 +112,12 @@ public class RowCaptionRenderer extends SelectableRenderer {
 
 		float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
-		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(IDCategory.getIDCategory("GENE"));
-		String geneName = geneIDMappingManager.getID(IDType.getIDType("DAVID"),
-				IDType.getIDType("GENE_SYMBOL"), davidID);
+		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				IDCategory.getIDCategory("GENE"));
+		String geneName = geneIDMappingManager.getID(IDType.getIDType("DAVID"), IDType.getIDType("GENE_SYMBOL"),
+				davidID);
 		if (geneName != null)
-			textRenderer.renderTextInBounds(gl, geneName, sideSpacing, (y - height) / 2,
-					0.1f, x, height);
+			textRenderer.renderTextInBounds(gl, geneName, sideSpacing, (y - height) / 2, 0.1f, x, height);
 
 		gl.glPopName();
 	}

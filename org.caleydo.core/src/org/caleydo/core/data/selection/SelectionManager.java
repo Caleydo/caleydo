@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.selection.delta.DeltaConverter;
@@ -558,9 +559,9 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param elementID
 	 * @return selection type or NULL
 	 */
-	public synchronized ArrayList<SelectionType> getSelectionTypes(int elementID) {
+	public synchronized List<SelectionType> getSelectionTypes(int elementID) {
 
-		ArrayList<SelectionType> selectedTypes = new ArrayList<SelectionType>(2);
+		List<SelectionType> selectedTypes = new ArrayList<SelectionType>(2);
 		for (SelectionType type : selectionTypes) {
 			if (checkStatus(type, elementID))
 				selectedTypes.add(type);
@@ -580,7 +581,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param elementID
 	 * @return the List of selection types or an empty list if ID could not be resolved
 	 */
-	public synchronized ArrayList<SelectionType> getSelectionTypes(IDType sourceIDType, int elementID) {
+	public synchronized List<SelectionType> getSelectionTypes(IDType sourceIDType, int elementID) {
 
 		Integer resolvedID = idMappingManager.getID(sourceIDType, this.idType, elementID);
 		if (resolvedID == null)

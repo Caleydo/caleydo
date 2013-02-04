@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.caleydo.view.enroute.node.mode;
+package org.caleydo.view.enroute.path.node.mode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,10 +13,11 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.IColorProvider;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.SelectionColorCalculator;
 import org.caleydo.view.enroute.node.GeneNode;
+import org.caleydo.view.enroute.path.PathwayPathRenderer;
 
 /**
  * Base class for modes of a {@link GeneNode}.
@@ -24,12 +25,10 @@ import org.caleydo.view.enroute.node.GeneNode;
  * @author Christian
  *
  */
-public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
-		IColorProvider {
+public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements IColorProvider {
 
 	/**
-	 * Second color that is used to show a color gradient made up of combined
-	 * selection colors.
+	 * Second color that is used to show a color gradient made up of combined selection colors.
 	 */
 	protected float[] gradientColor = null;
 
@@ -38,15 +37,15 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 	/**
 	 * @param view
 	 */
-	public AGeneNodeMode(GLEnRoutePathway view) {
-		super(view);
+	public AGeneNodeMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+		super(view, pathwayPathRenderer);
 		backgroundColor = DEFAULT_BACKGROUND_COLOR;
 		colorCalculator = new SelectionColorCalculator(new Color(DEFAULT_BACKGROUND_COLOR));
 	}
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
-		determineBackgroundColor(view.getGeneSelectionManager());
+		determineBackgroundColor(pathwayPathRenderer.getGeneSelectionManager());
 		super.render(gl, glu);
 
 	}
@@ -55,8 +54,7 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
 		List<SelectionType> allSelectionTypes = new ArrayList<SelectionType>();
 		for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
-			List<SelectionType> selectionTypes = selectionManager
-					.getSelectionTypes(davidId);
+			List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(davidId);
 			for (SelectionType selectionType : selectionTypes) {
 				if (!allSelectionTypes.contains(selectionType)) {
 					allSelectionTypes.add(selectionType);
