@@ -81,7 +81,7 @@ public class TableUtils {
 					nTable.setMax(numericalProperties.getMax());
 				}
 
-				nTable.setDefaultDataTransformation(numericalProperties.getDataTransformation());
+				nTable.setDefaultDataTransformation(sanitize(numericalProperties.getDataTransformation()));
 
 			} else if (dataDescription.getCategoricalClassDescription() != null) {
 				CategoricalClassDescription<?> catClassDescr = dataDescription.getCategoricalClassDescription();
@@ -119,6 +119,22 @@ public class TableUtils {
 
 		if (createDefaultRecordPerspective)
 			table.createDefaultRecordPerspective();
+	}
+
+	/**
+	 * cleans the input data transformation to known one if possible
+	 * 
+	 * @param dataTransformation
+	 * @return
+	 */
+	private static String sanitize(String dataTransformation) {
+		if (Table.Transformation.NONE.equalsIgnoreCase(dataTransformation))
+			return Table.Transformation.NONE;
+		if (NumericalTable.Transformation.LOG10.equalsIgnoreCase(dataTransformation))
+			return NumericalTable.Transformation.LOG10;
+		if (NumericalTable.Transformation.LOG2.equalsIgnoreCase(dataTransformation))
+			return NumericalTable.Transformation.LOG2;
+		return dataTransformation;
 	}
 
 	/**
