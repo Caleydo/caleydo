@@ -20,11 +20,11 @@
 /**
  *
  */
-package org.caleydo.view.enroute;
+package org.caleydo.view.enroute.path;
 
 import java.util.List;
 
-import org.caleydo.view.enroute.node.ANode;
+import org.caleydo.view.enroute.path.node.ANode;
 
 /**
  * Class that describes different properties of the spacing between two anchor

@@ -20,7 +20,9 @@
 package org.caleydo.view.enroute.path;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -47,6 +49,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
 import org.caleydo.view.enroute.path.node.CompoundNode;
@@ -54,6 +57,7 @@ import org.caleydo.view.enroute.path.node.GeneNode;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.jgrapht.GraphPath;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
 
@@ -78,7 +82,7 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	/**
 	 * List of renderable nodes for the path.
 	 */
-	private List<ALinearizableNode> pathNodes = new ArrayList<>();
+	List<ALinearizableNode> pathNodes = new ArrayList<>();
 
 	/**
 	 * View that renders this renderer.
@@ -98,7 +102,27 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	/**
 	 * Branch summary node that is currently expanded
 	 */
-	private BranchSummaryNode expandedBranchSummaryNode;
+	BranchSummaryNode expandedBranchSummaryNode;
+
+	/**
+	 * List of nodes that can currently be displayed in branches.
+	 */
+	List<ANode> branchNodes = new ArrayList<ANode>();
+
+	/**
+	 * Map that associates the linearized nodes with their incoming branch summary nodes.
+	 */
+	Map<ANode, ANode> linearizedNodesToIncomingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
+
+	/**
+	 * Map that associates the linearized nodes with their outgoing branch summary nodes.
+	 */
+	Map<ANode, ANode> linearizedNodesToOutgoingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
+
+	/**
+	 * Map that associates every node in a branch with a linearized node.
+	 */
+	Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
 
 	/**
 	 * Strategy that determines the way the path is rendered.
@@ -146,13 +170,13 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 		this.pathway = pathway;
 		this.path = path;
 
-		// expandedBranchSummaryNode = null;
-		// for (ANode node : linearizedNodes) {
-		// node.unregisterPickingListeners();
-		// }
-		// for (ANode node : branchNodes) {
-		// node.unregisterPickingListeners();
-		// }
+		expandedBranchSummaryNode = null;
+		for (ANode node : pathNodes) {
+			node.destroy();
+		}
+		for (ANode node : branchNodes) {
+			node.destroy();
+		}
 
 		createNodes(path);
 		// setMinSize(0);
@@ -182,57 +206,59 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 		createNodesForList(pathNodes, path);
 
 		// Create branch nodes
-		// for (int i = 0; i < linearizedNodes.size(); i++) {
-		// ALinearizableNode currentNode = linearizedNodes.get(i);
-		// PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
-		// PathwayVertexRep prevVertexRep = null;
-		// PathwayVertexRep nextVertexRep = null;
-		//
-		// if (i > 0) {
-		// ALinearizableNode prevNode = linearizedNodes.get(i - 1);
-		// prevVertexRep = prevNode.getPathwayVertexRep();
-		// }
-		// if (i != linearizedNodes.size() - 1) {
-		// ALinearizableNode nextNode = linearizedNodes.get(i + 1);
-		// nextVertexRep = nextNode.getPathwayVertexRep();
-		// }
-		//
-		// BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
-		// BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
-		// List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
-		// sourceVertexReps.remove(prevVertexRep);
-		// List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
-		// targetVertexReps.remove(nextVertexRep);
-		//
-		// if (sourceVertexReps.size() > 0) {
-		// List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
-		//
-		// createNodesForList(sourceNodes, sourceVertexReps);
-		// incomingNode.setBranchNodes(sourceNodes);
-		// linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
-		// branchNodes.add(incomingNode);
-		// branchNodes.addAll(sourceNodes);
-		// for (ANode node : sourceNodes) {
-		// ((ALinearizableNode) node).setPreviewMode(true);
-		// branchNodesToLinearizedNodesMap.put(node, currentNode);
-		// }
-		// }
-		//
-		// if (targetVertexReps.size() > 0) {
-		// List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
-		// createNodesForList(targetNodes, targetVertexReps);
-		//
-		// outgoingNode.setBranchNodes(targetNodes);
-		// linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
-		// branchNodes.add(outgoingNode);
-		// branchNodes.addAll(targetNodes);
-		// for (ANode node : targetNodes) {
-		// ((ALinearizableNode) node).setPreviewMode(true);
-		// branchNodesToLinearizedNodesMap.put(node, currentNode);
-		// }
-		// }
-		//
-		// }
+		for (int i = 0; i < pathNodes.size(); i++) {
+			ALinearizableNode currentNode = pathNodes.get(i);
+			PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
+			PathwayVertexRep prevVertexRep = null;
+			PathwayVertexRep nextVertexRep = null;
+
+			if (i > 0) {
+				ALinearizableNode prevNode = pathNodes.get(i - 1);
+				prevVertexRep = prevNode.getPathwayVertexRep();
+			}
+			if (i != pathNodes.size() - 1) {
+				ALinearizableNode nextNode = pathNodes.get(i + 1);
+				nextVertexRep = nextNode.getPathwayVertexRep();
+			}
+
+			BranchSummaryNode incomingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
+			incomingNode.init();
+			BranchSummaryNode outgoingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
+			outgoingNode.init();
+			List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
+			sourceVertexReps.remove(prevVertexRep);
+			List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
+			targetVertexReps.remove(nextVertexRep);
+
+			if (sourceVertexReps.size() > 0) {
+				List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
+
+				createNodesForList(sourceNodes, sourceVertexReps);
+				incomingNode.setBranchNodes(sourceNodes);
+				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
+				branchNodes.add(incomingNode);
+				branchNodes.addAll(sourceNodes);
+				for (ANode node : sourceNodes) {
+					((ALinearizableNode) node).setPreviewMode(true);
+					branchNodesToLinearizedNodesMap.put(node, currentNode);
+				}
+			}
+
+			if (targetVertexReps.size() > 0) {
+				List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
+				createNodesForList(targetNodes, targetVertexReps);
+
+				outgoingNode.setBranchNodes(targetNodes);
+				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
+				branchNodes.add(outgoingNode);
+				branchNodes.addAll(targetNodes);
+				for (ANode node : targetNodes) {
+					((ALinearizableNode) node).setPreviewMode(true);
+					branchNodesToLinearizedNodesMap.put(node, currentNode);
+				}
+			}
+
+		}
 
 	}
 
@@ -254,11 +280,13 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 					groupedNode.setParentNode(complexNode);
 				}
 				complexNode.setPathwayVertexRep(currentVertexRep);
+				complexNode.init();
 				node = complexNode;
 			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
 				CompoundNode compoundNode = new CompoundNode(this, view, lastNodeID++);
 
 				compoundNode.setPathwayVertexRep(currentVertexRep);
+				compoundNode.init();
 				node = compoundNode;
 
 			} else {
@@ -273,7 +301,7 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 					geneNode.setLabel(currentVertexRep.getName());
 				}
 				geneNode.setPathwayVertexRep(currentVertexRep);
-
+				geneNode.init();
 				node = geneNode;
 			}
 

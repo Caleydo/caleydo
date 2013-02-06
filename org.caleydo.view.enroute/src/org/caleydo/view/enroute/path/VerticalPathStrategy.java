@@ -27,7 +27,6 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
@@ -44,6 +43,8 @@ import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.ANode;
+import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
@@ -57,7 +58,20 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	/**
 	 * Default size for vertical node space, i.e., the space reserved for a single node.
 	 */
-	protected static final int DEFAULT_VERTICAL_NODE_SPACE_PIXELS = 60;
+	protected static final int DEFAULT_VERTICAL_NODE_SPACING_PIXELS = 50;
+	/**
+	 * Spacing before the first node.
+	 */
+	protected final static int TOP_SPACING_PIXELS = 60;
+	/**
+	 * Spacing after the last node.
+	 */
+	protected final static int BOTTOM_SPACING_PIXELS = 60;
+	protected final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
+	protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
+	protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
+	protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
+	protected final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
 
 	/**
 	 * PathwayPathRenderer that uses this strategy.
@@ -66,41 +80,318 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	protected PixelGLConverter pixelGLConverter;
 	protected CaleydoTextRenderer textRenderer;
 
+	protected boolean isEnRoutePath = true;
+
 	public VerticalPathStrategy(PathwayPathRenderer pathwayPathRenderer) {
 		this.pathwayPathRenderer = pathwayPathRenderer;
 		this.pixelGLConverter = pathwayPathRenderer.getView().getPixelGLConverter();
 		this.textRenderer = pathwayPathRenderer.getView().getTextRenderer();
 	}
 
-	private List<Float> calcNodeSpace(List<ALinearizableNode> nodes, PixelGLConverter pixelGLConverter) {
-		List<Float> nodeSpaces = new ArrayList<>(nodes.size());
-
-		for (int i = 0; i < nodes.size(); i++) {
-			nodeSpaces.add(pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACE_PIXELS));
+	/**
+	 * @param node
+	 *            The node for which the positions of associated branch nodes shall be calculated
+	 * @return the minimum view height in pixels that would be required by the nodes to be displayed.
+	 */
+	private int calculatePositionsOfBranchNodes(ANode node) {
+		int minViewHeightPixelsIncoming = 0;
+		int minViewHeightPixelsOutgoing = 0;
+		ANode incomingNode = pathwayPathRenderer.linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+		if ((incomingNode != null) && (incomingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+			minViewHeightPixelsIncoming = calculateBranchNodePosition((BranchSummaryNode) incomingNode);
 		}
 
-		return nodeSpaces;
+		ANode outgoingNode = pathwayPathRenderer.linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+		if ((outgoingNode != null) && (outgoingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+			minViewHeightPixelsOutgoing = calculateBranchNodePosition((BranchSummaryNode) outgoingNode);
+		}
+		return Math.max(minViewHeightPixelsIncoming, minViewHeightPixelsOutgoing);
+	}
+
+	/**
+	 * Calculates the spacings between all anchor nodes (nodes with mapped data) of the path.
+	 *
+	 * @return
+	 */
+	private List<AnchorNodeSpacing> calcAnchorNodeSpacings(List<ALinearizableNode> pathNodes) {
+
+		List<AnchorNodeSpacing> anchorNodeSpacings = new ArrayList<AnchorNodeSpacing>();
+		List<ANode> unmappedNodes = new ArrayList<ANode>();
+		ALinearizableNode currentAnchorNode = null;
+
+		for (int i = 0; i < pathNodes.size(); i++) {
+
+			ALinearizableNode node = pathNodes.get(i);
+			int numAssociatedRows = node.getMappedDavidIDs().size();
+
+			if (numAssociatedRows == 0) {
+				unmappedNodes.add(node);
+
+			} else {
+				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, node, unmappedNodes,
+						currentAnchorNode == null, false);
+
+				anchorNodeSpacings.add(anchorNodeSpacing);
+
+				unmappedNodes = new ArrayList<ANode>();
+				currentAnchorNode = node;
+			}
+
+			if (i == pathNodes.size() - 1) {
+				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, null, unmappedNodes,
+						currentAnchorNode == null, true);
+				anchorNodeSpacings.add(anchorNodeSpacing);
+
+			}
+		}
+
+		return anchorNodeSpacings;
+	}
+
+	private AnchorNodeSpacing createAnchorNodeSpacing(ALinearizableNode startAnchorNode,
+			ALinearizableNode endAnchorNode, List<ANode> nodesInbetween, boolean isFirstSpacing, boolean isLastSpacing) {
+
+		AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
+		anchorNodeSpacing.setStartNode(startAnchorNode);
+		anchorNodeSpacing.setEndNode(endAnchorNode);
+		anchorNodeSpacing.setNodesInbetween(nodesInbetween);
+		anchorNodeSpacing.calcTotalNodeHeight();
+
+		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
+
+		int numSpacingAnchorNodeRows = 0;
+		if (isEnRoutePath) {
+			if (startAnchorNode != null) {
+				numSpacingAnchorNodeRows += startAnchorNode.getMappedDavidIDs().size();
+			}
+			if (endAnchorNode != null) {
+				numSpacingAnchorNodeRows += endAnchorNode.getMappedDavidIDs().size();
+			}
+		}
+
+		float additionalSpacing = 0;
+		if (isFirstSpacing)
+			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+		if (isLastSpacing)
+			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+
+		float dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+
+		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * (numSpacingAnchorNodeRows) / 2.0f
+				+ additionalSpacing,
+				minNodeSpacing * (nodesInbetween.size() + 1) + anchorNodeSpacing.getTotalNodeHeight()));
+
+		return anchorNodeSpacing;
+	}
+
+	public void updateLayout() {
+
+		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+
+		float pathwayHeight = 0;
+		int minViewHeightRequiredByBranchNodes = 0;
+		List<ALinearizableNode> pathNodes = pathwayPathRenderer.getPathNodes();
+
+		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings(pathNodes);
+
+		Vec3f currentPosition = new Vec3f((isEnRoutePath) ? (branchColumnWidth + pathwayColumnWidth / 2.0f)
+				: (pathwayPathRenderer.getX() / 2.0f), pathwayPathRenderer.getY(), 0.2f);
+
+		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
+
+		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
+
+			float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
+
+			float nodeSpacing = (Float.isNaN(currentAnchorNodeSpacing) ? minNodeSpacing
+					: (currentAnchorNodeSpacing - spacing.getTotalNodeHeight())
+							/ ((float) spacing.getNodesInbetween().size() + 1));
+			ANode startAnchorNode = spacing.getStartNode();
+
+			float currentInbetweenNodePositionY = currentPosition.y()
+					- ((startAnchorNode != null) ? startAnchorNode.getHeight() / 2.0f : 0);
+
+			int minViewHeight = calculatePositionsOfBranchNodes(startAnchorNode);
+			if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+				minViewHeightRequiredByBranchNodes = minViewHeight;
+			}
+
+			for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
+				ANode node = spacing.getNodesInbetween().get(i);
+
+				node.setPosition(new Vec3f(currentPosition.x(), currentInbetweenNodePositionY - nodeSpacing
+						- node.getHeight() / 2.0f, currentPosition.z()));
+				currentInbetweenNodePositionY -= (nodeSpacing + node.getHeight());
+
+				minViewHeight = calculatePositionsOfBranchNodes(node);
+				if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+					minViewHeightRequiredByBranchNodes = minViewHeight;
+				}
+			}
+
+			currentPosition.setY(currentPosition.y() - spacing.getCurrentAnchorNodeSpacing());
+
+			ANode endAnchorNode = spacing.getEndNode();
+			if (endAnchorNode != null) {
+				endAnchorNode.setPosition(new Vec3f(currentPosition));
+				minViewHeight = calculatePositionsOfBranchNodes(endAnchorNode);
+				if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+					minViewHeightRequiredByBranchNodes = minViewHeight;
+				}
+			}
+
+			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
+		}
+	}
+
+	/**
+	 * Calculates the position for a single branch node.
+	 *
+	 * @param summaryNode
+	 * @return
+	 */
+	private int calculateBranchNodePosition(BranchSummaryNode summaryNode) {
+		boolean isIncomingNode = pathwayPathRenderer.linearizedNodesToIncomingBranchSummaryNodesMap.get(summaryNode
+				.getAssociatedLinearizedNode()) == summaryNode;
+		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
+		Vec3f linearizedNodePosition = linearizedNode.getPosition();
+
+		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_AREA_SIDE_SPACING_PIXELS);
+		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
+				.getGLHeightForPixelHeight(BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS);
+		float width = summaryNode.getWidth();
+		float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode.getTitleAreaHeightPixels());
+
+		float nodePositionY = linearizedNodePosition.y()
+				+ (isIncomingNode ? branchSummaryNodeToLinearizedNodeDistance
+						: -branchSummaryNodeToLinearizedNodeDistance) - (summaryNode.getHeight() / 2.0f)
+				+ titleAreaHeight / 2.0f;
+
+		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY, (summaryNode.isCollapsed() ? 0
+				: 0.2f)));
+
+		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
+		int minViewHeightPixels = 0;
+		// if (viewFrustum.getBottom() > bottomPositionY) {
+		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(pathwayPathRenderer.getY() - bottomPositionY);
+		// setMinSize(minViewHeightPixels + 3);
+		// }
+
+		return minViewHeightPixels;
+
 	}
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
 
-		AGLView view = pathwayPathRenderer.getView();
 		List<ALinearizableNode> pathNodes = pathwayPathRenderer.getPathNodes();
-		List<Float> nodeSpaces = calcNodeSpace(pathNodes, view.getPixelGLConverter());
 
-		float currentPositionY = pathwayPathRenderer.getY();
+		updateLayout();
+
+		// List<Float> nodeSpaces = calcNodeSpace(pathNodes, view.getPixelGLConverter());
+		//
+		// // gl.glPushMatrix();
+		// // gl.glLoadIdentity();
+		// // gl.glTranslatef(pathwayPathRenderer.getY(), 0, 0);
+		// // gl.glRotatef(90f, 0, 0, 1);
+		// // gl.glColor3f(1, 0, 0);
+		// // gl.glBegin(GL2.GL_QUADS);
+		// // gl.glVertex3f(0, 0, 0);
+		// // gl.glVertex3f(pathwayPathRenderer.getX(), 0, 0);
+		// // gl.glVertex3f(pathwayPathRenderer.getX(), pathwayPathRenderer.getY(), 0);
+		// // gl.glVertex3f(0, pathwayPathRenderer.getY(), 0);
+		// // gl.glEnd();
+		//
+		// float currentPositionY = pathwayPathRenderer.getY();
 		for (int i = 0; i < pathNodes.size(); i++) {
 			ALinearizableNode node = pathNodes.get(i);
-
-			node.setPosition(new Vec3f(pathwayPathRenderer.getX() / 2.0f, currentPositionY - nodeSpaces.get(i) / 2.0f,
-					0f));
 			node.render(gl, glu);
-
-			currentPositionY -= nodeSpaces.get(i);
+			renderBranchNodes(gl, glu, node);
 		}
 
+		if (pathwayPathRenderer.expandedBranchSummaryNode != null) {
+			renderBranchSummaryNode(gl, glu, pathwayPathRenderer.expandedBranchSummaryNode);
+			// float coverWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
+			// + BRANCH_COLUMN_WIDTH_PIXELS);
+			gl.glColor4f(1, 1, 1, 0.9f);
+
+			gl.glBegin(GL2.GL_QUADS);
+			gl.glVertex3f(0, 0, 0.1f);
+			gl.glVertex3f(pathwayPathRenderer.getX(), 0, 0.1f);
+			gl.glVertex3f(pathwayPathRenderer.getX(), pathwayPathRenderer.getY(), 0.1f);
+			gl.glVertex3f(0, pathwayPathRenderer.getY(), 0.1f);
+			gl.glEnd();
+		}
+		// currentPositionY -= nodeSpaces.get(i);
+		// }
+
 		renderEdges(gl, pathNodes);
+		// gl.glPopMatrix();
+	}
+
+	/**
+	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
+	 *
+	 * @param node
+	 */
+	private void renderBranchNodes(GL2 gl, GLU glu, ANode node) {
+
+		ANode incomingNode = pathwayPathRenderer.linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+		if ((incomingNode != null) && (incomingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+
+			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) incomingNode);
+
+			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+			List<Vec3f> linePoints = new ArrayList<Vec3f>();
+			Vec3f sourcePosition = incomingNode.getRightConnectionPoint();
+			Vec3f targetPosition = node.getLeftConnectionPoint();
+			sourcePosition.setZ(0);
+			targetPosition.setZ(0);
+			linePoints.add(sourcePosition);
+			linePoints.add(targetPosition);
+
+			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
+			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
+
+			connectionLineRenderer.renderLine(gl, linePoints);
+		}
+
+		ANode outgoingNode = pathwayPathRenderer.linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+		if ((outgoingNode != null) && (outgoingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+
+			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) outgoingNode);
+
+			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+			List<Vec3f> linePoints = new ArrayList<Vec3f>();
+
+			Vec3f sourcePosition = node.getLeftConnectionPoint();
+			Vec3f targetPosition = outgoingNode.getRightConnectionPoint();
+			sourcePosition.setZ(0);
+			targetPosition.setZ(0);
+			linePoints.add(sourcePosition);
+			linePoints.add(targetPosition);
+
+			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
+			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
+
+			connectionLineRenderer.renderLine(gl, linePoints);
+		}
+	}
+
+	private void renderBranchSummaryNode(GL2 gl, GLU glu, BranchSummaryNode summaryNode) {
+
+		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
+		summaryNode.render(gl, glu);
+
+		if (!summaryNode.isCollapsed()) {
+			List<ALinearizableNode> branchNodes = summaryNode.getBranchNodes();
+			for (ALinearizableNode node : branchNodes) {
+				renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
+						linearizedNode.getLeftConnectionPoint(), 0.2f, false);
+			}
+		}
+
 	}
 
 	private void renderEdges(GL2 gl, List<ALinearizableNode> pathNodes) {
@@ -291,6 +582,21 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	@Override
 	public int getMinWidthPixels() {
 		return 0;
+	}
+
+	/**
+	 * @return the isEnRoutePath, see {@link #isEnRoutePath}
+	 */
+	public boolean isEnRoutePath() {
+		return isEnRoutePath;
+	}
+
+	/**
+	 * @param isEnRoutePath
+	 *            setter, see {@link isEnRoutePath}
+	 */
+	public void setEnRoutePath(boolean isEnRoutePath) {
+		this.isEnRoutePath = isEnRoutePath;
 	}
 
 }
