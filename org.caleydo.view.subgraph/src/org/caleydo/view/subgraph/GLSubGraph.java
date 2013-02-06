@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.swt.widgets.Composite;
 
@@ -100,6 +101,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 		baseColumn.setRatioSizeX(1);
 		baseColumn.setRatioSizeY(1);
 		layoutManager.setBaseElementLayout(baseColumn);
+		layoutManager.setUseDisplayLists(true);
 
 	}
 
@@ -239,10 +241,9 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			data.setData(oldDimensionPerspective.getVirtualArray());
 
 			newDimensionPerspective.init(data);
-
 			PathwayTablePerspective pathwayPathwayTablePerspective = new PathwayTablePerspective(
 					tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective, newDimensionPerspective,
-					PathwayManager.get().getAllItems().iterator().next());
+					PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
 
 			pathwayDataDomain.addTablePerspective(pathwayPathwayTablePerspective);
 
