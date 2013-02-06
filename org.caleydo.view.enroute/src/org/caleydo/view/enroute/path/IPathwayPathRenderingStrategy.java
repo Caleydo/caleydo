@@ -17,38 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout.util.multiform;
+package org.caleydo.view.enroute.path;
+
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 
 /**
- * Provides information such as scaling characteristics about an embedded visualization that is rendered by a
- * {@link MultiFormRenderer}.
+ * Interface for different strategies that render a pathway path.
  *
  * @author Christian Partl
  *
  */
-public interface IEmbeddedVisualizationInfo {
+public interface IPathwayPathRenderingStrategy {
 
 	/**
-	 * Entities whose counts cause a visualization to scale either in width or height.
+	 * Renders the path for a {@link PathwayPathRenderer}.
 	 *
-	 * @author Christian
-	 *
+	 * @param gl
+	 * @param glu
 	 */
-	public enum EScalingEntity {
-		RECORD, DIMENSION, RECORD_PERSPECTIVE, DIMENSION_PERSPECTIVE, DATA_DOMAIN, IMAGE_PIXEL, PATHWAY_VERTEX;
-
-	}
+	public void render(GL2 gl, GLU glu);
 
 	/**
-	 * @return The entity whose count that is primarily responsible for the visualization to scale in width. Null, if
-	 *         the visualization's width is independent of such an entity.
+	 * @return The minimum height that is required by the strategy to render the path.
 	 */
-	public EScalingEntity getPrimaryWidthScalingEntity();
+	public int getMinHeightPixels();
 
 	/**
-	 * @return The entity whose count that is primarily responsible for the visualization to scale in height. Null, if
-	 *         the visualization's height is independent of such an entity.
+	 * @return The minimum width that is required by the strategy to render the path.
 	 */
-	public EScalingEntity getPrimaryHeightScalingEntity();
+	public int getMinWidthPixels();
 
 }

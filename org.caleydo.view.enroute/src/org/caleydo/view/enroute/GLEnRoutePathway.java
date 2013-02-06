@@ -247,6 +247,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (dataDomains.size() != 0) {
 			IDType sampleIDType = dataDomains.get(0).getSampleIDType().getIDCategory().getPrimaryMappingType();
 			sampleSelectionManager = new EventBasedSelectionManager(this, sampleIDType);
+			sampleSelectionManager.registerEventListeners();
 		}
 
 		mappedDataRenderer = new MappedDataRenderer(this);

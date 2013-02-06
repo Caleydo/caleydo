@@ -641,7 +641,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	protected void prepare() {
 		if (!ensureValidRenderer())
 			return;
-		super.setDisplayListDirty();
+		super.prepare();
 	}
 
 	@Override

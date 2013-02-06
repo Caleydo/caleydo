@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,14 +24,14 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 
 /**
- * A sub-class for {@link ALayoutRenderer} intended to render whole
- * {@link AGLView}s. The main contract here, is that the view renders within its
- * view frustum, which is updated according to the size of the layout in the
+ * A sub-class for {@link ALayoutRenderer} intended to render whole {@link AGLView}s. The main contract here, is that
+ * the view renders within its view frustum, which is updated according to the size of the layout in the
  * {@link #setLimits(float, float)} method.
- * 
+ *
  * @author Alexander Lex
  */
 public class ViewLayoutRenderer extends ALayoutRenderer {
@@ -44,7 +44,7 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 
 	/**
 	 * Constructor taking an {@link AGLView} to be rendered by this renderer.
-	 * 
+	 *
 	 * @param view
 	 */
 	public ViewLayoutRenderer(AGLView view) {
@@ -54,6 +54,10 @@ public class ViewLayoutRenderer extends ALayoutRenderer {
 	@Override
 	public void setLimits(float x, float y) {
 		super.setLimits(x, y);
+		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
+		// FIXME: the coordinates are not correct.
+		// view.reshape(view.getParentGLCanvas().asGLAutoDrawAble(), 0, 0, pixelGLConverter.getPixelWidthForGLWidth(x),
+		// pixelGLConverter.getPixelHeightForGLHeight(y));
 
 		ViewFrustum viewFrustum = view.getViewFrustum();
 

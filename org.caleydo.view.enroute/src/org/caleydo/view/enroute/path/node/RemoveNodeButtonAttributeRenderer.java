@@ -103,7 +103,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 				@Override
 				protected void timedMouseOut(Pick pick) {
 					showRemoveButton = false;
-					view.setDisplayListDirty();
+					pathwayPathRenderer.setDisplayListDirty();
 				}
 
 				@Override
@@ -115,7 +115,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 					if ((index == 0) || (index == pathNodes.size() - 1)) {
 						super.mouseOver(pick);
 						showRemoveButton = true;
-						view.setDisplayListDirty();
+						pathwayPathRenderer.setDisplayListDirty();
 					}
 				}
 			};
@@ -130,7 +130,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 					RemoveEnRouteNodeEvent event = new RemoveEnRouteNodeEvent((ALinearizableNode) node);
 					event.setSender(this);
 					GeneralManager.get().getEventPublisher().triggerEvent(event);
-					// view.removeLinearizedNode((ALinearizableNode)node);
+					pathwayPathRenderer.removeNodeFromPath((ALinearizableNode) node);
 				}
 
 			};

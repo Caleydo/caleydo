@@ -309,6 +309,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 		glMouseListener.addGLCanvas(this);
 		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
+		textRenderer = new CaleydoTextRenderer(24);
 		initLocal(gl);
 	}
 
@@ -1302,9 +1303,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 *            The lines of text.
 	 */
 	protected void renderEmptyViewText(GL2 gl, String... lines) {
-
-		if (textRenderer == null)
-			textRenderer = new CaleydoTextRenderer(24);
 
 		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(EMPTY_VIEW_TEXT_HEIGHT_PIXELS);
 		float safetySpacing = pixelGLConverter.getGLHeightForPixelHeight(3);

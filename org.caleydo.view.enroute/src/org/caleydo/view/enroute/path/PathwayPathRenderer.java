@@ -21,16 +21,28 @@ package org.caleydo.view.enroute.path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -39,6 +51,11 @@ import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
 import org.caleydo.view.enroute.path.node.CompoundNode;
 import org.caleydo.view.enroute.path.node.GeneNode;
+import org.caleydo.view.pathway.GLPathway;
+import org.caleydo.view.pathway.event.EnRoutePathEvent;
+import org.jgrapht.GraphPath;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Renderer that is responsible for rendering a single pathway path.
@@ -46,22 +63,22 @@ import org.caleydo.view.enroute.path.node.GeneNode;
  * @author Christian Partl
  *
  */
-public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedSelectionManagerUser {
+public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedSelectionManagerUser, IListenerOwner {
 
 	/**
 	 * The pathway graph the rendered path belongs to.
 	 */
 	private PathwayGraph pathway;
 
-	// /**
-	// * The list of {@link PathwayVertexRep}s that represents the path.
-	// */
-	// private List<PathwayVertexRep> path;
+	/**
+	 * The list of {@link PathwayVertexRep}s that represents the path.
+	 */
+	private List<PathwayVertexRep> path;
 
 	/**
 	 * List of renderable nodes for the path.
 	 */
-	private List<ALinearizableNode> pathNodes;
+	private List<ALinearizableNode> pathNodes = new ArrayList<>();
 
 	/**
 	 * View that renders this renderer.
@@ -83,21 +100,37 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	 */
 	private BranchSummaryNode expandedBranchSummaryNode;
 
+	/**
+	 * Strategy that determines the way the path is rendered.
+	 */
+	private IPathwayPathRenderingStrategy renderingStrategy;
+
+	/**
+	 * Event space that is used for receiving and sending path events.
+	 */
+	private String pathwayPathEventSpace = GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE;
+
+	/**
+	 * The queue which holds the events
+	 */
+	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
+
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
 	private EventBasedSelectionManager sampleSelectionManager;
 
-	public PathwayPathRenderer(AGLView view, EventBasedSelectionManager geneSelectionManager,
-			EventBasedSelectionManager metaboliteSelectionManager, EventBasedSelectionManager sampleSelectionManager,
-			List<TablePerspective> tablePerspectives) {
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
+
+	public PathwayPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		this.view = view;
-
-		this.geneSelectionManager = geneSelectionManager;
-		this.metaboliteSelectionManager = metaboliteSelectionManager;
-		this.sampleSelectionManager = sampleSelectionManager;
-
 		this.tablePerspectives = tablePerspectives;
+	}
 
+	/**
+	 * Method that initializes the {@link PathwayPathRenderer}. Shall be called once prior use.
+	 */
+	public void init() {
+		registerEventListeners();
 	}
 
 	/**
@@ -111,7 +144,7 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	 */
 	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
 		this.pathway = pathway;
-		// this.path = path;
+		this.path = path;
 
 		// expandedBranchSummaryNode = null;
 		// for (ANode node : linearizedNodes) {
@@ -126,6 +159,17 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 		// isNewPath = true;
 		// setLayoutDirty();
 
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	protected void onPathwayPathChanged(EnRoutePathEvent event) {
+		PathwayPath path = event.getPath();
+		if (path != null && path.getPath() != null) {
+			PathwayGraph pathway = (PathwayGraph) path.getPath().getGraph();
+			setPath(pathway, path.getNodes());
+		} else {
+			setPath(null, new ArrayList<PathwayVertexRep>());
+		}
 	}
 
 	private void createNodes(List<PathwayVertexRep> path) {
@@ -239,17 +283,21 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 
 	@Override
 	protected void renderContent(GL2 gl) {
+
+		renderingStrategy.render(gl, new GLU());
 	}
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public void destroy(GL2 gl) {
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
+		sampleSelectionManager.unregisterEventListeners();
+		unregisterEventListeners();
 		super.destroy(gl);
 	}
 
@@ -267,6 +315,14 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	}
 
 	/**
+	 * @param geneSelectionManager
+	 *            setter, see {@link geneSelectionManager}
+	 */
+	public void setGeneSelectionManager(EventBasedSelectionManager geneSelectionManager) {
+		this.geneSelectionManager = geneSelectionManager;
+	}
+
+	/**
 	 * @return the metaboliteSelectionManager, see {@link #metaboliteSelectionManager}
 	 */
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
@@ -274,10 +330,26 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	}
 
 	/**
+	 * @param metaboliteSelectionManager
+	 *            setter, see {@link metaboliteSelectionManager}
+	 */
+	public void setMetaboliteSelectionManager(EventBasedSelectionManager metaboliteSelectionManager) {
+		this.metaboliteSelectionManager = metaboliteSelectionManager;
+	}
+
+	/**
 	 * @return the sampleSelectionManager, see {@link #sampleSelectionManager}
 	 */
 	public EventBasedSelectionManager getSampleSelectionManager() {
 		return sampleSelectionManager;
+	}
+
+	/**
+	 * @param sampleSelectionManager
+	 *            setter, see {@link sampleSelectionManager}
+	 */
+	public void setSampleSelectionManager(EventBasedSelectionManager sampleSelectionManager) {
+		this.sampleSelectionManager = sampleSelectionManager;
 	}
 
 	/**
@@ -301,6 +373,7 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	 * @param node
 	 */
 	public void selectBranch(ALinearizableNode node) {
+
 		// ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
 		// BranchSummaryNode summaryNode = (BranchSummaryNode) linearizedNodesToIncomingBranchSummaryNodesMap
 		// .get(linearizedNode);
@@ -408,4 +481,141 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	public List<ALinearizableNode> getPathNodes() {
 		return pathNodes;
 	}
+
+	/**
+	 * @param renderingStrategy
+	 *            setter, see {@link #renderingStrategy}
+	 */
+	public void setRenderingStrategy(IPathwayPathRenderingStrategy renderingStrategy) {
+		this.renderingStrategy = renderingStrategy;
+	}
+
+	@Override
+	public int getMinHeightPixels() {
+		return renderingStrategy.getMinHeightPixels();
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		return renderingStrategy.getMinWidthPixels();
+	}
+
+	/**
+	 * @return the view, see {@link #view}
+	 */
+	public AGLView getView() {
+		return view;
+	}
+
+	float getX() {
+		return x;
+	}
+
+	float getY() {
+		return y;
+	}
+
+	/**
+	 * @param pathwayPathEventSpace
+	 *            setter, see {@link pathwayPathEventSpace}
+	 */
+	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
+		this.pathwayPathEventSpace = pathwayPathEventSpace;
+	}
+
+	@Override
+	public final synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
+	}
+
+	/**
+	 * This method should be called every display cycle when it is save to change the state of the object. It processes
+	 * all the previously submitted events.
+	 */
+	protected final void processEvents() {
+		Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
+		while (queue.peek() != null) {
+			pair = queue.poll();
+			pair.getFirst().handleEvent(pair.getSecond());
+		}
+	}
+
+	@Override
+	protected void prepare() {
+		processEvents();
+	}
+
+	@Override
+	public void registerEventListeners() {
+		listeners.register(this, pathwayPathEventSpace);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		listeners.unregisterAll();
+
+	}
+
+	/**
+	 * @return the pathway, see {@link #pathway}
+	 */
+	public PathwayGraph getPathway() {
+		return pathway;
+	}
+
+	/**
+	 * Removes the specified node from the path if it is at the start or the end of the path.
+	 *
+	 * @param node
+	 */
+	public void removeNodeFromPath(ALinearizableNode node) {
+
+		int linearizedNodeIndex = pathNodes.indexOf(node);
+
+		if (linearizedNodeIndex == 0) {
+			path.remove(0);
+		} else if (linearizedNodeIndex == path.size() - 1) {
+			path.remove(path.size() - 1);
+
+		} else {
+			return;
+		}
+
+		setPath(pathway, path);
+
+		broadcastPath();
+	}
+
+	private void broadcastPath() {
+
+		PathwayPath pathwayPath = null;
+		if (path.size() > 0) {
+
+			PathwayVertexRep startVertexRep = path.get(0);
+			PathwayVertexRep endVertexRep = path.get(path.size() - 1);
+			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+
+			for (int i = 0; i < path.size() - 1; i++) {
+				PathwayVertexRep currentVertexRep = path.get(i);
+				PathwayVertexRep nextVertexRep = path.get(i + 1);
+
+				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
+				if (edge == null)
+					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
+				edges.add(edge);
+			}
+			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+					pathway, startVertexRep, endVertexRep, edges, edges.size());
+
+			pathwayPath = new PathwayPath(graphPath);
+		}
+		EnRoutePathEvent event = new EnRoutePathEvent();
+		event.setEventSpace(pathwayPathEventSpace);
+		event.setPath(pathwayPath);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+	}
+
 }
