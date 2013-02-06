@@ -203,6 +203,10 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		try {
 			File hierarchicalGroupingFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".allclusters.txt",
 					hierarchicalArchiveName, LEVEL);
+			if (hierarchicalGroupingFile == null) {
+				hierarchicalGroupingFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation
+						+ "-TP.allclusters.txt", hierarchicalArchiveName, LEVEL);
+			}
 			if (hierarchicalGroupingFile == null)
 				throw new IllegalStateException("can't extract: " + tumorAbbreviation + ".allclusters.txt");
 			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(

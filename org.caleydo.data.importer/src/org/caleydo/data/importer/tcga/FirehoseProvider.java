@@ -1,10 +1,13 @@
 package org.caleydo.data.importer.tcga;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -94,9 +97,9 @@ public final class FirehoseProvider {
 		}
 
 		TarInputStream tarIn = null;
-		FileOutputStream out = null;
+		OutputStream out = null;
 		try {
-			InputStream in = inUrl.openStream();
+			InputStream in = new BufferedInputStream(inUrl.openStream());
 
 			// ok we have the file
 			tarIn = new TarInputStream(new GZIPInputStream(in));
@@ -107,22 +110,21 @@ public final class FirehoseProvider {
 				act = tarIn.getNextEntry();
 			}
 			if (act == null) // no entry found
-				return null;
+				throw new FileNotFoundException("no entry named: " + fileToExtract + " found");
 
 			byte[] buf = new byte[4096];
 			int n;
 			targetFile.getParentFile().mkdirs();
 			// use a temporary file to recognize if we have aborted between run
 			String tmpFile = targetFile.getAbsolutePath() + ".tmp";
-			out = new FileOutputStream(tmpFile);
+			out = new BufferedOutputStream(new FileOutputStream(tmpFile));
 			while ((n = tarIn.read(buf, 0, 4096)) > -1)
 				out.write(buf, 0, n);
 			out.close();
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			return targetFile;
 		} catch (FileNotFoundException e) {
-			System.err
-.println("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
+			System.err.println("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
 			// file was not found, create a marker to remember this for quicker checks
 			notFound.getParentFile().mkdirs();
 			try {
