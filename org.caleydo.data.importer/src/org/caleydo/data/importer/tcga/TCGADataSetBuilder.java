@@ -294,6 +294,9 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 	}
 
 	private File parseMAF(File maf) {
+		File out = new File(maf.getParentFile(), "P" + maf.getName());
+		if (out.exists())
+			return out;
 		final String TAB = "\t";
 
 		try {
@@ -309,7 +312,6 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 				mutated.put(columns[geneIndex], columns[sampleIndex], Boolean.TRUE);
 			}
 
-			File out = new File(maf.getParentFile(), "P" + maf.getName());
 			PrintWriter w = new PrintWriter(out);
 			w.append("Hugo_Symbol");
 			for (String sample : mutated.columnKeySet()) {
@@ -389,6 +391,9 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 
 	private static void transposeCSV(String fileName, String fileNameOut) {
 		File in = new File(fileName);
+		File out = new File(fileNameOut);
+		if (out.exists())
+			return;
 
 		List<String> data;
 		try {
