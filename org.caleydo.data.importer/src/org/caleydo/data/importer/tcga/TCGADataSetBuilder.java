@@ -389,7 +389,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		return dataSet;
 	}
 
-	private static void transposeCSV(String fileName, String fileNameOut) {
+	private void transposeCSV(String fileName, String fileNameOut) {
 		File in = new File(fileName);
 		File out = new File(fileNameOut);
 		if (out.exists())
@@ -418,7 +418,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 					if (i > 0)
 						writer.append('\t');
 					String[] p = parts[i];
-					if (p.length >= c)
+					if (p.length > c)
 						writer.append(p[c]);
 				}
 				writer.newLine();

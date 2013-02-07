@@ -63,6 +63,8 @@ public class TCGATask extends ATCGATask {
 		if (project.getDataSetDescriptionCollection().isEmpty())
 			return null;
 
+		if (settings.isDownloadOnly())
+			return null;
 		System.out.println("Building project file for tumor type " + tumorType + " for analysis run " + analysisRun);
 		String projectOutputPath = runSpecificOutputPath + analysisRun + "_" + tumorType + ".cal";
 		Collection<ATableBasedDataDomain> dataDomains = new XMLToProjectBuilder().buildProject(project,

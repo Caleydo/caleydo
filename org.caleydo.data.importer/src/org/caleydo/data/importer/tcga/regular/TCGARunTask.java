@@ -47,8 +47,10 @@ public class TCGARunTask extends RecursiveAction {
 			}
 		}
 		if (b.length() != 0) // remove last ,
-			b.setLength(b.length()-1);
-		generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(analysisRun));
+			b.setLength(b.length() - 1);
+
+		if (!settings.isDownloadOnly())
+			generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(analysisRun));
 	}
 
 	protected void generateJSONReport(StringBuilder report, String analysisRun, String dataRun,

@@ -58,6 +58,9 @@ public class Settings {
 			+ REPORT_PATTERN + "\"")
 	private String reportPattern = REPORT_PATTERN;
 
+	@Option(name = "--downloadOnly", usage = "if enabled only the files will be downloaded")
+	private boolean downloadOnly = false;
+
 
 	public boolean validate() {
 		if (dataRuns == null)
@@ -76,6 +79,13 @@ public class Settings {
 		if (numThreads <= 0)
 			numThreads = Runtime.getRuntime().availableProcessors();
 		return true;
+	}
+
+	/**
+	 * @return the downloadOnly, see {@link #downloadOnly}
+	 */
+	public boolean isDownloadOnly() {
+		return downloadOnly;
 	}
 
 	public String getJNLPOutputDirectory() {
