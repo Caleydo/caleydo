@@ -17,35 +17,47 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.enroute.path;
+package org.caleydo.view.enroute.event;
 
-import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 
 /**
- * Interface for different strategies that render a pathway path.
+ * Event that is triggered when a {@link APathwayPathRenderer} changes, i.e., its path changes, branches are uncollapsed
+ * etc.
  *
  * @author Christian Partl
  *
  */
-public interface IPathwayPathRenderingStrategy {
+public class PathRendererChangedEvent extends AEvent {
 
 	/**
-	 * Renders the path for a {@link APathwayPathRenderer}.
-	 *
-	 * @param gl
-	 * @param glu
+	 * The {@link APathwayPathRenderer} that changed.
 	 */
-	public void render(GL2 gl, GLU glu);
+	private APathwayPathRenderer pathRenderer;
+
+	public PathRendererChangedEvent(APathwayPathRenderer pathRenderer) {
+		this.pathRenderer = pathRenderer;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return pathRenderer != null;
+	}
 
 	/**
-	 * @return The minimum height that is required by the strategy to render the path.
+	 * @param pathRenderer
+	 *            setter, see {@link pathRenderer}
 	 */
-	public int getMinHeightPixels();
+	public void setPathRenderer(APathwayPathRenderer pathRenderer) {
+		this.pathRenderer = pathRenderer;
+	}
 
 	/**
-	 * @return The minimum width that is required by the strategy to render the path.
+	 * @return the pathRenderer, see {@link #pathRenderer}
 	 */
-	public int getMinWidthPixels();
+	public APathwayPathRenderer getPathRenderer() {
+		return pathRenderer;
+	}
 
 }

@@ -16,19 +16,14 @@
  *******************************************************************************/
 package org.caleydo.view.enroute;
 
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -36,6 +31,10 @@ import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
+import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
@@ -50,44 +49,17 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineEndStaticLineRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.PathwayPath;
-import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
-import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
-import org.caleydo.view.enroute.event.RemoveEnRouteNodeEvent;
-import org.caleydo.view.enroute.listener.EnRoutePathEventListener;
-import org.caleydo.view.enroute.listener.FitToViewWidthEventListener;
-import org.caleydo.view.enroute.listener.RemoveEnRouteNodeEventListener;
+import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
-import org.caleydo.view.enroute.node.ALinearizableNode;
-import org.caleydo.view.enroute.node.ANode;
-import org.caleydo.view.enroute.node.BranchSummaryNode;
-import org.caleydo.view.enroute.node.ComplexNode;
-import org.caleydo.view.enroute.node.CompoundNode;
-import org.caleydo.view.enroute.node.GeneNode;
-import org.caleydo.view.pathway.GLPathway;
-import org.caleydo.view.pathway.event.EnRoutePathEvent;
+import org.caleydo.view.enroute.path.EnRoutePathRenderer;
 import org.eclipse.swt.widgets.Composite;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Main view class for the linearized pathway view.
@@ -123,67 +95,79 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
-	private int lastNodeId = 0;
+	// private int lastNodeId = 0;
+
+	// /**
+	// * The pathway of the linearized path.
+	// */
+	// private PathwayGraph pathway;
+
+	// /**
+	// * The path of the pathway that is currently linearized.
+	// */
+	// private List<PathwayVertexRep> path = new;
+	//
+	// /**
+	// * The list of nodes that are rendered in a linearized way.
+	// */
+	// private List<ALinearizableNode> linearizedNodes = new ArrayList<ALinearizableNode>();
+	//
+	// /**
+	// * List of nodes that can currently be displayed in branches.
+	// */
+	// private List<ANode> branchNodes = new ArrayList<ANode>();
+	//
+	// /**
+	// * Map that associates the linearized nodes with their incoming branch summary nodes.
+	// */
+	// private Map<ANode, ANode> linearizedNodesToIncomingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
+	//
+	// /**
+	// * Map that associates the linearized nodes with their outgoing branch summary nodes.
+	// */
+	// private Map<ANode, ANode> linearizedNodesToOutgoingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
+	//
+	// /**
+	// * Map that associates every node in a branch with a linearized node.
+	// */
+	// private Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
 
 	/**
-	 * The pathway of the linearized path.
+	 * The top-level table perspectives as set externally through the {@link IMultiTablePerspectiveBasedView} interface.
 	 */
-	private PathwayGraph pathway;
+	private ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 
 	/**
-	 * The path of the pathway that is currently linearized.
+	 * The table perspectives resolved based on the {@link GroupList}s of the {@link #tablePerspectives}. That means
+	 * that this list contains a tablePerspective for every experiment group in one of the TablePerspectives in
+	 * {@link #tablePerspectives}.
 	 */
-	private List<PathwayVertexRep> path;
-
-	/**
-	 * The list of nodes that are rendered in a linearized way.
-	 */
-	private List<ALinearizableNode> linearizedNodes = new ArrayList<ALinearizableNode>();
-
-	/**
-	 * List of nodes that can currently be displayed in branches.
-	 */
-	private List<ANode> branchNodes = new ArrayList<ANode>();
-
-	/**
-	 * Map that associates the linearized nodes with their incoming branch summary nodes.
-	 */
-	private Map<ANode, ANode> linearizedNodesToIncomingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
-
-	/**
-	 * Map that associates the linearized nodes with their outgoing branch summary nodes.
-	 */
-	private Map<ANode, ANode> linearizedNodesToOutgoingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
-
-	/**
-	 * Map that associates every node in a branch with a linearized node.
-	 */
-	private Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
+	private ArrayList<TablePerspective> resolvedTablePerspectives = new ArrayList<TablePerspective>();
 
 	/**
 	 * The {@link IDataDomain}s for which data is displayed in this view.
 	 */
 	private Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
-
-	/**
-	 * The branch node that is currently expanded to show the possible branches.
-	 */
-	private BranchSummaryNode expandedBranchSummaryNode = null;
+	//
+	// /**
+	// * The branch node that is currently expanded to show the possible branches.
+	// */
+	// private BranchSummaryNode expandedBranchSummaryNode = null;
 
 	/**
 	 * The renderer for the experimental data of the nodes in the linearized pathways.
 	 */
 	private MappedDataRenderer mappedDataRenderer;
 
-	/**
-	 * The current height for all data rows.
-	 */
-	private float dataRowHeight;
-
-	/**
-	 * The maximum number of nodes that are added at once to the linearized pathway when switching branches.
-	 */
-	private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
+	// /**
+	// * The current height for all data rows.
+	// */
+	// private float dataRowHeight;
+	//
+	// /**
+	// * The maximum number of nodes that are added at once to the linearized pathway when switching branches.
+	// */
+	// private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
 
 	/**
 	 * Determines whether the layout needs to be updated. This is a more severe update than only the display list
@@ -194,12 +178,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	/**
 	 * Determines whether a new path was set and has not been rendered yet.
 	 */
-	private boolean isNewPath = true;
+	private boolean pathRendererChanged = true;
 
-	/**
-	 * Determines whether the linearized path or branch nodes determine the total view height.
-	 */
-	private boolean isViewHeightDeterminedByPath = true;
+	// /**
+	// * Determines whether the linearized path or branch nodes determine the total view height.
+	// */
+	// private boolean isViewHeightDeterminedByPath = true;
 
 	/**
 	 * The current minimum width in Pixels of this view.
@@ -216,15 +200,21 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	private EventBasedSelectionManager metaboliteSelectionManager;
 	private EventBasedSelectionManager sampleSelectionManager;
 
-	private EnRoutePathEventListener linearizePathwayPathEventListener;
+	// private EnRoutePathEventListener linearizePathwayPathEventListener;
 	private AddTablePerspectivesListener addTablePerspectivesListener;
-	private RemoveEnRouteNodeEventListener removeLinearizedNodeEventListener;
+	// private RemoveEnRouteNodeEventListener removeLinearizedNodeEventListener;
 	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
-	private FitToViewWidthEventListener fitToViewWidthEventListener;
+	// private FitToViewWidthEventListener fitToViewWidthEventListener;
+
+	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	private int layoutDisplayListIndex = -1;
 
-	private String pathwayPathEventSpace = GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE;
+	// private String pathwayPathEventSpace = GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE;
+
+	private EnRoutePathRenderer pathRenderer;
+
+	private LayoutManager layoutManager;
 
 	/**
 	 * Constructor.
@@ -262,7 +252,23 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		detailLevel = EDetailLevel.HIGH;
 
-		path = new ArrayList<PathwayVertexRep>();
+		pathRenderer = new EnRoutePathRenderer(this, new ArrayList<TablePerspective>());
+		// pathRenderer.setSampleSelectionManager(sampleSelectionManager);
+		// pathRenderer.setGeneSelectionManager(geneSelectionManager);
+		// pathRenderer.setMetaboliteSelectionManager(metaboliteSelectionManager);
+
+		pathRenderer.init();
+
+		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+		layoutManager.setUseDisplayLists(true);
+		ElementLayout pathElementLayout = new ElementLayout();
+		pathElementLayout.setPixelSizeX(EnRoutePathRenderer.BRANCH_COLUMN_WIDTH_PIXELS
+				+ EnRoutePathRenderer.PATH_COLUMN_WIDTH_PIXELS);
+		pathElementLayout.setRenderer(pathRenderer);
+		layoutManager.setBaseElementLayout(pathElementLayout);
+		layoutManager.updateLayout();
+
+		// path = new ArrayList<PathwayVertexRep>();
 		// Create sample path
 		// for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
 		// if (graph.getType() == EPathwayDatabaseType.KEGG
@@ -298,136 +304,136 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
-	private void createNodes() {
-		linearizedNodes.clear();
-		branchNodes.clear();
-		branchNodesToLinearizedNodesMap.clear();
-		linearizedNodesToIncomingBranchSummaryNodesMap.clear();
-		linearizedNodesToOutgoingBranchSummaryNodesMap.clear();
-
-		createNodesForList(linearizedNodes, path);
-
-		// Create branch nodes
-		for (int i = 0; i < linearizedNodes.size(); i++) {
-			ALinearizableNode currentNode = linearizedNodes.get(i);
-			PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
-			PathwayVertexRep prevVertexRep = null;
-			PathwayVertexRep nextVertexRep = null;
-
-			if (i > 0) {
-				ALinearizableNode prevNode = linearizedNodes.get(i - 1);
-				prevVertexRep = prevNode.getPathwayVertexRep();
-			}
-			if (i != linearizedNodes.size() - 1) {
-				ALinearizableNode nextNode = linearizedNodes.get(i + 1);
-				nextVertexRep = nextNode.getPathwayVertexRep();
-			}
-
-			BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
-			BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
-			List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
-			sourceVertexReps.remove(prevVertexRep);
-			List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
-			targetVertexReps.remove(nextVertexRep);
-
-			if (sourceVertexReps.size() > 0) {
-				List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
-
-				createNodesForList(sourceNodes, sourceVertexReps);
-				incomingNode.setBranchNodes(sourceNodes);
-				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
-				branchNodes.add(incomingNode);
-				branchNodes.addAll(sourceNodes);
-				for (ANode node : sourceNodes) {
-					((ALinearizableNode) node).setPreviewMode(true);
-					branchNodesToLinearizedNodesMap.put(node, currentNode);
-				}
-			}
-
-			if (targetVertexReps.size() > 0) {
-				List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
-				createNodesForList(targetNodes, targetVertexReps);
-
-				outgoingNode.setBranchNodes(targetNodes);
-				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
-				branchNodes.add(outgoingNode);
-				branchNodes.addAll(targetNodes);
-				for (ANode node : targetNodes) {
-					((ALinearizableNode) node).setPreviewMode(true);
-					branchNodesToLinearizedNodesMap.put(node, currentNode);
-				}
-			}
-
-		}
-
-	}
-
-	private void createNodesForList(List<ALinearizableNode> nodes, List<PathwayVertexRep> vertexReps) {
-
-		for (int i = 0; i < vertexReps.size(); i++) {
-			PathwayVertexRep currentVertexRep = vertexReps.get(i);
-			ALinearizableNode node = null;
-			if (currentVertexRep.getType() == EPathwayVertexType.group) {
-				PathwayVertexGroupRep groupRep = (PathwayVertexGroupRep) currentVertexRep;
-				List<PathwayVertexRep> groupedReps = groupRep.getGroupedVertexReps();
-				List<ALinearizableNode> groupedNodes = new ArrayList<ALinearizableNode>();
-				createNodesForList(groupedNodes, groupedReps);
-				ComplexNode complexNode = new ComplexNode(pixelGLConverter, textRenderer, this, lastNodeId++);
-				complexNode.setNodes(groupedNodes);
-				for (ALinearizableNode groupedNode : groupedNodes) {
-					groupedNode.setParentNode(complexNode);
-				}
-				complexNode.setPathwayVertexRep(currentVertexRep);
-				node = complexNode;
-			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
-				CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this, lastNodeId++);
-
-				compoundNode.setPathwayVertexRep(currentVertexRep);
-				node = compoundNode;
-
-			} else {
-
-				// TODO: Verify that this is also the right approach for
-				// enzymes and ortholog
-				GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer, this, lastNodeId++);
-				int commaIndex = currentVertexRep.getName().indexOf(',');
-				if (commaIndex > 0) {
-					geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
-				} else {
-					geneNode.setLabel(currentVertexRep.getName());
-				}
-				geneNode.setPathwayVertexRep(currentVertexRep);
-
-				node = geneNode;
-			}
-
-			nodes.add(node);
-			setMappedDavidIds(node);
-		}
-	}
-
-	private List<Integer> setMappedDavidIds(ALinearizableNode node) {
-		List<Integer> mappedDavidIds = new ArrayList<Integer>();
-
-		if (node instanceof ComplexNode) {
-			ComplexNode complexNode = (ComplexNode) node;
-
-			for (ALinearizableNode groupedNode : complexNode.getNodes()) {
-				mappedDavidIds.addAll(setMappedDavidIds(groupedNode));
-			}
-		} else {
-			// TODO: This is only true if the davidID maps to one id of the
-			// genetic
-			for (Integer davidID : node.getPathwayVertexRep().getDavidIDs()) {
-				// if (doesDavidMapToData(davidID))
-				mappedDavidIds.add(davidID);
-			}
-		}
-
-		node.setDavidIDs(mappedDavidIds);
-
-		return mappedDavidIds;
-	}
+	// private void createNodes() {
+	// linearizedNodes.clear();
+	// branchNodes.clear();
+	// branchNodesToLinearizedNodesMap.clear();
+	// linearizedNodesToIncomingBranchSummaryNodesMap.clear();
+	// linearizedNodesToOutgoingBranchSummaryNodesMap.clear();
+	//
+	// createNodesForList(linearizedNodes, path);
+	//
+	// // Create branch nodes
+	// for (int i = 0; i < linearizedNodes.size(); i++) {
+	// ALinearizableNode currentNode = linearizedNodes.get(i);
+	// PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
+	// PathwayVertexRep prevVertexRep = null;
+	// PathwayVertexRep nextVertexRep = null;
+	//
+	// if (i > 0) {
+	// ALinearizableNode prevNode = linearizedNodes.get(i - 1);
+	// prevVertexRep = prevNode.getPathwayVertexRep();
+	// }
+	// if (i != linearizedNodes.size() - 1) {
+	// ALinearizableNode nextNode = linearizedNodes.get(i + 1);
+	// nextVertexRep = nextNode.getPathwayVertexRep();
+	// }
+	//
+	// BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
+	// BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
+	// List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
+	// sourceVertexReps.remove(prevVertexRep);
+	// List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
+	// targetVertexReps.remove(nextVertexRep);
+	//
+	// if (sourceVertexReps.size() > 0) {
+	// List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
+	//
+	// createNodesForList(sourceNodes, sourceVertexReps);
+	// incomingNode.setBranchNodes(sourceNodes);
+	// linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
+	// branchNodes.add(incomingNode);
+	// branchNodes.addAll(sourceNodes);
+	// for (ANode node : sourceNodes) {
+	// ((ALinearizableNode) node).setPreviewMode(true);
+	// branchNodesToLinearizedNodesMap.put(node, currentNode);
+	// }
+	// }
+	//
+	// if (targetVertexReps.size() > 0) {
+	// List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
+	// createNodesForList(targetNodes, targetVertexReps);
+	//
+	// outgoingNode.setBranchNodes(targetNodes);
+	// linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
+	// branchNodes.add(outgoingNode);
+	// branchNodes.addAll(targetNodes);
+	// for (ANode node : targetNodes) {
+	// ((ALinearizableNode) node).setPreviewMode(true);
+	// branchNodesToLinearizedNodesMap.put(node, currentNode);
+	// }
+	// }
+	//
+	// }
+	//
+	// }
+	//
+	// private void createNodesForList(List<ALinearizableNode> nodes, List<PathwayVertexRep> vertexReps) {
+	//
+	// for (int i = 0; i < vertexReps.size(); i++) {
+	// PathwayVertexRep currentVertexRep = vertexReps.get(i);
+	// ALinearizableNode node = null;
+	// if (currentVertexRep.getType() == EPathwayVertexType.group) {
+	// PathwayVertexGroupRep groupRep = (PathwayVertexGroupRep) currentVertexRep;
+	// List<PathwayVertexRep> groupedReps = groupRep.getGroupedVertexReps();
+	// List<ALinearizableNode> groupedNodes = new ArrayList<ALinearizableNode>();
+	// createNodesForList(groupedNodes, groupedReps);
+	// ComplexNode complexNode = new ComplexNode(pixelGLConverter, textRenderer, this, lastNodeId++);
+	// complexNode.setNodes(groupedNodes);
+	// for (ALinearizableNode groupedNode : groupedNodes) {
+	// groupedNode.setParentNode(complexNode);
+	// }
+	// complexNode.setPathwayVertexRep(currentVertexRep);
+	// node = complexNode;
+	// } else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
+	// CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this, lastNodeId++);
+	//
+	// compoundNode.setPathwayVertexRep(currentVertexRep);
+	// node = compoundNode;
+	//
+	// } else {
+	//
+	// // TODO: Verify that this is also the right approach for
+	// // enzymes and ortholog
+	// GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer, this, lastNodeId++);
+	// int commaIndex = currentVertexRep.getName().indexOf(',');
+	// if (commaIndex > 0) {
+	// geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
+	// } else {
+	// geneNode.setLabel(currentVertexRep.getName());
+	// }
+	// geneNode.setPathwayVertexRep(currentVertexRep);
+	//
+	// node = geneNode;
+	// }
+	//
+	// nodes.add(node);
+	// setMappedDavidIds(node);
+	// }
+	// }
+	//
+	// private List<Integer> setMappedDavidIds(ALinearizableNode node) {
+	// List<Integer> mappedDavidIds = new ArrayList<Integer>();
+	//
+	// if (node instanceof ComplexNode) {
+	// ComplexNode complexNode = (ComplexNode) node;
+	//
+	// for (ALinearizableNode groupedNode : complexNode.getNodes()) {
+	// mappedDavidIds.addAll(setMappedDavidIds(groupedNode));
+	// }
+	// } else {
+	// // TODO: This is only true if the davidID maps to one id of the
+	// // genetic
+	// for (Integer davidID : node.getPathwayVertexRep().getDavidIDs()) {
+	// // if (doesDavidMapToData(davidID))
+	// mappedDavidIds.add(davidID);
+	// }
+	// }
+	//
+	// node.setDavidIDs(mappedDavidIds);
+	//
+	// return mappedDavidIds;
+	// }
 
 	@Override
 	public void initLocal(GL2 gl) {
@@ -470,7 +476,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void display(GL2 gl) {
 
 		// setMappedDataRendererGeometry();
-		if (path.isEmpty()) {
+		if (isLayoutDirty) {
+			layoutManager.updateLayout();
+		}
+		layoutManager.render(gl);
+		if (pathRenderer.getPathNodes().isEmpty()) {
 			if (isDisplayListDirty) {
 				renderEmptyViewInfo(gl, displayListIndex);
 				isDisplayListDirty = false;
@@ -478,7 +488,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			gl.glCallList(displayListIndex);
 		} else {
-
 			if (isLayoutDirty) {
 				updateLayout();
 
@@ -530,117 +539,123 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * Updates the layout of the view.
 	 */
 	private void updateLayout() {
-		dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
-
+		// dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		//
 		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
 		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+		//
+		// float pathwayHeight = 0;
+		// int minViewHeightRequiredByBranchNodes = 0;
+		//
+		// List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
+		//
+		// Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f, viewFrustum.getHeight(),
+		// 0.2f);
+		//
+		// float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
+		//
+		// for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
+		//
+		// float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
+		//
+		// float nodeSpacing = (Float.isNaN(currentAnchorNodeSpacing) ? minNodeSpacing
+		// : (currentAnchorNodeSpacing - spacing.getTotalNodeHeight())
+		// / ((float) spacing.getNodesInbetween().size() + 1));
+		// ANode startAnchorNode = spacing.getStartNode();
+		//
+		// float currentInbetweenNodePositionY = currentPosition.y()
+		// - ((startAnchorNode != null) ? startAnchorNode.getHeight() / 2.0f : 0);
+		//
+		// int minViewHeight = calculatePositionsOfBranchNodes(startAnchorNode);
+		// if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+		// minViewHeightRequiredByBranchNodes = minViewHeight;
+		// }
+		//
+		// for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
+		// ANode node = spacing.getNodesInbetween().get(i);
+		//
+		// node.setPosition(new Vec3f(currentPosition.x(), currentInbetweenNodePositionY - nodeSpacing
+		// - node.getHeight() / 2.0f, currentPosition.z()));
+		// currentInbetweenNodePositionY -= (nodeSpacing + node.getHeight());
+		//
+		// minViewHeight = calculatePositionsOfBranchNodes(node);
+		// if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+		// minViewHeightRequiredByBranchNodes = minViewHeight;
+		// }
+		// }
+		//
+		// currentPosition.setY(currentPosition.y() - spacing.getCurrentAnchorNodeSpacing());
+		//
+		// ANode endAnchorNode = spacing.getEndNode();
+		// if (endAnchorNode != null) {
+		// endAnchorNode.setPosition(new Vec3f(currentPosition));
+		// minViewHeight = calculatePositionsOfBranchNodes(endAnchorNode);
+		// if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+		// minViewHeightRequiredByBranchNodes = minViewHeight;
+		// }
+		// }
+		//
+		// pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
+		// }
+		//
+		// if (expandedBranchSummaryNode != null) {
+		// int minViewHeight = calculateBranchNodePosition(expandedBranchSummaryNode);
+		// if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+		// minViewHeightRequiredByBranchNodes = minViewHeight;
+		// }
+		// }
 
-		float pathwayHeight = 0;
-		int minViewHeightRequiredByBranchNodes = 0;
-
-		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
-
-		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f, viewFrustum.getHeight(), 0.2f);
-
-		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
-
-		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
-
-			float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
-
-			float nodeSpacing = (Float.isNaN(currentAnchorNodeSpacing) ? minNodeSpacing
-					: (currentAnchorNodeSpacing - spacing.getTotalNodeHeight())
-							/ ((float) spacing.getNodesInbetween().size() + 1));
-			ANode startAnchorNode = spacing.getStartNode();
-
-			float currentInbetweenNodePositionY = currentPosition.y()
-					- ((startAnchorNode != null) ? startAnchorNode.getHeight() / 2.0f : 0);
-
-			int minViewHeight = calculatePositionsOfBranchNodes(startAnchorNode);
-			if (minViewHeight > minViewHeightRequiredByBranchNodes) {
-				minViewHeightRequiredByBranchNodes = minViewHeight;
-			}
-
-			for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
-				ANode node = spacing.getNodesInbetween().get(i);
-
-				node.setPosition(new Vec3f(currentPosition.x(), currentInbetweenNodePositionY - nodeSpacing
-						- node.getHeight() / 2.0f, currentPosition.z()));
-				currentInbetweenNodePositionY -= (nodeSpacing + node.getHeight());
-
-				minViewHeight = calculatePositionsOfBranchNodes(node);
-				if (minViewHeight > minViewHeightRequiredByBranchNodes) {
-					minViewHeightRequiredByBranchNodes = minViewHeight;
-				}
-			}
-
-			currentPosition.setY(currentPosition.y() - spacing.getCurrentAnchorNodeSpacing());
-
-			ANode endAnchorNode = spacing.getEndNode();
-			if (endAnchorNode != null) {
-				endAnchorNode.setPosition(new Vec3f(currentPosition));
-				minViewHeight = calculatePositionsOfBranchNodes(endAnchorNode);
-				if (minViewHeight > minViewHeightRequiredByBranchNodes) {
-					minViewHeightRequiredByBranchNodes = minViewHeight;
-				}
-			}
-
-			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
-		}
-
-		if (expandedBranchSummaryNode != null) {
-			int minViewHeight = calculateBranchNodePosition(expandedBranchSummaryNode);
-			if (minViewHeight > minViewHeightRequiredByBranchNodes) {
-				minViewHeightRequiredByBranchNodes = minViewHeight;
-			}
-		}
+		// pathRenderer.updateLayout();
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
 		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
 
+		float dataRowHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(EnRoutePathRenderer.DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+
 		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX - sideSpacing, viewFrustum.getHeight()
 				- 2 * topSpacing, dataRowPositionX, topSpacing, dataRowHeight);
 
-		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
+		mappedDataRenderer.setLinearizedNodes(pathRenderer.getPathNodes());
 		int minMappedDataRendererWidthPixels = mappedDataRenderer.getMinWidthPixels();
-		int minViewHeightRequiredByPath = pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight);
+		// int minViewHeightRequiredByPath = pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight);
 
 		adaptViewSize(minMappedDataRendererWidthPixels + BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS
-				+ SIDE_SPACING_MAPPED_DATA, minViewHeightRequiredByPath, minViewHeightRequiredByBranchNodes);
+				+ SIDE_SPACING_MAPPED_DATA, pathRenderer.getMinHeightPixels());
 
 		mappedDataRenderer.updateLayout();
 	}
 
 	private void buildDisplayList(final GL2 gl, int displayListIndex) {
 
-		dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		// dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
 		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
 		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
 
-		GLU glu = new GLU();
-
-		for (ALinearizableNode node : linearizedNodes) {
-			node.render(gl, glu);
-			renderBranchNodes(gl, glu, node);
-		}
-
-		if (expandedBranchSummaryNode != null) {
-			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
-			float coverWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
-					+ BRANCH_COLUMN_WIDTH_PIXELS);
-			gl.glColor4f(1, 1, 1, 0.9f);
-
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(0, 0, 0.1f);
-			gl.glVertex3f(coverWidth, 0, 0.1f);
-			gl.glVertex3f(coverWidth, viewFrustum.getHeight(), 0.1f);
-			gl.glVertex3f(0, viewFrustum.getHeight(), 0.1f);
-			gl.glEnd();
-		}
+		// GLU glu = new GLU();
+		//
+		// for (ALinearizableNode node : linearizedNodes) {
+		// node.render(gl, glu);
+		// renderBranchNodes(gl, glu, node);
+		// }
+		//
+		// if (expandedBranchSummaryNode != null) {
+		// renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
+		// float coverWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
+		// + BRANCH_COLUMN_WIDTH_PIXELS);
+		// gl.glColor4f(1, 1, 1, 0.9f);
+		//
+		// gl.glBegin(GL2.GL_QUADS);
+		// gl.glVertex3f(0, 0, 0.1f);
+		// gl.glVertex3f(coverWidth, 0, 0.1f);
+		// gl.glVertex3f(coverWidth, viewFrustum.getHeight(), 0.1f);
+		// gl.glVertex3f(0, viewFrustum.getHeight(), 0.1f);
+		// gl.glEnd();
+		// }
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
 		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
@@ -650,7 +665,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		mappedDataRenderer.renderHighlightElements(gl);
 		gl.glPopMatrix();
 
-		renderEdgesOfLinearizedNodes(gl);
+		// renderEdgesOfLinearizedNodes(gl);
 
 		gl.glEndList();
 
@@ -663,20 +678,18 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 *            Minimum width required.
 	 * @param minViewHeightRequiredByPath
 	 *            View height in pixels required by the linearized path and its rows.
-	 * @param minViewHeightRequiredByBranchNodes
-	 *            View height in pixels required by branch nodes.
 	 */
-	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath, int minViewHeightRequiredByBranchNodes) {
+	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath) {
 		int minViewHeightPixels = 0;
 
-		boolean isViewHeightCurrentlyDeterminedByPath;
-		if (minViewHeightRequiredByBranchNodes > minViewHeightRequiredByPath) {
-			minViewHeightPixels = minViewHeightRequiredByBranchNodes;
-			isViewHeightCurrentlyDeterminedByPath = false;
-		} else {
-			minViewHeightPixels = minViewHeightRequiredByPath;
-			isViewHeightCurrentlyDeterminedByPath = true;
-		}
+		// boolean isViewHeightCurrentlyDeterminedByPath;
+		// if (minViewHeightRequiredByBranchNodes > minViewHeightRequiredByPath) {
+		// minViewHeightPixels = minViewHeightRequiredByBranchNodes;
+		// isViewHeightCurrentlyDeterminedByPath = false;
+		// } else {
+		// minViewHeightPixels = minViewHeightRequiredByPath;
+		// isViewHeightCurrentlyDeterminedByPath = true;
+		// }
 		// System.out.println("min width: " + minViewWidth + ", currentWidth: "
 		// + parentGLCanvas.getWidth());
 		boolean updateWidth = minViewWidth > parentGLCanvas.getWidth()
@@ -684,13 +697,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		boolean updateHeight = false;
 
-		if (isNewPath || (isViewHeightCurrentlyDeterminedByPath != isViewHeightDeterminedByPath)
-				|| parentGLCanvas.getHeight() < minViewHeightPixels) {
+		if (pathRendererChanged || parentGLCanvas.getHeight() < minViewHeightPixels) {
 			// System.out.println("setting min height:" + minViewHeightPixels);
-			isNewPath = false;
+			pathRendererChanged = false;
 			updateHeight = true;
 		}
-		isViewHeightDeterminedByPath = isViewHeightCurrentlyDeterminedByPath;
+		// isViewHeightDeterminedByPath = isViewHeightCurrentlyDeterminedByPath;
 
 		if (updateWidth || updateHeight) {
 
@@ -716,377 +728,377 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		setLayoutDirty();
 	}
 
-	/**
-	 * Calculates the spacings between all anchor nodes (nodes with mapped data) of the path.
-	 *
-	 * @return
-	 */
-	private List<AnchorNodeSpacing> calcAnchorNodeSpacings() {
-
-		List<AnchorNodeSpacing> anchorNodeSpacings = new ArrayList<AnchorNodeSpacing>();
-		List<ANode> unmappedNodes = new ArrayList<ANode>();
-		ALinearizableNode currentAnchorNode = null;
-
-		for (int i = 0; i < linearizedNodes.size(); i++) {
-
-			ALinearizableNode node = linearizedNodes.get(i);
-			int numAssociatedRows = node.getNumAssociatedRows();
-
-			if (numAssociatedRows == 0) {
-				unmappedNodes.add(node);
-
-			} else {
-				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, node, unmappedNodes,
-						currentAnchorNode == null, false);
-
-				anchorNodeSpacings.add(anchorNodeSpacing);
-
-				unmappedNodes = new ArrayList<ANode>();
-				currentAnchorNode = node;
-			}
-
-			if (i == linearizedNodes.size() - 1) {
-				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, null, unmappedNodes,
-						currentAnchorNode == null, true);
-				anchorNodeSpacings.add(anchorNodeSpacing);
-
-			}
-		}
-
-		return anchorNodeSpacings;
-	}
-
-	private AnchorNodeSpacing createAnchorNodeSpacing(ALinearizableNode startAnchorNode,
-			ALinearizableNode endAnchorNode, List<ANode> nodesInbetween, boolean isFirstSpacing, boolean isLastSpacing) {
-
-		AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
-		anchorNodeSpacing.setStartNode(startAnchorNode);
-		anchorNodeSpacing.setEndNode(endAnchorNode);
-		anchorNodeSpacing.setNodesInbetween(nodesInbetween);
-		anchorNodeSpacing.calcTotalNodeHeight();
-
-		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
-
-		int numSpacingAnchorNodeRows = 0;
-		if (startAnchorNode != null) {
-			numSpacingAnchorNodeRows += startAnchorNode.getNumAssociatedRows();
-		}
-		if (endAnchorNode != null) {
-			numSpacingAnchorNodeRows += endAnchorNode.getNumAssociatedRows();
-		}
-
-		float additionalSpacing = 0;
-		if (isFirstSpacing)
-			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
-		if (isLastSpacing)
-			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
-
-		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * (numSpacingAnchorNodeRows) / 2.0f
-				+ additionalSpacing,
-				minNodeSpacing * (nodesInbetween.size() + 1) + anchorNodeSpacing.getTotalNodeHeight()));
-
-		return anchorNodeSpacing;
-	}
-
-	/**
-	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
-	 *
-	 * @param node
-	 */
-	private void renderBranchNodes(GL2 gl, GLU glu, ANode node) {
-
-		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
-		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
-
-			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) incomingNode);
-
-			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
-			List<Vec3f> linePoints = new ArrayList<Vec3f>();
-			Vec3f sourcePosition = incomingNode.getRightConnectionPoint();
-			Vec3f targetPosition = node.getLeftConnectionPoint();
-			sourcePosition.setZ(0);
-			targetPosition.setZ(0);
-			linePoints.add(sourcePosition);
-			linePoints.add(targetPosition);
-
-			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
-			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
-
-			connectionLineRenderer.renderLine(gl, linePoints);
-		}
-
-		ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
-		if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
-
-			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) outgoingNode);
-
-			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
-			List<Vec3f> linePoints = new ArrayList<Vec3f>();
-
-			Vec3f sourcePosition = node.getLeftConnectionPoint();
-			Vec3f targetPosition = outgoingNode.getRightConnectionPoint();
-			sourcePosition.setZ(0);
-			targetPosition.setZ(0);
-			linePoints.add(sourcePosition);
-			linePoints.add(targetPosition);
-
-			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
-			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
-
-			connectionLineRenderer.renderLine(gl, linePoints);
-		}
-	}
-
-	/**
-	 * @param node
-	 *            The node for which the positions of associated branch nodes shall be calculated
-	 * @return the minimum view height in pixels that would be required by the nodes to be displayed.
-	 */
-	private int calculatePositionsOfBranchNodes(ANode node) {
-		int minViewHeightPixelsIncoming = 0;
-		int minViewHeightPixelsOutgoing = 0;
-		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
-		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
-			minViewHeightPixelsIncoming = calculateBranchNodePosition((BranchSummaryNode) incomingNode);
-		}
-
-		ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
-		if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
-			minViewHeightPixelsOutgoing = calculateBranchNodePosition((BranchSummaryNode) outgoingNode);
-		}
-		return Math.max(minViewHeightPixelsIncoming, minViewHeightPixelsOutgoing);
-	}
-
-	/**
-	 * Calculates the position for a single branch node.
-	 *
-	 * @param summaryNode
-	 * @return
-	 */
-	private int calculateBranchNodePosition(BranchSummaryNode summaryNode) {
-		boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(summaryNode
-				.getAssociatedLinearizedNode()) == summaryNode;
-		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
-		Vec3f linearizedNodePosition = linearizedNode.getPosition();
-
-		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_AREA_SIDE_SPACING_PIXELS);
-		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
-				.getGLHeightForPixelHeight(BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS);
-		float width = summaryNode.getWidth();
-		float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode.getTitleAreaHeightPixels());
-
-		float nodePositionY = linearizedNodePosition.y()
-				+ (isIncomingNode ? branchSummaryNodeToLinearizedNodeDistance
-						: -branchSummaryNodeToLinearizedNodeDistance) - (summaryNode.getHeight() / 2.0f)
-				+ titleAreaHeight / 2.0f;
-
-		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY, (summaryNode.isCollapsed() ? 0
-				: 0.2f)));
-
-		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
-		int minViewHeightPixels = 0;
-		// if (viewFrustum.getBottom() > bottomPositionY) {
-		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getBottom() - bottomPositionY)
-				+ parentGLCanvas.getHeight();
-		// setMinSize(minViewHeightPixels + 3);
-		// }
-
-		return minViewHeightPixels;
-
-	}
-
-	private void renderBranchSummaryNode(GL2 gl, GLU glu, BranchSummaryNode summaryNode) {
-
-		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
-		summaryNode.render(gl, glu);
-
-		if (!summaryNode.isCollapsed()) {
-			List<ALinearizableNode> branchNodes = summaryNode.getBranchNodes();
-			for (ALinearizableNode node : branchNodes) {
-				renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
-						linearizedNode.getLeftConnectionPoint(), 0.2f, false);
-			}
-		}
-
-	}
-
-	private void renderEdgesOfLinearizedNodes(GL2 gl) {
-		for (int i = 0; i < linearizedNodes.size() - 1; i++) {
-			ALinearizableNode node1 = linearizedNodes.get(i);
-			ALinearizableNode node2 = linearizedNodes.get(i + 1);
-			renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(), node2.getTopConnectionPoint(), 0.2f, true);
-		}
-	}
-
-	private void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2, Vec3f node1ConnectionPoint,
-			Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection) {
-
-		PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
-		PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
-
-		DefaultEdge edge = pathway.getEdge(vertexRep1, vertexRep2);
-		if (edge == null) {
-			edge = pathway.getEdge(vertexRep2, vertexRep1);
-			if (edge == null)
-				return;
-		}
-
-		ConnectionLineRenderer connectionRenderer = new ConnectionLineRenderer();
-		List<Vec3f> linePoints = new ArrayList<Vec3f>();
-
-		boolean isNode1Target = pathway.getEdgeTarget(edge) == vertexRep1;
-
-		Vec3f sourceConnectionPoint = (isNode1Target) ? node2ConnectionPoint : node1ConnectionPoint;
-		Vec3f targetConnectionPoint = (isNode1Target) ? node1ConnectionPoint : node2ConnectionPoint;
-
-		sourceConnectionPoint.setZ(zCoordinate);
-		targetConnectionPoint.setZ(zCoordinate);
-
-		linePoints.add(sourceConnectionPoint);
-		linePoints.add(targetConnectionPoint);
-
-		if (edge instanceof PathwayReactionEdgeRep) {
-			// TODO: This is just a default edge. Is this right?
-			PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
-
-			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
-
-			connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
-
-			if (reactionEdge.getType() == EPathwayReactionEdgeType.reversible) {
-				arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-				lineEndArrowRenderer = new LineEndArrowRenderer(true, arrowRenderer);
-				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
-			}
-
-		} else {
-			if (edge instanceof PathwayRelationEdgeRep) {
-				PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
-
-				ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep.getRelationSubTypes();
-				float spacing = pixelGLConverter.getGLHeightForPixelHeight(3);
-
-				for (EPathwayRelationEdgeSubType subtype : subtypes) {
-					switch (subtype) {
-					case compound:
-						// TODO:
-						break;
-					case hidden_compound:
-						// TODO:
-						break;
-					case activation:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						break;
-					case inhibition:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
-						if (isVerticalConnection) {
-							targetConnectionPoint.setY(targetConnectionPoint.y()
-									+ ((isNode1Target) ? -spacing : spacing));
-						} else {
-							targetConnectionPoint.setX(targetConnectionPoint.x()
-									+ ((isNode1Target) ? spacing : -spacing));
-						}
-						break;
-					case expression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						if (vertexRep1.getType() == EPathwayVertexType.gene
-								&& vertexRep1.getType() == EPathwayVertexType.gene) {
-							connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
-						}
-						break;
-					case repression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
-						targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
-						break;
-					case indirect_effect:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer.setLineStippled(true);
-						break;
-					case state_change:
-						connectionRenderer.setLineStippled(true);
-						break;
-					case binding_association:
-						// Nothing to do
-						break;
-					case dissociation:
-						connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
-						break;
-					case missing_interaction:
-						connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer());
-						break;
-					case phosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
-										.getSymbol()));
-						break;
-					case dephosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
-										.getSymbol()));
-						break;
-					case glycosylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
-										.getSymbol()));
-						break;
-					case ubiquitination:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
-										.getSymbol()));
-						break;
-					case methylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
-										.getSymbol()));
-						break;
-					}
-				}
-			}
-		}
-
-		connectionRenderer.renderLine(gl, linePoints);
-	}
-
-	private LineEndArrowRenderer createDefaultLineEndArrowRenderer() {
-		ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-		return new LineEndArrowRenderer(false, arrowRenderer);
-	}
-
-	private LineEndStaticLineRenderer createDefaultLineEndStaticLineRenderer(boolean isHorizontalLine) {
-		LineEndStaticLineRenderer lineEndRenderer = new LineEndStaticLineRenderer(false, pixelGLConverter);
-		lineEndRenderer.setHorizontalLine(isHorizontalLine);
-		return lineEndRenderer;
-	}
-
-	private LineLabelRenderer createDefaultLabelOnLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f, pixelGLConverter, text, textRenderer);
-		lineLabelRenderer.setXCentered(true);
-		lineLabelRenderer.setYCentered(true);
-		lineLabelRenderer.setLineOffsetPixels(0);
-		return lineLabelRenderer;
-	}
-
-	private LineLabelRenderer createDefaultLabelAboveLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter, text, textRenderer);
-		lineLabelRenderer.setLineOffsetPixels(5);
-		return lineLabelRenderer;
-	}
-
-	private LineCrossingRenderer createDefaultOrthogonalLineCrossingRenderer() {
-		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
-		lineCrossingRenderer.setCrossingAngle(90);
-		return lineCrossingRenderer;
-	}
-
-	private LineCrossingRenderer createDefaultLineCrossingRenderer() {
-		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
-		lineCrossingRenderer.setCrossingAngle(45);
-		return lineCrossingRenderer;
-	}
+	// /**
+	// * Calculates the spacings between all anchor nodes (nodes with mapped data) of the path.
+	// *
+	// * @return
+	// */
+	// private List<AnchorNodeSpacing> calcAnchorNodeSpacings() {
+	//
+	// List<AnchorNodeSpacing> anchorNodeSpacings = new ArrayList<AnchorNodeSpacing>();
+	// List<ANode> unmappedNodes = new ArrayList<ANode>();
+	// ALinearizableNode currentAnchorNode = null;
+	//
+	// for (int i = 0; i < linearizedNodes.size(); i++) {
+	//
+	// ALinearizableNode node = linearizedNodes.get(i);
+	// int numAssociatedRows = node.getNumAssociatedRows();
+	//
+	// if (numAssociatedRows == 0) {
+	// unmappedNodes.add(node);
+	//
+	// } else {
+	// AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, node, unmappedNodes,
+	// currentAnchorNode == null, false);
+	//
+	// anchorNodeSpacings.add(anchorNodeSpacing);
+	//
+	// unmappedNodes = new ArrayList<ANode>();
+	// currentAnchorNode = node;
+	// }
+	//
+	// if (i == linearizedNodes.size() - 1) {
+	// AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, null, unmappedNodes,
+	// currentAnchorNode == null, true);
+	// anchorNodeSpacings.add(anchorNodeSpacing);
+	//
+	// }
+	// }
+	//
+	// return anchorNodeSpacings;
+	// }
+	//
+	// private AnchorNodeSpacing createAnchorNodeSpacing(ALinearizableNode startAnchorNode,
+	// ALinearizableNode endAnchorNode, List<ANode> nodesInbetween, boolean isFirstSpacing, boolean isLastSpacing) {
+	//
+	// AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
+	// anchorNodeSpacing.setStartNode(startAnchorNode);
+	// anchorNodeSpacing.setEndNode(endAnchorNode);
+	// anchorNodeSpacing.setNodesInbetween(nodesInbetween);
+	// anchorNodeSpacing.calcTotalNodeHeight();
+	//
+	// float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
+	//
+	// int numSpacingAnchorNodeRows = 0;
+	// if (startAnchorNode != null) {
+	// numSpacingAnchorNodeRows += startAnchorNode.getNumAssociatedRows();
+	// }
+	// if (endAnchorNode != null) {
+	// numSpacingAnchorNodeRows += endAnchorNode.getNumAssociatedRows();
+	// }
+	//
+	// float additionalSpacing = 0;
+	// if (isFirstSpacing)
+	// additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+	// if (isLastSpacing)
+	// additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+	//
+	// anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * (numSpacingAnchorNodeRows) / 2.0f
+	// + additionalSpacing,
+	// minNodeSpacing * (nodesInbetween.size() + 1) + anchorNodeSpacing.getTotalNodeHeight()));
+	//
+	// return anchorNodeSpacing;
+	// }
+	//
+	// /**
+	// * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
+	// *
+	// * @param node
+	// */
+	// private void renderBranchNodes(GL2 gl, GLU glu, ANode node) {
+	//
+	// ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+	// if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
+	//
+	// renderBranchSummaryNode(gl, glu, (BranchSummaryNode) incomingNode);
+	//
+	// ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+	// List<Vec3f> linePoints = new ArrayList<Vec3f>();
+	// Vec3f sourcePosition = incomingNode.getRightConnectionPoint();
+	// Vec3f targetPosition = node.getLeftConnectionPoint();
+	// sourcePosition.setZ(0);
+	// targetPosition.setZ(0);
+	// linePoints.add(sourcePosition);
+	// linePoints.add(targetPosition);
+	//
+	// LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
+	// connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
+	//
+	// connectionLineRenderer.renderLine(gl, linePoints);
+	// }
+	//
+	// ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+	// if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
+	//
+	// renderBranchSummaryNode(gl, glu, (BranchSummaryNode) outgoingNode);
+	//
+	// ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+	// List<Vec3f> linePoints = new ArrayList<Vec3f>();
+	//
+	// Vec3f sourcePosition = node.getLeftConnectionPoint();
+	// Vec3f targetPosition = outgoingNode.getRightConnectionPoint();
+	// sourcePosition.setZ(0);
+	// targetPosition.setZ(0);
+	// linePoints.add(sourcePosition);
+	// linePoints.add(targetPosition);
+	//
+	// LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
+	// connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
+	//
+	// connectionLineRenderer.renderLine(gl, linePoints);
+	// }
+	// }
+	//
+	// /**
+	// * @param node
+	// * The node for which the positions of associated branch nodes shall be calculated
+	// * @return the minimum view height in pixels that would be required by the nodes to be displayed.
+	// */
+	// private int calculatePositionsOfBranchNodes(ANode node) {
+	// int minViewHeightPixelsIncoming = 0;
+	// int minViewHeightPixelsOutgoing = 0;
+	// ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+	// if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
+	// minViewHeightPixelsIncoming = calculateBranchNodePosition((BranchSummaryNode) incomingNode);
+	// }
+	//
+	// ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+	// if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
+	// minViewHeightPixelsOutgoing = calculateBranchNodePosition((BranchSummaryNode) outgoingNode);
+	// }
+	// return Math.max(minViewHeightPixelsIncoming, minViewHeightPixelsOutgoing);
+	// }
+	//
+	// /**
+	// * Calculates the position for a single branch node.
+	// *
+	// * @param summaryNode
+	// * @return
+	// */
+	// private int calculateBranchNodePosition(BranchSummaryNode summaryNode) {
+	// boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(summaryNode
+	// .getAssociatedLinearizedNode()) == summaryNode;
+	// ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
+	// Vec3f linearizedNodePosition = linearizedNode.getPosition();
+	//
+	// float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_AREA_SIDE_SPACING_PIXELS);
+	// float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
+	// .getGLHeightForPixelHeight(BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS);
+	// float width = summaryNode.getWidth();
+	// float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode.getTitleAreaHeightPixels());
+	//
+	// float nodePositionY = linearizedNodePosition.y()
+	// + (isIncomingNode ? branchSummaryNodeToLinearizedNodeDistance
+	// : -branchSummaryNodeToLinearizedNodeDistance) - (summaryNode.getHeight() / 2.0f)
+	// + titleAreaHeight / 2.0f;
+	//
+	// summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY, (summaryNode.isCollapsed() ? 0
+	// : 0.2f)));
+	//
+	// float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
+	// int minViewHeightPixels = 0;
+	// // if (viewFrustum.getBottom() > bottomPositionY) {
+	// minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getBottom() - bottomPositionY)
+	// + parentGLCanvas.getHeight();
+	// // setMinSize(minViewHeightPixels + 3);
+	// // }
+	//
+	// return minViewHeightPixels;
+	//
+	// }
+	//
+	// private void renderBranchSummaryNode(GL2 gl, GLU glu, BranchSummaryNode summaryNode) {
+	//
+	// ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
+	// summaryNode.render(gl, glu);
+	//
+	// if (!summaryNode.isCollapsed()) {
+	// List<ALinearizableNode> branchNodes = summaryNode.getBranchNodes();
+	// for (ALinearizableNode node : branchNodes) {
+	// renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
+	// linearizedNode.getLeftConnectionPoint(), 0.2f, false);
+	// }
+	// }
+	//
+	// }
+	//
+	// private void renderEdgesOfLinearizedNodes(GL2 gl) {
+	// for (int i = 0; i < linearizedNodes.size() - 1; i++) {
+	// ALinearizableNode node1 = linearizedNodes.get(i);
+	// ALinearizableNode node2 = linearizedNodes.get(i + 1);
+	// renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(), node2.getTopConnectionPoint(), 0.2f, true);
+	// }
+	// }
+	//
+	// private void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2, Vec3f node1ConnectionPoint,
+	// Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection) {
+	//
+	// PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
+	// PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
+	//
+	// DefaultEdge edge = pathway.getEdge(vertexRep1, vertexRep2);
+	// if (edge == null) {
+	// edge = pathway.getEdge(vertexRep2, vertexRep1);
+	// if (edge == null)
+	// return;
+	// }
+	//
+	// ConnectionLineRenderer connectionRenderer = new ConnectionLineRenderer();
+	// List<Vec3f> linePoints = new ArrayList<Vec3f>();
+	//
+	// boolean isNode1Target = pathway.getEdgeTarget(edge) == vertexRep1;
+	//
+	// Vec3f sourceConnectionPoint = (isNode1Target) ? node2ConnectionPoint : node1ConnectionPoint;
+	// Vec3f targetConnectionPoint = (isNode1Target) ? node1ConnectionPoint : node2ConnectionPoint;
+	//
+	// sourceConnectionPoint.setZ(zCoordinate);
+	// targetConnectionPoint.setZ(zCoordinate);
+	//
+	// linePoints.add(sourceConnectionPoint);
+	// linePoints.add(targetConnectionPoint);
+	//
+	// if (edge instanceof PathwayReactionEdgeRep) {
+	// // TODO: This is just a default edge. Is this right?
+	// PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
+	//
+	// ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+	// LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
+	//
+	// connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
+	//
+	// if (reactionEdge.getType() == EPathwayReactionEdgeType.reversible) {
+	// arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+	// lineEndArrowRenderer = new LineEndArrowRenderer(true, arrowRenderer);
+	// connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
+	// }
+	//
+	// } else {
+	// if (edge instanceof PathwayRelationEdgeRep) {
+	// PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
+	//
+	// ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep.getRelationSubTypes();
+	// float spacing = pixelGLConverter.getGLHeightForPixelHeight(3);
+	//
+	// for (EPathwayRelationEdgeSubType subtype : subtypes) {
+	// switch (subtype) {
+	// case compound:
+	// // TODO:
+	// break;
+	// case hidden_compound:
+	// // TODO:
+	// break;
+	// case activation:
+	// connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+	// break;
+	// case inhibition:
+	// connectionRenderer
+	// .addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
+	// if (isVerticalConnection) {
+	// targetConnectionPoint.setY(targetConnectionPoint.y()
+	// + ((isNode1Target) ? -spacing : spacing));
+	// } else {
+	// targetConnectionPoint.setX(targetConnectionPoint.x()
+	// + ((isNode1Target) ? spacing : -spacing));
+	// }
+	// break;
+	// case expression:
+	// connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+	// if (vertexRep1.getType() == EPathwayVertexType.gene
+	// && vertexRep1.getType() == EPathwayVertexType.gene) {
+	// connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
+	// }
+	// break;
+	// case repression:
+	// connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+	// connectionRenderer
+	// .addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
+	// targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
+	// break;
+	// case indirect_effect:
+	// connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+	// connectionRenderer.setLineStippled(true);
+	// break;
+	// case state_change:
+	// connectionRenderer.setLineStippled(true);
+	// break;
+	// case binding_association:
+	// // Nothing to do
+	// break;
+	// case dissociation:
+	// connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
+	// break;
+	// case missing_interaction:
+	// connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer());
+	// break;
+	// case phosphorylation:
+	// connectionRenderer
+	// .addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
+	// .getSymbol()));
+	// break;
+	// case dephosphorylation:
+	// connectionRenderer
+	// .addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
+	// .getSymbol()));
+	// break;
+	// case glycosylation:
+	// connectionRenderer
+	// .addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
+	// .getSymbol()));
+	// break;
+	// case ubiquitination:
+	// connectionRenderer
+	// .addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
+	// .getSymbol()));
+	// break;
+	// case methylation:
+	// connectionRenderer
+	// .addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
+	// .getSymbol()));
+	// break;
+	// }
+	// }
+	// }
+	// }
+	//
+	// connectionRenderer.renderLine(gl, linePoints);
+	// }
+	//
+	// private LineEndArrowRenderer createDefaultLineEndArrowRenderer() {
+	// ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+	// return new LineEndArrowRenderer(false, arrowRenderer);
+	// }
+	//
+	// private LineEndStaticLineRenderer createDefaultLineEndStaticLineRenderer(boolean isHorizontalLine) {
+	// LineEndStaticLineRenderer lineEndRenderer = new LineEndStaticLineRenderer(false, pixelGLConverter);
+	// lineEndRenderer.setHorizontalLine(isHorizontalLine);
+	// return lineEndRenderer;
+	// }
+	//
+	// private LineLabelRenderer createDefaultLabelOnLineRenderer(String text) {
+	// LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f, pixelGLConverter, text, textRenderer);
+	// lineLabelRenderer.setXCentered(true);
+	// lineLabelRenderer.setYCentered(true);
+	// lineLabelRenderer.setLineOffsetPixels(0);
+	// return lineLabelRenderer;
+	// }
+	//
+	// private LineLabelRenderer createDefaultLabelAboveLineRenderer(String text) {
+	// LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter, text, textRenderer);
+	// lineLabelRenderer.setLineOffsetPixels(5);
+	// return lineLabelRenderer;
+	// }
+	//
+	// private LineCrossingRenderer createDefaultOrthogonalLineCrossingRenderer() {
+	// LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
+	// lineCrossingRenderer.setCrossingAngle(90);
+	// return lineCrossingRenderer;
+	// }
+	//
+	// private LineCrossingRenderer createDefaultLineCrossingRenderer() {
+	// LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
+	// lineCrossingRenderer.setCrossingAngle(45);
+	// return lineCrossingRenderer;
+	// }
 
 	@Override
 	public ASerializedMultiTablePerspectiveBasedView getSerializableRepresentation() {
@@ -1105,26 +1117,28 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		linearizePathwayPathEventListener = new EnRoutePathEventListener();
-		linearizePathwayPathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
-		linearizePathwayPathEventListener.setHandler(this);
-		eventPublisher.addListener(EnRoutePathEvent.class, linearizePathwayPathEventListener);
+		// linearizePathwayPathEventListener = new EnRoutePathEventListener();
+		// linearizePathwayPathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
+		// linearizePathwayPathEventListener.setHandler(this);
+		// eventPublisher.addListener(EnRoutePathEvent.class, linearizePathwayPathEventListener);
+
+		listeners.register(this);
 
 		addTablePerspectivesListener = new AddTablePerspectivesListener();
 		addTablePerspectivesListener.setHandler(this);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 
-		removeLinearizedNodeEventListener = new RemoveEnRouteNodeEventListener();
-		removeLinearizedNodeEventListener.setHandler(this);
-		eventPublisher.addListener(RemoveEnRouteNodeEvent.class, removeLinearizedNodeEventListener);
+		// removeLinearizedNodeEventListener = new RemoveEnRouteNodeEventListener();
+		// removeLinearizedNodeEventListener.setHandler(this);
+		// eventPublisher.addListener(RemoveEnRouteNodeEvent.class, removeLinearizedNodeEventListener);
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
 		removeTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
 
-		fitToViewWidthEventListener = new FitToViewWidthEventListener();
-		fitToViewWidthEventListener.setHandler(this);
-		eventPublisher.addListener(FitToViewWidthEvent.class, fitToViewWidthEventListener);
+		// fitToViewWidthEventListener = new FitToViewWidthEventListener();
+		// fitToViewWidthEventListener.setHandler(this);
+		// eventPublisher.addListener(FitToViewWidthEvent.class, fitToViewWidthEventListener);
 
 	}
 
@@ -1132,237 +1146,242 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (linearizePathwayPathEventListener != null) {
-			eventPublisher.removeListener(linearizePathwayPathEventListener);
-			linearizePathwayPathEventListener = null;
-		}
+		// if (linearizePathwayPathEventListener != null) {
+		// eventPublisher.removeListener(linearizePathwayPathEventListener);
+		// linearizePathwayPathEventListener = null;
+		// }
 
 		if (addTablePerspectivesListener != null) {
 			eventPublisher.removeListener(addTablePerspectivesListener);
 			addTablePerspectivesListener = null;
 		}
 
-		if (removeLinearizedNodeEventListener != null) {
-			eventPublisher.removeListener(removeLinearizedNodeEventListener);
-			removeLinearizedNodeEventListener = null;
-		}
+		// if (removeLinearizedNodeEventListener != null) {
+		// eventPublisher.removeListener(removeLinearizedNodeEventListener);
+		// removeLinearizedNodeEventListener = null;
+		// }
 
 		if (removeTablePerspectiveListener != null) {
 			eventPublisher.removeListener(removeTablePerspectiveListener);
 			removeTablePerspectiveListener = null;
 		}
 
-		if (fitToViewWidthEventListener != null) {
-			eventPublisher.removeListener(fitToViewWidthEventListener);
-			fitToViewWidthEventListener = null;
-		}
+		// if (fitToViewWidthEventListener != null) {
+		// eventPublisher.removeListener(fitToViewWidthEventListener);
+		// fitToViewWidthEventListener = null;
+		// }
+
+		listeners.unregisterAll();
 
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
+		sampleSelectionManager.unregisterEventListeners();
 	}
 
-	/**
-	 * Sets a new path to be linearized.
-	 *
-	 * @param pathway
-	 *            The pathway the path corresponds to.
-	 * @param path
-	 *            List of {@link PathwayVertexRep}s that represents a path. If multiple <code>PathwayVertexRep</code>s
-	 *            represent a complex node, they must occur in a sequence.
-	 */
-	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
-		this.pathway = pathway;
-		this.path = path;
-
-		expandedBranchSummaryNode = null;
-		for (ANode node : linearizedNodes) {
-			node.unregisterPickingListeners();
-		}
-		for (ANode node : branchNodes) {
-			node.unregisterPickingListeners();
-		}
-
-		createNodes();
-		// setMinSize(0);
-		isNewPath = true;
-		setLayoutDirty();
-
-	}
-
-	/**
-	 * @param currentExpandedBranchNode
-	 *            setter, see {@link #expandedBranchSummaryNode}
-	 */
-	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
-		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
-	}
-
-	/**
-	 * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
-	 */
-	public BranchSummaryNode getExpandedBranchSummaryNode() {
-		return expandedBranchSummaryNode;
-	}
-
-	/**
-	 * @return the currentExpandedBranchNode, see {@link #expandedBranchSummaryNode}
-	 */
-	public BranchSummaryNode getCurrentExpandedBranchNode() {
-		return expandedBranchSummaryNode;
-	}
-
-	/**
-	 * Selects a branch node to be linearized.
-	 *
-	 * @param node
-	 */
-	public void selectBranch(ALinearizableNode node) {
-		ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
-		BranchSummaryNode summaryNode = (BranchSummaryNode) linearizedNodesToIncomingBranchSummaryNodesMap
-				.get(linearizedNode);
-
-		boolean isIncomingBranch = false;
-		if (summaryNode != null && summaryNode.getBranchNodes().contains(node)) {
-			isIncomingBranch = true;
-		}
-
-		PathwayVertexRep linearizedVertexRep = linearizedNode.getPathwayVertexRep();
-		PathwayVertexRep branchVertexRep = node.getPathwayVertexRep();
-
-		DefaultEdge edge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
-		if (edge == null) {
-			edge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
-		}
-
-		int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
-		List<PathwayVertexRep> newPath = null;
-		List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(branchVertexRep,
-				linearizedVertexRep, isIncomingBranch);
-
-		if (isIncomingBranch) {
-			// insert above linearized node
-			Collections.reverse(branchPath);
-			newPath = path.subList(linearizedNodeIndex, path.size());
-
-			newPath.addAll(0, branchPath);
-
-		} else {
-			// insert below linearized node
-			newPath = path.subList(0, linearizedNodeIndex + 1);
-			newPath.addAll(branchPath);
-		}
-
-		setPath(pathway, newPath);
-
-		broadcastPath();
-	}
-
-	/**
-	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects for a specified branch node. This path
-	 * ends if there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
-	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
-	 * start of the path is added at the beginning of the path.
-	 *
-	 * @param branchVertexRep
-	 *            The <code>PathwayVertexRep</code> that represents the start of the branch path.
-	 * @param linearizedVertexRep
-	 *            The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
-	 * @param isIncomingBranchPath
-	 *            Determines whether the branch path is incoming or outgoing. This is especially important for
-	 *            bidirectional edges.
-	 * @return
-	 */
-	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(PathwayVertexRep branchVertexRep,
-			PathwayVertexRep linearizedVertexRep, boolean isIncomingBranchPath) {
-
-		List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
-		vertexReps.add(branchVertexRep);
-		DefaultEdge existingEdge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
-		if (existingEdge == null)
-			existingEdge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
-
-		PathwayVertexRep currentVertexRep = branchVertexRep;
-
-		for (int i = 0; i < maxBranchSwitchingPathLength; i++) {
-			List<PathwayVertexRep> nextVertices = null;
-			if (isIncomingBranchPath) {
-				nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
-			} else {
-				nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
-			}
-
-			if (nextVertices.size() == 0 || nextVertices.size() > 1) {
-				return vertexReps;
-			} else {
-				currentVertexRep = nextVertices.get(0);
-				vertexReps.add(currentVertexRep);
-			}
-
-		}
-
-		return vertexReps;
-	}
-
-	/**
-	 * @return the linearizedNodes, see {@link #linearizedNodes}
-	 */
-	public List<ALinearizableNode> getLinearizedNodes() {
-		return linearizedNodes;
-	}
-
-	/**
-	 * Removes the specified linearized node from the path if it is at the start or the end of the path.
-	 *
-	 * @param node
-	 */
-	public void removeLinearizedNode(ALinearizableNode node) {
-
-		int linearizedNodeIndex = linearizedNodes.indexOf(node);
-
-		if (linearizedNodeIndex == 0) {
-			path.remove(0);
-		} else if (linearizedNodeIndex == path.size() - 1) {
-			path.remove(path.size() - 1);
-
-		} else {
-			return;
-		}
-
-		setPath(pathway, path);
-
-		broadcastPath();
-	}
-
-	private void broadcastPath() {
-
-		PathwayPath pathwayPath = null;
-		if (path.size() > 0) {
-
-			PathwayVertexRep startVertexRep = path.get(0);
-			PathwayVertexRep endVertexRep = path.get(path.size() - 1);
-			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
-
-			for (int i = 0; i < path.size() - 1; i++) {
-				PathwayVertexRep currentVertexRep = path.get(i);
-				PathwayVertexRep nextVertexRep = path.get(i + 1);
-
-				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
-				if (edge == null)
-					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
-				edges.add(edge);
-			}
-			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-					pathway, startVertexRep, endVertexRep, edges, edges.size());
-
-			pathwayPath = new PathwayPath(graphPath);
-		}
-		EnRoutePathEvent event = new EnRoutePathEvent();
-		event.setEventSpace(pathwayPathEventSpace);
-		event.setPath(pathwayPath);
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
-
-	}
+	//
+	// /**
+	// * Sets a new path to be linearized.
+	// *
+	// * @param pathway
+	// * The pathway the path corresponds to.
+	// * @param path
+	// * List of {@link PathwayVertexRep}s that represents a path. If multiple <code>PathwayVertexRep</code>s
+	// * represent a complex node, they must occur in a sequence.
+	// */
+	// public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
+	// this.pathway = pathway;
+	// this.path = path;
+	//
+	// expandedBranchSummaryNode = null;
+	// for (ANode node : linearizedNodes) {
+	// node.unregisterPickingListeners();
+	// }
+	// for (ANode node : branchNodes) {
+	// node.unregisterPickingListeners();
+	// }
+	//
+	// createNodes();
+	// // setMinSize(0);
+	// isNewPath = true;
+	// setLayoutDirty();
+	//
+	// }
+	//
+	// /**
+	// * @param currentExpandedBranchNode
+	// * setter, see {@link #expandedBranchSummaryNode}
+	// */
+	// public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
+	// this.expandedBranchSummaryNode = expandedBranchSummaryNode;
+	// }
+	//
+	// /**
+	// * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
+	// */
+	// public BranchSummaryNode getExpandedBranchSummaryNode() {
+	// return expandedBranchSummaryNode;
+	// }
+	//
+	// /**
+	// * @return the currentExpandedBranchNode, see {@link #expandedBranchSummaryNode}
+	// */
+	// public BranchSummaryNode getCurrentExpandedBranchNode() {
+	// return expandedBranchSummaryNode;
+	// }
+	//
+	// /**
+	// * Selects a branch node to be linearized.
+	// *
+	// * @param node
+	// */
+	// public void selectBranch(ALinearizableNode node) {
+	// ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
+	// BranchSummaryNode summaryNode = (BranchSummaryNode) linearizedNodesToIncomingBranchSummaryNodesMap
+	// .get(linearizedNode);
+	//
+	// boolean isIncomingBranch = false;
+	// if (summaryNode != null && summaryNode.getBranchNodes().contains(node)) {
+	// isIncomingBranch = true;
+	// }
+	//
+	// PathwayVertexRep linearizedVertexRep = linearizedNode.getPathwayVertexRep();
+	// PathwayVertexRep branchVertexRep = node.getPathwayVertexRep();
+	//
+	// DefaultEdge edge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
+	// if (edge == null) {
+	// edge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
+	// }
+	//
+	// int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
+	// List<PathwayVertexRep> newPath = null;
+	// List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(branchVertexRep,
+	// linearizedVertexRep, isIncomingBranch);
+	//
+	// if (isIncomingBranch) {
+	// // insert above linearized node
+	// Collections.reverse(branchPath);
+	// newPath = path.subList(linearizedNodeIndex, path.size());
+	//
+	// newPath.addAll(0, branchPath);
+	//
+	// } else {
+	// // insert below linearized node
+	// newPath = path.subList(0, linearizedNodeIndex + 1);
+	// newPath.addAll(branchPath);
+	// }
+	//
+	// setPath(pathway, newPath);
+	//
+	// broadcastPath();
+	// }
+	//
+	// /**
+	// * Calculates a branch path consisting of {@link PathwayVertexRep} objects for a specified branch node. This path
+	// * ends if there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
+	// * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents
+	// the
+	// * start of the path is added at the beginning of the path.
+	// *
+	// * @param branchVertexRep
+	// * The <code>PathwayVertexRep</code> that represents the start of the branch path.
+	// * @param linearizedVertexRep
+	// * The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
+	// * @param isIncomingBranchPath
+	// * Determines whether the branch path is incoming or outgoing. This is especially important for
+	// * bidirectional edges.
+	// * @return
+	// */
+	// private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(PathwayVertexRep branchVertexRep,
+	// PathwayVertexRep linearizedVertexRep, boolean isIncomingBranchPath) {
+	//
+	// List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
+	// vertexReps.add(branchVertexRep);
+	// DefaultEdge existingEdge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
+	// if (existingEdge == null)
+	// existingEdge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
+	//
+	// PathwayVertexRep currentVertexRep = branchVertexRep;
+	//
+	// for (int i = 0; i < maxBranchSwitchingPathLength; i++) {
+	// List<PathwayVertexRep> nextVertices = null;
+	// if (isIncomingBranchPath) {
+	// nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
+	// } else {
+	// nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
+	// }
+	//
+	// if (nextVertices.size() == 0 || nextVertices.size() > 1) {
+	// return vertexReps;
+	// } else {
+	// currentVertexRep = nextVertices.get(0);
+	// vertexReps.add(currentVertexRep);
+	// }
+	//
+	// }
+	//
+	// return vertexReps;
+	// }
+	//
+	// /**
+	// * @return the linearizedNodes, see {@link #linearizedNodes}
+	// */
+	// public List<ALinearizableNode> getLinearizedNodes() {
+	// return linearizedNodes;
+	// }
+	//
+	// /**
+	// * Removes the specified linearized node from the path if it is at the start or the end of the path.
+	// *
+	// * @param node
+	// */
+	// public void removeLinearizedNode(ALinearizableNode node) {
+	//
+	// int linearizedNodeIndex = linearizedNodes.indexOf(node);
+	//
+	// if (linearizedNodeIndex == 0) {
+	// path.remove(0);
+	// } else if (linearizedNodeIndex == path.size() - 1) {
+	// path.remove(path.size() - 1);
+	//
+	// } else {
+	// return;
+	// }
+	//
+	// setPath(pathway, path);
+	//
+	// broadcastPath();
+	// }
+	//
+	// private void broadcastPath() {
+	//
+	// PathwayPath pathwayPath = null;
+	// if (path.size() > 0) {
+	//
+	// PathwayVertexRep startVertexRep = path.get(0);
+	// PathwayVertexRep endVertexRep = path.get(path.size() - 1);
+	// List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+	//
+	// for (int i = 0; i < path.size() - 1; i++) {
+	// PathwayVertexRep currentVertexRep = path.get(i);
+	// PathwayVertexRep nextVertexRep = path.get(i + 1);
+	//
+	// DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
+	// if (edge == null)
+	// edge = pathway.getEdge(nextVertexRep, currentVertexRep);
+	// edges.add(edge);
+	// }
+	// GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+	// pathway, startVertexRep, endVertexRep, edges, edges.size());
+	//
+	// pathwayPath = new PathwayPath(graphPath);
+	// }
+	// EnRoutePathEvent event = new EnRoutePathEvent();
+	// event.setEventSpace(pathwayPathEventSpace);
+	// event.setPath(pathwayPath);
+	// event.setSender(this);
+	// eventPublisher.triggerEvent(event);
+	//
+	// }
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -1373,55 +1392,32 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		// setMappedDataRendererGeometry();
 	}
 
-	/**
-	 * @param dataRowHeight
-	 *            setter, see {@link #dataRowHeight}
-	 */
-	public void setDataRowHeight(float dataRowHeight) {
-		this.dataRowHeight = dataRowHeight;
-	}
-
-	/**
-	 * @return the dataRowHeight, see {@link #dataRowHeight}
-	 */
-	public float getDataRowHeight() {
-		return dataRowHeight;
-	}
+	// /**
+	// * @param dataRowHeight
+	// * setter, see {@link #dataRowHeight}
+	// */
+	// public void setDataRowHeight(float dataRowHeight) {
+	// this.dataRowHeight = dataRowHeight;
+	// }
+	//
+	// /**
+	// * @return the dataRowHeight, see {@link #dataRowHeight}
+	// */
+	// public float getDataRowHeight() {
+	// return dataRowHeight;
+	// }
 
 	@Override
 	public void addTablePerspective(TablePerspective newTablePerspective) {
-		mappedDataRenderer.addTablePerspective(newTablePerspective);
-		for (ALinearizableNode node : linearizedNodes) {
-			setMappedDavidIds(node);
-		}
-		for (ANode node : branchNodes) {
-			if (node instanceof ALinearizableNode) {
-				setMappedDavidIds((ALinearizableNode) node);
-				((ALinearizableNode) node).update();
-			}
-		}
+
+		tablePerspectives.add(newTablePerspective);
+		ArrayList<TablePerspective> newTablePerspectives = new ArrayList<TablePerspective>(1);
+		newTablePerspectives.add(newTablePerspective);
+		resolveSubTablePerspectives(newTablePerspectives);
+
+		pathRenderer.setTablePerspectives(resolvedTablePerspectives);
+		mappedDataRenderer.setTablePerspectives(resolvedTablePerspectives);
 		dataDomains.add(newTablePerspective.getDataDomain());
-		// setMappedDataRendererGeometry();
-		setLayoutDirty();
-	}
-
-	@Override
-	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
-		mappedDataRenderer.addTablePerspectives(newTablePerspectives);
-		for (ALinearizableNode node : linearizedNodes) {
-			setMappedDavidIds(node);
-		}
-		for (ANode node : branchNodes) {
-			if (node instanceof ALinearizableNode) {
-				setMappedDavidIds((ALinearizableNode) node);
-				((ALinearizableNode) node).update();
-			}
-		}
-		for (TablePerspective tablePerspective : newTablePerspectives) {
-			dataDomains.add(tablePerspective.getDataDomain());
-		}
-
-		// setMappedDataRendererGeometry();
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
@@ -1430,30 +1426,59 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	@Override
-	public List<TablePerspective> getTablePerspectives() {
-		if (mappedDataRenderer == null)
-			return null;
-		return mappedDataRenderer.getTablePerspectives();
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		tablePerspectives.addAll(newTablePerspectives);
+		resolveSubTablePerspectives(newTablePerspectives);
+
+		pathRenderer.setTablePerspectives(resolvedTablePerspectives);
+		mappedDataRenderer.setTablePerspectives(resolvedTablePerspectives);
+		for (TablePerspective tablePerspective : newTablePerspectives) {
+			dataDomains.add(tablePerspective.getDataDomain());
+		}
+
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		setLayoutDirty();
+	}
+
+	/**
+	 * @return the tablePerspectives, see {@link #tablePerspectives}
+	 */
+	@Override
+	public ArrayList<TablePerspective> getTablePerspectives() {
+		return tablePerspectives;
+	}
+
+	/**
+	 * Creates new table perspectives for every group in a gene-group-list of every table perspective. If no group lists
+	 * are present, the original table perspective is added.
+	 */
+	private void resolveSubTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		for (TablePerspective tablePerspective : newTablePerspectives) {
+			GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
+
+			List<TablePerspective> newlyResovedTablePerspectives;
+			if (dataDomain.isGeneRecord()) {
+				newlyResovedTablePerspectives = tablePerspective.getDimensionSubTablePerspectives();
+			} else {
+				newlyResovedTablePerspectives = tablePerspective.getRecordSubTablePerspectives();
+			}
+
+			if (newlyResovedTablePerspectives != null) {
+				resolvedTablePerspectives.addAll(newlyResovedTablePerspectives);
+
+			} else {
+				resolvedTablePerspectives.add(tablePerspective);
+			}
+
+		}
+
 	}
 
 	@Override
 	public boolean isDataView() {
 		return true;
-	}
-
-	/**
-	 * Returns true if one of the set {@link TablePerspective}s maps to the davidID provided, else false
-	 */
-	public boolean doesDavidMapToData(Integer davidID) {
-		for (TablePerspective currentTablePerspective : mappedDataRenderer.getTablePerspectives()) {
-			GeneticDataDomain dataDomain = (GeneticDataDomain) currentTablePerspective.getDataDomain();
-			Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
-					dataDomain.getGeneIDType(), davidID);
-			if (ids != null && ids.size() > 0) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -1470,15 +1495,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		return metaboliteSelectionManager;
 	}
 
-	/**
-	 * @return the mappedDataRenderer, see {@link #mappedDataRenderer}
-	 */
-	public MappedDataRenderer getMappedDataRenderer() {
-		return mappedDataRenderer;
-	}
-
 	public List<TablePerspective> getResolvedTablePerspectives() {
-		return mappedDataRenderer.getResolvedTablePerspectives();
+		return resolvedTablePerspectives;
 	}
 
 	@Override
@@ -1489,11 +1507,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public void removeTablePerspective(int tablePerspectiveID) {
 
-		for (TablePerspective tablePerspective : mappedDataRenderer.getTablePerspectives()) {
+		for (TablePerspective tablePerspective : tablePerspectives) {
 			if (tablePerspective.getID() == tablePerspectiveID) {
 				IDataDomain dataDomain = tablePerspective.getDataDomain();
 				boolean removeDataDomain = true;
-				for (TablePerspective tp : mappedDataRenderer.getTablePerspectives()) {
+				for (TablePerspective tp : tablePerspectives) {
 					if (tp != tablePerspective && tp.getDataDomain() == dataDomain) {
 						removeDataDomain = false;
 						break;
@@ -1506,7 +1524,18 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				break;
 			}
 		}
-		mappedDataRenderer.removeTablePerspective(tablePerspectiveID);
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
+
+		while (tablePerspectiveIterator.hasNext()) {
+			TablePerspective tablePerspective = tablePerspectiveIterator.next();
+			if (tablePerspective.getID() == tablePerspectiveID) {
+				tablePerspectiveIterator.remove();
+			}
+		}
+		resolvedTablePerspectives.clear();
+		// TODO - this is maybe not the most elegant way to remove the resolved
+		// sub-data containers
+		resolveSubTablePerspectives(tablePerspectives);
 
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
@@ -1518,8 +1547,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		// TODO: Destroy all the layoutManagers
-
+		gl.glDeleteLists(layoutDisplayListIndex, 1);
+		layoutManager.destroy(gl);
+		mappedDataRenderer.destroy(gl);
 	}
 
 	public void setLayoutDirty() {
@@ -1538,10 +1568,17 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * @param fitToViewWidth
 	 *            setter, see {@link #fitToViewWidth}
 	 */
-	public void setFitToViewWidth(boolean fitToViewWidth) {
-		this.fitToViewWidth = fitToViewWidth;
+	@ListenTo
+	public void onFitToViewWidth(FitToViewWidthEvent event) {
+		this.fitToViewWidth = event.isFitToViewWidth();
 		currentMinWidth = 0;
 		setLayoutDirty();
+	}
+
+	@ListenTo
+	public void onPathRendererChanged(PathRendererChangedEvent event) {
+		setLayoutDirty();
+		pathRendererChanged = true;
 	}
 
 	@Override
@@ -1556,19 +1593,18 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	/**
-	 * @param pathwayPathEventSpace
-	 *            setter, see {@link pathwayPathEventSpace}
+	 * Sets the event space for path related events.
 	 */
 	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
-		this.pathwayPathEventSpace = pathwayPathEventSpace;
+		pathRenderer.setPathwayPathEventSpace(pathwayPathEventSpace);
 	}
 
-	/**
-	 * @return the pathwayPathEventSpace, see {@link #pathwayPathEventSpace}
-	 */
-	public String getPathwayPathEventSpace() {
-		return pathwayPathEventSpace;
-	}
+	// /**
+	// * @return the pathwayPathEventSpace, see {@link #pathwayPathEventSpace}
+	// */
+	// public String getPathwayPathEventSpace() {
+	// return pathwayPathEventSpace;
+	// }
 
 	/**
 	 * @return the sampleSelectionManager, see {@link #sampleSelectionManager}

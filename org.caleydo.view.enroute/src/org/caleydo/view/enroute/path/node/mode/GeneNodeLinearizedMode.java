@@ -110,6 +110,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 				node.setSelectionType(SelectionType.SELECTION);
 				// colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
 				pathwayPathRenderer.setDisplayListDirty();
+				// view.setDisplayListDirty();
 
 			}
 

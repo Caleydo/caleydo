@@ -1,16 +1,16 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.event;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.view.enroute.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.ALinearizableNode;
 
 /**
  * Event to remove a {@link ALinearizableNode} from the linearized pathway.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class RemoveEnRouteNodeEvent extends AEvent {
 

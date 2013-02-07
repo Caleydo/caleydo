@@ -19,9 +19,9 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.SelectionColorCalculator;
-import org.caleydo.view.enroute.node.ANode;
-import org.caleydo.view.enroute.node.CompoundNode;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
+import org.caleydo.view.enroute.path.node.ANode;
+import org.caleydo.view.enroute.path.node.CompoundNode;
 
 /**
  * Base class for modes of a {@link CompoundNode}.

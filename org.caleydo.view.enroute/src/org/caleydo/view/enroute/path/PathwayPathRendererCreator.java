@@ -38,9 +38,9 @@ public class PathwayPathRendererCreator implements IRemoteRendererCreator {
 			sampleSelectionManager.registerEventListeners();
 		}
 
-		renderer.setSampleSelectionManager(sampleSelectionManager);
-		renderer.setGeneSelectionManager(geneSelectionManager);
-		renderer.setMetaboliteSelectionManager(metaboliteSelectionManager);
+		// renderer.setSampleSelectionManager(sampleSelectionManager);
+		// renderer.setGeneSelectionManager(geneSelectionManager);
+		// renderer.setMetaboliteSelectionManager(metaboliteSelectionManager);
 		// renderer.setPathwayPathEventSpace(embeddingEventSpace);
 
 		renderer.init();

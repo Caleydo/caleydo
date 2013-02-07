@@ -31,6 +31,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
@@ -44,6 +45,7 @@ import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.BranchSummaryNode;
@@ -75,11 +77,11 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 	 * Spacing after the last node.
 	 */
 	protected final static int BOTTOM_SPACING_PIXELS = 60;
-	protected final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
+	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
 	protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
-	protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
-	protected final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
+	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
+	public final static int PATH_COLUMN_WIDTH_PIXELS = 150;
 
 	protected static final int MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
@@ -110,12 +112,12 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
+		minWidthPixels = BRANCH_COLUMN_WIDTH_PIXELS + PATH_COLUMN_WIDTH_PIXELS;
 	}
 
 	@Override
 	protected void createNodes(List<PathwayVertexRep> path) {
 		super.createNodes(path);
-
 		expandedBranchSummaryNode = null;
 
 		for (ANode node : branchNodes) {
@@ -387,7 +389,13 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 	 *            setter, see {@link #expandedBranchSummaryNode}
 	 */
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
-		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
+		if (this.expandedBranchSummaryNode != expandedBranchSummaryNode) {
+			this.expandedBranchSummaryNode = expandedBranchSummaryNode;
+			PathRendererChangedEvent event = new PathRendererChangedEvent(this);
+			event.setSender(this);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			updateLayout();
+		}
 	}
 
 	/**
@@ -397,17 +405,18 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 		return expandedBranchSummaryNode;
 	}
 
+	@Override
 	public void updateLayout() {
 
 		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATH_COLUMN_WIDTH_PIXELS);
 
 		float pathwayHeight = 0;
 		int minViewHeightRequiredByBranchNodes = 0;
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings(pathNodes);
 
-		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f, y, 0.2f);
+		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathColumnWidth / 2.0f, y, 0.2f);
 
 		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
 
@@ -461,6 +470,9 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 				minViewHeightRequiredByBranchNodes = minViewHeight;
 			}
 		}
+
+		minHeightPixels = Math.max(minViewHeightRequiredByBranchNodes,
+				pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight));
 	}
 
 	/**
@@ -505,8 +517,6 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 		GLU glu = new GLU();
 		List<ALinearizableNode> pathNodes = getPathNodes();
-
-		updateLayout();
 
 		// List<Float> nodeSpaces = calcNodeSpace(pathNodes, view.getPixelGLConverter());
 		//

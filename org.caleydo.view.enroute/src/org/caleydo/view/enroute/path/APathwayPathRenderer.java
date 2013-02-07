@@ -26,6 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
@@ -35,17 +36,20 @@ import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
@@ -105,6 +109,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected String pathwayPathEventSpace = GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE;
 
 	/**
+	 * Minimum width in pixels required by the renderer.
+	 */
+	protected int minWidthPixels;
+
+	/**
+	 * Minimum height in pixels required by the renderer.
+	 */
+	protected int minHeightPixels;
+
+	/**
 	 * The queue which holds the events
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
@@ -123,6 +137,19 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.tablePerspectives = tablePerspectives;
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.textRenderer = view.getTextRenderer();
+
+		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
+		geneSelectionManager.registerEventListeners();
+
+		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
+		metaboliteSelectionManager.registerEventListeners();
+
+		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
+		if (dataDomains.size() != 0) {
+			IDType sampleIDType = dataDomains.get(0).getSampleIDType().getIDCategory().getPrimaryMappingType();
+			sampleSelectionManager = new EventBasedSelectionManager(this, sampleIDType);
+			sampleSelectionManager.registerEventListeners();
+		}
 	}
 
 	/**
@@ -146,6 +173,12 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.path = path;
 
 		createNodes(path);
+
+		PathRendererChangedEvent event = new PathRendererChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		updateLayout();
 		// setMinSize(0);
 		// isNewPath = true;
 		// setLayoutDirty();
@@ -162,6 +195,12 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			setPath(null, new ArrayList<PathwayVertexRep>());
 		}
 	}
+
+	/**
+	 * Updates the layout of the path. This method should be called everytime something changes in the layout of the
+	 * path.
+	 */
+	protected abstract void updateLayout();
 
 	protected void createNodes(List<PathwayVertexRep> path) {
 
@@ -234,7 +273,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-
+		setDisplayListDirty();
 	}
 
 	/**
@@ -245,14 +284,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * @param geneSelectionManager
-	 *            setter, see {@link geneSelectionManager}
-	 */
-	public void setGeneSelectionManager(EventBasedSelectionManager geneSelectionManager) {
-		this.geneSelectionManager = geneSelectionManager;
-	}
-
-	/**
 	 * @return the metaboliteSelectionManager, see {@link #metaboliteSelectionManager}
 	 */
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
@@ -260,26 +291,10 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * @param metaboliteSelectionManager
-	 *            setter, see {@link metaboliteSelectionManager}
-	 */
-	public void setMetaboliteSelectionManager(EventBasedSelectionManager metaboliteSelectionManager) {
-		this.metaboliteSelectionManager = metaboliteSelectionManager;
-	}
-
-	/**
 	 * @return the sampleSelectionManager, see {@link #sampleSelectionManager}
 	 */
 	public EventBasedSelectionManager getSampleSelectionManager() {
 		return sampleSelectionManager;
-	}
-
-	/**
-	 * @param sampleSelectionManager
-	 *            setter, see {@link sampleSelectionManager}
-	 */
-	public void setSampleSelectionManager(EventBasedSelectionManager sampleSelectionManager) {
-		this.sampleSelectionManager = sampleSelectionManager;
 	}
 
 	/**
@@ -339,6 +354,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	@Override
 	protected void prepare() {
 		processEvents();
+		if (isDisplayListDirty()) {
+			updateLayout();
+		}
 	}
 
 	@Override
@@ -412,6 +430,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		return super.getMinWidthPixels();
+	}
+
+	@Override
+	public int getMinHeightPixels() {
+		return minHeightPixels;
 	}
 
 }

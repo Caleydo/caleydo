@@ -16,8 +16,8 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.IColorProvider;
 import org.caleydo.view.enroute.SelectionColorCalculator;
-import org.caleydo.view.enroute.node.GeneNode;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
+import org.caleydo.view.enroute.path.node.GeneNode;
 
 /**
  * Base class for modes of a {@link GeneNode}.
