@@ -33,7 +33,7 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.mode.ALinearizeableNodeMode;
 
 /**
@@ -44,15 +44,15 @@ import org.caleydo.view.enroute.path.node.mode.ALinearizeableNodeMode;
  */
 public abstract class ALinearizableNode extends ANode implements ILabelProvider {
 
-	/**
-	 * Determines whether the node shows a preview of its data.
-	 */
-	protected boolean isPreviewMode = false;
+	// /**
+	// * Determines whether the node shows a preview of its data.
+	// */
+	// protected boolean isPreviewMode = false;
 
-	/**
-	 * Determines whether the button to remove the
-	 */
-	protected boolean showRemoveButton = false;
+	// /**
+	// * Determines whether the button to remove the
+	// */
+	// protected boolean showRemoveButton = false;
 
 	/**
 	 * The {@link SelectionType} of the node.
@@ -78,17 +78,18 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	/**
 	 * Renderer that uses this node.
 	 */
-	protected PathwayPathRenderer pathwayPathRenderer;
+	protected APathwayPathRenderer pathwayPathRenderer;
 
 	/**
 	 * @param pixelGLConverter
 	 * @param view
 	 * @param nodeId
 	 */
-	public ALinearizableNode(PathwayPathRenderer pathwayPathRenderer, AGLView view, int nodeId) {
+	public ALinearizableNode(APathwayPathRenderer pathwayPathRenderer, AGLView view, int nodeId,
+			ALinearizeableNodeMode mode) {
 		super(view, nodeId);
 		this.pathwayPathRenderer = pathwayPathRenderer;
-		mode = getLinearizedMode();
+		this.mode = mode;
 		mode.apply(this);
 	}
 
@@ -98,40 +99,50 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	}
 
 	/**
-	 * @param isPreviewMode
-	 *            setter, see {@link #isPreviewMode}
+	 * @param mode
+	 *            setter, see {@link mode}
 	 */
-	public void setPreviewMode(boolean isPreviewMode) {
-
-		if (this.isPreviewMode == isPreviewMode)
-			return;
-		this.isPreviewMode = isPreviewMode;
-		mode.unregisterPickingListeners();
-
-		if (isPreviewMode) {
-			mode = getPreviewMode();
-		} else {
-			mode = getLinearizedMode();
-		}
+	public void setMode(ALinearizeableNodeMode mode) {
+		this.mode.unregisterPickingListeners();
+		this.mode = mode;
 		mode.apply(this);
 	}
 
-	/**
-	 * @return the isPreviewMode, see {@link #isPreviewMode}
-	 */
-	public boolean isPreviewMode() {
-		return isPreviewMode;
-	}
+	// /**
+	// * @param isPreviewMode
+	// * setter, see {@link #isPreviewMode}
+	// */
+	// public void setPreviewMode(boolean isPreviewMode) {
+	//
+	// if (this.isPreviewMode == isPreviewMode)
+	// return;
+	// this.isPreviewMode = isPreviewMode;
+	// mode.unregisterPickingListeners();
+	//
+	// if (isPreviewMode) {
+	// mode = getPreviewMode();
+	// } else {
+	// mode = getLinearizedMode();
+	// }
+	// mode.apply(this);
+	// }
 
-	/**
-	 * @return A new linearized mode object for the concrete node.
-	 */
-	protected abstract ALinearizeableNodeMode getLinearizedMode();
+	// /**
+	// * @return the isPreviewMode, see {@link #isPreviewMode}
+	// */
+	// public boolean isPreviewMode() {
+	// return isPreviewMode;
+	// }
 
-	/**
-	 * @return A new preview mode object for the concrete node.
-	 */
-	protected abstract ALinearizeableNodeMode getPreviewMode();
+	// /**
+	// * @return A new linearized mode object for the concrete node.
+	// */
+	// protected abstract ALinearizeableNodeMode getLinearizedMode();
+	//
+	// /**
+	// * @return A new preview mode object for the concrete node.
+	// */
+	// protected abstract ALinearizeableNodeMode getPreviewMode();
 
 	/**
 	 * @param selectionType

@@ -15,7 +15,7 @@ import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.GeneNode;
@@ -34,7 +34,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 	/**
 	 * @param view
 	 */
-	public GeneNodeLinearizedMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public GeneNodeLinearizedMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
 	}
 

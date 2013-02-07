@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
@@ -30,7 +30,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	/**
 	 * @param view
 	 */
-	public CompoundNodeLinearizedMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public CompoundNodeLinearizedMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
 	}
 

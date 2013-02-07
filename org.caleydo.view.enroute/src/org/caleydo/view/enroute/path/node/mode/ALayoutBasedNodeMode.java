@@ -13,7 +13,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
 
 /**
@@ -31,7 +31,7 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 	/**
 	 * @param view
 	 */
-	public ALayoutBasedNodeMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public ALayoutBasedNodeMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
 		this.pixelGLConverter = view.getPixelGLConverter();
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);

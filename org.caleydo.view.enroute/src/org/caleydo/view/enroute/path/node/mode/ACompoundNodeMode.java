@@ -21,7 +21,7 @@ import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.SelectionColorCalculator;
 import org.caleydo.view.enroute.node.ANode;
 import org.caleydo.view.enroute.node.CompoundNode;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 
 /**
  * Base class for modes of a {@link CompoundNode}.
@@ -38,7 +38,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 	/**
 	 * @param view
 	 */
-	public ACompoundNodeMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public ACompoundNodeMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
 		this.pixelGLConverter = view.getPixelGLConverter();
 		colorCalculator = new SelectionColorCalculator(new Color(DEFAULT_BACKGROUND_COLOR));

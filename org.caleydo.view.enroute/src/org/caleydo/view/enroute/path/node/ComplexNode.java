@@ -30,9 +30,8 @@ import java.util.List;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.mode.ALinearizeableNodeMode;
-import org.caleydo.view.enroute.path.node.mode.ComplexNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.IComplexNodeMode;
 
 /**
@@ -53,21 +52,21 @@ public class ComplexNode extends ALinearizableNode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public ComplexNode(PathwayPathRenderer pathwayPathRenderer, CaleydoTextRenderer textRenderer, AGLView view,
-			int nodeId) {
-		super(pathwayPathRenderer, view, nodeId);
+	public ComplexNode(APathwayPathRenderer pathwayPathRenderer, CaleydoTextRenderer textRenderer, AGLView view,
+			int nodeId, ALinearizeableNodeMode mode) {
+		super(pathwayPathRenderer, view, nodeId, mode);
 	}
 
-	@Override
-	protected ALinearizeableNodeMode getLinearizedMode() {
-		return new ComplexNodeLinearizedMode(view, pathwayPathRenderer);
-	}
-
-	@Override
-	protected ALinearizeableNodeMode getPreviewMode() {
-		// FIXME: just temporary
-		return new ComplexNodeLinearizedMode(view, pathwayPathRenderer);
-	}
+	// @Override
+	// protected ALinearizeableNodeMode getLinearizedMode() {
+	// return new ComplexNodeLinearizedMode(view, pathwayPathRenderer);
+	// }
+	//
+	// @Override
+	// protected ALinearizeableNodeMode getPreviewMode() {
+	// // FIXME: just temporary
+	// return new ComplexNodeLinearizedMode(view, pathwayPathRenderer);
+	// }
 
 	@Override
 	public String getLabel() {
@@ -91,13 +90,21 @@ public class ComplexNode extends ALinearizableNode {
 	}
 
 	@Override
-	public void setPreviewMode(boolean isPreviewMode) {
-		super.setPreviewMode(isPreviewMode);
-
+	public void setMode(ALinearizeableNodeMode mode) {
+		super.setMode(mode);
 		for (ALinearizableNode node : nodes) {
-			node.setPreviewMode(isPreviewMode);
+			node.setMode(mode);
 		}
 	}
+
+	// @Override
+	// public void setL(boolean isPreviewMode) {
+	// super.setPreviewMode(isPreviewMode);
+	//
+	// for (ALinearizableNode node : nodes) {
+	// node.setPreviewMode(isPreviewMode);
+	// }
+	// }
 
 	@Override
 	public void destroy() {

@@ -20,7 +20,7 @@ public class PathwayPathRendererCreator implements IRemoteRendererCreator {
 	public ALayoutRenderer createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
 
-		PathwayPathRenderer renderer = new PathwayPathRenderer(remoteRenderingView, tablePerspectives);
+		APathwayPathRenderer renderer = new EnRoutePathRenderer(remoteRenderingView, tablePerspectives);
 
 		EventBasedSelectionManager geneSelectionManager = new EventBasedSelectionManager(renderer,
 				IDType.getIDType("DAVID"));
@@ -41,8 +41,7 @@ public class PathwayPathRendererCreator implements IRemoteRendererCreator {
 		renderer.setSampleSelectionManager(sampleSelectionManager);
 		renderer.setGeneSelectionManager(geneSelectionManager);
 		renderer.setMetaboliteSelectionManager(metaboliteSelectionManager);
-		renderer.setPathwayPathEventSpace(embeddingEventSpace);
-		renderer.setRenderingStrategy(new VerticalPathStrategy(renderer));
+		// renderer.setPathwayPathEventSpace(embeddingEventSpace);
 
 		renderer.init();
 

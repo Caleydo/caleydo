@@ -12,7 +12,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
 import org.caleydo.view.enroute.path.node.ComplexNode;
@@ -29,7 +29,7 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 	/**
 	 * @param view
 	 */
-	public ComplexNodeLinearizedMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public ComplexNodeLinearizedMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
 	}
 

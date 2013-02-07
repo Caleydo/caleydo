@@ -23,10 +23,8 @@
 package org.caleydo.view.enroute.path.node;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.mode.ALinearizeableNodeMode;
-import org.caleydo.view.enroute.path.node.mode.CompoundNodeLinearizedMode;
-import org.caleydo.view.enroute.path.node.mode.CompoundNodePreviewMode;
 
 /**
  * Node that represents a compound in a pathway.
@@ -41,19 +39,19 @@ public class CompoundNode extends ALinearizableNode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public CompoundNode(PathwayPathRenderer pathwayPathRenderer, AGLView view, int nodeId) {
-		super(pathwayPathRenderer, view, nodeId);
+	public CompoundNode(APathwayPathRenderer pathwayPathRenderer, AGLView view, int nodeId, ALinearizeableNodeMode mode) {
+		super(pathwayPathRenderer, view, nodeId, mode);
 	}
 
-	@Override
-	protected ALinearizeableNodeMode getLinearizedMode() {
-		return new CompoundNodeLinearizedMode(view, pathwayPathRenderer);
-	}
-
-	@Override
-	protected ALinearizeableNodeMode getPreviewMode() {
-		return new CompoundNodePreviewMode(view, pathwayPathRenderer);
-	}
+	// @Override
+	// protected ALinearizeableNodeMode getLinearizedMode() {
+	// return new CompoundNodeLinearizedMode(view, pathwayPathRenderer);
+	// }
+	//
+	// @Override
+	// protected ALinearizeableNodeMode getPreviewMode() {
+	// return new CompoundNodePreviewMode(view, pathwayPathRenderer);
+	// }
 
 	@Override
 	public String getLabel() {

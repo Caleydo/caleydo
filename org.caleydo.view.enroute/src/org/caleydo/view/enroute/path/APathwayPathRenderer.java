@@ -20,14 +20,11 @@
 package org.caleydo.view.enroute.path;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -41,6 +38,7 @@ import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -50,14 +48,15 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
-import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
 import org.caleydo.view.enroute.path.node.CompoundNode;
 import org.caleydo.view.enroute.path.node.GeneNode;
+import org.caleydo.view.enroute.path.node.mode.ComplexNodeLinearizedMode;
+import org.caleydo.view.enroute.path.node.mode.CompoundNodeLinearizedMode;
+import org.caleydo.view.enroute.path.node.mode.GeneNodeLinearizedMode;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
 
@@ -67,91 +66,67 @@ import org.jgrapht.graph.GraphPathImpl;
  * @author Christian Partl
  *
  */
-public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedSelectionManagerUser, IListenerOwner {
+public abstract class APathwayPathRenderer extends ALayoutRenderer implements IEventBasedSelectionManagerUser,
+		IListenerOwner {
 
 	/**
 	 * The pathway graph the rendered path belongs to.
 	 */
-	private PathwayGraph pathway;
+	protected PathwayGraph pathway;
 
 	/**
 	 * The list of {@link PathwayVertexRep}s that represents the path.
 	 */
-	private List<PathwayVertexRep> path;
+	protected List<PathwayVertexRep> path;
 
 	/**
 	 * List of renderable nodes for the path.
 	 */
-	List<ALinearizableNode> pathNodes = new ArrayList<>();
+	protected List<ALinearizableNode> pathNodes = new ArrayList<>();
 
 	/**
 	 * View that renders this renderer.
 	 */
-	private AGLView view;
+	protected AGLView view;
 
 	/**
 	 * ID of the last node that was added. Used to create unique node IDs for picking.
 	 */
-	private int lastNodeID = 0;
+	protected int lastNodeID = 0;
 
 	/**
 	 * Table perspectives for node previews.
 	 */
-	private List<TablePerspective> tablePerspectives;
-
-	/**
-	 * Branch summary node that is currently expanded
-	 */
-	BranchSummaryNode expandedBranchSummaryNode;
-
-	/**
-	 * List of nodes that can currently be displayed in branches.
-	 */
-	List<ANode> branchNodes = new ArrayList<ANode>();
-
-	/**
-	 * Map that associates the linearized nodes with their incoming branch summary nodes.
-	 */
-	Map<ANode, ANode> linearizedNodesToIncomingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
-
-	/**
-	 * Map that associates the linearized nodes with their outgoing branch summary nodes.
-	 */
-	Map<ANode, ANode> linearizedNodesToOutgoingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
-
-	/**
-	 * Map that associates every node in a branch with a linearized node.
-	 */
-	Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
-
-	/**
-	 * Strategy that determines the way the path is rendered.
-	 */
-	private IPathwayPathRenderingStrategy renderingStrategy;
+	protected List<TablePerspective> tablePerspectives;
 
 	/**
 	 * Event space that is used for receiving and sending path events.
 	 */
-	private String pathwayPathEventSpace = GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE;
+	protected String pathwayPathEventSpace = GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE;
 
 	/**
 	 * The queue which holds the events
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
-	private EventBasedSelectionManager geneSelectionManager;
-	private EventBasedSelectionManager metaboliteSelectionManager;
-	private EventBasedSelectionManager sampleSelectionManager;
+	protected EventBasedSelectionManager geneSelectionManager;
+	protected EventBasedSelectionManager metaboliteSelectionManager;
+	protected EventBasedSelectionManager sampleSelectionManager;
+
+	protected PixelGLConverter pixelGLConverter;
+	protected CaleydoTextRenderer textRenderer;
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
-	public PathwayPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
+	public APathwayPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		this.view = view;
 		this.tablePerspectives = tablePerspectives;
+		this.pixelGLConverter = view.getPixelGLConverter();
+		this.textRenderer = view.getTextRenderer();
 	}
 
 	/**
-	 * Method that initializes the {@link PathwayPathRenderer}. Shall be called once prior use.
+	 * Method that initializes the {@link APathwayPathRenderer}. Shall be called once prior use.
 	 */
 	public void init() {
 		registerEventListeners();
@@ -169,14 +144,6 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
 		this.pathway = pathway;
 		this.path = path;
-
-		expandedBranchSummaryNode = null;
-		for (ANode node : pathNodes) {
-			node.destroy();
-		}
-		for (ANode node : branchNodes) {
-			node.destroy();
-		}
 
 		createNodes(path);
 		// setMinSize(0);
@@ -196,73 +163,17 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 		}
 	}
 
-	private void createNodes(List<PathwayVertexRep> path) {
-		pathNodes.clear();
-		// branchNodes.clear();
-		// branchNodesToLinearizedNodesMap.clear();
-		// linearizedNodesToIncomingBranchSummaryNodesMap.clear();
-		// linearizedNodesToOutgoingBranchSummaryNodesMap.clear();
+	protected void createNodes(List<PathwayVertexRep> path) {
 
-		createNodesForList(pathNodes, path);
-
-		// Create branch nodes
-		for (int i = 0; i < pathNodes.size(); i++) {
-			ALinearizableNode currentNode = pathNodes.get(i);
-			PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
-			PathwayVertexRep prevVertexRep = null;
-			PathwayVertexRep nextVertexRep = null;
-
-			if (i > 0) {
-				ALinearizableNode prevNode = pathNodes.get(i - 1);
-				prevVertexRep = prevNode.getPathwayVertexRep();
-			}
-			if (i != pathNodes.size() - 1) {
-				ALinearizableNode nextNode = pathNodes.get(i + 1);
-				nextVertexRep = nextNode.getPathwayVertexRep();
-			}
-
-			BranchSummaryNode incomingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
-			incomingNode.init();
-			BranchSummaryNode outgoingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
-			outgoingNode.init();
-			List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
-			sourceVertexReps.remove(prevVertexRep);
-			List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
-			targetVertexReps.remove(nextVertexRep);
-
-			if (sourceVertexReps.size() > 0) {
-				List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
-
-				createNodesForList(sourceNodes, sourceVertexReps);
-				incomingNode.setBranchNodes(sourceNodes);
-				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
-				branchNodes.add(incomingNode);
-				branchNodes.addAll(sourceNodes);
-				for (ANode node : sourceNodes) {
-					((ALinearizableNode) node).setPreviewMode(true);
-					branchNodesToLinearizedNodesMap.put(node, currentNode);
-				}
-			}
-
-			if (targetVertexReps.size() > 0) {
-				List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
-				createNodesForList(targetNodes, targetVertexReps);
-
-				outgoingNode.setBranchNodes(targetNodes);
-				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
-				branchNodes.add(outgoingNode);
-				branchNodes.addAll(targetNodes);
-				for (ANode node : targetNodes) {
-					((ALinearizableNode) node).setPreviewMode(true);
-					branchNodesToLinearizedNodesMap.put(node, currentNode);
-				}
-			}
-
+		for (ANode node : pathNodes) {
+			node.destroy();
 		}
+		pathNodes.clear();
+		createNodesForList(pathNodes, path);
 
 	}
 
-	private void createNodesForList(List<ALinearizableNode> nodes, List<PathwayVertexRep> vertexReps) {
+	protected void createNodesForList(List<ALinearizableNode> nodes, List<PathwayVertexRep> vertexReps) {
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
@@ -274,7 +185,8 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 				List<PathwayVertexRep> groupedReps = groupRep.getGroupedVertexReps();
 				List<ALinearizableNode> groupedNodes = new ArrayList<ALinearizableNode>();
 				createNodesForList(groupedNodes, groupedReps);
-				ComplexNode complexNode = new ComplexNode(this, textRenderer, view, lastNodeID++);
+				ComplexNode complexNode = new ComplexNode(this, textRenderer, view, lastNodeID++,
+						new ComplexNodeLinearizedMode(view, this));
 				complexNode.setNodes(groupedNodes);
 				for (ALinearizableNode groupedNode : groupedNodes) {
 					groupedNode.setParentNode(complexNode);
@@ -283,7 +195,8 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 				complexNode.init();
 				node = complexNode;
 			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
-				CompoundNode compoundNode = new CompoundNode(this, view, lastNodeID++);
+				CompoundNode compoundNode = new CompoundNode(this, view, lastNodeID++, new CompoundNodeLinearizedMode(
+						view, this));
 
 				compoundNode.setPathwayVertexRep(currentVertexRep);
 				compoundNode.init();
@@ -293,7 +206,8 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 
 				// TODO: Verify that this is also the right approach for
 				// enzymes and ortholog
-				GeneNode geneNode = new GeneNode(this, textRenderer, view, lastNodeID++);
+				GeneNode geneNode = new GeneNode(this, textRenderer, view, lastNodeID++, new GeneNodeLinearizedMode(
+						view, this));
 				int commaIndex = currentVertexRep.getName().indexOf(',');
 				if (commaIndex > 0) {
 					geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
@@ -310,17 +224,6 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	}
 
 	@Override
-	protected void renderContent(GL2 gl) {
-
-		renderingStrategy.render(gl, new GLU());
-	}
-
-	@Override
-	protected boolean permitsWrappingDisplayLists() {
-		return true;
-	}
-
-	@Override
 	public void destroy(GL2 gl) {
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -331,7 +234,6 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 
 	@Override
 	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -396,114 +298,6 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	}
 
 	/**
-	 * Selects a branch node to be linearized.
-	 *
-	 * @param node
-	 */
-	public void selectBranch(ALinearizableNode node) {
-
-		// ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
-		// BranchSummaryNode summaryNode = (BranchSummaryNode) linearizedNodesToIncomingBranchSummaryNodesMap
-		// .get(linearizedNode);
-		//
-		// boolean isIncomingBranch = false;
-		// if (summaryNode != null && summaryNode.getBranchNodes().contains(node)) {
-		// isIncomingBranch = true;
-		// }
-		//
-		// PathwayVertexRep linearizedVertexRep = linearizedNode.getPathwayVertexRep();
-		// PathwayVertexRep branchVertexRep = node.getPathwayVertexRep();
-		//
-		// DefaultEdge edge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
-		// if (edge == null) {
-		// edge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
-		// }
-		//
-		// int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
-		// List<PathwayVertexRep> newPath = null;
-		// List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(branchVertexRep,
-		// linearizedVertexRep, isIncomingBranch);
-		//
-		// if (isIncomingBranch) {
-		// // insert above linearized node
-		// Collections.reverse(branchPath);
-		// newPath = path.subList(linearizedNodeIndex, path.size());
-		//
-		// newPath.addAll(0, branchPath);
-		//
-		// } else {
-		// // insert below linearized node
-		// newPath = path.subList(0, linearizedNodeIndex + 1);
-		// newPath.addAll(branchPath);
-		// }
-		//
-		// setPath(pathway, newPath);
-		//
-		// broadcastPath();
-	}
-
-	/**
-	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects for a specified branch node. This path
-	 * ends if there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
-	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
-	 * start of the path is added at the beginning of the path.
-	 *
-	 * @param branchVertexRep
-	 *            The <code>PathwayVertexRep</code> that represents the start of the branch path.
-	 * @param linearizedVertexRep
-	 *            The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
-	 * @param isIncomingBranchPath
-	 *            Determines whether the branch path is incoming or outgoing. This is especially important for
-	 *            bidirectional edges.
-	 * @return
-	 */
-	// private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(PathwayVertexRep branchVertexRep,
-	// PathwayVertexRep linearizedVertexRep, boolean isIncomingBranchPath) {
-	//
-	// List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
-	// vertexReps.add(branchVertexRep);
-	// DefaultEdge existingEdge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
-	// if (existingEdge == null)
-	// existingEdge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
-	//
-	// PathwayVertexRep currentVertexRep = branchVertexRep;
-	//
-	// for (int i = 0; i < maxBranchSwitchingPathLength; i++) {
-	// List<PathwayVertexRep> nextVertices = null;
-	// if (isIncomingBranchPath) {
-	// nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
-	// } else {
-	// nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
-	// }
-	//
-	// if (nextVertices.size() == 0 || nextVertices.size() > 1) {
-	// return vertexReps;
-	// } else {
-	// currentVertexRep = nextVertices.get(0);
-	// vertexReps.add(currentVertexRep);
-	// }
-	//
-	// }
-	//
-	// return vertexReps;
-	// }
-
-	/**
-	 * @param currentExpandedBranchNode
-	 *            setter, see {@link #expandedBranchSummaryNode}
-	 */
-	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
-		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
-	}
-
-	/**
-	 * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
-	 */
-	public BranchSummaryNode getExpandedBranchSummaryNode() {
-		return expandedBranchSummaryNode;
-	}
-
-	/**
 	 * @return the pathNodes, see {@link #pathNodes}
 	 */
 	public List<ALinearizableNode> getPathNodes() {
@@ -511,36 +305,10 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 	}
 
 	/**
-	 * @param renderingStrategy
-	 *            setter, see {@link #renderingStrategy}
-	 */
-	public void setRenderingStrategy(IPathwayPathRenderingStrategy renderingStrategy) {
-		this.renderingStrategy = renderingStrategy;
-	}
-
-	@Override
-	public int getMinHeightPixels() {
-		return renderingStrategy.getMinHeightPixels();
-	}
-
-	@Override
-	public int getMinWidthPixels() {
-		return renderingStrategy.getMinWidthPixels();
-	}
-
-	/**
 	 * @return the view, see {@link #view}
 	 */
 	public AGLView getView() {
 		return view;
-	}
-
-	float getX() {
-		return x;
-	}
-
-	float getY() {
-		return y;
 	}
 
 	/**
@@ -615,7 +383,7 @@ public class PathwayPathRenderer extends ALayoutRenderer implements IEventBasedS
 		broadcastPath();
 	}
 
-	private void broadcastPath() {
+	protected void broadcastPath() {
 
 		PathwayPath pathwayPath = null;
 		if (path.size() > 0) {

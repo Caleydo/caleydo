@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.EnRoutePathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
@@ -27,11 +27,14 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 
 	public static final int MIN_NODE_WIDTH_PIXELS = 70;
 
+	protected EnRoutePathRenderer enRoutePathRenderer;
+
 	/**
 	 * @param view
 	 */
-	public ComplexNodePreviewMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public ComplexNodePreviewMode(AGLView view, EnRoutePathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
+		this.enRoutePathRenderer = pathwayPathRenderer;
 	}
 
 	@Override
@@ -88,13 +91,13 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
+				enRoutePathRenderer.setExpandedBranchSummaryNode(null);
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
 				}
 
-				pathwayPathRenderer.selectBranch(branchNode);
+				enRoutePathRenderer.selectBranch(branchNode);
 			}
 		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 

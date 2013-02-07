@@ -3,7 +3,7 @@ package org.caleydo.view.enroute.path;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 
 /**
- * VisInfo for {@link PathwayPathRenderer}.
+ * VisInfo for {@link APathwayPathRenderer}.
  *
  * @author Christian Partl
  *

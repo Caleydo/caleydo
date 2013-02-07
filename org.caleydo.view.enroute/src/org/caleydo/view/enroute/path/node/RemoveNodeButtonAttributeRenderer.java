@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.RemoveEnRouteNodeEvent;
 
 /**
@@ -55,7 +55,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 	 * @param view
 	 * @param node
 	 */
-	public RemoveNodeButtonAttributeRenderer(AGLView view, ANode node, PathwayPathRenderer pathwayPathRenderer) {
+	public RemoveNodeButtonAttributeRenderer(AGLView view, ANode node, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, node, pathwayPathRenderer);
 	}
 

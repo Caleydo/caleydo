@@ -27,7 +27,7 @@ public class enRouteViewCreator implements IRemoteViewCreator {
 
 		enRoute.setRemoteRenderingGLView((IGLRemoteRenderingView) remoteRenderingView);
 		enRoute.addTablePerspectives(tablePerspectives);
-		enRoute.setPathwayPathEventSpace(embeddingEventSpace);
+		// enRoute.setPathwayPathEventSpace(embeddingEventSpace);
 
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		enRoute.initialize();

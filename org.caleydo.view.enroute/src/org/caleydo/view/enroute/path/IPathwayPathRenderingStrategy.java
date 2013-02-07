@@ -31,7 +31,7 @@ import javax.media.opengl.glu.GLU;
 public interface IPathwayPathRenderingStrategy {
 
 	/**
-	 * Renders the path for a {@link PathwayPathRenderer}.
+	 * Renders the path for a {@link APathwayPathRenderer}.
 	 *
 	 * @param gl
 	 * @param glu

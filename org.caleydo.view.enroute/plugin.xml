@@ -98,7 +98,7 @@
             <Embedding
                   embeddingID="org.caleydo.view.subgraph.pathway.multiform"
                   icon="resources/icons/enroute.png"
-                  isDefaultView="false"
+                  isDefaultView="true"
                   visInfo="org.caleydo.view.enroute.path.PathVisInfo">
                <RendererCreator
                      class="org.caleydo.view.enroute.path.PathwayPathRendererCreator">

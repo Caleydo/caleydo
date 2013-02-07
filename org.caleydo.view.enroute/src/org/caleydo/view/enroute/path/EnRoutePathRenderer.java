@@ -22,20 +22,22 @@ package org.caleydo.view.enroute.path;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndStaticLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
@@ -45,6 +47,12 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.BranchSummaryNode;
+import org.caleydo.view.enroute.path.node.ComplexNode;
+import org.caleydo.view.enroute.path.node.CompoundNode;
+import org.caleydo.view.enroute.path.node.mode.ComplexNodePreviewMode;
+import org.caleydo.view.enroute.path.node.mode.CompoundNodePreviewMode;
+import org.caleydo.view.enroute.path.node.mode.GeneNodePreviewMode;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
@@ -53,7 +61,7 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Christian Partl
  *
  */
-public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
+public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 	/**
 	 * Default size for vertical node space, i.e., the space reserved for a single node.
@@ -73,19 +81,117 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
 	protected final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
 
+	protected static final int MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
+
 	/**
-	 * PathwayPathRenderer that uses this strategy.
+	 * Branch summary node that is currently expanded
 	 */
-	protected final PathwayPathRenderer pathwayPathRenderer;
-	protected PixelGLConverter pixelGLConverter;
-	protected CaleydoTextRenderer textRenderer;
+	protected BranchSummaryNode expandedBranchSummaryNode;
 
-	protected boolean isEnRoutePath = true;
+	/**
+	 * List of nodes that can currently be displayed in branches.
+	 */
+	protected List<ANode> branchNodes = new ArrayList<ANode>();
 
-	public VerticalPathStrategy(PathwayPathRenderer pathwayPathRenderer) {
-		this.pathwayPathRenderer = pathwayPathRenderer;
-		this.pixelGLConverter = pathwayPathRenderer.getView().getPixelGLConverter();
-		this.textRenderer = pathwayPathRenderer.getView().getTextRenderer();
+	/**
+	 * Map that associates the linearized nodes with their incoming branch summary nodes.
+	 */
+	protected Map<ANode, ANode> linearizedNodesToIncomingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
+
+	/**
+	 * Map that associates the linearized nodes with their outgoing branch summary nodes.
+	 */
+	protected Map<ANode, ANode> linearizedNodesToOutgoingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
+
+	/**
+	 * Map that associates every node in a branch with a linearized node.
+	 */
+	protected Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
+
+	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
+		super(view, tablePerspectives);
+	}
+
+	@Override
+	protected void createNodes(List<PathwayVertexRep> path) {
+		super.createNodes(path);
+
+		expandedBranchSummaryNode = null;
+
+		for (ANode node : branchNodes) {
+			node.destroy();
+		}
+
+		branchNodes.clear();
+		branchNodesToLinearizedNodesMap.clear();
+		linearizedNodesToIncomingBranchSummaryNodesMap.clear();
+		linearizedNodesToOutgoingBranchSummaryNodesMap.clear();
+
+		// Create branch nodes
+		for (int i = 0; i < pathNodes.size(); i++) {
+			ALinearizableNode currentNode = pathNodes.get(i);
+			PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
+			PathwayVertexRep prevVertexRep = null;
+			PathwayVertexRep nextVertexRep = null;
+
+			if (i > 0) {
+				ALinearizableNode prevNode = pathNodes.get(i - 1);
+				prevVertexRep = prevNode.getPathwayVertexRep();
+			}
+			if (i != pathNodes.size() - 1) {
+				ALinearizableNode nextNode = pathNodes.get(i + 1);
+				nextVertexRep = nextNode.getPathwayVertexRep();
+			}
+
+			BranchSummaryNode incomingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
+			incomingNode.init();
+			BranchSummaryNode outgoingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
+			outgoingNode.init();
+			List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
+			sourceVertexReps.remove(prevVertexRep);
+			List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
+			targetVertexReps.remove(nextVertexRep);
+
+			if (sourceVertexReps.size() > 0) {
+				List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
+
+				createNodesForList(sourceNodes, sourceVertexReps);
+				incomingNode.setBranchNodes(sourceNodes);
+				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
+				branchNodes.add(incomingNode);
+				branchNodes.addAll(sourceNodes);
+				for (ANode node : sourceNodes) {
+					setPreviewMode((ALinearizableNode) node);
+					branchNodesToLinearizedNodesMap.put(node, currentNode);
+				}
+			}
+
+			if (targetVertexReps.size() > 0) {
+				List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
+				createNodesForList(targetNodes, targetVertexReps);
+
+				outgoingNode.setBranchNodes(targetNodes);
+				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
+				branchNodes.add(outgoingNode);
+				branchNodes.addAll(targetNodes);
+				for (ANode node : targetNodes) {
+					setPreviewMode((ALinearizableNode) node);
+					branchNodesToLinearizedNodesMap.put(node, currentNode);
+				}
+			}
+
+		}
+
+	}
+
+	private void setPreviewMode(ALinearizableNode node) {
+		if (node instanceof ComplexNode) {
+			node.setMode(new ComplexNodePreviewMode(view, this));
+		} else if (node instanceof CompoundNode) {
+			node.setMode(new CompoundNodePreviewMode(view, this));
+		} else {
+			node.setMode(new GeneNodePreviewMode(view, this));
+		}
 	}
 
 	/**
@@ -96,13 +202,13 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	private int calculatePositionsOfBranchNodes(ANode node) {
 		int minViewHeightPixelsIncoming = 0;
 		int minViewHeightPixelsOutgoing = 0;
-		ANode incomingNode = pathwayPathRenderer.linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
-		if ((incomingNode != null) && (incomingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
 			minViewHeightPixelsIncoming = calculateBranchNodePosition((BranchSummaryNode) incomingNode);
 		}
 
-		ANode outgoingNode = pathwayPathRenderer.linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
-		if ((outgoingNode != null) && (outgoingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+		ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+		if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
 			minViewHeightPixelsOutgoing = calculateBranchNodePosition((BranchSummaryNode) outgoingNode);
 		}
 		return Math.max(minViewHeightPixelsIncoming, minViewHeightPixelsOutgoing);
@@ -160,13 +266,12 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
 
 		int numSpacingAnchorNodeRows = 0;
-		if (isEnRoutePath) {
-			if (startAnchorNode != null) {
-				numSpacingAnchorNodeRows += startAnchorNode.getMappedDavidIDs().size();
-			}
-			if (endAnchorNode != null) {
-				numSpacingAnchorNodeRows += endAnchorNode.getMappedDavidIDs().size();
-			}
+
+		if (startAnchorNode != null) {
+			numSpacingAnchorNodeRows += startAnchorNode.getMappedDavidIDs().size();
+		}
+		if (endAnchorNode != null) {
+			numSpacingAnchorNodeRows += endAnchorNode.getMappedDavidIDs().size();
 		}
 
 		float additionalSpacing = 0;
@@ -184,6 +289,114 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 		return anchorNodeSpacing;
 	}
 
+	/**
+	 * Selects a branch node to be linearized.
+	 *
+	 * @param node
+	 */
+	public void selectBranch(ALinearizableNode node) {
+
+		ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
+		BranchSummaryNode summaryNode = (BranchSummaryNode) linearizedNodesToIncomingBranchSummaryNodesMap
+				.get(linearizedNode);
+
+		boolean isIncomingBranch = false;
+		if (summaryNode != null && summaryNode.getBranchNodes().contains(node)) {
+			isIncomingBranch = true;
+		}
+
+		PathwayVertexRep linearizedVertexRep = linearizedNode.getPathwayVertexRep();
+		PathwayVertexRep branchVertexRep = node.getPathwayVertexRep();
+
+		DefaultEdge edge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
+		if (edge == null) {
+			edge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
+		}
+
+		int linearizedNodeIndex = pathNodes.indexOf(linearizedNode);
+		List<PathwayVertexRep> newPath = null;
+		List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(branchVertexRep,
+				linearizedVertexRep, isIncomingBranch);
+
+		if (isIncomingBranch) {
+			// insert above linearized node
+			Collections.reverse(branchPath);
+			newPath = path.subList(linearizedNodeIndex, path.size());
+
+			newPath.addAll(0, branchPath);
+
+		} else {
+			// insert below linearized node
+			newPath = path.subList(0, linearizedNodeIndex + 1);
+			newPath.addAll(branchPath);
+		}
+
+		setPath(pathway, newPath);
+
+		broadcastPath();
+	}
+
+	/**
+	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects for a specified branch node. This path
+	 * ends if there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
+	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
+	 * start of the path is added at the beginning of the path.
+	 *
+	 * @param branchVertexRep
+	 *            The <code>PathwayVertexRep</code> that represents the start of the branch path.
+	 * @param linearizedVertexRep
+	 *            The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
+	 * @param isIncomingBranchPath
+	 *            Determines whether the branch path is incoming or outgoing. This is especially important for
+	 *            bidirectional edges.
+	 * @return
+	 */
+	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(PathwayVertexRep branchVertexRep,
+			PathwayVertexRep linearizedVertexRep, boolean isIncomingBranchPath) {
+
+		List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
+		vertexReps.add(branchVertexRep);
+		DefaultEdge existingEdge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
+		if (existingEdge == null)
+			existingEdge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
+
+		PathwayVertexRep currentVertexRep = branchVertexRep;
+
+		for (int i = 0; i < MAX_BRANCH_SWITCHING_PATH_LENGTH; i++) {
+			List<PathwayVertexRep> nextVertices = null;
+			if (isIncomingBranchPath) {
+				nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
+			} else {
+				nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
+			}
+
+			if (nextVertices.size() == 0 || nextVertices.size() > 1) {
+				return vertexReps;
+			} else {
+				currentVertexRep = nextVertices.get(0);
+				vertexReps.add(currentVertexRep);
+			}
+
+		}
+
+		return vertexReps;
+	}
+
+	/**
+	 * @param currentExpandedBranchNode
+	 *            setter, see {@link #expandedBranchSummaryNode}
+	 */
+	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
+		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
+	}
+
+	/**
+	 * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
+	 */
+	public BranchSummaryNode getExpandedBranchSummaryNode() {
+		return expandedBranchSummaryNode;
+	}
+
 	public void updateLayout() {
 
 		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
@@ -191,12 +404,10 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 
 		float pathwayHeight = 0;
 		int minViewHeightRequiredByBranchNodes = 0;
-		List<ALinearizableNode> pathNodes = pathwayPathRenderer.getPathNodes();
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings(pathNodes);
 
-		Vec3f currentPosition = new Vec3f((isEnRoutePath) ? (branchColumnWidth + pathwayColumnWidth / 2.0f)
-				: (pathwayPathRenderer.getX() / 2.0f), pathwayPathRenderer.getY(), 0.2f);
+		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f, y, 0.2f);
 
 		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
 
@@ -243,6 +454,13 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 
 			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
 		}
+
+		if (expandedBranchSummaryNode != null) {
+			int minViewHeight = calculateBranchNodePosition(expandedBranchSummaryNode);
+			if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+				minViewHeightRequiredByBranchNodes = minViewHeight;
+			}
+		}
 	}
 
 	/**
@@ -252,7 +470,7 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	 * @return
 	 */
 	private int calculateBranchNodePosition(BranchSummaryNode summaryNode) {
-		boolean isIncomingNode = pathwayPathRenderer.linearizedNodesToIncomingBranchSummaryNodesMap.get(summaryNode
+		boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(summaryNode
 				.getAssociatedLinearizedNode()) == summaryNode;
 		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
@@ -274,7 +492,7 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
 		int minViewHeightPixels = 0;
 		// if (viewFrustum.getBottom() > bottomPositionY) {
-		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(pathwayPathRenderer.getY() - bottomPositionY);
+		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(y - bottomPositionY);
 		// setMinSize(minViewHeightPixels + 3);
 		// }
 
@@ -283,9 +501,10 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	}
 
 	@Override
-	public void render(GL2 gl, GLU glu) {
+	protected void renderContent(GL2 gl) {
 
-		List<ALinearizableNode> pathNodes = pathwayPathRenderer.getPathNodes();
+		GLU glu = new GLU();
+		List<ALinearizableNode> pathNodes = getPathNodes();
 
 		updateLayout();
 
@@ -310,17 +529,17 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 			renderBranchNodes(gl, glu, node);
 		}
 
-		if (pathwayPathRenderer.expandedBranchSummaryNode != null) {
-			renderBranchSummaryNode(gl, glu, pathwayPathRenderer.expandedBranchSummaryNode);
+		if (expandedBranchSummaryNode != null) {
+			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
 			// float coverWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
 			// + BRANCH_COLUMN_WIDTH_PIXELS);
 			gl.glColor4f(1, 1, 1, 0.9f);
 
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(0, 0, 0.1f);
-			gl.glVertex3f(pathwayPathRenderer.getX(), 0, 0.1f);
-			gl.glVertex3f(pathwayPathRenderer.getX(), pathwayPathRenderer.getY(), 0.1f);
-			gl.glVertex3f(0, pathwayPathRenderer.getY(), 0.1f);
+			gl.glVertex3f(x, 0, 0.1f);
+			gl.glVertex3f(x, y, 0.1f);
+			gl.glVertex3f(0, y, 0.1f);
 			gl.glEnd();
 		}
 		// currentPositionY -= nodeSpaces.get(i);
@@ -337,8 +556,8 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 	 */
 	private void renderBranchNodes(GL2 gl, GLU glu, ANode node) {
 
-		ANode incomingNode = pathwayPathRenderer.linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
-		if ((incomingNode != null) && (incomingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
 
 			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) incomingNode);
 
@@ -357,8 +576,8 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 			connectionLineRenderer.renderLine(gl, linePoints);
 		}
 
-		ANode outgoingNode = pathwayPathRenderer.linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
-		if ((outgoingNode != null) && (outgoingNode != pathwayPathRenderer.expandedBranchSummaryNode)) {
+		ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+		if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
 
 			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) outgoingNode);
 
@@ -404,8 +623,6 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 
 	private void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2, Vec3f node1ConnectionPoint,
 			Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection) {
-
-		PathwayGraph pathway = pathwayPathRenderer.getPathway();
 
 		PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
 		PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
@@ -584,19 +801,9 @@ public class VerticalPathStrategy implements IPathwayPathRenderingStrategy {
 		return 0;
 	}
 
-	/**
-	 * @return the isEnRoutePath, see {@link #isEnRoutePath}
-	 */
-	public boolean isEnRoutePath() {
-		return isEnRoutePath;
-	}
-
-	/**
-	 * @param isEnRoutePath
-	 *            setter, see {@link isEnRoutePath}
-	 */
-	public void setEnRoutePath(boolean isEnRoutePath) {
-		this.isEnRoutePath = isEnRoutePath;
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
+		return true;
 	}
 
 }

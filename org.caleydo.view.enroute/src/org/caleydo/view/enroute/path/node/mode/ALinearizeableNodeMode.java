@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
 
@@ -46,14 +46,14 @@ public abstract class ALinearizeableNodeMode {
 
 	protected TextureManager textureManager;
 
-	protected PathwayPathRenderer pathwayPathRenderer;
+	protected APathwayPathRenderer pathwayPathRenderer;
 
 	/**
 	 * The {@link ANodeAttributeRenderer}s that shall be rendered in the current mode.
 	 */
 	protected List<ANodeAttributeRenderer> attributeRenderers = new ArrayList<ANodeAttributeRenderer>();
 
-	public ALinearizeableNodeMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public ALinearizeableNodeMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		this.pathwayPathRenderer = pathwayPathRenderer;
 		this.view = view;
 		this.pickingManager = view.getPickingManager();

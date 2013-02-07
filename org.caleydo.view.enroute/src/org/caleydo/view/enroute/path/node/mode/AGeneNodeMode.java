@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.IColorProvider;
 import org.caleydo.view.enroute.SelectionColorCalculator;
 import org.caleydo.view.enroute.node.GeneNode;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 
 /**
  * Base class for modes of a {@link GeneNode}.
@@ -37,7 +37,7 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 	/**
 	 * @param view
 	 */
-	public AGeneNodeMode(AGLView view, PathwayPathRenderer pathwayPathRenderer) {
+	public AGeneNodeMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
 		backgroundColor = DEFAULT_BACKGROUND_COLOR;
 		colorCalculator = new SelectionColorCalculator(new Color(DEFAULT_BACKGROUND_COLOR));

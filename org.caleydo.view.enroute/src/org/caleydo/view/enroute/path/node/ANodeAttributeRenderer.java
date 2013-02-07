@@ -9,7 +9,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 
 /**
  * Base class for renderers of optional attributes for {@link ANode}s.
@@ -27,14 +27,14 @@ public abstract class ANodeAttributeRenderer {
 
 	protected final PixelGLConverter pixelGLConverter;
 
-	protected final PathwayPathRenderer pathwayPathRenderer;
+	protected final APathwayPathRenderer pathwayPathRenderer;
 
 	/**
 	 * Node for which the attribute shall be rendered.
 	 */
 	protected ANode node;
 
-	public ANodeAttributeRenderer(AGLView view, ANode node, PathwayPathRenderer pathwayPathRenderer) {
+	public ANodeAttributeRenderer(AGLView view, ANode node, APathwayPathRenderer pathwayPathRenderer) {
 		this.view = view;
 		this.node = node;
 		this.pathwayPathRenderer = pathwayPathRenderer;

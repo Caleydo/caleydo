@@ -25,10 +25,8 @@ package org.caleydo.view.enroute.path.node;
 import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.enroute.path.PathwayPathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.mode.ALinearizeableNodeMode;
-import org.caleydo.view.enroute.path.node.mode.GeneNodeLinearizedMode;
-import org.caleydo.view.enroute.path.node.mode.GeneNodePreviewMode;
 
 /**
  * Renderer for a node that belongs to a gene.
@@ -50,20 +48,21 @@ public class GeneNode extends ALinearizableNode implements ILabelHolder {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public GeneNode(PathwayPathRenderer pathwayPathRenderer, CaleydoTextRenderer textRenderer, AGLView view, int nodeId) {
-		super(pathwayPathRenderer, view, nodeId);
+	public GeneNode(APathwayPathRenderer pathwayPathRenderer, CaleydoTextRenderer textRenderer, AGLView view,
+			int nodeId, ALinearizeableNodeMode mode) {
+		super(pathwayPathRenderer, view, nodeId, mode);
 		this.textRenderer = textRenderer;
 	}
 
-	@Override
-	protected ALinearizeableNodeMode getLinearizedMode() {
-		return new GeneNodeLinearizedMode(view, pathwayPathRenderer);
-	}
-
-	@Override
-	protected ALinearizeableNodeMode getPreviewMode() {
-		return new GeneNodePreviewMode(view, pathwayPathRenderer);
-	}
+	// @Override
+	// protected ALinearizeableNodeMode getLinearizedMode() {
+	// return new GeneNodeLinearizedMode(view, pathwayPathRenderer);
+	// }
+	//
+	// @Override
+	// protected ALinearizeableNodeMode getPreviewMode() {
+	// return new GeneNodePreviewMode(view, pathwayPathRenderer);
+	// }
 
 	@Override
 	public String getProviderName() {
