@@ -36,8 +36,8 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
-		unregisterPickingListeners();
-		registerPickingListeners();
+		destroy();
+		init();
 		attributeRenderers.clear();
 		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(view, node,
 				pathwayPathRenderer);
@@ -116,13 +116,13 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 	}
 
 	@Override
-	protected void registerPickingListeners() {
+	protected void init() {
 
 	}
 
 	@Override
-	public void unregisterPickingListeners() {
-		super.unregisterPickingListeners();
+	public void destroy() {
+		super.destroy();
 	}
 
 	// @Override

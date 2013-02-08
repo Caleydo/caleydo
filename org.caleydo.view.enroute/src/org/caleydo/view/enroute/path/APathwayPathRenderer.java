@@ -21,6 +21,7 @@ package org.caleydo.view.enroute.path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -47,8 +48,11 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
@@ -74,14 +78,9 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		IListenerOwner {
 
 	/**
-	 * The pathway graph the rendered path belongs to.
+	 * The list of path segments that are a list of {@link PathwayVertexRep}s.
 	 */
-	protected PathwayGraph pathway;
-
-	/**
-	 * The list of {@link PathwayVertexRep}s that represents the path.
-	 */
-	protected List<PathwayVertexRep> path;
+	protected List<List<PathwayVertexRep>> pathSegments;
 
 	/**
 	 * List of renderable nodes for the path.
@@ -162,17 +161,15 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	/**
 	 * Sets a new path to be linearized.
 	 *
-	 * @param pathway
-	 *            The pathway the path corresponds to.
-	 * @param path
-	 *            List of {@link PathwayVertexRep}s that represents a path. If multiple <code>PathwayVertexRep</code>s
-	 *            represent a complex node, they must occur in a sequence.
+	 * @param pathSegments
+	 *            List of path segments that are a List of {@link PathwayVertexRep}s. The last node of segment n and the
+	 *            first node of segment n+1 must be equivalent (i.e. they must refer to the same {@link PathwayVertex}
+	 *            objects).
 	 */
-	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
-		this.pathway = pathway;
-		this.path = path;
+	public void setPath(List<List<PathwayVertexRep>> pathSegments) {
+		this.pathSegments = pathSegments;
 
-		createNodes(path);
+		createNodes(pathSegments);
 
 		PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 		event.setSender(this);
@@ -186,10 +183,42 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected void onPathwayPathChanged(EnRoutePathEvent event) {
 		PathwayPath path = event.getPath();
 		if (path != null && path.getPath() != null) {
-			PathwayGraph pathway = (PathwayGraph) path.getPath().getGraph();
-			setPath(pathway, path.getNodes());
+			List<List<PathwayVertexRep>> pathParts = new ArrayList<>();
+			pathParts.add(path.getNodes());
+			if (path.getNodes().size() > 0) {
+				PathwayVertexRep vertexRep = path.getNodes().get(path.getNodes().size() - 1);
+				Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexReps(vertexRep);
+				PathwayVertexRep eqVertexRep = null;
+				PathwayVertexRep nextVertexRep = null;
+
+				for (PathwayVertexRep vr : equivalentVertexReps) {
+					eqVertexRep = vr;
+					PathwayGraph pw = eqVertexRep.getPathway();
+					if (pw.getType() == EPathwayDatabaseType.KEGG) {
+						Set<DefaultEdge> edges = pw.edgesOf(eqVertexRep);
+						for (DefaultEdge edge : edges) {
+							if (pw.getEdgeSource(edge) == eqVertexRep) {
+								nextVertexRep = pw.getEdgeTarget(edge);
+								break;
+							}
+						}
+						if (nextVertexRep != null)
+							break;
+					}
+				}
+				if (eqVertexRep != null) {
+					if (nextVertexRep != null) {
+						List<PathwayVertexRep> nextSegment = new ArrayList<>(2);
+						nextSegment.add(eqVertexRep);
+						nextSegment.add(nextVertexRep);
+						pathParts.add(nextSegment);
+					}
+				}
+			}
+
+			setPath(pathParts);
 		} else {
-			setPath(null, new ArrayList<PathwayVertexRep>());
+			setPath(new ArrayList<List<PathwayVertexRep>>());
 		}
 	}
 
@@ -199,14 +228,64 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	protected abstract void updateLayout();
 
-	protected void createNodes(List<PathwayVertexRep> path) {
+	protected void createNodes(List<List<PathwayVertexRep>> pathSegments) {
 
 		for (ANode node : pathNodes) {
 			node.destroy();
 		}
 		pathNodes.clear();
-		createNodesForList(pathNodes, path);
+		for (List<PathwayVertexRep> vertexReps : pathSegments) {
+			List<ALinearizableNode> currentNodes = new ArrayList<>();
+			createNodesForList(currentNodes, vertexReps);
+			appendNodes(pathNodes, currentNodes);
+		}
 
+	}
+
+	/**
+	 * Merges the last node of pathNodes with the first node of nodesToAppend and adds the remaining nodesToAppend to
+	 * pathNodes.
+	 *
+	 * @param pathNodes
+	 * @param nodesToAppend
+	 */
+	protected void appendNodes(List<ALinearizableNode> pathNodes, List<ALinearizableNode> nodesToAppend) {
+		if (pathNodes.size() <= 0) {
+			pathNodes.addAll(nodesToAppend);
+		} else {
+			if (nodesToAppend.size() > 0) {
+				ALinearizableNode lastNodeOfPath = pathNodes.get(pathNodes.size() - 1);
+				ALinearizableNode firstNodeOfNodesToAppend = nodesToAppend.get(0);
+				mergeNodes(lastNodeOfPath, firstNodeOfNodesToAppend);
+				nodesToAppend.remove(0);
+				firstNodeOfNodesToAppend.destroy();
+				pathNodes.addAll(nodesToAppend);
+			}
+		}
+	}
+
+	/**
+	 * Merges node1 with node2, i.e., the {@link PathwayVertexRep}s from node2 are added to node1.
+	 *
+	 * @param node1
+	 * @param node2
+	 */
+	protected void mergeNodes(ALinearizableNode node1, ALinearizableNode node2) {
+		for (PathwayVertexRep vertexRep : node2.getVertexReps()) {
+			node1.addPathwayVertexRep(vertexRep);
+		}
+		if (node1 instanceof ComplexNode) {
+			List<ALinearizableNode> nodesOfNode1 = ((ComplexNode) node1).getNodes();
+			for (ALinearizableNode node1Child : nodesOfNode1) {
+				List<ALinearizableNode> nodesOfNode2 = ((ComplexNode) node2).getNodes();
+				for (ALinearizableNode node2Child : nodesOfNode2) {
+					if (node1Child.getMappedDavidIDs().size() == node2Child.getMappedDavidIDs().size()
+							&& node1Child.getMappedDavidIDs().containsAll(node2Child.getMappedDavidIDs())) {
+						mergeNodes(node1Child, node2Child);
+					}
+				}
+			}
+		}
 	}
 
 	protected void createNodesForList(List<ALinearizableNode> nodes, List<PathwayVertexRep> vertexReps) {
@@ -227,14 +306,14 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				for (ALinearizableNode groupedNode : groupedNodes) {
 					groupedNode.setParentNode(complexNode);
 				}
-				complexNode.setPathwayVertexRep(currentVertexRep);
+				complexNode.addPathwayVertexRep(currentVertexRep);
 				complexNode.init();
 				node = complexNode;
 			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
 				CompoundNode compoundNode = new CompoundNode(this, view, lastNodeID++, new CompoundNodeLinearizedMode(
 						view, this));
 
-				compoundNode.setPathwayVertexRep(currentVertexRep);
+				compoundNode.addPathwayVertexRep(currentVertexRep);
 				compoundNode.init();
 				node = compoundNode;
 
@@ -250,13 +329,14 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				} else {
 					geneNode.setLabel(currentVertexRep.getName());
 				}
-				geneNode.setPathwayVertexRep(currentVertexRep);
+				geneNode.addPathwayVertexRep(currentVertexRep);
 				geneNode.init();
 				node = geneNode;
 			}
 
 			nodes.add(node);
 		}
+
 	}
 
 	@Override
@@ -369,13 +449,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * @return the pathway, see {@link #pathway}
-	 */
-	public PathwayGraph getPathway() {
-		return pathway;
-	}
-
-	/**
 	 * Removes the specified node from the path if it is at the start or the end of the path.
 	 *
 	 * @param node
@@ -385,15 +458,15 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		int linearizedNodeIndex = pathNodes.indexOf(node);
 
 		if (linearizedNodeIndex == 0) {
-			path.remove(0);
-		} else if (linearizedNodeIndex == path.size() - 1) {
-			path.remove(path.size() - 1);
+			pathSegments.remove(0);
+		} else if (linearizedNodeIndex == pathSegments.size() - 1) {
+			pathSegments.remove(pathSegments.size() - 1);
 
 		} else {
 			return;
 		}
 
-		setPath(pathway, path);
+		setPath(pathSegments);
 
 		broadcastPath();
 	}
@@ -401,25 +474,29 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected void broadcastPath() {
 
 		PathwayPath pathwayPath = null;
-		if (path.size() > 0) {
+		// FIXME: TODO: Use pathSegments correctly.
+		if (pathSegments.size() > 0) {
+			List<PathwayVertexRep> pathSegment = pathSegments.get(0);
+			if (pathSegment.size() > 0) {
+				PathwayVertexRep startVertexRep = pathSegment.get(0);
+				PathwayVertexRep endVertexRep = pathSegment.get(pathSegment.size() - 1);
+				List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+				PathwayGraph pathway = startVertexRep.getPathway();
 
-			PathwayVertexRep startVertexRep = path.get(0);
-			PathwayVertexRep endVertexRep = path.get(path.size() - 1);
-			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+				for (int i = 0; i < pathSegment.size() - 1; i++) {
+					PathwayVertexRep currentVertexRep = pathSegment.get(i);
+					PathwayVertexRep nextVertexRep = pathSegment.get(i + 1);
 
-			for (int i = 0; i < path.size() - 1; i++) {
-				PathwayVertexRep currentVertexRep = path.get(i);
-				PathwayVertexRep nextVertexRep = path.get(i + 1);
+					DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
+					if (edge == null)
+						edge = pathway.getEdge(nextVertexRep, currentVertexRep);
+					edges.add(edge);
+				}
+				GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+						pathway, startVertexRep, endVertexRep, edges, edges.size());
 
-				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
-				if (edge == null)
-					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
-				edges.add(edge);
+				pathwayPath = new PathwayPath(graphPath);
 			}
-			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-					pathway, startVertexRep, endVertexRep, edges, edges.size());
-
-			pathwayPath = new PathwayPath(graphPath);
 		}
 		EnRoutePathEvent event = new EnRoutePathEvent();
 		event.setEventSpace(pathwayPathEventSpace);

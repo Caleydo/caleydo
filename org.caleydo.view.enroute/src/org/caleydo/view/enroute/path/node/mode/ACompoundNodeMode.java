@@ -59,7 +59,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 
 	@Override
 	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
-		List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node.getPathwayVertexRep()
+		List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node.getPrimaryPathwayVertexRep()
 				.getName().hashCode());
 		Collections.sort(selectionTypes);
 		Collections.reverse(selectionTypes);

@@ -54,16 +54,6 @@ public class GeneNode extends ALinearizableNode implements ILabelHolder {
 		this.textRenderer = textRenderer;
 	}
 
-	// @Override
-	// protected ALinearizeableNodeMode getLinearizedMode() {
-	// return new GeneNodeLinearizedMode(view, pathwayPathRenderer);
-	// }
-	//
-	// @Override
-	// protected ALinearizeableNodeMode getPreviewMode() {
-	// return new GeneNodePreviewMode(view, pathwayPathRenderer);
-	// }
-
 	@Override
 	public String getProviderName() {
 		return "Gene Node";

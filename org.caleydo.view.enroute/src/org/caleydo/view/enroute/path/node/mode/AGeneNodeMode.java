@@ -53,7 +53,7 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements ICol
 	@Override
 	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
 		List<SelectionType> allSelectionTypes = new ArrayList<SelectionType>();
-		for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+		for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 			List<SelectionType> selectionTypes = selectionManager.getSelectionTypes(davidId);
 			for (SelectionType selectionType : selectionTypes) {
 				if (!allSelectionTypes.contains(selectionType)) {

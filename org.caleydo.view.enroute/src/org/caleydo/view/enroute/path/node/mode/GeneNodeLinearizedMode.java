@@ -41,8 +41,8 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
-		unregisterPickingListeners();
-		registerPickingListeners();
+		destroy();
+		init();
 		attributeRenderers.clear();
 		if (node.getParentNode() == null) {
 			RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(view, node,
@@ -92,7 +92,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 	}
 
 	@Override
-	protected void registerPickingListeners() {
+	protected void init() {
 		view.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -102,7 +102,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 						.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.SELECTION);
 				selectionManager.clearSelection(SelectionType.SELECTION);
-				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 					selectionManager.addToType(SelectionType.SELECTION, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
@@ -121,7 +121,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 						.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
@@ -135,7 +135,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 			@Override
 			public void mouseOut(Pick pick) {
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
@@ -150,8 +150,8 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 	}
 
 	@Override
-	public void unregisterPickingListeners() {
-		super.unregisterPickingListeners();
+	public void destroy() {
+		super.destroy();
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 

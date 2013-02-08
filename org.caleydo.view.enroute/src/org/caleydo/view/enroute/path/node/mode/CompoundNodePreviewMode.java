@@ -45,8 +45,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
-		unregisterPickingListeners();
-		registerPickingListeners();
+		destroy();
+		init();
 		attributeRenderers.clear();
 	}
 
@@ -97,7 +97,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 	}
 
 	@Override
-	protected void registerPickingListeners() {
+	protected void init() {
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -119,7 +119,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPathwayVertexRep().getName().hashCode());
+				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName().hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
@@ -131,7 +131,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 			public void mouseOut(Pick pick) {
 
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
-				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPathwayVertexRep().getName()
+				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
 						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
@@ -143,8 +143,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 	}
 
 	@Override
-	public void unregisterPickingListeners() {
-		super.unregisterPickingListeners();
+	public void destroy() {
+		super.destroy();
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 
 	}

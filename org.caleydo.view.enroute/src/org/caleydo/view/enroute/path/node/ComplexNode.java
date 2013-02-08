@@ -57,17 +57,6 @@ public class ComplexNode extends ALinearizableNode {
 		super(pathwayPathRenderer, view, nodeId, mode);
 	}
 
-	// @Override
-	// protected ALinearizeableNodeMode getLinearizedMode() {
-	// return new ComplexNodeLinearizedMode(view, pathwayPathRenderer);
-	// }
-	//
-	// @Override
-	// protected ALinearizeableNodeMode getPreviewMode() {
-	// // FIXME: just temporary
-	// return new ComplexNodeLinearizedMode(view, pathwayPathRenderer);
-	// }
-
 	@Override
 	public String getLabel() {
 		return "Complex";
@@ -92,19 +81,10 @@ public class ComplexNode extends ALinearizableNode {
 	@Override
 	public void setMode(ALinearizeableNodeMode mode) {
 		super.setMode(mode);
-		for (ALinearizableNode node : nodes) {
-			node.setMode(mode);
-		}
+		// for (ALinearizableNode node : nodes) {
+		// node.setMode(mode);
+		// }
 	}
-
-	// @Override
-	// public void setL(boolean isPreviewMode) {
-	// super.setPreviewMode(isPreviewMode);
-	//
-	// for (ALinearizableNode node : nodes) {
-	// node.setPreviewMode(isPreviewMode);
-	// }
-	// }
 
 	@Override
 	public void destroy() {

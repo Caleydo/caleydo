@@ -43,19 +43,9 @@ public class CompoundNode extends ALinearizableNode {
 		super(pathwayPathRenderer, view, nodeId, mode);
 	}
 
-	// @Override
-	// protected ALinearizeableNodeMode getLinearizedMode() {
-	// return new CompoundNodeLinearizedMode(view, pathwayPathRenderer);
-	// }
-	//
-	// @Override
-	// protected ALinearizeableNodeMode getPreviewMode() {
-	// return new CompoundNodePreviewMode(view, pathwayPathRenderer);
-	// }
-
 	@Override
 	public String getLabel() {
-		return pathwayVertexRep.getName();
+		return getPrimaryPathwayVertexRep().getName();
 	}
 
 	@Override

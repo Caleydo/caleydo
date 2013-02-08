@@ -85,7 +85,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		for (int i = 0; i < pathNodes.size() - 1; i++) {
 			ALinearizableNode node1 = pathNodes.get(i);
 			ALinearizableNode node2 = pathNodes.get(i + 1);
-			EdgeRenderUtil.renderEdge(gl, pathway, node1, node2, node1.getBottomConnectionPoint(),
+			EdgeRenderUtil.renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(),
 					node2.getTopConnectionPoint(), 0.2f, true, pixelGLConverter, textRenderer);
 		}
 	}

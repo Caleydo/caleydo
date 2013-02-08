@@ -87,9 +87,9 @@ public abstract class ALinearizeableNodeMode {
 	public abstract int getMinWidthPixels();
 
 	/**
-	 * Method that is intended to register all picking listeners for the current mode.
+	 * Method that is intended to initialize the mode and, e.g., register all picking listeners.
 	 */
-	protected abstract void registerPickingListeners();
+	protected abstract void init();
 
 	/**
 	 * This method is intended to set the background color according to the selection status of the data that is
@@ -102,9 +102,9 @@ public abstract class ALinearizeableNodeMode {
 	}
 
 	/**
-	 * Method that shall be called when the mode is no longer needed to unregister its picking listeners.
+	 * Method that shall be called when the mode is no longer needed.
 	 */
-	public void unregisterPickingListeners() {
+	public void destroy() {
 		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
 			attributeRenderer.unregisterPickingListeners();
 		}

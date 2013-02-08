@@ -45,10 +45,8 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 		Vec3f position = node.getPosition();
 
 		gl.glPushMatrix();
-		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f,
-				position.z());
-		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
-				0, width, 0, height, -1, 20));
+		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f, position.z());
+		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, width, 0, height, -1, 20));
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
@@ -57,6 +55,13 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 			attributeRenderer.render(gl);
 		}
 
+	}
+
+	@Override
+	public void destroy() {
+		GL2 gl = view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+		layoutManager.destroy(gl);
+		super.destroy();
 	}
 
 }

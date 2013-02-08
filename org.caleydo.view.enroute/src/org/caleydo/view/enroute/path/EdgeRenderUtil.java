@@ -55,19 +55,32 @@ public final class EdgeRenderUtil {
 	private EdgeRenderUtil() {
 	}
 
-	public static void renderEdge(GL2 gl, PathwayGraph pathway, ALinearizableNode node1, ALinearizableNode node2,
-			Vec3f node1ConnectionPoint, Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection,
+	public static void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2, Vec3f node1ConnectionPoint,
+			Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection,
 			PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer) {
 
-		PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
-		PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
-
-		DefaultEdge edge = pathway.getEdge(vertexRep1, vertexRep2);
-		if (edge == null) {
-			edge = pathway.getEdge(vertexRep2, vertexRep1);
-			if (edge == null)
-				return;
+		List<PathwayVertexRep> node1VertexReps = node1.getVertexReps();
+		List<PathwayVertexRep> node2VertexReps = node2.getVertexReps();
+		PathwayGraph pathway = null;
+		DefaultEdge edge = null;
+		PathwayVertexRep vertexRep1 = null;
+		for (PathwayVertexRep node1VertexRep : node1VertexReps) {
+			for (PathwayVertexRep node2VertexRep : node2VertexReps) {
+				if (node1VertexRep.getPathway() == node2VertexRep.getPathway()) {
+					pathway = node1VertexRep.getPathway();
+					vertexRep1 = node1VertexRep;
+					edge = pathway.getEdge(node1VertexRep, node2VertexRep);
+					if (edge == null) {
+						edge = pathway.getEdge(node2VertexRep, node1VertexRep);
+					}
+				}
+			}
 		}
+		if (edge == null || pathway == null || vertexRep1 == null)
+			return;
+
+		// PathwayVertexRep vertexRep1 = node1.getPrimaryPathwayVertexRep();
+		// PathwayVertexRep vertexRep2 = node2.getPrimaryPathwayVertexRep();
 
 		ConnectionLineRenderer connectionRenderer = new ConnectionLineRenderer();
 		List<Vec3f> linePoints = new ArrayList<Vec3f>();

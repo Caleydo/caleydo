@@ -40,8 +40,8 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
-		unregisterPickingListeners();
-		registerPickingListeners();
+		destroy();
+		init();
 		attributeRenderers.clear();
 
 		Column baseColumn = new Column("baseColumn");
@@ -74,6 +74,10 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 		baseColumn.append(verticalSpacing);
 
 		layoutManager.setBaseElementLayout(baseColumn);
+
+		for (ALinearizableNode childNode : ((ComplexNode) node).getNodes()) {
+			enRoutePathRenderer.setPreviewMode(childNode);
+		}
 	}
 
 	@Override
@@ -87,7 +91,7 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 	}
 
 	@Override
-	protected void registerPickingListeners() {
+	protected void init() {
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -104,8 +108,8 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 	}
 
 	@Override
-	public void unregisterPickingListeners() {
-		super.unregisterPickingListeners();
+	public void destroy() {
+		super.destroy();
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 

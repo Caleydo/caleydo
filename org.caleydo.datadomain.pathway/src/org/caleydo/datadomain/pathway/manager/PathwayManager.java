@@ -464,4 +464,32 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		return hashPathwaysToOccurences;
 	}
+
+	/**
+	 * Gets all {@link PathwayVertexRep}s that are equivalent to the specified one. Equivalence is defined as that the
+	 * vertexReps refer to the same set of {@link PathwayVertex} objects. The returned vertexReps can be from different
+	 * {@link PathwayGraph}s or also the same one as the specified vertexRep. The specified vertexRep is not part of the
+	 * returned set.
+	 *
+	 * @param vertexRep
+	 * @return Set of equivalent vertexReps.
+	 */
+	public Set<PathwayVertexRep> getEquivalentVertexReps(PathwayVertexRep vertexRep) {
+		Set<PathwayVertexRep> equivalentVertexReps = new HashSet<>();
+
+		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
+		for (PathwayVertex vertex : vertices) {
+			List<PathwayVertexRep> vertexReps = vertex.getPathwayVertexReps();
+			for (PathwayVertexRep vr : vertexReps) {
+				if (vr != vertexRep) {
+					List<PathwayVertex> currentVertices = vr.getPathwayVertices();
+					if (currentVertices.size() == vertices.size() && currentVertices.containsAll(vertices)) {
+						equivalentVertexReps.add(vr);
+					}
+				}
+			}
+		}
+
+		return equivalentVertexReps;
+	}
 }

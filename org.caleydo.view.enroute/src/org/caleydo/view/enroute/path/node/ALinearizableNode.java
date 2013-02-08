@@ -44,16 +44,6 @@ import org.caleydo.view.enroute.path.node.mode.ALinearizeableNodeMode;
  */
 public abstract class ALinearizableNode extends ANode implements ILabelProvider {
 
-	// /**
-	// * Determines whether the node shows a preview of its data.
-	// */
-	// protected boolean isPreviewMode = false;
-
-	// /**
-	// * Determines whether the button to remove the
-	// */
-	// protected boolean showRemoveButton = false;
-
 	/**
 	 * The {@link SelectionType} of the node.
 	 */
@@ -65,10 +55,9 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	protected ALinearizeableNodeMode mode;
 
 	/**
-	 * The {@link PathwayVertexRep} in the graph this node belongs to. This can either be a direct relationship, or the
-	 * vertex can contain multiple genes.
+	 * The {@link PathwayVertexRep}s this node belongs to.
 	 */
-	protected PathwayVertexRep pathwayVertexRep;
+	protected List<PathwayVertexRep> vertexReps = new ArrayList<>(2);
 
 	/**
 	 * The {@link ComplexNode} this node belongs to. Null if this node is not part of a complex node.
@@ -103,46 +92,10 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	 *            setter, see {@link mode}
 	 */
 	public void setMode(ALinearizeableNodeMode mode) {
-		this.mode.unregisterPickingListeners();
+		this.mode.destroy();
 		this.mode = mode;
 		mode.apply(this);
 	}
-
-	// /**
-	// * @param isPreviewMode
-	// * setter, see {@link #isPreviewMode}
-	// */
-	// public void setPreviewMode(boolean isPreviewMode) {
-	//
-	// if (this.isPreviewMode == isPreviewMode)
-	// return;
-	// this.isPreviewMode = isPreviewMode;
-	// mode.unregisterPickingListeners();
-	//
-	// if (isPreviewMode) {
-	// mode = getPreviewMode();
-	// } else {
-	// mode = getLinearizedMode();
-	// }
-	// mode.apply(this);
-	// }
-
-	// /**
-	// * @return the isPreviewMode, see {@link #isPreviewMode}
-	// */
-	// public boolean isPreviewMode() {
-	// return isPreviewMode;
-	// }
-
-	// /**
-	// * @return A new linearized mode object for the concrete node.
-	// */
-	// protected abstract ALinearizeableNodeMode getLinearizedMode();
-	//
-	// /**
-	// * @return A new preview mode object for the concrete node.
-	// */
-	// protected abstract ALinearizeableNodeMode getPreviewMode();
 
 	/**
 	 * @param selectionType
@@ -170,18 +123,31 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	}
 
 	/**
+	 * Adds a {@link PathwayVertexRep} to this node. Note that only equivalent vertexReps are allowed to be added.
+	 *
 	 * @param pathwayVertexRep
-	 *            setter, see {@link #pathwayVertexRep}
 	 */
-	public void setPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
-		this.pathwayVertexRep = pathwayVertexRep;
+	public void addPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
+		PathwayVertexRep primaryVertexRep = getPrimaryPathwayVertexRep();
+		if (primaryVertexRep != null) {
+			if (primaryVertexRep.getDavidIDs().size() != pathwayVertexRep.getDavidIDs().size()
+					|| !primaryVertexRep.getDavidIDs().containsAll(pathwayVertexRep.getDavidIDs())) {
+				throw new IllegalArgumentException("Tried to add a vertex rep to node " + this
+						+ " that is not equivalent to existing ones.");
+			}
+		}
+		vertexReps.add(pathwayVertexRep);
 	}
 
 	/**
-	 * @return the pathwayVertexRep, see {@link #pathwayVertexRep}
+	 * Gets the first vertexRep this node represents.
+	 *
+	 * @return
 	 */
-	public PathwayVertexRep getPathwayVertexRep() {
-		return pathwayVertexRep;
+	public PathwayVertexRep getPrimaryPathwayVertexRep() {
+		if (vertexReps.size() > 0)
+			return vertexReps.get(0);
+		return null;
 	}
 
 	/**
@@ -207,20 +173,29 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	@Override
 	public void destroy() {
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), nodeId);
-		mode.unregisterPickingListeners();
+		mode.destroy();
 	}
 
 	/**
 	 * @return List of all davidIDs this node maps to.
 	 */
 	public List<Integer> getMappedDavidIDs() {
-		return new ArrayList<>(pathwayVertexRep.getDavidIDs());
+
+		// The DavidIDs must be the same for all vertex reps
+		return new ArrayList<>(getPrimaryPathwayVertexRep().getDavidIDs());
 	}
 
 	public void update() {
 		destroy();
 		init();
 		mode.apply(this);
+	}
+
+	/**
+	 * @return the vertexReps, see {@link #vertexReps}
+	 */
+	public List<PathwayVertexRep> getVertexReps() {
+		return vertexReps;
 	}
 
 }

@@ -37,8 +37,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
-		unregisterPickingListeners();
-		registerPickingListeners();
+		destroy();
+		init();
 		attributeRenderers.clear();
 		if (node.getParentNode() == null) {
 			RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(view, node,
@@ -63,7 +63,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	}
 
 	@Override
-	protected void registerPickingListeners() {
+	protected void init() {
 		view.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -72,7 +72,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.SELECTION);
 				selectionManager.clearSelection(SelectionType.SELECTION);
-				selectionManager.addToType(SelectionType.SELECTION, node.getPathwayVertexRep().getName().hashCode());
+				selectionManager.addToType(SelectionType.SELECTION, node.getPrimaryPathwayVertexRep().getName().hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.SELECTION);
@@ -86,7 +86,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPathwayVertexRep().getName().hashCode());
+				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName().hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
@@ -97,7 +97,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 			public void mouseOut(Pick pick) {
 
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
-				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPathwayVertexRep().getName()
+				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
 						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
@@ -109,8 +109,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	}
 
 	@Override
-	public void unregisterPickingListeners() {
-		super.unregisterPickingListeners();
+	public void destroy() {
+		super.destroy();
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 

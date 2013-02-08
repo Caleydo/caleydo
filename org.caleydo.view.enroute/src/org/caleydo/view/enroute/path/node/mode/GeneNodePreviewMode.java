@@ -59,8 +59,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
-		unregisterPickingListeners();
-		registerPickingListeners();
+		destroy();
+		init();
 		attributeRenderers.clear();
 
 		Column baseColumn = new Column("baseColumn");
@@ -194,7 +194,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	}
 
 	@Override
-	protected void registerPickingListeners() {
+	protected void init() {
 		view.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -205,7 +205,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 					branchNode = branchNode.getParentNode();
 				}
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
@@ -220,7 +220,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 						.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
@@ -231,7 +231,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			@Override
 			public void mouseOut(Pick pick) {
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getGeneSelectionManager();
-				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+				for (Integer davidId : node.getPrimaryPathwayVertexRep().getDavidIDs()) {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
@@ -243,8 +243,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	}
 
 	@Override
-	public void unregisterPickingListeners() {
-		super.unregisterPickingListeners();
+	public void destroy() {
+		super.destroy();
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 
