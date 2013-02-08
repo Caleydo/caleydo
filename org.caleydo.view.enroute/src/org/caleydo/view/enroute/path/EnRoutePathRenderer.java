@@ -518,21 +518,6 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 		GLU glu = new GLU();
 		List<ALinearizableNode> pathNodes = getPathNodes();
 
-		// List<Float> nodeSpaces = calcNodeSpace(pathNodes, view.getPixelGLConverter());
-		//
-		// // gl.glPushMatrix();
-		// // gl.glLoadIdentity();
-		// // gl.glTranslatef(pathwayPathRenderer.getY(), 0, 0);
-		// // gl.glRotatef(90f, 0, 0, 1);
-		// // gl.glColor3f(1, 0, 0);
-		// // gl.glBegin(GL2.GL_QUADS);
-		// // gl.glVertex3f(0, 0, 0);
-		// // gl.glVertex3f(pathwayPathRenderer.getX(), 0, 0);
-		// // gl.glVertex3f(pathwayPathRenderer.getX(), pathwayPathRenderer.getY(), 0);
-		// // gl.glVertex3f(0, pathwayPathRenderer.getY(), 0);
-		// // gl.glEnd();
-		//
-		// float currentPositionY = pathwayPathRenderer.getY();
 		for (int i = 0; i < pathNodes.size(); i++) {
 			ALinearizableNode node = pathNodes.get(i);
 			node.render(gl, glu);
@@ -541,8 +526,6 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 		if (expandedBranchSummaryNode != null) {
 			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
-			// float coverWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
-			// + BRANCH_COLUMN_WIDTH_PIXELS);
 			gl.glColor4f(1, 1, 1, 0.9f);
 
 			gl.glBegin(GL2.GL_QUADS);
@@ -552,11 +535,7 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 			gl.glVertex3f(0, y, 0.1f);
 			gl.glEnd();
 		}
-		// currentPositionY -= nodeSpaces.get(i);
-		// }
-
 		renderEdges(gl, pathNodes);
-		// gl.glPopMatrix();
 	}
 
 	/**
@@ -803,7 +782,7 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 0;
+		return minHeightPixels;
 	}
 
 	@Override
