@@ -24,6 +24,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.CategoricalColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
@@ -191,8 +192,8 @@ public class TabularDataParser extends ATextParser {
 						categoricalColumn.setCategoryDescriptions(((CategoricalTable<String>) table)
 								.getCategoryDescriptions());
 					} else {
-						// TODO support per column samples
-						// categoricalColumn.setCategoryDescriptions(parsingDetail.getCategoricalDescription());
+						categoricalColumn.setCategoryDescriptions((CategoricalClassDescription<String>) dataDescription
+								.getCategoricalClassDescription());
 					}
 					columnID = table.addColumn(categoricalColumn);
 					break;
@@ -209,6 +210,10 @@ public class TabularDataParser extends ATextParser {
 					if (table instanceof CategoricalTable<?>) {
 						categoricalIntColumn.setCategoryDescriptions(((CategoricalTable<Integer>) table)
 								.getCategoryDescriptions());
+					} else {
+						categoricalIntColumn
+								.setCategoryDescriptions((CategoricalClassDescription<Integer>) dataDescription
+										.getCategoricalClassDescription());
 					}
 					columnID = table.addColumn(categoricalIntColumn);
 					break;
