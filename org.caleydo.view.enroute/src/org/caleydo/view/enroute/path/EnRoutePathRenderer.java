@@ -35,15 +35,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineEndStaticLineRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
-import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
-import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
@@ -559,7 +551,8 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 			linePoints.add(sourcePosition);
 			linePoints.add(targetPosition);
 
-			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
+			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
 			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
 
 			connectionLineRenderer.renderLine(gl, linePoints);
@@ -580,7 +573,8 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 			linePoints.add(sourcePosition);
 			linePoints.add(targetPosition);
 
-			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
+			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
 			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
 
 			connectionLineRenderer.renderLine(gl, linePoints);
@@ -595,8 +589,8 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 		if (!summaryNode.isCollapsed()) {
 			List<ALinearizableNode> branchNodes = summaryNode.getBranchNodes();
 			for (ALinearizableNode node : branchNodes) {
-				renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
-						linearizedNode.getLeftConnectionPoint(), 0.2f, false);
+				EdgeRenderUtil.renderEdge(gl, pathway, node, linearizedNode, node.getRightConnectionPoint(),
+						linearizedNode.getLeftConnectionPoint(), 0.2f, false, pixelGLConverter, textRenderer);
 			}
 		}
 
@@ -606,188 +600,9 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 		for (int i = 0; i < pathNodes.size() - 1; i++) {
 			ALinearizableNode node1 = pathNodes.get(i);
 			ALinearizableNode node2 = pathNodes.get(i + 1);
-			renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(), node2.getTopConnectionPoint(), 0.2f, true);
+			EdgeRenderUtil.renderEdge(gl, pathway, node1, node2, node1.getBottomConnectionPoint(),
+					node2.getTopConnectionPoint(), 0.2f, true, pixelGLConverter, textRenderer);
 		}
-	}
-
-	private void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2, Vec3f node1ConnectionPoint,
-			Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection) {
-
-		PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
-		PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
-
-		DefaultEdge edge = pathway.getEdge(vertexRep1, vertexRep2);
-		if (edge == null) {
-			edge = pathway.getEdge(vertexRep2, vertexRep1);
-			if (edge == null)
-				return;
-		}
-
-		ConnectionLineRenderer connectionRenderer = new ConnectionLineRenderer();
-		List<Vec3f> linePoints = new ArrayList<Vec3f>();
-
-		boolean isNode1Target = pathway.getEdgeTarget(edge) == vertexRep1;
-
-		Vec3f sourceConnectionPoint = (isNode1Target) ? node2ConnectionPoint : node1ConnectionPoint;
-		Vec3f targetConnectionPoint = (isNode1Target) ? node1ConnectionPoint : node2ConnectionPoint;
-
-		sourceConnectionPoint.setZ(zCoordinate);
-		targetConnectionPoint.setZ(zCoordinate);
-
-		linePoints.add(sourceConnectionPoint);
-		linePoints.add(targetConnectionPoint);
-
-		if (edge instanceof PathwayReactionEdgeRep) {
-			// TODO: This is just a default edge. Is this right?
-			PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
-
-			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
-
-			connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
-
-			if (reactionEdge.getType() == EPathwayReactionEdgeType.reversible) {
-				arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-				lineEndArrowRenderer = new LineEndArrowRenderer(true, arrowRenderer);
-				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
-			}
-
-		} else {
-			if (edge instanceof PathwayRelationEdgeRep) {
-				PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
-
-				ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep.getRelationSubTypes();
-				float spacing = pixelGLConverter.getGLHeightForPixelHeight(3);
-
-				for (EPathwayRelationEdgeSubType subtype : subtypes) {
-					switch (subtype) {
-					case compound:
-						// TODO:
-						break;
-					case hidden_compound:
-						// TODO:
-						break;
-					case activation:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						break;
-					case inhibition:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
-						if (isVerticalConnection) {
-							targetConnectionPoint.setY(targetConnectionPoint.y()
-									+ ((isNode1Target) ? -spacing : spacing));
-						} else {
-							targetConnectionPoint.setX(targetConnectionPoint.x()
-									+ ((isNode1Target) ? spacing : -spacing));
-						}
-						break;
-					case expression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						if (vertexRep1.getType() == EPathwayVertexType.gene
-								&& vertexRep1.getType() == EPathwayVertexType.gene) {
-							connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
-						}
-						break;
-					case repression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
-						targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
-						break;
-					case indirect_effect:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer.setLineStippled(true);
-						break;
-					case state_change:
-						connectionRenderer.setLineStippled(true);
-						break;
-					case binding_association:
-						// Nothing to do
-						break;
-					case dissociation:
-						connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
-						break;
-					case missing_interaction:
-						connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer());
-						break;
-					case phosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
-										.getSymbol()));
-						break;
-					case dephosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
-										.getSymbol()));
-						break;
-					case glycosylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
-										.getSymbol()));
-						break;
-					case ubiquitination:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
-										.getSymbol()));
-						break;
-					case methylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
-										.getSymbol()));
-						break;
-					}
-				}
-			}
-		}
-
-		connectionRenderer.renderLine(gl, linePoints);
-	}
-
-	private LineEndArrowRenderer createDefaultLineEndArrowRenderer() {
-		ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-		return new LineEndArrowRenderer(false, arrowRenderer);
-	}
-
-	private LineEndStaticLineRenderer createDefaultLineEndStaticLineRenderer(boolean isHorizontalLine) {
-		LineEndStaticLineRenderer lineEndRenderer = new LineEndStaticLineRenderer(false, pixelGLConverter);
-		lineEndRenderer.setHorizontalLine(isHorizontalLine);
-		return lineEndRenderer;
-	}
-
-	private LineLabelRenderer createDefaultLabelOnLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f, pixelGLConverter, text, textRenderer);
-		lineLabelRenderer.setXCentered(true);
-		lineLabelRenderer.setYCentered(true);
-		lineLabelRenderer.setLineOffsetPixels(0);
-		return lineLabelRenderer;
-	}
-
-	private LineLabelRenderer createDefaultLabelAboveLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter, text, textRenderer);
-		lineLabelRenderer.setLineOffsetPixels(5);
-		return lineLabelRenderer;
-	}
-
-	private LineCrossingRenderer createDefaultOrthogonalLineCrossingRenderer() {
-		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
-		lineCrossingRenderer.setCrossingAngle(90);
-		return lineCrossingRenderer;
-	}
-
-	private LineCrossingRenderer createDefaultLineCrossingRenderer() {
-		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
-		lineCrossingRenderer.setCrossingAngle(45);
-		return lineCrossingRenderer;
-	}
-
-	@Override
-	public int getMinHeightPixels() {
-		return minHeightPixels;
-	}
-
-	@Override
-	public int getMinWidthPixels() {
-		return 0;
 	}
 
 	@Override

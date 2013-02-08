@@ -92,7 +92,7 @@
             <Embedding
                   embeddingID="org.caleydo.view.subgraph.pathway.multiform"
                   icon="resources/icons/pathway.png"
-                  isDefaultView="false"
+                  isDefaultView="true"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
                <ViewCreator
                      class="org.caleydo.view.pathway.PathwayRemoteViewCreator">

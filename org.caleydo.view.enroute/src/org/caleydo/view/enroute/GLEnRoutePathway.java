@@ -177,6 +177,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			sampleSelectionManager.registerEventListeners();
 		}
 
+
+		pathRenderer = new EnRoutePathRenderer(this, new ArrayList<TablePerspective>());
 		mappedDataRenderer = new MappedDataRenderer(this);
 
 	}
@@ -188,9 +190,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		textRenderer = new CaleydoTextRenderer(24);
 
 		detailLevel = EDetailLevel.HIGH;
-
-		pathRenderer = new EnRoutePathRenderer(this, new ArrayList<TablePerspective>());
-
+		pathRenderer.setTextRenderer(textRenderer);
+		pathRenderer.setPixelGLConverter(pixelGLConverter);
 		pathRenderer.init();
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);

@@ -179,9 +179,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		updateLayout();
-		// setMinSize(0);
-		// isNewPath = true;
-		// setLayoutDirty();
 
 	}
 
@@ -440,6 +437,22 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	@Override
 	public int getMinHeightPixels() {
 		return minHeightPixels;
+	}
+
+	/**
+	 * @param pixelGLConverter
+	 *            setter, see {@link pixelGLConverter}
+	 */
+	public void setPixelGLConverter(PixelGLConverter pixelGLConverter) {
+		this.pixelGLConverter = pixelGLConverter;
+	}
+
+	/**
+	 * @param textRenderer
+	 *            setter, see {@link textRenderer}
+	 */
+	public void setTextRenderer(CaleydoTextRenderer textRenderer) {
+		this.textRenderer = textRenderer;
 	}
 
 }
