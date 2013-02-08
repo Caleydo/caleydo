@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
-import java.awt.Point;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -27,33 +26,32 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.BitSet;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.caleydo.core.util.ClassUtils;
+import org.caleydo.core.util.IntegerPool;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 /**
  * space specific part of a picking manager see {@link PickingManager2}
- * 
+ *
  * registration: {@link #addPickingListener(Object, int, IPickingListener)} or
  * {@link #addTypePickingListener(Object, IPickingListener)} or {@link #register(Object)} using annotation
- * 
+ *
  * querying: {@link #getPickingID(Object, int)}
  *
  * usage: one {@link SpacePickingManager} per view
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public class SpacePickingManager {
+public class SpacePickingManager implements Iterable<PickingEntry> {
 	/**
 	 * mapping from key: type,id to their state
 	 */
@@ -64,10 +62,10 @@ public class SpacePickingManager {
 	private Map<Object, PickingListenerComposite> typeListeners = new HashMap<>();
 
 	// shared instance for global id counter per PickingManager2 instance
-	private final AtomicInteger counter;
+	private final IntegerPool pool;
 
-	SpacePickingManager(AtomicInteger counter) {
-		this.counter = counter;
+	SpacePickingManager(IntegerPool pool) {
+		this.pool = pool;
 	}
 
 	/**
@@ -85,7 +83,7 @@ public class SpacePickingManager {
 		PickingKey key = new PickingKey(type, objectId);
 		PickingEntry id = mapping.get(key);
 		if (id == null) {
-			id = new PickingEntry(counter.incrementAndGet(), objectId, getType(type));
+			id = new PickingEntry(pool.checkOut(), objectId, getType(type));
 			mapping.put(key, id);
 		}
 		return id;
@@ -153,7 +151,12 @@ public class SpacePickingManager {
 	 * @return
 	 */
 	public boolean removePickingListener(Object type, int id, IPickingListener l) {
-		return get(type, id).remove(l);
+		PickingEntry entry = get(type, id);
+		boolean r = entry.remove(l);
+		if (entry.isEmpty()) {
+			removePickingListeners(type, id);
+		}
+		return r;
 	}
 
 	/**
@@ -165,7 +168,12 @@ public class SpacePickingManager {
 	 * @return
 	 */
 	public boolean removePickingListeners(Object type, int id) {
-		return mapping.remove(new PickingKey(type, id)) != null;
+		PickingEntry entry = mapping.remove(new PickingKey(type, id));
+		if (entry != null) {
+			pool.checkIn(entry.pickingId);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -176,9 +184,12 @@ public class SpacePickingManager {
 	public void removeAllPickingListeners(Object type) {
 		removeTypePickingListeners(type);
 		// check all ids
-		for (Iterator<PickingKey> it = mapping.keySet().iterator(); it.hasNext();) {
-			if (it.next().type.equals(type))
+		for (Iterator<Map.Entry<PickingKey, PickingEntry>> it = mapping.entrySet().iterator(); it.hasNext();) {
+			Map.Entry<PickingKey, PickingEntry> entry = it.next();
+			if (entry.getKey().type.equals(type)) {
+				pool.checkIn(entry.getValue().pickingId);
 				it.remove();
+			}
 		}
 	}
 
@@ -209,8 +220,9 @@ public class SpacePickingManager {
 			for (Iterator<IPickingListener> it = p.iterator(); it.hasNext();) {
 				IPickingListener value = it.next();
 				if (value instanceof AnnotationBasedPickingListener
-						&& ((AnnotationBasedPickingListener) value).listener == listener)
+						&& ((AnnotationBasedPickingListener) value).listener == listener) {
 					it.remove();
+				}
 			}
 		}
 		for (PickingEntry p : mapping.values()) {
@@ -221,6 +233,11 @@ public class SpacePickingManager {
 					it.remove();
 			}
 		}
+	}
+
+	@Override
+	public Iterator<PickingEntry> iterator() {
+		return this.mapping.values().iterator();
 	}
 
 	private static final Predicate<Method> matches = new Predicate<Method>() {
@@ -336,73 +353,40 @@ public class SpacePickingManager {
 			return true;
 		}
 	}
+}
 
-	private static class PickingEntry implements Iterable<IPickingListener> {
-		private final int pickingId;
-		private final int objectId;
-		private final PickingListenerComposite listener = new PickingListenerComposite(1);
-		private final PickingListenerComposite typeListener;
+class PickingEntry extends APickingEntry implements Iterable<IPickingListener> {
+	private final PickingListenerComposite listener = new PickingListenerComposite(1);
+	private final PickingListenerComposite typeListener;
 
-		private boolean hovered = false;
-		private Point dragStart;
-
-		public PickingEntry(int pickingId, int objectId, PickingListenerComposite typeListener) {
-			this.pickingId = pickingId;
-			this.objectId = objectId;
-			this.typeListener = typeListener;
-		}
-
-		public void fire(PickingMode mode, Point mouse, float depth) {
-			if (mode == PickingMode.DRAGGED && dragStart == null)
-				dragStart = mouse;
-			if (mode == PickingMode.MOUSE_OUT)
-				dragStart = null;
-			final Pick pick = new Pick(objectId, mode, mouse, dragStart, depth);
-			listener.pick(pick);
-			typeListener.pick(pick);
-		}
-
-		@Override
-		public Iterator<IPickingListener> iterator() {
-			return listener.iterator();
-		}
-
-		public void add(IPickingListener l) {
-			listener.add(l);
-		}
-
-		public boolean remove(IPickingListener l) {
-			return listener.remove(l);
-		}
+	public PickingEntry(int pickingId, int objectId, PickingListenerComposite typeListener) {
+		super(pickingId, objectId);
+		this.typeListener = typeListener;
 	}
 
 	/**
-	 * space specific picking part
-	 *
-	 * @param picked
-	 * @param mode
-	 * @param depth
-	 * @param pickPoint
 	 * @return
 	 */
-	boolean doPicking(BitSet picked, PickingMode mode, float depth, Point pickPoint) {
-		boolean anyHovered = false;
-		for (PickingEntry entry : this.mapping.values()) {
-			if (picked.get(entry.pickingId)) { // currently picked
-				if (!entry.hovered) {
-					// send mouse in
-					entry.fire(PickingMode.MOUSE_OVER, pickPoint, depth);
-				}
-				entry.hovered = true;
-				anyHovered = true;
-				entry.fire(mode, pickPoint, depth);
+	public boolean isEmpty() {
+		return listener.isEmpty();
+	}
 
-			} else if (entry.hovered) { // was picked last time
-				// send mouse out
-				entry.fire(PickingMode.MOUSE_OUT, pickPoint, depth);
-				entry.hovered = false;
-			}
-		}
-		return anyHovered;
+	@Override
+	protected void fire(Pick pick) {
+		listener.pick(pick);
+		typeListener.pick(pick);
+	}
+
+	@Override
+	public Iterator<IPickingListener> iterator() {
+		return listener.iterator();
+	}
+
+	public void add(IPickingListener l) {
+		listener.add(l);
+	}
+
+	public boolean remove(IPickingListener l) {
+		return listener.remove(l);
 	}
 }

@@ -17,17 +17,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.util.function;
-
-import com.google.common.base.Function;
+package org.caleydo.core.util.function;
 
 /**
- * simple float specific function with primitive and wrapper handling
- * 
+ * basic implementation of a {@link IFloatFunction}
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IFloatFunction extends Function<Float, Float> {
-	public float apply(float in);
+public abstract class AFloatFunction implements IFloatFunction {
+	@Override
+	public final Float apply(Float in) {
+		return Float.valueOf(apply(in.floatValue()));
+	}
 }
-

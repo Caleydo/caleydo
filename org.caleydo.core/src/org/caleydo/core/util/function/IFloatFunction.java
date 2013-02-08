@@ -17,38 +17,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.util.function;
+package org.caleydo.core.util.function;
 
+import com.google.common.base.Function;
 
 /**
- * factory for various {@link IFloatFunction}s
- *
+ * simple float specific function with primitive and wrapper handling
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public final class FloatFunctions {
-	private FloatFunctions() {
-
-	}
-
-	/**
-	 * identity mapping
-	 */
-	public static final AFloatFunction IDENTITY = new AFloatFunction() {
-		@Override
-		public float apply(float in) {
-			return in;
-		}
-	};
-
-	/**
-	 * clamps the given value between 0 and 1
-	 */
-	public static final AFloatFunction CLAMP01 = new AFloatFunction() {
-		@Override
-		public float apply(float in) {
-			return (in < 0 ? 0 : (in > 1 ? 1 : in));
-		}
-	};
+public interface IFloatFunction extends Function<Float, Float> {
+	public float apply(float in);
 }
 

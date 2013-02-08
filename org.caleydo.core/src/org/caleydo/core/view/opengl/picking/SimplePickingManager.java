@@ -19,17 +19,13 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
-import static org.caleydo.core.view.opengl.picking.PickingManager2.doPickingImpl;
-
-import java.awt.Point;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.IntegerPool;
 
 /**
  * simple version of a picking manager: one ID per PickingListener
@@ -39,29 +35,20 @@ import org.caleydo.core.util.collection.Pair;
  */
 public class SimplePickingManager {
 	private List<PickingEntry> mapping = new ArrayList<>();
-	private int pickingIds = 0;
-	private boolean anyHovered = false;
+	private final IntegerPool pool = new IntegerPool();
 
-	private static class PickingEntry {
+	private boolean anyWaiting = false;
+
+	private static class PickingEntry extends APickingEntry {
 		private final IPickingListener listener;
-		private final int pickingId;
-		private final int objectId;
-
-		private boolean hovered = false;
-		private Point dragStart;
 
 		public PickingEntry(int pickingId, IPickingListener listener, int objectId) {
-			this.pickingId = pickingId;
+			super(pickingId, objectId);
 			this.listener = listener;
-			this.objectId = objectId;
 		}
 
-		public void fire(PickingMode mode, Point mouse, float depth) {
-			if (mode == PickingMode.DRAGGED && dragStart == null)
-				dragStart = mouse;
-			if (mode == PickingMode.MOUSE_OUT)
-				dragStart = null;
-			final Pick pick = new Pick(objectId, mode, mouse, dragStart, depth);
+		@Override
+		protected void fire(Pick pick) {
 			listener.pick(pick);
 		}
 	}
@@ -75,7 +62,7 @@ public class SimplePickingManager {
 	 * @return
 	 */
 	public int register(IPickingListener l, int objectId) {
-		int id = ++pickingIds;
+		int id = pool.checkOut();
 		mapping.add(new PickingEntry(id, l, objectId));
 		return id;
 	}
@@ -87,8 +74,26 @@ public class SimplePickingManager {
 	 */
 	public void unregister(IPickingListener l) {
 		for (Iterator<PickingEntry> it = mapping.iterator(); it.hasNext();) {
-			if (it.next().listener == l)
+			PickingEntry entry = it.next();
+			if (entry.listener == l) {
+				pool.checkIn(entry.pickingId);
 				it.remove();
+			}
+		}
+	}
+
+	/**
+	 * unregister and free a given picking Id
+	 *
+	 * @param pickingId
+	 */
+	public void unregister(int pickingId) {
+		for (Iterator<PickingEntry> it = mapping.iterator(); it.hasNext();) {
+			if (it.next().pickingId == pickingId) {
+				pool.checkIn(pickingId);
+				it.remove();
+				break;
+			}
 		}
 	}
 
@@ -100,39 +105,7 @@ public class SimplePickingManager {
 	 * @param g
 	 * @param root
 	 */
-	public void doPicking(PickingMode mode, Point mousePos, final GL2 gl, Runnable toRender) {
-		BitSet picked = new BitSet();
-		float depth = 0.0f;
-
-		if (mode == null) // nothing changed
-			return;
-
-		if (mousePos != null) {
-			Pair<int[], Float> tmp = doPickingImpl(mousePos.x, mousePos.y, gl, toRender);
-			for (int pi : tmp.getFirst())
-				picked.set(pi);
-			depth = tmp.getSecond();
-		}
-
-		if (picked.isEmpty() && !(anyHovered || mode == PickingMode.MOUSE_OUT))
-			return;
-
-		anyHovered = false;
-		for (PickingEntry entry : this.mapping) {
-			if (picked.get(entry.pickingId)) { // currently picked
-				if (!entry.hovered) {
-					// send mouse in
-					entry.fire(PickingMode.MOUSE_OVER, mousePos, depth);
-				}
-				entry.hovered = true;
-				anyHovered = true;
-				entry.fire(mode, mousePos, depth);
-
-			} else if (entry.hovered) { // was picked last time
-				// send mouse out
-				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth);
-				entry.hovered = false;
-			}
-		}
+	public void doPicking(PickingMouseListener l, final GL2 gl, Runnable toRender) {
+		anyWaiting = PickingUtils.doPicking(l, gl, toRender, anyWaiting, this.mapping);
 	}
 }

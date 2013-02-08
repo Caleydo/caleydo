@@ -25,8 +25,8 @@ import java.util.TreeMap;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.util.function.FloatFunctions;
-import org.caleydo.core.view.opengl.util.function.IFloatFunction;
+import org.caleydo.core.util.function.FloatFunctions;
+import org.caleydo.core.util.function.IFloatFunction;
 
 /**
  * composite pattern, that has a pool of underlying renderer with different text sizes and automatically selects the

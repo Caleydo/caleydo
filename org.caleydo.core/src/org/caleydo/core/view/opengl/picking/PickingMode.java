@@ -20,10 +20,33 @@
 package org.caleydo.core.view.opengl.picking;
 
 public enum PickingMode {
+	/**
+	 * aka mouse down
+	 */
 	CLICKED,
 	DOUBLE_CLICKED,
+	/**
+	 * when the mouse enters the element
+	 */
 	MOUSE_OVER,
+	/**
+	 * aka MOUSE_DRAGGED_MOVED
+	 */
 	DRAGGED,
+
 	RIGHT_CLICKED,
- MOUSE_OUT, MOUSE_MOVED
+	/**
+	 * when the mouse exists the element
+	 */
+	MOUSE_OUT,
+	/**
+	 * special event, when the mouse was moved and is over the element, supported just by {@link SimplePickingManager}
+	 * and {@link PickingManager2}
+	 */
+	MOUSE_MOVED,
+	/**
+	 * special event, when the mouse was released, supported just by {@link SimplePickingManager} and
+	 * {@link PickingManager2}
+	 */
+	MOUSE_RELEASED
 }

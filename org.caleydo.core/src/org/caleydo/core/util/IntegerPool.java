@@ -17,17 +17,48 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.util.function;
+package org.caleydo.core.util;
+
+import java.util.BitSet;
 
 /**
- * basic implementation of a {@link IFloatFunction}
+ * integer id pool
  *
  * @author Samuel Gratzl
  *
  */
-public abstract class AFloatFunction implements IFloatFunction {
-	@Override
-	public final Float apply(Float in) {
-		return Float.valueOf(apply(in.floatValue()));
+public final class IntegerPool {
+	private int last = 0; // last used
+	// free list for elements not used anymore
+	private BitSet free = new BitSet();
+
+	/**
+	 * returns a new free id
+	 *
+	 * @return
+	 */
+	public int checkOut() {
+		if (!free.isEmpty()) // reuse
+			return free.nextSetBit(0);
+		return ++last; // reserve new
 	}
+
+	/**
+	 * frees a given id, such as it can be used again
+	 *
+	 * @param id
+	 */
+	public void checkIn(int id) {
+		assert id >= 0 && id <= last; // valid range
+		if (last == id) { // same as last used, undo
+			last--;
+			// compact the free list
+			while (free.get(last)) {
+				free.clear(last);
+				last--;
+			}
+		} else
+			free.set(id);
+	}
+
 }

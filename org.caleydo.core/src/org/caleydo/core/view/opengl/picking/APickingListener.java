@@ -52,7 +52,20 @@ public abstract class APickingListener
 			break;
 		case MOUSE_MOVED:
 			mouseMoved(pick);
+			break;
+		case MOUSE_RELEASED:
+			mouseReleased(pick);
+			break;
 		}
+	}
+
+	/**
+	 * Called, when the object corresponding to this listener was not clicked anymore, opposite of clicked
+	 *
+	 * @param pick
+	 */
+	protected void mouseReleased(Pick pick) {
+
 	}
 
 	/**
@@ -111,7 +124,7 @@ public abstract class APickingListener
 
 	/**
 	 * Called, when the mouse was moved within the object
-	 * 
+	 *
 	 * @param pick
 	 */
 	protected void mouseMoved(Pick pick) {
