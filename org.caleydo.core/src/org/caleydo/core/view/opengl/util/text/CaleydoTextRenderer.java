@@ -37,13 +37,12 @@ import com.jogamp.opengl.util.awt.TextRenderer;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class CaleydoTextRenderer
-	extends TextRenderer {
+public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
 
 	static private final String REFERENCE_TEXT = "Reference Text";
 	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
-	private Rectangle2D referenceBounds;
+	private final Rectangle2D referenceBounds;
 
 	/**
 	 * Constructor.
@@ -62,6 +61,7 @@ public class CaleydoTextRenderer
 				true);
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
+
 
 	/**
 	 * Convenience method to render text with a specified minimum size without
@@ -158,6 +158,10 @@ public class CaleydoTextRenderer
 		return referenceBounds;
 	}
 
+	public float getReferenceHeight() {
+		return (float) referenceBounds.getHeight();
+	}
+
 	/**
 	 * Render the text at the position specified (lower left corner) within the
 	 * bounding box The height is scaled to fit, the string is truncated to fit
@@ -171,6 +175,7 @@ public class CaleydoTextRenderer
 	 * @param width width fo the bounding box
 	 * @param height height of the bounding box
 	 */
+	@Override
 	public void renderTextInBounds(GL2 gl, String text, float xPosition, float yPosition,
 			float zPositon, float width, float height) {
 
@@ -280,6 +285,7 @@ public class CaleydoTextRenderer
 	 * @param maxWidth
 	 * @return
 	 */
+	@Override
 	public float getRequiredTextWidthWithMax(String text, float height, float maxWidth) {
 
 		float requiredWidth = getRequiredTextWidth(text, height);

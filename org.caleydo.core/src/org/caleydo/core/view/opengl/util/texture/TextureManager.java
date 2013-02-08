@@ -58,11 +58,34 @@ public final class TextureManager {
 		this.loader = loader;
 	}
 
+	/**
+	 * alias to {@link #get(String)}
+	 *
+	 * @param texturePath
+	 * @return
+	 */
 	public Texture getIconTexture(final String texturePath) {
 		return get(texturePath);
 	}
 
-	private Texture get(final String texturePath) {
+	/**
+	 * return the cached texture or loads the given texture using the default {@link ITextureLoader}
+	 *
+	 * @param texturePath
+	 * @return
+	 */
+	public Texture get(final String texturePath) {
+		return get(texturePath, this.loader);
+	}
+
+	/**
+	 * load a texture once, using the specified {@link ITextureLoader}
+	 * 
+	 * @param texture
+	 * @param locator
+	 * @return
+	 */
+	public Texture get(String texturePath, ITextureLoader loader) {
 		if (!cache.containsKey(texturePath)) {
 			Texture tmpTexture = loader.getTexture(texturePath);
 			cache.put(texturePath, tmpTexture);
