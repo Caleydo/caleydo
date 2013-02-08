@@ -198,4 +198,9 @@ public class FloatContainer implements INumericalContainer<Float> {
 	public void addUnknown() {
 		add(UNKNOWN_VALUE);
 	}
+
+	@Override
+	public boolean isUnknown(Float value) {
+		return value == null || value.isNaN();
+	}
 }

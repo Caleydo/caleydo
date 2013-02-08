@@ -136,6 +136,11 @@ public class CategoricalContainer<CATEGORY_TYPE extends Comparable<CATEGORY_TYPE
 		}
 	}
 
+	@Override
+	public boolean isUnknown(CATEGORY_TYPE value) {
+		return value == unknownCategoryType;
+	}
+
 	/**
 	 * Adds a new category - this should only happen if no {@link CategoricalClassDescription} exist
 	 *

@@ -93,4 +93,9 @@ public class GenericContainer<DATA_TYPE> implements IContainer<DATA_TYPE> {
 		container.add(null);
 	}
 
+	@Override
+	public boolean isUnknown(DATA_TYPE value) {
+		return value == null;
+	}
+
 }

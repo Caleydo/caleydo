@@ -184,4 +184,9 @@ public class IntContainer implements INumericalContainer<Integer> {
 	public void addUnknown() {
 		add(UNKNOWN_VALUE);
 	}
+
+	@Override
+	public boolean isUnknown(Integer value) {
+		return value == UNKNOWN_VALUE;
+	}
 }
