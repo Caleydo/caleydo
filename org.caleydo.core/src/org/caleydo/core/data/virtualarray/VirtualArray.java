@@ -68,6 +68,7 @@ public class VirtualArray
 	protected IDType idType;
 
 	@XmlElement
+	// @XmlList //would save xml space
 	ArrayList<Integer> virtualArrayList;
 	IDMap idMap;
 
