@@ -179,7 +179,7 @@ public class GLElement {
 		float x = x_layout + padding.left;
 		float y = y_layout + padding.top;
 		float w = w_layout - padding.left - padding.right;
-		float h = w_layout - padding.top - padding.bottom;
+		float h = h_layout - padding.top - padding.bottom;
 
 		g.move(x, y);
 		if (!cache.render(context, g)) {
@@ -476,7 +476,7 @@ public class GLElement {
 	}
 
 	/**
-	 * triggers that the parent should be relayouted
+	 * triggers that I should be relayouted before the next run
 	 */
 	protected void relayout() {
 		cache.invalidate(context);

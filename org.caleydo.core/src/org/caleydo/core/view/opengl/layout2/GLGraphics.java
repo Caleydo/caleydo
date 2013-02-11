@@ -191,24 +191,41 @@ public class GLGraphics {
 	 * renders a texture within the given rect
 	 */
 	public GLGraphics fillImage(String texture, float x, float y, float w, float h) {
-		return fillImage(textures.get(texture, new ResourceLoader(locator)), x, y, w, h);
+		return fillImage(getTexture(texture), x, y, w, h);
+	}
+
+	public Texture getTexture(String texture) {
+		return textures.get(texture, new ResourceLoader(locator));
 	}
 
 	/**
 	 * see {@link #fillImage(String, float, float, float, float)} for a texture object
 	 */
-	private GLGraphics fillImage(Texture texture, float x, float y, float w, float h) {
+	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h) {
+		return fillImage(texture, x, y, w, h, Color.WHITE);
+	}
+
+	/**
+	 * see {@link #fillImage(Texture, float, float, float, float)} but with a dedicated static color to use
+	 *
+	 * @param color
+	 * @return
+	 */
+	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h, Color color) {
 		Vec3f lowerLeftCorner = new Vec3f(x, y, z);
 		Vec3f lowerRightCorner = new Vec3f(x + w, y, z);
 		Vec3f upperRightCorner = new Vec3f(x + w, y + h, z);
 		Vec3f upperLeftCorner = new Vec3f(x, y + h, z);
 
+		org.caleydo.core.util.color.Color tmp = new org.caleydo.core.util.color.Color(color.getRed(), color.getGreen(),
+				color.getBlue(), color.getAlpha());
+
 		if (originInTopLeft)
 			textures.renderTexture(gl, texture, upperLeftCorner, upperRightCorner, lowerRightCorner, lowerLeftCorner,
-					1, 1, 1, 1);
+					tmp.r, tmp.g, tmp.b, tmp.a);
 		else
 			textures.renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
-					1, 1, 1, 1);
+					tmp.r, tmp.g, tmp.b, tmp.a);
 		return this;
 	}
 
@@ -336,6 +353,10 @@ public class GLGraphics {
 	 */
 	public GLGraphics drawPath(Iterable<Vec2f> points, boolean closed) {
 		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, points);
+	}
+
+	public GLGraphics drawPath(boolean closed, Vec2f... points) {
+		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, Arrays.asList(points));
 	}
 
 	private GLGraphics render(int mode, Iterable<Vec2f> points) {
