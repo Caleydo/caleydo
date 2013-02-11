@@ -19,55 +19,42 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
-import org.caleydo.core.view.opengl.layout2.layout.Layouts;
+import gleem.linalg.Vec2f;
 
 /**
- * can act as a root element with a dedicated mouse layer
- *
+ * an element that can be the parent of another element
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public final class WindowElement extends ElementContainer {
-	private final Element root;
-	private final ElementContainer mouseLayer;
-
-	public WindowElement(Element root) {
-		super(Layouts.LAYERS);
-		this.root = root;
-		this.add(root);
-		this.mouseLayer = new ElementContainer(Layouts.NONE);
-		this.add(mouseLayer);
-	}
+public interface IGLElementParent {
+	/**
+	 * triggers that the parent should be re layouted
+	 */
+	void relayout();
 
 	/**
-	 * @return the root, see {@link #root}
+	 * triggers that the parent hierarchy will be repainted
 	 */
-	public Element getRoot() {
-		return root;
-	}
+	void repaint();
 
 	/**
-	 * @return the mouseLayer, see {@link #mouseLayer}
+	 * triggers that the parents hierarchy will be repainted just the picking
 	 */
-	public ElementContainer getMouseLayer() {
-		return mouseLayer;
-	}
+	void repaintPick();
 
-	@Override
-	protected void renderPickChild(Element child, GLGraphics g) {
-		if (child == mouseLayer) // mouse Layer in the front
-			g.incZ(1.0f);
-		super.renderPickChild(child, g);
-		if (child == mouseLayer)
-			g.incZ(-1.0f);
-	}
+	/**
+	 * returns the absolute location of the parent
+	 * 
+	 * @return
+	 */
+	Vec2f getAbsoluteLocation();
 
-	@Override
-	protected void renderChild(Element child, GLGraphics g) {
-		if (child == mouseLayer) // mouse Layer in the front
-			g.incZ(1.0f);
-		super.renderChild(child, g);
-		if (child == mouseLayer)
-			g.incZ(-1.0f);
-	}
+	/**
+	 * notification that the child will be moved to another parent
+	 * 
+	 * @param child
+	 */
+	void moved(GLElement child);
+
 }

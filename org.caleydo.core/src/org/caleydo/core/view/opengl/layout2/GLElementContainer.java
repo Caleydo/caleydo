@@ -8,28 +8,28 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.layout2.layout.ILayout;
-import org.caleydo.core.view.opengl.layout2.layout.ILayoutElement;
-import org.caleydo.core.view.opengl.layout2.layout.Layouts;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 import com.google.common.collect.Iterators;
 
 /**
- * an element that contain other elements which are layouted by a {@link ILayout}, default is that the children won't be
+ * an element that contain other elements which are layouted by a {@link IGLLayout}, default is that the children won't be
  * layouted
  *
  * @author Samuel Gratzl
  *
  */
-public class ElementContainer extends Element implements IElementParent, Iterable<Element> {
-	private ILayout layout = Layouts.NONE;
-	private final List<Element> children = new ArrayList<>(3);
+public class GLElementContainer extends GLElement implements IGLElementParent, Iterable<GLElement> {
+	private IGLLayout layout = GLLayouts.NONE;
+	private final List<GLElement> children = new ArrayList<>(3);
 
-	public ElementContainer() {
+	public GLElementContainer() {
 
 	}
 
-	public ElementContainer(ILayout layout) {
+	public GLElementContainer(IGLLayout layout) {
 		this.layout = layout;
 	}
 
@@ -52,7 +52,7 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 	 * @param layout
 	 *            setter, see {@link layout}
 	 */
-	public final ElementContainer setLayout(ILayout layout) {
+	public final GLElementContainer setLayout(IGLLayout layout) {
 		if (layout == this.layout)
 			return this;
 		this.layout = layout;
@@ -63,15 +63,15 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 	@Override
 	protected final void layout() {
 		super.layout();
-		List<ILayoutElement> l = asLayoutElements();
+		List<IGLLayoutElement> l = asLayoutElements();
 		Vec2f size = getSize();
 		if (layout.doLayout(l, size.x(), size.y()))
 			relayout();
 	}
 
-	private List<ILayoutElement> asLayoutElements() {
-		List<ILayoutElement> l = new ArrayList<>(children.size());
-		for (Element child : children)
+	private List<IGLLayoutElement> asLayoutElements() {
+		List<IGLLayoutElement> l = new ArrayList<>(children.size());
+		for (GLElement child : children)
 			if (child.getVisibility() != EVisibility.NONE)
 				l.add(child.layoutElement);
 		return Collections.unmodifiableList(l);
@@ -86,13 +86,13 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 	 *            perform packing in y direction
 	 * @return
 	 */
-	public final Element pack(boolean packWidth, boolean packHeight) {
+	public final GLElement pack(boolean packWidth, boolean packHeight) {
 		if (!packWidth && !packHeight)
 			return this;
 		// this.layout.pack(asLayoutElement(), this, width, height);
 		float w = -1;
 		float h = -1;
-		for (ILayoutElement child : asLayoutElements()) {
+		for (IGLLayoutElement child : asLayoutElements()) {
 			float cw = child.getSetWidth();
 			if (!Float.isNaN(cw) && cw > 0)
 				w = Math.max(w, cw);
@@ -111,20 +111,20 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 
 	@Override
 	protected void takeDown() {
-		for (Element elem : this)
+		for (GLElement elem : this)
 			takeDown(elem);
 		super.takeDown();
 	}
 
 	@Override
-	protected void init(IElementContext context) {
+	protected void init(IGLElementContext context) {
 		super.init(context);
-		for (Element child : this)
+		for (GLElement child : this)
 			child.init(context);
 	}
 
-	private void setup(Element child) {
-		IElementParent ex = child.getParent();
+	private void setup(GLElement child) {
+		IGLElementParent ex = child.getParent();
 		assert ex != this;
 		if (ex != null) {
 			ex.moved(child);
@@ -134,61 +134,69 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 			child.init(context);
 	}
 
-	private void takeDown(Element child) {
+	private void takeDown(GLElement child) {
 		child.takeDown();
 	}
 
 	public final void clear() {
-		for (Iterator<Element> it = this.iterator(); it.hasNext();) {
-			Element e = it.next();
+		for (Iterator<GLElement> it = this.iterator(); it.hasNext();) {
+			GLElement e = it.next();
 			takeDown(e);
 			it.remove();
 		}
 		relayout();
 	}
 
-	public final Element get(int index) {
+	public final GLElement get(int index) {
 		return children.get(index);
 	}
 
-	public final boolean add(Element child) {
+	public final boolean add(GLElement child) {
 		setup(child);
 		boolean r = children.add(child);
 		relayout();
 		return r;
 	}
 
-	public final void add(Element child, Object layout) {
+	public final void add(GLElement child, Object layout) {
 		add(child.setLayoutData(layout));
 	}
 
-	public final void add(int index, Element child) {
+	public final void add(int index, GLElement child) {
 		setup(child);
 		children.add(child);
 		relayout();
 	}
 
-	public final void remove(Element child) {
+	public final void remove(GLElement child) {
 		if (children.remove(child)) {
 			takeDown(child);
 			relayout();
 		}
 	}
 
+	public final int size() {
+		return children.size();
+	}
+
+	public final boolean isEmpty() {
+		return children.isEmpty();
+	}
+
 	@Override
-	public final void moved(Element child) {
+	public final void moved(GLElement child) {
 		children.remove(child);
 		relayout();
 	}
 
-	public final Element remove(int index) {
-		Element e = children.get(index);
+	public final GLElement remove(int index) {
+		GLElement e = children.get(index);
 		remove(e);
 		return e;
 	}
 
-	public final Element set(int index, Element element) {
-		Element old = children.get(index);
+	public final GLElement set(int index, GLElement element) {
+		GLElement old = children.get(index);
 		takeDown(old);
 		setup(element);
 		children.set(index, element);
@@ -196,27 +204,27 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 		return old;
 	}
 
-	public final List<Element> asList() {
-		return new AbstractList<Element>() {
+	public final List<GLElement> asList() {
+		return new AbstractList<GLElement>() {
 
 			@Override
-			public Element get(int index) {
+			public GLElement get(int index) {
 				return children.get(index);
 			}
 
 			@Override
-			public void add(int index, Element element) {
-				ElementContainer.this.add(index, element);
+			public void add(int index, GLElement element) {
+				GLElementContainer.this.add(index, element);
 			}
 
 			@Override
-			public Element set(int index, Element element) {
-				return ElementContainer.this.set(index, element);
+			public GLElement set(int index, GLElement element) {
+				return GLElementContainer.this.set(index, element);
 			}
 
 			@Override
-			public Element remove(int index) {
-				return ElementContainer.this.remove(index);
+			public GLElement remove(int index) {
+				return GLElementContainer.this.remove(index);
 			}
 
 			@Override
@@ -231,11 +239,11 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 		g.incZ();
-		for(Element child : children)
+		for(GLElement child : children)
 			renderChild(child, g);
 		g.decZ();
 	}
-	protected void renderChild(Element child, GLGraphics g) {
+	protected void renderChild(GLElement child, GLGraphics g) {
 		child.render(g);
 	}
 
@@ -243,17 +251,17 @@ public class ElementContainer extends Element implements IElementParent, Iterabl
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);
 		g.incZ();
-		for (Element child : children)
+		for (GLElement child : children)
 			renderPickChild(child, g);
 		g.decZ();
 	}
 
-	protected void renderPickChild(Element child, GLGraphics g) {
+	protected void renderPickChild(GLElement child, GLGraphics g) {
 		child.renderPick(g);
 	}
 
 	@Override
-	public final Iterator<Element> iterator() {
+	public final Iterator<GLElement> iterator() {
 		return Iterators.unmodifiableIterator(children.iterator());
 	}
 }

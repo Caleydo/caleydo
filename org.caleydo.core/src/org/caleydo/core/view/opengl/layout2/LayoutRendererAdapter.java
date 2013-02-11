@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * adapter between {@link ALayoutRenderer} and {@link Element}, such that {@link Element} can be as an
+ * adapter between {@link ALayoutRenderer} and {@link GLElement}, such that {@link GLElement} can be as an
  * {@link ALayoutRenderer}
  *
  * @author Samuel Gratzl
  *
  */
-public final class LayoutRendererAdapter extends ALayoutRenderer implements IElementParent, IElementContext {
+public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLElementParent, IGLElementContext {
 	/*
 	 * random name for base picking type names
 	 */
@@ -39,7 +39,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IEle
 	private final EventListenerManager eventListeners;
 
 	private final AGLView view;
-	private final WindowElement root;
+	private final WindowGLElement root;
 	private final IResourceLocator locator;
 
 	/**
@@ -52,9 +52,9 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IEle
 	 */
 	private Vec2f location = new Vec2f(0, 0);
 
-	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, Element root) {
+	public LayoutRendererAdapter(AGLView view, IResourceLocator locator, GLElement root) {
 		this.view = view;
-		this.root = new WindowElement(root);
+		this.root = new WindowGLElement(root);
 		this.eventListeners = EventListenerManagers.wrap(view);
 		this.locator = locator;
 		this.root.init(this);
@@ -100,6 +100,8 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IEle
 			root.renderPick(g);
 		else
 			root.render(g);
+
+		g.destroy();
 
 		gl.glPopMatrix();
 	}
@@ -189,13 +191,13 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IEle
 	}
 
 	@Override
-	public void init(Element element) {
+	public void init(GLElement element) {
 		// scan object for event listeners but only the subclasses
-		eventListeners.register(element, null, Element.class);
+		eventListeners.register(element, null, GLElement.class);
 	}
 
 	@Override
-	public void takeDown(Element element) {
+	public void takeDown(GLElement element) {
 		// undo listeners
 		eventListeners.unregister(element);
 	}
@@ -206,7 +208,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IEle
 	}
 
 	@Override
-	public ElementContainer getMouseLayer() {
+	public GLElementContainer getMouseLayer() {
 		return root.getMouseLayer();
 	}
 
@@ -224,7 +226,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IEle
 	}
 
 	@Override
-	public void moved(Element child) {
+	public void moved(GLElement child) {
 		// nothing to do
 	}
 }

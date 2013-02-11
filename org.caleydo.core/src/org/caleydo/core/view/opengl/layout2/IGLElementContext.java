@@ -24,12 +24,12 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.swt.SWT;
 
 /**
- * basic interface for the context of a element hierarchy, e.g. one {@link IElementContext} per opengl canvas
+ * basic interface for the context of a element hierarchy, e.g. one {@link IGLElementContext} per opengl canvas
  *
  * @author Samuel Gratzl
  *
  */
-public interface IElementContext {
+public interface IGLElementContext {
 	/**
 	 * register a picking listener
 	 *
@@ -76,25 +76,25 @@ public interface IElementContext {
 	public DisplayListPool getDisplayListPool();
 
 	/**
-	 * returns a special {@link ElementContainer} that will be positioned at the mouse position
+	 * returns a special {@link GLElementContainer} that will be positioned at the mouse position
 	 * 
 	 * @return
 	 */
-	public ElementContainer getMouseLayer();
+	public GLElementContainer getMouseLayer();
 
 	/**
 	 * chance for a context to initialize an added element
 	 *
 	 * @param element
 	 */
-	public void init(Element element);
+	public void init(GLElement element);
 
 	/**
-	 * chance for a context to undo the initialization of added element, see {@link #init(Element)}
+	 * chance for a context to undo the initialization of added element, see {@link #init(GLElement)}
 	 *
 	 * @param element
 	 */
-	public void takeDown(Element element);
+	public void takeDown(GLElement element);
 
 	/**
 	 * the the current cursor, using {@link SWT} constants

@@ -31,7 +31,7 @@ public final class RenderCache {
 	private int validCounter = 0;
 	private int displayListIndex = -1;
 
-	public void invalidate(IElementContext context) {
+	public void invalidate(IGLElementContext context) {
 		validCounter = 0;
 		if (displayListIndex >= 0) { // free the display list
 			DisplayListPool pool = context.getDisplayListPool();
@@ -55,7 +55,7 @@ public final class RenderCache {
 	 * @param g
 	 * @return true if a cache was used
 	 */
-	public boolean render(IElementContext context, GLGraphics g) {
+	public boolean render(IGLElementContext context, GLGraphics g) {
 		if (displayListIndex <= 0)
 			return false;
 		DisplayListPool pool = context.getDisplayListPool();
@@ -74,7 +74,7 @@ public final class RenderCache {
 	 * @param context
 	 * @param g
 	 */
-	public void begin(IElementContext context, GLGraphics g, float w, float h) {
+	public void begin(IGLElementContext context, GLGraphics g, float w, float h) {
 		DisplayListPool pool = context.getDisplayListPool();
 		if (enableCaching(pool, w, h)) {
 			displayListIndex = pool.checkOut(g);
@@ -104,7 +104,7 @@ public final class RenderCache {
 	 *
 	 * @param g
 	 */
-	public void end(IElementContext context, GLGraphics g) {
+	public void end(IGLElementContext context, GLGraphics g) {
 		if (displayListIndex >= 0) {
 			DisplayListPool pool = context.getDisplayListPool();
 			g.gl.glEndList();
@@ -115,7 +115,7 @@ public final class RenderCache {
 		}
 	}
 
-	public void takeDown(IElementContext context) {
+	public void takeDown(IGLElementContext context) {
 		invalidate(context);
 	}
 }

@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.layout2.renderer;
 
-import org.caleydo.core.view.opengl.layout2.Element;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
@@ -11,10 +11,10 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
  * @author Samuel Gratzl
  *
  */
-public interface IRenderer {
+public interface IGLRenderer {
 	/**
 	 * performs the actual rendering using the given data
 	 */
-	void render(GLGraphics g, float w, float h, Element parent);
+	void render(GLGraphics g, float w, float h, GLElement parent);
 }
 

@@ -29,9 +29,9 @@ import org.caleydo.core.view.opengl.picking.Pick;
  * @author Samuel Gratzl
  *
  */
-public class PickableElement extends Element {
+public class PickableGLElement extends GLElement {
 
-	public PickableElement() {
+	public PickableGLElement() {
 		this.setVisibility(EVisibility.PICKABLE);
 		this.onPick(new IPickingListener() {
 			@Override

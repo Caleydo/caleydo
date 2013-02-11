@@ -24,10 +24,10 @@ import gleem.linalg.Vec4f;
 
 import java.awt.Point;
 
-import org.caleydo.core.view.opengl.layout2.layout.ILayout;
-import org.caleydo.core.view.opengl.layout2.layout.ILayoutElement;
-import org.caleydo.core.view.opengl.layout2.renderer.IRenderer;
-import org.caleydo.core.view.opengl.layout2.renderer.Renderers;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 
@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
  * @author Samuel Gratzl
  *
  */
-public class Element {
+public class GLElement {
 	/**
 	 * the visibility state of this element
 	 *
@@ -66,7 +66,7 @@ public class Element {
 	/**
 	 * the renderer to use for rendering indirectly
 	 */
-	private IRenderer renderer = Renderers.DUMMY;
+	private IGLRenderer renderer = GLRenderers.DUMMY;
 
 	/**
 	 * location of this element determined by parent layout
@@ -86,6 +86,11 @@ public class Element {
 	private float w_set = Float.NaN, h_set = Float.NaN;
 
 	/**
+	 * padding of the content to the border
+	 */
+	private GLPadding padding = GLPadding.ZERO;
+
+	/**
 	 * the current visibility mode, see {@link EVisibility}
 	 */
 	private EVisibility visibility = EVisibility.VISIBLE;
@@ -93,21 +98,21 @@ public class Element {
 	/**
 	 * my parent element for propagating repaint and relayout requests
 	 */
-	protected IElementParent parent;
+	protected IGLElementParent parent;
 
 	/**
 	 * global shared context of this hierarchy
 	 */
-	protected IElementContext context;
+	protected IGLElementContext context;
 
 	/**
 	 * layout data for the parent layout
 	 */
 	private Object layoutData;
 	/**
-	 * this element as {@link ILayoutElement}
+	 * this element as {@link IGLLayoutElement}
 	 */
-	protected final ILayoutElement layoutElement = new LayoutElementAdapter();
+	protected final IGLLayoutElement layoutElement = new LayoutElementAdapter();
 
 	/**
 	 * cache for managing display lists of rendering
@@ -125,7 +130,7 @@ public class Element {
 	/**
 	 * the renderer to use for picking, default: a full sized rect
 	 */
-	private IRenderer picker = Renderers.TRANSPARENT_RECT;
+	private IGLRenderer picker = GLRenderers.TRANSPARENT_RECT;
 	/**
 	 * the list of picking listeners, set by {@link #onPick(IPickingListener)}
 	 */
@@ -136,11 +141,11 @@ public class Element {
 	 */
 	private boolean dirtyLayout = true;
 
-	public Element() {
+	public GLElement() {
 
 	}
 
-	public Element(IRenderer renderer) {
+	public GLElement(IGLRenderer renderer) {
 		this.renderer = renderer;
 	}
 
@@ -151,7 +156,7 @@ public class Element {
 		return layoutData;
 	}
 
-	public final Element setLayoutData(Object layoutData) {
+	public final GLElement setLayoutData(Object layoutData) {
 		if (this.layoutData == layoutData)
 			return this;
 		this.layoutData = layoutData;
@@ -171,17 +176,21 @@ public class Element {
 			cache.invalidate(context);
 			return;
 		}
-		g.move(x_layout, y_layout);
+		float x = x_layout + padding.left;
+		float y = y_layout + padding.top;
+		float w = w_layout - padding.left - padding.right;
+		float h = w_layout - padding.top - padding.bottom;
+
+		g.move(x, y);
 		if (!cache.render(context, g)) {
-			cache.begin(context, g, w_layout, h_layout);
-			renderImpl(g, w_layout, h_layout);
+			cache.begin(context, g, w, h);
+			renderImpl(g, w, h);
 			cache.end(context, g);
 			// } else {
 			// // cache visualization
-			// g.color(1, 0, 1, 0.1f).incZ().incZ().incZ().fillRect(0, 0, w_layout, h_layout).decZ().decZ()
-			// .decZ();
+			// g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
 		}
-		g.move(-x_layout, -y_layout);
+		g.move(-x, -y);
 	}
 
 	/**
@@ -209,18 +218,23 @@ public class Element {
 			pickCache.invalidate(context);
 			return;
 		}
-		g.move(x_layout, y_layout);
+		float x = x_layout + padding.left;
+		float y = y_layout + padding.top;
+		float w = w_layout - padding.left - padding.right;
+		float h = w_layout - padding.top - padding.bottom;
+
+		g.move(x, y);
 		if (!pickCache.render(context, g)) {
-			pickCache.begin(context, g, w_layout, h_layout);
+			pickCache.begin(context, g, w, h);
 			boolean pushed = pickingID >= 0;
 			if (pushed)
 				g.pushName(this.pickingID);
-			renderPickImpl(g, w_layout, h_layout);
+			renderPickImpl(g, w, h);
 			if (pushed)
 				g.popName();
 			pickCache.end(context, g);
 		}
-		g.move(-x_layout, -y_layout);
+		g.move(-x, -y);
 	}
 
 	private boolean needToRender() {
@@ -244,11 +258,28 @@ public class Element {
 	}
 
 	/**
+	 * @param padding
+	 *            setter, see {@link padding}
+	 */
+	public void setPadding(GLPadding padding) {
+		if (padding == null)
+			padding = GLPadding.ZERO;
+		this.padding = padding;
+	}
+
+	/**
+	 * @return the padding, see {@link #padding}
+	 */
+	public GLPadding getPadding() {
+		return padding;
+	}
+
+	/**
 	 * setter for {@link #picker}
 	 *
 	 * @param picker
 	 */
-	public final void setPicker(IRenderer picker) {
+	public final void setPicker(IGLRenderer picker) {
 		if (this.picker == picker)
 			return;
 		this.picker = picker;
@@ -260,7 +291,7 @@ public class Element {
 	 *
 	 * @param renderer
 	 */
-	public final void setRenderer(IRenderer renderer) {
+	public final void setRenderer(IGLRenderer renderer) {
 		if (this.renderer == renderer)
 			return;
 		this.renderer = renderer;
@@ -271,7 +302,7 @@ public class Element {
 	 * @param display
 	 *            setter, see {@link display}
 	 */
-	public final Element setVisibility(EVisibility display) {
+	public final GLElement setVisibility(EVisibility display) {
 		if (this.visibility == display)
 			return this;
 		final EVisibility old = this.visibility;
@@ -312,7 +343,7 @@ public class Element {
 	 * @param customPickingListener
 	 * @return
 	 */
-	public final Element onPick(IPickingListener customPickingListener) {
+	public final GLElement onPick(IPickingListener customPickingListener) {
 		this.pickingListener.add(customPickingListener);
 		return this;
 	}
@@ -325,13 +356,13 @@ public class Element {
 	}
 
 	/**
-	 * sets the size of this element to a fixed size, to help the {@link ILayout}
+	 * sets the size of this element to a fixed size, to help the {@link IGLLayout}
 	 *
 	 * @param w
 	 * @param h
 	 * @return
 	 */
-	public final Element setSize(float w, float h) {
+	public final GLElement setSize(float w, float h) {
 		if (this.w_set == w && this.h_set == h)
 			return this;
 		this.w_set = w_layout = w;
@@ -341,13 +372,13 @@ public class Element {
 	}
 
 	/**
-	 * sets the location of this element to a fixed position, to help the {@link ILayout}
+	 * sets the location of this element to a fixed position, to help the {@link IGLLayout}
 	 *
 	 * @param x
 	 * @param y
 	 * @return
 	 */
-	public final Element setLocation(float x, float y) {
+	public final GLElement setLocation(float x, float y) {
 		if (this.x_set == x && this.y_set == y)
 			return this;
 		this.x_set = x_layout = x;
@@ -440,7 +471,7 @@ public class Element {
 	 * @param h
 	 * @return
 	 */
-	public final Element setBounds(float x, float y, float w, float h) {
+	public final GLElement setBounds(float x, float y, float w, float h) {
 		return setLocation(x, y).setSize(w, h);
 	}
 
@@ -484,7 +515,7 @@ public class Element {
 			parent.repaintPick();
 	}
 
-	final void setParent(IElementParent parent) {
+	final void setParent(IGLElementParent parent) {
 		if (this.parent == parent)
 			return;
 		this.parent = parent;
@@ -493,7 +524,7 @@ public class Element {
 	/**
 	 * @return the parent, see {@link #parent}
 	 */
-	public final IElementParent getParent() {
+	public final IGLElementParent getParent() {
 		return parent;
 	}
 
@@ -501,7 +532,7 @@ public class Element {
 	 * setup method, when adding a child to a parent
 	 * @param context
 	 */
-	protected void init(IElementContext context) {
+	protected void init(IGLElementContext context) {
 		this.context = context;
 		if (visibility == EVisibility.PICKABLE) {
 			pickingID = context.registerPickingListener(pickingListener, getPickingObjectId());
@@ -556,12 +587,12 @@ public class Element {
 	}
 
 	/**
-	 * implementation of the {@link ILayoutElement} spec
+	 * implementation of the {@link IGLLayoutElement} spec
 	 *
 	 * @author Samuel Gratzl
 	 *
 	 */
-	private class LayoutElementAdapter implements ILayoutElement {
+	private class LayoutElementAdapter implements IGLLayoutElement {
 		@Override
 		public void setSize(float w, float h) {
 			setLayoutSize(w, h);
@@ -569,8 +600,8 @@ public class Element {
 
 		@Override
 		public void setLocation(float x, float y) {
-			Element.this.x_layout = x;
-			Element.this.y_layout = y;
+			GLElement.this.x_layout = x;
+			GLElement.this.y_layout = y;
 		}
 
 		@Override
@@ -617,13 +648,13 @@ public class Element {
 		}
 
 		@Override
-		public Element asElement() {
-			return Element.this;
+		public GLElement asElement() {
+			return GLElement.this;
 		}
 
 		@Override
 		public String toString() {
-			return Element.this.toString();
+			return GLElement.this.toString();
 		}
 	}
 }

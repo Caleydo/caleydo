@@ -1,15 +1,15 @@
 package org.caleydo.core.view.opengl.layout2.layout;
 
-import org.caleydo.core.view.opengl.layout2.Element;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 
 /**
- * accessor for an element seen by a {@link ILayout}
+ * accessor for an element seen by a {@link IGLLayout}
  *
  * @author Samuel Gratzl
  *
  */
-public interface ILayoutElement {
-	Element asElement();
+public interface IGLLayoutElement {
+	GLElement asElement();
 
 	/**
 	 * returns the layout data of the element if it is of the specific class otherwise return the default value

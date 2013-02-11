@@ -27,7 +27,7 @@ import java.util.List;
  * @author Samuel Gratzl
  * 
  */
-public interface ILayout {
+public interface IGLLayout {
 	/**
 	 * performs the actual layout of the given children within the given width and height
 	 *
@@ -40,5 +40,5 @@ public interface ILayout {
 	 *
 	 * @return true if another layouting round should be triggered before the next rendering step
 	 */
-	boolean doLayout(List<ILayoutElement> children, float w, float h);
+	boolean doLayout(List<IGLLayoutElement> children, float w, float h);
 }

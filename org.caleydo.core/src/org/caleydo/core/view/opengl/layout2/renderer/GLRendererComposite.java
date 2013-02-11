@@ -21,21 +21,21 @@ package org.caleydo.core.view.opengl.layout2.renderer;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.view.opengl.layout2.Element;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
- * composite pattern for {@link IRenderer}
+ * composite pattern for {@link IGLRenderer}
  * 
  * @author Samuel Gratzl
  * 
  */
-public class RendererComposite extends ArrayList<IRenderer> implements IRenderer {
+public class GLRendererComposite extends ArrayList<IGLRenderer> implements IGLRenderer {
 	private static final long serialVersionUID = -2280716329162030636L;
 
 	@Override
-	public void render(GLGraphics g, float w, float h, Element parent) {
-		for (IRenderer r : this)
+	public void render(GLGraphics g, float w, float h, GLElement parent) {
+		for (IGLRenderer r : this)
 			r.render(g, w, h, parent);
 	}
 }

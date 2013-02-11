@@ -21,41 +21,41 @@ package org.caleydo.core.view.opengl.layout2.test;
 
 import java.awt.Color;
 
-import org.caleydo.core.view.opengl.layout2.Element;
-import org.caleydo.core.view.opengl.layout2.ElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
-import org.caleydo.core.view.opengl.layout2.PickableElement;
-import org.caleydo.core.view.opengl.layout2.layout.Layouts;
-import org.caleydo.core.view.opengl.layout2.renderer.Renderers;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SimpleTest extends ElementContainer {
+public class SimpleTest extends GLElementContainer {
 	public SimpleTest() {
-		setLayout(Layouts.flowHorizontal(4));
-		add(new Element(Renderers.fillRect(Color.GREEN)).setSize(Float.NaN, 200), 0.3f);
-		add(new Element(Renderers.fillRect(Color.RED)).setSize(100, -1));
+		setLayout(GLLayouts.flowHorizontal(4));
+		add(new GLElement(GLRenderers.fillRect(Color.GREEN)).setSize(Float.NaN, 200), 0.3f);
+		add(new GLElement(GLRenderers.fillRect(Color.RED)).setSize(100, -1));
 
-		ElementContainer l = new ElementContainer();
-		l.setLayout(Layouts.flowVertical(5));
-		l.add(new Element(Renderers.fillRect(Color.ORANGE)).setSize(200, 120));
-		l.add(new Element(Renderers.fillRect(Color.YELLOW)).setSize(Float.NaN, 50));
+		GLElementContainer l = new GLElementContainer();
+		l.setLayout(GLLayouts.flowVertical(5));
+		l.add(new GLElement(GLRenderers.fillRect(Color.ORANGE)).setSize(200, 120));
+		l.add(new GLElement(GLRenderers.fillRect(Color.YELLOW)).setSize(Float.NaN, 50));
 		l.pack(true, false);
 		add(l);
 		add(new ButtonElement().setSize(100, 20));
 
-		l = new ElementContainer();
-		l.setLayout(Layouts.flowVertical(10));
-		l.add(new Element(Renderers.fillRect(Color.BLACK)), 10);
-		l.add(new Element(Renderers.fillRect(Color.WHITE)), 5);
+		l = new GLElementContainer();
+		l.setLayout(GLLayouts.flowVertical(10));
+		l.add(new GLElement(GLRenderers.fillRect(Color.BLACK)), 10);
+		l.add(new GLElement(GLRenderers.fillRect(Color.WHITE)), 5);
 		add(l);
 	}
 
-	class ButtonElement extends PickableElement {
+	class ButtonElement extends PickableGLElement {
 		private boolean hovered;
 
 		@Override

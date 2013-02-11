@@ -17,7 +17,7 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
-import org.caleydo.core.view.opengl.layout2.renderer.IRenderer;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingMouseListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
- * acts as a sandbox for elements, just use {@link GLSandBox#main(String[], Element)} and provide a element, and run the
+ * acts as a sandbox for elements, just use {@link GLSandBox#main(String[], GLElement)} and provide a element, and run the
  * application to open a window with the element shown, without the need of the whole caleydo / eclipse overhead
  *
  * perfect for prototyping
@@ -44,11 +44,11 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author Samuel Gratzl
  *
  */
-public class GLSandBox implements GLEventListener, IElementParent, IElementContext {
+public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementContext {
 	private final FPSAnimator animator;
 	private TextureManager textures;
 	private CompositeTextRenderer text;
-	private final WindowElement root;
+	private final WindowGLElement root;
 	private boolean dirty = true;
 	private final PickingMouseListener mouseListener;
 
@@ -66,13 +66,13 @@ public class GLSandBox implements GLEventListener, IElementParent, IElementConte
 	/**
 	 * @param canvas
 	 */
-	public GLSandBox(IGLCanvas canvas, Element root, IResourceLocator loader) {
+	public GLSandBox(IGLCanvas canvas, GLElement root, IResourceLocator loader) {
 		this.canvas = canvas;
 		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
 		this.mouseListener = new PickingMouseListener();
 		this.loader = loader;
 		this.canvas.addMouseListener(mouseListener);
-		this.root = new WindowElement(root);
+		this.root = new WindowGLElement(root);
 		this.root.init(this);
 	}
 
@@ -113,22 +113,22 @@ public class GLSandBox implements GLEventListener, IElementParent, IElementConte
 	}
 
 	@Override
-	public void init(Element element) {
+	public void init(GLElement element) {
 
 	}
 
 	@Override
-	public ElementContainer getMouseLayer() {
+	public GLElementContainer getMouseLayer() {
 		return root.getMouseLayer();
 	}
 
 	@Override
-	public void moved(Element child) {
+	public void moved(GLElement child) {
 
 	}
 
 	@Override
-	public void takeDown(Element element) {
+	public void takeDown(GLElement element) {
 
 	}
 
@@ -207,6 +207,8 @@ public class GLSandBox implements GLEventListener, IElementParent, IElementConte
 		pickingManager.doPicking(mouseListener, g.gl, toRender);
 		root.render(g);
 
+		g.destroy();
+
 		drawable.swapBuffers();
 	}
 
@@ -249,11 +251,11 @@ public class GLSandBox implements GLEventListener, IElementParent, IElementConte
 		});
 	}
 
-	public static void main(String[] args, IRenderer renderer) {
-		main(args, new Element(renderer));
+	public static void main(String[] args, IGLRenderer renderer) {
+		main(args, new GLElement(renderer));
 	}
 
-	public static void main(String[] args, Element root) {
+	public static void main(String[] args, GLElement root) {
 		IResourceLocator l = ResourceLocators.chain(ResourceLocators.classLoader(root.getClass().getClassLoader()),
 				ResourceLocators.FILE);
 		Display display = new Display();

@@ -25,24 +25,24 @@ import java.util.List;
  * @author Samuel Gratzl
  *
  */
-public class FlowLayout implements ILayout {
+public class GLFlowLayout implements IGLLayout {
 	private final boolean horizontal;
 	private final float gap;
 
-	public FlowLayout(boolean horizontal, float gap) {
+	public GLFlowLayout(boolean horizontal, float gap) {
 		this.horizontal = horizontal;
 		this.gap = gap;
 	}
 
 	@Override
-	public boolean doLayout(List<ILayoutElement> children, float w, float h) {
+	public boolean doLayout(List<IGLLayoutElement> children, float w, float h) {
 		float freeSpace = (horizontal ? w : h) - gap * (children.size() - 1);
 		int unbounded = 0;
 		float fixUsed = 0;
 		float ratioSum = 0;
 
 		// count statistics
-		for (ILayoutElement child : children) {
+		for (IGLLayoutElement child : children) {
 			float fix = horizontal ? child.getSetWidth() : child.getSetHeight();
 			float ratio = child.getLayoutDataAs(Number.class, Float.NaN).floatValue();
 			if (Float.isNaN(fix) && Float.isNaN(ratio)) {
@@ -57,7 +57,7 @@ public class FlowLayout implements ILayout {
 		float unboundedSpace = (freeSpace - fixUsed - freeSpace * ratioSum / ratioMax) / unbounded;
 
 		// set all sizes
-		for (ILayoutElement child : children) {
+		for (IGLLayoutElement child : children) {
 			float fix = horizontal ? child.getSetWidth() : child.getSetHeight();
 			float ratio = child.getLayoutDataAs(Number.class, Float.NaN).floatValue();
 			if (Float.isNaN(fix) && Float.isNaN(ratio)) {
@@ -73,7 +73,7 @@ public class FlowLayout implements ILayout {
 		// set all locations
 		float x_acc = 0;
 		float y_acc = 0;
-		for (ILayoutElement child : children) {
+		for (IGLLayoutElement child : children) {
 			child.setLocation(x_acc, y_acc);
 			if (horizontal) {
 				x_acc += child.getWidth() + gap;
@@ -85,7 +85,7 @@ public class FlowLayout implements ILayout {
 		return false;
 	}
 
-	private void setSize(float w, float h, ILayoutElement child, float value) {
+	private void setSize(float w, float h, IGLLayoutElement child, float value) {
 		if (horizontal)
 			child.setSize(value, grab(child.getSetHeight(), h));
 		else

@@ -142,9 +142,13 @@ public class GLPrimitives {
 	 */
 	public static void renderCircleBorder(GL2 gl, GLU glu, float fRadius,
 			int iNumSlicesPerFullDisc, float fBorderWidth) {
+		gl.glLineWidth(fBorderWidth);
+		renderCircleBorder(glu, fRadius, iNumSlicesPerFullDisc);
+	}
+
+	public static void renderCircleBorder(GLU glu, float fRadius, int iNumSlicesPerFullDisc) {
 		GLUquadric quadric = glu.gluNewQuadric();
 
-		gl.glLineWidth(fBorderWidth);
 		glu.gluQuadricDrawStyle(quadric, GLU.GLU_SILHOUETTE);
 		glu.gluDisk(quadric, 0, fRadius, iNumSlicesPerFullDisc, 1);
 

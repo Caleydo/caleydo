@@ -4,13 +4,16 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
@@ -48,7 +51,9 @@ public class GLGraphics {
 	/**
 	 * the stack of {@link IResourceLocator}s
 	 */
-	private StackedResourceLocator locator = new StackedResourceLocator();
+	private final StackedResourceLocator locator = new StackedResourceLocator();
+
+	private GLU glu = null; // lazy
 
 	public GLGraphics(GL2 gl, ITextRenderer text, TextureManager textures, IResourceLocator loader,
 			boolean originInTopLeft) {
@@ -207,6 +212,43 @@ public class GLGraphics {
 		return this;
 	}
 
+	public GLGraphics fillPolygon(Vec2f... points) {
+		return fillPolygon(Arrays.asList(points));
+	}
+
+	public GLGraphics fillPolygon(Iterable<Vec2f> points) {
+		return render(GL2.GL_POLYGON, points);
+	}
+
+	public GLU glu() {
+		if (this.glu != null)
+			return this.glu;
+		this.glu = new GLU();
+		return this.glu;
+	}
+
+	public GLGraphics fillCircle(float x, float y, float radius) {
+		return fillCircle(x, y, radius, 16);
+	}
+
+	public GLGraphics fillCircle(float x, float y, float radius, int numSlices) {
+		move(x, y);
+		GLPrimitives.renderCircle(glu(), radius, numSlices);
+		move(-x, -y);
+		return this;
+	}
+
+	public GLGraphics drawCircle(float x, float y, float radius) {
+		return drawCircle(x, y, radius, 16);
+	}
+
+	public GLGraphics drawCircle(float x, float y, float radius, int numSlices) {
+		move(x, y);
+		GLPrimitives.renderCircleBorder(glu(), radius, numSlices);
+		move(-x, -y);
+		return this;
+	}
+
 	/**
 	 * draws the given text within the given bounds
 	 */
@@ -284,11 +326,31 @@ public class GLGraphics {
 		return drawLine(x, y, x + w, y + h);
 	}
 
+	/**
+	 * returns a set of points as lines
+	 *
+	 * @param points
+	 * @param closed
+	 *            close the path?
+	 * @return
+	 */
+	public GLGraphics drawPath(Iterable<Vec2f> points, boolean closed) {
+		return render(closed ? GL.GL_LINE_LOOP : GL.GL_LINE_STRIP, points);
+	}
+
+	private GLGraphics render(int mode, Iterable<Vec2f> points) {
+		gl.glBegin(mode);
+		for (Vec2f p : points)
+			gl.glVertex3f(p.x(), p.y(), z);
+		gl.glEnd();
+		return this;
+	}
+
 	// ############## transformation
 
 	/**
 	 * increases the z value with {@link #DEFAULT_Z_INC}
-	 * 
+	 *
 	 * @return
 	 */
 	public GLGraphics incZ() {
@@ -297,7 +359,7 @@ public class GLGraphics {
 
 	/**
 	 * increases the z value with a defined delta value
-	 * 
+	 *
 	 * @param zDelta
 	 * @return
 	 */
@@ -308,7 +370,7 @@ public class GLGraphics {
 
 	/**
 	 * decreases the z value iwth {@link #DEFAULT_Z_INC}
-	 * 
+	 *
 	 * @return
 	 */
 	public GLGraphics decZ() {
@@ -339,7 +401,7 @@ public class GLGraphics {
 
 	/**
 	 * runs the given {@link IRenderProcedure} a moved environment by x and y
-	 * 
+	 *
 	 * @return
 	 */
 	public GLGraphics withMove(float x, float y, IRenderProcedure toRun) {
@@ -377,5 +439,15 @@ public class GLGraphics {
 
 	public interface IRenderProcedure {
 		public void render(GLGraphics g);
+	}
+
+	/**
+	 *
+	 */
+	void destroy() {
+		if (this.glu != null) {
+			this.glu.destroy();
+			this.glu = null;
+		}
 	}
 }

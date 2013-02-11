@@ -22,22 +22,22 @@ package org.caleydo.core.view.opengl.layout2.renderer;
 import java.awt.Color;
 
 import org.caleydo.core.util.color.Colors;
-import org.caleydo.core.view.opengl.layout2.Element;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
- * factory class for {@link IRenderer}
+ * factory class for {@link IGLRenderer}
  * 
  * @author Samuel Gratzl
  * 
  */
-public final class Renderers {
+public final class GLRenderers {
 	/**
 	 * dummy renderer, which does nothing
 	 */
-	public static final IRenderer DUMMY = new IRenderer() {
+	public static final IGLRenderer DUMMY = new IGLRenderer() {
 		@Override
-		public void render(GLGraphics g, float w, float h, Element parent) {
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
 
 		}
 	};
@@ -45,14 +45,14 @@ public final class Renderers {
 	/**
 	 * renders a full sized transparent rect
 	 */
-	public static final IRenderer TRANSPARENT_RECT = new IRenderer() {
+	public static final IGLRenderer TRANSPARENT_RECT = new IGLRenderer() {
 		@Override
-		public void render(GLGraphics g, float w, float h, Element parent) {
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
 			g.color(Colors.TRANSPARENT).fillRect(0, 0, w, h);
 		}
 	};
 
-	private Renderers() {
+	private GLRenderers() {
 
 	}
 
@@ -63,17 +63,17 @@ public final class Renderers {
 	 *            the color to use
 	 * @return
 	 */
-	public static IRenderer fillRect(final Color color) {
-		return new IRenderer() {
+	public static IGLRenderer fillRect(final Color color) {
+		return new IGLRenderer() {
 			@Override
-			public void render(GLGraphics g, float w, float h, Element parent) {
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
 				g.color(color).fillRect(0, 0, w, h);
 			}
 		};
 	}
 
-	public static Runnable asRunnable(final IRenderer renderer, final GLGraphics g, final float w, final float h,
-			final Element parent) {
+	public static Runnable asRunnable(final IGLRenderer renderer, final GLGraphics g, final float w, final float h,
+			final GLElement parent) {
 		return new Runnable() {
 			@Override
 			public void run() {
@@ -82,11 +82,11 @@ public final class Renderers {
 		};
 	}
 
-	public static IRenderer drawText(final String text) {
-		return new IRenderer() {
+	public static IGLRenderer drawText(final String text) {
+		return new IGLRenderer() {
 
 			@Override
-			public void render(GLGraphics g, float w, float h, Element parent) {
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
 				g.drawText(text, 0, 0, w, h);
 			}
 		};
