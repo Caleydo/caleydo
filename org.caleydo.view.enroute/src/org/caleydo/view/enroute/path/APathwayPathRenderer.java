@@ -181,10 +181,14 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	protected void onPathwayPathChanged(EnRoutePathEvent event) {
-		PathwayPath path = event.getPath();
+		List<PathwayPath> segments = event.getPathSegments();
+		List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(segments.size());
+		for (PathwayPath path : segments) {
+			pathSegments.add(path.getNodes());
+		}
+
+		PathwayPath path = segments.get(segments.size() - 1);
 		if (path != null && path.getPath() != null) {
-			List<List<PathwayVertexRep>> pathParts = new ArrayList<>();
-			pathParts.add(path.getNodes());
 			if (path.getNodes().size() > 0) {
 				PathwayVertexRep vertexRep = path.getNodes().get(path.getNodes().size() - 1);
 				Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexReps(vertexRep);
@@ -211,12 +215,12 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 						List<PathwayVertexRep> nextSegment = new ArrayList<>(2);
 						nextSegment.add(eqVertexRep);
 						nextSegment.add(nextVertexRep);
-						pathParts.add(nextSegment);
+						pathSegments.add(nextSegment);
 					}
 				}
 			}
 
-			setPath(pathParts);
+			setPath(pathSegments);
 		} else {
 			setPath(new ArrayList<List<PathwayVertexRep>>());
 		}
@@ -489,34 +493,31 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	protected void broadcastPath() {
 
-		PathwayPath pathwayPath = null;
-		// FIXME: TODO: Use pathSegments correctly.
-		if (pathSegments.size() > 0) {
-			List<PathwayVertexRep> pathSegment = pathSegments.get(0);
-			if (pathSegment.size() > 0) {
-				PathwayVertexRep startVertexRep = pathSegment.get(0);
-				PathwayVertexRep endVertexRep = pathSegment.get(pathSegment.size() - 1);
-				List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
-				PathwayGraph pathway = startVertexRep.getPathway();
+		List<PathwayPath> segments = new ArrayList<>(pathSegments.size());
+		for (List<PathwayVertexRep> segment : pathSegments) {
+			PathwayVertexRep startVertexRep = segment.get(0);
+			PathwayVertexRep endVertexRep = segment.get(segment.size() - 1);
+			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+			PathwayGraph pathway = startVertexRep.getPathway();
 
-				for (int i = 0; i < pathSegment.size() - 1; i++) {
-					PathwayVertexRep currentVertexRep = pathSegment.get(i);
-					PathwayVertexRep nextVertexRep = pathSegment.get(i + 1);
+			for (int i = 0; i < segment.size() - 1; i++) {
+				PathwayVertexRep currentVertexRep = segment.get(i);
+				PathwayVertexRep nextVertexRep = segment.get(i + 1);
 
-					DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
-					if (edge == null)
-						edge = pathway.getEdge(nextVertexRep, currentVertexRep);
-					edges.add(edge);
-				}
-				GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-						pathway, startVertexRep, endVertexRep, edges, edges.size());
-
-				pathwayPath = new PathwayPath(graphPath);
+				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
+				if (edge == null)
+					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
+				edges.add(edge);
 			}
+			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+					pathway, startVertexRep, endVertexRep, edges, edges.size());
+
+			segments.add(new PathwayPath(graphPath));
 		}
+
 		EnRoutePathEvent event = new EnRoutePathEvent();
 		event.setEventSpace(pathwayPathEventSpace);
-		event.setPath(pathwayPath);
+		event.setPathSegments(segments);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 

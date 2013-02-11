@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.pathway.listener;
 
@@ -10,7 +10,7 @@ import org.caleydo.view.pathway.event.EnRoutePathEvent;
 
 /**
  * Listener for {@link EnRoutePathEvent}.
- * 
+ *
  * @author Christian
  *
  */
@@ -23,7 +23,7 @@ public class EnRoutePathEventListener extends AEventListener<GLPathway> {
 			return;
 		if (event instanceof EnRoutePathEvent) {
 			EnRoutePathEvent e = (EnRoutePathEvent) event;
-			handler.setSelectedPath(e.getPath());
+			handler.setSelectedPathSegments(e.getPathSegments());
 		}
 	}
 

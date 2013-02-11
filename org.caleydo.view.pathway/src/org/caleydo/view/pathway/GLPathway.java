@@ -1513,7 +1513,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	private void triggerPathUpdate() {
 		EnRoutePathEvent pathEvent = new EnRoutePathEvent();
-		pathEvent.setPath(new PathwayPath(selectedPath));
+		List<PathwayPath> pathSegments = new ArrayList<>(1);
+		pathSegments.add(new PathwayPath(selectedPath));
+		pathEvent.setPathSegments(pathSegments);
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(pathwayPathEventSpace);
 		eventPublisher.triggerEvent(pathEvent);
@@ -1523,14 +1525,20 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 * @param selectedPath
 	 *            setter, see {@link #selectedPath}
 	 */
-	public void setSelectedPath(PathwayPath selectedPath) {
-		if (selectedPath == null || selectedPath.getPathway() != pathway)
+	public void setSelectedPathSegments(List<PathwayPath> pathSegments) {
+		if (pathSegments == null)
 			return;
 
-		this.selectedPath = selectedPath.getPath();
+		for (PathwayPath path : pathSegments) {
+			// TODO: Handle multiple path segments
+			if (path.getPathway() == pathway) {
+				this.selectedPath = path.getPath();
+				break;
+			}
+		}
 
 		allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
-		allPaths.add(selectedPath.getPath());
+		allPaths.add(selectedPath);
 
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();
