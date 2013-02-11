@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -58,20 +57,12 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Christian Partl
  *
  */
-public class EnRoutePathRenderer extends APathwayPathRenderer {
+public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 	/**
 	 * Default size for vertical node space, i.e., the space reserved for a single node.
 	 */
 	protected static final int DEFAULT_VERTICAL_NODE_SPACING_PIXELS = 50;
-	/**
-	 * Spacing before the first node.
-	 */
-	protected final static int TOP_SPACING_PIXELS = 60;
-	/**
-	 * Spacing after the last node.
-	 */
-	protected final static int BOTTOM_SPACING_PIXELS = 60;
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
 	protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
@@ -102,7 +93,7 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
-		minWidthPixels = BRANCH_COLUMN_WIDTH_PIXELS + PATH_COLUMN_WIDTH_PIXELS;
+		minWidthPixels = BRANCH_COLUMN_WIDTH_PIXELS + PATH_COLUMN_WIDTH_PIXELS + PATHWAY_TITLE_COLUMN_WIDTH_PIXELS;
 	}
 
 	@Override
@@ -457,13 +448,14 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
 		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATH_COLUMN_WIDTH_PIXELS);
+		float pathwayTitleColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
 
 		float pathwayHeight = 0;
 		int minViewHeightRequiredByBranchNodes = 0;
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings(pathNodes);
 
-		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathColumnWidth / 2.0f, y, 0.2f);
+		Vec3f currentPosition = new Vec3f(pathwayTitleColumnWidth + branchColumnWidth + pathColumnWidth / 2.0f, y, 0.2f);
 
 		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
 
@@ -534,7 +526,8 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
 
-		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_AREA_SIDE_SPACING_PIXELS);
+		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS
+				+ BRANCH_AREA_SIDE_SPACING_PIXELS);
 		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
 				.getGLHeightForPixelHeight(BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS);
 		float width = summaryNode.getWidth();
@@ -564,17 +557,10 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 
 		GLU glu = new GLU();
 		List<ALinearizableNode> pathNodes = getPathNodes();
+		renderPathwayBorders(gl);
 
 		for (int i = 0; i < pathNodes.size(); i++) {
 			ALinearizableNode node = pathNodes.get(i);
-
-			if (node.getVertexReps().size() > 1) {
-				gl.glColor3f(0.5f, 0.5f, 0.5f);
-				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(0, node.getPosition().y(), 0);
-				gl.glVertex3f(x, node.getPosition().y(), 0);
-				gl.glEnd();
-			}
 
 			node.render(gl, glu);
 			renderBranchNodes(gl, glu, node);
@@ -593,6 +579,8 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 		}
 		renderEdges(gl, pathNodes);
 	}
+
+
 
 	/**
 	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
@@ -658,15 +646,6 @@ public class EnRoutePathRenderer extends APathwayPathRenderer {
 			}
 		}
 
-	}
-
-	private void renderEdges(GL2 gl, List<ALinearizableNode> pathNodes) {
-		for (int i = 0; i < pathNodes.size() - 1; i++) {
-			ALinearizableNode node1 = pathNodes.get(i);
-			ALinearizableNode node2 = pathNodes.get(i + 1);
-			EdgeRenderUtil.renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(),
-					node2.getTopConnectionPoint(), 0.2f, true, pixelGLConverter, textRenderer);
-		}
 	}
 
 	@Override

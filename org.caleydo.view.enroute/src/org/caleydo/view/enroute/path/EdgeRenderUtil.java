@@ -73,8 +73,12 @@ public final class EdgeRenderUtil {
 					if (edge == null) {
 						edge = pathway.getEdge(node2VertexRep, node1VertexRep);
 					}
+					if (edge != null)
+						break;
 				}
 			}
+			if (edge != null)
+				break;
 		}
 		if (edge == null || pathway == null || vertexRep1 == null)
 			return;

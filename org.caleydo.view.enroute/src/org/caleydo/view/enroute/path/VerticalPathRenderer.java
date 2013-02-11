@@ -23,6 +23,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -39,9 +40,11 @@ import org.caleydo.view.enroute.path.node.ANode;
  */
 public class VerticalPathRenderer extends APathwayPathRenderer {
 
-	protected static final int TOP_SPACING_PIXELS = 20;
-	protected static final int BOTTOM_SPACING_PIXELS = 20;
+	protected static final int TOP_SPACING_PIXELS = 60;
+	protected static final int BOTTOM_SPACING_PIXELS = 60;
 	protected static final int NODE_SPACING_PIXELS = 60;
+	public final static int PATHWAY_TITLE_COLUMN_WIDTH_PIXELS = 20;
+	protected final static int PATHWAY_TITLE_TEXT_HEIGHT_PIXELS = 16;
 
 	/**
 	 * @param view
@@ -49,7 +52,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	 */
 	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
-		minWidthPixels = ANode.DEFAULT_WIDTH_PIXELS;
+		minWidthPixels = ANode.DEFAULT_WIDTH_PIXELS + 2 * PATHWAY_TITLE_COLUMN_WIDTH_PIXELS;
 	}
 
 	@Override
@@ -73,15 +76,85 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	protected void renderContent(GL2 gl) {
 		GLU glu = new GLU();
 
+		renderPathwayBorders(gl);
+
 		for (int i = 0; i < pathNodes.size(); i++) {
 			ALinearizableNode node = pathNodes.get(i);
+
 			node.render(gl, glu);
 		}
 
 		renderEdges(gl, pathNodes);
 	}
 
-	private void renderEdges(GL2 gl, List<ALinearizableNode> pathNodes) {
+	protected void renderPathwayBorders(GL2 gl) {
+
+		float topPathwayTitleLimit = y - pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+
+		int segmentIndex = 0;
+		for (int i = 0; i < pathNodes.size(); i++) {
+			ALinearizableNode node = pathNodes.get(i);
+
+			if (node.getVertexReps().size() > 1) {
+				float nodePositionY = node.getPosition().y();
+
+				gl.glColor3f(0.95f, 0.95f, 0.95f);
+				gl.glBegin(GL2.GL_QUADS);
+
+				gl.glVertex3f(0, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(x, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				// gl.glColor3f(1f, 1f, 1f);
+				gl.glVertex3f(x, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(0, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+
+				// gl.glColor3f(0.5f, 0.5f, 0.5f);
+				// gl.glVertex3f(0, nodePositionY, 0);
+				// gl.glVertex3f(x, nodePositionY, 0);
+				// // gl.glColor3f(1f, 1f, 1f);
+				// gl.glVertex3f(x, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				// gl.glVertex3f(0, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glEnd();
+
+				gl.glColor3f(0.5f, 0.5f, 0.5f);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(x, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(0, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(x, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(0, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glEnd();
+
+				renderPathwayTitle(gl, segmentIndex, topPathwayTitleLimit, nodePositionY);
+				gl.glPopMatrix();
+
+				topPathwayTitleLimit = nodePositionY;
+				segmentIndex++;
+			}
+			if (segmentIndex == pathSegments.size() - 1) {
+				renderPathwayTitle(gl, segmentIndex, topPathwayTitleLimit,
+						y - pixelGLConverter.getGLHeightForPixelHeight(minHeightPixels));
+				segmentIndex++;
+			}
+		}
+	}
+
+	private void renderPathwayTitle(GL2 gl, int pathSegmentIndex, float topPathwayTitleLimit,
+			float bottomPathwayTitleLimit) {
+		float pathwayTitlePositionX = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS
+				- (int) ((PATHWAY_TITLE_COLUMN_WIDTH_PIXELS - PATHWAY_TITLE_TEXT_HEIGHT_PIXELS) / 2.0f));
+		float pathwayTitleTextHeight = pixelGLConverter.getGLHeightForPixelHeight(PATHWAY_TITLE_TEXT_HEIGHT_PIXELS);
+		String text = pathSegments.get(pathSegmentIndex).get(0).getPathway().getTitle();
+		float maxTextWidth = topPathwayTitleLimit - bottomPathwayTitleLimit;
+		float requiredTextWidth = textRenderer.getRequiredTextWidthWithMax(text, pathwayTitleTextHeight, maxTextWidth);
+		gl.glPushMatrix();
+		gl.glTranslatef(pathwayTitlePositionX, bottomPathwayTitleLimit + (maxTextWidth - requiredTextWidth) / 2.0f, 0);
+		gl.glRotatef(90, 0, 0, 1);
+		// gl.glColor3f(0, 0, 0);
+		// textRenderer.setColor(0, 0, 0, 1);
+		textRenderer.renderTextInBounds(gl, text, 0, 0, 0, maxTextWidth, pathwayTitleTextHeight);
+		gl.glPopMatrix();
+	}
+
+	protected void renderEdges(GL2 gl, List<ALinearizableNode> pathNodes) {
 		for (int i = 0; i < pathNodes.size() - 1; i++) {
 			ALinearizableNode node1 = pathNodes.get(i);
 			ALinearizableNode node2 = pathNodes.get(i + 1);
