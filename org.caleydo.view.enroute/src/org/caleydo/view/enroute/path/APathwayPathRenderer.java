@@ -458,9 +458,25 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		int linearizedNodeIndex = pathNodes.indexOf(node);
 
 		if (linearizedNodeIndex == 0) {
-			pathSegments.remove(0);
-		} else if (linearizedNodeIndex == pathSegments.size() - 1) {
-			pathSegments.remove(pathSegments.size() - 1);
+			List<PathwayVertexRep> segment = pathSegments.get(0);
+			segment.remove(0);
+			if (segment.size() == 0) {
+				if (pathSegments.size() > 1) {
+					List<PathwayVertexRep> nextSegment = pathSegments.get(1);
+					nextSegment.remove(0);
+				}
+				pathSegments.remove(segment);
+			}
+		} else if (linearizedNodeIndex == pathNodes.size() - 1) {
+			List<PathwayVertexRep> segment = pathSegments.get(pathSegments.size() - 1);
+			segment.remove(segment.size() - 1);
+			if (segment.size() == 0) {
+				if (pathSegments.size() > 1) {
+					List<PathwayVertexRep> prevSegment = pathSegments.get(pathSegments.size() - 2);
+					prevSegment.remove(prevSegment.size() - 1);
+				}
+				pathSegments.remove(segment);
+			}
 
 		} else {
 			return;
