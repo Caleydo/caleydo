@@ -210,13 +210,12 @@ public class PickingUtils {
 				}
 				anyWaiting = true;
 				entry.fire(mode, mousePos, depth);
-
-			} else if (entry.isHovered()) { // was picked last time
-				// send mouse out
-				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth);
 			} else if (entry.isDragging() && (mode == PickingMode.MOUSE_RELEASED || mode == PickingMode.DRAGGED)) {
 				entry.fire(mode, mousePos, depth);
 				anyWaiting = anyWaiting || (mode == PickingMode.DRAGGED);
+			} else if (entry.isHovered()) { // was picked last time
+				// send mouse out
+				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth);
 			}
 		}
 		return anyWaiting;
