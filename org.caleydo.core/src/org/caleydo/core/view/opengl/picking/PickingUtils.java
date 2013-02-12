@@ -75,14 +75,17 @@ public class PickingUtils {
 		}
 	}
 
+	private static final int LEFT_MOUSE_BUTTON = 1;
+	private static final int RIGHT_MOUSE_BUTTON = 3;
+
 	private static PickingMode convert(IMouseEvent event, PickingMode type) {
 		if (type == PickingMode.CLICKED && event.getClickCount() > 1)
 			return PickingMode.DOUBLE_CLICKED;
 		if (type == PickingMode.DRAGGED)
 			return PickingMode.DRAGGED;
-		if (type == PickingMode.CLICKED && event.getButton() == 1)
+		if (type == PickingMode.CLICKED && event.getButton() == LEFT_MOUSE_BUTTON)
 			return PickingMode.CLICKED;
-		if (type == PickingMode.CLICKED && event.getButton() == 2)
+		if (type == PickingMode.CLICKED && event.getButton() == RIGHT_MOUSE_BUTTON)
 			return PickingMode.RIGHT_CLICKED;
 		if (type == PickingMode.MOUSE_MOVED)
 			return PickingMode.MOUSE_MOVED;
