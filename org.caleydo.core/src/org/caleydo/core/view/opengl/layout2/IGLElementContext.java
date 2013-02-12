@@ -77,10 +77,10 @@ public interface IGLElementContext {
 
 	/**
 	 * returns a special {@link GLElementContainer} that will be positioned at the mouse position
-	 * 
+	 *
 	 * @return
 	 */
-	public GLElementContainer getMouseLayer();
+	public IMouseLayer getMouseLayer();
 
 	/**
 	 * chance for a context to initialize an added element

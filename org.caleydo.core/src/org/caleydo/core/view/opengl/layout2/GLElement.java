@@ -86,11 +86,6 @@ public class GLElement {
 	private float w_set = Float.NaN, h_set = Float.NaN;
 
 	/**
-	 * padding of the content to the border
-	 */
-	private GLPadding padding = GLPadding.ZERO;
-
-	/**
 	 * the current visibility mode, see {@link EVisibility}
 	 */
 	private EVisibility visibility = EVisibility.VISIBLE;
@@ -130,7 +125,7 @@ public class GLElement {
 	/**
 	 * the renderer to use for picking, default: a full sized rect
 	 */
-	private IGLRenderer picker = GLRenderers.TRANSPARENT_RECT;
+	private IGLRenderer picker = GLRenderers.RECT;
 	/**
 	 * the list of picking listeners, set by {@link #onPick(IPickingListener)}
 	 */
@@ -176,10 +171,10 @@ public class GLElement {
 			cache.invalidate(context);
 			return;
 		}
-		float x = x_layout + padding.left;
-		float y = y_layout + padding.top;
-		float w = w_layout - padding.left - padding.right;
-		float h = h_layout - padding.top - padding.bottom;
+		float x = x_layout;
+		float y = y_layout;
+		float w = w_layout;
+		float h = h_layout;
 
 		g.move(x, y);
 		if (!cache.render(context, g)) {
@@ -218,10 +213,10 @@ public class GLElement {
 			pickCache.invalidate(context);
 			return;
 		}
-		float x = x_layout + padding.left;
-		float y = y_layout + padding.top;
-		float w = w_layout - padding.left - padding.right;
-		float h = w_layout - padding.top - padding.bottom;
+		float x = x_layout;
+		float y = y_layout;
+		float w = w_layout;
+		float h = w_layout;
 
 		g.move(x, y);
 		if (!pickCache.render(context, g)) {
@@ -255,23 +250,6 @@ public class GLElement {
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		if (visibility == EVisibility.PICKABLE) // check really pickable
 			picker.render(g, w, h, this);
-	}
-
-	/**
-	 * @param padding
-	 *            setter, see {@link padding}
-	 */
-	public void setPadding(GLPadding padding) {
-		if (padding == null)
-			padding = GLPadding.ZERO;
-		this.padding = padding;
-	}
-
-	/**
-	 * @return the padding, see {@link #padding}
-	 */
-	public GLPadding getPadding() {
-		return padding;
 	}
 
 	/**
@@ -492,7 +470,7 @@ public class GLElement {
 	/**
 	 * shortcut to {@link #repaint()} and {@link #repaintAll()}
 	 */
-	protected final void repaintAll() {
+	public final void repaintAll() {
 		repaint();
 		repaintPick();
 	}
@@ -500,7 +478,7 @@ public class GLElement {
 	/**
 	 * triggers that me and my parents get repainted
 	 */
-	protected void repaint() {
+	public void repaint() {
 		cache.invalidate(context);
 		if (parent != null)
 			parent.repaint();
@@ -509,7 +487,7 @@ public class GLElement {
 	/**
 	 * triggers that me and my parents get repaint the picking representation
 	 */
-	protected void repaintPick() {
+	public void repaintPick() {
 		pickCache.invalidate(context);
 		if (parent != null)
 			parent.repaintPick();

@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import org.caleydo.core.view.opengl.layout2.internal.MouseLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 /**
@@ -29,13 +30,13 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
  */
 public final class WindowGLElement extends GLElementContainer {
 	private final GLElement root;
-	private final GLElementContainer mouseLayer;
+	private final MouseLayer mouseLayer;
 
 	public WindowGLElement(GLElement root) {
 		super(GLLayouts.LAYERS);
 		this.root = root;
 		this.add(root);
-		this.mouseLayer = new GLElementContainer(GLLayouts.NONE);
+		this.mouseLayer = new MouseLayer();
 		this.add(mouseLayer);
 	}
 
@@ -49,7 +50,7 @@ public final class WindowGLElement extends GLElementContainer {
 	/**
 	 * @return the mouseLayer, see {@link #mouseLayer}
 	 */
-	public GLElementContainer getMouseLayer() {
+	public MouseLayer getMouseLayer() {
 		return mouseLayer;
 	}
 

@@ -65,6 +65,13 @@ public class GLGraphics {
 		this.originInTopLeft = originInTopLeft;
 	}
 
+	/**
+	 * @return the text, see {@link #text}
+	 */
+	public ITextRenderer getText() {
+		return text;
+	}
+
 	// #############
 
 	/**
@@ -249,9 +256,9 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillCircle(float x, float y, float radius, int numSlices) {
-		move(x, y);
+		gl.glTranslatef(x, y, z);
 		GLPrimitives.renderCircle(glu(), radius, numSlices);
-		move(-x, -y);
+		gl.glTranslatef(-x, -y, -z);
 		return this;
 	}
 
@@ -260,9 +267,9 @@ public class GLGraphics {
 	}
 
 	public GLGraphics drawCircle(float x, float y, float radius, int numSlices) {
-		move(x, y);
+		gl.glTranslatef(x, y, z);
 		GLPrimitives.renderCircleBorder(glu(), radius, numSlices);
-		move(-x, -y);
+		gl.glTranslatef(-x, -y, -z);
 		return this;
 	}
 

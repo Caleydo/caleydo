@@ -8,9 +8,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 import com.google.common.collect.Iterators;
 
@@ -168,11 +168,13 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		relayout();
 	}
 
-	public final void remove(GLElement child) {
+	public final boolean remove(GLElement child) {
 		if (children.remove(child)) {
 			takeDown(child);
 			relayout();
+			return true;
 		}
+		return false;
 	}
 
 	public final int size() {

@@ -15,6 +15,7 @@ import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
@@ -62,7 +63,9 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	private final IGLCanvas canvas;
 	private final IResourceLocator loader;
+	protected boolean renderPick;
 
+	private GLPadding padding = GLPadding.ZERO;
 	/**
 	 * @param canvas
 	 */
@@ -72,7 +75,21 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		this.mouseListener = new PickingMouseListener();
 		this.loader = loader;
 		this.canvas.addMouseListener(mouseListener);
+		this.canvas.addKeyListener(new IGLKeyListener() {
+			@Override
+			public void keyReleased(IKeyEvent e) {
+				if (e.isKey('p')) {
+					renderPick = !renderPick;
+				}
+			}
+
+			@Override
+			public void keyPressed(IKeyEvent e) {
+
+			}
+		});
 		this.root = new WindowGLElement(root);
+		this.root.setParent(this);
 		this.root.init(this);
 	}
 
@@ -104,7 +121,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public Vec2f getAbsoluteLocation() {
-		return new Vec2f(0, 0);
+		return new Vec2f(padding.left, padding.top);
 	}
 
 	@Override
@@ -118,7 +135,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
-	public GLElementContainer getMouseLayer() {
+	public IMouseLayer getMouseLayer() {
 		return root.getMouseLayer();
 	}
 
@@ -187,8 +204,12 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		final GLGraphics g = tracingGL ? new GLGraphicsTracing(gl, text, textures, loader, true) : new GLGraphics(gl,
 				text, textures, loader, true);
 
+		float paddedWidth = width - padding.left - padding.right;
+		float paddedHeight = height - padding.top - padding.bottom;
+		g.move(padding.left, padding.right);
+
 		if (dirty) {
-			root.setBounds(0, 0, width, height);
+			root.setBounds(0, 0, paddedWidth, paddedHeight);
 			root.layout();
 			dirty = false;
 		}
@@ -200,13 +221,19 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			}
 		};
 
-		Point mousPos = mouseListener.getCurrentMousePos();
-		if (mousPos != null) {
-			root.getMouseLayer().setLocation(mousPos.x, mousPos.y);
+		Point mousePos = mouseListener.getCurrentMousePos();
+		if (mousePos != null) {
+			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, width - mousePos.x, height - mousePos.y);
+			root.getMouseLayer().relayout();
 		}
 		pickingManager.doPicking(mouseListener, g.gl, toRender);
-		root.render(g);
 
+		if (renderPick)
+			root.renderPick(g);
+		else
+			root.render(g);
+
+		g.move(-padding.left, -padding.right);
 		g.destroy();
 
 		drawable.swapBuffers();
@@ -256,6 +283,10 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	public static void main(String[] args, GLElement root) {
+		main(args, root, GLPadding.ZERO);
+	}
+
+	public static void main(String[] args, GLElement root, GLPadding padding) {
 		IResourceLocator l = ResourceLocators.chain(ResourceLocators.classLoader(root.getClass().getClassLoader()),
 				ResourceLocators.FILE);
 		Display display = new Display();
@@ -270,6 +301,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		try {
 			GLSandBox sandbox = new GLSandBox(canvas, root, l);
+			sandbox.padding = padding;
 			canvas.addGLEventListener(sandbox);
 
 			shell.open();
@@ -294,4 +326,5 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			// System.exit(0);
 		}
 	}
+
 }

@@ -21,15 +21,14 @@ package org.caleydo.core.view.opengl.layout2.renderer;
 
 import java.awt.Color;
 
-import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
  * factory class for {@link IGLRenderer}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class GLRenderers {
 	/**
@@ -45,10 +44,10 @@ public final class GLRenderers {
 	/**
 	 * renders a full sized transparent rect
 	 */
-	public static final IGLRenderer TRANSPARENT_RECT = new IGLRenderer() {
+	public static final IGLRenderer RECT = new IGLRenderer() {
 		@Override
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
-			g.color(Colors.TRANSPARENT).fillRect(0, 0, w, h);
+			g.fillRect(0, 0, w, h);
 		}
 	};
 
@@ -58,7 +57,7 @@ public final class GLRenderers {
 
 	/**
 	 * renders a full sized rect with the specified color
-	 * 
+	 *
 	 * @param color
 	 *            the color to use
 	 * @return

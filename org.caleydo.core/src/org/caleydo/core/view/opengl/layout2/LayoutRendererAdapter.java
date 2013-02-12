@@ -43,7 +43,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	private final IResourceLocator locator;
 
 	/**
-	 * do we need to peform a layout
+	 * do we need to perform a layout
 	 */
 	private boolean dirty = true;
 
@@ -208,7 +208,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
-	public GLElementContainer getMouseLayer() {
+	public IMouseLayer getMouseLayer() {
 		return root.getMouseLayer();
 	}
 

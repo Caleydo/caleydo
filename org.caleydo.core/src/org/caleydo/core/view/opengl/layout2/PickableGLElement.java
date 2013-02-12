@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
  *
  */
 public class PickableGLElement extends GLElement {
+	private String tooltip = null;
 
 	public PickableGLElement() {
 		this.setVisibility(EVisibility.PICKABLE);
@@ -39,6 +40,18 @@ public class PickableGLElement extends GLElement {
 				onPicked(pick);
 			}
 		});
+	}
+
+	/**
+	 * @param tooltip
+	 *            setter, see {@link tooltip}
+	 */
+	public void setTooltip(String tooltip) {
+		if (tooltip != null)
+			tooltip = tooltip.trim();
+		if (tooltip != null && tooltip.length() == 0)
+			tooltip = null;
+		this.tooltip = tooltip;
 	}
 
 	protected void onPicked(Pick pick) {
@@ -54,9 +67,13 @@ public class PickableGLElement extends GLElement {
 			break;
 		case MOUSE_OUT:
 			onMouseOut(pick);
+			if (this.tooltip != null)
+				context.getMouseLayer().clearToolTip();
 			break;
 		case MOUSE_OVER:
 			onMouseOver(pick);
+			if (this.tooltip != null)
+				context.getMouseLayer().setToolTip(tooltip);
 			break;
 		case RIGHT_CLICKED:
 			onRightClicked(pick);
@@ -83,11 +100,9 @@ public class PickableGLElement extends GLElement {
 	}
 
 	protected void onMouseOver(Pick pick) {
-
 	}
 
 	protected void onMouseOut(Pick pick) {
-
 	}
 
 	protected void onDragged(Pick pick) {

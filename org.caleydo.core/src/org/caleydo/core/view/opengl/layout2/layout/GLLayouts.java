@@ -61,7 +61,16 @@ public class GLLayouts {
 		return new GLFlowLayout(false, gap);
 	}
 
-	private static float defaultValue(float v, float d) {
+	/**
+	 * returns the default value if the value to check is lower than 0 or NaN
+	 * 
+	 * @param v
+	 *            the value to check
+	 * @param d
+	 *            the default value
+	 * @return
+	 */
+	public static float defaultValue(float v, float d) {
 		if (v < 0 || Float.isNaN(v))
 			return d;
 		return v;
