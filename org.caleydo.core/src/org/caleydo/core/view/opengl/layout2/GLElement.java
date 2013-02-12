@@ -216,7 +216,7 @@ public class GLElement {
 		float x = x_layout;
 		float y = y_layout;
 		float w = w_layout;
-		float h = w_layout;
+		float h = h_layout;
 
 		g.move(x, y);
 		if (!pickCache.render(context, g)) {
