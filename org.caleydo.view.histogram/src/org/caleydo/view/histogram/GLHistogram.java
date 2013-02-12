@@ -135,20 +135,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			if (tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
 				histogram = tablePerspective.getContainerStatistics().getHistogram();
 			}
-			// // FIXME Bad hack
-			// if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-			// histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-			// .getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-			// .getVirtualArray(), 5);
-			// } else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-			// histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-			// .getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-			// .getVirtualArray(), 2);
-			// } else {
-			//
-			// }
-			// }
-			// }
+
 		}
 
 	}

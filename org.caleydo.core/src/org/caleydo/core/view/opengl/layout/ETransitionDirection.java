@@ -17,11 +17,10 @@
 package org.caleydo.core.view.opengl.layout;
 
 /**
- *
- * Directions for appearance/removal of elements
  * 
+ * Directions for appearance/removal of elements
  * @author Alexander Lex
- *
+ * 
  */
 public enum ETransitionDirection {
 	HORIZONTAL, VERTICAL, DIAGONAL;
