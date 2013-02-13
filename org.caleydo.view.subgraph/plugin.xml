@@ -77,6 +77,9 @@
          <Embedding
                id="org.caleydo.view.subgraph.pathway.multiform">
          </Embedding>
+         <Embedding
+               id="org.caleydo.view.subgraph.path">
+         </Embedding>
       </Provider>
    </extension>
 

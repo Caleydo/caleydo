@@ -30,7 +30,11 @@ public enum EEmbeddingID {
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance.
 	 */
-	PATHWAY_MULTIFORM("org.caleydo.view.subgraph.pathway.multiform");
+	PATHWAY_MULTIFORM("org.caleydo.view.subgraph.pathway.multiform"),
+	/**
+	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways.
+	 */
+	PATH("org.caleydo.view.subgraph.path");
 
 	/**
 	 * Actual ID of embedding.

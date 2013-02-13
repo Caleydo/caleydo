@@ -23,16 +23,13 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -47,15 +44,21 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 
 	private LayoutManager layoutManager;
 
-	private MultiFormRenderer multiFormRenderer;
+	private MultiFormRenderer pathMultiformRenderer;
 
 	private List<TablePerspective> tablePerspectives = new ArrayList<>();
 
-	private Set<String> remoteRenderedViewIDs;
+	private Set<String> remoteRenderedPathwayMultiformViewIDs;
 
-	private Column baseColumn;
+	private Row baseRow;
+
+	private Column pathwayColumn;
 
 	private AddTablePerspectivesListener addTablePerspectivesListener;
+
+	private Column pathColumn;
+
+	private String pathEventSpace;
 
 	/**
 	 * Constructor.
@@ -67,6 +70,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 	public GLSubGraph(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+		pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 	}
 
 	@Override
@@ -93,14 +97,23 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 		// }
 		displayListIndex = gl.glGenLists(1);
 		detailLevel = EDetailLevel.HIGH;
-		multiFormRenderer = new MultiFormRenderer(this, true);
+		pathMultiformRenderer = new MultiFormRenderer(this, false);
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+		baseRow = new Row();
 
-		baseColumn = new Column();
-		baseColumn.setRatioSizeX(1);
-		baseColumn.setRatioSizeY(1);
-		layoutManager.setBaseElementLayout(baseColumn);
+		pathwayColumn = new Column();
+		pathwayColumn.setRatioSizeX(0.3f);
+		pathwayColumn.setRatioSizeY(1);
+		pathwayColumn.setBottomUp(false);
+
+		pathColumn = new Column();
+		pathColumn.setRatioSizeX(0.7f);
+		pathColumn.setRatioSizeY(1);
+
+		baseRow.add(pathwayColumn);
+		baseRow.add(pathColumn);
+		layoutManager.setBaseElementLayout(baseRow);
 		layoutManager.setUseDisplayLists(true);
 
 	}
@@ -216,9 +229,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 	}
 
 	private void createRemoteRenderedViews() {
-		if (remoteRenderedViewIDs == null) {
-			remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE,
-					EEmbeddingID.PATHWAY_MULTIFORM.id());
+		if (remoteRenderedPathwayMultiformViewIDs == null) {
 
 			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 					PathwayDataDomain.DATA_DOMAIN_TYPE);
@@ -244,53 +255,61 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			PathwayTablePerspective pathwayPathwayTablePerspective = new PathwayTablePerspective(
 					tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective, newDimensionPerspective,
 					PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-
 			pathwayDataDomain.addTablePerspective(pathwayPathwayTablePerspective);
 
-			List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
-			pathwayTablePerspectives.add(pathwayPathwayTablePerspective);
+			addPathwayMultiform(pathwayPathwayTablePerspective);
 
-			int currentRendererID = -1;
-			String eventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
-			for (String viewID : remoteRenderedViewIDs) {
-				currentRendererID = multiFormRenderer.addPluginVisualization(viewID, getViewType(),
-						EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayTablePerspectives, eventSpace);
+			pathwayPathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(),
+					pathwayDataDomain, newRecordPerspective, newDimensionPerspective, PathwayManager.get()
+							.getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
+			pathwayDataDomain.addTablePerspective(pathwayPathwayTablePerspective);
+
+			addPathwayMultiform(pathwayPathwayTablePerspective);
+
+			Set<String> pathViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, EEmbeddingID.PATH.id());
+
+			for (String viewID : pathViewIDs) {
+				pathMultiformRenderer.addPluginVisualization(viewID, getViewType(), EEmbeddingID.PATH.id(),
+						tablePerspectives, pathEventSpace);
 			}
-			ALayoutRenderer customRenderer = new BorderedAreaRenderer();
-			IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
 
-				@Override
-				public EScalingEntity getPrimaryWidthScalingEntity() {
-					return null;
-				}
-
-				@Override
-				public EScalingEntity getPrimaryHeightScalingEntity() {
-					return null;
-				}
-			};
-
-			multiFormRenderer.addLayoutRenderer(customRenderer, EIconTextures.ARROW_DOWN.getFileName(), visInfo, false);
-
-			// TextureRenderer textureRenderer = new TextureRenderer("resources/tissue_images/ebene_0.bmp",
-			// textureManager);
-			// List<String> areaImagePaths = new ArrayList<>(2);
-			// areaImagePaths.add("resources/tissue_images/ebene_1.bmp");
-			// areaImagePaths.add("resources/tissue_images/ebene_2.bmp");
-			// areaImagePaths.add("resources/tissue_images/ebene_3.bmp");
-			// areaImagePaths.add("resources/tissue_images/ebene_4.bmp");
-			// TissueRenderer textureRenderer = new TissueRenderer(this, "resources/tissue_images/ebene_0.bmp",
-			// areaImagePaths);
-			// multiFormRenderer
-			// .addLayoutRenderer(textureRenderer, EIconTextures.ARROW_DOWN.getFileName(), visInfo, false);
-
-			MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, this);
-			baseColumn.add(viewSwitchingBar);
+			MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(pathMultiformRenderer, this);
+			pathColumn.add(viewSwitchingBar);
 			ElementLayout multiformRendererLayout = new ElementLayout();
-			multiformRendererLayout.setRenderer(multiFormRenderer);
-			baseColumn.add(multiformRendererLayout);
+			multiformRendererLayout.setRenderer(pathMultiformRenderer);
+			pathColumn.add(multiformRendererLayout);
+
 			setDisplayListDirty();
 		}
+	}
+
+	private void addPathwayMultiform(PathwayTablePerspective pathwayPathwayTablePerspective) {
+		remoteRenderedPathwayMultiformViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE,
+				EEmbeddingID.PATHWAY_MULTIFORM.id());
+		List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
+		pathwayTablePerspectives.add(pathwayPathwayTablePerspective);
+
+		// Different renderers should receive path updates from the beginning on, therefore no lazy creation.
+		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
+
+
+		for (String viewID : remoteRenderedPathwayMultiformViewIDs) {
+			renderer.addPluginVisualization(viewID, getViewType(), EEmbeddingID.PATHWAY_MULTIFORM.id(),
+					pathwayTablePerspectives, pathEventSpace);
+		}
+		Row row = new Row();
+		row.setRatioSizeY(0.5f);
+		Column column = new Column();
+		row.add(column);
+
+		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(renderer, this);
+		column.add(viewSwitchingBar);
+
+		ElementLayout multiformRendererLayout = new ElementLayout();
+		multiformRendererLayout.setRenderer(renderer);
+		column.add(multiformRendererLayout);
+		pathwayColumn.add(row);
+
 	}
 
 	@Override
