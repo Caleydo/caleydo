@@ -328,6 +328,10 @@ Export-Package:
    javax.media.opengl,
    org.caleydo.core.view.opengl.miniview,
    com.jogamp.opengl.util.awt",
+ org.caleydo.core.view.opengl.layout2,
+ org.caleydo.core.view.opengl.layout2.animation,
+ org.caleydo.core.view.opengl.layout2.layout,
+ org.caleydo.core.view.opengl.layout2.renderer,
  org.caleydo.core.view.opengl.mouse;uses:="org.caleydo.core.view.opengl.canvas",
  org.caleydo.core.view.opengl.picking;uses:="org.caleydo.core.view.opengl.canvas,javax.media.opengl,org.caleydo.core.util.base",
  org.caleydo.core.view.opengl.renderstyle;
