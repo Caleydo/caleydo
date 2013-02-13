@@ -80,7 +80,7 @@ public class InteractiveNormalization implements Function<IValue, IValue>, Itera
 		}
 	}
 
-	private float apply(float in) {
+	public float apply(float in) {
 		if (mapping.isEmpty()) // default clamping
 			return clamp01(in);
 

@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
@@ -252,6 +253,9 @@ public class GraphInteractiveTransformationUI extends GLElementContainer impleme
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
+			// render all point mappings
+			renderMapping(g, w, h);
+
 			List<GLElement> points = this.renderLine(g);
 			g.color(Color.LIGHT_GRAY);
 			Vec2f myloc = this.getLocation();
@@ -267,6 +271,21 @@ public class GraphInteractiveTransformationUI extends GLElementContainer impleme
 						10, 10,
 						Color.LIGHT_GRAY);
 			}
+		}
+
+		private void renderMapping(GLGraphics g, float w, float h) {
+			g.color(.3f, .3f, .3f, .3f);
+			GL2 gl = g.gl;
+			final float z = g.z();
+			gl.glBegin(GL.GL_LINES);
+			for (int i = 0; i < raw.size(); ++i) {
+				float v = raw.getPrimitive(i);
+				float x = normalizeRaw(v) * w;
+				float y = (1 - model.apply(v)) * h;
+				gl.glVertex3f(x, h, z);
+				gl.glVertex3f(0, y, z);
+			}
+			gl.glEnd();
 		}
 
 		private void drawHintLines(GLGraphics g, Vec2f loc, float h) {
