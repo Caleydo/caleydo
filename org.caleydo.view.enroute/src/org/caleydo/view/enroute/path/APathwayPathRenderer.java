@@ -118,6 +118,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected int minHeightPixels;
 
 	/**
+	 * If set the path renderer only renders path segments that belong to this pathway.
+	 */
+	protected PathwayGraph pathway;
+
+	/**
 	 * The queue which holds the events
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
@@ -240,8 +245,10 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		pathNodes.clear();
 		for (List<PathwayVertexRep> vertexReps : pathSegments) {
 			List<ALinearizableNode> currentNodes = new ArrayList<>();
-			createNodesForList(currentNodes, vertexReps);
-			appendNodes(pathNodes, currentNodes);
+			if (pathway == null || (vertexReps.size() > 0 && vertexReps.get(0).getPathway() == pathway)) {
+				createNodesForList(currentNodes, vertexReps);
+				appendNodes(pathNodes, currentNodes);
+			}
 		}
 
 	}
@@ -260,36 +267,45 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			if (nodesToAppend.size() > 0) {
 				ALinearizableNode lastNodeOfPath = pathNodes.get(pathNodes.size() - 1);
 				ALinearizableNode firstNodeOfNodesToAppend = nodesToAppend.get(0);
-				mergeNodes(lastNodeOfPath, firstNodeOfNodesToAppend);
-				nodesToAppend.remove(0);
-				firstNodeOfNodesToAppend.destroy();
+				if (mergeNodes(lastNodeOfPath, firstNodeOfNodesToAppend)) {
+					nodesToAppend.remove(0);
+					firstNodeOfNodesToAppend.destroy();
+				}
 				pathNodes.addAll(nodesToAppend);
 			}
 		}
 	}
 
 	/**
-	 * Merges node1 with node2, i.e., the {@link PathwayVertexRep}s from node2 are added to node1.
+	 * Merges node1 with node2, i.e., the {@link PathwayVertexRep}s from node2 are added to node1, if they are
+	 * equivalent.
 	 *
 	 * @param node1
 	 * @param node2
+	 * @return True, if the nodes were merged, false otherwise.
 	 */
-	protected void mergeNodes(ALinearizableNode node1, ALinearizableNode node2) {
-		for (PathwayVertexRep vertexRep : node2.getVertexReps()) {
-			node1.addPathwayVertexRep(vertexRep);
-		}
-		if (node1 instanceof ComplexNode) {
-			List<ALinearizableNode> nodesOfNode1 = ((ComplexNode) node1).getNodes();
-			for (ALinearizableNode node1Child : nodesOfNode1) {
-				List<ALinearizableNode> nodesOfNode2 = ((ComplexNode) node2).getNodes();
-				for (ALinearizableNode node2Child : nodesOfNode2) {
-					if (node1Child.getMappedDavidIDs().size() == node2Child.getMappedDavidIDs().size()
-							&& node1Child.getMappedDavidIDs().containsAll(node2Child.getMappedDavidIDs())) {
-						mergeNodes(node1Child, node2Child);
+	protected boolean mergeNodes(ALinearizableNode node1, ALinearizableNode node2) {
+		if (node1.getMappedDavidIDs().size() == node2.getMappedDavidIDs().size()
+				&& node1.getMappedDavidIDs().containsAll(node2.getMappedDavidIDs())) {
+
+			for (PathwayVertexRep vertexRep : node2.getVertexReps()) {
+				node1.addPathwayVertexRep(vertexRep);
+			}
+			if (node1 instanceof ComplexNode) {
+				List<ALinearizableNode> nodesOfNode1 = ((ComplexNode) node1).getNodes();
+				for (ALinearizableNode node1Child : nodesOfNode1) {
+					List<ALinearizableNode> nodesOfNode2 = ((ComplexNode) node2).getNodes();
+					for (ALinearizableNode node2Child : nodesOfNode2) {
+						if (node1Child.getMappedDavidIDs().size() == node2Child.getMappedDavidIDs().size()
+								&& node1Child.getMappedDavidIDs().containsAll(node2Child.getMappedDavidIDs())) {
+							mergeNodes(node1Child, node2Child);
+						}
 					}
 				}
 			}
+			return true;
 		}
+		return false;
 	}
 
 	protected void createNodesForList(List<ALinearizableNode> nodes, List<PathwayVertexRep> vertexReps) {
@@ -459,9 +475,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void removeNodeFromPath(ALinearizableNode node) {
 
-		int linearizedNodeIndex = pathNodes.indexOf(node);
-
-		if (linearizedNodeIndex == 0) {
+		if (isFirstNode(node)) {
 			List<PathwayVertexRep> segment = pathSegments.get(0);
 			segment.remove(0);
 			if (segment.size() == 0) {
@@ -471,7 +485,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				}
 				pathSegments.remove(segment);
 			}
-		} else if (linearizedNodeIndex == pathNodes.size() - 1) {
+		} else if (isLastNode(node)) {
 			List<PathwayVertexRep> segment = pathSegments.get(pathSegments.size() - 1);
 			segment.remove(segment.size() - 1);
 			if (segment.size() == 0) {
@@ -489,6 +503,79 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		setPath(pathSegments);
 
 		broadcastPath();
+	}
+
+	/**
+	 * Determines, whether the specified node is the first node of the whole path. Note, that if this path renderer only
+	 * displays segments of a certain pathway, the first rendered node might not be the first node in the path.
+	 *
+	 * @param node
+	 * @return
+	 */
+	public boolean isFirstNode(ALinearizableNode node) {
+		if (pathway == null) {
+			return pathNodes.get(0) == node;
+		} else {
+			List<PathwayVertexRep> firstSegment = pathSegments.get(0);
+			for (PathwayVertexRep vertexRep : node.getVertexReps()) {
+				if (firstSegment.get(0) == vertexRep) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * Determines, whether the specified node is the last node of the whole path. Note, that if this path renderer only
+	 * displays segments of a certain pathway, the last rendered node might not be the last node in the path.
+	 *
+	 * @param node
+	 * @return
+	 */
+	public boolean isLastNode(ALinearizableNode node) {
+		if (pathway == null) {
+			return pathNodes.get(pathNodes.size() - 1) == node;
+		} else {
+			List<PathwayVertexRep> firstSegment = pathSegments.get(pathSegments.size() - 1);
+			for (PathwayVertexRep vertexRep : node.getVertexReps()) {
+				if (firstSegment.get(firstSegment.size() - 1) == vertexRep) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * Determines the indices of the path segment (first) and the index of the vertexRep (second) within a segment a
+	 * path node belongs to.
+	 *
+	 * @param node
+	 * @param vertexRep
+	 * @return
+	 */
+	protected Pair<Integer, Integer> determinePathSegmentAndIndexOfPathNode(ALinearizableNode node,
+			PathwayVertexRep vertexRep) {
+		int linearizedNodeIndex = pathNodes.indexOf(node);
+		int correspondingIndex = 0;
+		for (int i = 0; i < pathSegments.size(); i++) {
+			List<PathwayVertexRep> segment = pathSegments.get(i);
+			if (pathway == null || (segment.size() > 0 && segment.get(0).getPathway() == pathway)) {
+				for (int j = 0; j < segment.size(); j++) {
+					PathwayVertexRep currentVertexRep = segment.get(j);
+					if (correspondingIndex == linearizedNodeIndex && vertexRep == currentVertexRep) {
+						return new Pair<Integer, Integer>(i, j);
+					}
+					correspondingIndex++;
+				}
+				// Decrement corresponding index, because a single node refers to two vertexReps at the beginning and
+				// the
+				// end of a segment
+				correspondingIndex--;
+			}
+		}
+		return null;
 	}
 
 	protected void broadcastPath() {
@@ -547,6 +634,14 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void setTextRenderer(CaleydoTextRenderer textRenderer) {
 		this.textRenderer = textRenderer;
+	}
+
+	/**
+	 * @param pathway
+	 *            setter, see {@link pathway}
+	 */
+	public void setPathway(PathwayGraph pathway) {
+		this.pathway = pathway;
 	}
 
 }

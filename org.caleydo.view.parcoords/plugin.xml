@@ -60,22 +60,4 @@
          </view>
       </perspectiveExtension>
    </extension>
-   <extension
-         point="org.caleydo.view.EmbeddedView">
-      <EmbeddingInfo
-            viewID="org.caleydo.view.parcoords">
-         <ParentView
-               viewID="org.caleydo.view.subgraph">
-            <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
-                  icon="resources/icons/parcoords.png"
-                  isDefaultView="false"
-                  visInfo="org.caleydo.view.parcoords.ParCoordsVisInfo">
-               <ViewCreator
-                     class="org.caleydo.view.parcoords.ParCoordsRemoteViewCreator">
-               </ViewCreator>
-            </Embedding>
-         </ParentView>
-      </EmbeddingInfo>
-   </extension>
 </plugin>

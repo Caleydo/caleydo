@@ -59,6 +59,7 @@ import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
+import org.caleydo.view.enroute.path.VerticalPathRenderer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -196,8 +197,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
 		ElementLayout pathElementLayout = new ElementLayout();
-		pathElementLayout.setPixelSizeX(EnRoutePathRenderer.BRANCH_COLUMN_WIDTH_PIXELS
-				+ EnRoutePathRenderer.PATH_COLUMN_WIDTH_PIXELS + EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
+		pathElementLayout
+				.setPixelSizeX(EnRoutePathRenderer.BRANCH_COLUMN_WIDTH_PIXELS
+						+ EnRoutePathRenderer.PATH_COLUMN_WIDTH_PIXELS
+						+ VerticalPathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
 		pathElementLayout.setRenderer(pathRenderer);
 		layoutManager.setBaseElementLayout(pathElementLayout);
 		layoutManager.updateLayout();
@@ -592,7 +595,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
 		gl.glDeleteLists(layoutDisplayListIndex, 1);
-		layoutManager.destroy(gl);
+		if (layoutManager != null) {
+			layoutManager.destroy(gl);
+		} else {
+			pathRenderer.destroy(gl);
+		}
 		mappedDataRenderer.destroy(gl);
 	}
 

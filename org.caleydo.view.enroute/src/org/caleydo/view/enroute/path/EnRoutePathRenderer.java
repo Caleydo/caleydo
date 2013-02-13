@@ -348,33 +348,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		broadcastPath();
 	}
 
-	/**
-	 * Determines the indices of the path segment (first) and the index of the vertexRep (second) within a segment a
-	 * path node belongs to.
-	 *
-	 * @param node
-	 * @param vertexRep
-	 * @return
-	 */
-	private Pair<Integer, Integer> determinePathSegmentAndIndexOfPathNode(ALinearizableNode node,
-			PathwayVertexRep vertexRep) {
-		int linearizedNodeIndex = pathNodes.indexOf(node);
-		int correspondingIndex = 0;
-		for (int i = 0; i < pathSegments.size(); i++) {
-			List<PathwayVertexRep> segment = pathSegments.get(i);
-			for (int j = 0; j < segment.size(); j++) {
-				PathwayVertexRep currentVertexRep = segment.get(j);
-				if (correspondingIndex == linearizedNodeIndex && vertexRep == currentVertexRep) {
-					return new Pair<Integer, Integer>(i, j);
-				}
-				correspondingIndex++;
-			}
-			// Decrement corresponding index, because a single node refers to two vertexReps at the beginning and the
-			// end of a segment
-			correspondingIndex--;
-		}
-		return null;
-	}
+
 
 	/**
 	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects for a specified branch node. This path

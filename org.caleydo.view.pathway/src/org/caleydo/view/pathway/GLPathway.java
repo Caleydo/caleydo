@@ -1512,6 +1512,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	private void triggerPathUpdate() {
+		if (selectedPath == null)
+			return;
 		EnRoutePathEvent pathEvent = new EnRoutePathEvent();
 		List<PathwayPath> pathSegments = new ArrayList<>(1);
 		pathSegments.add(new PathwayPath(selectedPath));
