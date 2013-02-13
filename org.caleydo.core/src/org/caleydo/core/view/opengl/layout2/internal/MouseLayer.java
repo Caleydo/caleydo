@@ -22,8 +22,10 @@ package org.caleydo.core.view.opengl.layout2.internal;
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -31,6 +33,8 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+
+import com.google.common.base.Objects;
 
 /**
  * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
@@ -45,19 +49,30 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	// marker for a tooltip element
 	private static final Object TOOLTIP = new Object();
 
+	private final List<IDragInfo> invisibles = new ArrayList<>(1);
+
+	private final Set<IDragInfo> dropAbles = new HashSet<>();
+	private final Set<Class<? extends IDragInfo>> dropAbleTypes = new HashSet<>();
+
 	public MouseLayer() {
 		super();
 		setLayout(this);
 	}
 
 	@Override
-	public boolean doLayout(List<IGLLayoutElement> children, float w, float h) {
+	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		for (IGLLayoutElement child : children) {
 			child.setBounds(defaultValue(child.getSetX(), 0), defaultValue(child.getSetY(), 0),
 					defaultValue(child.getSetWidth(), w), defaultValue(child.getSetHeight(), h));
 		}
 		return false;
 	}
+
+	@Override
+	public void addDraggable(IDragInfo info) {
+		invisibles.add(info);
+	}
+
 
 	@Override
 	public void addDraggable(GLElement element) {
@@ -76,20 +91,46 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	@Override
 	public boolean hasDraggable(Class<? extends IDragInfo> type) {
-		return getFirstDragable(type) != null;
+		return getFirstDraggable(type) != null;
 	}
 
 	@Override
-	public <T extends IDragInfo> Pair<GLElement, T> getFirstDragable(Class<T> type) {
+	public boolean hasDraggable(IDragInfo info) {
+		return getFirstDraggable(info) != null;
+	}
+
+	@Override
+	public <T extends IDragInfo> Pair<GLElement, T> getFirstDraggable(Class<T> type) {
+		for (IDragInfo invisible : invisibles) {
+			if (type.isInstance(invisible))
+				return Pair.make(null, type.cast(invisible));
+		}
 		for (GLElement child : this)
 			if (type.isInstance(child.getLayoutData()))
 				return Pair.make(child, type.cast(child.getLayoutData()));
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IDragInfo> List<Pair<GLElement, T>> getDragables(Class<T> type) {
+	public <T extends IDragInfo> Pair<GLElement, T> getFirstDraggable(T info) {
+		for (IDragInfo invisible : invisibles) {
+			if (Objects.equal(info, invisible))
+				return Pair.make(null, (T) invisible);
+		}
+		for (GLElement child : this)
+			if (Objects.equal(info, child.getLayoutData()))
+				return Pair.make(child, (T) child.getLayoutData());
+		return null;
+	}
+
+	@Override
+	public <T extends IDragInfo> List<Pair<GLElement, T>> getDraggables(Class<T> type) {
 		List<Pair<GLElement, T>> r = new ArrayList<>(1);
+		for (IDragInfo invisible : invisibles) {
+			if (type.isInstance(invisible))
+				r.add(Pair.make((GLElement) null, type.cast(invisible)));
+		}
 		for (GLElement child : this)
 			if (type.isInstance(child.getLayoutData()))
 				r.add(Pair.make(child, type.cast(child.getLayoutData())));
@@ -99,6 +140,44 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public boolean removeDraggable(GLElement element) {
 		return this.remove(element);
+	}
+
+	@Override
+	public boolean removeDraggable(IDragInfo info) {
+		if (this.invisibles.remove(info))
+			return true;
+		for (GLElement child : this)
+			if (Objects.equal(info, child.getLayoutData())) {
+				return removeDraggable(child);
+			}
+		return false;
+	}
+
+	@Override
+	public void setDropable(IDragInfo info, boolean dropAble) {
+		if (dropAble)
+			dropAbles.add(info);
+		else
+			dropAbles.remove(info);
+	}
+
+	@Override
+	public void setDropable(Class<? extends IDragInfo> type, boolean dropAble) {
+		if (dropAble)
+			dropAbleTypes.add(type);
+		else
+			dropAbleTypes.remove(type);
+	}
+
+	@Override
+	public boolean isDropable(IDragInfo info) {
+		if (dropAbles.contains(info))
+			return true;
+		for (Class<? extends IDragInfo> c : this.dropAbleTypes) {
+			if (c.isInstance(info))
+				return true;
+		}
+		return false;
 	}
 
 	@Override

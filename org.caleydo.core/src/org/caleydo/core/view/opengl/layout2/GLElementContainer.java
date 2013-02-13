@@ -125,12 +125,15 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	private void setup(GLElement child) {
 		IGLElementParent ex = child.getParent();
-		assert ex != this;
-		if (ex != null) {
-			ex.moved(child);
+		boolean doInit = ex == null;
+		if (ex == this) {
+			//internal move
+			children.remove(child);
+		} else if (ex != null) {
+			doInit = ex.moved(child);
 		}
 		child.setParent(this);
-		if (context != null)
+		if (doInit && context != null)
 			child.init(context);
 	}
 
@@ -164,7 +167,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	public final void add(int index, GLElement child) {
 		setup(child);
-		children.add(child);
+		children.add(index, child);
 		relayout();
 	}
 
@@ -186,9 +189,10 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	@Override
-	public final void moved(GLElement child) {
+	public final boolean moved(GLElement child) {
 		children.remove(child);
 		relayout();
+		return context != null;
 	}
 
 	public final GLElement remove(int index) {

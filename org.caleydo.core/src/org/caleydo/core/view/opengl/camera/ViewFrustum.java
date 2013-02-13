@@ -192,6 +192,23 @@ public class ViewFrustum {
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 	}
 
+	public void setProjectionMatrix(GL2 gl) {
+		float left = getLeft();
+		float right = getRight();
+		float bottom = getBottom();
+		float top = getTop();
+
+		switch (this.projectionMode) {
+		case ORTHOGRAPHIC:
+			gl.glOrtho(left, right, bottom, top, getNear(), getFar());
+			break;
+		case PERSPECTIVE:
+			gl.glFrustum(left, right, bottom, top, getNear(), getFar());
+			break;
+		}
+		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+	}
+
 	@Override
 	public String toString() {
 		return "[" + left + ", " + bottom + ", " + right + ", " + top + "]";

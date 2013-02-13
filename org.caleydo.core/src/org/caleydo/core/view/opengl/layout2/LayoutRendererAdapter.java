@@ -226,7 +226,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
-	public void moved(GLElement child) {
-		// nothing to do
+	public boolean moved(GLElement child) {
+		return true;
 	}
 }

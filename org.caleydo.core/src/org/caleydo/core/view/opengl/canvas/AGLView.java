@@ -100,7 +100,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class AGLView extends AView implements GLEventListener, IResettableView, IMouseWheelHandler {
+public abstract class AGLView extends AView implements IGLView, GLEventListener, IResettableView, IMouseWheelHandler {
 
 	protected final static int EMPTY_VIEW_TEXT_HEIGHT_PIXELS = 26;
 
@@ -131,11 +131,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	private boolean showFPSCounter;
 
 	protected PixelGLConverter pixelGLConverter = null;
-
-	/**
-	 * The views current aspect ratio. Value gets updated when reshape is called by the JOGL2 animator.
-	 */
-	protected float aspectRatio = 1f;
 
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
@@ -284,6 +279,15 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		fpsCounter = new FPSCounter(drawable, 16);
 		fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
 
+		initGLContext(gl);
+
+		glMouseListener.addGLCanvas(this);
+		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
+		textRenderer = new CaleydoTextRenderer(24);
+		initLocal(gl);
+	}
+
+	public static void initGLContext(GL2 gl) {
 		gl.glShadeModel(GLLightingFunc.GL_SMOOTH); // Enables Smooth Shading
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
 		gl.glClearDepth(1.0f); // Depth Buffer Setup
@@ -306,11 +310,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 		gl.glEnable(GLLightingFunc.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL.GL_FRONT, GLLightingFunc.GL_DIFFUSE);
-
-		glMouseListener.addGLCanvas(this);
-		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
-		textRenderer = new CaleydoTextRenderer(24);
-		initLocal(gl);
 	}
 
 	@Override
@@ -376,11 +375,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
-		viewFrustum.setLeft(0);
-		viewFrustum.setBottom(0);
-		aspectRatio = (float) height / (float) width;
-		viewFrustum.setTop(aspectRatio);
-		viewFrustum.setRight(1);
+		updateViewFrustum(width, height);
 
 		setDisplayListDirty();
 		hasFrustumChanged = true;
@@ -391,8 +386,22 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glLoadIdentity();
 
-		viewFrustum.setProjectionMatrix(gl, aspectRatio);
+		viewFrustum.setProjectionMatrix(gl);
 		updateDetailMode();
+	}
+
+	/**
+	 * hook for custom view frustum layouts
+	 * 
+	 * @param width
+	 * @param height
+	 */
+	protected void updateViewFrustum(int width, int height) {
+		viewFrustum.setLeft(0);
+		viewFrustum.setBottom(0);
+		float aspectRatio = (float) height / (float) width;
+		viewFrustum.setTop(aspectRatio);
+		viewFrustum.setRight(1);
 	}
 
 	/**
@@ -537,6 +546,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public abstract void displayRemote(final GL2 gl);
 
+	@Override
 	public final IGLCanvas getParentGLCanvas() {
 
 		if (parentGLCanvas == null && this.isRenderedRemote())
@@ -1016,10 +1026,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		}
 	}
 
-	public final float getAspectRatio() {
-		return aspectRatio;
-	}
-
 	public final EDetailLevel getDetailLevel() {
 		return detailLevel;
 	}
@@ -1048,6 +1054,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * @param isVisible
 	 *            true if the view is visible
 	 */
+	@Override
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 		if (!isVisible) {

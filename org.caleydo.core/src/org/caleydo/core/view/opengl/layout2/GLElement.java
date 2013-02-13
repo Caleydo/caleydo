@@ -23,6 +23,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec4f;
 
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -69,21 +70,13 @@ public class GLElement {
 	private IGLRenderer renderer = GLRenderers.DUMMY;
 
 	/**
-	 * location of this element determined by parent layout
+	 * location and size of this element determined by parent layout
 	 */
-	private float x_layout = 0, y_layout = 0;
+	private final Rectangle2D.Float bounds_layout = new Rectangle2D.Float(0, 0, Float.NaN, Float.NaN);
 	/**
-	 * location set by the user
+	 * location and size set by the user
 	 */
-	private float x_set = Float.NaN, y_set = Float.NaN;
-	/**
-	 * size determined by parent layout
-	 */
-	private float w_layout = Float.NaN, h_layout = Float.NaN;
-	/**
-	 * size set by the user
-	 */
-	private float w_set = Float.NaN, h_set = Float.NaN;
+	private final Rectangle2D.Float bounds_set = new Rectangle2D.Float(Float.NaN, Float.NaN, Float.NaN, Float.NaN);
 
 	/**
 	 * the current visibility mode, see {@link EVisibility}
@@ -171,10 +164,10 @@ public class GLElement {
 			cache.invalidate(context);
 			return;
 		}
-		float x = x_layout;
-		float y = y_layout;
-		float w = w_layout;
-		float h = h_layout;
+		float x = bounds_layout.x;
+		float y = bounds_layout.y;
+		float w = bounds_layout.width;
+		float h = bounds_layout.height;
 
 		g.move(x, y);
 		if (!cache.render(context, g)) {
@@ -213,10 +206,10 @@ public class GLElement {
 			pickCache.invalidate(context);
 			return;
 		}
-		float x = x_layout;
-		float y = y_layout;
-		float w = w_layout;
-		float h = h_layout;
+		float x = bounds_layout.x;
+		float y = bounds_layout.y;
+		float w = bounds_layout.width;
+		float h = bounds_layout.height;
 
 		g.move(x, y);
 		if (!pickCache.render(context, g)) {
@@ -235,7 +228,11 @@ public class GLElement {
 	private boolean needToRender() {
 		if (visibility != EVisibility.VISIBLE && visibility != EVisibility.PICKABLE)
 			return false;
-		if (w_layout <= 0 || h_layout <= 0)
+		float x = bounds_layout.x;
+		float y = bounds_layout.y;
+		float w = bounds_layout.width;
+		float h = bounds_layout.height;
+		if (w <= 0 || h <= 0 || Float.isNaN(w) || Float.isNaN(h) || Float.isNaN(x) || Float.isNaN(y))
 			return false;
 		return true;
 	}
@@ -341,10 +338,10 @@ public class GLElement {
 	 * @return
 	 */
 	public final GLElement setSize(float w, float h) {
-		if (this.w_set == w && this.h_set == h)
+		if (this.bounds_set.width == w && this.bounds_set.height == h)
 			return this;
-		this.w_set = w_layout = w;
-		this.h_set = h_layout = h;
+		this.bounds_set.width = bounds_layout.width = w;
+		this.bounds_set.height = bounds_layout.height = h;
 		relayoutParent();
 		return this;
 	}
@@ -357,10 +354,10 @@ public class GLElement {
 	 * @return
 	 */
 	public final GLElement setLocation(float x, float y) {
-		if (this.x_set == x && this.y_set == y)
+		if (this.bounds_set.x == x && this.bounds_set.y == y)
 			return this;
-		this.x_set = x_layout = x;
-		this.y_set = y_layout = y;
+		this.bounds_set.x = bounds_layout.x = x;
+		this.bounds_set.y = bounds_layout.y = y;
 		relayoutParent();
 		return this;
 	}
@@ -371,7 +368,7 @@ public class GLElement {
 	 * @return
 	 */
 	public final Vec2f getLocation() {
-		return new Vec2f(x_layout, y_layout);
+		return new Vec2f(bounds_layout.x, bounds_layout.y);
 	}
 
 	/**
@@ -428,7 +425,7 @@ public class GLElement {
 	 * @return
 	 */
 	public final Vec2f getSize() {
-		return new Vec2f(w_layout, h_layout);
+		return new Vec2f(bounds_layout.width, bounds_layout.height);
 	}
 
 	/**
@@ -437,7 +434,7 @@ public class GLElement {
 	 * @return
 	 */
 	public final Vec4f getBounds() {
-		return new Vec4f(x_layout, y_layout, w_layout, h_layout);
+		return new Vec4f(bounds_layout.x, bounds_layout.y, bounds_layout.width, bounds_layout.height);
 	}
 
 	/**
@@ -543,11 +540,11 @@ public class GLElement {
 	}
 
 	private void setLayoutSize(float w, float h) {
-		if (this.w_layout == w && this.h_layout == h)
+		if (this.bounds_layout.width == w && this.bounds_layout.height == h)
 			return;
-		this.w_layout = w;
-		this.h_layout = h;
-		if (w_layout > 0 && h_layout > 0)
+		this.bounds_layout.width = w;
+		this.bounds_layout.height = h;
+		if (bounds_layout.width > 0 && bounds_layout.height > 0)
 			layout();
 	}
 
@@ -556,10 +553,10 @@ public class GLElement {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Element [visibility=");
 		builder.append(visibility);
-		builder.append(", xywh_layout=").append(x_layout).append('/').append(y_layout).append('/').append(w_layout)
-				.append('/').append(h_layout);
-		builder.append(", xywh_set=").append(x_set).append('/').append(y_set).append('/').append(w_set).append('/')
-				.append(h_set);
+		builder.append(", xywh_layout=").append(this.bounds_layout.x).append('/').append(this.bounds_layout.y)
+				.append('/').append(this.bounds_layout.width).append('/').append(this.bounds_layout.height);
+		builder.append(", xywh_set=").append(this.bounds_set.x).append('/').append(this.bounds_set.y).append('/')
+				.append(this.bounds_set.width).append('/').append(this.bounds_set.height);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -578,8 +575,13 @@ public class GLElement {
 
 		@Override
 		public void setLocation(float x, float y) {
-			GLElement.this.x_layout = x;
-			GLElement.this.y_layout = y;
+			GLElement.this.bounds_layout.x = x;
+			GLElement.this.bounds_layout.y = y;
+		}
+
+		@Override
+		public Vec2f getLocation() {
+			return new Vec2f(bounds_layout.x, bounds_layout.y);
 		}
 
 		@Override
@@ -590,32 +592,32 @@ public class GLElement {
 
 		@Override
 		public float getWidth() {
-			return w_layout;
+			return bounds_layout.width;
 		}
 
 		@Override
 		public float getHeight() {
-			return h_layout;
+			return bounds_layout.height;
 		}
 
 		@Override
 		public float getSetWidth() {
-			return w_set;
+			return bounds_set.width;
 		}
 
 		@Override
 		public float getSetHeight() {
-			return h_set;
+			return bounds_set.height;
 		}
 
 		@Override
 		public float getSetX() {
-			return x_set;
+			return bounds_set.x;
 		}
 
 		@Override
 		public float getSetY() {
-			return y_set;
+			return bounds_set.y;
 		}
 
 		@Override

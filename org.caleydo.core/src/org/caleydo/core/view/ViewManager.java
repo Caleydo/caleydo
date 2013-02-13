@@ -39,7 +39,6 @@ import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.ConsoleFlags;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -81,9 +80,9 @@ public class ViewManager extends AManager<IView> {
 
 	private final Map<Integer, AGLView> hashGLViewID2GLView = new HashMap<>();
 
-	private final Map<ARcpGLViewPart, IView> hashRCP2View = new HashMap<>();
+	private final Map<CaleydoRCPViewPart, IView> hashRCP2View = new HashMap<>();
 
-	private final Map<IView, ARcpGLViewPart> hashView2RCP = new HashMap<>();
+	private final Map<IView, CaleydoRCPViewPart> hashView2RCP = new HashMap<>();
 
 	/**
 	 * Map that maps from a remote rendering view to a list of its remote rendered views.
@@ -358,7 +357,7 @@ public class ViewManager extends AManager<IView> {
 	 * @param rcpView
 	 * @param view
 	 */
-	public void registerRCPView(final ARcpGLViewPart rcpView, final IView view) {
+	public void registerRCPView(final CaleydoRCPViewPart rcpView, final IView view) {
 		if (!hashRCP2View.containsKey(rcpView))
 			hashRCP2View.put(rcpView, view);
 
@@ -372,7 +371,7 @@ public class ViewManager extends AManager<IView> {
 	 * @param rcpView
 	 * @param view
 	 */
-	public void unregisterRCPView(final ARcpGLViewPart rcpView, final IView view) {
+	public void unregisterRCPView(final CaleydoRCPViewPart rcpView, final IView view) {
 
 		if (hashRCP2View.containsKey(rcpView))
 			hashRCP2View.remove(rcpView);
@@ -381,11 +380,11 @@ public class ViewManager extends AManager<IView> {
 			hashView2RCP.remove(view);
 	}
 
-	public ARcpGLViewPart getViewPartFromView(IView view) {
+	public CaleydoRCPViewPart getViewPartFromView(IView view) {
 		return hashView2RCP.get(view);
 	}
 
-	public IView getViewFromViewPart(ARcpGLViewPart viewPart) {
+	public IView getViewFromViewPart(CaleydoRCPViewPart viewPart) {
 		return hashRCP2View.get(viewPart);
 	}
 
@@ -518,75 +517,6 @@ public class ViewManager extends AManager<IView> {
 		fpsAnimator.add(glCanvas.asGLAutoDrawAble());
 
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Add canvas to animator" + glCanvas));
-	}
-
-	/**
-	 * Requests busy mode for the application. This method should be called whenever a process needs to stop any user
-	 * interaction with the application, e.g. when starting up or when loading multiple pathways. Usually this should
-	 * result disabling user events and showing a loading screen animation.
-	 *
-	 * @param requestInstance
-	 *            object that wants to request busy mode
-	 */
-	public void requestBusyMode(Object requestInstance) {
-		if (requestInstance == null) {
-			throw new IllegalArgumentException("requestInstance must not be null");
-		}
-		synchronized (busyRequests) {
-			if (busyRequests.isEmpty()) {
-				for (AGLView tmpGLEventListener : getAllGLViews()) {
-					if (!tmpGLEventListener.isRenderedRemote()) {
-						tmpGLEventListener.enableBusyMode(true);
-					}
-				}
-			}
-			if (!busyRequests.contains(requestInstance)) {
-				busyRequests.add(requestInstance);
-			}
-		}
-	}
-
-	/**
-	 * Releases a previously requested busy mode. Releases are only performed by passing the originally requesting
-	 * object to this method.
-	 *
-	 * @param requestInstance
-	 *            the object that requested the busy mode
-	 */
-	public void releaseBusyMode(Object requestInstance) {
-		if (requestInstance == null) {
-			throw new IllegalArgumentException("requestInstance must not be null");
-		}
-		synchronized (busyRequests) {
-			if (busyRequests.contains(requestInstance)) {
-				busyRequests.remove(requestInstance);
-			}
-			if (busyRequests.isEmpty()) {
-				for (AGLView tmpGLEventListener : getAllGLViews()) {
-					if (!tmpGLEventListener.isRenderedRemote()) {
-						tmpGLEventListener.enableBusyMode(false);
-					}
-				}
-			}
-		}
-	}
-
-	public void createSWTView(final ASerializedView serializedView) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewType());
-					AGLView view = viewPart.getGLView();
-					view.initFromSerializableRepresentation(serializedView);
-					// TODO re-init view with its serializedView
-
-				} catch (PartInitException ex) {
-					throw new RuntimeException("could not create view with gui-id=" + serializedView.getViewType(), ex);
-				}
-			}
-		});
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -60,7 +60,7 @@ public class AWTGLCanvasFactory implements IGLCanvasFactory {
 	}
 
 	@Override
-	public void showPopupMenu(final AGLView view, final Iterable<AContextMenuItem> items) {
+	public void showPopupMenu(final IGLView view, final Iterable<AContextMenuItem> items) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

@@ -64,7 +64,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -908,7 +908,7 @@ public class GLDataViewIntegrator
 	}
 
 	public void openView(final AGLView view) {
-		final ARcpGLViewPart viewPart = GeneralManager.get().getViewManager().getViewPartFromView(view);
+		final CaleydoRCPViewPart viewPart = GeneralManager.get().getViewManager().getViewPartFromView(view);
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override

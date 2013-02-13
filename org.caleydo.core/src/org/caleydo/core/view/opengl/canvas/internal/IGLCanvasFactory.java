@@ -22,8 +22,8 @@ package org.caleydo.core.view.opengl.canvas.internal;
 import javax.media.opengl.GLCapabilitiesImmutable;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -33,5 +33,5 @@ import org.eclipse.swt.widgets.Composite;
 public interface IGLCanvasFactory {
 	IGLCanvas create(GLCapabilitiesImmutable caps, Composite parent);
 
-	void showPopupMenu(final AGLView view, final Iterable<AContextMenuItem> items);
+	void showPopupMenu(final IGLView view, final Iterable<AContextMenuItem> items);
 }

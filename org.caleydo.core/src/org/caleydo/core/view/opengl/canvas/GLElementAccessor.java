@@ -17,28 +17,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2.layout;
+package org.caleydo.core.view.opengl.canvas;
 
-import java.util.List;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * abstraction of a layout algorithm
- *
+ * utility to access package protection
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IGLLayout {
-	/**
-	 * performs the actual layout of the given children within the given width and height
-	 *
-	 * @param children
-	 *            the active children of the element container
-	 * @param w
-	 *            the width of the container
-	 * @param h
-	 *            the height of the container
-	 *
-	 * @return true if another layouting round should be triggered before the next rendering step
-	 */
-	boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h);
+public class GLElementAccessor {
+	public static PixelGLConverter createPixelGLConverter(ViewFrustum viewFrustum, IGLCanvas canvas) {
+		return new PixelGLConverter(viewFrustum, canvas);
+	}
 }

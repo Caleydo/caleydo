@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,6 +23,9 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
@@ -32,7 +35,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Listener for events that are related to view changes (detach, visible, hide,
  * activate, etc.)
- * 
+ *
  * @author Marc Streit
  */
 public class PartListener implements IPartListener2 {
@@ -63,10 +66,9 @@ public class PartListener implements IPartListener2 {
 		}
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
 
-		if (viewPart instanceof ARcpGLViewPart) {
-			ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
-
-			glViewPart.getGLView().setVisible(true);
+		IView view = viewPart.getView();
+		if (view instanceof IGLView) {
+			((IGLView) view).setVisible(true);
 		}
 	}
 
@@ -92,7 +94,10 @@ public class PartListener implements IPartListener2 {
 		// GeneralManager.get().getViewGLCanvasManager()
 		// .unregisterGLCanvasFromAnimator(glViewPart.getGLCanvas());
 
-		glViewPart.getGLView().setVisible(false);
+		IView view = glViewPart.getView();
+		if (view instanceof IGLView) {
+			((IGLView) view).setVisible(false);
+		}
 	}
 
 	@Override

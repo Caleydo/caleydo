@@ -204,7 +204,7 @@ public abstract class AView extends AUniqueObject implements IView {
 
 			@Override
 			public void run() {
-				ARcpGLViewPart viewPart = ViewManager.get().getViewPartFromView(
+				CaleydoRCPViewPart viewPart = ViewManager.get().getViewPartFromView(
 						AView.this);
 				if (viewPart != null) {
 					viewPart.setPartName(AView.this.label);

@@ -44,12 +44,7 @@ public final class GLRenderers {
 	/**
 	 * renders a full sized transparent rect
 	 */
-	public static final IGLRenderer RECT = new IGLRenderer() {
-		@Override
-		public void render(GLGraphics g, float w, float h, GLElement parent) {
-			g.fillRect(0, 0, w, h);
-		}
-	};
+	public static final IGLRenderer RECT = fillRect(null);
 
 	private GLRenderers() {
 
@@ -66,7 +61,9 @@ public final class GLRenderers {
 		return new IGLRenderer() {
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				g.color(color).fillRect(0, 0, w, h);
+				if (color != null)
+					g.color(color);
+				g.fillRect(0, 0, w, h);
 			}
 		};
 	}

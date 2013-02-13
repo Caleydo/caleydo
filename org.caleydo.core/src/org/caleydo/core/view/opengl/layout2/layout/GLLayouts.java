@@ -17,7 +17,7 @@ public class GLLayouts {
 	 */
 	public static final IGLLayout NONE = new IGLLayout() {
 		@Override
-		public boolean doLayout(List<IGLLayoutElement> children, float w, float h) {
+		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 			return false;
 		}
 	};
@@ -27,7 +27,7 @@ public class GLLayouts {
 	 */
 	public static final IGLLayout LAYERS = new IGLLayout() {
 		@Override
-		public boolean doLayout(List<IGLLayoutElement> children, float w, float h) {
+		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 			for (IGLLayoutElement child : children) {
 				float x = defaultValue(child.getSetX(), 0);
 				float y = defaultValue(child.getSetY(), 0);
@@ -63,7 +63,7 @@ public class GLLayouts {
 
 	/**
 	 * returns the default value if the value to check is lower than 0 or NaN
-	 * 
+	 *
 	 * @param v
 	 *            the value to check
 	 * @param d

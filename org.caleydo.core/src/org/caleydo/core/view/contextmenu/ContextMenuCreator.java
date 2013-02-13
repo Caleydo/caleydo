@@ -26,7 +26,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLView;
 
 public class ContextMenuCreator {
 	private static final SeparatorMenuItem SEPARATOR = new SeparatorMenuItem();
@@ -71,7 +71,7 @@ public class ContextMenuCreator {
 		return !menuItems.isEmpty();
 	}
 
-	public synchronized void open(final AGLView view) {
+	public synchronized void open(final IGLView view) {
 		ViewManager.get().getCanvasFactory().showPopupMenu(view, menuItems);
 	}
 

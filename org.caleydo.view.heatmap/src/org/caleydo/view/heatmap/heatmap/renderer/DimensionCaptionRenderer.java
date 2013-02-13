@@ -63,7 +63,7 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 			String label = heatMap.getDataDomain().getDimensionLabel(dimensionID);
 
 			float fRotation = -90;
-			float yOffset = elementLayout.getSizeScaledY();
+			float yOffset = elementLayout.getSizeScaledY(); // =y
 
 			gl.glTranslatef(xPosition + xOffset, yOffset, 0);
 			gl.glRotatef(fRotation, 0, 0, 1);

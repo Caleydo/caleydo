@@ -531,7 +531,7 @@ public class PickingManager {
 		}
 	}
 
-	private boolean isParentViewOfView(int viewID, int parentViewID) {
+	static boolean isParentViewOfView(int viewID, int parentViewID) {
 		AGLView view = GeneralManager.get().getViewManager().getGLView(viewID);
 		AGLView parentView = GeneralManager.get().getViewManager().getGLView(parentViewID);
 		if (view == null || parentView == null)

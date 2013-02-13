@@ -35,7 +35,7 @@ public class GLFlowLayout implements IGLLayout {
 	}
 
 	@Override
-	public boolean doLayout(List<IGLLayoutElement> children, float w, float h) {
+	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		float freeSpace = (horizontal ? w : h) - gap * (children.size() - 1);
 		int unbounded = 0;
 		float fixUsed = 0;

@@ -28,7 +28,6 @@ import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.mapping.ColorMapper;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -302,9 +301,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		return 1 - (maxUncertainty * 2);
 	}
 
-	public ElementLayout getLayout() {
-		return elementLayout;
-	}
 
 	public void setGroupIndex(int groupIndex) {
 		this.groupIndex = groupIndex;

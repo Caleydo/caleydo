@@ -24,11 +24,14 @@ import java.util.List;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -54,6 +57,15 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		super();
 	}
 
+	public ARcpGLViewPart(Class<? extends ASerializedView> serializedViewClass) {
+		this();
+		try {
+			viewContext = JAXBContext.newInstance(serializedViewClass);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContext", ex);
+		}
+	}
+
 	@Override
 	public void createPartControl(Composite parent) {
 
@@ -74,6 +86,13 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		});
 
 		minSizeComposite.setContent(parentComposite);
+
+		view = createView();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T extends AView & IGLView> T createView() {
+		return (T) view;
 	}
 
 	protected IGLCanvas createGLCanvas(Composite parent) {
@@ -130,8 +149,8 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		return views;
 	}
 
-	public AGLView getGLView() {
-		return (AGLView) view;
+	public IGLView getGLView() {
+		return (IGLView) view;
 	}
 
 	public IGLCanvas getGLCanvas() {

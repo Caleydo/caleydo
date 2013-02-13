@@ -14,6 +14,8 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
@@ -54,8 +56,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	private final PickingMouseListener mouseListener;
 
 	protected boolean tracingGL = false;
-	private int width;
-	private int height;
+	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
 
 	private final DisplayListPool pool = new DisplayListPool();
 
@@ -140,8 +141,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
-	public void moved(GLElement child) {
-
+	public boolean moved(GLElement child) {
+		return true;
 	}
 
 	@Override
@@ -193,6 +194,14 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		pool.deleteAll(gl);
 	}
 
+	private float getWidth() {
+		return viewFrustum.getRight();
+	}
+
+	private float getHeight() {
+		return viewFrustum.getBottom();
+	}
+
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
@@ -204,8 +213,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		final GLGraphics g = tracingGL ? new GLGraphicsTracing(gl, text, textures, loader, true) : new GLGraphics(gl,
 				text, textures, loader, true);
 
-		float paddedWidth = width - padding.left - padding.right;
-		float paddedHeight = height - padding.top - padding.bottom;
+		float paddedWidth = getWidth() - padding.left - padding.right;
+		float paddedHeight = getHeight() - padding.top - padding.bottom;
 		g.move(padding.left, padding.right);
 
 		if (dirty) {
@@ -223,7 +232,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		Point mousePos = mouseListener.getCurrentMousePos();
 		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, width - mousePos.x, height - mousePos.y);
+			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
 			root.getMouseLayer().relayout();
 		}
 		pickingManager.doPicking(mouseListener, g.gl, toRender);
@@ -253,14 +262,13 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		this.width = width;
-		this.height = height;
+		viewFrustum.setRight(width);
+		viewFrustum.setBottom(height);
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glLoadIdentity();
-		gl.glOrtho(0, this.width, this.height, 0, -20, 20);
-		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+		viewFrustum.setProjectionMatrix(gl);
 
 		relayout();
 

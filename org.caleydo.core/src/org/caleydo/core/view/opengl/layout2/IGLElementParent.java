@@ -23,9 +23,9 @@ import gleem.linalg.Vec2f;
 
 /**
  * an element that can be the parent of another element
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IGLElementParent {
 	/**
@@ -45,16 +45,17 @@ public interface IGLElementParent {
 
 	/**
 	 * returns the absolute location of the parent
-	 * 
+	 *
 	 * @return
 	 */
 	Vec2f getAbsoluteLocation();
 
 	/**
 	 * notification that the child will be moved to another parent
-	 * 
+	 *
 	 * @param child
+	 * @return whether the child was a already initialized
 	 */
-	void moved(GLElement child);
+	boolean moved(GLElement child);
 
 }
