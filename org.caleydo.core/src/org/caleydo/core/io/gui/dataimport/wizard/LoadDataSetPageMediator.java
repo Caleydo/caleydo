@@ -741,7 +741,7 @@ public class LoadDataSetPageMediator {
 	 * @return <code>true</code> if the preparation was successful, <code>false</code> otherwise
 	 */
 	private void readDimensionDefinition() {
-		ArrayList<String> dimensionLabels = new ArrayList<String>();
+		// ArrayList<String> dimensionLabels = new ArrayList<String>();
 
 		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
 		// inputPattern = new StringBuffer("SKIP" + ";");
@@ -752,10 +752,20 @@ public class LoadDataSetPageMediator {
 			int columnIndex = selected.intValue();
 			if (columnIndex == dataSetDescription.getColumnOfRowIds())
 				continue;
-			inputPattern.add(createColumnDescription(columnIndex));
+			if (columnIndex >= 0)
+				inputPattern.add(createColumnDescription(columnIndex));
+			else {
+				// wildcard creating multiple column descriptions at once, i.e til the end
+				int from = page.previewTable.getColumnCount(); // everything before was directly selected
+				int to = this.totalNumberOfColumns; // all possible
+				for (int i = from; i < to; ++i) {
+					// TODO how to handle different automatically detected types for unknown
+					inputPattern.add(new ColumnDescription(i, dataSetDescription.getDataDescription()));
+				}
+			}
 
-			String labelText = dataMatrix.get(0).get(columnIndex);
-			dimensionLabels.add(labelText);
+			// String labelText = dataMatrix.get(0).get(columnIndex);
+			// dimensionLabels.add(labelText);
 		}
 		dataSetDescription.setParsingPattern(inputPattern);
 		dataSetDescription.setDataSourcePath(page.loadFile.getFileName());

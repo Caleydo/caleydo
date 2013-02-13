@@ -53,6 +53,8 @@ public class PreviewTableWidget {
 	 */
 	private final List<Button> selectedColumnButtons = new ArrayList<Button>();
 
+	private boolean areAllColumnsSelected = true;
+
 	/**
 	 * Table editors that are associated with {@link #selectedColumnButtons}.
 	 */
@@ -88,6 +90,8 @@ public class PreviewTableWidget {
 	 * Shows the total number columns in the data file and the number of displayed columns of the {@link #previewTable}.
 	 */
 	private final Label tableInfoLabel;
+
+	private int totalNumberOfColumns;
 
 
 	public PreviewTableWidget(Composite parent, final BooleanCallback onSelectAllColumnsCallback) {
@@ -276,15 +280,8 @@ public class PreviewTableWidget {
 		}
 	}
 
-	/**
-	 * @return the selectedColumnButtons, see {@link #selectedColumnButtons}
-	 */
-	public List<Button> getSelectedColumnButtons() {
-		return selectedColumnButtons;
-	}
-
 	public void selectColumns(boolean selectAll, int columnOfRowId) {
-
+		areAllColumnsSelected = selectAll;
 		if (selectAll) {
 			for (int i = 0; i < selectedColumnButtons.size(); i++) {
 				Button button = selectedColumnButtons.get(i);
@@ -316,6 +313,7 @@ public class PreviewTableWidget {
 
 
 	public void updateVisibleColumns(int totalNumberOfColumns) {
+		this.totalNumberOfColumns = totalNumberOfColumns;
 		int visibleColumns = getColumnCount();
 		showAllColumnsButton.setEnabled(visibleColumns <= totalNumberOfColumns);
 		tableInfoLabel.setText(visibleColumns + " of " + totalNumberOfColumns + " Columns shown");
@@ -330,12 +328,19 @@ public class PreviewTableWidget {
 		return previewTable.getItemCount() - 1; // -1 for th
 	}
 
+	/**
+	 * returns the current selected column indices + optional a -1 as wildcard for all unseen
+	 * 
+	 * @return
+	 */
 	public Collection<Integer> getSelectedColumns() {
 		Collection<Integer> result = new ArrayList<>();
 		for (int i = 0; i < selectedColumnButtons.size(); ++i) {
 			if (selectedColumnButtons.get(i).getSelection())
 				result.add(i);
 		}
+		if (this.areAllColumnsSelected) // add wildcard
+			result.add(-1);
 		return result;
 	}
 
