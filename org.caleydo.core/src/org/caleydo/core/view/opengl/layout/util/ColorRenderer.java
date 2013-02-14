@@ -216,28 +216,34 @@ public class ColorRenderer extends APickableLayoutRenderer {
 		gl.glVertex3f(0, y, 0);
 		gl.glEnd();
 
-		gl.glPushAttrib(GL2.GL_LINE_BIT);
-		gl.glLineWidth(borderWidth);
+		if (drawBorder) {
+			if (borderWidth > 0) {
+				gl.glPushAttrib(GL2.GL_LINE_BIT);
+				gl.glLineWidth(borderWidth);
+			}
 
-		// gl.glColor3f(0.3f, 0.3f, 0.3f);
-		gl.glColor4fv(borderColor, 0);
-		gl.glBegin(GL.GL_LINES);
+			// gl.glColor3f(0.3f, 0.3f, 0.3f);
+			gl.glColor4fv(borderColor, 0);
+			gl.glBegin(GL.GL_LINES);
 
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(x, 0, 0);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(x, 0, 0);
 
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(0, y, 0);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, y, 0);
 
-		gl.glVertex3f(0, y, 0);
-		gl.glVertex3f(x, y, 0);
+			gl.glVertex3f(0, y, 0);
+			gl.glVertex3f(x, y, 0);
 
-		gl.glVertex3f(x, 0, 0);
-		gl.glVertex3f(x, y, 0);
+			gl.glVertex3f(x, 0, 0);
+			gl.glVertex3f(x, y, 0);
 
-		gl.glEnd();
+			gl.glEnd();
 
-		gl.glPopAttrib();
+			if (borderWidth > 0) {
+				gl.glPopAttrib();
+			}
+		}
 
 		popNames(gl);
 	}
