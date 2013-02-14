@@ -65,8 +65,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		super.layout();
 		List<IGLLayoutElement> l = asLayoutElements();
 		Vec2f size = getSize();
-		if (layout.doLayout(l, size.x(), size.y()))
-			relayout();
+		layout.doLayout(l, size.x(), size.y());
 	}
 
 	private List<IGLLayoutElement> asLayoutElements() {

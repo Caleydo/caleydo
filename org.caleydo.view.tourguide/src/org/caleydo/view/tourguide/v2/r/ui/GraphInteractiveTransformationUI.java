@@ -91,7 +91,7 @@ public class GraphInteractiveTransformationUI extends GLElementContainer impleme
 	}
 
 	@Override
-	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		final float histHeight = 40;
 		IGLLayoutElement raw = children.get(RAW_HIST);
 		raw.setBounds(histHeight + GAP, h - histHeight, w - histHeight - GAP, histHeight);
@@ -110,7 +110,6 @@ public class GraphInteractiveTransformationUI extends GLElementContainer impleme
 			float y_v = y_canvas + h_canvas * (1 - p.to);
 			point.setBounds(x_v, y_v, 3, 3);
 		}
-		return false;
 	}
 
 	void onRemovePoint(Point point) {

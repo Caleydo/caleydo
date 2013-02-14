@@ -75,7 +75,7 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 	}
 
 	@Override
-	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement raw = children.get(0);
 		raw.setBounds(20, 0, w - 40, 40);
 		IGLLayoutElement norm = children.get(1);
@@ -83,7 +83,6 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 		for (IGLLayoutElement line : children.subList(2, children.size())) {
 			line.setBounds(20, 40, w - 40, h - 80);
 		}
-		return false;
 	}
 
 	private float normalizeRaw(float v) {
@@ -181,10 +180,9 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 			setLayout(this);
 		}
 		@Override
-		public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 			children.get(0).setBounds(from * w, 0, w, h);
 			children.get(1).setBounds(to * w, h, w, h);
-			return false;
 		}
 
 		@Override

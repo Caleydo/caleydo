@@ -145,7 +145,7 @@ public class ScoreTableUI extends GLElementContainer implements IGLLayout {
 	}
 
 	@Override
-	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		System.out.println("compute layout");
 		float[] rowHeights = rowLayout.compute(table.getNumRows(), table.getSelectedRow(), h);
 
@@ -220,7 +220,6 @@ public class ScoreTableUI extends GLElementContainer implements IGLLayout {
 				it.next().setSize(0, 0);
 			}
 		}
-		return false;
 	}
 
 	@Override

@@ -37,8 +37,6 @@ public interface IGLLayout {
 	 *            the width of the container
 	 * @param h
 	 *            the height of the container
-	 *
-	 * @return true if another layouting round should be triggered before the next rendering step
 	 */
-	boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h);
+	void doLayout(List<? extends IGLLayoutElement> children, float w, float h);
 }

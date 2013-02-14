@@ -120,7 +120,6 @@ public class GLElementAdapter extends GLElement {
 			layout.updateLayout();
 
 		}
-		// g.color(Color.BLACK).fillRect(0, 0, w, h);
 		g.save();
 		final GL2 gl = g.gl;
 		// swap the origin to the top bottom corner
@@ -130,7 +129,9 @@ public class GLElementAdapter extends GLElement {
 		gl.glTranslatef(0, h, 0);
 		gl.glScalef(1, -1, 1);
 
+		g.checkError();
 		layout.render(gl);
+		g.checkError();
 
 		g.restore();
 

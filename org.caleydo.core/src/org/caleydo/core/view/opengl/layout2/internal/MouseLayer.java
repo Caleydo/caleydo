@@ -60,12 +60,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	}
 
 	@Override
-	public boolean doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		for (IGLLayoutElement child : children) {
 			child.setBounds(defaultValue(child.getSetX(), 0), defaultValue(child.getSetY(), 0),
 					defaultValue(child.getSetWidth(), w), defaultValue(child.getSetHeight(), h));
 		}
-		return false;
 	}
 
 	@Override

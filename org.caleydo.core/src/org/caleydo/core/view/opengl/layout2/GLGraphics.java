@@ -100,13 +100,31 @@ public class GLGraphics {
 	}
 
 	/**
+	 * similar to {@link #checkError()} but just return the state without printing a message
+	 *
+	 * @return whether an error was found
+	 */
+	public boolean clearError() {
+		return clearError(gl);
+	}
+
+	/**
+	 * similar to {@link #checkError()} but just return the state without printing a message
+	 *
+	 * @return whether an error was found
+	 */
+	public static boolean clearError(GL2 gl) {
+		int error = gl.glGetError();
+		return error > 0;
+	}
+	/**
 	 * checks for errors and prints a {@link System#err} message
 	 *
 	 * @param text
 	 *            description message
 	 * @return whether an error was found
 	 */
-	public static void checkError(GL2 gl) {
+	public static boolean checkError(GL2 gl) {
 		int error = gl.glGetError();
 		if (error > 0) {
 			StackTraceElement[] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
@@ -114,7 +132,9 @@ public class GLGraphics {
 			GLU glu = new GLU();
 			System.err.println(caller.toString() + " " + error + " " + glu.gluErrorString(error) + " ");
 			glu.destroy();
+			return true;
 		}
+		return false;
 	}
 
 	// #############

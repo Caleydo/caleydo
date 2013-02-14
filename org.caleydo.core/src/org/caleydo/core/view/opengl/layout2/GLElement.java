@@ -551,7 +551,8 @@ public class GLElement {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Element [visibility=");
+		builder.append(getClass().getSimpleName());
+		builder.append(" [visibility=");
 		builder.append(visibility);
 		builder.append(", xywh_layout=").append(this.bounds_layout.x).append('/').append(this.bounds_layout.y)
 				.append('/').append(this.bounds_layout.width).append('/').append(this.bounds_layout.height);

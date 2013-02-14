@@ -119,11 +119,12 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		}
 
 		GLGraphics g = new GLGraphics(gl, this.getTextRenderer(), this.getTextureManager(), locator, true);
+		g.checkError("pre render");
 		if (isPickingRun(gl))
 			root.renderPick(g);
 		else
 			root.render(g);
-
+		g.checkError("post render");
 		g.destroy();
 
 		checkForHits(gl);
