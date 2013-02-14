@@ -106,7 +106,7 @@ public class GLPathwayTextureManager {
 		float textureHeight = containingView.getPixelGLConverter().getGLHeightForPixelHeight(pathway.getHeight());
 
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
