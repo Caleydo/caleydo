@@ -57,6 +57,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 		colorRenderer = new ColorRenderer(this);
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
+		colorRenderer.setDrawBorder(true);
 		colorRenderer.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 		baseColumn.addBackgroundRenderer(colorRenderer);
 

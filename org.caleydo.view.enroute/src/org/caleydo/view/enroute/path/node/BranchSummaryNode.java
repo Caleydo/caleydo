@@ -192,6 +192,7 @@ public class BranchSummaryNode extends ANode {
 		colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer.setColor(new float[] { 0.9f, 0.9f, 0.9f, 1 });
+		colorRenderer.setDrawBorder(true);
 		colorRenderer.setView(view);
 		colorRenderer.addPickingID(EPickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
 		baseColumn.addBackgroundRenderer(colorRenderer);

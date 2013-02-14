@@ -124,7 +124,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				gl.glEnd();
 
 				renderPathwayTitle(gl, segmentIndex, topPathwayTitleLimit, nodePositionY);
-				gl.glPopMatrix();
+				// gl.glPopMatrix();
 
 				topPathwayTitleLimit = nodePositionY;
 				segmentIndex++;

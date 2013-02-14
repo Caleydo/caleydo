@@ -62,7 +62,7 @@ public class GLElementAdapter extends GLElement {
 		this.pixelGLConverter = GLElementAccessor.createPixelGLConverter(viewFrustum, view.getParentGLCanvas());
 
 		this.layout = new LayoutManager(viewFrustum, pixelGLConverter);
-		this.layout.setUseDisplayLists(false);
+		this.layout.setUseDisplayLists(true);
 	}
 
 	public GLElementAdapter(AGLView view, ALayoutRenderer renderer) {

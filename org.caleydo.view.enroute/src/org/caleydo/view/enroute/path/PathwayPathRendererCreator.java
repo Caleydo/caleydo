@@ -17,7 +17,7 @@ public class PathwayPathRendererCreator implements IRemoteRendererCreator {
 			String embeddingEventSpace) {
 
 		APathwayPathRenderer renderer = new VerticalPathRenderer(remoteRenderingView, tablePerspectives);
-		// renderer.setPathwayPathEventSpace(embeddingEventSpace);
+		renderer.setPathwayPathEventSpace(embeddingEventSpace);
 		renderer.init();
 
 		return renderer;
