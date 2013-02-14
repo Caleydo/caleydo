@@ -31,8 +31,17 @@ import org.caleydo.core.view.opengl.picking.Pick;
  */
 public class PickableGLElement extends GLElement {
 	private String tooltip = null;
+	/**
+	 * the object id to use
+	 */
+	private int objectId = 0;
 
 	public PickableGLElement() {
+		this(0);
+	}
+
+	public PickableGLElement(int objectId) {
+		this.objectId = objectId;
 		this.setVisibility(EVisibility.PICKABLE);
 		this.onPick(new IPickingListener() {
 			@Override
@@ -40,6 +49,33 @@ public class PickableGLElement extends GLElement {
 				onPicked(pick);
 			}
 		});
+	}
+
+	/**
+	 * @param objectId
+	 *            setter, see {@link objectId}
+	 */
+	public PickableGLElement setPickingObjectId(int objectId) {
+		if (this.objectId == objectId)
+			return this;
+		this.objectId = objectId;
+		if (context != null) { // already initialized
+			// temporary set the visible state to not pickable, to enforce that we register a new picking listener with
+			// the right id
+			EVisibility bak = getVisibility();
+			if (bak == EVisibility.PICKABLE) {
+				setVisibility(EVisibility.VISIBLE).setVisibility(EVisibility.PICKABLE);
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * @return the objectId, see {@link #objectId}
+	 */
+	@Override
+	public int getPickingObjectId() {
+		return objectId;
 	}
 
 	/**
