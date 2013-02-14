@@ -45,10 +45,7 @@ public class TCGAXMLGenerator extends RecursiveTask<ProjectDescription> {
 	private final boolean loadSampledGenes;
 	private final FirehoseProvider fileProvider;
 
-	private final String tumorAbbreviation;
-
-	public TCGAXMLGenerator(String tumorAbbreviation, FirehoseProvider fileProvider, TCGASettings settings) {
-		this.tumorAbbreviation = tumorAbbreviation;
+	public TCGAXMLGenerator(FirehoseProvider fileProvider, TCGASettings settings) {
 		this.fileProvider = fileProvider;
 		this.loadSampledGenes = settings.isSampleGenes();
 	}
@@ -58,7 +55,7 @@ public class TCGAXMLGenerator extends RecursiveTask<ProjectDescription> {
 		Collection<ForkJoinTask<DataSetDescription>> tasks = new ArrayList<>();
 
 		for (EDataSetType type : EDataSetType.values()) {
-			tasks.add(TCGADataSetBuilder.create(tumorAbbreviation, type, fileProvider, loadSampledGenes));
+			tasks.add(TCGADataSetBuilder.create(type, fileProvider, loadSampledGenes));
 		}
 
 		invokeAll(tasks); // fork and wait

@@ -20,6 +20,7 @@
 package org.caleydo.data.importer.tcga.regular;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 
@@ -51,11 +52,11 @@ public class TCGAProjectBuilderApplication
 	@Override
 	protected List<ForkJoinTask<Void>> createTasks(TCGASettings settings) {
 		List<ForkJoinTask<Void>> tasks = new ArrayList<>();
-		List<String> analysisRuns = settings.getAnalysisRuns();
-		List<String> dataRuns = settings.getDataRuns();
+		List<Date> analysisRuns = settings.getAnalysisRuns();
+		List<Date> dataRuns = settings.getDataRuns();
 		for (int i = 0; i < analysisRuns.size(); i++) {
-			String analysisRun = analysisRuns.get(i);
-			String dataRun = dataRuns.get(i);
+			Date analysisRun = analysisRuns.get(i);
+			Date dataRun = dataRuns.get(i);
 
 			tasks.add(new TCGARunTask(analysisRun, dataRun, settings));
 		}

@@ -21,6 +21,7 @@ package org.caleydo.data.importer.tcga.regular;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Date;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -28,6 +29,8 @@ import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.ETumorType;
+import org.caleydo.data.importer.tcga.FirehoseProvider;
+import org.caleydo.data.importer.tcga.Settings;
 
 /**
  * This class handles the whole workflow of creating a Caleydo project from TCGA
@@ -40,11 +43,11 @@ public class TCGATask extends ATCGATask {
 	private static final long serialVersionUID = 7378867458430247164L;
 
 	private final String tumorType;
-	private final String analysisRun;
-	private final String dataRun;
+	private final Date analysisRun;
+	private final Date dataRun;
 	private TCGASettings settings;
 
-	public TCGATask(String tumorType, String analysisRun, String dataRun, TCGASettings settings) {
+	public TCGATask(String tumorType, Date analysisRun, Date dataRun, TCGASettings settings) {
 		this.tumorType = tumorType;
 		this.analysisRun = analysisRun;
 		this.dataRun = dataRun;
@@ -55,10 +58,11 @@ public class TCGATask extends ATCGATask {
 	protected String compute() {
 		System.out.println("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
 
-		String runSpecificOutputPath = settings.getDataDirectory(analysisRun);
+		String runSpecificOutputPath = settings.getDataDirectory(Settings.format(analysisRun));
 
-		ProjectDescription project = new TCGAXMLGenerator(tumorType, settings.createFirehoseProvider(tumorType,
-				analysisRun, dataRun), settings).invoke();
+		FirehoseProvider firehoseProvider = settings.createFirehoseProvider(tumorType,
+				analysisRun, dataRun);
+		ProjectDescription project = new TCGAXMLGenerator(firehoseProvider, settings).invoke();
 
 		if (project.getDataSetDescriptionCollection().isEmpty())
 			return null;
@@ -79,7 +83,9 @@ public class TCGATask extends ATCGATask {
 
 		String jnlpFileName = analysisRun + "_" + tumorType + ".jnlp";
 
-		generateTumorReportLine(report, dataDomains, tumorType, analysisRun, jnlpFileName, projectRemoteOutputURL);
+		String firehoseReportURL = firehoseProvider.getReportURL();
+		generateTumorReportLine(report, dataDomains, tumorType, analysisRun, jnlpFileName, projectRemoteOutputURL,
+				firehoseReportURL);
 
 		generateJNLP(new File(settings.getJNLPOutputDirectory(), jnlpFileName), projectRemoteOutputURL);
 
@@ -89,8 +95,9 @@ public class TCGATask extends ATCGATask {
 	}
 
 	protected void generateTumorReportLine(StringBuilder report, Collection<ATableBasedDataDomain> dataDomains,
-			String tumorAbbreviation, String analysisRun,
-			String jnlpFileName, String projectOutputPath) {
+			String tumorAbbreviation, Date analysisRun,
+ String jnlpFileName, String projectOutputPath,
+			String firehoseReportURL) {
 
 		String addInfoMRNA = "null";
 		String addInfoMRNASeq = "null";
@@ -104,7 +111,6 @@ public class TCGATask extends ATCGATask {
 
 		String jnlpURL = settings.getJNLPURL(jnlpFileName);
 
-		String firehoseReportURL = settings.getReportUrl(analysisRun, tumorAbbreviation);
 
 		String tumorName = ETumorType.valueOf(tumorAbbreviation).getTumorName();
 

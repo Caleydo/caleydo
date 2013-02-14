@@ -19,10 +19,8 @@ package org.caleydo.data.importer.tcga;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
@@ -37,54 +35,45 @@ import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
-import com.google.common.collect.Table;
-import com.google.common.collect.TreeBasedTable;
-
 public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
-
-	private static final String CLUSTER_FILE = "outputprefix.expclu.gct";
-	private static final int LEVEL = 4;
-
 	private static final long serialVersionUID = 6468622325177694143L;
 
-	private final EDataSetType dataSetType;
-	private final String tumorAbbreviation;
-	private boolean loadSampledGenes;
-
-	private final FirehoseProvider fileProvider;
-
 	private final String dataSetName;
+	private final EDataSetType dataSetType;
+	private final boolean loadSampledGenes;
 
-	private TCGADataSetBuilder(String tumorAbbreviation, EDataSetType datasetType, String dataSetName,
-			FirehoseProvider fileProvider, boolean loadSampledGenes) {
-		this.tumorAbbreviation = tumorAbbreviation;
-		this.dataSetType = datasetType;
-		this.fileProvider = fileProvider;
-		this.loadSampledGenes = loadSampledGenes;
+	private final FirehoseProvider fileFinder;
+
+	private TCGADataSetBuilder(EDataSetType datasetType, String dataSetName, FirehoseProvider fileFinder,
+			boolean loadSampledGenes) {
 		this.dataSetName = dataSetName;
+		this.dataSetType = datasetType;
+		this.loadSampledGenes = loadSampledGenes;
+		this.fileFinder = fileFinder;
 
 	}
 
-	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
+	public static ForkJoinTask<DataSetDescription> create(EDataSetType datasetType,
 			FirehoseProvider fileProvider) {
-		return create(tumorAbbreviation, datasetType, fileProvider, true);
+		return create(datasetType, fileProvider, true);
 	}
 
-	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
+	public static ForkJoinTask<DataSetDescription> create(EDataSetType datasetType,
 			String dataSetName, FirehoseProvider fileProvider) {
-		return create(tumorAbbreviation, datasetType, dataSetName, fileProvider, true);
+		return create(datasetType, dataSetName, fileProvider, true);
 	}
 
-	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
+	public static ForkJoinTask<DataSetDescription> create(EDataSetType datasetType,
 			FirehoseProvider fileProvider, boolean loadSampledGenes) {
-		return create(tumorAbbreviation, datasetType, datasetType.getName(), fileProvider, loadSampledGenes);
+		return create(datasetType, datasetType.getName(), fileProvider, loadSampledGenes);
 	}
 
-	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
+	public static ForkJoinTask<DataSetDescription> create(EDataSetType datasetType,
 			String dataSetName, FirehoseProvider fileProvider, boolean loadSampledGenes) {
-		return new TCGADataSetBuilder(tumorAbbreviation, datasetType, dataSetName, fileProvider, loadSampledGenes);
+		return new TCGADataSetBuilder(datasetType, dataSetName, fileProvider, loadSampledGenes);
 	}
 
 	@Override
@@ -109,37 +98,21 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 
 		switch (dataSetType) {
 		case mRNA:
-			if (loadSampledGenes) {
-				return setUpClusteredMatrixData(geneRowID, sampleID);
-			} else {
-				return setUpClusteredMatrixData("mRNA_Preprocess_Median", tumorAbbreviation + ".medianexp.txt",
-						geneRowID, sampleID);
-			}
+			return setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
+					fileFinder.findmRNAMatrixFile(loadSampledGenes));
 		case mRNAseq:
-			if (loadSampledGenes) {
-				return setUpClusteredMatrixData(geneRowID, seqSampleID);
-			} else {
-				return setUpClusteredMatrixData("mRNAseq_Preprocess", tumorAbbreviation + ".mRNAseq_RPKM_log2.txt",
-						geneRowID, seqSampleID);
-			}
+			return setUpClusteredMatrixData(dataSetType, geneRowID, sampleID,
+					fileFinder.findmRNAseqMatrixFile(loadSampledGenes));
 		case microRNA:
-			if (loadSampledGenes) {
-				return setUpClusteredMatrixData(microRNARowID, sampleID);
-			} else {
-				return setUpClusteredMatrixData("miR_Preprocess", tumorAbbreviation + ".miR_expression.txt",
-						microRNARowID, sampleID);
-			}
+			return setUpClusteredMatrixData(dataSetType, microRNARowID, sampleID,
+					fileFinder.findmicroRNAMatrixFile(loadSampledGenes));
 		case microRNAseq:
-			if (loadSampledGenes) {
-				return setUpClusteredMatrixData(microRNARowID, seqSampleID);
-			} else {
-				return setUpClusteredMatrixData("miRseq_Preprocess", tumorAbbreviation + ".miRseq_RPKM_log2.txt",
-						microRNARowID, seqSampleID);
-			}
+			return setUpClusteredMatrixData(dataSetType, microRNARowID, seqSampleID,
+					fileFinder.findmicroRNAseqMatrixFile(loadSampledGenes));
 		case methylation:
-			return setUpClusteredMatrixData(geneRowID, sampleID);
+			return setUpClusteredMatrixData(dataSetType, geneRowID, sampleID, fileFinder.findMethylationMatrixFile());
 		case RPPA:
-			return setUpClusteredMatrixData(proteinRowID, sampleID);
+			return setUpClusteredMatrixData(dataSetType, proteinRowID, sampleID, fileFinder.findRPPAMatrixFile());
 		case clinical:
 			return setUpClinicalData(clinicalRowID, clinicalColumnID);
 		case mutation:
@@ -150,22 +123,9 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		throw new IllegalStateException("uknown data set type: " + dataSetType);
 	}
 
-	private DataSetDescription setUpClusteredMatrixData(IDSpecification rowIDSpecification,
-			IDSpecification sampleIDSpecification) {
-		return setUpClusteredMatrixData(dataSetType.getTCGAAbbr() + "_Clustering_CNMF", CLUSTER_FILE,
-				rowIDSpecification, sampleIDSpecification);
-	}
-
-	private DataSetDescription setUpClusteredMatrixData(String matrixArchiveName, String matrixFileName,
-			IDSpecification rowIDSpecification, IDSpecification columnIDSpecification) {
-		String cnmfArchiveName = dataSetType.getTCGAAbbr() + "_Clustering_CNMF";
-		String hierarchicalArchiveName = dataSetType.getTCGAAbbr() + "_Clustering_Consensus";
-
-		File matrixFile = fileProvider.extractAnalysisRunFile(matrixFileName, matrixArchiveName, LEVEL);
+	private DataSetDescription setUpClusteredMatrixData(EDataSetType type, IDSpecification rowIDSpecification,
+			IDSpecification columnIDSpecification, File matrixFile) {
 		if (matrixFile == null)
-			return null;
-		File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt", cnmfArchiveName, LEVEL);
-		if (cnmfGroupingFile == null)
 			return null;
 
 		DataSetDescription dataSet = new DataSetDescription();
@@ -194,38 +154,39 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 
 		dataSet.setColumnIDSpecification(columnIDSpecification);
 
-		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(cnmfGroupingFile.getPath());
-		firehoseCnmfClustering.setContainsColumnIDs(false);
-		firehoseCnmfClustering.setRowIDSpecification(columnIDSpecification);
-		firehoseCnmfClustering.setGroupingName("CNMF Clustering");
-		dataSet.addColumnGroupingSpecification(firehoseCnmfClustering);
+		File cnmfGroupingFile = fileFinder.findCNMFGroupingFile(type);
+		if (cnmfGroupingFile != null) {
+			GroupingParseSpecification grouping = new GroupingParseSpecification(
+					cnmfGroupingFile.getPath());
+			grouping.setContainsColumnIDs(false);
+			grouping.setRowIDSpecification(columnIDSpecification);
+			grouping.setGroupingName("CNMF Clustering");
+			dataSet.addColumnGroupingSpecification(grouping);
+		} else {
+			System.out.println("Warning can't find cnmf grouping file");
+		}
 
-		try {
-			File hierarchicalGroupingFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".allclusters.txt",
-					hierarchicalArchiveName, LEVEL);
-			if (hierarchicalGroupingFile == null) {
-				hierarchicalGroupingFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation
-						+ "-TP.allclusters.txt", hierarchicalArchiveName, LEVEL);
-			}
-			if (hierarchicalGroupingFile == null)
-				throw new IllegalStateException("can't extract: " + tumorAbbreviation + ".allclusters.txt");
-			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
+		File hierarchicalGroupingFile = fileFinder.findHiearchicalGrouping(type);
+		if (hierarchicalGroupingFile != null) {
+			GroupingParseSpecification grouping = new GroupingParseSpecification(
 					hierarchicalGroupingFile.getPath());
-			firehoseHierarchicalClustering.setContainsColumnIDs(false);
-			firehoseHierarchicalClustering.setRowIDSpecification(columnIDSpecification);
-			firehoseHierarchicalClustering.setGroupingName("Hierarchical Clustering");
-			dataSet.addColumnGroupingSpecification(firehoseHierarchicalClustering);
-		} catch (RuntimeException e) {
-			System.err.println("can't extract hierarchical information " + e.getMessage());
+			grouping.setContainsColumnIDs(false);
+			grouping.setRowIDSpecification(columnIDSpecification);
+			grouping.setGroupingName("Hierarchical Clustering");
+			dataSet.addColumnGroupingSpecification(grouping);
+		} else {
+			System.out.println("Warning can't find hierarchical grouping file");
 		}
 
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-		kMeansAlgo.setNumberOfClusters(5);
-		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
-		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		{
+			ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+			clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+			KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+			kMeansAlgo.setNumberOfClusters(5);
+			clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
+			dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		}
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
 
 		if (loadSampledGenes) {
@@ -236,25 +197,14 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		return dataSet;
 	}
 
+
+
 	private DataSetDescription setUpMutationData(IDSpecification rowIDSpecification,
 			IDSpecification sampleIDSpecification) {
 
-		int startColumn = 8;
-		File mutationFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".per_gene.mutation_counts.txt",
-				"Mutation_Significance", LEVEL);
-
-		if (mutationFile == null)
-			mutationFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".per_gene.mutation_counts.txt",
-					"MutSigRun2.0", LEVEL);
-
-		if (mutationFile == null) {
-			File maf = fileProvider.extractAnalysisRunFile(tumorAbbreviation + "-TP.final_analysis_set.maf",
-					"MutSigNozzleReport2.0", LEVEL);
-			if (maf != null) {
-				mutationFile = parseMAF(maf);
-				startColumn = 1;
-			}
-		}
+		Pair<File, Integer> p = fileFinder.findMutationFile();
+		int startColumn = p.getSecond();
+		File mutationFile = p.getFirst();
 
 		if (mutationFile == null)
 			return null;
@@ -293,51 +243,10 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		return dataSet;
 	}
 
-	private File parseMAF(File maf) {
-		File out = new File(maf.getParentFile(), "P" + maf.getName());
-		if (out.exists())
-			return out;
-		final String TAB = "\t";
-
-		try {
-			List<String> lines = Files.readAllLines(maf.toPath(), Charset.defaultCharset());
-			List<String> header = Arrays.asList(lines.get(0).split(TAB));
-			lines = lines.subList(1, lines.size());
-			int geneIndex = header.indexOf("Hugo_Symbol");
-			int sampleIndex = header.indexOf("Tumor_Sample_Barcode");
-			// gene x sample x mutated
-			Table<String, String, Boolean> mutated = TreeBasedTable.create();
-			for (String line : lines) {
-				String[] columns = line.split(TAB);
-				mutated.put(columns[geneIndex], columns[sampleIndex], Boolean.TRUE);
-			}
-
-			PrintWriter w = new PrintWriter(out);
-			w.append("Hugo_Symbol");
-			for (String sample : mutated.columnKeySet()) {
-				w.append(TAB).append(sample);
-			}
-			w.println();
-			for (String gene : mutated.rowKeySet()) {
-				w.append(gene);
-				for (String sample : mutated.columnKeySet()) {
-					w.append(TAB).append(mutated.contains(gene, sample) ? "1" : "0");
-				}
-				w.println();
-			}
-			w.close();
-			return out;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	private DataSetDescription setUpCopyNumberData(IDSpecification rwoIDSpecification,
 			IDSpecification sampleIDSpecification) {
-		File copyNumberFile = fileProvider.extractAnalysisRunFile("all_thresholded.by_genes.txt", "CopyNumber_Gistic2",
-				LEVEL);
+		File copyNumberFile = fileFinder.findCopyNumberFile();
 		if (copyNumberFile == null)
 			return null;
 
@@ -362,8 +271,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 
 	private DataSetDescription setUpClinicalData(IDSpecification rowIdSpecification,
 			IDSpecification columnIdSpecification) {
-		File clinicalFile = fileProvider.extractDataRunFile(tumorAbbreviation + ".clin.merged.picked.txt",
-				"Clinical_Pick_Tier1", LEVEL);
+		File clinicalFile = fileFinder.findClinicalDataFile();
 		if (clinicalFile == null)
 			return null;
 
@@ -389,7 +297,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		return dataSet;
 	}
 
-	private void transposeCSV(String fileName, String fileNameOut) {
+	private static void transposeCSV(String fileName, String fileNameOut) {
 		File in = new File(fileName);
 		File out = new File(fileNameOut);
 		if (out.exists())
