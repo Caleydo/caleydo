@@ -72,6 +72,51 @@ public class GLGraphics {
 		return text;
 	}
 
+	/**
+	 * see {@link #checkError(String)} with no text
+	 *
+	 * @return whether an error was found
+	 */
+	public boolean checkError() {
+		return checkError("");
+	}
+
+	/**
+	 * checks for errors and prints a {@link System#err} message
+	 *
+	 * @param text
+	 *            description message
+	 * @return whether an error was found
+	 */
+	public boolean checkError(String text) {
+		int error = gl.glGetError();
+		if (error > 0) {
+			StackTraceElement[] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
+			StackTraceElement caller = stackTrace[1];
+			System.err.println(caller.toString() + " " + error + " " + glu().gluErrorString(error) + ": " + text);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * checks for errors and prints a {@link System#err} message
+	 *
+	 * @param text
+	 *            description message
+	 * @return whether an error was found
+	 */
+	public static void checkError(GL2 gl) {
+		int error = gl.glGetError();
+		if (error > 0) {
+			StackTraceElement[] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
+			StackTraceElement caller = stackTrace[1];
+			GLU glu = new GLU();
+			System.err.println(caller.toString() + " " + error + " " + glu.gluErrorString(error) + " ");
+			glu.destroy();
+		}
+	}
+
 	// #############
 
 	/**
