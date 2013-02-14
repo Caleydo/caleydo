@@ -41,11 +41,16 @@ public final class FirehoseProvider {
 
 	private final Settings settings;
 
+	private Calendar relevantDate;
+
 
 	FirehoseProvider(String tumor, Date analysisRun, Date dataRun, Settings settings) {
 		this.tumor = tumor;
-		this.tumorSample = guessTumorSample(tumor, analysisRun);
+		this.relevantDate = Calendar.getInstance();
+		this.relevantDate.setTime(analysisRun);
+		this.tumorSample = guessTumorSample(tumor, this.relevantDate);
 		this.analysisRun = analysisRun;
+
 		this.dataRun = dataRun;
 		this.settings = settings;
 		String tmpDir = settings.getTemporaryDirectory();
@@ -60,9 +65,7 @@ public final class FirehoseProvider {
 	 * @param date
 	 * @return
 	 */
-	private static String guessTumorSample(String tumor, Date date) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
+	private static String guessTumorSample(String tumor, Calendar cal) {
 		if (cal.get(Calendar.YEAR) >= 2013)
 			return tumor + "-TP";
 		return tumor;
@@ -138,13 +141,15 @@ public final class FirehoseProvider {
 
 	public Pair<File, Integer> findMutationFile() {
 		int startColumn = 8;
-		File mutationFile = extractAnalysisRunFile(getFileName(".per_gene.mutation_counts.txt"),
-				"Mutation_Significance", LEVEL);
+		File mutationFile = null;
+		if (relevantDate.get(Calendar.YEAR) < 2013) { // test only for the <= 2012
+			mutationFile = extractAnalysisRunFile(getFileName(".per_gene.mutation_counts.txt"),
+					"Mutation_Significance", LEVEL);
 
-		if (mutationFile == null)
-			mutationFile = extractAnalysisRunFile(getFileName(".per_gene.mutation_counts.txt"), "MutSigRun2.0",
-					LEVEL);
-
+			if (mutationFile == null)
+				mutationFile = extractAnalysisRunFile(getFileName(".per_gene.mutation_counts.txt"), "MutSigRun2.0",
+						LEVEL);
+		}
 		if (mutationFile == null) {
 			// TODO always the -TP version
 			File maf = extractAnalysisRunFile(tumor + "-TP.final_analysis_set.maf",

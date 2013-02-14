@@ -58,7 +58,8 @@ public class TCGATask extends ATCGATask {
 	protected String compute() {
 		System.out.println("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
 
-		String runSpecificOutputPath = settings.getDataDirectory(Settings.format(analysisRun));
+		String run = Settings.format(analysisRun);
+		String runSpecificOutputPath = settings.getDataDirectory(run);
 
 		FirehoseProvider firehoseProvider = settings.createFirehoseProvider(tumorType,
 				analysisRun, dataRun);
@@ -70,18 +71,18 @@ public class TCGATask extends ATCGATask {
 		if (settings.isDownloadOnly())
 			return null;
 		System.out.println("Building project file for tumor type " + tumorType + " for analysis run " + analysisRun);
-		String projectOutputPath = runSpecificOutputPath + analysisRun + "_" + tumorType + ".cal";
+		String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
 		Collection<ATableBasedDataDomain> dataDomains = new XMLToProjectBuilder().buildProject(project,
 				projectOutputPath);
 
 		project = null;
 
-		String projectRemoteOutputURL = settings.getTcgaServerURL() + analysisRun + "/" + analysisRun + "_" + tumorType
+		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType
 				+ ".cal";
 
 		StringBuilder report = new StringBuilder();
 
-		String jnlpFileName = analysisRun + "_" + tumorType + ".jnlp";
+		String jnlpFileName = run + "_" + tumorType + ".jnlp";
 
 		String firehoseReportURL = firehoseProvider.getReportURL();
 		generateTumorReportLine(report, dataDomains, tumorType, analysisRun, jnlpFileName, projectRemoteOutputURL,
