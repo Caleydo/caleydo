@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -34,6 +35,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLPadding;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -77,11 +79,11 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement raw = children.get(0);
-		raw.setBounds(20, 0, w - 40, 40);
+		raw.setBounds(0, 0, w, 40);
 		IGLLayoutElement norm = children.get(1);
-		norm.setBounds(20, h - 40, w - 40, 40);
+		norm.setBounds(0, h - 40, w, 40);
 		for (IGLLayoutElement line : children.subList(2, children.size())) {
-			line.setBounds(20, 40, w - 40, h - 80);
+			line.setBounds(0, 40, w, h - 80);
 		}
 	}
 
@@ -98,6 +100,7 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 		from = inverseNormalize(from);
 		model.update(oldFrom, oldTo, from, to);
 		repaintAll();
+		get(1).repaint();
 		return new float[] { from, normalizeRaw(from), to, to };
 	}
 
@@ -119,6 +122,25 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 				return cursor != raw.size();
 			}
 		});
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.color(.3f, .3f, .3f, .3f);
+		GL2 gl = g.gl;
+		final float z = g.z();
+		gl.glBegin(GL.GL_LINES);
+		for (int i = 0; i < raw.size(); ++i) {
+			float v = raw.getPrimitive(i);
+			float x = normalizeRaw(v) * w;
+			float x2 = model.apply(v) * w;
+			if (Float.isNaN(x2))
+				continue;
+			gl.glVertex3f(x, 40, z);
+			gl.glVertex3f(x2, h - 40, z);
+		}
+		gl.glEnd();
+		super.renderImpl(g, w, h);
 	}
 
 	class RawHistogramElement extends GLElement {
@@ -161,11 +183,15 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 	}
 
 	public static void main(String[] args) {
-		FloatContainer tmp = new FloatContainer(new float[] { 0.5f, 0.1f, 0.1f, 0.25f, 0.5f, 0.5f, 0.3f, 0.2f, 0.8f });
+		Random r = new Random(100);
+		final int count = 1000;
+		FloatContainer tmp = new FloatContainer(count);
+		for (int i = 0; i < count; ++i)
+			tmp.add(r.nextFloat());
 		InteractiveNormalization n = new InteractiveNormalization();
 		n.put(0, 0);
 		n.put(1, 1);
-		GLSandBox.main(args, new InteractiveTransformationUI(n, tmp, 0, 1));
+		GLSandBox.main(args, new InteractiveTransformationUI(n, tmp, 0, 1), new GLPadding(20));
 	}
 
 	class Line extends GLElementContainer implements IGLLayout {
@@ -191,7 +217,7 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 			float x1 = get(0).getLocation().x();
 			float x2 = get(1).getLocation().x();
 			// fancy line
-			g.drawLine(x1, 0, x2, h);
+			g.drawLine(x1, 3, x2, h - 6);
 			super.renderImpl(g, w, h);
 		}
 
