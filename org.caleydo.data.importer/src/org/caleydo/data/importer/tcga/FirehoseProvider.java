@@ -2,6 +2,7 @@ package org.caleydo.data.importer.tcga;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,10 +15,12 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.tools.tar.TarEntry;
@@ -273,38 +276,45 @@ public final class FirehoseProvider {
 	}
 
 	private static File parseMAF(File maf) {
+
 		File out = new File(maf.getParentFile(), "P" + maf.getName());
 		if (out.exists())
 			return out;
+		System.out.println("parsing maf file " + maf.getAbsolutePath());
 		final String TAB = "\t";
 
-		try {
-			List<String> lines = Files.readAllLines(maf.toPath(), Charset.defaultCharset());
-			List<String> header = Arrays.asList(lines.get(0).split(TAB));
-			lines = lines.subList(1, lines.size());
+		try (BufferedReader reader = Files.newBufferedReader(maf.toPath(), Charset.defaultCharset())) {
+			List<String> header = Arrays.asList(reader.readLine().split(TAB));
 			int geneIndex = header.indexOf("Hugo_Symbol");
 			int sampleIndex = header.indexOf("Tumor_Sample_Barcode");
 			// gene x sample x mutated
 			Table<String, String, Boolean> mutated = TreeBasedTable.create();
-			for (String line : lines) {
+			String line = null;
+			while ((line = reader.readLine()) != null) {
 				String[] columns = line.split(TAB);
 				mutated.put(columns[geneIndex], columns[sampleIndex], Boolean.TRUE);
 			}
 
-			PrintWriter w = new PrintWriter(out);
+			File tmp = new File(out.getParentFile(), out.getName() + ".tmp");
+			PrintWriter w = new PrintWriter(tmp);
 			w.append("Hugo_Symbol");
-			for (String sample : mutated.columnKeySet()) {
+			List<String> cols = new ArrayList<>(mutated.columnKeySet());
+			for (String sample : cols) {
 				w.append(TAB).append(sample);
 			}
 			w.println();
-			for (String gene : mutated.rowKeySet()) {
+			Set<String> rows = mutated.rowKeySet();
+			System.out.println(mutated.size() + " " + rows.size() + " " + cols.size());
+			for (String gene : rows) {
 				w.append(gene);
-				for (String sample : mutated.columnKeySet()) {
-					w.append(TAB).append(mutated.contains(gene, sample) ? "1" : "0");
+				for (String sample : cols) {
+					w.append(TAB).append(mutated.contains(gene, sample) ? '1' : '0');
 				}
 				w.println();
 			}
 			w.close();
+			Files.move(tmp.toPath(), out.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			System.out.println("parsed " + maf.getAbsolutePath());
 			return out;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
