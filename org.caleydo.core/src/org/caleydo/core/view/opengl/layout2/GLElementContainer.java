@@ -171,6 +171,10 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		relayout();
 	}
 
+	public final int indexOf(GLElement child) {
+		return children.indexOf(child);
+	}
+
 	public final boolean remove(GLElement child) {
 		if (children.remove(child)) {
 			takeDown(child);
