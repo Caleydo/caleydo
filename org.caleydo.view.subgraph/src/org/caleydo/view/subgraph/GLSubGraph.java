@@ -23,13 +23,13 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.util.multiform.GLElementViewSwitchingBar;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -284,7 +284,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer);
 		container.add(multiFormRendererAdapter);
 
-		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer, this);
+		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
 		container.add(viewSwitchingBar);
 
 		parent.add(container);
