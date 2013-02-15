@@ -26,9 +26,9 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * the out animation implementation
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class OutAnimation extends Animation {
 	private final IOutTransition animation;
@@ -48,8 +48,7 @@ public class OutAnimation extends Animation {
 
 	@Override
 	protected void firstTime(float w, float h) {
-		System.out.println(from);
-
+		animated.setBounds(from);
 	}
 
 	@Override
