@@ -23,8 +23,8 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.util.multiform.GLElementViewSwitchingBar;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
@@ -44,7 +44,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private LayoutManager layoutManager;
 
-	private MultiFormRenderer pathMultiformRenderer = new MultiFormRenderer(this, false);
+	// private MultiFormRenderer pathMultiformRenderer = new MultiFormRenderer(this, false);
 
 	private List<TablePerspective> tablePerspectives = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	// private Column pathwayColumn;
 
-	private AddTablePerspectivesListener addTablePerspectivesListener;
+	// private AddTablePerspectivesListener addTablePerspectivesListener;
 
 	// private Column pathColumn;
 
@@ -75,8 +75,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 		baseContainer = new GLElementContainer(GLLayouts.flowHorizontal(10));
-		 pathwayColumn = new GLElementContainer(GLLayouts.flowVertical(10));
-		 baseContainer.add(pathwayColumn, 0.4f);
+		pathwayColumn = new GLElementContainer(GLLayouts.flowVertical(10));
+		baseContainer.add(pathwayColumn, 0.4f);
 	}
 
 	@Override
@@ -245,56 +245,50 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			data.setData(oldDimensionPerspective.getVirtualArray());
 
 			newDimensionPerspective.init(data);
-			PathwayTablePerspective pathwayPathwayTablePerspective = new PathwayTablePerspective(
+			PathwayTablePerspective pathwayTablePerspective = new PathwayTablePerspective(
 					tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective, newDimensionPerspective,
 					PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-			pathwayDataDomain.addTablePerspective(pathwayPathwayTablePerspective);
+			pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
 
-			 addPathwayMultiform(pathwayPathwayTablePerspective);
+			List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
+			pathwayTablePerspectives.add(pathwayTablePerspective);
 
-			pathwayPathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(),
-					pathwayDataDomain, newRecordPerspective, newDimensionPerspective, PathwayManager.get()
-							.getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-			pathwayDataDomain.addTablePerspective(pathwayPathwayTablePerspective);
+			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn);
 
-			 addPathwayMultiform(pathwayPathwayTablePerspective);
+			pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(), pathwayDataDomain,
+					newRecordPerspective, newDimensionPerspective, PathwayManager.get().getPathwayByTitle("Glioma",
+							EPathwayDatabaseType.KEGG));
+			pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
 
-			Set<String> pathViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, EEmbeddingID.PATH.id());
+			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn);
 
-			for (String viewID : pathViewIDs) {
-				pathMultiformRenderer.addPluginVisualization(viewID, getViewType(), EEmbeddingID.PATH.id(),
-						tablePerspectives, pathEventSpace);
-			}
+			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer);
 
-			baseContainer.add(new GLElementAdapter(this, pathMultiformRenderer));
-			// MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(pathMultiformRenderer, this);
-			// pathColumn.add(viewSwitchingBar);
-			// ElementLayout multiformRendererLayout = new ElementLayout();
-			// multiformRendererLayout.setRenderer(pathMultiformRenderer);
-			// pathColumn.add(multiformRendererLayout);
-
-			// setDisplayListDirty();
 		}
 	}
 
-	private void addPathwayMultiform(PathwayTablePerspective pathwayPathwayTablePerspective) {
-		remoteRenderedPathwayMultiformViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE,
-				EEmbeddingID.PATHWAY_MULTIFORM.id());
-		List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
-		pathwayTablePerspectives.add(pathwayPathwayTablePerspective);
+	private void addMultiformRenderer(List<TablePerspective> tablePerspectives, String embeddingID,
+			GLElementContainer parent) {
+
+		GLElementContainer container = new GLElementContainer(GLLayouts.flowVertical(6));
+
+		remoteRenderedPathwayMultiformViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, embeddingID);
 
 		// Different renderers should receive path updates from the beginning on, therefore no lazy creation.
 		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
 
 		for (String viewID : remoteRenderedPathwayMultiformViewIDs) {
-			renderer.addPluginVisualization(viewID, getViewType(), EEmbeddingID.PATHWAY_MULTIFORM.id(),
-					pathwayTablePerspectives, pathEventSpace);
+			renderer.addPluginVisualization(viewID, getViewType(), embeddingID, tablePerspectives, pathEventSpace);
 		}
 
 		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer);
-		pathwayColumn.add(multiFormRendererAdapter);
+		container.add(multiFormRendererAdapter);
 
-		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(renderer, this);
+		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer, this);
+		container.add(viewSwitchingBar);
+
+		parent.add(container);
+
 		// baseContainer.add(new GLElementAdapter(this, viewSwitchingBar));
 		//
 		// ElementLayout multiformRendererLayout = new ElementLayout();
