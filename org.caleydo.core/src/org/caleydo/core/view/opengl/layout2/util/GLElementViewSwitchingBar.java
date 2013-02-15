@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout.util.multiform;
+package org.caleydo.core.view.opengl.layout2.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,16 +27,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
-import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 
 /**
  * @author Christian
@@ -46,11 +46,6 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 
 	public final static int DEFAULT_HEIGHT_PIXELS = 16;
 	public final static int BUTTON_SPACING_PIXELS = 2;
-
-	/**
-	 * Parent view with canvas.
-	 */
-	private final AGLView view;
 
 	/**
 	 * Picking type used for buttons.
@@ -65,30 +60,32 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 	/**
 	 * Map associating rendererIDs with corresponding buttons and layouts.
 	 */
-	private Map<Integer, Pair<Button, GLElement>> buttons = new HashMap<>();
+	private Map<Integer, Pair<Button, GLImageButton>> buttons = new HashMap<>();
+
+	/**
+	 * PickingListener for buttons to switch views.
+	 */
+	private IPickingListener buttonPickingListener = new APickingListener() {
+		@Override
+		public void clicked(Pick pick) {
+			GLElementViewSwitchingBar.this.multiFormRenderer.setActive(pick.getObjectID());
+		}
+	};
 
 	/**
 	 * @param multiFormRenderer
 	 *            The {@link MultiFormRenderer} buttons for view switching shall be created for.
-	 * @param view
-	 *            The view with canvas that renders this toolbar.
 	 */
-	public GLElementViewSwitchingBar(MultiFormRenderer multiFormRenderer, AGLView view) {
+	public GLElementViewSwitchingBar(MultiFormRenderer multiFormRenderer) {
+
 		setSize(Float.NaN, DEFAULT_HEIGHT_PIXELS);
 		setLayout(GLLayouts.flowHorizontal(BUTTON_SPACING_PIXELS));
 		multiFormRenderer.addChangeListener(this);
-		this.view = view;
 		buttonPickingType = MultiFormViewSwitchingBar.class.getName() + hashCode();
 		this.multiFormRenderer = multiFormRenderer;
 
 		createButtonsForMultiformRenderer(multiFormRenderer);
 
-		view.addTypePickingListener(new APickingListener() {
-			@Override
-			public void clicked(Pick pick) {
-				GLElementViewSwitchingBar.this.multiFormRenderer.setActive(pick.getObjectID());
-			}
-		}, buttonPickingType);
 	}
 
 	/**
@@ -100,8 +97,10 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 	 * @param rendererID
 	 */
 	public void addButtonPickingListener(IPickingListener pickingListener, int rendererID) {
-		if (buttons.keySet().contains(rendererID))
-			view.addIDPickingListener(pickingListener, buttonPickingType, rendererID);
+		Pair<Button, GLImageButton> buttonPair = buttons.get(rendererID);
+		if (buttonPair != null) {
+			buttonPair.getSecond().onPick(pickingListener);
+		}
 	}
 
 	private void createButtonsForMultiformRenderer(MultiFormRenderer multiFormRenderer) {
@@ -130,13 +129,24 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 		Button button = new Button(buttonPickingType, rendererID, multiFormRenderer.getIconPath(rendererID));
 		// ElementLayout buttonLayout = ElementLayouts.createButton(view, button, DEFAULT_HEIGHT_PIXELS,
 		// DEFAULT_HEIGHT_PIXELS, 0.22f);
+		int activeRendererID = multiFormRenderer.getActiveRendererID();
+		if (activeRendererID == -1) {
+			activeRendererID = multiFormRenderer.getDefaultRendererID();
+		}
+		if (rendererID == activeRendererID) {
+			button.setSelected(true);
+		}
 
-		GLElement buttonElement = new GLElementAdapter(view, new ButtonRenderer.Builder(view, button)
-				.zCoordinate(0.22f).build());
+		GLImageButton buttonElement = new GLImageButton(button);
+		buttonElement.onPick(buttonPickingListener);
+		buttonElement.setPickingObjectId(rendererID);
+
+		// GLElementAdapter(view, new ButtonRenderer.Builder(view, button)
+		// .zCoordinate(0.22f).build());
 		buttonElement.setSize(DEFAULT_HEIGHT_PIXELS, DEFAULT_HEIGHT_PIXELS);
 
 		if (buttons.containsKey(rendererID)) {
-			Pair<Button, GLElement> buttonPair = buttons.get(rendererID);
+			Pair<Button, GLImageButton> buttonPair = buttons.get(rendererID);
 			GLElement element = buttonPair.getSecond();
 
 			int elementIndex = indexOf(element);
@@ -147,6 +157,7 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 			add(buttonElement);
 		}
 		buttons.put(rendererID, new Pair<>(button, buttonElement));
+
 	}
 
 	/**
@@ -157,15 +168,13 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 	 */
 	public void removeButton(int rendererID) {
 
-		Pair<Button, GLElement> buttonPair = buttons.get(rendererID);
+		Pair<Button, GLImageButton> buttonPair = buttons.get(rendererID);
 		if (buttonPair == null)
 			return;
 
 		GLElement element = buttonPair.getSecond();
 		remove(element);
 		buttons.remove(rendererID);
-		view.removeAllIDPickingListeners(buttonPickingType, rendererID);
-
 	}
 
 	@Override
@@ -181,10 +190,11 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 	}
 
 	private void selectButton(int rendererID, boolean select) {
-		Pair<Button, GLElement> buttonPair = buttons.get(rendererID);
+		Pair<Button, GLImageButton> buttonPair = buttons.get(rendererID);
 		if (buttonPair != null) {
 			Button button = buttonPair.getFirst();
 			button.setSelected(select);
+			buttonPair.getSecond().repaint();
 		}
 	}
 
@@ -200,10 +210,6 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 
 	@Override
 	public void takeDown() {
-		view.removeAllTypePickingListeners(buttonPickingType);
-		for (Integer rendererID : buttons.keySet()) {
-			view.removeAllIDPickingListeners(buttonPickingType, rendererID);
-		}
 		if (multiFormRenderer != null)
 			multiFormRenderer.removeChangeListener(this);
 		buttons.clear();
