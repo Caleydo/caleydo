@@ -22,12 +22,14 @@ package org.caleydo.data.importer.tcga.regular;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.data.importer.tcga.ATCGATask;
+import org.caleydo.data.importer.tcga.Settings;
 import org.caleydo.data.importer.tcga.model.TCGADataSet;
 import org.caleydo.data.importer.tcga.model.TCGADataSets;
 import org.caleydo.data.importer.tcga.model.TumorType;
@@ -48,11 +50,11 @@ public class TCGATask extends ATCGATask {
 	private static final long serialVersionUID = 7378867458430247164L;
 
 	private final TumorType tumorType;
-	private final String analysisRun;
-	private final String dataRun;
+	private final Date analysisRun;
+	private final Date dataRun;
 	private final TCGASettings settings;
 
-	public TCGATask(TumorType tumorType, String analysisRun, String dataRun, TCGASettings settings) {
+	public TCGATask(TumorType tumorType, Date analysisRun, Date dataRun, TCGASettings settings) {
 		this.tumorType = tumorType;
 		this.analysisRun = analysisRun;
 		this.dataRun = dataRun;
@@ -63,7 +65,8 @@ public class TCGATask extends ATCGATask {
 	protected JsonElement compute() {
 		log.info("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
 
-		String runSpecificOutputPath = settings.getDataDirectory(analysisRun);
+		String run = Settings.format(analysisRun);
+		String runSpecificOutputPath = settings.getDataDirectory(run);
 
 		TCGADataSets project = new TCGADataSetGenerator(tumorType, settings.createFirehoseProvider(tumorType,
 				analysisRun, dataRun), settings).invoke();
@@ -71,34 +74,36 @@ public class TCGATask extends ATCGATask {
 		if (project.isEmpty())
 			return null;
 
-		log.info("Building project file for tumor type " + tumorType + " for analysis run " + analysisRun);
+		log.info("Building project file for tumor type " + tumorType + " for analysis run " + run);
 
 		Collection<ATableBasedDataDomain> dataDomains = loadProject(project);
 		if (dataDomains.isEmpty()) {
-			log.warning("No Data Domains loaded for tumor type " + tumorType + " for analysis run " + analysisRun
+			log.warning("No Data Domains loaded for tumor type " + tumorType + " for analysis run " + run
 					+ " -> skipping rest");
 			return null;
 		}
 
-		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + analysisRun);
+		log.info("Post Processing project file for tumor type " + tumorType + " for analysis run " + run);
 		for (TCGADataSet set : project) {
 			new TCGAPostprocessingTask(set, settings).invoke();
 		}
 
-		final String projectOutputPath = runSpecificOutputPath + analysisRun + "_" + tumorType + ".cal";
+		final String projectOutputPath = runSpecificOutputPath + run + "_" + tumorType + ".cal";
 		if (!saveProject(dataDomains, projectOutputPath)) {
-			log.severe("Saving Project failed for tumor type " + tumorType + " for analysis run " + analysisRun);
+			log.severe("Saving Project failed for tumor type " + tumorType + " for analysis run " + run);
 			return null;
 		}
 
-		log.info("Built project file for tumor type " + tumorType + " for analysis run " + analysisRun);
+		if (settings.isDownloadOnly())
+			return null;
+		log.info("Built project file for tumor type " + tumorType + " for analysis run " + run);
 
 		project = null;
 
-		String projectRemoteOutputURL = settings.getTcgaServerURL() + analysisRun + "/" + analysisRun + "_" + tumorType
+		String projectRemoteOutputURL = settings.getTcgaServerURL() + run + "/" + run + "_" + tumorType
 				+ ".cal";
 
-		String jnlpFileName = analysisRun + "_" + tumorType + ".jnlp";
+		String jnlpFileName = run + "_" + tumorType + ".jnlp";
 
 		JsonObject report = generateTumorReportLine(dataDomains, tumorType, analysisRun, jnlpFileName,
 				projectRemoteOutputURL);
@@ -113,7 +118,7 @@ public class TCGATask extends ATCGATask {
 
 
 	protected JsonObject generateTumorReportLine(Collection<ATableBasedDataDomain> dataDomains,
-			TumorType tumor, String analysisRun,
+			TumorType tumor, Date analysisRun,
 			String jnlpFileName, String projectOutputPath) {
 
 		AdditionalInfo addInfoMRNA = null;

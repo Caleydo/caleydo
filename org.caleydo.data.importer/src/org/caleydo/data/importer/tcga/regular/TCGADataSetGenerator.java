@@ -59,7 +59,7 @@ public class TCGADataSetGenerator extends RecursiveTask<TCGADataSets> {
 		Collection<ForkJoinTask<TCGADataSet>> tasks = new ArrayList<>();
 
 		for (EDataSetType type : EDataSetType.values()) {
-			tasks.add(TCGADataSetBuilder.create(tumorAbbreviation, type, fileProvider, settings.isSampleGenes(),
+			tasks.add(TCGADataSetBuilder.create(type, fileProvider, settings.isSampleGenes(),
 					settings));
 		}
 

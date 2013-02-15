@@ -19,8 +19,10 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.qualitycontrol;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinTask;
@@ -60,14 +62,16 @@ public class TCGAInterAnalysisRunXMLGenerator extends RecursiveTask<TCGADataSets
 	public TCGADataSets compute() {
 		Collection<ForkJoinTask<TCGADataSet>> tasks = new ArrayList<>();
 
-		List<String> analysisRuns = settings.getAnalysisRuns();
-		List<String> dataRuns = settings.getDataRuns();
+		List<Date> analysisRuns = settings.getAnalysisRuns();
+		List<Date> dataRuns = settings.getDataRuns();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		for (int i = 0; i < analysisRuns.size(); i++) {
-			String analysisRun = analysisRuns.get(i);
-			String dataRun = dataRuns.get(i);
+			Date analysisRun = analysisRuns.get(i);
+			Date dataRun = dataRuns.get(i);
 			FirehoseProvider fileProvider = settings.createFirehoseProvider(tumor, analysisRun, dataRun);
 
-			tasks.add(TCGADataSetBuilder.create(tumor, dataSetType, analysisRun, fileProvider, loadSampledGenes,
+			tasks.add(TCGADataSetBuilder.create(this.dataSetType, df.format(analysisRun), fileProvider,
+					loadSampledGenes,
 					settings));
 		}
 

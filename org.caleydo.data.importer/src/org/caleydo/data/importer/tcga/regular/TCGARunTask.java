@@ -5,14 +5,17 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveAction;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.EDataSetType;
+import org.caleydo.data.importer.tcga.Settings;
 import org.caleydo.data.importer.tcga.model.TumorType;
 
 import com.google.common.io.Files;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,11 +23,11 @@ import com.google.gson.JsonObject;
 public class TCGARunTask extends RecursiveAction {
 	private static final long serialVersionUID = 1903427073511950319L;
 
-	private final String analysisRun;
-	private final String dataRun;
+	private final Date analysisRun;
+	private final Date dataRun;
 	private TCGASettings settings;
 
-	public TCGARunTask(String analysisRun, String dataRun, TCGASettings settings) {
+	public TCGARunTask(Date analysisRun, Date dataRun, TCGASettings settings) {
 		this.analysisRun = analysisRun;
 		this.dataRun = dataRun;
 		this.settings = settings;
@@ -51,17 +54,17 @@ public class TCGARunTask extends RecursiveAction {
 			}
 		}
 		try {
-			generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(analysisRun));
+			generateJSONReport(b, analysisRun, dataRun, settings.getDataDirectory(Settings.format(analysisRun)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	protected void generateJSONReport(JsonArray detailedReports, String analysisRun, String dataRun,
+	protected void generateJSONReport(JsonArray detailedReports, Date analysisRun, Date dataRun,
 			String runSpecificOutputPath) throws IOException {
 
-		String reportJSONOutputPath = analysisRun + ".json";
+		String reportJSONOutputPath = Settings.format(analysisRun) + ".json";
 
 		JsonArray dataSetColors = new JsonArray();
 		for (EDataSetType dataSetType : EDataSetType.values()) {
@@ -70,14 +73,15 @@ public class TCGARunTask extends RecursiveAction {
 			dataSetColors.add(o);
 		}
 
+		Gson gson = settings.getGson();
 		JsonObject report = new JsonObject();
-		report.addProperty("analysisRun", analysisRun);
-		report.addProperty("dataRun", dataRun);
+		report.add("analysisRun", gson.toJsonTree(analysisRun));
+		report.add("dataRun", gson.toJsonTree(dataRun));
 		report.add("details", detailedReports);
 		report.addProperty("caleydoVersion", GeneralManager.VERSION);
 		report.add("dataSetColors", dataSetColors);
 
-		String r = settings.getGson().toJson(report);
+		String r = gson.toJson(report);
 		Files.write(r, new File(runSpecificOutputPath, reportJSONOutputPath), Charset.defaultCharset());
 	}
 }

@@ -61,7 +61,8 @@ public class ClinicalMapping {
 			s.useDelimiter("\t").nextLine();
 			Collection<ClinicalMapping> result = new ArrayList<>();
 			while (s.hasNext()) {
-				result.add(new ClinicalMapping(s.next(), EDataClass.valueOf(s.next().trim().toUpperCase()), EDataType
+				result.add(new ClinicalMapping(s.next(), s.next(), EDataClass.valueOf(s.next().trim().toUpperCase()),
+						EDataType
 						.valueOf(s.nextLine().trim().toUpperCase())));
 			}
 			return result;
@@ -69,14 +70,20 @@ public class ClinicalMapping {
 	}
 
 	private final String name;
+	private final String label;
 	private final EDataClass dataClass;
 	private final EDataType dataType;
 
-	ClinicalMapping(String name, EDataClass dataClass, EDataType dataType) {
+	ClinicalMapping(String name, String label, EDataClass dataClass, EDataType dataType) {
 		super();
 		this.name = name;
+		this.label = label;
 		this.dataClass = dataClass;
 		this.dataType = dataType;
+	}
+
+	public String getLabel() {
+		return label;
 	}
 
 	public String getName() {

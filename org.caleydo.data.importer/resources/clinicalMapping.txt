@@ -1,12 +1,10 @@
-#name	EDataClass	EDataType
-yearstobirth	NATURAL_NUMBER	INTEGER
-daystodeath	NATURAL_NUMBER	INTEGER
-daystolastfollowup	NATURAL_NUMBER	INTEGER
-vitalstatus	CATEGORICAL	INTEGER
-primarysiteofdesease	CATEGORICAL	STRING
-gender	CATEGORICAL	STRING
-dateofinitialpathologicdiagnosis	NATURAL_NUMBER	INTEGER
-karnofskyperformancescore	CATEGORICAL	INTEGER
-histologicaltype	CATEGORICAL	STRING
-radiations.radiation.regimenindication	CATEGORICAL	STRING
-neoadjuvanttherapy	CATEGORICAL	STRING
+#name	Label	EDataClass	EDataType
+patient.daystobirth	Days To Birth	NATURAL_NUMBER	INTEGER
+patient.daystodeath	Days to Death	NATURAL_NUMBER	INTEGER
+patient.daystolastfollowup	Days To Last Follow Up	NATURAL_NUMBER	INTEGER
+patient.vitalstatus	Vital Status	CATEGORICAL	STRING
+patient.tumortissuesite	Tumor Tissue Site	CATEGORICAL	STRING
+patient.gender	Gender	CATEGORICAL	STRING
+patient.ageatinitialpathologicdiagnosis	Age At Initial Pathologic Diagnosis	NATURAL_NUMBER	INTEGER
+patient.race	Race	CATEGORICAL	STRING
+patient.ethnicity	Ethnicity	CATEGORICAL	STRING
