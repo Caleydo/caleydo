@@ -210,6 +210,21 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		eventListeners.register(this);
+	}
+
+	/**
+	 * final as just the {@link #eventListeners} object should be used
+	 */
+	@Override
+	public final void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		eventListeners.unregisterAll();
+	}
+
+	@Override
 	public void setCursor(final int swtCursorConst) {
 		final Composite c = this.getParentGLCanvas().asComposite();
 		final Display d = c.getDisplay();

@@ -309,5 +309,4 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	public final void unregisterPickingListener(int pickingID) {
 		pickingManager.unregister(pickingID);
 	}
-
 }

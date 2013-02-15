@@ -44,9 +44,11 @@ public class DisplayListPool {
 	 * @return
 	 */
 	public int checkOut(GLGraphics g) {
+		if (isRecording()) // no new display lists during recording
+			return -1;
 		if (displayListIndices.isEmpty())
 			createDisplayListIndices(g);
-		if (displayListIndices.isEmpty()) {
+		if (displayListIndices.isEmpty()) { // have no
 			return -1;
 		}
 		int i = displayListIndices.pop();
@@ -98,7 +100,7 @@ public class DisplayListPool {
 
 	/**
 	 * cleanup display lists
-	 * 
+	 *
 	 * @param gl
 	 */
 	void deleteAll(GL2 gl) {

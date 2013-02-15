@@ -70,10 +70,12 @@ public class GLElementAdapter extends GLElement {
 		setRenderer(renderer);
 	}
 
+
 	@Override
 	protected void takeDown() {
 		// assumption
 		IGLView view = (IGLView) context;
+		assert view != null;
 		GL2 gl = view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
 		this.layout.destroy(gl);
 		super.takeDown();
@@ -120,6 +122,8 @@ public class GLElementAdapter extends GLElement {
 			layout.updateLayout();
 
 		}
+
+		// g.fillRect(0, 0, w, h);
 		g.save();
 		final GL2 gl = g.gl;
 		// swap the origin to the top bottom corner
