@@ -104,22 +104,27 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			if (type.isInstance(invisible))
 				return Pair.make(null, type.cast(invisible));
 		}
-		for (GLElement child : this)
-			if (type.isInstance(child.getLayoutData()))
-				return Pair.make(child, type.cast(child.getLayoutData()));
+		for (GLElement child : this) {
+			T info = child.getLayoutDataAs(type, null);
+			if (info != null)
+				return Pair.make(child, info);
+		}
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IDragInfo> Pair<GLElement, T> getFirstDraggable(T info) {
+		assert info != null;
 		for (IDragInfo invisible : invisibles) {
 			if (Objects.equal(info, invisible))
 				return Pair.make(null, (T) invisible);
 		}
-		for (GLElement child : this)
-			if (Objects.equal(info, child.getLayoutData()))
-				return Pair.make(child, (T) child.getLayoutData());
+		for (GLElement child : this) {
+			IDragInfo o = child.getLayoutDataAs(IDragInfo.class, null);
+			if (Objects.equal(info, o))
+				return Pair.make(child, (T) o);
+		}
 		return null;
 	}
 
@@ -130,9 +135,11 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 			if (type.isInstance(invisible))
 				r.add(Pair.make((GLElement) null, type.cast(invisible)));
 		}
-		for (GLElement child : this)
-			if (type.isInstance(child.getLayoutData()))
-				r.add(Pair.make(child, type.cast(child.getLayoutData())));
+		for (GLElement child : this) {
+			T info = child.getLayoutDataAs(type, null);
+			if (info != null)
+				r.add(Pair.make(child, info));
+		}
 		return r;
 	}
 
@@ -146,7 +153,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 		if (this.invisibles.remove(info))
 			return true;
 		for (GLElement child : this)
-			if (Objects.equal(info, child.getLayoutData())) {
+			if (Objects.equal(info, child.getLayoutDataAs(IDragInfo.class, null))) {
 				return removeDraggable(child);
 			}
 		return false;
@@ -182,7 +189,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public void setToolTip(GLElement element) {
 		for (ListIterator<GLElement> it = asList().listIterator(); it.hasNext();) {
-			if(it.next().getLayoutData() == TOOLTIP) {
+			if (it.next().getLayoutDataAs(Object.class, null) == TOOLTIP) {
 				it.set(element);
 				return;
 			}
@@ -198,7 +205,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public boolean clearToolTip() {
 		for (ListIterator<GLElement> it = asList().listIterator(); it.hasNext();) {
-			if (it.next().getLayoutData() == TOOLTIP) {
+			if (it.next().getLayoutDataAs(Object.class, null) == TOOLTIP) {
 				it.remove();
 				return true;
 			}

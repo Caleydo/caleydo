@@ -6,16 +6,15 @@ import java.awt.Point;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
-import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
@@ -156,28 +155,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		text = new CompositeTextRenderer(8, 16, 24, 40);
 		textures = new TextureManager(new ResourceLoader(loader));
 
-		gl.glShadeModel(GLLightingFunc.GL_SMOOTH); // Enables Smooth Shading
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
-		gl.glClearDepth(1.0f); // Depth Buffer Setup
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
-
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glDepthFunc(GL.GL_LEQUAL);
-
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-		// gl.glEnable(GL2.GL_POINT_SMOOTH);
-		// gl.glHint(GL2.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
-		gl.glEnable(GL.GL_LINE_SMOOTH);
-		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-		// gl.glEnable(GL2.GL_POLYGON_SMOOTH);
-		// gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
-
-		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-
-		gl.glEnable(GLLightingFunc.GL_COLOR_MATERIAL);
-		gl.glColorMaterial(GL.GL_FRONT, GLLightingFunc.GL_DIFFUSE);
+		AGLView.initGLContext(gl);
 
 		gl.glLoadIdentity();
 	}
@@ -201,6 +179,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	private float getHeight() {
 		return viewFrustum.getBottom();
 	}
+
 
 	@Override
 	public void display(GLAutoDrawable drawable) {

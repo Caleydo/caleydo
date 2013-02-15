@@ -25,8 +25,11 @@ import gleem.linalg.Vec4f;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
+import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.layout.IHasGLLayoutData;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -38,7 +41,7 @@ import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
  * @author Samuel Gratzl
  *
  */
-public class GLElement {
+public class GLElement implements IHasGLLayoutData {
 	/**
 	 * the visibility state of this element
 	 *
@@ -137,19 +140,17 @@ public class GLElement {
 		this.renderer = renderer;
 	}
 
-	/**
-	 * @return the layoutData, see {@link #layoutData}
-	 */
-	public final Object getLayoutData() {
-		return layoutData;
-	}
-
 	public final GLElement setLayoutData(Object layoutData) {
 		if (this.layoutData == layoutData)
 			return this;
 		this.layoutData = layoutData;
 		relayout();
 		return this;
+	}
+
+	@Override
+	public final <T> T getLayoutDataAs(Class<T> clazz, T default_) {
+		return GLLayouts.resolveLayoutData(clazz, layoutData, default_);
 	}
 
 	/**
@@ -568,7 +569,7 @@ public class GLElement {
 	 * @author Samuel Gratzl
 	 *
 	 */
-	private class LayoutElementAdapter implements IGLLayoutElement {
+	private class LayoutElementAdapter extends AGLLayoutElement {
 		@Override
 		public void setSize(float w, float h) {
 			setLayoutSize(w, h);
@@ -576,56 +577,18 @@ public class GLElement {
 
 		@Override
 		public void setLocation(float x, float y) {
-			GLElement.this.bounds_layout.x = x;
-			GLElement.this.bounds_layout.y = y;
+			bounds_layout.x = x;
+			bounds_layout.y = y;
 		}
 
 		@Override
-		public Vec2f getLocation() {
-			return new Vec2f(bounds_layout.x, bounds_layout.y);
-		}
-
-		@Override
-		public void setBounds(float x, float y, float w, float h) {
-			setLocation(x, y);
-			setSize(w, h);
-		}
-
-		@Override
-		public float getWidth() {
-			return bounds_layout.width;
-		}
-
-		@Override
-		public float getHeight() {
-			return bounds_layout.height;
-		}
-
-		@Override
-		public float getSetWidth() {
-			return bounds_set.width;
-		}
-
-		@Override
-		public float getSetHeight() {
-			return bounds_set.height;
-		}
-
-		@Override
-		public float getSetX() {
-			return bounds_set.x;
-		}
-
-		@Override
-		public float getSetY() {
-			return bounds_set.y;
+		public Vec4f getBounds() {
+			return GLElement.this.getBounds();
 		}
 
 		@Override
 		public <T> T getLayoutDataAs(Class<T> clazz, T default_) {
-			if (clazz.isInstance(layoutData))
-				return clazz.cast(layoutData);
-			return default_;
+			return GLElement.this.getLayoutDataAs(clazz, default_);
 		}
 
 		@Override
@@ -636,6 +599,11 @@ public class GLElement {
 		@Override
 		public String toString() {
 			return GLElement.this.toString();
+		}
+
+		@Override
+		public Vec4f getSetBounds() {
+			return new Vec4f(bounds_set.x, bounds_set.y, bounds_set.width, bounds_set.height);
 		}
 	}
 }

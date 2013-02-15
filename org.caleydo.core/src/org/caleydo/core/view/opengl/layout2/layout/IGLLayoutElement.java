@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.layout2.layout;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec4f;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 
@@ -10,19 +11,8 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
  * @author Samuel Gratzl
  *
  */
-public interface IGLLayoutElement {
+public interface IGLLayoutElement extends IHasGLLayoutData {
 	GLElement asElement();
-
-	/**
-	 * returns the layout data of the element if it is of the specific class otherwise return the default value
-	 *
-	 * @param clazz
-	 *            the instance of expected layout data
-	 * @param default_
-	 *            default value
-	 * @return
-	 */
-	<T> T getLayoutDataAs(Class<T> clazz, T default_);
 
 	/**
 	 * sets the computed layouted position of this element
@@ -51,8 +41,15 @@ public interface IGLLayoutElement {
 	void setBounds(float x, float y, float w, float h);
 
 	/**
+	 * see {@link #setBounds(float, float, float, float)} with a {@link Vec4f}
+	 *
+	 * @param xywh
+	 */
+	void setBounds(Vec4f xywh);
+
+	/**
 	 * returns the layouted location
-	 * 
+	 *
 	 * @return
 	 */
 	Vec2f getLocation();
@@ -70,6 +67,13 @@ public interface IGLLayoutElement {
 	 * @return
 	 */
 	float getHeight();
+
+	/**
+	 * returns the layouted bounds
+	 *
+	 * @return
+	 */
+	Vec4f getBounds();
 
 	/**
 	 * returns the set width of the element, i.e the width that was directly set by the element and not by the layout
@@ -98,4 +102,30 @@ public interface IGLLayoutElement {
 	 * @return
 	 */
 	float getSetY();
+
+	/**
+	 * returns the set location of the element, i.e the x,y that was directly set by the element and not by the layout
+	 *
+	 * @return
+	 */
+	Vec2f getSetLocation();
+
+	/**
+	 * returns the set location of the element, i.e the size that was directly set by the element and not by the layout
+	 *
+	 * @return
+	 */
+	Vec2f getSetSize();
+
+	/**
+	 * returns the set bounds of the element, i.e the x,y,w,h that was directly set by the element and not by the layout
+	 *
+	 * @return
+	 */
+	Vec4f getSetBounds();
+
+	/**
+	 * hides the element from a layout view
+	 */
+	void hide();
 }

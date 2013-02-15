@@ -137,6 +137,12 @@ public class GLGraphics {
 		return false;
 	}
 
+	public boolean isPickingPass() {
+		int[] r = new int[1];
+		gl.glGetIntegerv(GL2.GL_RENDER_MODE, r, 0);
+		return r[0] == GL2.GL_SELECT;
+	}
+
 	// #############
 
 	/**

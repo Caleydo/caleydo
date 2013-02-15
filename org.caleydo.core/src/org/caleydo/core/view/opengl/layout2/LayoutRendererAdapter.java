@@ -96,7 +96,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		}
 
 		GLGraphics g = new GLGraphics(gl, view.getTextRenderer(), view.getTextureManager(), locator, true);
-		if (isPickingRun(gl))
+		if (g.isPickingPass())
 			root.renderPick(g);
 		else
 			root.render(g);
@@ -104,18 +104,6 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 		g.destroy();
 
 		gl.glPopMatrix();
-	}
-
-	/**
-	 * are we rendering or do picking
-	 *
-	 * @param gl
-	 * @return
-	 */
-	private boolean isPickingRun(GL2 gl) {
-		int[] r = new int[1];
-		gl.glGetIntegerv(GL2.GL_RENDER_MODE, r, 0);
-		return r[0] == GL2.GL_SELECT;
 	}
 
 	@Override

@@ -141,13 +141,14 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	public final void clear() {
-
+		int size = this.size();
 		for (Iterator<GLElement> it = children.iterator(); it.hasNext();) {
 			GLElement e = it.next();
 			takeDown(e);
 			it.remove();
 		}
-		relayout();
+		if (size > 0) // had deleted something
+			relayout();
 	}
 
 	public final GLElement get(int index) {
