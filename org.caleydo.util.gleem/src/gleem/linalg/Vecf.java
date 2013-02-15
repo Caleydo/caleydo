@@ -23,6 +23,8 @@
 
 package gleem.linalg;
 
+import java.util.Arrays;
+
 /**
  * Arbitrary-length single-precision vector class. Currently very simple and
  * only supports a few needed operations.
@@ -80,4 +82,27 @@ public class Vecf {
 		}
 		return out;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(data);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vecf other = (Vecf) obj;
+		if (!Arrays.equals(data, other.data))
+			return false;
+		return true;
+	}
+
 }

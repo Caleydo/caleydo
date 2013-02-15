@@ -25,7 +25,7 @@ package gleem.linalg;
 
 /**
  * 3-element single-precision vector
- * 
+ *
  * @author Michael Kalkusch
  * @author Marc Streit
  */
@@ -53,7 +53,7 @@ public class Vec3f {
 
 	/**
 	 * Copy x,y,z to Vec3f and ignores arg.w().
-	 * 
+	 *
 	 * @param arg
 	 */
 	public Vec3f(Vec4f arg) {
@@ -62,7 +62,7 @@ public class Vec3f {
 
 	/**
 	 * Convert grad to radiant (eg: [-360� .. +360�] ==> [-2PI .. 2PI]).
-	 * 
+	 *
 	 * @param fGrad
 	 *            in grad
 	 * @return grad converted to radiant
@@ -73,7 +73,7 @@ public class Vec3f {
 
 	/**
 	 * Convert radiant to grad (eg:[-2PI .. 2PI] ==> [-360� .. +360�]).
-	 * 
+	 *
 	 * @param fRadiant
 	 *            angle in radiant
 	 * @return radiant converted to grad
@@ -119,7 +119,7 @@ public class Vec3f {
 
 	/**
 	 * Copy x,y,z and ignores arg.w().
-	 * 
+	 *
 	 * @param arg
 	 */
 	public void set(Vec4f arg) {
@@ -310,5 +310,33 @@ public class Vec3f {
 	@Override
 	public String toString() {
 		return "(" + x + ", " + y + ", " + z + ")";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(x);
+		result = prime * result + Float.floatToIntBits(y);
+		result = prime * result + Float.floatToIntBits(z);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vec3f other = (Vec3f) obj;
+		if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))
+			return false;
+		if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))
+			return false;
+		if (Float.floatToIntBits(z) != Float.floatToIntBits(other.z))
+			return false;
+		return true;
 	}
 }
