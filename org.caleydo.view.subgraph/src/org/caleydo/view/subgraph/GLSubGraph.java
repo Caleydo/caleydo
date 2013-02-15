@@ -187,21 +187,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-
-		addTablePerspectivesListener = new AddTablePerspectivesListener();
-		addTablePerspectivesListener.setHandler(this);
-		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
-
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-
-		if (addTablePerspectivesListener != null) {
-			eventPublisher.removeListener(addTablePerspectivesListener);
-			addTablePerspectivesListener = null;
-		}
+		eventListeners.register(AddTablePerspectivesEvent.class, new AddTablePerspectivesListener().setHandler(this));
 	}
 
 	@Override
