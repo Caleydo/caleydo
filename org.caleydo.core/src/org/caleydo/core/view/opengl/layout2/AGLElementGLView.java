@@ -248,6 +248,11 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
+	public IGLElementParent getParent() {
+		return null;
+	}
+
+	@Override
 	public DisplayListPool getDisplayListPool() {
 		return pool;
 	}
