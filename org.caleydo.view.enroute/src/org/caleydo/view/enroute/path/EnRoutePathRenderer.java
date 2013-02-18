@@ -62,12 +62,12 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	/**
 	 * Default size for vertical node space, i.e., the space reserved for a single node.
 	 */
-	protected static final int DEFAULT_VERTICAL_NODE_SPACING_PIXELS = 50;
-	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
-	protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
-	protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
-	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
-	public final static int PATH_COLUMN_WIDTH_PIXELS = 150;
+	// protected static final int DEFAULT_VERTICAL_NODE_SPACING_PIXELS = 50;
+	// public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
+	// protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
+	// protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
+	// public final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
+	// public final static int PATH_COLUMN_WIDTH_PIXELS = 150;
 
 	protected static final int MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
@@ -91,9 +91,11 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	 */
 	protected Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
 
+	protected EnRoutePathSizeConfiguration sizeConfig = EnRoutePathSizeConfiguration.ENROUTE_DEFAULT;
+
 	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
-		minWidthPixels = BRANCH_COLUMN_WIDTH_PIXELS + PATH_COLUMN_WIDTH_PIXELS + PATHWAY_TITLE_COLUMN_WIDTH_PIXELS;
+		minWidthPixels = sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth + PATHWAY_TITLE_COLUMN_WIDTH_PIXELS;
 	}
 
 	@Override
@@ -258,7 +260,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		anchorNodeSpacing.setNodesInbetween(nodesInbetween);
 		anchorNodeSpacing.calcTotalNodeHeight();
 
-		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
+		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.minNodeSpacing);
 
 		int numSpacingAnchorNodeRows = 0;
 
@@ -275,7 +277,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		if (isLastSpacing)
 			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
 
-		float dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		float dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.rowHeight);
 
 		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * (numSpacingAnchorNodeRows) / 2.0f
 				+ additionalSpacing,
@@ -348,8 +350,6 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		broadcastPath();
 	}
 
-
-
 	/**
 	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects for a specified branch node. This path
 	 * ends if there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
@@ -420,8 +420,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	@Override
 	public void updateLayout() {
 
-		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATH_COLUMN_WIDTH_PIXELS);
+		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.branchAreaWidth);
+		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathAreaWidth);
 		float pathwayTitleColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
 
 		float pathwayHeight = 0;
@@ -431,7 +431,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 		Vec3f currentPosition = new Vec3f(pathwayTitleColumnWidth + branchColumnWidth + pathColumnWidth / 2.0f, y, 0.2f);
 
-		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_VERTICAL_NODE_SPACING_PIXELS);
+		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.minNodeSpacing);
 
 		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
 
@@ -501,9 +501,9 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
 
 		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS
-				+ BRANCH_AREA_SIDE_SPACING_PIXELS);
+				+ sizeConfig.branchNodeLeftSideSpacing);
 		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
-				.getGLHeightForPixelHeight(BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS);
+				.getGLHeightForPixelHeight(sizeConfig.branchNodeToPathNodeVerticalSpacing);
 		float width = summaryNode.getWidth();
 		float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode.getTitleAreaHeightPixels());
 
@@ -517,10 +517,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
 		int minViewHeightPixels = 0;
-		// if (viewFrustum.getBottom() > bottomPositionY) {
 		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(y - bottomPositionY);
-		// setMinSize(minViewHeightPixels + 3);
-		// }
 
 		return minViewHeightPixels;
 
@@ -553,8 +550,6 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		}
 		renderEdges(gl, pathNodes);
 	}
-
-
 
 	/**
 	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
@@ -625,6 +620,21 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return true;
+	}
+
+	/**
+	 * @return the sizeConfig, see {@link #sizeConfig}
+	 */
+	public EnRoutePathSizeConfiguration getSizeConfig() {
+		return sizeConfig;
+	}
+
+	/**
+	 * @param sizeConfig
+	 *            setter, see {@link sizeConfig}
+	 */
+	public void setSizeConfig(EnRoutePathSizeConfiguration sizeConfig) {
+		this.sizeConfig = sizeConfig;
 	}
 
 }

@@ -59,7 +59,6 @@ import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
-import org.caleydo.view.enroute.path.VerticalPathRenderer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -78,23 +77,23 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	protected final static String EMPTY_VIEW_TEXT_LINE_ONE = "Please select a path of nodes using the Pathway View ";
 	protected final static String EMPTY_VIEW_TEXT_LINE_TWO = "and assign data to enRoute using the Data-View Integrator.";
 
-	protected final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
-	protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
-	protected final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
+	// protected final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
+	// protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
+	// protected final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
 	protected final static int DATA_COLUMN_WIDTH_PIXELS = 350;
-	protected final static int MIN_NODE_SPACING_PIXELS = 50;
-	protected final static int TOP_SPACING_PIXELS = 60;
+	// protected final static int MIN_NODE_SPACING_PIXELS = 50;
+	// protected final static int TOP_SPACING_PIXELS = 60;
 	protected final static int TOP_SPACING_MAPPED_DATA = 10;
 	protected final static int SIDE_SPACING_MAPPED_DATA = 10;
-	protected final static int BOTTOM_SPACING_PIXELS = 60;
-	protected final static int PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS = 40;
-	protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
-	protected final static int EXPANDED_BRANCH_NODE_SPACING_PIXELS = 20;
-	protected final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
+	// protected final static int BOTTOM_SPACING_PIXELS = 60;
+	// protected final static int PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS = 40;
+	// protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
+	// protected final static int EXPANDED_BRANCH_NODE_SPACING_PIXELS = 20;
+	// protected final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
 	protected final static int SPACING_PIXELS = 2;
-	protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
+	// protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
 
-	public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
+	// public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
 	/**
 	 * The top-level table perspectives as set externally through the {@link IMultiTablePerspectiveBasedView} interface.
@@ -197,10 +196,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
 		ElementLayout pathElementLayout = new ElementLayout();
-		pathElementLayout
-				.setPixelSizeX(EnRoutePathRenderer.BRANCH_COLUMN_WIDTH_PIXELS
-						+ EnRoutePathRenderer.PATH_COLUMN_WIDTH_PIXELS
-						+ VerticalPathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
+		pathElementLayout.setPixelSizeX(pathRenderer.getMinWidthPixels());
 		pathElementLayout.setRenderer(pathRenderer);
 		layoutManager.setBaseElementLayout(pathElementLayout);
 		layoutManager.updateLayout();
@@ -262,11 +258,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			if (isLayoutDirty) {
 				updateLayout();
 
-				float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-				float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
-				float pathwayTextColumnWidth = pixelGLConverter
-						.getGLWidthForPixelWidth(EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
-				float dataRowPositionX = branchColumnWidth + pathwayColumnWidth + pathwayTextColumnWidth;
+				// float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+				// float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+				// float pathwayTextColumnWidth = pixelGLConverter
+				// .getGLWidthForPixelWidth(EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
+				float dataRowPositionX = pixelGLConverter.getGLWidthForPixelWidth(pathRenderer.getMinWidthPixels());
 				float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 
 				gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
@@ -308,16 +304,16 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * Updates the layout of the view.
 	 */
 	private void updateLayout() {
-		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
-		float pathwayTextColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
-		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth + pathwayTextColumnWidth;
+		// float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+		// float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+		// float pathwayTextColumnWidth = pixelGLConverter
+		// .getGLWidthForPixelWidth(EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
+		float dataRowPositionX = pixelGLConverter.getGLWidthForPixelWidth(pathRenderer.getMinWidthPixels());
 		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
 
-		float dataRowHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(EnRoutePathRenderer.DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		float dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(pathRenderer.getSizeConfig()
+				.getMinNodeSpacing());
 
 		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX - sideSpacing, viewFrustum.getHeight()
 				- 2 * topSpacing, dataRowPositionX, topSpacing, dataRowHeight);
@@ -325,8 +321,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		mappedDataRenderer.setLinearizedNodes(pathRenderer.getPathNodes());
 		int minMappedDataRendererWidthPixels = mappedDataRenderer.getMinWidthPixels();
 
-		adaptViewSize(minMappedDataRendererWidthPixels + BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS
-				+ EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS + SIDE_SPACING_MAPPED_DATA,
+		adaptViewSize(minMappedDataRendererWidthPixels + pathRenderer.getMinWidthPixels() + SIDE_SPACING_MAPPED_DATA,
 				pathRenderer.getMinHeightPixels());
 
 		mappedDataRenderer.updateLayout();
@@ -336,11 +331,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
-		float pathwayTextColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
-		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth + pathwayTextColumnWidth;
+		// float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+		// float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+		// float pathwayTextColumnWidth = pixelGLConverter
+		// .getGLWidthForPixelWidth(EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
+		float dataRowPositionX = pixelGLConverter.getGLWidthForPixelWidth(pathRenderer.getMinWidthPixels());
 		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 
 		gl.glPushMatrix();
@@ -376,10 +371,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			// System.out.println("setting min width:" + minViewWidth);
 			if (fitToViewWidth) {
-				currentMinWidth = BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
+				currentMinWidth = pathRenderer.getMinWidthPixels() + DATA_COLUMN_WIDTH_PIXELS;
 			} else {
-				currentMinWidth = updateWidth ? minViewWidth + 3 : BRANCH_COLUMN_WIDTH_PIXELS
-						+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
+				currentMinWidth = updateWidth ? minViewWidth + 3 : pathRenderer.getMinWidthPixels()
+						+ DATA_COLUMN_WIDTH_PIXELS;
 			}
 
 			setMinViewSize(currentMinWidth, minViewHeightRequiredByPath + 3);

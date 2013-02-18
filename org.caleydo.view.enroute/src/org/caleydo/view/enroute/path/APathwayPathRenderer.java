@@ -612,7 +612,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	@Override
 	public int getMinWidthPixels() {
-		return super.getMinWidthPixels();
+		return minWidthPixels;
 	}
 
 	@Override
