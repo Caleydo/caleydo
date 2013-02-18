@@ -245,10 +245,11 @@ public abstract class APickingManager<T extends APickingEntry> {
 				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth);
 			}
 		}
+		this.mouseIn.clear();
+
 		if (picked.isEmpty())
 			return;
 
-		this.mouseIn.clear();
 		// second fire in the order of the names
 		for (int name : picked) {
 			T entry = get(name);

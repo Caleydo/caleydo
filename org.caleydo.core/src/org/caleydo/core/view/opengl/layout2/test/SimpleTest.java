@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -46,7 +47,7 @@ public class SimpleTest extends GLElementContainer {
 		l.add(new GLElement(GLRenderers.fillRect(Color.YELLOW)).setSize(Float.NaN, 50));
 		l.pack(true, false);
 		add(l);
-		add(new ButtonElement().setSize(100, 20));
+		add(new GLButton().setRenderer(GLRenderers.fillRect(Color.BLUE)).setSize(100, 20));
 
 		l = new GLElementContainer();
 		l.setLayout(GLLayouts.flowVertical(10));

@@ -82,7 +82,7 @@ public class SimpleAnimationTest extends AnimatedGLElementContainer {
 		protected void onMouseOut(Pick pick) {
 			this.hovered = false;
 			repaint();
-			((AnimatedGLElementContainer) parent).remove(this, 500, new InOutTransitions.InOutTransitionBase(
+			((AnimatedGLElementContainer) getParent()).remove(this, 500, new InOutTransitions.InOutTransitionBase(
 					InOutInitializers.LEFT, MoveTransitions.MOVE_LINEAR));
 		}
 	}

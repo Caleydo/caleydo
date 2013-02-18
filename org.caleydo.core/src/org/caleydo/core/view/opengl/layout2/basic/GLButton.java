@@ -1,0 +1,242 @@
+/*******************************************************************************
+ * Caleydo - visualization for molecular biology - http://caleydo.org
+ *
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
+ * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ *******************************************************************************/
+package org.caleydo.core.view.opengl.layout2.basic;
+
+import java.awt.Color;
+
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.Pick;
+
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class GLButton extends PickableGLElement {
+	/**
+	 * is mouse over
+	 */
+	private boolean hovered = false;
+	/**
+	 * is mouse down
+	 */
+	private boolean armed = false;
+	/**
+	 * is selected
+	 */
+	private boolean selected = false;
+
+	/**
+	 * effect to render when the mouse is over the component
+	 */
+	private IGLRenderer hoverEffect = GLRenderers.drawRect(Color.DARK_GRAY);
+	/**
+	 * effect to render when the mouse is down
+	 */
+	private IGLRenderer armedEffect = GLRenderers.fillRect(new Color(1, 1, 1, 0.3f));
+	/**
+	 * effect to render when the component is selected
+	 */
+	private IGLRenderer selectedEffect = GLRenderers.DUMMY;
+
+	/**
+	 * callback for selection state changes
+	 */
+	private ISelectionCallback callback = DUMMY_CALLBACK;
+
+	/**
+	 * mode controlling the behavior on clicked
+	 */
+	private EButtonMode mode = EButtonMode.BUTTON;
+
+	/**
+	 * @param mode
+	 *            setter, see {@link mode}
+	 */
+	public GLButton setMode(EButtonMode mode) {
+		if (this.mode == mode)
+			return this;
+		this.mode = mode;
+		return this;
+	}
+
+	/**
+	 * @return the mode, see {@link #mode}
+	 */
+	public EButtonMode getMode() {
+		return mode;
+	}
+
+	/**
+	 * @param armedEffect
+	 *            setter, see {@link armedEffect}
+	 */
+	public GLButton setArmedEffect(IGLRenderer armedEffect) {
+		if (armedEffect == null)
+			armedEffect = GLRenderers.DUMMY;
+		if (this.armedEffect.equals(armedEffect))
+			return this;
+		this.armedEffect = armedEffect;
+		if (armed)
+			repaint();
+		return this;
+	}
+
+	/**
+	 * @param hoverEffect
+	 *            setter, see {@link hoverEffect}
+	 */
+	public GLButton setHoverEffect(IGLRenderer hoverEffect) {
+		if (hoverEffect == null)
+			hoverEffect = GLRenderers.DUMMY;
+		if (this.hoverEffect.equals(hoverEffect))
+			return this;
+		this.hoverEffect = hoverEffect;
+		if (hovered)
+			repaint();
+		return this;
+	}
+
+	/**
+	 * @param selectedEffect
+	 *            setter, see {@link selectedEffect}
+	 */
+	public GLButton setSelectedEffect(IGLRenderer selectedEffect) {
+		if (selectedEffect == null)
+			selectedEffect = GLRenderers.DUMMY;
+		if (this.selectedEffect.equals(selectedEffect))
+			return this;
+		this.selectedEffect = selectedEffect;
+		if (selected)
+			repaint();
+		return this;
+	}
+
+	/**
+	 * @param selected
+	 *            setter, see {@link selected}
+	 */
+	public final GLButton setSelected(boolean selected) {
+		if (this.selected == selected)
+			return this;
+		this.selected = selected;
+		repaint();
+		return this;
+	}
+
+	protected final void fireCallback(boolean state) {
+		callback.onSelectionChanged(this, state);
+	}
+
+	/**
+	 * @param callback
+	 *            setter, see {@link callback}
+	 */
+	public final GLButton setCallback(ISelectionCallback callback) {
+		if (callback == null)
+			callback = DUMMY_CALLBACK;
+		if (this.callback == callback)
+			return this;
+		this.callback = callback;
+		return this;
+	}
+
+	/**
+	 * @return the selected, see {@link #selected}
+	 */
+	public final boolean isSelected() {
+		return selected;
+	}
+
+	@Override
+	protected void onClicked(Pick pick) {
+		armed = true;
+		switch (mode) {
+		case BUTTON_COMPATIBLE:
+			fireCallback(true);
+			armed = false;
+			break;
+		case CHECKBOX_COMPATIBLE:
+			this.setSelected(!isSelected());
+			armed = false;
+			break;
+		default:
+			break;
+		}
+		repaint();
+	}
+
+	@Override
+	protected void onMouseReleased(Pick pick) {
+		armed = false;
+		switch (mode) {
+		case BUTTON:
+			fireCallback(true);
+			break;
+		case CHECKBOX:
+			this.setSelected(!isSelected());
+			break;
+		default:
+			break;
+		}
+		repaint();
+	}
+
+	@Override
+	protected void onMouseOver(Pick pick) {
+		hovered = true;
+		repaint();
+	}
+
+	@Override
+	protected void onMouseOut(Pick pick) {
+		armed = false;
+		hovered = false;
+		repaint();
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		super.renderImpl(g, w, h);
+		if (hovered)
+			hoverEffect.render(g, w, h, this);
+		if (armed)
+			armedEffect.render(g, w, h, this);
+		if (selected)
+			selectedEffect.render(g, w, h, this);
+	}
+
+	public enum EButtonMode {
+		BUTTON, BUTTON_COMPATIBLE, CHECKBOX, CHECKBOX_COMPATIBLE
+	}
+
+	public interface ISelectionCallback {
+		void onSelectionChanged(GLButton button, boolean selected);
+	}
+
+	private static final ISelectionCallback DUMMY_CALLBACK = new ISelectionCallback() {
+		@Override
+		public void onSelectionChanged(GLButton button, boolean selected) {
+
+		}
+	};
+}

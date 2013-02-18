@@ -129,6 +129,11 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
+	public IGLElementParent getParent() {
+		return null;
+	}
+
+	@Override
 	public int registerPickingListener(IPickingListener l) {
 		return registerPickingListener(l, 0);
 	}

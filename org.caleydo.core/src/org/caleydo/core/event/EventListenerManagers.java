@@ -3,7 +3,6 @@ package org.caleydo.core.event;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.caleydo.core.util.collection.Pair;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -50,7 +49,7 @@ public final class EventListenerManagers {
 
 	/**
 	 * creates a new {@link EventListenerManager}, which queues the event in the SWT {@link Display} loop
-	 * 
+	 *
 	 * @return
 	 */
 	public static EventListenerManager createSynchronizedDirect() {
@@ -74,7 +73,7 @@ public final class EventListenerManagers {
 		return new QueuedEventListenerManager();
 	}
 
-	public static class QueuedEventListenerManager extends EventListenerManager implements Runnable {
+	public static final class QueuedEventListenerManager extends EventListenerManager implements Runnable {
 		QueuedEventListenerManager() {
 			super(new QueuedListenerOwner());
 		}
@@ -83,12 +82,20 @@ public final class EventListenerManagers {
 		 * processes all currently queued events, non-blocking
 		 */
 		public void processEvents() {
-			BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = ((QueuedListenerOwner) owner)
-					.getQueue();
-			Pair<AEventListener<? extends IListenerOwner>, AEvent> p;
+			BlockingQueue<Runnable> queue = getQueue();
+			Runnable p;
 			while ((p = queue.poll()) != null) {
-				p.getFirst().handleEvent(p.getSecond());
+				p.run();
 			}
+		}
+
+		private BlockingQueue<Runnable> getQueue() {
+			BlockingQueue<Runnable> queue = ((QueuedListenerOwner) owner).getQueue();
+			return queue;
+		}
+
+		public void asyncExec(Runnable run) {
+			getQueue().offer(run);
 		}
 
 		/**
@@ -96,12 +103,10 @@ public final class EventListenerManagers {
 		 */
 		@Override
 		public void run() {
-			BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = ((QueuedListenerOwner) owner)
-					.getQueue();
+			BlockingQueue<Runnable> queue = getQueue();
 			while (!Thread.interrupted()) {
 				try {
-					Pair<AEventListener<? extends IListenerOwner>, AEvent> eventPair = queue.take();
-					eventPair.getFirst().handleEvent(eventPair.getSecond());
+					queue.take().run();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					break; // stop listening
@@ -129,14 +134,30 @@ class DirectListenerOwner implements IListenerOwner {
 }
 
 class QueuedListenerOwner extends DirectListenerOwner {
-	private final BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<>();
+	private final BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
 
 	@Override
 	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		queue.offer(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
+		queue.offer(new EventExecuteRunner(listener, event));
 	}
 
-	public BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> getQueue() {
+	public BlockingQueue<Runnable> getQueue() {
 		return queue;
+	}
+}
+
+class EventExecuteRunner implements Runnable {
+	private final AEventListener<? extends IListenerOwner> handler;
+	private final AEvent event;
+
+	public EventExecuteRunner(AEventListener<? extends IListenerOwner> handler, AEvent event) {
+		super();
+		this.handler = handler;
+		this.event = event;
+	}
+
+	@Override
+	public void run() {
+		handler.handleEvent(event);
 	}
 }

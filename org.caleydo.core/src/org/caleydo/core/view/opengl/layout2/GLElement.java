@@ -35,6 +35,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 
+import com.google.common.base.Predicate;
+
 /**
  * basic layouting element
  *
@@ -89,7 +91,7 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * my parent element for propagating repaint and relayout requests
 	 */
-	protected IGLElementParent parent;
+	private IGLElementParent parent;
 
 	/**
 	 * global shared context of this hierarchy
@@ -255,11 +257,12 @@ public class GLElement implements IHasGLLayoutData {
 	 *
 	 * @param picker
 	 */
-	public final void setPicker(IGLRenderer picker) {
+	public final GLElement setPicker(IGLRenderer picker) {
 		if (this.picker == picker)
-			return;
+			return this;
 		this.picker = picker;
 		repaintPick();
+		return this;
 	}
 
 	/**
@@ -267,11 +270,12 @@ public class GLElement implements IHasGLLayoutData {
 	 *
 	 * @param renderer
 	 */
-	public final void setRenderer(IGLRenderer renderer) {
+	public final GLElement setRenderer(IGLRenderer renderer) {
 		if (this.renderer == renderer)
-			return;
+			return this;
 		this.renderer = renderer;
 		repaint();
+		return this;
 	}
 
 	/**
@@ -502,6 +506,20 @@ public class GLElement implements IHasGLLayoutData {
 	 */
 	public final IGLElementParent getParent() {
 		return parent;
+	}
+
+	/**
+	 * finds a parent in the hierarchy that satisfies the given predicate
+	 *
+	 * @param satisfies
+	 * @return
+	 */
+	protected final IGLElementParent findParent(Predicate<IGLElementParent> satisfies) {
+		IGLElementParent act = parent;
+		while (act != null && !(satisfies.apply(act))) {
+			act = parent.getParent();
+		}
+		return act;
 	}
 
 	/**

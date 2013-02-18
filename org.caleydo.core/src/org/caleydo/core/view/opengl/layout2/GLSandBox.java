@@ -142,6 +142,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
+	public IGLElementParent getParent() {
+		return null;
+	}
+
+	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		text = new CompositeTextRenderer(8, 16, 24, 40);

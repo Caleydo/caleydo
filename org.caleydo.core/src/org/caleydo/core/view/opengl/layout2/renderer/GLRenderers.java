@@ -50,6 +50,9 @@ public final class GLRenderers {
 
 	}
 
+	public static IGLRenderer drawRect(Color color) {
+		return new SimpleRenderer(EWhat.DRAW_RECT, color);
+	}
 	/**
 	 * renders a full sized rect with the specified color
 	 *
@@ -57,15 +60,8 @@ public final class GLRenderers {
 	 *            the color to use
 	 * @return
 	 */
-	public static IGLRenderer fillRect(final Color color) {
-		return new IGLRenderer() {
-			@Override
-			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				if (color != null)
-					g.color(color);
-				g.fillRect(0, 0, w, h);
-			}
-		};
+	public static IGLRenderer fillRect(Color color) {
+		return new SimpleRenderer(EWhat.FILL_RECT, color);
 	}
 
 	public static Runnable asRunnable(final IGLRenderer renderer, final GLGraphics g, final float w, final float h,
@@ -86,6 +82,37 @@ public final class GLRenderers {
 				g.drawText(text, 0, 0, w, h);
 			}
 		};
+	}
+
+	private enum EWhat {
+		FILL_RECT, DRAW_RECT, DRAW_DIAGONAL_LINE
+	}
+
+	private static class SimpleRenderer implements IGLRenderer {
+		private final EWhat what;
+		private final Color color;
+
+		public SimpleRenderer(EWhat what, Color color) {
+			this.what = what;
+			this.color = color;
+		}
+
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			if (color != null)
+				g.color(color);
+			switch (what) {
+			case DRAW_DIAGONAL_LINE:
+				g.drawDiagonalLine(0, 0, w, h);
+				break;
+			case DRAW_RECT:
+				g.drawRect(0, 0, w, h);
+				break;
+			case FILL_RECT:
+				g.fillRect(0, 0, w, h);
+				break;
+			}
+		}
 	}
 
 }

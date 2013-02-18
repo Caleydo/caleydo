@@ -58,4 +58,9 @@ public interface IGLElementParent {
 	 */
 	boolean moved(GLElement child);
 
+	/**
+	 * @return the parent of this parent
+	 */
+	IGLElementParent getParent();
+
 }
