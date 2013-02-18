@@ -26,6 +26,8 @@ import java.awt.Point;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -37,10 +39,10 @@ import org.eclipse.swt.widgets.Control;
  * @author Samuel Gratzl
  *
  */
-final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWheelListener, MouseTrackListener {
+final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWheelListener, MouseTrackListener,
+		MenuDetectListener {
 
 	private final IGLMouseListener listener;
-	private boolean mouseDown = false;
 
 	public SWTMouseAdapter(IGLMouseListener listener) {
 		this.listener = listener;
@@ -65,13 +67,16 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 
 	@Override
 	public void mouseDown(MouseEvent e) {
-		mouseDown = true;
 		listener.mousePressed(wrap(e));
 	}
 
 	@Override
+	public void menuDetected(MenuDetectEvent e) {
+		//
+	}
+
+	@Override
 	public void mouseUp(MouseEvent e) {
-		mouseDown = false;
 		listener.mouseReleased(wrap(e));
 	}
 
@@ -109,51 +114,26 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 			this.event = event;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getPoint()
-		 */
 		@Override
 		public Point getPoint() {
 			return new Point(event.x, event.y);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getClickCount()
-		 */
 		@Override
 		public int getClickCount() {
 			return event.count;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getWheelRotation()
-		 */
 		@Override
 		public int getWheelRotation() {
 			return event.count;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getButton()
-		 */
 		@Override
 		public int getButton() {
 			return event.button;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#isButtonDown(int)
-		 */
 		@Override
 		public boolean isButtonDown(int button) {
 			switch (button) {
@@ -171,12 +151,6 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 			return false;
 		}
 
-
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getParentSize()
-		 */
 		@Override
 		public Dimension getParentSize() {
 			if (event.widget instanceof Control) {

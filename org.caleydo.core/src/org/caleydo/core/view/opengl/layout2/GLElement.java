@@ -290,7 +290,7 @@ public class GLElement implements IHasGLLayoutData {
 		if (old == EVisibility.PICKABLE) {
 			//not longer pickable
 			if (pickingID >= 0) {
-				context.unregisterPickingListener(pickingListener);
+				context.unregisterPickingListener(pickingID);
 				pickingID = -1;
 			}
 		} else if (new_ == EVisibility.PICKABLE) {
@@ -524,7 +524,7 @@ public class GLElement implements IHasGLLayoutData {
 		cache.takeDown(context);
 		pickCache.takeDown(context);
 		if (pickingID >= 0) {
-			context.unregisterPickingListener(pickingListener);
+			context.unregisterPickingListener(pickingID);
 			pickingID = -1;
 		}
 		this.parent = null;

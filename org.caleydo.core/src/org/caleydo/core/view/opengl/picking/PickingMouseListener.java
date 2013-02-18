@@ -34,7 +34,7 @@ import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
  * @author Samuel Gratzl
  *
  */
-public class PickingMouseListener implements IGLMouseListener {
+final class PickingMouseListener implements IGLMouseListener {
 
 	private final Deque<Pair<IMouseEvent, PickingMode>> event = new ArrayDeque<>(5);
 	private boolean isMouseIn = false;

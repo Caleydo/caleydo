@@ -29,16 +29,10 @@ import java.awt.Point;
  */
 abstract class APickingEntry {
 
-	protected final int pickingId;
+	protected int pickingId;
 
 	// extra identifier
 	protected final int objectId;
-
-	// state information
-	/**
-	 * currently mouse over indicator, used for mouse out events
-	 */
-	private boolean hovered = false;
 
 	/**
 	 * is this entry does currently dragging, i.e. it listens to mouse events til the mouse_release occur
@@ -54,8 +48,7 @@ abstract class APickingEntry {
 	 */
 	private Point lastPoint;
 
-	public APickingEntry(int pickingId, int objectId) {
-		this.pickingId = pickingId;
+	public APickingEntry(int objectId) {
 		this.objectId = objectId;
 	}
 
@@ -71,10 +64,6 @@ abstract class APickingEntry {
 				&& dragStart == null) {
 			dragStart = lastPoint = (Point) mouse.clone();
 		}
-		if (mode == PickingMode.MOUSE_OVER)
-			hovered = true;
-		else if (mode == PickingMode.MOUSE_OUT)
-			hovered = false;
 
 		Pick pick;
 		if (mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED) {
@@ -96,13 +85,6 @@ abstract class APickingEntry {
 	}
 
 	/**
-	 * @return the hovered, see {@link #hovered}
-	 */
-	public boolean isHovered() {
-		return hovered;
-	}
-
-	/**
 	 * @return the dragging, see {@link #dragging}
 	 */
 	public boolean isDragging() {
@@ -115,4 +97,27 @@ abstract class APickingEntry {
 	 * @param pick
 	 */
 	protected abstract void fire(Pick pick);
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + pickingId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		APickingEntry other = (APickingEntry) obj;
+		if (pickingId != other.pickingId)
+			return false;
+		return true;
+	}
+
 }

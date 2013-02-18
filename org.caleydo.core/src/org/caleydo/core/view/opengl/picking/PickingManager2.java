@@ -16,18 +16,15 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
-import static org.caleydo.core.view.opengl.picking.PickingUtils.convertToPickingMode;
-
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.util.IntegerPool;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-
-import com.google.common.collect.Iterables;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 /**
  * simpler version of {@link PickingManager} for a view specific setup
@@ -42,20 +39,68 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public class PickingManager2 {
-	/**
-	 * counter variable for picking ids
-	 */
-	private IntegerPool pool = new IntegerPool();
+public class PickingManager2 extends APickingManager<PickingManager2.PickingEntry> {
+	protected static class PickingEntry extends APickingEntry implements Iterable<IPickingListener> {
+		private final PickingListenerComposite listener = new PickingListenerComposite(1);
+		private final PickingListenerComposite typeListener;
+
+		public PickingEntry(int objectId, PickingListenerComposite typeListener) {
+			super(objectId);
+			this.typeListener = typeListener;
+		}
+
+		/**
+		 * @return
+		 */
+		public boolean isEmpty() {
+			return listener.isEmpty();
+		}
+
+		@Override
+		protected void fire(Pick pick) {
+			listener.pick(pick);
+			typeListener.pick(pick);
+		}
+
+		@Override
+		public Iterator<IPickingListener> iterator() {
+			return listener.iterator();
+		}
+
+		public void add(IPickingListener l) {
+			listener.add(l);
+		}
+
+		public boolean remove(IPickingListener l) {
+			return listener.remove(l);
+		}
+	}
+
+	private final Map<Integer, SpacePickingManager> spacePickingManagers = new HashMap<>();
 
 	/**
-	 * indicator, whether any element was hovered in the last run, used for optimization
+	 * uses the given {@link GLMouseListener} to convert the current state to a {@link PickingMode}
+	 *
+	 * @param glMouseListener
+	 * @return
 	 */
-	private boolean anyHovered = false;
-
-	private Map<Integer, SpacePickingManager> spacePickingManagers = new HashMap<>();
-
-
+	protected static PickingMode convertToPickingMode(GLMouseListener glMouseListener) {
+		if (glMouseListener.wasMouseDoubleClicked()) {
+			return PickingMode.DOUBLE_CLICKED;
+		} else if (glMouseListener.wasMouseDragged()) {
+			return PickingMode.DRAGGED;
+		} else if (glMouseListener.wasLeftMouseButtonPressed()) {
+			return PickingMode.CLICKED;
+		} else if (glMouseListener.wasRightMouseButtonPressed()) {
+			return PickingMode.RIGHT_CLICKED;
+		} else if (glMouseListener.wasMouseMoved()) {
+			return PickingMode.MOUSE_MOVED;
+		} else if (glMouseListener.wasMouseReleased()) {
+			return PickingMode.MOUSE_RELEASED;
+		} else {
+			return null; // no picking
+		}
+	}
 
 	/**
 	 * returns a space specific picking manager, e.g. one per view instance
@@ -63,10 +108,10 @@ public class PickingManager2 {
 	 * @param spaceId
 	 * @return
 	 */
-	public SpacePickingManager get(int spaceId) {
+	public SpacePickingManager getSpace(int spaceId) {
 		SpacePickingManager p = spacePickingManagers.get(spaceId);
 		if (p == null) {
-			p = new SpacePickingManager(pool);
+			p = new SpacePickingManager(this);
 			spacePickingManagers.put(spaceId, p);
 		}
 		return p;
@@ -82,7 +127,7 @@ public class PickingManager2 {
 		PickingMode mode = convertToPickingMode(view.getGLMouseListener());
 		Point pickPoint = view.getGLMouseListener().getPickedPoint();
 
-		doPicking(gl, mode, pickPoint, new Runnable() {
+		super.doPicking(mode, pickPoint, gl, new Runnable() {
 			@Override
 			public void run() {
 				view.display(gl);
@@ -91,19 +136,21 @@ public class PickingManager2 {
 	}
 
 	/**
-	 * performs picking on the given view and calls all the registered picking listeners
-	 *
-	 * @param gl
-	 *            the gl context to use
-	 * @param mode
-	 *            the picking mode, if null only the last mouseOut will be executed
-	 * @param mousePos
-	 *            the position of the mouse
-	 * @param toRender
-	 *            the element to render
+	 * @param pickingId
+	 * @return
 	 */
-	public void doPicking(GL2 gl, PickingMode mode, Point mousePos, Runnable toRender) {
-		anyHovered = PickingUtils.doPicking(mode, mousePos, gl, toRender, anyHovered,
-				Iterables.concat(this.spacePickingManagers.values()));
+	protected PickingEntry find(int pickingId) {
+		return get(pickingId);
+	}
+
+
+	PickingEntry createEntry(int objectId, PickingListenerComposite typeListener) {
+		PickingEntry entry = new PickingEntry(objectId, typeListener);
+		add(entry);
+		return entry;
+	}
+
+	void removeEntry(PickingEntry entry) {
+		super.remove(entry);
 	}
 }

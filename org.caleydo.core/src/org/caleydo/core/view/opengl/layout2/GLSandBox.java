@@ -21,7 +21,6 @@ import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.caleydo.core.view.opengl.picking.PickingMouseListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -52,7 +51,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	private CompositeTextRenderer text;
 	private final WindowGLElement root;
 	private boolean dirty = true;
-	private final PickingMouseListener mouseListener;
 
 	protected boolean tracingGL = false;
 	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
@@ -72,9 +70,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	public GLSandBox(IGLCanvas canvas, GLElement root, IResourceLocator loader) {
 		this.canvas = canvas;
 		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
-		this.mouseListener = new PickingMouseListener();
 		this.loader = loader;
-		this.canvas.addMouseListener(mouseListener);
+		this.canvas.addMouseListener(pickingManager.getListener());
 		this.canvas.addKeyListener(new IGLKeyListener() {
 			@Override
 			public void keyReleased(IKeyEvent e) {
@@ -101,11 +98,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	@Override
 	public int registerPickingListener(IPickingListener l, int objectId) {
 		return pickingManager.register(l, objectId);
-	}
-
-	@Override
-	public void unregisterPickingListener(IPickingListener l) {
-		pickingManager.unregister(l);
 	}
 
 	@Override
@@ -209,12 +201,12 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			}
 		};
 
-		Point mousePos = mouseListener.getCurrentMousePos();
+		Point mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
 			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
 			root.getMouseLayer().relayout();
 		}
-		pickingManager.doPicking(mouseListener, g.gl, toRender);
+		pickingManager.doPicking(g.gl, toRender);
 
 		if (renderPick)
 			root.renderPick(g);

@@ -216,9 +216,9 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 		if (animations.isEmpty()) {
 			startTime = -1; // stop animation
-		} else {
-			repaintAll();
 		}
+
+		repaintAll();
 	}
 
 	private int nextDelta() {
@@ -259,6 +259,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	private void takeDown(GLElement child) {
+		System.out.println("take down " + child + " " + child.hashCode());
 		child.takeDown();
 	}
 
@@ -333,6 +334,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	protected void renderChild(GLElement child, GLGraphics g) {
+		System.out.println("child render " + child + " " + child.hashCode());
 		child.render(g);
 	}
 

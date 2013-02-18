@@ -42,7 +42,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
-import org.caleydo.core.view.opengl.picking.PickingMouseListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -65,7 +64,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	protected final QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
 
 	private final SimplePickingManager pickingManager = new SimplePickingManager();
-	private final PickingMouseListener mouseListener = new PickingMouseListener();
 
 	private final ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 100, 100, 0, -20, 20);
 
@@ -85,7 +83,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 				viewName);
 		this.canvas = glCanvas;
 		this.canvas.addGLEventListener(this);
-		this.canvas.addMouseListener(mouseListener);
+		this.canvas.addMouseListener(pickingManager.getListener());
 	}
 
 	protected GLElement getRoot() {
@@ -147,7 +145,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
 		this.canvas.removeGLEventListener(this);
-		this.canvas.removeMouseListener(mouseListener);
+		this.canvas.removeMouseListener(pickingManager.getListener());
 
 		this.root.takeDown();
 		GL2 gl = drawable.getGL().getGL2();
@@ -178,6 +176,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		gl.glTranslatef(0.375f, 0.375f, 0);
 
 		final GLGraphics g = new GLGraphics(gl, text, getTextureManager(), locator, true);
+		g.clearError();
 
 		float paddedWidth = getWidth();
 		float paddedHeight = getHeight();
@@ -188,24 +187,28 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			dirtyLayout = false;
 		}
 
-		Runnable toRender = new Runnable() {
-			@Override
-			public void run() {
-				root.renderPick(g);
-			}
-		};
-
-		Point mousePos = mouseListener.getCurrentMousePos();
+		Point mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
 			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
 			root.getMouseLayer().relayout();
 		}
+
 		contextMenuCreator.clear();
-		pickingManager.doPicking(mouseListener, g.gl, toRender);
+
+		pickingManager.doPicking(g.gl, new Runnable() {
+			@Override
+			public void run() {
+				root.renderPick(g);
+			}
+		});
+		g.checkError();
+
 		if (contextMenuCreator.hasMenuItems())
 			contextMenuCreator.open(this);
 
+
 		root.render(g);
+		g.checkError();
 
 		g.destroy();
 	}
@@ -298,11 +301,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final int registerPickingListener(IPickingListener l, int objectId) {
 		return pickingManager.register(l, objectId);
-	}
-
-	@Override
-	public final void unregisterPickingListener(IPickingListener l) {
-		pickingManager.unregister(l);
 	}
 
 	@Override

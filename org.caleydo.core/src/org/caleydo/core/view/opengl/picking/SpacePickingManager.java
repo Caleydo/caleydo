@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.util.ClassUtils;
-import org.caleydo.core.util.IntegerPool;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -51,21 +50,20 @@ import com.google.common.collect.Iterables;
  * @author Samuel Gratzl
  *
  */
-public class SpacePickingManager implements Iterable<PickingEntry> {
+public class SpacePickingManager {
 	/**
 	 * mapping from key: type,id to their state
 	 */
-	private Map<PickingKey, PickingEntry> mapping = new HashMap<>();
+	private Map<PickingKey, PickingManager2.PickingEntry> mapping = new HashMap<>();
 	/**
 	 * mapping for the generic version where just the type is queried
 	 */
 	private Map<Object, PickingListenerComposite> typeListeners = new HashMap<>();
 
-	// shared instance for global id counter per PickingManager2 instance
-	private final IntegerPool pool;
+	private final PickingManager2 parent;
 
-	SpacePickingManager(IntegerPool pool) {
-		this.pool = pool;
+	SpacePickingManager(PickingManager2 parent) {
+		this.parent = parent;
 	}
 
 	/**
@@ -79,11 +77,11 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 		return get(type, objectId).pickingId;
 	}
 
-	private PickingEntry get(Object type, int objectId) {
+	private PickingManager2.PickingEntry get(Object type, int objectId) {
 		PickingKey key = new PickingKey(type, objectId);
-		PickingEntry id = mapping.get(key);
+		PickingManager2.PickingEntry id = mapping.get(key);
 		if (id == null) {
-			id = new PickingEntry(pool.checkOut(), objectId, getType(type));
+			id = parent.createEntry(objectId, getType(type));
 			mapping.put(key, id);
 		}
 		return id;
@@ -137,7 +135,7 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 	 * @return the picking id of this key
 	 */
 	public int addPickingListener(Object type, int id, IPickingListener l) {
-		PickingEntry entry = get(type, id);
+		PickingManager2.PickingEntry entry = get(type, id);
 		entry.add(l);
 		return entry.pickingId;
 	}
@@ -151,7 +149,7 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 	 * @return
 	 */
 	public boolean removePickingListener(Object type, int id, IPickingListener l) {
-		PickingEntry entry = get(type, id);
+		PickingManager2.PickingEntry entry = get(type, id);
 		boolean r = entry.remove(l);
 		if (entry.isEmpty()) {
 			removePickingListeners(type, id);
@@ -168,9 +166,9 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 	 * @return
 	 */
 	public boolean removePickingListeners(Object type, int id) {
-		PickingEntry entry = mapping.remove(new PickingKey(type, id));
+		PickingManager2.PickingEntry entry = mapping.remove(new PickingKey(type, id));
 		if (entry != null) {
-			pool.checkIn(entry.pickingId);
+			parent.remove(entry);
 			return true;
 		}
 		return false;
@@ -184,10 +182,11 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 	public void removeAllPickingListeners(Object type) {
 		removeTypePickingListeners(type);
 		// check all ids
-		for (Iterator<Map.Entry<PickingKey, PickingEntry>> it = mapping.entrySet().iterator(); it.hasNext();) {
-			Map.Entry<PickingKey, PickingEntry> entry = it.next();
+		for (Iterator<Map.Entry<PickingKey, PickingManager2.PickingEntry>> it = mapping.entrySet().iterator(); it
+				.hasNext();) {
+			Map.Entry<PickingKey, PickingManager2.PickingEntry> entry = it.next();
 			if (entry.getKey().type.equals(type)) {
-				pool.checkIn(entry.getValue().pickingId);
+				parent.remove(entry.getValue());
 				it.remove();
 			}
 		}
@@ -225,7 +224,7 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 				}
 			}
 		}
-		for (PickingEntry p : mapping.values()) {
+		for (PickingManager2.PickingEntry p : mapping.values()) {
 			for (Iterator<IPickingListener> it = p.iterator(); it.hasNext();) {
 				IPickingListener value = it.next();
 				if (value instanceof AnnotationBasedPickingListener
@@ -233,11 +232,6 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 					it.remove();
 			}
 		}
-	}
-
-	@Override
-	public Iterator<PickingEntry> iterator() {
-		return this.mapping.values().iterator();
 	}
 
 	private static final Predicate<Method> matches = new Predicate<Method>() {
@@ -352,41 +346,5 @@ public class SpacePickingManager implements Iterable<PickingEntry> {
 				return false;
 			return true;
 		}
-	}
-}
-
-class PickingEntry extends APickingEntry implements Iterable<IPickingListener> {
-	private final PickingListenerComposite listener = new PickingListenerComposite(1);
-	private final PickingListenerComposite typeListener;
-
-	public PickingEntry(int pickingId, int objectId, PickingListenerComposite typeListener) {
-		super(pickingId, objectId);
-		this.typeListener = typeListener;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean isEmpty() {
-		return listener.isEmpty();
-	}
-
-	@Override
-	protected void fire(Pick pick) {
-		listener.pick(pick);
-		typeListener.pick(pick);
-	}
-
-	@Override
-	public Iterator<IPickingListener> iterator() {
-		return listener.iterator();
-	}
-
-	public void add(IPickingListener l) {
-		listener.add(l);
-	}
-
-	public boolean remove(IPickingListener l) {
-		return listener.remove(l);
 	}
 }

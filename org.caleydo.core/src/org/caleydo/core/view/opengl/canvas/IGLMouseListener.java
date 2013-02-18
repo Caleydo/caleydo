@@ -31,17 +31,17 @@ public interface IGLMouseListener {
 
 	void mouseMoved(IMouseEvent mouseEvent);
 
-	void mouseClicked(IMouseEvent arg0);
+	void mouseClicked(IMouseEvent mouseEvent);
 
 	void mouseReleased(IMouseEvent mouseEvent);
 
 	void mouseDragged(IMouseEvent mouseEvent);
 
-	void mouseWheelMoved(IMouseEvent e);
+	void mouseWheelMoved(IMouseEvent mouseEvent);
 
-	void mouseEntered(IMouseEvent arg0);
+	void mouseEntered(IMouseEvent mouseEvent);
 
-	void mouseExited(IMouseEvent e);
+	void mouseExited(IMouseEvent mouseEvent);
 
 	public interface IMouseEvent {
 		Point getPoint();
@@ -54,6 +54,7 @@ public interface IGLMouseListener {
 
 		boolean isButtonDown(int button);
 
+		@Deprecated
 		Dimension getParentSize();
 	}
 }

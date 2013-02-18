@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.util;
 
-import gleem.linalg.Vec2f;
-
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -46,12 +44,8 @@ public class GLImageButton extends PickableGLElement {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.fillImage(button.getIconPath(), 0, 0, w, h);
 		if (button.isSelected()) {
-
-			g.color(new float[] { 0.55f, 0.55f, 0.55f, 0.5f });
-			g.fillRect(0, 0, w, h);
-
-			g.color(new float[] { 0.3f, 0.3f, 0.3f, 1f });
-			g.drawPath(true, new Vec2f(0, 0), new Vec2f(w, 0), new Vec2f(w, h), new Vec2f(0, h));
+			g.color(0.55f, 0.55f, 0.55f, 0.5f).fillRect(0, 0, w, h);
+			g.color(0.3f).drawRect(0, 0, w, h);
 
 		}
 	}

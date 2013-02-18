@@ -146,13 +146,6 @@ final class SWTGLCanvas implements IGLCanvas {
 		return canvas;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.IGLCanvas#addMouseListener(org.caleydo.core.view.opengl.canvas.IGLMouseListener
-	 * )
-	 */
 	@Override
 	public void addMouseListener(final IGLMouseListener listener) {
 		if (canvas.isDisposed())
@@ -168,16 +161,12 @@ final class SWTGLCanvas implements IGLCanvas {
 				canvas.addMouseMoveListener(a);
 				canvas.addMouseWheelListener(a);
 				canvas.addMouseTrackListener(a);
+				canvas.addMenuDetectListener(a);
+
 			}
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#removeMouseListener(org.caleydo.core.view.opengl.canvas.
-	 * IGLMouseListener)
-	 */
 	@Override
 	public void removeMouseListener(final IGLMouseListener listener) {
 		getDisplay().syncExec(new Runnable() {
@@ -192,17 +181,11 @@ final class SWTGLCanvas implements IGLCanvas {
 				canvas.removeMouseMoveListener(a);
 				canvas.removeMouseWheelListener(a);
 				canvas.removeMouseTrackListener(a);
+				canvas.removeMenuDetectListener(a);
 			}
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.IGLCanvas#addFocusListener(org.caleydo.core.view.opengl.canvas.IGLFocusListener
-	 * )
-	 */
 	@Override
 	public void addFocusListener(final IGLFocusListener listener) {
 		if (canvas.isDisposed())
@@ -217,12 +200,6 @@ final class SWTGLCanvas implements IGLCanvas {
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#removeFocusListener(org.caleydo.core.view.opengl.canvas.
-	 * IGLFocusListener)
-	 */
 	@Override
 	public void removeFocusListener(final IGLFocusListener listener) {
 		if (canvas.isDisposed())
@@ -240,11 +217,6 @@ final class SWTGLCanvas implements IGLCanvas {
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#requestFocus()
-	 */
 	@Override
 	public void requestFocus() {
 		if (canvas.isDisposed())
@@ -263,12 +235,6 @@ final class SWTGLCanvas implements IGLCanvas {
 		return canvas.getDisplay();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.IGLCanvas#addKeyListener(org.caleydo.core.view.opengl.canvas.IGLKeyListener)
-	 */
 	@Override
 	public void addKeyListener(final IGLKeyListener listener) {
 		if (canvas.isDisposed())
@@ -285,13 +251,6 @@ final class SWTGLCanvas implements IGLCanvas {
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.IGLCanvas#removeKeyListener(org.caleydo.core.view.opengl.canvas.IGLKeyListener
-	 * )
-	 */
 	@Override
 	public void removeKeyListener(final IGLKeyListener listener) {
 		if (canvas.isDisposed())
@@ -309,74 +268,39 @@ final class SWTGLCanvas implements IGLCanvas {
 		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#addGLEventListener(javax.media.opengl.GLEventListener)
-	 */
 	@Override
 	public void addGLEventListener(GLEventListener listener) {
 		glEventListeners.add(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#removeGLEventListener(javax.media.opengl.GLEventListener)
-	 */
 	@Override
 	public void removeGLEventListener(GLEventListener listener) {
 		glEventListeners.remove(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#getWidth()
-	 */
 	@Override
 	public int getWidth() {
 		return canvas.getWidth();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#getHeight()
-	 */
 	@Override
 	public int getHeight() {
 		return canvas.getHeight();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#asGLAutoDrawAble()
-	 */
 	@Override
 	public GLAutoDrawable asGLAutoDrawAble() {
 		return canvas;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.canvas.IGLCanvas#asComposite()
-	 */
 	@Override
 	public Composite asComposite() {
 		return canvas;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "AWTGLCanvas of " + canvas.toString();
+		return "SWTGLCanvas of " + canvas.toString();
 	}
 
 }

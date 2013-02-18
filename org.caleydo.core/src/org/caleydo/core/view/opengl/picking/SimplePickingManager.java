@@ -19,13 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.media.opengl.GL2;
-
-import org.caleydo.core.util.IntegerPool;
 
 /**
  * simple version of a picking manager: one ID per PickingListener
@@ -33,17 +26,13 @@ import org.caleydo.core.util.IntegerPool;
  * @author Samuel Gratzl
  *
  */
-public class SimplePickingManager {
-	private List<PickingEntry> mapping = new ArrayList<>();
-	private final IntegerPool pool = new IntegerPool();
+public class SimplePickingManager extends APickingManager<SimplePickingManager.PickingEntry> {
 
-	private boolean anyWaiting = false;
-
-	private static class PickingEntry extends APickingEntry {
+	protected static class PickingEntry extends APickingEntry {
 		private final IPickingListener listener;
 
-		public PickingEntry(int pickingId, IPickingListener listener, int objectId) {
-			super(pickingId, objectId);
+		public PickingEntry(IPickingListener listener, int objectId) {
+			super(objectId);
 			this.listener = listener;
 		}
 
@@ -62,24 +51,7 @@ public class SimplePickingManager {
 	 * @return
 	 */
 	public int register(IPickingListener l, int objectId) {
-		int id = pool.checkOut();
-		mapping.add(new PickingEntry(id, l, objectId));
-		return id;
-	}
-
-	/**
-	 * removes all instances of this {@link IPickingListener} object
-	 *
-	 * @param l
-	 */
-	public void unregister(IPickingListener l) {
-		for (Iterator<PickingEntry> it = mapping.iterator(); it.hasNext();) {
-			PickingEntry entry = it.next();
-			if (entry.listener == l) {
-				pool.checkIn(entry.pickingId);
-				it.remove();
-			}
-		}
+		return add(new PickingEntry(l, objectId));
 	}
 
 	/**
@@ -88,24 +60,6 @@ public class SimplePickingManager {
 	 * @param pickingId
 	 */
 	public void unregister(int pickingId) {
-		for (Iterator<PickingEntry> it = mapping.iterator(); it.hasNext();) {
-			if (it.next().pickingId == pickingId) {
-				pool.checkIn(pickingId);
-				it.remove();
-				break;
-			}
-		}
-	}
-
-	/**
-	 * does the actual picking and calls the registered picking listener
-	 *
-	 * @param mode
-	 * @param mousePos
-	 * @param g
-	 * @param root
-	 */
-	public void doPicking(PickingMouseListener l, final GL2 gl, Runnable toRender) {
-		anyWaiting = PickingUtils.doPicking(l, gl, toRender, anyWaiting, this.mapping);
+		remove(get(pickingId));
 	}
 }

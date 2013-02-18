@@ -176,6 +176,9 @@ public class GLGraphics {
 		return color(color.getComponents(null));
 	}
 
+	public GLGraphics color(float grey) {
+		return color(grey, grey, grey);
+	}
 	public GLGraphics color(float r, float g, float b) {
 		return color(r, g, b, 1);
 	}

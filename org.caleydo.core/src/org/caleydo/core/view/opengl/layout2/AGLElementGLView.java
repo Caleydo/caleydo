@@ -191,8 +191,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 
-	@Override
-	public void unregisterPickingListener(IPickingListener l) {
+	private void unregisterPickingListener(IPickingListener l) {
 		PickingMetaData data = pickingMetaData.remove(l);
 		if (data == null)
 			return;

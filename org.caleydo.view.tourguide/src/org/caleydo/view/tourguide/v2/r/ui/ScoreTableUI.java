@@ -95,7 +95,8 @@ public class ScoreTableUI extends GLElementContainer implements IGLLayout {
 
 	@Override
 	protected void takeDown() {
-		context.unregisterPickingListener(selectRowListener);
+		for (int pickingID : this.pickingIDs)
+			context.unregisterPickingListener(pickingID);
 		this.pickingIDs = null;
 		super.takeDown();
 	}

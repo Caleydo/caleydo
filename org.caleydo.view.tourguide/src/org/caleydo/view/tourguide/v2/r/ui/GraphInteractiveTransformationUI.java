@@ -28,11 +28,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.apache.commons.math.random.JDKRandomGenerator;
+import org.apache.commons.math.random.RandomGenerator;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.util.format.Formatter;
@@ -429,14 +430,16 @@ public class GraphInteractiveTransformationUI extends GLElementContainer impleme
 	}
 
 	public static void main(String[] args) {
-		Random r = new Random(100);
+		RandomGenerator gen = new JDKRandomGenerator();
+		gen.setSeed(100);
+
 		final int count = 1000;
 		FloatContainer tmp = new FloatContainer(count);
 		for (int i = 0; i < count; ++i)
-			tmp.add(r.nextFloat());
+			tmp.add(Math.abs((float) gen.nextGaussian()));
 		InteractiveNormalization n = new InteractiveNormalization();
 		n.put(0, 0);
-		n.put(1, 1);
-		GLSandBox.main(args, new GraphInteractiveTransformationUI(n, tmp, 0, 1), new GLPadding(20));
+		n.put(3, 1);
+		GLSandBox.main(args, new GraphInteractiveTransformationUI(n, tmp, 0, 3), new GLPadding(20));
 	}
 }

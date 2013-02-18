@@ -43,19 +43,11 @@ final class SWTFocusAdapter implements FocusListener {
 		return listener;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.FocusEvent)
-	 */
 	@Override
 	public void focusGained(FocusEvent e) {
 		listener.focusGained();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-	 */
 	@Override
 	public void focusLost(FocusEvent e) {
 		listener.focusLost();

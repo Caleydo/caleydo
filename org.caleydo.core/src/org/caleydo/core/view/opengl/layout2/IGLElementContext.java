@@ -48,13 +48,6 @@ public interface IGLElementContext {
 	public int registerPickingListener(IPickingListener l, int objectId);
 
 	/**
-	 * unregisters a picking listener
-	 *
-	 * @param l
-	 */
-	public void unregisterPickingListener(IPickingListener l);
-
-	/**
 	 * unregisters a picking listener, given by its pickingId
 	 *
 	 * @param pickingID

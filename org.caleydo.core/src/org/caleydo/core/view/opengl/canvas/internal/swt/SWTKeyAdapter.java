@@ -49,21 +49,12 @@ final class SWTKeyAdapter implements KeyListener {
 		return listener;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
-	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		listener.keyPressed(wrap(e, true));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
-	 */
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		listener.keyReleased(wrap(e, false));
@@ -110,21 +101,11 @@ final class SWTKeyAdapter implements KeyListener {
 			throw new IllegalStateException("unknown special key:" + c);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent#getKeyCode()
-		 */
 		@Override
 		public int getKeyCode() {
 			return event.keyCode;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent#isControlDown()
-		 */
 		@Override
 		public boolean isControlDown() {
 			if (pressed)
@@ -135,11 +116,6 @@ final class SWTKeyAdapter implements KeyListener {
 				return (event.stateMask & SWT.CONTROL) != 0 && !isKey(ESpecialKey.CONTROL);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent#isShiftDown()
-		 */
 		@Override
 		public boolean isShiftDown() {
 			if (pressed)
