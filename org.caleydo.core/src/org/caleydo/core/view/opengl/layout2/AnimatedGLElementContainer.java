@@ -24,6 +24,8 @@ import gleem.linalg.Vec4f;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -115,10 +117,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 * @param time
 	 * @return
 	 */
-	private Collection<GLElement> asSeenIn(int time) {
+	private List<GLElement> asSeenIn(int time) {
 		if (this.animations.isEmpty() || time == 0)
 			return children;
-		Collection<GLElement> r = new ArrayList<>(children);
+		List<GLElement> r = new ArrayList<>(children);
 		for (Animation anim : animations) {
 			switch (anim.getType()) {
 			case MOVE:
@@ -168,8 +170,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 			Collection<GLElement> elems = asSeenIn(0);
 			List<RecordingLayoutElement> l = new ArrayList<>(elems.size());
-			for (GLElement elem : elems)
-				l.add(new RecordingLayoutElement(elem.layoutElement));
+			for (GLElement elem : elems) {
+				if (elem.getVisibility() != EVisibility.NONE)
+					l.add(new RecordingLayoutElement(elem.layoutElement));
+			}
 			layout.doLayout(l, size.x(), size.y());
 
 			outer: for (RecordingLayoutElement elem : l) {
@@ -259,7 +263,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	private void takeDown(GLElement child) {
-		System.out.println("take down " + child + " " + child.hashCode());
 		child.takeDown();
 	}
 
@@ -307,6 +310,15 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		animate();
 	}
 
+	public final GLElement get(int index) {
+		return asSeenIn(0).get(index);
+	}
+
+	public final void sortBy(Comparator<GLElement> comparator) {
+		Collections.sort(children, comparator);
+		relayout();
+	}
+
 	private void animate() {
 		super.relayout();// super not direct to signal we want to relayout but no force
 	}
@@ -334,7 +346,6 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	protected void renderChild(GLElement child, GLGraphics g) {
-		System.out.println("child render " + child + " " + child.hashCode());
 		child.render(g);
 	}
 

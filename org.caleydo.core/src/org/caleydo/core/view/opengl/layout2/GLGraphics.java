@@ -259,7 +259,11 @@ public class GLGraphics {
 	 * renders a filled rect
 	 */
 	public GLGraphics fillRect(float x, float y, float w, float h) {
-		gl.glBegin(GL2.GL_POLYGON);
+		return renderRect(true, x, y, w, h);
+	}
+
+	public GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
+		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, z);
 		gl.glVertex3f(x + w, y, z);
 		gl.glVertex3f(x + w, y + h, z);
@@ -268,7 +272,7 @@ public class GLGraphics {
 		return this;
 	}
 
-	public GLGraphics fillRoundecRect(float x, float y, float w, float h, float radius) {
+	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius) {
 		int segments;
 		if (radius < 4)
 			segments = 0;
@@ -280,14 +284,15 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillRoundecRect(float x, float y, float w, float h, float radius, int segments) {
-		return renderRoundedRect(true, x, y, w, h, radius, segments);
+		return renderRoundedRect(true, x, y, w, h, radius, segments, true, true, true, true);
 	}
 
-	private GLGraphics renderRoundedRect(boolean fill, float x, float y, float w, float h, float radius, int segments) {
+	public GLGraphics renderRoundedRect(boolean fill, float x, float y, float w, float h, float radius, int segments,
+			boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight) {
 		assert w < radius * 2;
 		assert h < radius * 2;
 		if (radius <= 0)
-			return fillRect(x, y, w, h);
+			return renderRect(fill, x, y, w, h);
 
 		if (segments % 2 == 1) // make it even
 			segments++;
@@ -307,27 +312,44 @@ public class GLGraphics {
 		final int ol = offsets.length - 1;
 
 		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
-		gl.glVertex3f(x + radius, y, 0);
-		gl.glVertex3f(x + w - radius, y, 0);
-		// round
-		for (int i = 0; i < offsets.length; ++i) {
-			gl.glVertex3f(x + w - offsets[i], y + offsets[ol - i], 0);
-		}
-		gl.glVertex3f(x + w, y + radius, 0);
-		gl.glVertex3f(x + w, y + h - radius, 0);
-		for (int i = 0; i < offsets.length; ++i) {
-			gl.glVertex3f(x + w - offsets[ol - i], y + h - offsets[i], 0);
-		}
-		gl.glVertex3f(x + w - radius, y + h, 0);
-		gl.glVertex3f(x + radius, y + h, 0);
-		for (int i = 0; i < offsets.length; ++i) {
-			gl.glVertex3f(x + offsets[i], y + h - offsets[ol - i], 0);
-		}
-		gl.glVertex3f(x, y + h - radius, 0);
-		gl.glVertex3f(x, y + radius, 0);
-		for (int i = 0; i < offsets.length; ++i) {
-			gl.glVertex3f(x + offsets[ol - i], y + offsets[i], 0);
-		}
+
+		if (topLeft) {
+			gl.glVertex3f(x, y + radius, z);
+			for (int i = 0; i < offsets.length; ++i) {
+				gl.glVertex3f(x + offsets[ol - i], y + offsets[i], z);
+			}
+			gl.glVertex3f(x + radius, y, z);
+		} else
+			gl.glVertex3f(x, y, z);
+
+		if (topRight) {
+			gl.glVertex3f(x + w - radius, y, z);
+			// round
+			for (int i = 0; i < offsets.length; ++i) {
+				gl.glVertex3f(x + w - offsets[i], y + offsets[ol - i], z);
+			}
+			gl.glVertex3f(x + w, y + radius, z);
+		} else
+			gl.glVertex3f(x + w, y, z);
+
+		if (bottomRight) {
+			gl.glVertex3f(x + w, y + h - radius, z);
+			for (int i = 0; i < offsets.length; ++i) {
+				gl.glVertex3f(x + w - offsets[ol - i], y + h - offsets[i], z);
+			}
+			gl.glVertex3f(x + w - radius, y + h, z);
+		} else
+			gl.glVertex3f(x + w, y + h, z);
+
+		if (bottomLeft) {
+			gl.glVertex3f(x + radius, y + h, z);
+			for (int i = 0; i < offsets.length; ++i) {
+				gl.glVertex3f(x + offsets[i], y + h - offsets[ol - i], z);
+			}
+			gl.glVertex3f(x, y + h - radius, z);
+		} else
+			gl.glVertex3f(x, y + h, z);
+
 		gl.glEnd();
 		return this;
 	}
@@ -461,16 +483,20 @@ public class GLGraphics {
 	 * render an empty rect, i.e. just the frame
 	 */
 	public GLGraphics drawRect(float x, float y, float w, float h) {
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(x, y, z);
-		gl.glVertex3f(x + w, y, z);
-		gl.glVertex3f(x + w, y + h, z);
-		gl.glVertex3f(x, y + h, z);
-		gl.glEnd();
-		return this;
+		return renderRect(false, x, y, w, h);
 	}
 
 	public GLGraphics drawRoundecRect(float x, float y, float w, float h, float radius) {
+		return drawRoundecRect(x, y, w, h, radius, guessRoundedSegments(radius));
+	}
+
+	/**
+	 * guesses the number of segments given the radius
+	 *
+	 * @param radius
+	 * @return
+	 */
+	private int guessRoundedSegments(float radius) {
 		int segments;
 		if (radius < 4)
 			segments = 0;
@@ -478,11 +504,11 @@ public class GLGraphics {
 			segments = 2;
 		else
 			segments = 4;
-		return drawRoundecRect(x, y, w, h, radius, segments);
+		return segments;
 	}
 
 	public GLGraphics drawRoundecRect(float x, float y, float w, float h, float radius, int segments) {
-		return renderRoundedRect(false, x, y, w, h, radius, segments);
+		return renderRoundedRect(false, x, y, w, h, radius, segments, true, true, true, true);
 	}
 
 	/**

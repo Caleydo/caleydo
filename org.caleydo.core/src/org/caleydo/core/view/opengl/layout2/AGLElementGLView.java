@@ -9,6 +9,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -196,6 +197,11 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		if (data == null)
 			return;
 		this.removeIDPickingListener(l, data.type, data.objectId);
+	}
+
+	@Override
+	public IPickingListener createTooltip(ILabelProvider label) {
+		return getParentGLCanvas().createTooltip(label);
 	}
 
 	@Override

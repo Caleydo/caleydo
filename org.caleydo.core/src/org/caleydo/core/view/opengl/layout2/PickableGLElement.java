@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -49,6 +50,22 @@ public class PickableGLElement extends GLElement {
 				onPicked(pick);
 			}
 		});
+	}
+
+	@Override
+	protected void init(IGLElementContext context) {
+		super.init(context);
+		this.onPick(context.createTooltip(new ILabelProvider() {
+			@Override
+			public String getProviderName() {
+				return null;
+			}
+
+			@Override
+			public String getLabel() {
+				return tooltip;
+			}
+		}));
 	}
 
 	/**
@@ -103,13 +120,9 @@ public class PickableGLElement extends GLElement {
 			break;
 		case MOUSE_OUT:
 			onMouseOut(pick);
-			if (this.tooltip != null)
-				context.getMouseLayer().clearToolTip();
 			break;
 		case MOUSE_OVER:
 			onMouseOver(pick);
-			if (this.tooltip != null)
-				context.getMouseLayer().setToolTip(tooltip);
 			break;
 		case RIGHT_CLICKED:
 			onRightClicked(pick);

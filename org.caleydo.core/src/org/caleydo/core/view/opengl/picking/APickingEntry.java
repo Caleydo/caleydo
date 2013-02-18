@@ -59,7 +59,7 @@ abstract class APickingEntry {
 	 * @param mouse
 	 * @param depth
 	 */
-	public void fire(PickingMode mode, Point mouse, float depth) {
+	public void fire(PickingMode mode, Point mouse, float depth, boolean isAnyDragging) {
 		if ((mode == PickingMode.CLICKED || mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED)
 				&& dragStart == null) {
 			dragStart = lastPoint = (Point) mouse.clone();
@@ -69,10 +69,10 @@ abstract class APickingEntry {
 		if (mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED) {
 			int dx = mouse.x - lastPoint.x;
 			int dy = mouse.y - lastPoint.y;
-			pick = new Pick(objectId, mode, mouse, dragStart, depth, dx, dy);
+			pick = new Pick(objectId, mode, mouse, dragStart, depth, dx, dy, isAnyDragging);
 			lastPoint = mouse;
 		} else
-			pick = new Pick(objectId, mode, mouse, dragStart, depth);
+			pick = new Pick(objectId, mode, mouse, dragStart, depth, 0, 0, isAnyDragging);
 		pick.setDoDragging(dragging);
 
 		fire(pick);

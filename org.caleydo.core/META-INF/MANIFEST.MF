@@ -329,6 +329,8 @@ Export-Package:
    org.caleydo.core.view.opengl.miniview,
    com.jogamp.opengl.util.awt",
  org.caleydo.core.view.opengl.layout2,
+ org.caleydo.core.view.opengl.layout2.animation,
+ org.caleydo.core.view.opengl.layout2.basic,
  org.caleydo.core.view.opengl.layout2.layout,
  org.caleydo.core.view.opengl.layout2.renderer,
  org.caleydo.core.view.opengl.layout2.util,

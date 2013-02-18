@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.swt.SWT;
@@ -96,4 +97,6 @@ public interface IGLElementContext {
 	 *            SWT constant or -1 for the default
 	 */
 	public void setCursor(int swtCursorConst);
+
+	public IPickingListener createTooltip(ILabelProvider label);
 }

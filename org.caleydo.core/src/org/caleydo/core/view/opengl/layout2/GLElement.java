@@ -134,12 +134,29 @@ public class GLElement implements IHasGLLayoutData {
 	 */
 	private boolean dirtyLayout = true;
 
+	/**
+	 * the z value to add before the value should be rendered
+	 */
+	private float zDelta = 0;
+
 	public GLElement() {
 
 	}
 
 	public GLElement(IGLRenderer renderer) {
 		this.renderer = renderer;
+	}
+
+	/**
+	 * @param zDelta
+	 *            setter, see {@link zDelta}
+	 */
+	public GLElement setzDelta(float zDelta) {
+		if (this.zDelta == zDelta)
+			return this;
+		this.zDelta = zDelta;
+		repaintAll();
+		return this;
 	}
 
 	public final GLElement setLayoutData(Object layoutData) {
@@ -172,6 +189,7 @@ public class GLElement implements IHasGLLayoutData {
 		float w = bounds_layout.width;
 		float h = bounds_layout.height;
 
+		g.incZ(zDelta);
 		g.move(x, y);
 		if (!cache.render(context, g)) {
 			cache.begin(context, g, w, h);
@@ -182,6 +200,7 @@ public class GLElement implements IHasGLLayoutData {
 			// g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
 		}
 		g.move(-x, -y);
+		g.incZ(-zDelta);
 	}
 
 	/**
@@ -214,6 +233,7 @@ public class GLElement implements IHasGLLayoutData {
 		float w = bounds_layout.width;
 		float h = bounds_layout.height;
 
+		g.incZ(zDelta);
 		g.move(x, y);
 		if (!pickCache.render(context, g)) {
 			pickCache.begin(context, g, w, h);
@@ -226,6 +246,7 @@ public class GLElement implements IHasGLLayoutData {
 			pickCache.end(context, g);
 		}
 		g.move(-x, -y);
+		g.incZ(-zDelta);
 	}
 
 	private boolean needToRender() {

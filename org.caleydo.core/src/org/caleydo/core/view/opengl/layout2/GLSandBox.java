@@ -12,6 +12,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -103,6 +104,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	@Override
 	public void unregisterPickingListener(int pickingID) {
 		pickingManager.unregister(pickingID);
+	}
+
+	@Override
+	public IPickingListener createTooltip(ILabelProvider label) {
+		return canvas.createTooltip(label);
 	}
 
 	@Override
@@ -208,7 +214,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 		Point mousePos = pickingManager.getCurrentMousePos();
 		if (mousePos != null) {
-			root.getMouseLayer().setBounds(mousePos.x, mousePos.y, getWidth() - mousePos.x, getHeight() - mousePos.y);
+			root.getMouseLayer().setBounds(mousePos.x - padding.left, mousePos.y - padding.top,
+					getWidth() - mousePos.x, getHeight() - mousePos.y);
 			root.getMouseLayer().relayout();
 		}
 		pickingManager.doPicking(g.gl, toRender);

@@ -53,6 +53,10 @@ public final class GLRenderers {
 	public static IGLRenderer drawRect(Color color) {
 		return new SimpleRenderer(EWhat.DRAW_RECT, color);
 	}
+
+	public static IGLRenderer drawRoundedRect(Color color) {
+		return new SimpleRenderer(EWhat.DRAW_ROUNDED_RECT, color);
+	}
 	/**
 	 * renders a full sized rect with the specified color
 	 *
@@ -62,6 +66,14 @@ public final class GLRenderers {
 	 */
 	public static IGLRenderer fillRect(Color color) {
 		return new SimpleRenderer(EWhat.FILL_RECT, color);
+	}
+
+	/**
+	 * @param color
+	 * @return
+	 */
+	public static IGLRenderer fillRoundedRect(Color color) {
+		return new SimpleRenderer(EWhat.FILL_ROUNDED_RECT, color);
 	}
 
 	public static Runnable asRunnable(final IGLRenderer renderer, final GLGraphics g, final float w, final float h,
@@ -84,8 +96,18 @@ public final class GLRenderers {
 		};
 	}
 
+	public static IGLRenderer fillImage(final String image) {
+		return new IGLRenderer() {
+
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.fillImage(image, 0, 0, w, h);
+			}
+		};
+	}
+
 	private enum EWhat {
-		FILL_RECT, DRAW_RECT, DRAW_DIAGONAL_LINE
+		FILL_RECT, DRAW_RECT, DRAW_DIAGONAL_LINE, DRAW_ROUNDED_RECT, FILL_ROUNDED_RECT
 	}
 
 	private static class SimpleRenderer implements IGLRenderer {
@@ -105,8 +127,14 @@ public final class GLRenderers {
 			case DRAW_DIAGONAL_LINE:
 				g.drawDiagonalLine(0, 0, w, h);
 				break;
+			case DRAW_ROUNDED_RECT:
+				g.drawRoundecRect(0, 0, w, h, Math.min(w, h) * 0.25f);
+				break;
 			case DRAW_RECT:
 				g.drawRect(0, 0, w, h);
+				break;
+			case FILL_ROUNDED_RECT:
+				g.drawRoundecRect(0, 0, w, h, Math.min(w, h) * 0.25f);
 				break;
 			case FILL_RECT:
 				g.fillRect(0, 0, w, h);

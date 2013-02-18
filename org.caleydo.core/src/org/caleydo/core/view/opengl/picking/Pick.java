@@ -48,6 +48,12 @@ public class Pick {
 	private boolean doDragging = false;
 
 	/**
+	 * indicator, whether for any current the {@link #doDragging} is set to true, supported by {@link PickingManager2}
+	 * and {@link SimplePickingManager}
+	 */
+	private final boolean isAnyDragging;
+
+	/**
 	 * the mouse x delta between the last call, used by {@link PickingMode#MOUSE_MOVED} and {@link PickingMode#DRAGGED}
 	 *
 	 * supported by {@link PickingManager2} and {@link SimplePickingManager}
@@ -61,13 +67,13 @@ public class Pick {
 	private final int dy;
 
 	public Pick(int objectID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint, float depth) {
-		this(objectID, ePickingMode, pickedPoint, dragStartPoint, depth, 0, 0);
+		this(objectID, ePickingMode, pickedPoint, dragStartPoint, depth, 0, 0, false);
 	}
 	/**
 	 * Constructor.
 	 */
 	public Pick(int objectID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint, float depth, int dx,
-			int dy) {
+			int dy, boolean isAnyDragging) {
 
 		this.objectID = objectID;
 		this.ePickingMode = ePickingMode;
@@ -76,6 +82,7 @@ public class Pick {
 		this.depth = depth;
 		this.dx = dx;
 		this.dy = dy;
+		this.isAnyDragging = isAnyDragging;
 	}
 
 	/**
@@ -91,6 +98,13 @@ public class Pick {
 	 */
 	public boolean isDoDragging() {
 		return doDragging;
+	}
+
+	/**
+	 * @return the isAnyDragging, see {@link #isAnyDragging}
+	 */
+	public boolean isAnyDragging() {
+		return isAnyDragging;
 	}
 
 	/**

@@ -70,6 +70,8 @@ public abstract class APickingManager<T extends APickingEntry> {
 	// a list of the current mouse in entries
 	private final List<T> mouseIn = new ArrayList<>(3);
 
+	private boolean isAnyDragging = false;
+
 	/**
 	 * @return the listener, see {@link #listener}
 	 */
@@ -231,6 +233,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 
 		BitSet wasMouseIn = new BitSet();
 
+		this.isAnyDragging = false;
 		// first send mouse out
 		for (Iterator<T> it = this.mouseIn.iterator(); it.hasNext();) {
 			T entry = it.next();
@@ -242,7 +245,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 				wasMouseIn.set(entry.pickingId);
 			} else {
 				// send mouse out
-				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth);
+				entry.fire(PickingMode.MOUSE_OUT, mousePos, depth, isAnyDragging);
 			}
 		}
 		this.mouseIn.clear();
@@ -257,9 +260,10 @@ public abstract class APickingManager<T extends APickingEntry> {
 				continue;
 			if (!wasMouseIn.get(name)) {
 				// send mouse in
-				entry.fire(PickingMode.MOUSE_OVER, mousePos, depth);
+				entry.fire(PickingMode.MOUSE_OVER, mousePos, depth, isAnyDragging);
 			}
-			entry.fire(mode, mousePos, depth);
+			entry.fire(mode, mousePos, depth, isAnyDragging);
+			this.isAnyDragging = this.isAnyDragging || entry.isDragging();
 			mouseIn.add(entry);
 		}
 	}

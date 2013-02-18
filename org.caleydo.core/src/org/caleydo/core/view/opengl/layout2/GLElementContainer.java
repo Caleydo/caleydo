@@ -5,6 +5,7 @@ import gleem.linalg.Vec2f;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -191,6 +192,11 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	public final boolean isEmpty() {
 		return children.isEmpty();
+	}
+
+	public final void sortBy(Comparator<GLElement> comparator) {
+		Collections.sort(children, comparator);
+		relayout();
 	}
 
 	@Override

@@ -48,15 +48,15 @@ public class GLButton extends PickableGLElement {
 	/**
 	 * effect to render when the mouse is over the component
 	 */
-	private IGLRenderer hoverEffect = GLRenderers.drawRect(Color.DARK_GRAY);
+	private IGLRenderer hoverEffect = GLRenderers.drawRoundedRect(Color.DARK_GRAY);
 	/**
 	 * effect to render when the mouse is down
 	 */
-	private IGLRenderer armedEffect = GLRenderers.fillRect(new Color(1, 1, 1, 0.3f));
+	private IGLRenderer armedEffect = GLRenderers.fillRoundedRect(new Color(1, 1, 1, 0.3f));
 	/**
 	 * effect to render when the component is selected
 	 */
-	private IGLRenderer selectedEffect = GLRenderers.DUMMY;
+	private IGLRenderer selectedRenderer = null;
 
 	/**
 	 * callback for selection state changes
@@ -117,15 +117,13 @@ public class GLButton extends PickableGLElement {
 	}
 
 	/**
-	 * @param selectedEffect
-	 *            setter, see {@link selectedEffect}
+	 * @param selectedRenderer
+	 *            setter, see {@link selectedRenderer}
 	 */
-	public GLButton setSelectedEffect(IGLRenderer selectedEffect) {
-		if (selectedEffect == null)
-			selectedEffect = GLRenderers.DUMMY;
-		if (this.selectedEffect.equals(selectedEffect))
+	public GLButton setSelectedRenderer(IGLRenderer selectedRenderer) {
+		if (this.selectedRenderer != null && this.selectedRenderer.equals(selectedRenderer))
 			return this;
-		this.selectedEffect = selectedEffect;
+		this.selectedRenderer = selectedRenderer;
 		if (selected)
 			repaint();
 		return this;
@@ -216,13 +214,15 @@ public class GLButton extends PickableGLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		super.renderImpl(g, w, h);
+		if (selected && selectedRenderer != null)
+			selectedRenderer.render(g, w, h, this);
+		else
+			super.renderImpl(g, w, h);
+
 		if (hovered)
 			hoverEffect.render(g, w, h, this);
 		if (armed)
 			armedEffect.render(g, w, h, this);
-		if (selected)
-			selectedEffect.render(g, w, h, this);
 	}
 
 	public enum EButtonMode {
