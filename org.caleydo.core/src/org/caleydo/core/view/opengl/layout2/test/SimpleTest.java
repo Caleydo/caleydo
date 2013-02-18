@@ -24,11 +24,13 @@ import java.awt.Color;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.GLPadding;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -38,7 +40,14 @@ import org.caleydo.core.view.opengl.picking.Pick;
 public class SimpleTest extends GLElementContainer {
 	public SimpleTest() {
 		setLayout(GLLayouts.flowHorizontal(4));
-		add(new GLElement(GLRenderers.fillRect(Color.GREEN)).setSize(Float.NaN, 200), 0.3f);
+		add(new GLElement(new IGLRenderer() {
+
+			@Override
+			public void render(GLGraphics g, float w, float h, GLElement parent) {
+				g.color(Color.GREEN).fillRoundecRect(0, 0, w, h, 20, 10);
+
+			}
+		}).setSize(Float.NaN, 200), 0.3f);
 		add(new GLElement(GLRenderers.fillRect(Color.RED)).setSize(100, -1));
 
 		GLElementContainer l = new GLElementContainer();
@@ -84,11 +93,11 @@ public class SimpleTest extends GLElementContainer {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(Color.CYAN).fillRect(0, 0, w, h);
+		// g.color(Color.CYAN).fillRoundecRect(0, 0, w, h, 10);
 		super.renderImpl(g, w, h);
 	}
 
 	public static void main(String[] args) {
-		GLSandBox.main(args, new SimpleTest());
+		GLSandBox.main(args, new SimpleTest(), new GLPadding(10));
 	}
 }

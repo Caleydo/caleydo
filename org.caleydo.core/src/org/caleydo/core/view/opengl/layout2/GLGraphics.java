@@ -268,6 +268,70 @@ public class GLGraphics {
 		return this;
 	}
 
+	public GLGraphics fillRoundecRect(float x, float y, float w, float h, float radius) {
+		int segments;
+		if (radius < 4)
+			segments = 0;
+		else if (radius < 10)
+			segments = 2;
+		else
+			segments = 8;
+		return fillRoundecRect(x, y, w, h, radius, segments);
+	}
+
+	public GLGraphics fillRoundecRect(float x, float y, float w, float h, float radius, int segments) {
+		return renderRoundedRect(true, x, y, w, h, radius, segments);
+	}
+
+	private GLGraphics renderRoundedRect(boolean fill, float x, float y, float w, float h, float radius, int segments) {
+		assert w < radius * 2;
+		assert h < radius * 2;
+		if (radius <= 0)
+			return fillRect(x, y, w, h);
+
+		if (segments % 2 == 1) // make it even
+			segments++;
+		float[] offsets;
+
+		if (segments < 2)
+			offsets = new float[0];
+		else {
+			offsets = new float[segments-1];
+			double delta = Math.toRadians(90.f / segments);
+			double act = delta;
+			for(int i = 0; i < offsets.length; ++i) {
+				offsets[i] = radius - (float) Math.sin(act) * radius;
+				act += delta;
+			}
+		}
+		final int ol = offsets.length - 1;
+
+		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
+		gl.glVertex3f(x + radius, y, 0);
+		gl.glVertex3f(x + w - radius, y, 0);
+		// round
+		for (int i = 0; i < offsets.length; ++i) {
+			gl.glVertex3f(x + w - offsets[i], y + offsets[ol - i], 0);
+		}
+		gl.glVertex3f(x + w, y + radius, 0);
+		gl.glVertex3f(x + w, y + h - radius, 0);
+		for (int i = 0; i < offsets.length; ++i) {
+			gl.glVertex3f(x + w - offsets[ol - i], y + h - offsets[i], 0);
+		}
+		gl.glVertex3f(x + w - radius, y + h, 0);
+		gl.glVertex3f(x + radius, y + h, 0);
+		for (int i = 0; i < offsets.length; ++i) {
+			gl.glVertex3f(x + offsets[i], y + h - offsets[ol - i], 0);
+		}
+		gl.glVertex3f(x, y + h - radius, 0);
+		gl.glVertex3f(x, y + radius, 0);
+		for (int i = 0; i < offsets.length; ++i) {
+			gl.glVertex3f(x + offsets[ol - i], y + offsets[i], 0);
+		}
+		gl.glEnd();
+		return this;
+	}
+
 	/**
 	 * renders a texture within the given rect
 	 */
@@ -404,6 +468,21 @@ public class GLGraphics {
 		gl.glVertex3f(x, y + h, z);
 		gl.glEnd();
 		return this;
+	}
+
+	public GLGraphics drawRoundecRect(float x, float y, float w, float h, float radius) {
+		int segments;
+		if (radius < 4)
+			segments = 0;
+		else if (radius < 10)
+			segments = 2;
+		else
+			segments = 4;
+		return drawRoundecRect(x, y, w, h, radius, segments);
+	}
+
+	public GLGraphics drawRoundecRect(float x, float y, float w, float h, float radius, int segments) {
+		return renderRoundedRect(false, x, y, w, h, radius, segments);
 	}
 
 	/**
