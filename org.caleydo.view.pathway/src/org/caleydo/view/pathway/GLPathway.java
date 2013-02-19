@@ -45,6 +45,8 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
+import org.caleydo.core.event.EventListenerManager;
+import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
@@ -84,6 +86,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -98,6 +101,7 @@ import org.caleydo.view.pathway.listener.ClearPathEventListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
+import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -182,6 +186,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private SampleMappingModeListener sampleMappingModeListener;
 	private UpdateColorMappingListener updateColorMappingListener;
 	private ClearMappingListener clearMappingListener;
+	private ShowPortalNodesEventListener showPortalNodesEventListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -218,6 +223,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 * Event space for events that synchronize a pathway path.
 	 */
 	private String pathwayPathEventSpace = DEFAULT_PATHWAY_PATH_EVENT_SPACE;
+
+	EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	/**
 	 * Constructor.
@@ -1154,11 +1161,18 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		clearMappingListener.setHandler(this);
 		eventPublisher.addListener(ClearMappingEvent.class, clearMappingListener);
 
+		showPortalNodesEventListener = new ShowPortalNodesEventListener();
+		showPortalNodesEventListener.setHandler(this);
+		showPortalNodesEventListener.setEventSpace(pathwayPathEventSpace);
+		listeners.register(ShowPortalNodesEvent.class, showPortalNodesEventListener);
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
+
+		listeners.unregisterAll();
 
 		if (enableGeneMappingListener != null) {
 			eventPublisher.removeListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
@@ -1502,6 +1516,16 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		if (isPathSelectionMode) {
 			selectPath(vertexRep, selectionType);
+
+			// TODO: make sure that this is the last vertex of the last path segment
+			if (selectedPath != null && vertexRep == selectedPath.getEndVertex()) {
+				ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
+				e.setSender(this);
+				e.setEventSpace(pathwayPathEventSpace);
+				eventPublisher.triggerEvent(e);
+				// the event will not be sent back to this pathway object, so highlight must be triggered here
+				highlightPortalNodes(vertexRep);
+			}
 		}
 
 		// Add new vertex to internal selection manager
@@ -1668,6 +1692,23 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	public String getPathwayPathEventSpace() {
 		return pathwayPathEventSpace;
+	}
+
+	/**
+	 * Highlights all nodes equivalent to the specified {@link PathwayVertexRep}.
+	 *
+	 * @param vertexRep
+	 */
+	public void highlightPortalNodes(PathwayVertexRep vertexRep) {
+
+		Set<PathwayVertexRep> portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
+				pathway);
+		// TODO: clear existing portal highlights
+		for (PathwayVertexRep portal : portalVertexReps) {
+			portal.getCenterX();
+			// TODO: trigger rendering of portal highlight
+		}
+
 	}
 
 }

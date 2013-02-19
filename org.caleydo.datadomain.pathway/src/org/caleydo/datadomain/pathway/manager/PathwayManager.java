@@ -466,22 +466,34 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	/**
-	 * Gets all {@link PathwayVertexRep}s that are equivalent to the specified one. Equivalence is defined as that the
-	 * vertexReps refer to the same set of {@link PathwayVertex} objects. The returned vertexReps can be from different
-	 * {@link PathwayGraph}s or also the same one as the specified vertexRep. The specified vertexRep is not part of the
-	 * returned set.
+	 * Convenience method for {@link #getEquivalentVertexRepsInPathway(PathwayVertexRep, null)}.
+	 *
 	 *
 	 * @param vertexRep
 	 * @return Set of equivalent vertexReps.
 	 */
 	public Set<PathwayVertexRep> getEquivalentVertexReps(PathwayVertexRep vertexRep) {
+		return getEquivalentVertexRepsInPathway(vertexRep, null);
+	}
+
+	/**
+	 * Gets all {@link PathwayVertexRep}s that are equivalent to the specified one. Equivalence is defined as that the
+	 * vertexReps refer to the same set of {@link PathwayVertex} objects. The returned vertexReps are from the specified
+	 * {@link PathwayGraph} or can be from multiple different <code>PathwayGraph</code>s if null is specified. The
+	 * specified vertexRep is not part of the returned set.
+	 *
+	 * @param vertexRep
+	 * @param pathway
+	 * @return
+	 */
+	public Set<PathwayVertexRep> getEquivalentVertexRepsInPathway(PathwayVertexRep vertexRep, PathwayGraph pathway) {
 		Set<PathwayVertexRep> equivalentVertexReps = new HashSet<>();
 
 		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
 		for (PathwayVertex vertex : vertices) {
 			List<PathwayVertexRep> vertexReps = vertex.getPathwayVertexReps();
 			for (PathwayVertexRep vr : vertexReps) {
-				if (vr != vertexRep) {
+				if (vr != vertexRep && (pathway == null || vr.getPathway() == pathway)) {
 					List<PathwayVertex> currentVertices = vr.getPathwayVertices();
 					if (currentVertices.size() == vertices.size() && currentVertices.containsAll(vertices)) {
 						equivalentVertexReps.add(vr);
