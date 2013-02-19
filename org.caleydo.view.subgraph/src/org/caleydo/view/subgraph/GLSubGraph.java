@@ -159,10 +159,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn);
 
 			pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(), pathwayDataDomain,
-					newRecordPerspective, newDimensionPerspective, PathwayManager.get().getPathwayByTitle("Apoptosis",
-							EPathwayDatabaseType.KEGG));
+					newRecordPerspective, newDimensionPerspective, PathwayManager.get().getPathwayByTitle(
+							"Pathways in cancer", EPathwayDatabaseType.KEGG));
 			pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
 
+			pathwayTablePerspectives.clear();
+			pathwayTablePerspectives.add(pathwayTablePerspective);
 			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn);
 
 			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer);
