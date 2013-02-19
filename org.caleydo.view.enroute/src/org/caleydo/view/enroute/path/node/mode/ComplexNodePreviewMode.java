@@ -14,7 +14,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
-import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
 
 /**
@@ -25,7 +24,7 @@ import org.caleydo.view.enroute.path.node.ComplexNode;
  */
 public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements IComplexNodeMode {
 
-	public static final int MIN_NODE_WIDTH_PIXELS = 70;
+	// public static final int MIN_NODE_WIDTH_PIXELS = 70;
 
 	protected EnRoutePathRenderer enRoutePathRenderer;
 
@@ -83,12 +82,12 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 
 	@Override
 	public int getMinHeightPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getRectangleNodeHeight();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		return MIN_NODE_WIDTH_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getRectangleNodeWidth();
 	}
 
 	@Override

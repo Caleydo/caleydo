@@ -91,11 +91,13 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	 */
 	protected Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
 
-	protected EnRoutePathSizeConfiguration sizeConfig = EnRoutePathSizeConfiguration.ENROUTE_DEFAULT;
-
 	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
-		minWidthPixels = sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth + PATHWAY_TITLE_COLUMN_WIDTH_PIXELS;
+		// setSizeConfig(PathSizeConfiguration.ENROUTE_DEFAULT);
+		setSizeConfig(new PathSizeConfiguration.Builder(PathSizeConfiguration.ENROUTE_COMPACT)
+				.branchSummaryNodeWidth(50).branchAreaWidth(65).pathAreaWidth(80).minNodeSpacing(25)
+				.branchNodeToPathNodeVerticalSpacing(10).branchSummaryNodeBranchAreaSpacing(4).build());
+
 	}
 
 	@Override
@@ -273,9 +275,9 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 		float additionalSpacing = 0;
 		if (isFirstSpacing)
-			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing);
 		if (isLastSpacing)
-			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathEndSpacing);
 
 		float dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.rowHeight);
 
@@ -422,7 +424,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.branchAreaWidth);
 		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathAreaWidth);
-		float pathwayTitleColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
+		float pathwayTitleColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathwayTitleAreaWidth);
 
 		float pathwayHeight = 0;
 		int minViewHeightRequiredByBranchNodes = 0;
@@ -500,7 +502,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
 
-		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS
+		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathwayTitleAreaWidth
 				+ sizeConfig.branchNodeLeftSideSpacing);
 		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
 				.getGLHeightForPixelHeight(sizeConfig.branchNodeToPathNodeVerticalSpacing);
@@ -573,6 +575,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 			linePoints.add(targetPosition);
 
 			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+			arrowRenderer.setBaseWidthPixels(sizeConfig.edgeArrwoBaseLineSize);
+			arrowRenderer.setHeadToBasePixels(sizeConfig.edgeArrowSize);
 			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
 			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
 
@@ -595,6 +599,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 			linePoints.add(targetPosition);
 
 			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+			arrowRenderer.setBaseWidthPixels(sizeConfig.edgeArrwoBaseLineSize);
+			arrowRenderer.setHeadToBasePixels(sizeConfig.edgeArrowSize);
 			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
 			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
 
@@ -611,7 +617,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 			List<ALinearizableNode> branchNodes = summaryNode.getBranchNodes();
 			for (ALinearizableNode node : branchNodes) {
 				EdgeRenderUtil.renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
-						linearizedNode.getLeftConnectionPoint(), 0.2f, false, pixelGLConverter, textRenderer);
+						linearizedNode.getLeftConnectionPoint(), 0.2f, false, pixelGLConverter, textRenderer,
+						sizeConfig);
 			}
 		}
 
@@ -622,19 +629,10 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		return true;
 	}
 
-	/**
-	 * @return the sizeConfig, see {@link #sizeConfig}
-	 */
-	public EnRoutePathSizeConfiguration getSizeConfig() {
-		return sizeConfig;
-	}
-
-	/**
-	 * @param sizeConfig
-	 *            setter, see {@link sizeConfig}
-	 */
-	public void setSizeConfig(EnRoutePathSizeConfiguration sizeConfig) {
-		this.sizeConfig = sizeConfig;
+	@Override
+	public void setSizeConfig(PathSizeConfiguration sizeConfig) {
+		super.setSizeConfig(sizeConfig);
+		minWidthPixels = sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth + sizeConfig.pathwayTitleAreaWidth;
 	}
 
 }

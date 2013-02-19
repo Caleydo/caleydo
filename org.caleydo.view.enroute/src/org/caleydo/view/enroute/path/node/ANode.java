@@ -40,8 +40,8 @@ import org.caleydo.core.view.opengl.picking.PickingManager;
  */
 public abstract class ANode implements ILabelProvider {
 
-	public final static int DEFAULT_HEIGHT_PIXELS = 20;
-	public final static int DEFAULT_WIDTH_PIXELS = 70;
+	// public final static int DEFAULT_HEIGHT_PIXELS = 20;
+	// public final static int DEFAULT_WIDTH_PIXELS = 70;
 
 	protected PixelGLConverter pixelGLConverter;
 

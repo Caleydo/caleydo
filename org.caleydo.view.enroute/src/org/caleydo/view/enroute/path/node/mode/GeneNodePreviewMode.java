@@ -34,10 +34,10 @@ import org.caleydo.view.enroute.path.node.GeneNode;
  */
 public class GeneNodePreviewMode extends AGeneNodeMode {
 
-	protected static final int MIN_NODE_WIDTH_PIXELS = 70;
+	// protected static final int MIN_NODE_WIDTH_PIXELS = 70;
 	protected static final int SPACING_PIXELS = 2;
-	protected static final int CAPTION_HEIGHT_PIXELS = 16;
-	protected static final int GENE_ROW_HEIGHT_PIXELS = 30;
+	// protected static final int CAPTION_HEIGHT_PIXELS = 16;
+	// protected static final int GENE_ROW_HEIGHT_PIXELS = 30;
 
 	protected ColorRenderer colorRenderer;
 
@@ -80,7 +80,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 		ElementLayout labelLayout = new ElementLayout("label");
 		labelLayout.setRenderer(Renderers.createLabel(node, view).setAlignment(LabelAlignment.CENTER));
-		labelLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+		labelLayout.setPixelSizeY(pathwayPathRenderer.getSizeConfig().getNodeTextHeight());
 
 		ElementLayout horizontalSpacing = new ElementLayout();
 		horizontalSpacing.setPixelSizeX(SPACING_PIXELS);
@@ -101,7 +101,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		baseColumn.append(verticalSpacing);
 		baseColumn.append(titleRow);
 		baseColumn.append(verticalSpacing);
-		heightPixels += 2 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS;
+		heightPixels += 2 * SPACING_PIXELS + pathwayPathRenderer.getSizeConfig().getNodeTextHeight();
 		if (previewRow != null) {
 			baseColumn.append(previewRow);
 		}
@@ -135,11 +135,11 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			ColorRenderer geneRowColorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 },
 					new float[] { 0, 0, 0, 1 }, 1);
 			geneRow.setRenderer(geneRowColorRenderer);
-			geneRow.setPixelSizeY(GENE_ROW_HEIGHT_PIXELS);
+			geneRow.setPixelSizeY(pathwayPathRenderer.getSizeConfig().getDataPreviewRowHeight());
 			geneColumn.append(geneRow);
 			// geneColumn.append(verticalSpacing);
 			// geneColumn.append(verticalSpacing);
-			heightPixels += GENE_ROW_HEIGHT_PIXELS;
+			heightPixels += pathwayPathRenderer.getSizeConfig().getDataPreviewRowHeight();
 			IDataDomain prevDataDomain = null;
 			geneRow.append(horizontalSpacing);
 			geneRow.append(columnSpacingLayout);
@@ -191,7 +191,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 	@Override
 	public int getMinWidthPixels() {
-		return MIN_NODE_WIDTH_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getRectangleNodeWidth();
 	}
 
 	@Override

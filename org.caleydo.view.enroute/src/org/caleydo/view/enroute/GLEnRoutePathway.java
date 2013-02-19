@@ -246,6 +246,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (isLayoutDirty) {
 			layoutManager.updateLayout();
 		}
+
 		layoutManager.render(gl);
 		if (pathRenderer.getPathNodes().isEmpty()) {
 			if (isDisplayListDirty) {
@@ -258,10 +259,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			if (isLayoutDirty) {
 				updateLayout();
 
-				// float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-				// float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
-				// float pathwayTextColumnWidth = pixelGLConverter
-				// .getGLWidthForPixelWidth(EnRoutePathRenderer.PATHWAY_TITLE_COLUMN_WIDTH_PIXELS);
 				float dataRowPositionX = pixelGLConverter.getGLWidthForPixelWidth(pathRenderer.getMinWidthPixels());
 				float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 
@@ -312,8 +309,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
 
-		float dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(pathRenderer.getSizeConfig()
-				.getMinNodeSpacing());
+		float dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(pathRenderer.getSizeConfig().getRowHeight());
 
 		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX - sideSpacing, viewFrustum.getHeight()
 				- 2 * topSpacing, dataRowPositionX, topSpacing, dataRowHeight);

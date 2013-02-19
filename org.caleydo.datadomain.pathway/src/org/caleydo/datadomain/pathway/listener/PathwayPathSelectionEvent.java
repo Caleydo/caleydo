@@ -20,7 +20,7 @@
 /**
  *
  */
-package org.caleydo.view.pathway.event;
+package org.caleydo.datadomain.pathway.listener;
 
 import java.util.List;
 
@@ -28,12 +28,12 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 
 /**
- * Event that specifies a linearizable list of pathway path segments.
- * 
+ * Event that specifies a list of pathway path segments.
+ *
  * @author Christian Partl
- * 
+ *
  */
-public class EnRoutePathEvent extends AEvent {
+public class PathwayPathSelectionEvent extends AEvent {
 
 	/**
 	 * Path object that specifies a path.

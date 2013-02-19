@@ -14,7 +14,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
-import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
 import org.caleydo.view.enroute.path.node.CompoundNode;
 import org.caleydo.view.enroute.path.node.RemoveNodeButtonAttributeRenderer;
@@ -72,7 +71,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.SELECTION);
 				selectionManager.clearSelection(SelectionType.SELECTION);
-				selectionManager.addToType(SelectionType.SELECTION, node.getPrimaryPathwayVertexRep().getName().hashCode());
+				selectionManager.addToType(SelectionType.SELECTION, node.getPrimaryPathwayVertexRep().getName()
+						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.SELECTION);
@@ -86,7 +86,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				EventBasedSelectionManager geneSelectionManager = pathwayPathRenderer.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName().hashCode());
+				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
+						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
@@ -116,7 +117,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 	@Override
 	public int getMinWidthPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getCircleNodeRadius() * 2;
 	}
 
 }

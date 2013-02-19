@@ -28,9 +28,9 @@ import org.caleydo.view.enroute.path.node.CompoundNode;
  */
 public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
-	protected static final int MIN_NODE_WIDTH_PIXELS = 70;
-	protected static final int TEXT_HEIGHT_PIXELS = 12;
-	protected static final int SPACING_PIXELS = 4;
+	// protected static final int MIN_NODE_WIDTH_PIXELS = 70;
+	// protected static final int TEXT_HEIGHT_PIXELS = 12;
+	// protected static final int SPACING_PIXELS = 4;
 
 	protected EnRoutePathRenderer enRoutePathRenderer;
 
@@ -59,8 +59,10 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		Vec3f circlePosition = new Vec3f(nodePosition.x() + width / 2.0f - height / 2.0f, nodePosition.y(),
 				nodePosition.z());
 
-		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
-		float spacing = pixelGLConverter.getGLHeightForPixelHeight(SPACING_PIXELS);
+		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(pathwayPathRenderer.getSizeConfig()
+				.getNodeTextHeight());
+		float horizontalSpacing = pixelGLConverter.getGLHeightForPixelHeight(4);
+		float verticalSpacing = (height - textHeight) / 2.0f;
 		float leftX = nodePosition.x() - width / 2.0f;
 		float bottomY = nodePosition.y() - height / 2.0f;
 
@@ -83,12 +85,11 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		gl.glVertex3f(leftX, bottomY + height, nodePosition.z());
 		gl.glEnd();
 
-		textRenderer.renderTextInBounds(gl, node.getLabel(), leftX + spacing,
-				bottomY + spacing + pixelGLConverter.getGLHeightForPixelHeight(2), nodePosition.z(), width - height,
-				textHeight);
+		textRenderer.renderTextInBounds(gl, node.getLabel(), leftX + horizontalSpacing, bottomY + verticalSpacing
+				+ pixelGLConverter.getGLHeightForPixelHeight(2), nodePosition.z(), width - height, textHeight);
 		gl.glPopName();
 
-		renderCircle(gl, glu, circlePosition, height - spacing);
+		renderCircle(gl, glu, circlePosition, textHeight);
 
 		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
 			attributeRenderer.render(gl);
@@ -119,7 +120,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 				EventBasedSelectionManager selectionManager = pathwayPathRenderer.getMetaboliteSelectionManager();
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName().hashCode());
+				selectionManager.addToType(SelectionType.MOUSE_OVER, node.getPrimaryPathwayVertexRep().getName()
+						.hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
 
 				node.setSelectionType(SelectionType.MOUSE_OVER);
@@ -151,7 +153,12 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 	@Override
 	public int getMinWidthPixels() {
-		return MIN_NODE_WIDTH_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getRectangleNodeWidth();
+	}
+
+	@Override
+	public int getMinHeightPixels() {
+		return pathwayPathRenderer.getSizeConfig().getRectangleNodeHeight();
 	}
 
 }

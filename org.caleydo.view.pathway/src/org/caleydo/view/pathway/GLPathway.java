@@ -83,12 +83,12 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
+import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.event.ClearMappingEvent;
 import org.caleydo.view.pathway.event.ClearPathEvent;
-import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeListener;
@@ -888,6 +888,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// }
 		//
 		// /////////////////////
+		if (allPaths.size() == 0)
+			return;
 		if (allPaths.size() <= selectedPathID)
 			selectedPathID = 0;
 		bubblesetCanvas.setSelection(selectedPathID); // the selected set will
@@ -1126,7 +1128,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		enRoutePathEventListener = new EnRoutePathEventListener();
 		enRoutePathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
 		enRoutePathEventListener.setHandler(this);
-		eventPublisher.addListener(EnRoutePathEvent.class, enRoutePathEventListener);
+		eventPublisher.addListener(PathwayPathSelectionEvent.class, enRoutePathEventListener);
 
 		selectPathModeEventListener = new SelectPathModeEventListener();
 		selectPathModeEventListener.setHandler(this);
@@ -1423,6 +1425,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType) {
+		if (vertexRep == null)
+			return;
 		if (!isPathStartSelected) {// ////////////////////////////////
 			if (isControlKeyDown) {// shrink previous selected path
 				shrinkSelectedPath(vertexRep);
@@ -1514,7 +1518,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private void triggerPathUpdate() {
 		if (selectedPath == null)
 			return;
-		EnRoutePathEvent pathEvent = new EnRoutePathEvent();
+		PathwayPathSelectionEvent pathEvent = new PathwayPathSelectionEvent();
 		List<PathwayPath> pathSegments = new ArrayList<>(1);
 		pathSegments.add(new PathwayPath(selectedPath));
 		pathEvent.setPathSegments(pathSegments);
@@ -1540,7 +1544,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		}
 
 		allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
-		allPaths.add(selectedPath);
+		if (selectedPath != null)
+			allPaths.add(selectedPath);
 
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();

@@ -55,13 +55,13 @@ import org.caleydo.view.enroute.path.EnRoutePathRenderer;
  */
 public class BranchSummaryNode extends ANode {
 
-	protected static final int MIN_NODE_WIDTH_PIXELS = 90;
+	// protected static final int MIN_NODE_WIDTH_PIXELS = 90;
 	protected static final int SPACING_PIXELS = 2;
-	protected static final int COLLAPSE_BUTTON_SIZE_PIXELS = 12;
-	protected static final int LABEL_HEIGHT_PIXELS = 14;
+	// protected static final int COLLAPSE_BUTTON_SIZE_PIXELS = 12;
+	// protected static final int LABEL_HEIGHT_PIXELS = 14;
 	protected static final int NUM_NODES_LABEL_WIDTH_PIXELS = 16;
-	protected static final int BRANCH_NODE_SPACING = 20;
-	protected static final int BRANCH_AREA_SPACING = 8;
+	// protected static final int BRANCH_NODE_SPACING = 20;
+	// protected static final int BRANCH_AREA_SPACING = 8;
 
 	protected LayoutManager layoutManager;
 
@@ -201,21 +201,23 @@ public class BranchSummaryNode extends ANode {
 		Row baseRow = new Row("baseRow");
 		// baseRow.setDebug(true);
 		// baseRow.setFrameColor(0, 1, 0, 1);
-		baseRow.setPixelSizeY(LABEL_HEIGHT_PIXELS);
+		int textHeight = pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeTextHeight();
+
+		baseRow.setPixelSizeY(textHeight);
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
 		collapseButton = new Button(EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId,
 				EIconTextures.GROUPER_COLLAPSE_PLUS);
 		ButtonRenderer collapseButtonRenderer = new ButtonRenderer.Builder(view, collapseButton).build();
 		collapseButtonLayout.setRenderer(collapseButtonRenderer);
-		collapseButtonLayout.setPixelSizeX(COLLAPSE_BUTTON_SIZE_PIXELS);
-		collapseButtonLayout.setPixelSizeY(COLLAPSE_BUTTON_SIZE_PIXELS);
+		collapseButtonLayout.setPixelSizeX(textHeight - SPACING_PIXELS);
+		collapseButtonLayout.setPixelSizeY(textHeight - SPACING_PIXELS);
 
 		ElementLayout captionLayout = new ElementLayout("label");
 		labelRenderer = new BranchNodeLabelRenderer(this, view);
 
 		captionLayout.setRenderer(labelRenderer);
-		captionLayout.setPixelSizeY(LABEL_HEIGHT_PIXELS);
+		captionLayout.setPixelSizeY(textHeight);
 
 		ElementLayout numNodesLabelLayout = new ElementLayout("numNodeslabel");
 		// numNodesLabelLayout.setDebug(true);
@@ -224,7 +226,7 @@ public class BranchSummaryNode extends ANode {
 		// numNodesLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
 
 		numNodesLabelLayout.setRenderer(numNodesLabelRenderer);
-		numNodesLabelLayout.setPixelSizeY(LABEL_HEIGHT_PIXELS);
+		numNodesLabelLayout.setPixelSizeY(textHeight);
 		numNodesLabelLayout.setPixelSizeX(NUM_NODES_LABEL_WIDTH_PIXELS);
 
 		ElementLayout horizontalSpacing = new ElementLayout();
@@ -267,8 +269,10 @@ public class BranchSummaryNode extends ANode {
 		if (!isCollapsed) {
 
 			float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(getTitleAreaHeightPixels());
-			float branchAreaSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_AREA_SPACING);
-			float branchNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_NODE_SPACING);
+			float branchAreaSpacing = pixelGLConverter.getGLHeightForPixelHeight(pathwayPathRenderer.getSizeConfig()
+					.getBranchSummaryNodeBranchAreaSpacing());
+			float branchNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(pathwayPathRenderer.getSizeConfig()
+					.getBranchSummaryNodeBranchNodeSpacing());
 			float currentPositionY = position.y() + height / 2.0f - titleAreaHeight - branchAreaSpacing;
 
 			for (ANode node : branchNodes) {
@@ -286,7 +290,7 @@ public class BranchSummaryNode extends ANode {
 	 * @return Height of the title area of the branch node in pixels.
 	 */
 	public int getTitleAreaHeightPixels() {
-		return 2 * SPACING_PIXELS + LABEL_HEIGHT_PIXELS;
+		return 2 * SPACING_PIXELS + pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeTextHeight();
 	}
 
 	/**
@@ -299,8 +303,9 @@ public class BranchSummaryNode extends ANode {
 			minHeight += node.getHeightPixels();
 		}
 
-		minHeight += (branchNodes.size() - 1) * BRANCH_NODE_SPACING;
-		minHeight += 2 * BRANCH_AREA_SPACING;
+		minHeight += (branchNodes.size() - 1)
+				* pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeBranchNodeSpacing();
+		minHeight += 2 * pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeBranchAreaSpacing();
 
 		return minHeight;
 	}
@@ -317,7 +322,7 @@ public class BranchSummaryNode extends ANode {
 
 	@Override
 	public int getWidthPixels() {
-		return MIN_NODE_WIDTH_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getBranchSummaryNodeWidth();
 	}
 
 	@Override

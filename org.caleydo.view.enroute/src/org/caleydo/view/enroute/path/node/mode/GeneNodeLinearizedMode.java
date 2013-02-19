@@ -17,7 +17,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
-import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.GeneNode;
 import org.caleydo.view.enroute.path.node.RemoveNodeButtonAttributeRenderer;
 
@@ -63,17 +62,18 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
 		ElementLayout labelLayout = new ElementLayout("label");
 		labelLayout.setRenderer(Renderers.createLabel(node, view).setAlignment(LabelAlignment.CENTER));
-		labelLayout.setPixelSizeY(16);
+		labelLayout.setPixelSizeY(pathwayPathRenderer.getSizeConfig().getNodeTextHeight());
 
 		ElementLayout horizontalSpacing = new ElementLayout();
-		horizontalSpacing.setPixelSizeX(2);
+		int spacing = (int) ((getMinHeightPixels() - pathwayPathRenderer.getSizeConfig().getNodeTextHeight()) / 2.0f);
+		horizontalSpacing.setPixelSizeX(spacing);
 
 		// baseRow.append(horizontalSpacing);
 		baseRow.append(labelLayout);
 		// baseRow.append(horizontalSpacing);
 
 		ElementLayout verticalSpacing = new ElementLayout();
-		verticalSpacing.setPixelSizeY(2);
+		verticalSpacing.setPixelSizeY(spacing);
 
 		baseColumn.append(verticalSpacing);
 		baseColumn.append(baseRow);
@@ -84,12 +84,12 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
 	@Override
 	public int getMinHeightPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getRectangleNodeHeight();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		return ANode.DEFAULT_WIDTH_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getRectangleNodeWidth();
 	}
 
 	@Override

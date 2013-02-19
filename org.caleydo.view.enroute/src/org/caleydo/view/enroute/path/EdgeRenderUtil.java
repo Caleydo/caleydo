@@ -57,7 +57,7 @@ public final class EdgeRenderUtil {
 
 	public static void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2, Vec3f node1ConnectionPoint,
 			Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection,
-			PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer) {
+			PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer, PathSizeConfiguration sizeConfig) {
 
 		List<PathwayVertexRep> node1VertexReps = node1.getVertexReps();
 		List<PathwayVertexRep> node2VertexReps = node2.getVertexReps();
@@ -131,11 +131,12 @@ public final class EdgeRenderUtil {
 						// TODO:
 						break;
 					case activation:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter));
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+								sizeConfig));
 						break;
 					case inhibition:
 						connectionRenderer.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(
-								isVerticalConnection, pixelGLConverter));
+								isVerticalConnection, pixelGLConverter, sizeConfig));
 						if (isVerticalConnection) {
 							targetConnectionPoint.setY(targetConnectionPoint.y()
 									+ ((isNode1Target) ? -spacing : spacing));
@@ -145,21 +146,24 @@ public final class EdgeRenderUtil {
 						}
 						break;
 					case expression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter));
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+								sizeConfig));
 						if (vertexRep1.getType() == EPathwayVertexType.gene
 								&& vertexRep1.getType() == EPathwayVertexType.gene) {
 							connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e",
-									pixelGLConverter, textRenderer));
+									pixelGLConverter, textRenderer, sizeConfig));
 						}
 						break;
 					case repression:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter));
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+								sizeConfig));
 						connectionRenderer.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(
-								isVerticalConnection, pixelGLConverter));
+								isVerticalConnection, pixelGLConverter, sizeConfig));
 						targetConnectionPoint.setY(targetConnectionPoint.y() + ((isNode1Target) ? -spacing : spacing));
 						break;
 					case indirect_effect:
-						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter));
+						connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer(pixelGLConverter,
+								sizeConfig));
 						connectionRenderer.setLineStippled(true);
 						break;
 					case state_change:
@@ -169,36 +173,37 @@ public final class EdgeRenderUtil {
 						// Nothing to do
 						break;
 					case dissociation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer(pixelGLConverter));
+						connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer(
+								pixelGLConverter, sizeConfig));
 						break;
 					case missing_interaction:
-						connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer(pixelGLConverter));
+						connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer(pixelGLConverter,
+								sizeConfig));
 						break;
 					case phosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-										EPathwayRelationEdgeSubType.phosphorylation.getSymbol(), pixelGLConverter,
-										textRenderer));
+						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
+								EPathwayRelationEdgeSubType.phosphorylation.getSymbol(), pixelGLConverter,
+								textRenderer, sizeConfig));
 						break;
 					case dephosphorylation:
 						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
 								EPathwayRelationEdgeSubType.dephosphorylation.getSymbol(), pixelGLConverter,
-								textRenderer));
+								textRenderer, sizeConfig));
 						break;
 					case glycosylation:
 						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-								EPathwayRelationEdgeSubType.glycosylation.getSymbol(), pixelGLConverter, textRenderer));
+								EPathwayRelationEdgeSubType.glycosylation.getSymbol(), pixelGLConverter, textRenderer,
+								sizeConfig));
 						break;
 					case ubiquitination:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-										EPathwayRelationEdgeSubType.ubiquitination.getSymbol(), pixelGLConverter,
-										textRenderer));
+						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
+								EPathwayRelationEdgeSubType.ubiquitination.getSymbol(), pixelGLConverter, textRenderer,
+								sizeConfig));
 						break;
 					case methylation:
 						connectionRenderer.addAttributeRenderer(createDefaultLabelAboveLineRenderer(
-								EPathwayRelationEdgeSubType.methylation.getSymbol(), pixelGLConverter, textRenderer));
+								EPathwayRelationEdgeSubType.methylation.getSymbol(), pixelGLConverter, textRenderer,
+								sizeConfig));
 						break;
 					}
 				}
@@ -208,43 +213,53 @@ public final class EdgeRenderUtil {
 		connectionRenderer.renderLine(gl, linePoints);
 	}
 
-	private static LineEndArrowRenderer createDefaultLineEndArrowRenderer(PixelGLConverter pixelGLConverter) {
+	private static LineEndArrowRenderer createDefaultLineEndArrowRenderer(PixelGLConverter pixelGLConverter,
+			PathSizeConfiguration sizeConfig) {
 		ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+		arrowRenderer.setHeadToBasePixels(sizeConfig.edgeArrowSize);
+		arrowRenderer.setBaseWidthPixels(sizeConfig.edgeArrwoBaseLineSize);
 		return new LineEndArrowRenderer(false, arrowRenderer);
 	}
 
 	private static LineEndStaticLineRenderer createDefaultLineEndStaticLineRenderer(boolean isHorizontalLine,
-			PixelGLConverter pixelGLConverter) {
+			PixelGLConverter pixelGLConverter, PathSizeConfiguration sizeConfig) {
 		LineEndStaticLineRenderer lineEndRenderer = new LineEndStaticLineRenderer(false, pixelGLConverter);
 		lineEndRenderer.setHorizontalLine(isHorizontalLine);
+		lineEndRenderer.setLineLengthPixels(sizeConfig.edgeArrwoBaseLineSize);
 		return lineEndRenderer;
 	}
 
 	private static LineLabelRenderer createDefaultLabelOnLineRenderer(String text, PixelGLConverter pixelGLConverter,
-			CaleydoTextRenderer textRenderer) {
+			CaleydoTextRenderer textRenderer, PathSizeConfiguration sizeConfig) {
 		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f, pixelGLConverter, text, textRenderer);
 		lineLabelRenderer.setXCentered(true);
 		lineLabelRenderer.setYCentered(true);
 		lineLabelRenderer.setLineOffsetPixels(0);
+		lineLabelRenderer.setTextHeight(sizeConfig.edgeTextHeight);
 		return lineLabelRenderer;
 	}
 
 	private static LineLabelRenderer createDefaultLabelAboveLineRenderer(String text,
-			PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer) {
+			PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer, PathSizeConfiguration sizeConfig) {
 		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter, text, textRenderer);
+		lineLabelRenderer.setTextHeight(sizeConfig.edgeTextHeight);
 		lineLabelRenderer.setLineOffsetPixels(5);
 		return lineLabelRenderer;
 	}
 
-	private static LineCrossingRenderer createDefaultOrthogonalLineCrossingRenderer(PixelGLConverter pixelGLConverter) {
+	private static LineCrossingRenderer createDefaultOrthogonalLineCrossingRenderer(PixelGLConverter pixelGLConverter,
+			PathSizeConfiguration sizeConfig) {
 		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
 		lineCrossingRenderer.setCrossingAngle(90);
+		lineCrossingRenderer.setLineLengthPixels(sizeConfig.edgeArrwoBaseLineSize);
 		return lineCrossingRenderer;
 	}
 
-	private static LineCrossingRenderer createDefaultLineCrossingRenderer(PixelGLConverter pixelGLConverter) {
+	private static LineCrossingRenderer createDefaultLineCrossingRenderer(PixelGLConverter pixelGLConverter,
+			PathSizeConfiguration sizeConfig) {
 		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
 		lineCrossingRenderer.setCrossingAngle(45);
+		lineCrossingRenderer.setLineLengthPixels(sizeConfig.edgeArrwoBaseLineSize);
 		return lineCrossingRenderer;
 	}
 

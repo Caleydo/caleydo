@@ -30,7 +30,6 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
-import org.caleydo.view.enroute.path.node.ANode;
 
 /**
  * Renders a vertical path of nodes with constant spacings. No branches are rendered.
@@ -40,11 +39,11 @@ import org.caleydo.view.enroute.path.node.ANode;
  */
 public class VerticalPathRenderer extends APathwayPathRenderer {
 
-	protected static final int TOP_SPACING_PIXELS = 60;
-	protected static final int BOTTOM_SPACING_PIXELS = 60;
-	protected static final int NODE_SPACING_PIXELS = 60;
-	public final static int PATHWAY_TITLE_COLUMN_WIDTH_PIXELS = 20;
-	protected final static int PATHWAY_TITLE_TEXT_HEIGHT_PIXELS = 16;
+	// protected static final int TOP_SPACING_PIXELS = 60;
+	// protected static final int BOTTOM_SPACING_PIXELS = 60;
+	// protected static final int NODE_SPACING_PIXELS = 60;
+	// public final static int PATHWAY_TITLE_COLUMN_WIDTH_PIXELS = 20;
+	// protected final static int PATHWAY_TITLE_TEXT_HEIGHT_PIXELS = 16;
 
 	/**
 	 * @param view
@@ -52,14 +51,14 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	 */
 	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
-		minWidthPixels = ANode.DEFAULT_WIDTH_PIXELS + 2 * PATHWAY_TITLE_COLUMN_WIDTH_PIXELS;
+		minWidthPixels = sizeConfig.rectangleNodeWidth + 2 * sizeConfig.pathwayTitleAreaWidth;
 	}
 
 	@Override
 	protected void updateLayout() {
 
-		float currentPositionY = y - pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
-		float nodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(NODE_SPACING_PIXELS);
+		float currentPositionY = y - pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing);
+		float nodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.minNodeSpacing);
 
 		for (ALinearizableNode node : pathNodes) {
 			node.setPosition(new Vec3f(x / 2.0f, currentPositionY, 0));
@@ -68,7 +67,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		if (pathNodes.size() == 0) {
 			minHeightPixels = 0;
 		} else {
-			minHeightPixels = TOP_SPACING_PIXELS + BOTTOM_SPACING_PIXELS + (pathNodes.size() - 1) * NODE_SPACING_PIXELS;
+			minHeightPixels = sizeConfig.pathStartSpacing + sizeConfig.pathEndSpacing + (pathNodes.size() - 1)
+					* sizeConfig.minNodeSpacing;
 		}
 	}
 
@@ -89,8 +89,9 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 	protected void renderPathwayBorders(GL2 gl) {
 
-		float topPathwayTitleLimit = y - pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
-
+		float topPathwayTitleLimit = y - pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing);
+		float halfBorderWidth = pixelGLConverter
+				.getGLHeightForPixelHeight((int) (sizeConfig.pathwayBorderWidth / 2.0f));
 		int segmentIndex = 0;
 		for (int i = 0; i < pathNodes.size(); i++) {
 			ALinearizableNode node = pathNodes.get(i);
@@ -101,26 +102,19 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 				gl.glColor3f(0.95f, 0.95f, 0.95f);
 				gl.glBegin(GL2.GL_QUADS);
 
-				gl.glVertex3f(0, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
-				gl.glVertex3f(x, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(0, nodePositionY - halfBorderWidth, 0);
+				gl.glVertex3f(x, nodePositionY - halfBorderWidth, 0);
 				// gl.glColor3f(1f, 1f, 1f);
-				gl.glVertex3f(x, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
-				gl.glVertex3f(0, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
-
-				// gl.glColor3f(0.5f, 0.5f, 0.5f);
-				// gl.glVertex3f(0, nodePositionY, 0);
-				// gl.glVertex3f(x, nodePositionY, 0);
-				// // gl.glColor3f(1f, 1f, 1f);
-				// gl.glVertex3f(x, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
-				// gl.glVertex3f(0, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(x, nodePositionY + halfBorderWidth, 0);
+				gl.glVertex3f(0, nodePositionY + halfBorderWidth, 0);
 				gl.glEnd();
 
 				gl.glColor3f(0.5f, 0.5f, 0.5f);
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(x, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
-				gl.glVertex3f(0, nodePositionY + pixelGLConverter.getGLHeightForPixelHeight(5), 0);
-				gl.glVertex3f(x, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
-				gl.glVertex3f(0, nodePositionY - pixelGLConverter.getGLHeightForPixelHeight(5), 0);
+				gl.glVertex3f(x, nodePositionY + halfBorderWidth, 0);
+				gl.glVertex3f(0, nodePositionY + halfBorderWidth, 0);
+				gl.glVertex3f(x, nodePositionY - halfBorderWidth, 0);
+				gl.glVertex3f(0, nodePositionY - halfBorderWidth, 0);
 				gl.glEnd();
 
 				renderPathwayTitle(gl, segmentIndex, topPathwayTitleLimit, nodePositionY);
@@ -139,9 +133,9 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 	private void renderPathwayTitle(GL2 gl, int pathSegmentIndex, float topPathwayTitleLimit,
 			float bottomPathwayTitleLimit) {
-		float pathwayTitlePositionX = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_TITLE_COLUMN_WIDTH_PIXELS
-				- (int) ((PATHWAY_TITLE_COLUMN_WIDTH_PIXELS - PATHWAY_TITLE_TEXT_HEIGHT_PIXELS) / 2.0f));
-		float pathwayTitleTextHeight = pixelGLConverter.getGLHeightForPixelHeight(PATHWAY_TITLE_TEXT_HEIGHT_PIXELS);
+		float pathwayTitlePositionX = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathwayTitleAreaWidth
+				- (int) ((sizeConfig.pathwayTitleAreaWidth - sizeConfig.pathwayTextHeight) / 2.0f));
+		float pathwayTitleTextHeight = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathwayTextHeight);
 		String text = pathSegments.get(pathSegmentIndex).get(0).getPathway().getTitle();
 		float maxTextWidth = topPathwayTitleLimit - bottomPathwayTitleLimit;
 		float requiredTextWidth = textRenderer.getRequiredTextWidthWithMax(text, pathwayTitleTextHeight, maxTextWidth);
@@ -159,7 +153,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			ALinearizableNode node1 = pathNodes.get(i);
 			ALinearizableNode node2 = pathNodes.get(i + 1);
 			EdgeRenderUtil.renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(),
-					node2.getTopConnectionPoint(), 0.2f, true, pixelGLConverter, textRenderer);
+					node2.getTopConnectionPoint(), 0.2f, true, pixelGLConverter, textRenderer, sizeConfig);
 		}
 	}
 

@@ -51,6 +51,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
@@ -63,7 +64,6 @@ import org.caleydo.view.enroute.path.node.mode.ComplexNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.CompoundNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.GeneNodeLinearizedMode;
 import org.caleydo.view.pathway.GLPathway;
-import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
@@ -121,6 +121,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * If set the path renderer only renders path segments that belong to this pathway.
 	 */
 	protected PathwayGraph pathway;
+
+	/**
+	 * Configuration that determines the size of individual path elements.
+	 */
+	protected PathSizeConfiguration sizeConfig = PathSizeConfiguration.DEFAULT;
 
 	/**
 	 * The queue which holds the events
@@ -185,7 +190,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
-	protected void onPathwayPathChanged(EnRoutePathEvent event) {
+	protected void onPathwayPathChanged(PathwayPathSelectionEvent event) {
 		List<PathwayPath> segments = event.getPathSegments();
 		List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(segments.size());
 		for (PathwayPath path : segments) {
@@ -602,7 +607,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			segments.add(new PathwayPath(graphPath));
 		}
 
-		EnRoutePathEvent event = new EnRoutePathEvent();
+		PathwayPathSelectionEvent event = new PathwayPathSelectionEvent();
 		event.setEventSpace(pathwayPathEventSpace);
 		event.setPathSegments(segments);
 		event.setSender(this);
@@ -642,6 +647,21 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void setPathway(PathwayGraph pathway) {
 		this.pathway = pathway;
+	}
+
+	/**
+	 * @return the sizeConfig, see {@link #sizeConfig}
+	 */
+	public PathSizeConfiguration getSizeConfig() {
+		return sizeConfig;
+	}
+
+	/**
+	 * @param sizeConfig
+	 *            setter, see {@link sizeConfig}
+	 */
+	public void setSizeConfig(PathSizeConfiguration sizeConfig) {
+		this.sizeConfig = sizeConfig;
 	}
 
 }

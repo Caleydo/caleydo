@@ -20,7 +20,6 @@ import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.SelectionColorCalculator;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
-import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.CompoundNode;
 
 /**
@@ -69,7 +68,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 
 	@Override
 	public int getMinHeightPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
+		return pathwayPathRenderer.getSizeConfig().getCircleNodeRadius() * 2;
 	}
 
 }
