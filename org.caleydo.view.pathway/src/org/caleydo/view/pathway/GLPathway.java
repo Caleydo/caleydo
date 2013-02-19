@@ -1705,8 +1705,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				pathway);
 		// TODO: clear existing portal highlights
 		for (PathwayVertexRep portal : portalVertexReps) {
-			portal.getCenterX();
-			// TODO: trigger rendering of portal highlight
+			// TODO: trigger rendering of new portal highlight
 		}
 
 	}
