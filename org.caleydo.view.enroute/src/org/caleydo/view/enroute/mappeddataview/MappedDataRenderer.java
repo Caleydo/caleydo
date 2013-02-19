@@ -131,10 +131,6 @@ public class MappedDataRenderer {
 	 */
 	public MappedDataRenderer(GLEnRoutePathway parentView) {
 		this.parentView = parentView;
-		viewFrustum = new ViewFrustum();
-		baseLayoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
-		highlightLayoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
-
 		geneSelectionManager = parentView.getGeneSelectionManager();
 
 		List<GeneticDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
@@ -153,6 +149,12 @@ public class MappedDataRenderer {
 		}
 
 		registerPickingListeners();
+	}
+
+	public void init() {
+		viewFrustum = new ViewFrustum();
+		baseLayoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
+		highlightLayoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
 	}
 
 	public void updateLayout() {

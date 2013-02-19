@@ -9,6 +9,7 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.view.enroute.path.PathSizeConfiguration;
 
 public class enRouteViewCreator implements IRemoteViewCreator {
 
@@ -29,6 +30,7 @@ public class enRouteViewCreator implements IRemoteViewCreator {
 		enRoute.addTablePerspectives(tablePerspectives);
 		enRoute.setPathwayPathEventSpace(embeddingEventSpace);
 		enRoute.initialize();
+		enRoute.getPathRenderer().setSizeConfig(PathSizeConfiguration.ENROUTE_COMPACT);
 
 		return enRoute;
 	}

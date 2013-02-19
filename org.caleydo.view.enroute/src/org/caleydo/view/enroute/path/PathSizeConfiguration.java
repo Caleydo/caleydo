@@ -40,17 +40,17 @@ public class PathSizeConfiguration {
 
 	public static final PathSizeConfiguration COMPACT = new Builder().rectangleNodeWidth(40).rectangleNodeHeight(14)
 			.circleNodeRadius(7).minNodeSpacing(40).nodeTextHeight(12).pathStartSpacing(14).pathEndSpacing(14)
-			.rowHeight(40).branchNodeToPathNodeVerticalSpacing(15).branchAreaWidth(65).pathAreaWidth(100)
+			.rowHeight(40).branchNodeToPathNodeVerticalSpacing(10).branchAreaWidth(65).pathAreaWidth(80)
 			.branchNodeLeftSideSpacing(6).pathwayTextHeight(12).pathwayTitleAreaWidth(14).dataPreviewRowHeight(20)
-			.branchSummaryNodeWidth(50).branchSummaryNodeTextHeight(12).branchSummaryNodeBranchAreaSpacing(6)
-			.branchSummaryNodeBranchNodeSpacing(15).pathwayBorderWidth(6).edgeArrowSize(10).edgeArrwoBaseLineSize(6)
+			.branchSummaryNodeWidth(50).branchSummaryNodeTextHeight(12).branchSummaryNodeBranchAreaSpacing(4)
+			.branchSummaryNodeBranchNodeSpacing(10).pathwayBorderWidth(6).edgeArrowSize(10).edgeArrwoBaseLineSize(6)
 			.edgeTextHeight(9).build();
 
 	public static final PathSizeConfiguration ENROUTE_DEFAULT = new Builder(DEFAULT).pathStartSpacing(60)
-			.pathEndSpacing(60).build();
+			.pathEndSpacing(60).minNodeSpacing(40).build();
 
 	public static final PathSizeConfiguration ENROUTE_COMPACT = new Builder(COMPACT).pathStartSpacing(60)
-			.pathEndSpacing(60).build();
+			.pathEndSpacing(60).minNodeSpacing(26).build();
 
 	/**
 	 * Height of labels for edges.

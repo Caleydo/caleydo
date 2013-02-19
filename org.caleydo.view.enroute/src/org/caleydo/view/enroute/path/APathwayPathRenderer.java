@@ -662,6 +662,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void setSizeConfig(PathSizeConfiguration sizeConfig) {
 		this.sizeConfig = sizeConfig;
+		if (pathSegments != null && !pathSegments.isEmpty())
+			updateLayout();
 	}
 
 }

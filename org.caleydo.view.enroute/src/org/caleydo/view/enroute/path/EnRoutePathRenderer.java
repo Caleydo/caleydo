@@ -93,10 +93,9 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
-		// setSizeConfig(PathSizeConfiguration.ENROUTE_DEFAULT);
-		setSizeConfig(new PathSizeConfiguration.Builder(PathSizeConfiguration.ENROUTE_COMPACT)
-				.branchSummaryNodeWidth(50).branchAreaWidth(65).pathAreaWidth(80).minNodeSpacing(25)
-				.branchNodeToPathNodeVerticalSpacing(10).branchSummaryNodeBranchAreaSpacing(4).build());
+		setSizeConfig(PathSizeConfiguration.ENROUTE_DEFAULT);
+		// setSizeConfig(new PathSizeConfiguration.Builder(PathSizeConfiguration.ENROUTE_COMPACT).minNodeSpacing(40)
+		// .build());
 
 	}
 

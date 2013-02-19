@@ -51,6 +51,7 @@ public class SinglePathwayPathRendererCreator implements IRemoteRendererCreator 
 			renderer.setPathway(((PathwayTablePerspective) tablePerspective).getPathway());
 		}
 
+		renderer.setSizeConfig(PathSizeConfiguration.COMPACT);
 		renderer.init();
 
 		return renderer;

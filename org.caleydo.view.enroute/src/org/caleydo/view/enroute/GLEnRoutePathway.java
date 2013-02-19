@@ -193,6 +193,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		pathRenderer.setPixelGLConverter(pixelGLConverter);
 		pathRenderer.init();
 
+		mappedDataRenderer.init();
+
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
 		ElementLayout pathElementLayout = new ElementLayout();
@@ -646,6 +648,19 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	public EventBasedSelectionManager getSampleSelectionManager() {
 		return sampleSelectionManager;
+	}
+
+	/**
+	 * @return the pathRenderer, see {@link #pathRenderer}
+	 */
+	public EnRoutePathRenderer getPathRenderer() {
+		return pathRenderer;
+	}
+
+	@Override
+	public void setFrustum(ViewFrustum viewFrustum) {
+		super.setFrustum(viewFrustum);
+		setLayoutDirty();
 	}
 
 }
