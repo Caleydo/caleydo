@@ -116,6 +116,12 @@ public class GLElementAdapter extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		super.renderImpl(g, w, h);
+		renderAdapter(g, w, h);
+		repaint(); // invalidate it again to avoid that parent display lists will be activated
+	}
+
+	private void renderAdapter(GLGraphics g, float w, float h) {
 		if (viewFrustum.getRight() != w || viewFrustum.getTop() != h) {
 			viewFrustum.setRight(w);
 			viewFrustum.setTop(h);
@@ -123,9 +129,9 @@ public class GLElementAdapter extends GLElement {
 
 		}
 
-		// g.fillRect(0, 0, w, h);
 		g.save();
 		final GL2 gl = g.gl;
+		gl.glTranslatef(0, 0, g.z());
 		// swap the origin to the top bottom corner
 		// convert the coordinate system to
 		// 0,h w,h
@@ -138,13 +144,12 @@ public class GLElementAdapter extends GLElement {
 		g.checkError();
 
 		g.restore();
-
-		repaintAll(); // invalidate it again to avoid that parent display lists will be activated
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		// the same again
-		renderImpl(g, w, h);
+		super.renderPickImpl(g, w, h);
+		renderAdapter(g, w, h);
+		repaintPick();
 	}
 }
