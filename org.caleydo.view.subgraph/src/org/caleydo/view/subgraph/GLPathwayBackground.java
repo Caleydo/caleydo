@@ -38,7 +38,7 @@ public class GLPathwayBackground extends PickableGLElement {
 		super.renderImpl(g, w, h);
 
 		if (hovered)
-			g.color(0, 0, 0, 1).drawRoundecRect(0, 0, w, h, 10);
+			g.color(0, 0, 0, 1).drawRoundedRect(0, 0, w, h, 10);
 
 	}
 
