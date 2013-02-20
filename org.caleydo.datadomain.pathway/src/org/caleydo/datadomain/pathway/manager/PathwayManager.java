@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -72,11 +73,11 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	public IPathwayResourceLoader biocartaPathwayResourceLoader;
 	public IPathwayResourceLoader wikipathwaysResourceLoader;
 
-	private HashMap<PathwayGraph, Boolean> hashPathwayToVisibilityState;
+	private Map<PathwayGraph, Boolean> hashPathwayToVisibilityState;
 
-	private HashMap<String, PathwayGraph> hashPathwayTitleToPathway;
+	private Map<EPathwayDatabaseType, Map<String, PathwayGraph>> mapPathwayDBToPathways;
 
-	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
+	private Map<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
 
 	/**
 	 * Root pathway contains all nodes that are loaded into the system. Therefore it represents the overall topological
@@ -116,7 +117,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	}
 
 	private void init() {
-		hashPathwayTitleToPathway = new HashMap<String, PathwayGraph>();
+		mapPathwayDBToPathways = new HashMap<>();
 		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
 		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
@@ -154,7 +155,12 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
 
 		registerItem(pathway);
-		hashPathwayTitleToPathway.put(sTitle, pathway);
+		Map<String, PathwayGraph> mapTitleToPathway = mapPathwayDBToPathways.get(type);
+		if (mapTitleToPathway == null) {
+			mapTitleToPathway = new HashMap<>();
+			mapPathwayDBToPathways.put(type, mapTitleToPathway);
+		}
+		mapTitleToPathway.put(sTitle, pathway);
 		hashPathwayToVisibilityState.put(pathway, false);
 
 		currentPathwayGraph = pathway;
@@ -165,7 +171,12 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	public PathwayGraph getPathwayByTitle(final String pathwayTitle, EPathwayDatabaseType pathwayDatabaseType) {
 
 		waitUntilPathwayLoadingIsFinished();
-		Iterator<String> iterPathwayName = hashPathwayTitleToPathway.keySet().iterator();
+
+		Map<String, PathwayGraph> mapTitleToPathway = mapPathwayDBToPathways.get(pathwayDatabaseType);
+		if (mapTitleToPathway == null)
+			return null;
+
+		Iterator<String> iterPathwayName = mapTitleToPathway.keySet().iterator();
 		Pattern pattern = Pattern.compile(pathwayTitle, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 		String tempPathwayTitle;
@@ -174,15 +185,15 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			tempPathwayTitle = iterPathwayName.next();
 			regexMatcher = pattern.matcher(tempPathwayTitle);
 
-			if (regexMatcher.find()) {
-				PathwayGraph pathway = hashPathwayTitleToPathway.get(tempPathwayTitle);
+			if (regexMatcher.find() && tempPathwayTitle.length() == pathwayTitle.length()) {
+				PathwayGraph pathway = mapTitleToPathway.get(tempPathwayTitle);
 
 				// Ignore the found pathway if it has the same name but is
 				// contained
 				// in a different database
-				if (getItem(pathway.getID()).getType() != pathwayDatabaseType) {
-					continue;
-				}
+				// if (getItem(pathway.getID()).getType() != pathwayDatabaseType) {
+				// continue;
+				// }
 				return pathway;
 			}
 		}
