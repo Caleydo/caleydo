@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.ui;
 
+import static org.caleydo.view.tourguide.v3.ui.TableHeaderUI.COLUMN_SPACE;
+
 import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -48,9 +50,6 @@ import org.caleydo.view.tourguide.v3.model.StackedRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.mixin.ICollapseableColumnMixin;
 
 /**
- * FIXME: watch for changes: * weight changes -> relayout * reorder column -> sort columns * remove column -> remove
- * column * add column *
- *
  * @author Samuel Gratzl
  *
  */
@@ -202,7 +201,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		System.out.println("compute layout");
 		rowPositions = preScan(rowLayout.compute(table.size(), table.getSelectedRow() == null ? -1 : table
-				.getSelectedRow().getRank(), h));
+				.getSelectedRow().getRank(), h - 5));
 		if (rowPositions.length > pickingIDs.length) {
 			int bak = this.pickingIDs.length;
 			this.pickingIDs = Arrays.copyOf(this.pickingIDs, rowPositions.length);
@@ -213,7 +212,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		float x = TableHeaderUI.COLUMN_SPACE;
 		for (IGLLayoutElement col : children) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			col.setBounds(x, 0, model.getPreferredWidth(), h);
+			col.setBounds(x, 3, model.getPreferredWidth(), h - 3);
 			x += model.getPreferredWidth() + TableHeaderUI.COLUMN_SPACE;
 		}
 	}
@@ -239,7 +238,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			int r = ranks[i++];
 			IGLLayoutElement row = children.get(r);
 			used.clear(r);
-			row.setBounds(0, y, w, hr - y);
+			row.setBounds(COLUMN_SPACE, y, w, hr - y);
 			y = hr;
 		}
 		for (int unused = used.nextSetBit(0); unused >= 0; unused = used.nextSetBit(unused + 1)) {
@@ -256,7 +255,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			if (rank < rowPositions.length && rank >= 0) {
 				float prev = rank == 0 ? 0 : rowPositions[rank - 1];
 				float next = rowPositions[rank];
-				g.color(Color.YELLOW).fillRect(0, prev, w, next - prev);
+				g.color(Color.YELLOW).fillRect(0, prev + 3, w, next - prev);
 			}
 		}
 		super.renderImpl(g, w, h);
@@ -267,7 +266,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		float y = 0;
 		for (int i = 0; i < rowPositions.length; ++i) {
 			g.pushName(pickingIDs[i]);
-			g.fillRect(0, y, w, rowPositions[i] - y);
+			g.fillRect(0, y + 3, w, rowPositions[i] - y);
 			y = rowPositions[i];
 			g.popName();
 		}
