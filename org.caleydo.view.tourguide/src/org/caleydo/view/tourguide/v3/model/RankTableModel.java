@@ -123,8 +123,13 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	private void checkOrderChanges(int index, ARankColumnModel col) {
-		if (col instanceof IFilterColumnMixin && ((IFilterColumnMixin) col).isFiltered()) {
+		if (col instanceof IFilterColumnMixin && ((IFilterColumnMixin) col).isFiltered()) { // filter elements changed
 			dirtyFilter = true;
+			fireInvalid();
+			return;
+		}
+		if (findFirstRankable() != orderBy) { // order by changed
+			dirtyOrder = true;
 			fireInvalid();
 			return;
 		}
