@@ -190,7 +190,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	private IPickingListener pathwayElementPickingListener;
 
-	Set<PathwayVertexRep> portalVertexReps;
+	private Set<PathwayVertexRep> portalVertexReps = new HashSet<>();
 	/**
 	 * The currently selected path as selected by the user from allPaths.
 	 */
@@ -815,14 +815,13 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					double tY = targetVertexRep.getLowerLeftCornerY();
 
 					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-					
+
 					//
 					// bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
 					// System.out.println("bubblesetCanvas.addItem(" + bbGroupID + "," + tX + "," + tY + "," + bbItemW +
 					// "," + bbItemH + ")");
 					//
 					bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-
 
 				}
 				DefaultEdge lastEdge = path.getEdgeList().get(path.getEdgeList().size() - 1);
@@ -860,7 +859,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		for (PathwayVertexRep portal : portalVertexReps) {
 			bbGroupID++;
-			bubblesetCanvas.addGroup(new Color(1.0f, 0.0f, 0.0f),6, true);
+			bubblesetCanvas.addGroup(new Color(1.0f, 0.0f, 0.0f), 6, true);
 			double posX = portal.getLowerLeftCornerX();
 			double posY = portal.getLowerLeftCornerY();
 			double bbItemW = portal.getWidth();
@@ -906,8 +905,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// }
 		//
 		// /////////////////////
-//		if (allPaths.size() == 0)
-//			return;
+		// if (allPaths.size() == 0)
+		// return;
 		if (bbGroupID < 0)
 			return;
 		if (allPaths.size() <= selectedPathID)
@@ -1553,11 +1552,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	private void triggerPathUpdate() {
-		if (selectedPath == null)
-			return;
-		PathwayPathSelectionEvent pathEvent = new PathwayPathSelectionEvent();
 		List<PathwayPath> pathSegments = new ArrayList<>(1);
-		pathSegments.add(new PathwayPath(selectedPath));
+		PathwayPathSelectionEvent pathEvent = new PathwayPathSelectionEvent();
+
+		if (selectedPath != null) {
+			pathSegments.add(new PathwayPath(selectedPath));
+		}
 		pathEvent.setPathSegments(pathSegments);
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(pathwayPathEventSpace);
@@ -1714,8 +1714,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	public void highlightPortalNodes(PathwayVertexRep vertexRep) {
 
-		portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
-				pathway);
+		portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathway);
 
 	}
 

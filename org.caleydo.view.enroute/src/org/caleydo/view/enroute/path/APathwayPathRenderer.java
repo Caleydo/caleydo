@@ -21,7 +21,6 @@ package org.caleydo.view.enroute.path;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -52,8 +51,6 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
@@ -197,43 +194,45 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			pathSegments.add(path.getNodes());
 		}
 
-		PathwayPath path = segments.get(segments.size() - 1);
-		if (path != null && path.getPath() != null) {
-			if (path.getNodes().size() > 0) {
-				PathwayVertexRep vertexRep = path.getNodes().get(path.getNodes().size() - 1);
-				Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexReps(vertexRep);
-				PathwayVertexRep eqVertexRep = null;
-				PathwayVertexRep nextVertexRep = null;
+		setPath(pathSegments);
 
-				for (PathwayVertexRep vr : equivalentVertexReps) {
-					eqVertexRep = vr;
-					PathwayGraph pw = eqVertexRep.getPathway();
-					if (pw.getType() == EPathwayDatabaseType.KEGG) {
-						Set<DefaultEdge> edges = pw.edgesOf(eqVertexRep);
-						for (DefaultEdge edge : edges) {
-							if (pw.getEdgeSource(edge) == eqVertexRep) {
-								nextVertexRep = pw.getEdgeTarget(edge);
-								break;
-							}
-						}
-						if (nextVertexRep != null)
-							break;
-					}
-				}
-				if (eqVertexRep != null) {
-					if (nextVertexRep != null) {
-						List<PathwayVertexRep> nextSegment = new ArrayList<>(2);
-						nextSegment.add(eqVertexRep);
-						nextSegment.add(nextVertexRep);
-						pathSegments.add(nextSegment);
-					}
-				}
-			}
+		// PathwayPath path = segments.get(segments.size() - 1);
+		// if (path != null && path.getPath() != null) {
+		// if (path.getNodes().size() > 0) {
+		// PathwayVertexRep vertexRep = path.getNodes().get(path.getNodes().size() - 1);
+		// Set<PathwayVertexRep> equivalentVertexReps = PathwayManager.get().getEquivalentVertexReps(vertexRep);
+		// PathwayVertexRep eqVertexRep = null;
+		// PathwayVertexRep nextVertexRep = null;
+		//
+		// for (PathwayVertexRep vr : equivalentVertexReps) {
+		// eqVertexRep = vr;
+		// PathwayGraph pw = eqVertexRep.getPathway();
+		// if (pw.getType() == EPathwayDatabaseType.KEGG) {
+		// Set<DefaultEdge> edges = pw.edgesOf(eqVertexRep);
+		// for (DefaultEdge edge : edges) {
+		// if (pw.getEdgeSource(edge) == eqVertexRep) {
+		// nextVertexRep = pw.getEdgeTarget(edge);
+		// break;
+		// }
+		// }
+		// if (nextVertexRep != null)
+		// break;
+		// }
+		// }
+		// if (eqVertexRep != null) {
+		// if (nextVertexRep != null) {
+		// List<PathwayVertexRep> nextSegment = new ArrayList<>(2);
+		// nextSegment.add(eqVertexRep);
+		// nextSegment.add(nextVertexRep);
+		// pathSegments.add(nextSegment);
+		// }
+		// }
+		// }
 
-			setPath(pathSegments);
-		} else {
-			setPath(new ArrayList<List<PathwayVertexRep>>());
-		}
+		// setPath(pathSegments);
+		// } else {
+		// setPath(new ArrayList<List<PathwayVertexRep>>());
+		// }
 	}
 
 	/**
