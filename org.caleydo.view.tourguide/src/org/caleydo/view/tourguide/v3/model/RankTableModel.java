@@ -48,6 +48,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public static final String PROP_DATA = "data";
 	public static final String PROP_COLUMNS = "columns";
 	public static final String PROP_POOL = "pool";
+	public static final String PROP_INVALID = "invalid";
 
 	private final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
@@ -58,12 +59,14 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			dirtyOrder = true;
+			fireInvalid();
 		}
 	};
 	private final PropertyChangeListener refilter = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			dirtyFilter = true;
+			fireInvalid();
 		}
 	};
 
@@ -88,6 +91,10 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		this.data.addAll(rows);
 		propertySupport.fireIndexedPropertyChange(PROP_DATA, s, null, rows);
 		filter();
+	}
+
+	protected void fireInvalid() {
+		propertySupport.firePropertyChange(PROP_INVALID, false, true);
 	}
 
 	public void setDataMask(BitSet dataMask) {
@@ -117,7 +124,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	private void checkOrderChanges(int index, ARankColumnModel col) {
 		if (col instanceof IFilterColumnMixin && ((IFilterColumnMixin) col).isFiltered()) {
-			filter();
+			dirtyFilter = true;
+			fireInvalid();
 			return;
 		}
 
@@ -190,6 +198,16 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		if (col instanceof ACompositeRankColumnModel) {
 			for (ARankColumnModel child : ((ACompositeRankColumnModel) col))
 				setup(child);
+		}
+	}
+
+	private void takeDown(ARankColumnModel col) {
+		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
+		col.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
+		col.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);
+		if (col instanceof ACompositeRankColumnModel) {
+			for (ARankColumnModel child : ((ACompositeRankColumnModel) col))
+				takeDown(child);
 		}
 	}
 
@@ -274,15 +292,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		checkOrderChanges(index, children.get(0));
 	}
 
-	private void takeDown(ARankColumnModel col) {
-		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
-		col.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
-		col.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);
-		if (col instanceof ACompositeRankColumnModel) {
-			for (ARankColumnModel child : ((ACompositeRankColumnModel) col))
-				takeDown(child);
-		}
-	}
+
 
 	private IRankableColumnMixin findFirstRankable() {
 		for (ARankColumnModel col : this.columns) {
@@ -428,6 +438,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	public IRow get(int index) {
+		if (index < 0)
+			return null;
 		checkOrder();
 		return data.get(order[index]);
 	}

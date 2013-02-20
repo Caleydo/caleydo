@@ -263,7 +263,7 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			super.renderPickImpl(g, w, h);
 			if (w <= 20)
 				return;
-			g.incZ();
+			g.incZ().incZ();
 			float from = selectionMin;
 			if (from > 0) {
 				g.pushName(cursorMinPickingID);
@@ -282,7 +282,7 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 					g.fillRect(to * w, 0, 1, h);
 				g.popName();
 			}
-			g.decZ();
+			g.decZ().decZ();
 		}
 
 		private void renderSelection(GLGraphics g, float from, float to, float w, float h) {

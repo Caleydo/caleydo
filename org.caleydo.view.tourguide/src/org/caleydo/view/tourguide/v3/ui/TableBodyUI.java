@@ -91,6 +91,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		this.rowLayout = rowLayout;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_ORDER, layoutOnChange);
+		this.table.addPropertyChangeListener(RankTableModel.PROP_INVALID, layoutOnChange);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_DATA, updateData);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
 		for (ARankColumnModel col : table.getColumns()) {
@@ -180,6 +181,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	protected void takeDown() {
 		this.table.removePropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
 		this.table.removePropertyChangeListener(RankTableModel.PROP_ORDER, layoutOnChange);
+		this.table.removePropertyChangeListener(RankTableModel.PROP_INVALID, layoutOnChange);
 		this.table.removePropertyChangeListener(RankTableModel.PROP_DATA, updateData);
 		this.table.removePropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
 		for (GLElement col : this) {
