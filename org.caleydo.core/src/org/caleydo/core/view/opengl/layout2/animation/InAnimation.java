@@ -21,20 +21,21 @@ package org.caleydo.core.view.opengl.layout2.animation;
 
 import gleem.linalg.Vec4f;
 
+import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IInTransition;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * in animation implementation
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class InAnimation extends Animation {
 	private final IInTransition animation;
 	private Vec4f to = null;
 
-	public InAnimation(int startIn, int duration, IGLLayoutElement animated, IInTransition animation) {
+	public InAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IInTransition animation) {
 		super(startIn, duration, animated);
 		this.animation = animation;
 	}

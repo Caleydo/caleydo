@@ -34,6 +34,7 @@ import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
@@ -86,17 +87,27 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		this.canvas.addMouseListener(pickingManager.getListener());
 	}
 
-	protected GLElement getRoot() {
+	protected final GLElement getRoot() {
 		return root.getRoot();
 	}
 
 	@Override
-	public IGLCanvas getParentGLCanvas() {
+	public final IGLElementParent getParent() {
+		return null;
+	}
+
+	@Override
+	public final IPickingListener createTooltip(ILabelProvider label) {
+		return canvas.createTooltip(label);
+	}
+
+	@Override
+	public final IGLCanvas getParentGLCanvas() {
 		return canvas;
 	}
 
 	@Override
-	public void setVisible(boolean visible) {
+	public final void setVisible(boolean visible) {
 		if (this.visible == visible)
 			return;
 		this.visible = visible;
@@ -154,11 +165,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		this.eventListeners.unregisterAll();
 	}
 
-	private float getWidth() {
+	private final float getWidth() {
 		return viewFrustum.getRight();
 	}
 
-	private float getHeight() {
+	private final float getHeight() {
 		return viewFrustum.getBottom();
 	}
 

@@ -233,7 +233,6 @@ public abstract class APickingManager<T extends APickingEntry> {
 
 		BitSet wasMouseIn = new BitSet();
 
-		this.isAnyDragging = false;
 		// first send mouse out
 		for (Iterator<T> it = this.mouseIn.iterator(); it.hasNext();) {
 			T entry = it.next();
@@ -253,6 +252,7 @@ public abstract class APickingManager<T extends APickingEntry> {
 		if (picked.isEmpty())
 			return;
 
+		boolean stillDragging = false;
 		// second fire in the order of the names
 		for (int name : picked) {
 			T entry = get(name);
@@ -263,9 +263,14 @@ public abstract class APickingManager<T extends APickingEntry> {
 				entry.fire(PickingMode.MOUSE_OVER, mousePos, depth, isAnyDragging);
 			}
 			entry.fire(mode, mousePos, depth, isAnyDragging);
-			this.isAnyDragging = this.isAnyDragging || entry.isDragging();
-			mouseIn.add(entry);
+			// query again for handling removal in between
+			entry = get(name);
+			if (entry != null) {
+				mouseIn.add(entry);
+				stillDragging = stillDragging || entry.isDragging();
+			}
 		}
+		this.isAnyDragging = stillDragging;
 	}
 
 	/**

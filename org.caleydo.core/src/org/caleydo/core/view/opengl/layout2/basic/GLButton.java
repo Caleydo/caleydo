@@ -137,6 +137,7 @@ public class GLButton extends PickableGLElement {
 		if (this.selected == selected)
 			return this;
 		this.selected = selected;
+		fireCallback(this.selected);
 		repaint();
 		return this;
 	}
@@ -167,6 +168,8 @@ public class GLButton extends PickableGLElement {
 
 	@Override
 	protected void onClicked(Pick pick) {
+		if (pick.isAnyDragging())
+			return;
 		armed = true;
 		switch (mode) {
 		case BUTTON_COMPATIBLE:
@@ -185,6 +188,8 @@ public class GLButton extends PickableGLElement {
 
 	@Override
 	protected void onMouseReleased(Pick pick) {
+		if (!armed)
+			return;
 		armed = false;
 		switch (mode) {
 		case BUTTON:
@@ -201,12 +206,16 @@ public class GLButton extends PickableGLElement {
 
 	@Override
 	protected void onMouseOver(Pick pick) {
+		if (pick.isAnyDragging())
+			return;
 		hovered = true;
 		repaint();
 	}
 
 	@Override
 	protected void onMouseOut(Pick pick) {
+		if (!hovered)
+			return;
 		armed = false;
 		hovered = false;
 		repaint();

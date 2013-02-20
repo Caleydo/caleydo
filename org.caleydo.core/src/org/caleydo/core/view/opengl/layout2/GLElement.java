@@ -479,7 +479,7 @@ public class GLElement implements IHasGLLayoutData {
 	/**
 	 * triggers that I should be relayouted before the next run
 	 */
-	protected void relayout() {
+	public void relayout() {
 		cache.invalidate(context);
 		pickCache.invalidate(context);
 		this.dirtyLayout = true;

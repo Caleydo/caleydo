@@ -57,6 +57,7 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	public MouseLayer() {
 		super();
 		setLayout(this);
+		setzDelta(2.f);
 	}
 
 	@Override

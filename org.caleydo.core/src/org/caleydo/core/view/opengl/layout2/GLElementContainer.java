@@ -34,21 +34,6 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		this.layout = layout;
 	}
 
-	@Override
-	public void relayout() {
-		super.relayout();
-	}
-
-	@Override
-	public void repaint() {
-		super.repaint();
-	}
-
-	@Override
-	public void repaintPick() {
-		super.repaintPick();
-	}
-
 	/**
 	 * @param layout
 	 *            setter, see {@link layout}
@@ -112,7 +97,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	@Override
 	protected void takeDown() {
 		for (GLElement elem : this)
-			takeDown(elem);
+			elem.takeDown();
 		super.takeDown();
 	}
 
@@ -137,15 +122,11 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 			child.init(context);
 	}
 
-	private void takeDown(GLElement child) {
-		child.takeDown();
-	}
-
 	public final void clear() {
 		int size = this.size();
 		for (Iterator<GLElement> it = children.iterator(); it.hasNext();) {
 			GLElement e = it.next();
-			takeDown(e);
+			e.takeDown();
 			it.remove();
 		}
 		if (size > 0) // had deleted something
@@ -179,7 +160,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	public final boolean remove(GLElement child) {
 		if (children.remove(child)) {
-			takeDown(child);
+			child.takeDown();
 			relayout();
 			return true;
 		}
@@ -214,7 +195,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 
 	public final GLElement set(int index, GLElement element) {
 		GLElement old = children.get(index);
-		takeDown(old);
+		old.takeDown();
 		setup(element);
 		children.set(index, element);
 		relayout();

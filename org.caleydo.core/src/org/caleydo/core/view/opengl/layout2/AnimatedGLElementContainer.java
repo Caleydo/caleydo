@@ -31,6 +31,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import org.caleydo.core.view.opengl.layout2.animation.Animation;
+import org.caleydo.core.view.opengl.layout2.animation.Animation.EAnimationType;
+import org.caleydo.core.view.opengl.layout2.animation.DummyAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.Durations;
+import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.animation.InAnimation;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IInTransition;
@@ -66,6 +70,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	private long startTime = -1;
 
+	private boolean animateByDefault = true;
+
 
 	public AnimatedGLElementContainer() {
 
@@ -75,22 +81,20 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		this.layout = layout;
 	}
 
+	/**
+	 * @param animateByDefault
+	 *            setter, see {@link animateByDefault}
+	 */
+	public AnimatedGLElementContainer setAnimateByDefault(boolean animateByDefault) {
+		this.animateByDefault = animateByDefault;
+		return this;
+	}
+
 	@Override
 	public void relayout() {
 		super.relayout();
 		this.forceLayout = true;
 	}
-
-	@Override
-	public void repaint() {
-		super.repaint();
-	}
-
-	@Override
-	public void repaintPick() {
-		super.repaintPick();
-	}
-
 	/**
 	 * @param layout
 	 *            setter, see {@link layout}
@@ -186,13 +190,23 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					}
 				}
 				if (elem.hasChanged()) { // create a move animation
-					MoveAnimation anim = new MoveAnimation(0, 300, elem.wrappee, elem.getLayoutDataAs(
-							IMoveTransition.class, MoveTransitions.MOVE_AND_GROW_LINEAR));
+					Animation anim = createMoveAnimation(elem);
 					anim.init(elem.before, elem.after);
 					animations.add(anim);
 				}
 			}
 		}
+	}
+
+	private Animation createMoveAnimation(RecordingLayoutElement elem) {
+		if (!animateByDefault) {
+			return new DummyAnimation(EAnimationType.MOVE, elem.wrappee);
+		}
+		final IDuration duration = elem.getLayoutDataAs(IDuration.class, Durations.DEFAULT);
+		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class,
+				MoveTransitions.MOVE_AND_GROW_LINEAR);
+		MoveAnimation anim = new MoveAnimation(0, duration, elem.wrappee, animation);
+		return anim;
 	}
 
 	private void doAnimation() {
@@ -267,7 +281,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void add(GLElement child) {
-		add(child, 300);
+		add(child, animateByDefault ? 300 : 0);
 	}
 
 	public final void add(GLElement child, int duration) {
@@ -284,7 +298,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		assert child.getParent() == null; // no parent yet
 		// we want to add this child now but smooth it in, so we are interested in its final position in the future at
 		// the future state
-		this.animations.add(new InAnimation(startIn, duration, child.layoutElement, animation));
+		this.animations.add(new InAnimation(startIn, Durations.fix(duration), child.layoutElement, animation));
 		setup(child);
 		dirtyAnimation = true;
 		if (startIn == 0)
@@ -293,7 +307,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void remove(GLElement child) {
-		remove(child, 300);
+		remove(child, animateByDefault ? 300 : 0);
 	}
 
 	public final void remove(GLElement child, int duration) {
@@ -303,7 +317,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	public final void remove(GLElement child, int duration, IOutTransition animation) {
 		int startIn = 0;
 		assert child.getParent() == this;
-		this.animations.add(new OutAnimation(startIn, duration, child.layoutElement, animation));
+		this.animations.add(new OutAnimation(startIn, Durations.fix(duration), child.layoutElement, animation));
 		if (startIn == 0)
 			children.remove(child);
 		dirtyAnimation = true;

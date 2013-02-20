@@ -486,8 +486,8 @@ public class GLGraphics {
 		return renderRect(false, x, y, w, h);
 	}
 
-	public GLGraphics drawRoundecRect(float x, float y, float w, float h, float radius) {
-		return drawRoundecRect(x, y, w, h, radius, guessRoundedSegments(radius));
+	public GLGraphics drawRoundedRect(float x, float y, float w, float h, float radius) {
+		return drawRoundedRect(x, y, w, h, radius, guessRoundedSegments(radius));
 	}
 
 	/**
@@ -507,7 +507,7 @@ public class GLGraphics {
 		return segments;
 	}
 
-	public GLGraphics drawRoundecRect(float x, float y, float w, float h, float radius, int segments) {
+	public GLGraphics drawRoundedRect(float x, float y, float w, float h, float radius, int segments) {
 		return renderRoundedRect(false, x, y, w, h, radius, segments, true, true, true, true);
 	}
 

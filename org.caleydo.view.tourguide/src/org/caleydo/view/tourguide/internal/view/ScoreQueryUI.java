@@ -323,7 +323,6 @@ public class ScoreQueryUI extends Row {
 			@Override
 			public void pick(Pick pick) {
 				super.pick(pick);
-				System.out.println(pick.getPickingMode());
 			}
 		}, EDIT_FILTER);
 		view.addTypePickingTooltipListener("Edit Score Filters", EDIT_FILTER);

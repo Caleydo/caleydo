@@ -44,7 +44,7 @@ public class GLLayouts {
 	 * @return
 	 */
 	public static IGLLayout flowHorizontal(float gap) {
-		return new GLFlowLayout(true, gap);
+		return new GLFlowLayout(true, gap, 0);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class GLLayouts {
 	 * @return
 	 */
 	public static IGLLayout flowVertical(float gap) {
-		return new GLFlowLayout(false, gap);
+		return new GLFlowLayout(false, gap, 0);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class GLLayouts {
 
 	/**
 	 * utility to work with decorators for Layout data
-	 * 
+	 *
 	 * @param clazz
 	 *            the desired type
 	 * @param value

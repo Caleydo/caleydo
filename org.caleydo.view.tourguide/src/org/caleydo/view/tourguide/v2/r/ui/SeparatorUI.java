@@ -111,7 +111,7 @@ public class SeparatorUI extends PickableGLElement {
 			Pair<GLElement, ScoreColumnDragInfo> dragged = mouse.getFirstDraggable(ScoreColumnDragInfo.class);
 			mouse.removeDraggable(dragged.getSecond());
 			this.canDrop = false;
-			((ScoreTableUI) getParent()).moveColumnNextTo(dragged.getSecond().getCol(), this.index);
+			((ScoreTableUI) this.getParent()).moveColumnNextTo(dragged.getSecond().getCol(), this.index);
 			repaint();
 		}
 	}
@@ -150,7 +150,7 @@ class CombinedSeparatorUI extends SeparatorUI {
 		if (mouse.hasDraggable(ScoreDragInfo.COMBINED_ALIGN)) {
 			Pair<GLElement, IDragInfo> draggable = mouse.getFirstDraggable(ScoreDragInfo.COMBINED_ALIGN);
 			mouse.removeDraggable(draggable.getFirst());
-			((ScoreTableUI) getParent()).alignCombined(index);
+			((ScoreTableUI) this.getParent()).alignCombined(index);
 			repaintAll();
 		}
 	}

@@ -22,6 +22,7 @@ package org.caleydo.core.view.opengl.layout2.animation;
 import gleem.linalg.Vec4f;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
@@ -33,13 +34,15 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 public abstract class Animation implements Comparable<Animation> {
 	private int startIn;
 	private int remaining;
-	private final int duration;
+	private final IDuration duration;
+	private int durationValue;
 	protected final IGLLayoutElement animated;
 
-	public Animation(int startIn, int duration, IGLLayoutElement animated) {
+	public Animation(int startIn, IDuration duration, IGLLayoutElement animated) {
 		this.duration = duration;
+		this.durationValue = duration.getDuration();
 		this.startIn = startIn;
-		this.remaining = duration;
+		this.remaining = this.durationValue;
 		this.animated = animated;
 	}
 
@@ -79,7 +82,7 @@ public abstract class Animation implements Comparable<Animation> {
 	 * @return
 	 */
 	public int getElapsed() {
-		return duration - remaining;
+		return durationValue - remaining;
 	}
 
 	/**
@@ -155,7 +158,7 @@ public abstract class Animation implements Comparable<Animation> {
 		if (remaining <= 0) { //last one
 			lastTime();
 		} else {
-			alpha = 1 - (remaining / (float) duration);
+			alpha = 1 - (remaining / (float) durationValue);
 			animate(alpha, w, h);
 		}
 		return remaining <= 0;

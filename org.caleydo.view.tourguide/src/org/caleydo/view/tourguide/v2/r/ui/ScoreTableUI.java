@@ -42,7 +42,8 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.v2.r.model.ScoreColumn;
 import org.caleydo.view.tourguide.v2.r.model.ScoreTable;
-import org.caleydo.view.tourguide.v2.r.ui.RowHeightLayouts.IRowHeightLayout;
+import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
+import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts.IRowHeightLayout;
 
 /**
  * @author Samuel Gratzl

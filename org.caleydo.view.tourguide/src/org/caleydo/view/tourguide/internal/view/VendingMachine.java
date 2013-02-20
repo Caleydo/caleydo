@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayouts;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row.HAlign;
+import org.caleydo.core.view.opengl.layout2.LayoutRendererAdapter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -64,6 +65,8 @@ import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.renderer.DecorationTextureRenderer;
+import org.caleydo.view.tourguide.v2.r.model.ScoreTable;
+import org.caleydo.view.tourguide.v2.r.ui.ScoreTableUI;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -199,13 +202,15 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		if (scoreQuery == null)
 			setQuery(new ScoreQuery(new DataDomainQuery()));
 
-		// mainColumn.append(ElementLayouts.create().height(300).width(200)
-		// .render(new LayoutRendererAdapter(this, StackedBarRankedListUI.demo())).build());
+		mainColumn.append(ElementLayouts.create().height(300).width(200)
+				.render(new LayoutRendererAdapter(this, Activator.getResourceLocator(), new ScoreTableUI(ScoreTable
+						.demo()))).build());
 
 
 		dataDomainQueryUI = new DataDomainQueryUI(this);
 		dataDomainQueryUI.setQuery(dataDomainQuery);
 		listeners.register(dataDomainQueryUI);
+
 
 		mainColumn.append(dataDomainQueryUI);
 
@@ -282,6 +287,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
+		layoutManager.destroy(gl);
+
 		this.stratomex.cleanUp();
 
 		if (keyListener != null)

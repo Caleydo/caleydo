@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.v2.r.model.ScoreColumn;
 import org.caleydo.view.tourguide.v2.r.model.ScoreTable;
+import org.caleydo.view.tourguide.v3.ui.RenderUtils;
 import org.eclipse.swt.SWT;
 
 /**

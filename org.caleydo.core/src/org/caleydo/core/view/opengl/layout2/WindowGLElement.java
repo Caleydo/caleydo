@@ -53,22 +53,4 @@ public final class WindowGLElement extends GLElementContainer {
 	public MouseLayer getMouseLayer() {
 		return mouseLayer;
 	}
-
-	@Override
-	protected void renderPickChild(GLElement child, GLGraphics g) {
-		if (child == mouseLayer) // mouse Layer in the front
-			g.incZ(1.0f);
-		super.renderPickChild(child, g);
-		if (child == mouseLayer)
-			g.incZ(-1.0f);
-	}
-
-	@Override
-	protected void renderChild(GLElement child, GLGraphics g) {
-		if (child == mouseLayer) // mouse Layer in the front
-			g.incZ(1.0f);
-		super.renderChild(child, g);
-		if (child == mouseLayer)
-			g.incZ(-1.0f);
-	}
 }

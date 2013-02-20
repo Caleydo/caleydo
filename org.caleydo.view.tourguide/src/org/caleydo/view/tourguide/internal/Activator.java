@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.internal;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
+import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -70,9 +71,12 @@ public class Activator extends Plugin {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
 	}
 
+	public static IResourceLocator getResourceLocator() {
+		return ResourceLocators.chain(ResourceLocators.classLoader(plugin.getClass().getClassLoader()),
+				ResourceLocators.DATA_CLASSLOADER, ResourceLocators.FILE);
+	}
+
 	public static ResourceLoader getResourceLoader() {
-		return new ResourceLoader(ResourceLocators.chain(
-				ResourceLocators.classLoader(plugin.getClass().getClassLoader()), ResourceLocators.DATA_CLASSLOADER,
-				ResourceLocators.FILE));
+		return new ResourceLoader(getResourceLocator());
 	}
 }

@@ -168,7 +168,6 @@ public abstract class ATableColumn extends Column {
 	 */
 	protected void setResizeDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
-		System.out.println("start: " + mouseCoordinateX + " ");
 		setCursor(SWT.CURSOR_SIZEWE);
 	}
 
@@ -180,7 +179,6 @@ public abstract class ATableColumn extends Column {
 	protected void handleResizeDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 		setCursor(-1);
-		System.out.println("drop: " + mouseCoordinateX + " ");
 	}
 
 	private void setCursor(final int cursor) {
@@ -200,7 +198,6 @@ public abstract class ATableColumn extends Column {
 	 */
 	protected void handleResizeDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
-		System.out.println("drag: " + mouseCoordinateX + " ");
 		if (getPixelSizeX() > getMinWidth()) {
 			setPixelSizeX(getPixelSizeX() - 1);
 			layoutManager.updateLayout();

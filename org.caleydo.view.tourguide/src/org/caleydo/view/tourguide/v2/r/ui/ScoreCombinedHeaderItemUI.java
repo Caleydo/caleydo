@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.view.tourguide.v2.r.model.ScoreColumn;
 import org.caleydo.view.tourguide.v2.r.model.ScoreTable;
+import org.caleydo.view.tourguide.v3.ui.RenderUtils;
 
 /**
  * @author Samuel Gratzl

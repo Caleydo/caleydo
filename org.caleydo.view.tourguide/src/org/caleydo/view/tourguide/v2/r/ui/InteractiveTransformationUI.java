@@ -47,6 +47,7 @@ import org.caleydo.view.tourguide.v2.r.model.DataUtils;
 import org.caleydo.view.tourguide.v2.r.model.IValue;
 import org.caleydo.view.tourguide.v2.r.model.InteractiveNormalization;
 import org.caleydo.view.tourguide.v2.r.model.Values;
+import org.caleydo.view.tourguide.v3.ui.RenderUtils;
 
 /**
  * @author Samuel Gratzl

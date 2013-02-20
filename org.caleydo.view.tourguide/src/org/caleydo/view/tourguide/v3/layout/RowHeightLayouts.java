@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v2.r.ui;
+package org.caleydo.view.tourguide.v3.layout;
 
 import java.util.Arrays;
 
@@ -64,6 +64,32 @@ public class RowHeightLayouts {
 			if (selectedRowIndex >= 0 && selectedRowIndex < r.length) {
 				r[selectedRowIndex] = 30;
 			}
+			return r;
+		}
+	};
+
+	public static final IRowHeightLayout JUST_SELECTED = new IRowHeightLayout() {
+		@Override
+		public float[] compute(int numRows, int selectedRowIndex, float h) {
+			if (selectedRowIndex < 0)
+				return new float[0];
+			float[] r = new float[selectedRowIndex + 1];
+			Arrays.fill(r, 0);
+			r[selectedRowIndex] = h;
+			return r;
+		}
+	};
+
+	public static final IRowHeightLayout HINTS = new IRowHeightLayout() {
+		@Override
+		public float[] compute(int numRows, int selectedRowIndex, float h) {
+			if (h <= (numRows + 2) || selectedRowIndex < 0)
+				return JUST_SELECTED.compute(numRows, selectedRowIndex, h);
+
+			float[] r = new float[numRows];
+			float delta = h / (numRows + 2);
+			Arrays.fill(r, delta);
+			r[selectedRowIndex] = delta * 3;
 			return r;
 		}
 	};

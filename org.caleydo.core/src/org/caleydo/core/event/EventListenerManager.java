@@ -82,11 +82,11 @@ public class EventListenerManager {
 
 	/**
 	 * filter all methods of the listener object for <code>
-	 * 
+	 *
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 * 
+	 *
 	 *           and register an event listener for calling this method
-	 * 
+	 *
 	 * @param listener
 	 * @param eventSpace
 	 *            if {@link ListenTo#restrictToEventSpace()} or {@link ListenTo#restrictExclusiveToEventSpace()} is used
@@ -156,6 +156,10 @@ public class EventListenerManager {
 			}
 		}
 		listeners.clear();
+	}
+
+	public static void triggerEvent(AEvent event) {
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	/**
