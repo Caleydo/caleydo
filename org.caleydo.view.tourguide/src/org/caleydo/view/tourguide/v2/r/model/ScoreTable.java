@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
 import com.google.common.collect.Iterables;
 
@@ -386,9 +386,9 @@ public class ScoreTable {
 		return new Color(240, 240, 240);
 	}
 
-	public Histogram getCombinedHist(int bins) {
+	public SimpleHistogram getCombinedHist(int bins) {
 		String key = "chist" + bins;
-		Histogram h = (Histogram) cache.get(key);
+		SimpleHistogram h = (SimpleHistogram) cache.get(key);
 		if (h != null)
 			return h;
 		h = DataUtils.getHist(bins, getNormalizedCombinedCol());

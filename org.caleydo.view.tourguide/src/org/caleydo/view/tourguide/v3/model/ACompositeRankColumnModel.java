@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
 
 import com.google.common.collect.Iterators;
@@ -186,8 +185,8 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		return colors;
 	}
 
-	public final Histogram[] getHists(int bins) {
-		Histogram[] hists = new Histogram[size()];
+	public final SimpleHistogram[] getHists(int bins) {
+		SimpleHistogram[] hists = new SimpleHistogram[size()];
 		int i = 0;
 		for (ARankColumnModel child : this)
 			hists[i++] = ((IRankableColumnMixin) child).getHist(bins);
@@ -195,16 +194,10 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	@Override
-	public final Histogram getHist(int bins) {
-		Histogram hist = new Histogram(bins);
+	public final SimpleHistogram getHist(int bins) {
+		SimpleHistogram hist = new SimpleHistogram(bins);
 		for (IRow row : getTable()) {
-			float value = getValue(row);
-			if (value > 1)
-				System.err.println();
-			if (Float.isNaN(value))
-				hist.addNAN(0);
-			else
-				hist.add(Math.round(value * (bins - 1)), 0);
+			hist.add(getValue(row));
 		}
 		return hist;
 	}

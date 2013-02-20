@@ -23,16 +23,16 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class RenderUtils {
-	public static void renderHist(GLGraphics g, Histogram hist, float w, float h, int selectedBin, Color color,
+	public static void renderHist(GLGraphics g, SimpleHistogram hist, float w, float h, int selectedBin, Color color,
 			Color selectionColor) {
 		w -= 2;
 		float factor = h / hist.getLargestValue();
@@ -58,7 +58,7 @@ public class RenderUtils {
 		g.restore();
 	}
 
-	public static void renderStackedHist(GLGraphics g, Histogram[] hists, float w, float h, int[] selectedBins,
+	public static void renderStackedHist(GLGraphics g, SimpleHistogram[] hists, float w, float h, int[] selectedBins,
 			Color[] colors, Color[] selectionColors) {
 		if (hists.length == 1) {
 			renderHist(g, hists[0], w, h, selectedBins[0], colors[0], selectionColors[0]);
@@ -69,7 +69,7 @@ public class RenderUtils {
 		int largest = 0;
 		for (int i = 0; i < size; ++i) {
 			int act = 0;
-			for (Histogram hist : hists)
+			for (SimpleHistogram hist : hists)
 				act += hist.get(i);
 			if (act > largest)
 				largest = act;

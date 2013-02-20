@@ -29,7 +29,6 @@ import javax.media.opengl.GL2;
 
 import org.apache.commons.math.random.JDKRandomGenerator;
 import org.apache.commons.math.random.RandomGenerator;
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -47,6 +46,7 @@ import org.caleydo.view.tourguide.v2.r.model.DataUtils;
 import org.caleydo.view.tourguide.v2.r.model.IValue;
 import org.caleydo.view.tourguide.v2.r.model.InteractiveNormalization;
 import org.caleydo.view.tourguide.v2.r.model.Values;
+import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 import org.caleydo.view.tourguide.v3.ui.RenderUtils;
 
 /**
@@ -106,7 +106,7 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 		return new float[] { from, normalizeRaw(from), to, to };
 	}
 
-	public Histogram computeHist() {
+	public SimpleHistogram computeHist() {
 		return DataUtils.getHist(200, new Iterator<IValue>() {
 			int cursor = 0;
 			@Override
@@ -146,7 +146,7 @@ public class InteractiveTransformationUI extends GLElementContainer implements I
 	}
 
 	class RawHistogramElement extends GLElement {
-		private final Histogram rawHist;
+		private final SimpleHistogram rawHist;
 
 		private RawHistogramElement(FloatContainer raw) {
 			rawHist = DataUtils.getHist(200, raw);

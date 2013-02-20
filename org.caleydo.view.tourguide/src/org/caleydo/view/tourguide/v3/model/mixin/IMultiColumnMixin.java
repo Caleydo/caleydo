@@ -21,8 +21,8 @@ package org.caleydo.view.tourguide.v3.model.mixin;
 
 import java.awt.Color;
 
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
 /**
  * @author Samuel Gratzl
@@ -61,7 +61,7 @@ public interface IMultiColumnMixin extends IRankableColumnMixin {
 	 */
 	Color[] getColors();
 
-	Histogram[] getHists(int bins);
+	SimpleHistogram[] getHists(int bins);
 
 	/**
 	 * @return

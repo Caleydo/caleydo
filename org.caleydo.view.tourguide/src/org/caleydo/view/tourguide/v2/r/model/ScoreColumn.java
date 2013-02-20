@@ -5,7 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
 public class ScoreColumn {
 	public static final String PROP_WEIGHT = "weight";
@@ -87,9 +87,9 @@ public class ScoreColumn {
 		propertySupport.firePropertyChange(PROP_WEIGHT, this.weight, this.weight = weight);
 	}
 
-	public Histogram getHist(int bins) {
+	public SimpleHistogram getHist(int bins) {
 		String key = this.hashCode() + "hist" + bins;
-		Histogram h = (Histogram) table.cache.get(key);
+		SimpleHistogram h = (SimpleHistogram) table.cache.get(key);
 		if (h != null)
 			return h;
 		h = DataUtils.getHist(bins, table.getNormalizedCol(this));

@@ -191,6 +191,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	private void setup(ARankColumnModel col) {
+		col.init(this);
 		if (col instanceof StackedRankColumnModel)
 			col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
 		col.addPropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
@@ -202,6 +203,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	private void takeDown(ARankColumnModel col) {
+		col.takeDown(this);
 		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, resort);
 		col.removePropertyChangeListener(IMappedColumnMixin.PROP_MAPPING, refilter);
 		col.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, refilter);

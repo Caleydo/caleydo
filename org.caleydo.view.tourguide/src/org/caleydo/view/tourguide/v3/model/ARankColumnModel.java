@@ -62,6 +62,14 @@ public abstract class ARankColumnModel implements IDragInfo {
 		this.header = header;
 	}
 
+	protected void init(RankTableModel table) {
+
+	}
+
+	protected void takeDown(RankTableModel table) {
+
+	}
+
 	/**
 	 * @param parent
 	 *            setter, see {@link parent}

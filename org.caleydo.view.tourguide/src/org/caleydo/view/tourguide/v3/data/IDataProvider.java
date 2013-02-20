@@ -17,38 +17,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v2.r.model;
+package org.caleydo.view.tourguide.v3.data;
 
-import java.util.Iterator;
+import java.util.Collection;
 
-import org.caleydo.core.data.collection.column.container.FloatContainer;
-import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
+import org.caleydo.view.tourguide.v3.model.IRow;
+
+import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class DataUtils {
-	public static SimpleHistogram getHist(int bins, Iterator<IValue> it) {
-		SimpleHistogram hist = new SimpleHistogram(bins);
-		while (it.hasNext()) {
-			float value = it.next().asFloat();
-			hist.add(value);
-		}
-		return hist;
-	}
-
-	public static SimpleHistogram getHist(int bins, FloatContainer c) {
-		SimpleHistogram hist = new SimpleHistogram(bins);
-		for (int i = 0; i < c.size(); ++i) {
-			float value = c.getPrimitive(i);
-			hist.add(value);
-		}
-		return hist;
-	}
-
-	public static int getHistBin(int bins, float normalized) {
-		float value = normalized;
-		return Math.round(value * (bins - 1));
-	}
+public interface IDataProvider<T> extends Function<IRow, T> {
+	void prepareFor(Collection<IRow> data);
 }

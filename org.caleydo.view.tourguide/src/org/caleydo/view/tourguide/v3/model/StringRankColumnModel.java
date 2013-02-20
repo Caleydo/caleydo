@@ -22,8 +22,12 @@ package org.caleydo.view.tourguide.v3.model;
 import static org.caleydo.core.event.EventListenerManager.triggerEvent;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.BitSet;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
@@ -31,23 +35,49 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.view.tourguide.v3.data.IDataProvider;
 import org.caleydo.view.tourguide.v3.event.FilterEvent;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
-
-import com.google.common.base.Function;
 /**
  * @author Samuel Gratzl
  *
  */
 public class StringRankColumnModel extends ABasicRankColumnModel implements IFilterColumnMixin {
-	private final Function<? super IRow, String> data;
+	public static IDataProvider<String> TO_STRING = new IDataProvider<String>() {
+		@Override
+		public String apply(IRow row) {
+			return Objects.toString(row);
+		}
+
+		@Override
+		public void prepareFor(Collection<IRow> data) {
+
+		}
+	};
+
+	private final IDataProvider<String> data;
 	private String filter;
 	private boolean removeAble;
 
-	public StringRankColumnModel(IGLRenderer header, final Function<? super IRow, String> data,
+	private BitSet cacheFilter = null;
+	private final PropertyChangeListener listerner = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+			case RankTableModel.PROP_DATA:
+				@SuppressWarnings("unchecked")
+				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
+				data.prepareFor(news);
+				cacheFilter = null;
+				break;
+			}
+		}
+	};
+
+	public StringRankColumnModel(IGLRenderer header, final IDataProvider<String> data,
 			boolean removeAble) {
 		super(Color.GRAY, new Color(.95f, .95f, .95f));
 		setHeaderRenderer(header);
@@ -65,6 +95,19 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 		});
 		this.data = data;
 		this.removeAble = removeAble;
+	}
+
+	@Override
+	protected void init(RankTableModel table) {
+		table.addPropertyChangeListener(RankTableModel.PROP_DATA, listerner);
+		this.data.prepareFor(table.getData());
+		super.init(table);
+	}
+
+	@Override
+	protected void takeDown(RankTableModel table) {
+		table.removePropertyChangeListener(RankTableModel.PROP_DATA, listerner);
+		super.takeDown(table);
 	}
 
 	@Override
@@ -96,6 +139,7 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 
 	@ListenTo(sendToMe = true)
 	private void onSetFilter(FilterEvent event) {
+		cacheFilter = null;
 		propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = (String) event.getFilter());
 	}
 
@@ -106,6 +150,8 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 
 	@Override
 	public BitSet getSelectedRows(List<IRow> rows) {
+		if (cacheFilter != null)
+			return cacheFilter;
 		BitSet b = new BitSet(rows.size());
 		if (filter == null) {
 			b.set(0, rows.size());
@@ -117,6 +163,7 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 				b.set(i++, Pattern.matches(regex, v));
 			}
 		}
+		cacheFilter = b;
 		return b;
 	}
 }

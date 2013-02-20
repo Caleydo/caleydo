@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.v3.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -30,18 +31,16 @@ import org.caleydo.core.view.opengl.layout2.GLPadding;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.view.tourguide.v3.data.AFloatFunction;
+import org.caleydo.view.tourguide.v3.data.IFloatDataProvider;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
 import org.caleydo.view.tourguide.v3.model.ARow;
 import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
-import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel.AFloatFunction;
-import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel.FloatFunction;
 import org.caleydo.view.tourguide.v3.model.IRow;
 import org.caleydo.view.tourguide.v3.model.RankRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.RankTableModel;
 import org.caleydo.view.tourguide.v3.model.StackedRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.StringRankColumnModel;
-
-import com.google.common.base.Functions;
 
 /**
  * @author Samuel Gratzl
@@ -66,45 +65,22 @@ public class RankedVis extends GLElementContainer {
 		RankTableModel table = new RankTableModel();
 		table.addColumn(new RankRankColumnModel());
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
- Functions
-				.toStringFunction(), false));
+				StringRankColumnModel.TO_STRING, false));
 
-		FloatFunction<IRow> data = new AFloatFunction<IRow>() {
-			@Override
-			public float applyPrimitive(IRow in) {
-				return ((SimpleRow) in).value;
-			}
-		};
-		FloatFunction<IRow> data2 = new AFloatFunction<IRow>() {
-			@Override
-			public float applyPrimitive(IRow in) {
-				return ((SimpleRow) in).value2;
-			}
-		};
-		FloatFunction<IRow> data3 = new AFloatFunction<IRow>() {
-			@Override
-			public float applyPrimitive(IRow in) {
-				return ((SimpleRow) in).value3;
-			}
-		};
-		FloatFunction<IRow> data4 = new AFloatFunction<IRow>() {
-			@Override
-			public float applyPrimitive(IRow in) {
-				return ((SimpleRow) in).value4;
-			}
-		};
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.addColumn(stacked);
 
-		table.addColumnTo(stacked,new FloatRankColumnModel(data, GLRenderers.drawText("Float", VAlign.CENTER), Color
+		table.addColumnTo(
+				stacked,
+				new FloatRankColumnModel(new SimpleAcc(1), GLRenderers.drawText("Float", VAlign.CENTER), Color
 				.decode("#ffb380"), Color.decode("#ffe6d5")));
 		table.addColumnTo(stacked,
-				new FloatRankColumnModel(data2, GLRenderers.drawText("Float2", VAlign.CENTER), Color
+				new FloatRankColumnModel(new SimpleAcc(2), GLRenderers.drawText("Float2", VAlign.CENTER), Color
 				.decode("#80ffb3"), Color.decode("#e3f4d7")));
 
-		table.addColumn(new FloatRankColumnModel(data3, GLRenderers.drawText("Float3", VAlign.CENTER), Color
+		table.addColumn(new FloatRankColumnModel(new SimpleAcc(3), GLRenderers.drawText("Float3", VAlign.CENTER), Color
 				.decode("#5fd3bc"), Color.decode("#d5fff6")));
-		table.addColumn(new FloatRankColumnModel(data4, GLRenderers.drawText("Float4", VAlign.CENTER), Color
+		table.addColumn(new FloatRankColumnModel(new SimpleAcc(4), GLRenderers.drawText("Float4", VAlign.CENTER), Color
 				.decode("#ffb380"), Color.decode("#ffe6d5")));
 
 
@@ -115,6 +91,35 @@ public class RankedVis extends GLElementContainer {
 					.nextFloat(), r.nextFloat()));
 		table.addData(rows);
 		GLSandBox.main(args, new RankedVis(table), new GLPadding(5));
+	}
+
+	private static class SimpleAcc extends AFloatFunction<IRow> implements IFloatDataProvider {
+		private final int what;
+
+		public SimpleAcc(int what) {
+			this.what = what;
+		}
+
+		@Override
+		public float applyPrimitive(IRow in) {
+			SimpleRow r = (SimpleRow) in;
+			switch (what) {
+			case 1:
+				return r.value;
+			case 2:
+				return r.value2;
+			case 3:
+				return r.value3;
+			case 4:
+				return r.value4;
+			}
+			return 0;
+		}
+
+		@Override
+		public void prepareFor(Collection<IRow> data) {
+
+		}
 	}
 
 	static class SimpleRow extends ARow {

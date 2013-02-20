@@ -5,13 +5,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.view.tourguide.v2.r.model.DataUtils;
 import org.caleydo.view.tourguide.v3.model.IRow;
 import org.caleydo.view.tourguide.v3.model.RankTableModel;
+import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.view.tourguide.v3.ui.RenderUtils;
@@ -66,7 +65,7 @@ public class StackedScoreSummary extends AnimatedGLElementContainer {
 		int bins = Math.round(w);
 		int size = model.size();
 		// create a stacked histogram of all values
-		Histogram[] hists = model.getHists(bins);
+		SimpleHistogram[] hists = model.getHists(bins);
 		Color[] colors = model.getColors();
 		Color[] selectedColors = new Color[size];
 		int[] selectedBins = new int[size];
@@ -75,7 +74,7 @@ public class StackedScoreSummary extends AnimatedGLElementContainer {
 		} else {
 			MultiFloat vs = model.getSplittedValue(selectedRow);
 			for(int i = 0; i < size; ++i)
-				selectedBins[i] = DataUtils.getHistBin(bins, vs.values[i]);
+				selectedBins[i] = hists[i].getBinOf(vs.values[i]);
 		}
 		for(int i = 0; i < size; ++i)
 			selectedColors[i] = colors[i].darker();

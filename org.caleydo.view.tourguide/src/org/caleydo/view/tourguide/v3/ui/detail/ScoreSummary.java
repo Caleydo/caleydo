@@ -6,9 +6,9 @@ import java.beans.PropertyChangeListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
-import org.caleydo.view.tourguide.v2.r.model.DataUtils;
 import org.caleydo.view.tourguide.v3.model.IRow;
 import org.caleydo.view.tourguide.v3.model.RankTableModel;
+import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
 import org.caleydo.view.tourguide.v3.ui.RenderUtils;
 
@@ -56,8 +56,9 @@ public class ScoreSummary extends GLElement {
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		// hist
 		int bins = Math.round(w);
-		int selectedBin = selectedRow == null ? -1 : DataUtils.getHistBin(bins, model.getValue(selectedRow));
-		RenderUtils.renderHist(g, model.getHist(bins), w, h, selectedBin, model.getColor(), model.getColor().darker());
+		SimpleHistogram hist = model.getHist(bins);
+		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.getValue(selectedRow));
+		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker());
 	}
 
 	protected void onSelectRow(IRow selectedRow) {
