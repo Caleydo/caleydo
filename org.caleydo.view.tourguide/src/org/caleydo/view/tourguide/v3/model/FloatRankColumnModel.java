@@ -37,7 +37,6 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.v2.r.model.DataUtils;
-import org.caleydo.view.tourguide.v2.r.ui.ScoreDragInfo;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
@@ -203,7 +202,6 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			switch (pick.getPickingMode()) {
 			case CLICKED:
 				pick.setDoDragging(true);
-				context.getMouseLayer().addDraggable(ScoreDragInfo.SELECTION_DRAG_INFO);
 				break;
 			case MOUSE_OVER:
 				context.setCursor(SWT.CURSOR_HAND);
@@ -239,7 +237,6 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 						cursorMinHovered = false;
 					else
 						cursorMaxHovered = false;
-					context.getMouseLayer().removeDraggable(ScoreDragInfo.SELECTION_DRAG_INFO);
 					repaintAll();
 				}
 				break;

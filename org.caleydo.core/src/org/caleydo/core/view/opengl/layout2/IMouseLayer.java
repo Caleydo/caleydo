@@ -30,13 +30,6 @@ import org.caleydo.core.util.collection.Pair;
  *
  */
 public interface IMouseLayer {
-
-	/**
-	 * adds an invisible draggable element, e.g. a marker that something is dragged
-	 *
-	 * @param info
-	 */
-	void addDraggable(IDragInfo info);
 	/**
 	 * adds a draggable element to this mouse layer
 	 *

@@ -588,6 +588,10 @@ public class GLElement implements IHasGLLayoutData {
 			layout();
 	}
 
+	public <P, R> R accept(IGLElementVisitor<P, R> visitor, P para) {
+		return visitor.visit(this, para);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

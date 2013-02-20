@@ -238,29 +238,26 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		super.renderImpl(g, w, h);
 		g.incZ();
 		for(GLElement child : children)
-			renderChild(child, g);
+			child.render(g);
 		g.decZ();
 	}
-	protected void renderChild(GLElement child, GLGraphics g) {
-		child.render(g);
-	}
-
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);
 		g.incZ();
 		for (GLElement child : children)
-			renderPickChild(child, g);
+			child.renderPick(g);
 		g.decZ();
-	}
-
-	protected void renderPickChild(GLElement child, GLGraphics g) {
-		child.renderPick(g);
 	}
 
 	@Override
 	public final Iterator<GLElement> iterator() {
 		return Iterators.unmodifiableIterator(children.iterator());
+	}
+
+	@Override
+	public <P, R> R accept(IGLElementVisitor<P, R> visitor, P para) {
+		return visitor.visit(this, para);
 	}
 }
 

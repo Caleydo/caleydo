@@ -65,4 +65,8 @@ public interface IRankColumnParent {
 	 * @return
 	 */
 	boolean isCollapseAble(ARankColumnModel model);
+
+	boolean isMoveAble(ARankColumnModel model, int index);
+
+	void move(ARankColumnModel model, int index);
 }

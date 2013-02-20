@@ -429,7 +429,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			g.color(model.getBgColor()).renderRoundedRect(true, 0, 0, w, h, 5, 2, true, true, false, false);
-			renderLabel(g, w, h);
+			renderLabel(g, w, h);			
 			if (hovered) {
 				g.color(Color.BLACK).renderRoundedRect(false, 0, 0, w, h, 5, 2, true, true, false, false);
 			}

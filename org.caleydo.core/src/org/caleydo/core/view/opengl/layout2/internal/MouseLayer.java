@@ -49,8 +49,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	// marker for a tooltip element
 	private static final Object TOOLTIP = new Object();
 
-	private final List<IDragInfo> invisibles = new ArrayList<>(1);
-
 	private final Set<IDragInfo> dropAbles = new HashSet<>();
 	private final Set<Class<? extends IDragInfo>> dropAbleTypes = new HashSet<>();
 
@@ -67,12 +65,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 					defaultValue(child.getSetWidth(), w), defaultValue(child.getSetHeight(), h));
 		}
 	}
-
-	@Override
-	public void addDraggable(IDragInfo info) {
-		invisibles.add(info);
-	}
-
 
 	@Override
 	public void addDraggable(GLElement element) {
@@ -101,10 +93,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	@Override
 	public <T extends IDragInfo> Pair<GLElement, T> getFirstDraggable(Class<T> type) {
-		for (IDragInfo invisible : invisibles) {
-			if (type.isInstance(invisible))
-				return Pair.make(null, type.cast(invisible));
-		}
 		for (GLElement child : this) {
 			T info = child.getLayoutDataAs(type, null);
 			if (info != null)
@@ -117,10 +105,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public <T extends IDragInfo> Pair<GLElement, T> getFirstDraggable(T info) {
 		assert info != null;
-		for (IDragInfo invisible : invisibles) {
-			if (Objects.equal(info, invisible))
-				return Pair.make(null, (T) invisible);
-		}
 		for (GLElement child : this) {
 			IDragInfo o = child.getLayoutDataAs(IDragInfo.class, null);
 			if (Objects.equal(info, o))
@@ -132,10 +116,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 	@Override
 	public <T extends IDragInfo> List<Pair<GLElement, T>> getDraggables(Class<T> type) {
 		List<Pair<GLElement, T>> r = new ArrayList<>(1);
-		for (IDragInfo invisible : invisibles) {
-			if (type.isInstance(invisible))
-				r.add(Pair.make((GLElement) null, type.cast(invisible)));
-		}
 		for (GLElement child : this) {
 			T info = child.getLayoutDataAs(type, null);
 			if (info != null)
@@ -151,8 +131,6 @@ public final class MouseLayer extends GLElementContainer implements IMouseLayer,
 
 	@Override
 	public boolean removeDraggable(IDragInfo info) {
-		if (this.invisibles.remove(info))
-			return true;
 		for (GLElement child : this)
 			if (Objects.equal(info, child.getLayoutDataAs(IDragInfo.class, null))) {
 				return removeDraggable(child);

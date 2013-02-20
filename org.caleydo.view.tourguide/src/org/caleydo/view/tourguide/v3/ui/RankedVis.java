@@ -64,8 +64,8 @@ public class RankedVis extends GLElementContainer {
 
 	public static void main(String[] args) {
 		RankTableModel table = new RankTableModel();
-		table.add(new RankRankColumnModel());
-		table.add(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
+		table.addColumn(new RankRankColumnModel());
+		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
  Functions
 				.toStringFunction(), false));
 
@@ -93,15 +93,18 @@ public class RankedVis extends GLElementContainer {
 				return ((SimpleRow) in).value4;
 			}
 		};
-		StackedRankColumnModel stacked = new StackedRankColumnModel();
-		stacked.add(new FloatRankColumnModel(data, GLRenderers.drawText("Float", VAlign.CENTER), Color
+		final StackedRankColumnModel stacked = new StackedRankColumnModel();
+		table.addColumn(stacked);
+
+		table.addColumnTo(stacked,new FloatRankColumnModel(data, GLRenderers.drawText("Float", VAlign.CENTER), Color
 				.decode("#ffb380"), Color.decode("#ffe6d5")));
-		stacked.add(new FloatRankColumnModel(data2, GLRenderers.drawText("Float2", VAlign.CENTER), Color
+		table.addColumnTo(stacked,
+				new FloatRankColumnModel(data2, GLRenderers.drawText("Float2", VAlign.CENTER), Color
 				.decode("#80ffb3"), Color.decode("#e3f4d7")));
-		table.add(stacked);
-		table.add(new FloatRankColumnModel(data3, GLRenderers.drawText("Float3", VAlign.CENTER), Color
+
+		table.addColumn(new FloatRankColumnModel(data3, GLRenderers.drawText("Float3", VAlign.CENTER), Color
 				.decode("#5fd3bc"), Color.decode("#d5fff6")));
-		table.add(new FloatRankColumnModel(data4, GLRenderers.drawText("Float4", VAlign.CENTER), Color
+		table.addColumn(new FloatRankColumnModel(data4, GLRenderers.drawText("Float4", VAlign.CENTER), Color
 				.decode("#ffb380"), Color.decode("#ffe6d5")));
 
 

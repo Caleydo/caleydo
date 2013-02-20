@@ -35,8 +35,9 @@ import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 import org.caleydo.view.tourguide.v3.model.RankTableModel;
 import org.caleydo.view.tourguide.v3.model.StackedRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.view.tourguide.v3.ui.SeparatorUI.IMoveHereChecker;
 
-public final class TableHeaderUI extends GLElementContainer implements IGLLayout {
+public final class TableHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
 	public static final float COLUMN_SPACE = 2;
 	private final RankTableModel table;
 	private final PropertyChangeListener layoutOnChange = new PropertyChangeListener() {
@@ -54,6 +55,8 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 	private boolean hasStacked = false;
 
+	private int numColumns = 0;
+
 	public TableHeaderUI(RankTableModel table) {
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
@@ -64,7 +67,11 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 				this.hasStacked = true;
 			} else
 				this.add(wrap(col));
+			numColumns++;
 		}
+		this.add(new SeparatorUI(this, -1)); // left
+		for (int i = 0; i < numColumns; ++i)
+			this.add(new SeparatorUI(this, i));
 		setLayout(this);
 		setSize(-1, (hasStacked ? 40 : 0) + 60);
 	}
@@ -96,10 +103,15 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 				for (ARankColumnModel c : (Collection<ARankColumnModel>) evt.getNewValue())
 					news.add(wrap(c));
 			}
+			numColumns += news.size();
 			asList().addAll(index, news);
+			for (int i = 0; i < news.size(); ++i)
+				add(new SeparatorUI(this));
 		} else if (evt.getNewValue() == null) { // removed
 			takeDown(get(index).getLayoutDataAs(ARankColumnModel.class, null));
 			remove(index);
+			numColumns--;
+			remove(this.size() - 1); // remove last separator
 		} else { // replaced
 			takeDown(get(index).getLayoutDataAs(ARankColumnModel.class, null));
 			set(index, wrap((ARankColumnModel) evt.getNewValue()));
@@ -128,14 +140,38 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		//align the columns normally
 		float x = COLUMN_SPACE;
-		for (IGLLayoutElement col : children) {
+
+		List<? extends IGLLayoutElement> columns = children.subList(0, numColumns);
+		List<? extends IGLLayoutElement> separators = children.subList(numColumns + 1, children.size());
+		assert separators.size() == columns.size();
+
+		float y = hasStacked ? 40 : 0;
+		float hn = hasStacked ? h - 40 : h;
+		children.get(numColumns).setBounds(0, y, COLUMN_SPACE, hn); // left separator
+
+		for (int i = 0; i < columns.size(); ++i) {
+			IGLLayoutElement col = columns.get(i);
+			IGLLayoutElement sep = separators.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			if (model instanceof StackedRankColumnModel)
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
-				col.setBounds(x, hasStacked ? 40 : 0, model.getPreferredWidth(), hasStacked ? h - 40 : h);
+				col.setBounds(x, y, model.getPreferredWidth(), hn);
 			x += model.getPreferredWidth() + COLUMN_SPACE;
+			sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);
+			((SeparatorUI) sep.asElement()).setIndex(i);
 		}
+	}
+
+	@Override
+	public boolean canMoveHere(int index, ARankColumnModel model) {
+		return table.isMoveAble(model, index + 1);
+	}
+
+	@Override
+	public void moveHere(int index, ARankColumnModel model) {
+		assert canMoveHere(index, model);
+		this.table.move(model, index + 1);
 	}
 }
 

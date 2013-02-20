@@ -17,17 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v2.r.ui;
-
-import org.caleydo.core.view.opengl.layout2.DragInfos;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
+package org.caleydo.core.view.opengl.layout2;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ScoreDragInfo {
-	public static final IDragInfo WEIGHT_DRAG_INFO = DragInfos.createString("weight");
-	public static final IDragInfo SELECTION_DRAG_INFO = DragInfos.createString("selection");
-	public static final IDragInfo COMBINED_ALIGN = DragInfos.createString("combined_align");
+public interface IGLElementVisitor<P, R> {
+	R visit(GLElement elem, P para);
+
+	R visit(GLElementContainer elem, P para);
 }

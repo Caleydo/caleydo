@@ -40,8 +40,9 @@ public class RankRankColumnModel extends ARankColumnModel {
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
 				if (h < 5 || w < 15)
 					return;
+				float hi = Math.min(h, 16);
 				String value = String.format("%2d.", parent.getLayoutDataAs(IRow.class, null).getRank() + 1);
-				g.drawText(value, 1, 1, w - 2, h - 2);
+				g.drawText(value, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
 			}
 		});
 		setWeight(20);

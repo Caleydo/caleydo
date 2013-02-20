@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.ui;
 
+import gleem.linalg.Vec2f;
+
 import java.awt.Color;
 
 import org.caleydo.core.util.collection.Pair;
@@ -36,6 +38,17 @@ import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 public class SeparatorUI extends PickableGLElement {
 	private int index;
 	private boolean armed = false;
+	private final IMoveHereChecker model;
+
+	public SeparatorUI(IMoveHereChecker model) {
+		setzDelta(0.2f);
+		this.model = model;
+	}
+
+	public SeparatorUI(IMoveHereChecker model, int index) {
+		this(model);
+		this.index = index;
+	}
 
 	/**
 	 * @param index
@@ -48,8 +61,19 @@ public class SeparatorUI extends PickableGLElement {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (armed) {
+			renderTriangle(g, w);
 			g.color(Color.BLACK).fillRect(0, 0, w, h);
 		}
+	}
+
+	protected void renderTriangle(GLGraphics g, float w) {
+		g.color(Color.BLACK).fillPolygon(new Vec2f(0, 0), new Vec2f(-10, -10), new Vec2f(w + 10, -10), new Vec2f(w, 0));
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		super.renderPickImpl(g, w, h);
+		renderTriangle(g, w);
 	}
 
 	@Override
@@ -60,7 +84,8 @@ public class SeparatorUI extends PickableGLElement {
 		if (!m.hasDraggable(ARankColumnModel.class))
 			return;
 		Pair<GLElement, ARankColumnModel> info = m.getFirstDraggable(ARankColumnModel.class);
-
+		if (!model.canMoveHere(index, info.getSecond()))
+			return;
 		m.setDropable(ARankColumnModel.class, true);
 		armed = true;
 		repaint();
@@ -86,6 +111,12 @@ public class SeparatorUI extends PickableGLElement {
 		m.removeDraggable(info.getFirst());
 		context.setCursor(-1);
 		armed = false;
-		// TODO perform
+		model.moveHere(index, info.getSecond());
+	}
+
+	public interface IMoveHereChecker {
+		boolean canMoveHere(int index, ARankColumnModel model);
+
+		void moveHere(int index, ARankColumnModel model);
 	}
 }

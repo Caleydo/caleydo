@@ -93,21 +93,47 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		this.dataMask = dataMask;
 	}
 
-	public void add(ARankColumnModel col) {
+	public void addColumn(ARankColumnModel col) {
 		setup(col);
-		col.setParent(this);
-		int bak = columns.size();
-		this.columns.add(col); // intelligent positioning
-		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, bak, null, col);
+		add(col);
 	}
 
+	public void addColumnTo(ACompositeRankColumnModel parent, ARankColumnModel col) {
+		setup(col);
+		parent.add(col);
+	}
+
+	private void add(ARankColumnModel col) {
+		add(columns.size(), col);
+	}
+
+	private void add(int index, ARankColumnModel col) {
+		col.setParent(this);
+		this.columns.add(index, col); // intelligent positioning
+		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, null, col);
+	}
+
+	@Override
 	public final void move(ARankColumnModel model, int to) {
-		int from = columns.indexOf(model);
-		if (from == to)
-			return;
-		columns.add(to, model);
-		columns.remove(from < to ? from : from + 1);
-		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, to, from, model);
+		if (model.getParent() == this) { // move within the same parent
+			int from = this.columns.indexOf(model);
+			if (from < 0) {
+				System.err.println();
+			}
+			if (from == to)
+				return;
+			columns.add(to, model);
+			columns.remove(from < to ? from : from + 1);
+			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, to, from, model);
+		} else {
+			model.getParent().detach(model);
+			add(to, model);
+		}
+	}
+
+	@Override
+	public boolean isMoveAble(ARankColumnModel model, int index) {
+		return true;
 	}
 
 	@Override
@@ -223,6 +249,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.columns.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
+		for (ARankColumnModel child : children)
+			child.setParent(this);
 		getTable().destroy(model);
 		this.columns.set(index, children.get(0));
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, children.get(0));

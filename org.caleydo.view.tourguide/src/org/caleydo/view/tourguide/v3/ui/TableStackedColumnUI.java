@@ -144,7 +144,7 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 					for (int i = 0; i <= combinedIndex; ++i)
 						x -= vs.values[i] + weights[i];
 				} else {
-					for (int i = combinedIndex; i < vs.size(); ++i)
+					for (int i = combinedAlign; i < combinedIndex; ++i)
 						x += vs.values[i] - weights[i];
 				}
 				row.setBounds(x, y, w, hr - y);
