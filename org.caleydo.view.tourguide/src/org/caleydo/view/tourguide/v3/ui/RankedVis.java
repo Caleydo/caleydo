@@ -53,7 +53,7 @@ public class RankedVis extends GLElementContainer {
 
 	public RankedVis(RankTableModel table) {
 		this.table = table;
-		setLayout(GLLayouts.flowVertical(4));
+		setLayout(GLLayouts.flowVertical(0));
 
 		this.add(new TableHeaderUI(table));
 		this.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));

@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.ui;
 
+import static org.caleydo.view.tourguide.v3.ui.TableHeaderUI.COLUMN_SPACE;
+
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -47,10 +49,17 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 
 	private StackedRankColumnModel stacked;
 
-	private final PropertyChangeListener childrenChanged = new PropertyChangeListener() {
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			onChildrenChanged((IndexedPropertyChangeEvent) evt);
+			switch (evt.getPropertyName()) {
+			case ACompositeRankColumnModel.PROP_CHILDREN:
+				onChildrenChanged((IndexedPropertyChangeEvent) evt);
+				break;
+			case StackedRankColumnModel.PROP_ALIGNMENT:
+				onAlignmentChanged();
+				break;
+			}
 		}
 	};
 
@@ -58,13 +67,16 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 		this.stacked = model;
 		setLayout(this);
 		setLayoutData(model);
-		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		for (ARankColumnModel col2 : model) {
 			TableColumnUI ui = new TableColumnUI(col2);
 			ui.setData(model.getTable().getData());
 			this.add(ui);
 		}
 	}
+
+
 
 	protected void onChildrenChanged(IndexedPropertyChangeEvent evt) {
 		int index = evt.getIndex();
@@ -91,6 +103,12 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 		relayout();
 	}
 
+
+	protected void onAlignmentChanged() {
+		relayoutChildren();
+		relayout();
+		repaint();
+	}
 	private void relayoutChildren() {
 		for (GLElement c : this)
 			c.relayout();
@@ -104,14 +122,19 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 
 	@Override
 	protected void takeDown() {
-		stacked.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		stacked.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
+		stacked.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		super.takeDown();
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		super.renderImpl(g, w, h);
+		g.decZ().decZ();
 		g.color(stacked.getBgColor()).fillRect(0, 0, w, h);
+		g.incZ().incZ();
+		// float x = get(stacked.getAlignment()).getLocation().x();
+		// g.color(Color.BLUE).drawLine(x, 0, x, h);
+		super.renderImpl(g, w, h);
 	}
 
 	@Override
@@ -127,8 +150,8 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 	@Override
 	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
 		int combinedAlign = stacked.getAlignment();
-		int combinedIndex = stacked.indexOf(model);
-		if (combinedIndex != combinedAlign) {
+		int index = stacked.indexOf(model);
+		if (index != combinedAlign) {
 			// moving around
 			int[] ranks = stacked.getTable().getOrder();
 			float[] rowPositions = ((TableBodyUI) getParent()).getRowPositions();
@@ -147,12 +170,14 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 				IRow data = row.getLayoutDataAs(IRow.class, null);
 				float x = 0;
 				MultiFloat vs = stacked.getSplittedValue(data);
-				if (combinedIndex < combinedAlign) {
-					for (int i = 0; i <= combinedIndex; ++i)
-						x -= vs.values[i] + weights[i];
+				if (index < combinedAlign) {
+					for (int i = index; i < combinedAlign; ++i)
+						x += -vs.values[i] + weights[i] - COLUMN_SPACE;
+					x += COLUMN_SPACE;
 				} else {
-					for (int i = combinedAlign; i < combinedIndex; ++i)
-						x += vs.values[i] - weights[i];
+					for (int i = combinedAlign; i < index; ++i)
+						x += vs.values[i] - weights[i] + COLUMN_SPACE;
+					x += COLUMN_SPACE;
 				}
 				row.setBounds(x, y, w, hr - y);
 				y = hr;

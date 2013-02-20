@@ -36,8 +36,8 @@ import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
  *
  */
 public class SeparatorUI extends PickableGLElement {
-	private int index;
-	private boolean armed = false;
+	protected int index;
+	protected boolean armed = false;
 	private final IMoveHereChecker model;
 
 	public SeparatorUI(IMoveHereChecker model) {
@@ -61,13 +61,18 @@ public class SeparatorUI extends PickableGLElement {
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (armed) {
-			renderTriangle(g, w);
-			g.color(Color.BLACK).fillRect(0, -20, w, h + 20);
+			renderHint(g, w, h);
 		}
 	}
 
+	protected void renderHint(GLGraphics g, float w, float h) {
+		float c = w * 0.5f;
+		g.fillImage(g.getTexture("resources/icons/arrow.png"), c - 7, -20, 14, 27, Color.BLUE);
+		g.color(Color.BLUE).fillRect(0, -20, w, h + 20);
+	}
+
 	protected void renderTriangle(GLGraphics g, float w) {
-		g.color(Color.RED).fillPolygon(new Vec2f(0, 0), new Vec2f(-5, -10), new Vec2f(w + 5, -10), new Vec2f(w, 0));
+		g.color(Color.BLUE).fillPolygon(new Vec2f(0, 3), new Vec2f(-5, -10), new Vec2f(w + 5, -10), new Vec2f(w, 3));
 	}
 
 	@Override

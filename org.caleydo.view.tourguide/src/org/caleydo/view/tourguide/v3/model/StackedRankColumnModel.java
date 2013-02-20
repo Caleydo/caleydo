@@ -72,6 +72,9 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 		super.takeDown(model);
 		model.removePropertyChangeListener(PROP_WEIGHT, weightChanged);
 		addWeight(-model.getWeight());
+		if (alignment > size() - 2) {
+			setAlignment(alignment - 1);
+		}
 	}
 
 	@Override

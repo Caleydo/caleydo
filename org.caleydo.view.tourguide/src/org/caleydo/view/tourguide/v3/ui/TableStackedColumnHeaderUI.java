@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.view.tourguide.v3.model.ACompositeRankColumnModel;
@@ -45,6 +46,8 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	private final static int FIRST_COLUMN = 1;
 	private StackedRankColumnModel model;
 	private int numColumns = 0;
+
+	public final AlignmentDragInfo align = new AlignmentDragInfo();
 
 	private final PropertyChangeListener childrenChanged = new PropertyChangeListener() {
 		@Override
@@ -63,9 +66,9 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			this.add(wrap(col));
 			numColumns++;
 		}
-		this.add(new SeparatorUI(this, -1)); // left
+		this.add(new StackedSeparatorUI(this, -1)); // left
 		for (int i = 0; i < numColumns; ++i)
-			this.add(new SeparatorUI(this, i));
+			this.add(new StackedSeparatorUI(this, i));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -87,7 +90,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			numColumns += news.size();
 			asList().addAll(index + FIRST_COLUMN, news);
 			for (int i = 0; i < news.size(); ++i)
-				add(new SeparatorUI(this));
+				add(new StackedSeparatorUI(this));
 		} else if (evt.getNewValue() == null) { //removed
 			remove(index + FIRST_COLUMN);
 			numColumns--;
@@ -120,8 +123,9 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 		List<? extends IGLLayoutElement> separators = children.subList(numColumns + 2, children.size());
 		assert separators.size() == columns.size();
 
-		children.get(numColumns + 1).setBounds(3, 40, COLUMN_SPACE, h - 40); // left separator
-
+		final IGLLayoutElement sep0 = children.get(numColumns + 1);
+		sep0.setBounds(3, 40, COLUMN_SPACE, h - 40); // left separator
+		((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment() == 0);
 		// align the columns normally
 		float x = COLUMN_SPACE + 3;
 		for (int i = 0; i < columns.size(); ++i) {
@@ -132,6 +136,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			x += model.getPreferredWidth() + COLUMN_SPACE;
 			sep.setBounds(x - COLUMN_SPACE, 40, COLUMN_SPACE, h - 40);
 			((SeparatorUI) sep.asElement()).setIndex(i);
+			((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment() == (i + 1));
 		}
 	}
 
@@ -151,5 +156,15 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 		assert canMoveHere(index, model);
 		this.model.move(model, index + 1);
 	}
+
+	public static class AlignmentDragInfo implements IDragInfo {
+
+	}
+
+	public void setAlignment(int index) {
+		model.setAlignment(index + 1);
+		relayout();
+	}
+
 }
 
