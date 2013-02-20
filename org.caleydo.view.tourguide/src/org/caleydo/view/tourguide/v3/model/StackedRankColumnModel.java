@@ -47,7 +47,7 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 	private int alignment = 0;
 
 	public StackedRankColumnModel() {
-		super(Color.DARK_GRAY, Color.LIGHT_GRAY);
+		super(Color.DARK_GRAY, new Color(0.90f, .90f, .90f));
 		setWeight(0);
 	}
 
@@ -57,7 +57,7 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 
 	@Override
 	public float getPreferredWidth() {
-		return getWeight() + TableHeaderUI.COLUMN_SPACE * size();
+		return getWeight() + TableHeaderUI.COLUMN_SPACE * size() + 6;
 	}
 
 	@Override

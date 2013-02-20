@@ -37,6 +37,8 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.animation.Durations;
+import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
+import org.caleydo.core.view.opengl.layout2.animation.Transitions;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton.ISelectionCallback;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -45,6 +47,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 import org.caleydo.view.tourguide.v3.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IExplodeableColumnMixin;
@@ -58,11 +61,10 @@ import org.eclipse.swt.SWT;
  *
  */
 public class TableColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout {
-	private final static int LABEL = 0;
-	private final static int HIST = 1;
-	private final static int DRAG_WEIGHT = 2;
-	private final static int BUTTONS = 3;
-	private final static int UNCOLLAPSE = 4;
+	private final static int HIST = 0;
+	private final static int DRAG_WEIGHT = 1;
+	private final static int BUTTONS = 2;
+	private final static int UNCOLLAPSE = 3;
 
 	private final boolean interactive;
 	private boolean canDrag;
@@ -79,6 +81,10 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			onCollapsedChanged(evt.getNewValue() == Boolean.TRUE);
 		}
 	};
+	private final PickingListenerComposite headerPick = new PickingListenerComposite(2);
+	private int headerPickingId = -1;
+	private boolean headerHovered;
+
 
 	public TableColumnHeaderUI(final ARankColumnModel model, boolean interactive) {
 		this.model = model;
@@ -92,20 +98,13 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 				onMainPick(pick);
 			}
 		});
-		ScoreHeaderLabelElement header = new ScoreHeaderLabelElement();
-		header.onPick(new IPickingListener() {
-			@Override
-			public void pick(Pick pick) {
-				onLabelPick(pick);
-			}
-		});
-		header.setLayoutData(Durations.NO);
-		this.add(header, 0);
-
 		this.add(model.createSummary().setLayoutData(Durations.NO), 0);
 		if (interactive) {
-			this.add(new DragElement(), 0);
-			this.add(createButtons(), 0);
+			this.add(new DragElement().setLayoutData(MoveTransitions.GROW_LINEAR), 0);
+			this.add(
+					createButtons().setLayoutData(
+							new MoveTransitions.MoveTransitionBase(Transitions.NO, Transitions.NO, Transitions.NO,
+									Transitions.LINEAR)), 0);
 
 			this.isCollapsed = (model instanceof ICollapseableColumnMixin) ? ((ICollapseableColumnMixin) model)
 					.isCollapsed() : false;
@@ -129,10 +128,11 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 	}
 
+
 	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
-		get(0).onPick(context.createTooltip(new ILabelProvider() {
+		headerPick.add(context.createTooltip(new ILabelProvider() {
 			@Override
 			public String getProviderName() {
 				return null;
@@ -143,7 +143,15 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 				return model.getHeaderRenderer().toString();
 			}
 		}));
+		headerPick.add(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				onLabelPick(pick);
+			}
+		});
+		headerPickingId = context.registerPickingListener(headerPick);
 	}
+
 
 	protected void onCollapsedChanged(boolean isCollapsed) {
 		if (this.isCollapsed == isCollapsed)
@@ -165,9 +173,78 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 	@Override
 	protected void takeDown() {
-		super.takeDown();
+		context.unregisterPickingListener(headerPickingId);
+		headerPickingId = -1;
 		model.removePropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);
 		model.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
+		super.takeDown();
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		renderBackground(g, w, h);
+		super.renderImpl(g, w, h);
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		g.incZ();
+		g.pushName(headerPickingId);
+		g.fillRect(0, 0, w, 20);
+		g.popName();
+		g.decZ();
+		super.renderPickImpl(g, w, h);
+	}
+
+	protected void renderBackground(GLGraphics g, float w, float h) {
+		g.color(model.getBgColor()).renderRoundedRect(true, 0, 0, w, h, 5, 2, true, true, false, false);
+		if (isCollapsed)
+			return;
+		g.move(2, 2);
+		model.getHeaderRenderer().render(g, w - 4, 20 - 6, this);
+		g.move(-2, -2);
+		if (headerHovered) {
+			g.color(Color.BLACK).renderRoundedRect(false, 0, 0, w, h, 5, 2, true, true, false, false);
+		}
+		if (this.armDropColum) {
+			g.incZ(0.3f);
+			g.drawText("+", 2, 2, w - 4, h - 4, VAlign.CENTER);
+			g.decZ();
+		}
+	}
+
+	/**
+	 * @param pick
+	 */
+	protected void onLabelPick(Pick pick) {
+		switch (pick.getPickingMode()) {
+		case CLICKED:
+			if (pick.isAnyDragging())
+				return;
+			pick.setDoDragging(true);
+			onDragColumn(pick);
+			break;
+		case MOUSE_RELEASED:
+			if (pick.isDoDragging())
+				onDropColumn(pick);
+			break;
+		case MOUSE_OVER:
+			if (pick.isAnyDragging())
+				return;
+			this.headerHovered = true;
+			context.setCursor(SWT.CURSOR_HAND);
+			repaint();
+			break;
+		case MOUSE_OUT:
+			if (this.headerHovered) {
+				this.headerHovered = false;
+				context.setCursor(-1);
+				repaint();
+			}
+			break;
+		default:
+			break;
+		}
 	}
 
 	private GLElement createButtons() {
@@ -265,10 +342,8 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		IGLLayoutElement label = children.get(LABEL);
-		label.setBounds(0, 0, w, 20);
 		IGLLayoutElement hist = children.get(HIST);
-		hist.setBounds(0, 20, w, h - 20);
+		hist.setBounds(1, 20, w - 2, h - 20);
 
 		if (interactive) {
 			IGLLayoutElement weight = children.get(DRAG_WEIGHT);
@@ -282,42 +357,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		}
 	}
 
-	public void renderLabel(GLGraphics g, float w, float h) {
-		if (isCollapsed)
-			return;
-		if (this.armDropColum) {
-			g.drawText("+", 2, 2, w - 4, h - 4, VAlign.CENTER);
-		} else {
-			g.move(2, 2);
-			model.getHeaderRenderer().render(g, w - 4, h - 6, this);
-			g.move(-2, -2);
-		}
-	}
 
-	/**
-	 * @param pick
-	 */
-	protected void onLabelPick(Pick pick) {
-		switch (pick.getPickingMode()) {
-		case CLICKED:
-			if (pick.isAnyDragging())
-				return;
-			pick.setDoDragging(true);
-			onDragColumn(pick);
-			break;
-		case MOUSE_RELEASED:
-			if (pick.isDoDragging())
-				onDropColumn(pick);
-			break;
-		default:
-			break;
-		}
-	}
-
-
-	/**
-	 * @param pick
-	 */
 	protected void onMainPick(Pick pick) {
 		IMouseLayer m = context.getMouseLayer();
 		switch (pick.getPickingMode()) {
@@ -327,7 +367,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 				if (model.isCombineAble(pair.getSecond())) {
 					m.setDropable(ARankColumnModel.class, true);
 					this.armDropColum = true;
-					get(LABEL).repaint();
+					repaint();
 				}
 			} else if (!pick.isAnyDragging()) {
 				this.canDrag = true;
@@ -338,7 +378,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			if (armDropColum) {
 				this.armDropColum = false;
 				m.setDropable(ARankColumnModel.class, false);
-				get(LABEL).repaint();
+				repaint();
 			}
 			if (this.canDrag) {
 				this.canDrag = false;
@@ -395,46 +435,11 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 	class DraggedScoreHeaderItem extends GLElement {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			get(LABEL).render(g);
+			renderBackground(g, w, h);
 			get(HIST).render(g);
 		}
 	}
 
-	private class ScoreHeaderLabelElement extends PickableGLElement {
-		private boolean hovered;
-
-		public ScoreHeaderLabelElement() {
-			setTooltip("Drag this column");
-		}
-
-		@Override
-		protected void onMouseOver(Pick pick) {
-			if (pick.isAnyDragging())
-				return;
-			this.hovered = true;
-			context.setCursor(SWT.CURSOR_HAND);
-			repaint();
-		}
-
-		@Override
-		protected void onMouseOut(Pick pick) {
-			if (this.hovered) {
-				this.hovered = false;
-				context.setCursor(-1);
-				repaint();
-			}
-			super.onMouseOut(pick);
-		}
-
-		@Override
-		protected void renderImpl(GLGraphics g, float w, float h) {
-			g.color(model.getBgColor()).renderRoundedRect(true, 0, 0, w, h, 5, 2, true, true, false, false);
-			renderLabel(g, w, h);			
-			if (hovered) {
-				g.color(Color.BLACK).renderRoundedRect(false, 0, 0, w, h, 5, 2, true, true, false, false);
-			}
-		}
-	}
 	class DragElement extends PickableGLElement {
 		private boolean hovered = false;
 		public DragElement() {
@@ -449,7 +454,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 				return;
 			this.hovered = true;
 			context.setCursor(SWT.CURSOR_HAND);
-			repaint();
+			repaintAll();
 		}
 
 		@Override
@@ -457,7 +462,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			if (this.hovered)
 				context.setCursor(-1);
 			this.hovered = false;
-			repaint();
+			repaintAll();
 		}
 
 
@@ -477,8 +482,14 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
-			// if (hovered)
-				//
+		}
+
+		@Override
+		protected void renderPickImpl(GLGraphics g, float w, float h) {
+			super.renderPickImpl(g, w, h);
+			if (hovered) {
+				g.fillRect(0, 0, w * 2, h);
+			}
 		}
 	}
 }

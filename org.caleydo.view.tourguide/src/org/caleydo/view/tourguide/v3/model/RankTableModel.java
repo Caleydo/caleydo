@@ -46,7 +46,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public static final String PROP_SELECTED_ROW = "selectedRow";
 	public static final String PROP_ORDER = "order";
 	public static final String PROP_DATA = "data";
-	public static final String PROP_FILTER = "filter";
 	public static final String PROP_COLUMNS = "columns";
 	public static final String PROP_POOL = "pool";
 
@@ -58,26 +57,29 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	private final PropertyChangeListener resort = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			sort();
+			dirtyOrder = true;
 		}
 	};
 	private final PropertyChangeListener refilter = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			filter();
-			sort();
+			dirtyFilter = true;
 		}
 	};
 
 
+	private final List<IRow> data = new ArrayList<>();
+	private BitSet dataMask;
+
 	private int selectedRank = -1;
 	private IRow selectedRow = null;
 
-	private BitSet mask;
-	private int[] order;
+	private boolean dirtyFilter = true;
+	private BitSet filter;
 
-	private final List<IRow> data = new ArrayList<>();
-	private BitSet dataMask;
+	private boolean dirtyOrder = true;
+	private IRankableColumnMixin orderBy;
+	private int[] order;
 
 	public void addData(Collection<IRow> rows) {
 		int s = this.data.size();
@@ -86,7 +88,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		this.data.addAll(rows);
 		propertySupport.fireIndexedPropertyChange(PROP_DATA, s, null, rows);
 		filter();
-		sort();
 	}
 
 	public void setDataMask(BitSet dataMask) {
@@ -111,20 +112,27 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		col.setParent(this);
 		this.columns.add(index, col); // intelligent positioning
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, null, col);
+		checkOrderChanges(index, col);
+	}
+
+	private void checkOrderChanges(int index, ARankColumnModel col) {
+		if (col instanceof IFilterColumnMixin && ((IFilterColumnMixin) col).isFiltered()) {
+			filter();
+			return;
+		}
+
 	}
 
 	@Override
 	public final void move(ARankColumnModel model, int to) {
-		if (model.getParent() == this) { // move within the same parent
-			int from = this.columns.indexOf(model);
-			if (from < 0) {
-				System.err.println();
-			}
+		int from = this.columns.indexOf(model);
+		if (model.getParent() == this && from >= 0) { // move within the same parent
 			if (from == to)
 				return;
 			columns.add(to, model);
 			columns.remove(from < to ? from : from + 1);
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, to, from, model);
+			checkOrderChanges(to, model);
 		} else {
 			model.getParent().detach(model);
 			add(to, model);
@@ -133,7 +141,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, int index) {
-		return true;
+		return model.getParent().isHideAble(model);
 	}
 
 	@Override
@@ -143,12 +151,14 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		to.setParent(this);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, i, from, to);
 		from.setParent(null);
+		checkOrderChanges(i, to);
 	}
 
 	@Override
 	public void detach(ARankColumnModel model) {
 		remove(model);
 		removeFromPool(model);
+		checkOrderChanges(-1, model);
 	}
 
 	/**
@@ -190,6 +200,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		columns.remove(model);
 		propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index, model, null);
 		model.setParent(null);
+		checkOrderChanges(index, model);
 	}
 
 	public boolean destroy(ARankColumnModel col) {
@@ -207,6 +218,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		model.setParent(this);
 		ARankColumnModel.uncollapse(model);
 		propertySupport.fireIndexedPropertyChange(PROP_POOL, bak, null, model);
+		checkOrderChanges(-1, model);
 	}
 
 	void removeFromPool(ARankColumnModel model) {
@@ -259,6 +271,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			propertySupport.fireIndexedPropertyChange(PROP_COLUMNS, index + 1, null,
 					children.subList(1, children.size()));
 		}
+		checkOrderChanges(index, children.get(0));
 	}
 
 	private void takeDown(ARankColumnModel col) {
@@ -279,7 +292,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		return null;
 	}
 
-	private StackedRankColumnModel findFirstStacked() {
+	public StackedRankColumnModel findFirstStacked() {
 		for (ARankColumnModel col : this.columns) {
 			if (col instanceof StackedRankColumnModel)
 				return (StackedRankColumnModel) col;
@@ -322,34 +335,52 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 
 	public int size() {
+		checkOrder();
 		return order.length;
 	}
 
-	protected void filter() {
+	private void filter() {
+		if (!dirtyFilter)
+			return;
+		dirtyFilter = false;
 		System.out.println("filter");
-		BitSet bak = mask;
 		if (dataMask != null)
-			mask = (BitSet) dataMask.clone();
+			filter = (BitSet) dataMask.clone();
 		else {
-			mask = new BitSet(data.size());
-			mask.set(0, data.size());
+			filter = new BitSet(data.size());
+			filter.set(0, data.size());
 		}
 
 		for (Iterator<IFilterColumnMixin> it = findAllFiltered(); it.hasNext();) {
-			mask.and(it.next().getSelectedRows(data));
+			filter.and(it.next().getSelectedRows(data));
 		}
-		propertySupport.firePropertyChange(PROP_FILTER, bak, mask);
+
+		if (selectedRow != null && !filter.get(selectedRow.getIndex()))
+			setSelectedRow(-1);
+
+		dirtyOrder = true;
+		order();
 	}
 
-	protected void sort() {
+	private void checkOrder() {
+		if (dirtyFilter) {
+			filter();
+		} else
+			order();
+	}
+
+	private void order() {
+		if (!dirtyOrder)
+			return;
+		dirtyOrder = false;
 		System.out.println("sort");
 		int[] bak = order;
 
-		IRankableColumnMixin toSort = findFirstRankable();
-		if (toSort == null)  {
+		orderBy = findFirstRankable();
+		if (orderBy == null) {
 			int rank = 0;
 			for (int i = 0; i < data.size(); ++i) {
-				if (!mask.get(i)) {
+				if (!filter.get(i)) {
 					data.get(i).setRank(-1);
 				} else {
 					data.get(i).setRank(rank++);
@@ -361,10 +392,10 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		} else {
 			List<Pair<Integer,Float>> tmp = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
-				if (!mask.get(i)) {
+				if (!filter.get(i)) {
 					data.get(i).setRank(-1);
 				} else {
-					tmp.add(Pair.make(i, -toSort.getValue(data.get(i))));
+					tmp.add(Pair.make(i, -orderBy.getValue(data.get(i))));
 				}
 			}
 			Collections.sort(tmp, Pair.<Float> compareSecond());
@@ -384,6 +415,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	 *            setter, see {@link selectedRow}
 	 */
 	public void setSelectedRow(int selectedRank) {
+		checkOrder();
 		if (selectedRank >= order.length)
 			selectedRank = order.length - 1;
 		else if (selectedRank < 0) {
@@ -396,6 +428,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	public IRow get(int index) {
+		checkOrder();
 		return data.get(order[index]);
 	}
 
@@ -438,11 +471,13 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	 * @return
 	 */
 	public int[] getOrder() {
+		checkOrder();
 		return order;
 	}
 
 	@Override
 	public Iterator<IRow> iterator() {
+		checkOrder();
 		return new Iterator<IRow>() {
 			int cursor = 0;
 

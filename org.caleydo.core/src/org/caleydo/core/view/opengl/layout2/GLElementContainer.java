@@ -149,6 +149,11 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 	}
 
 	public final void add(int index, GLElement child) {
+		if (child.getParent() == this) {
+			int from = indexOf(child);
+			if (from < index) // as we remove before we insert
+				index--;
+		}
 		setup(child);
 		children.add(index, child);
 		relayout();

@@ -355,12 +355,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		super.renderImpl(g, w, h);
 		g.incZ();
 		for (GLElement child : activeChildren())
-			renderChild(child, g);
+			child.render(g);
 		g.decZ();
-	}
-
-	protected void renderChild(GLElement child, GLGraphics g) {
-		child.render(g);
 	}
 
 	@Override
@@ -368,12 +364,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		super.renderPickImpl(g, w, h);
 		g.incZ();
 		for (GLElement child : activeChildren())
-			renderPickChild(child, g);
+			child.renderPick(g);
 		g.decZ();
-	}
-
-	protected void renderPickChild(GLElement child, GLGraphics g) {
-		child.renderPick(g);
 	}
 
 	@Override

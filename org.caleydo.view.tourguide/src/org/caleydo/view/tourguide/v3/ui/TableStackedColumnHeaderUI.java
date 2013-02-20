@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.ui;
 
+import static org.caleydo.view.tourguide.v3.ui.TableHeaderUI.COLUMN_SPACE;
+
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -28,19 +30,21 @@ import java.util.Collections;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.view.tourguide.v3.model.ACompositeRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 import org.caleydo.view.tourguide.v3.model.StackedRankColumnModel;
-
+import org.caleydo.view.tourguide.v3.ui.SeparatorUI.IMoveHereChecker;
 /**
  * @author Samuel Gratzl
  *
  */
-public class TableStackedColumnHeaderUI extends GLElementContainer implements IGLLayout{
-
+public class TableStackedColumnHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
+	private final static int FIRST_COLUMN = 1;
 	private StackedRankColumnModel model;
+	private int numColumns = 0;
 
 	private final PropertyChangeListener childrenChanged = new PropertyChangeListener() {
 		@Override
@@ -56,8 +60,12 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 		this.add(model.createSummary());
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		for (ARankColumnModel col : model) {
-			this.add(new TableColumnHeaderUI(col, true));
+			this.add(wrap(col));
+			numColumns++;
 		}
+		this.add(new SeparatorUI(this, -1)); // left
+		for (int i = 0; i < numColumns; ++i)
+			this.add(new SeparatorUI(this, i));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,7 +74,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 		if (evt.getOldValue() instanceof Integer) {
 			// moved
 			int movedFrom = (Integer) evt.getOldValue();
-			this.add(index + 1, get(movedFrom));
+			this.add(index + FIRST_COLUMN, get(movedFrom + FIRST_COLUMN));
 		} else if (evt.getOldValue() == null) { // added
 			Collection<TableColumnHeaderUI> news = null;
 			if (evt.getNewValue() instanceof ARankColumnModel) {
@@ -76,11 +84,16 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 				for (ARankColumnModel c : (Collection<ARankColumnModel>) evt.getNewValue())
 					news.add(wrap(c));
 			}
-			asList().addAll(index + 1, news);
+			numColumns += news.size();
+			asList().addAll(index + FIRST_COLUMN, news);
+			for (int i = 0; i < news.size(); ++i)
+				add(new SeparatorUI(this));
 		} else if (evt.getNewValue() == null) { //removed
-			remove(index + 1);
+			remove(index + FIRST_COLUMN);
+			numColumns--;
+			remove(this.size() - 1); // remove last separator
 		} else { //replaced
-			this.set(index + 1, new TableColumnHeaderUI((ARankColumnModel) evt.getNewValue(), true));
+			this.set(index + FIRST_COLUMN, new TableColumnHeaderUI((ARankColumnModel) evt.getNewValue(), true));
 		}
 	}
 
@@ -101,14 +114,42 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement summary = children.get(0);
-		summary.setBounds(0, 0, w, 40);
+		summary.setBounds(3, 0, w - 6, 40);
+
+		List<? extends IGLLayoutElement> columns = children.subList(1, numColumns+1);
+		List<? extends IGLLayoutElement> separators = children.subList(numColumns + 2, children.size());
+		assert separators.size() == columns.size();
+
+		children.get(numColumns + 1).setBounds(3, 40, COLUMN_SPACE, h - 40); // left separator
+
 		// align the columns normally
-		float x = TableHeaderUI.COLUMN_SPACE;
-		for (IGLLayoutElement col : children.subList(1, children.size())) {
+		float x = COLUMN_SPACE + 3;
+		for (int i = 0; i < columns.size(); ++i) {
+			IGLLayoutElement col = columns.get(i);
+			IGLLayoutElement sep = separators.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			col.setBounds(x, 40, model.getPreferredWidth(), h - 40);
-			x += model.getPreferredWidth() + TableHeaderUI.COLUMN_SPACE;
+			x += model.getPreferredWidth() + COLUMN_SPACE;
+			sep.setBounds(x - COLUMN_SPACE, 40, COLUMN_SPACE, h - 40);
+			((SeparatorUI) sep.asElement()).setIndex(i);
 		}
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.color(model.getBgColor()).fillRect(0, 0, w, h);
+		super.renderImpl(g, w, h);
+	}
+
+	@Override
+	public boolean canMoveHere(int index, ARankColumnModel model) {
+		return this.model.isMoveAble(model, index + 1);
+	}
+
+	@Override
+	public void moveHere(int index, ARankColumnModel model) {
+		assert canMoveHere(index, model);
+		this.model.move(model, index + 1);
 	}
 }
 

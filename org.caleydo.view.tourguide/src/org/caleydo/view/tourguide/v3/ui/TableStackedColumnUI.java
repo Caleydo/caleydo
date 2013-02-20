@@ -87,6 +87,13 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 		} else { // replaced
 			set(index, wrap((ARankColumnModel) evt.getNewValue()));
 		}
+		relayoutChildren();
+		relayout();
+	}
+
+	private void relayoutChildren() {
+		for (GLElement c : this)
+			c.relayout();
 	}
 
 	private GLElement wrap(ARankColumnModel model) {

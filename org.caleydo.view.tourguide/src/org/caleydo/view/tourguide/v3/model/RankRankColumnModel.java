@@ -33,7 +33,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 public class RankRankColumnModel extends ARankColumnModel {
 
 	public RankRankColumnModel() {
-		super(Color.GRAY, Color.GRAY);
+		super(Color.GRAY, new Color(0.95f, .95f, .95f));
 		setHeaderRenderer(GLRenderers.drawText("Rank", VAlign.CENTER));
 		setValueRenderer(new IGLRenderer() {
 			@Override

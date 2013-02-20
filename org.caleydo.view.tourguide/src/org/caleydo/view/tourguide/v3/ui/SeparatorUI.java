@@ -62,12 +62,12 @@ public class SeparatorUI extends PickableGLElement {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (armed) {
 			renderTriangle(g, w);
-			g.color(Color.BLACK).fillRect(0, 0, w, h);
+			g.color(Color.BLACK).fillRect(0, -20, w, h + 20);
 		}
 	}
 
 	protected void renderTriangle(GLGraphics g, float w) {
-		g.color(Color.BLACK).fillPolygon(new Vec2f(0, 0), new Vec2f(-10, -10), new Vec2f(w + 10, -10), new Vec2f(w, 0));
+		g.color(Color.RED).fillPolygon(new Vec2f(0, 0), new Vec2f(-5, -10), new Vec2f(w + 5, -10), new Vec2f(w, 0));
 	}
 
 	@Override

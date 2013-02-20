@@ -34,11 +34,12 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 public class RenderUtils {
 	public static void renderHist(GLGraphics g, Histogram hist, float w, float h, int selectedBin, Color color,
 			Color selectionColor) {
+		w -= 2;
 		float factor = h / hist.getLargestValue();
 		float delta = w / hist.size();
 
 		g.save();
-		float x = delta / 2;
+		float x = 1 + delta / 2;
 		g.move(0, h - 1).color(color);
 		for (int i = 0; i < hist.size(); ++i) {
 			if (selectedBin == i) {
@@ -63,6 +64,7 @@ public class RenderUtils {
 			renderHist(g, hists[0], w, h, selectedBins[0], colors[0], selectionColors[0]);
 			return;
 		}
+		w -= 2;
 		int size = hists[0].size();
 		int largest = 0;
 		for (int i = 0; i < size; ++i) {
@@ -76,7 +78,7 @@ public class RenderUtils {
 		float delta = w / size;
 
 		g.save();
-		float x = delta / 2;
+		float x = 1 + delta / 2;
 		g.move(0, h - 1);
 		for (int i = 0; i < size; ++i) {
 			float vi = 0;

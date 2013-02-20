@@ -96,7 +96,7 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, int index) {
-		return canAdd(model);
+		return canAdd(model) && model.getParent().isHideAble(model);
 	}
 
 	@Override
@@ -166,10 +166,11 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		int index = this.children.indexOf(model);
 		List<ARankColumnModel> children = model.getChildren();
 		for (ARankColumnModel child : children)
-			child.setParent(this);
-		getTable().destroy(model);
+			init(child);
 		this.children.set(index, children.get(0));
 		propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, index, model, children.get(0));
+		takeDown(model);
+		getTable().destroy(model);
 		if (children.size() > 1) {
 			this.children.addAll(index + 1, children.subList(1, children.size()));
 			propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, index + 1, null,
