@@ -101,6 +101,7 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 		}
 		relayoutChildren();
 		relayout();
+		repaint();
 	}
 
 
