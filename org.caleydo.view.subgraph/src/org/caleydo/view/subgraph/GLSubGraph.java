@@ -175,7 +175,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private void addMultiformRenderer(List<TablePerspective> tablePerspectives, String embeddingID,
 			GLElementContainer parent) {
 
+		GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
 		GLElementContainer container = new GLElementContainer(GLLayouts.flowVertical(6));
+
+		backgroundContainer.add(container);
+		backgroundContainer.add(new GLPathwayBackground());
+
 
 		remoteRenderedPathwayMultiformViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, embeddingID);
 
@@ -192,7 +197,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
 		container.add(viewSwitchingBar);
 
-		parent.add(container);
+		parent.add(backgroundContainer);
 
 	}
 
