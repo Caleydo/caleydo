@@ -190,6 +190,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	private IPickingListener pathwayElementPickingListener;
 
+	Set<PathwayVertexRep> portalVertexReps;
 	/**
 	 * The currently selected path as selected by the user from allPaths.
 	 */
@@ -814,16 +815,14 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					double tY = targetVertexRep.getLowerLeftCornerY();
 
 					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-					System.out.println("bubblesetCanvas.addItem(" + bbGroupID + "," + posX + "," + posY + "," + bbItemW
-							+ "," + bbItemH + ")");
+					
 					//
 					// bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
 					// System.out.println("bubblesetCanvas.addItem(" + bbGroupID + "," + tX + "," + tY + "," + bbItemW +
 					// "," + bbItemH + ")");
 					//
 					bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-					System.out.println("bubblesetCanvas.addEdge(" + bbGroupID + "," + posX + "," + posY + "," + tX
-							+ "," + tY + ")");
+
 
 				}
 				DefaultEdge lastEdge = path.getEdgeList().get(path.getEdgeList().size() - 1);
@@ -857,6 +856,18 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		}
 		// /////////////////////
+		// highlight portals
+
+		for (PathwayVertexRep portal : portalVertexReps) {
+			bbGroupID++;
+			bubblesetCanvas.addGroup(new Color(1.0f, 0.0f, 0.0f),6, true);
+			double posX = portal.getLowerLeftCornerX();
+			double posY = portal.getLowerLeftCornerY();
+			double bbItemW = portal.getWidth();
+			double bbItemH = portal.getHeight();
+			bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+		}
+
 		//
 		// HashSet<PathwayVertexRep> otherNodes = new HashSet();
 		// HashSet<Rectangle2D> otherRects = new HashSet();
@@ -895,7 +906,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// }
 		//
 		// /////////////////////
-		if (allPaths.size() == 0)
+//		if (allPaths.size() == 0)
+//			return;
+		if (bbGroupID < 0)
 			return;
 		if (allPaths.size() <= selectedPathID)
 			selectedPathID = 0;
@@ -1701,12 +1714,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	public void highlightPortalNodes(PathwayVertexRep vertexRep) {
 
-		Set<PathwayVertexRep> portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
+		portalVertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep,
 				pathway);
-		// TODO: clear existing portal highlights
-		for (PathwayVertexRep portal : portalVertexReps) {
-			// TODO: trigger rendering of new portal highlight
-		}
 
 	}
 
