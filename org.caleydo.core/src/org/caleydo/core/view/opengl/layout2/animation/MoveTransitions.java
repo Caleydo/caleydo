@@ -35,7 +35,7 @@ public class MoveTransitions {
 	public interface IMoveTransition {
 		/**
 		 * interpolation between bounds (x,y,w,h) of an element
-		 * 
+		 *
 		 * @param from
 		 * @param to
 		 * @param w
@@ -50,6 +50,7 @@ public class MoveTransitions {
 
 	public static final IMoveTransition MOVE_LINEAR = new MoveTransitionBase(LINEAR, LINEAR, NO, NO);
 	public static final IMoveTransition MOVE_AND_GROW_LINEAR = new MoveTransitionBase(LINEAR, LINEAR, LINEAR, LINEAR);
+	public static final IMoveTransition GROW_LINEAR = new MoveTransitionBase(NO, NO, LINEAR, LINEAR);
 
 	public static class MoveTransitionBase implements IMoveTransition {
 		protected final ITransition x;
