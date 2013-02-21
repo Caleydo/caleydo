@@ -193,7 +193,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private IPickingListener pathwayElementPickingListener;
 
 	private Set<PathwayVertexRep> portalVertexReps = new HashSet<>();
-	private List<PathwayPath> pathSegmentList;
+	private List<PathwayPath> pathSegments = new ArrayList<PathwayPath>();
 	/**
 	 * The currently selected path as selected by the user from allPaths.
 	 */
@@ -267,7 +267,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		bubblesetCanvas.setDefaultView();
 		isBubbleTextureDirty = true;
 		selectedPathID = 0;
-		pathSegmentList = new ArrayList<PathwayPath>();
+		
 	}
 
 	private void selectNextPath() {
@@ -754,38 +754,44 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		float[] colorValues = new float[3];
 		Integer outlineThickness;
 		// pathSegmentList
-		if (pathSegmentList.size() > 0) {
+		if (pathSegments.size() > 0) {
 			colorValues = SelectionType.SELECTION.getColor();
 			outlineThickness = 3;
 
-			for (PathwayPath pathSegment : pathSegmentList) {
-				bbGroupID++;
-				bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1], colorValues[2]), outlineThickness,
-						true);
-				for (DefaultEdge edge : pathSegment.getPath().getEdgeList()) {
-					PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-					PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-					// src
-					double bbItemW = sourceVertexRep.getWidth();
-					double bbItemH = sourceVertexRep.getHeight();
-					double posX = sourceVertexRep.getLowerLeftCornerX();
-					double posY = sourceVertexRep.getLowerLeftCornerY();
-					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-					//
-					double tX = targetVertexRep.getLowerLeftCornerX();
-					double tY = targetVertexRep.getLowerLeftCornerY();
-					bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-				}
-				// add last item
-				DefaultEdge lastEdge = pathSegment.getPath().getEdgeList()
-						.get(pathSegment.getPath().getEdgeList().size() - 1);
-				if (lastEdge != null) {
-					PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
-					double posX = targetVertexRep.getLowerLeftCornerX();
-					double posY = targetVertexRep.getLowerLeftCornerY();
-					double bbItemW = targetVertexRep.getWidth();
-					double bbItemH = targetVertexRep.getHeight();
-					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+			for (PathwayPath pathSegment : pathSegments) {
+				if(pathSegment.getPathway() == pathway)
+				{
+					bbGroupID++;
+					bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1], colorValues[2]), outlineThickness,
+							true);
+					for (DefaultEdge edge : pathSegment.getPath().getEdgeList()) {
+						PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+						PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+						// src
+						double bbItemW = sourceVertexRep.getWidth();
+						double bbItemH = sourceVertexRep.getHeight();
+						double posX = sourceVertexRep.getLowerLeftCornerX();
+						double posY = sourceVertexRep.getLowerLeftCornerY();
+						bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+						//
+						double tX = targetVertexRep.getLowerLeftCornerX();
+						double tY = targetVertexRep.getLowerLeftCornerY();
+						bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
+					}
+					// add last item
+					if(pathSegment.getPath().getEdgeList().size()>0)
+					{
+						DefaultEdge lastEdge = pathSegment.getPath().getEdgeList()
+								.get(pathSegment.getPath().getEdgeList().size() - 1);
+						if (lastEdge != null) {
+							PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
+							double posX = targetVertexRep.getLowerLeftCornerX();
+							double posY = targetVertexRep.getLowerLeftCornerY();
+							double bbItemW = targetVertexRep.getWidth();
+							double bbItemH = targetVertexRep.getHeight();
+							bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+						}
+					}
 				}
 			}
 		}
@@ -951,16 +957,21 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// /////////////////////
 		// if (allPaths.size() == 0)
 		// return;
-		if (bbGroupID < 0)
-			return;
+
+
+
 		if (allPaths.size() <= selectedPathID)
-			selectedPathID = 0;
+				selectedPathID = 0;
+		
 		bubblesetCanvas.setSelection(selectedPathID); // the selected set will
 														// be rendered on top of
 														// all others
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
 		Graphics2D g2d = texRenderer.createGraphics();
-		bubblesetCanvas.paint(g2d);
+			
+		if (bbGroupID >= 0){
+			bubblesetCanvas.paint(g2d);
+		}
 
 		g2d.dispose();
 	}
@@ -1537,25 +1548,21 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				// no interaction with the previous selected path
 				// select vertexRep as startPoint and switch to
 				// end_point_selection_mode
-
+				
 				if (selectionType == SelectionType.SELECTION) {
 
-					if (portalVertexReps != null) {
-						boolean isPortalNode = false;
-						for (PathwayVertexRep portal : portalVertexReps) {
-							if (vertexRep == portal) {
-								// save old selected path as path segment
-								// pathSegmentList.add(copyPath(selectedPath));
-								pathSegmentList.add(new PathwayPath(selectedPath));
-								isPortalNode = true;
-								// generate new path segment
-							}
-						}
-						if (!isPortalNode) {
-							pathSegmentList.clear();
+					boolean isPortalNode = false;
+					for (PathwayVertexRep portal : portalVertexReps) {
+						if (vertexRep == portal) {
+							isPortalNode = true;
 						}
 					}
+					if (!isPortalNode) {
+						pathSegments.clear();							
+					}
+								
 					generateSingleNodePath(vertexRep);
+					pathSegments.add(new PathwayPath(selectedPath));
 					isPathStartSelected = true;
 				}
 			}
@@ -1565,23 +1572,28 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, pathStartVertexRep, MAX_PATHS);
 			List<GraphPath<PathwayVertexRep, DefaultEdge>> allPathsTmp = null;
-			if (vertexRep != pathStartVertexRep) {
-				allPathsTmp = pathAlgo.getPaths(vertexRep);
-				// if at least one path exist update the selected path
-				if (allPathsTmp != null && allPathsTmp.size() > 0) {
-					allPaths = allPathsTmp;
-					if (allPaths.size() <= selectedPathID)
-						selectedPathID = 0;
-					selectedPath = allPaths.get(selectedPathID);
+			if(vertexRep!=null){
+				if (vertexRep != pathStartVertexRep) {
+					allPathsTmp = pathAlgo.getPaths(vertexRep);
+					// if at least one path exist update the selected path
+					if (allPathsTmp != null && allPathsTmp.size() > 0) {
+						allPaths = allPathsTmp;
+						if (allPaths.size() <= selectedPathID)
+							selectedPathID = 0;
+						selectedPath = allPaths.get(selectedPathID);
+					}
+				} else {
+					generateSingleNodePath(vertexRep);
 				}
-			} else {
-				generateSingleNodePath(vertexRep);
 			}
-
+			//update 
+			if(pathSegments.size()>0)
+				pathSegments.set(pathSegments.size()-1,new PathwayPath(selectedPath));			
 			if (selectionType == SelectionType.SELECTION) {// click on
 															// end node
 				isPathStartSelected = false;
 				previousSelectedPath = selectedPath;
+				//
 			}
 		}
 
@@ -1635,15 +1647,16 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	private void triggerPathUpdate() {
-		List<PathwayPath> pathSegments = new ArrayList<>(1);
+//		List<PathwayPath> pathSegments = new ArrayList<>(1);
 		PathwayPathSelectionEvent pathEvent = new PathwayPathSelectionEvent();
 
-		for (PathwayPath pathSegment : pathSegmentList) {
-			pathSegments.add(pathSegment);
-		}
-		if (selectedPath != null) {
-			pathSegments.add(new PathwayPath(selectedPath));
-		}
+//		for (PathwayPath pathSegment : pathSegmentList) {
+//			pathSegments.add(pathSegment);
+//		}
+//		if (selectedPath != null && pathSegments!=null && pathSegments.size()>0) {
+//			//pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
+//			//pathSegments.set(pathSeg, element)
+//		}
 		pathEvent.setPathSegments(pathSegments);
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(pathwayPathEventSpace);
@@ -1654,10 +1667,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 * @param selectedPath
 	 *            setter, see {@link #selectedPath}
 	 */
-	public void setSelectedPathSegments(List<PathwayPath> pathSegments) {
-		if (pathSegments == null)
+	public void setSelectedPathSegments(List<PathwayPath> pathSegmentsBroadcasted) {
+		if (pathSegmentsBroadcasted == null)
 			return;
-
+		pathSegments=pathSegmentsBroadcasted;
+		this.selectedPath=null;
 		for (PathwayPath path : pathSegments) {
 			// TODO: Handle multiple path segments
 			if (path.getPathway() == pathway) {
