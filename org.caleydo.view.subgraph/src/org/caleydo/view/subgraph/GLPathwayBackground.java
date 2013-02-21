@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
  * Renders a pickable background behind pathway elements.
@@ -37,29 +37,20 @@ public class GLPathwayBackground extends PickableGLElement {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 
-		if (hovered)
-			g.color(0, 0, 0, 1).drawRoundedRect(0, 0, w, h, 10);
+		if (hovered) {
+			g.incZ(-0.2f);
+			g.color(new Color(255, 234, 183)).fillRoundedRect(0, 0, w, h, 10);
+			// g.color(new Color(255, 234, 183)).lineWidth(4).drawRoundedRect(0, 0, w, h, 10);
+			g.incZ(0.2f);
+		}
 
 	}
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		// g.incZ(-1f);
+		g.incZ(-0.2f);
 		super.renderPickImpl(g, w, h);
-		// g.incZ(1f);
+		g.incZ(0.2f);
 	}
 
-	@Override
-	protected void onMouseOver(Pick pick) {
-		hovered = true;
-		repaint();
-		repaintPick();
-	}
-
-	@Override
-	protected void onMouseOut(Pick pick) {
-		hovered = false;
-		repaint();
-		repaintPick();
-	}
 }

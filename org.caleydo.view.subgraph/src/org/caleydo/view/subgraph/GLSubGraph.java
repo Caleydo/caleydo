@@ -30,6 +30,8 @@ import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -52,6 +54,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private GLElementContainer baseContainer;
 	private GLElementContainer pathwayColumn;
+
+	private GLPathwayBackground currentActiveBackground = null;
 
 	/**
 	 * Constructor.
@@ -177,10 +181,28 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
 		GLElementContainer container = new GLElementContainer(GLLayouts.flowVertical(6));
+		// GLPathwayBackground bg = new GLPathwayBackground();
 
+		final GLPathwayBackground bg = new GLPathwayBackground();
+		backgroundContainer.add(bg);
 		backgroundContainer.add(container);
-		backgroundContainer.add(new GLPathwayBackground());
 
+		bg.onPick(new APickingListener() {
+			@Override
+			protected void mouseOver(Pick pick) {
+				if (currentActiveBackground != null && currentActiveBackground != bg) {
+					currentActiveBackground.hovered = false;
+					currentActiveBackground.repaint();
+				}
+				currentActiveBackground = bg;
+				bg.hovered = true;
+				bg.repaint();
+			}
+		});
+		// IPickingListener pl =
+		// bg.onPick(pl);
+
+		// addIDPickingListener(pl, "BG", bg.hashCode());
 
 		remoteRenderedPathwayMultiformViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, embeddingID);
 
@@ -192,6 +214,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 
 		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer);
+		// multiFormRendererAdapter.onPick(pl);
 		container.add(multiFormRendererAdapter);
 
 		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
