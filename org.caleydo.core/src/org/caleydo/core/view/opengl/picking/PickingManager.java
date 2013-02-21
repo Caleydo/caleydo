@@ -494,12 +494,14 @@ public class PickingManager {
 												hitContainer = new ViewSpecificHitListContainer();
 												hashViewIDToViewSpecificHitListContainer.put(viewID, hitContainer);
 											}
-											Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
-													tmpPickPoint, glMouseListener.getPickedPointDragStart(),
-													fMinimumZValue);
-											hitContainer.addPicksForPickingType(pickingType, pick, true);
+											if (hitContainer.getPickingTypes().size() <= 0) {
+												Pick pick = new Pick(previousPick.getObjectID(), PickingMode.MOUSE_OUT,
+														tmpPickPoint, glMouseListener.getPickedPointDragStart(),
+														fMinimumZValue);
+												hitContainer.addPicksForPickingType(pickingType, pick, true);
 
-											processedViews.add(viewID);
+												processedViews.add(viewID);
+											}
 										}
 									}
 								}

@@ -121,7 +121,7 @@ public class GLElementAdapter extends GLElement {
 		repaint(); // invalidate it again to avoid that parent display lists will be activated
 	}
 
-	private void renderAdapter(GLGraphics g, float w, float h) {
+	protected void renderAdapter(GLGraphics g, float w, float h) {
 		if (viewFrustum.getRight() != w || viewFrustum.getTop() != h) {
 			viewFrustum.setRight(w);
 			viewFrustum.setTop(h);
@@ -148,7 +148,7 @@ public class GLElementAdapter extends GLElement {
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		super.renderPickImpl(g, w, h);
+		// super.renderPickImpl(g, w, h);
 		renderAdapter(g, w, h);
 		repaintPick();
 	}

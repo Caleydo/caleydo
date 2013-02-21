@@ -244,6 +244,7 @@ public final class EdgeRenderUtil {
 		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter, text, textRenderer);
 		lineLabelRenderer.setTextHeight(sizeConfig.edgeTextHeight);
 		lineLabelRenderer.setLineOffsetPixels(5);
+		lineLabelRenderer.setBackGroundColor(new float[] { 0, 0, 0, 0 });
 		return lineLabelRenderer;
 	}
 
