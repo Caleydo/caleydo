@@ -83,8 +83,8 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 	}
 
 	@Override
-	public GLElement createSummary() {
-		return new ScoreSummary(this);
+	public GLElement createSummary(boolean interactive) {
+		return new ScoreSummary(this, interactive);
 	}
 
 	@Override

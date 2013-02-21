@@ -39,7 +39,7 @@ public class StackedSeparatorUI extends SeparatorUI {
 	private boolean isAlignment = false;
 
 	public StackedSeparatorUI(IMoveHereChecker model) {
-		super(model);
+		this(model, 0);
 	}
 
 	public StackedSeparatorUI(IMoveHereChecker model, int index) {
@@ -54,6 +54,11 @@ public class StackedSeparatorUI extends SeparatorUI {
 		if (this.isAlignment == isAlignment)
 			return;
 		this.isAlignment = isAlignment;
+		if (this.isAlignment) {
+			setTooltip("Drag this element to change the alignment");
+		} else {
+			setTooltip(null);
+		}
 		repaint();
 	}
 

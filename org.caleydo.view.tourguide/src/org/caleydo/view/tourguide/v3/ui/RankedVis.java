@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.GLPadding;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
 import org.caleydo.view.tourguide.v3.data.AFloatFunction;
 import org.caleydo.view.tourguide.v3.data.IFloatDataProvider;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
@@ -58,11 +59,15 @@ public class RankedVis extends GLElementContainer {
 		this.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
 
 		this.add(new ColumnPoolUI(table));
-		// TODO separators
 	}
 
 	public static void main(String[] args) {
-		RankTableModel table = new RankTableModel();
+		RankTableModel table = new RankTableModel(new RankTableConfigBase() {
+			@Override
+			public boolean isInteractive() {
+				return false;
+			}
+		});
 		table.addColumn(new RankRankColumnModel());
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
 				StringRankColumnModel.TO_STRING, false));

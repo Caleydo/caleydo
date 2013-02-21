@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
+import org.caleydo.view.tourguide.v3.config.IRankTableConfig;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
@@ -70,7 +70,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		}
 	};
 
-
+	private final IRankTableConfig config;
 	private final List<IRow> data = new ArrayList<>();
 	private BitSet dataMask;
 
@@ -83,6 +83,13 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	private boolean dirtyOrder = true;
 	private IRankableColumnMixin orderBy;
 	private int[] order;
+
+	/**
+	 *
+	 */
+	public RankTableModel(IRankTableConfig config) {
+		this.config = config;
+	}
 
 	public void addData(Collection<IRow> rows) {
 		int s = this.data.size();
@@ -99,6 +106,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	public void setDataMask(BitSet dataMask) {
 		this.dataMask = dataMask;
+		dirtyFilter = true;
+		fireInvalid();
 	}
 
 	public void addColumn(ARankColumnModel col) {
@@ -154,7 +163,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model, int index) {
-		return model.getParent().isHideAble(model);
+		return config.isMoveAble(model) && model.getParent().isHideAble(model);
 	}
 
 	@Override
@@ -178,21 +187,20 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	 * @return
 	 */
 	public ACompositeRankColumnModel createCombined() {
-		ACompositeRankColumnModel new_ = new MaxCompositeRankColumnModel(RowHeightLayouts.HINTS);
+		ACompositeRankColumnModel new_ = config.createNewCombined();
 		setup(new_);
 		return new_;
 	}
 
+
 	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
 		if (model == with)
-			return false;
-		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
 			return false;
 		if (model.getParent() == with || with.getParent() == model) // already children
 			return false;
 		if (!with.getParent().isHideAble(with)) // b must be hide able
 			return false;
-		return true;
+		return config.isCombineAble(model, with);
 	}
 
 	private void setup(ARankColumnModel col) {
@@ -269,12 +277,12 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	@Override
 	public final boolean isCollapseAble(ARankColumnModel model) {
-		return true;
+		return config.isDefaultCollapseAble();
 	}
 
 	@Override
 	public boolean isHideAble(ARankColumnModel model) {
-		return true;
+		return config.isDefaultHideAble();
 	}
 
 	@Override
@@ -305,14 +313,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		for (ARankColumnModel col : this.columns) {
 			if (col instanceof IRankableColumnMixin)
 				return (IRankableColumnMixin) col;
-		}
-		return null;
-	}
-
-	public StackedRankColumnModel findFirstStacked() {
-		for (ARankColumnModel col : this.columns) {
-			if (col instanceof StackedRankColumnModel)
-				return (StackedRankColumnModel) col;
 		}
 		return null;
 	}
@@ -515,6 +515,13 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 				throw new UnsupportedOperationException();
 			}
 		};
+	}
+
+	/**
+	 * @return the config, see {@link #config}
+	 */
+	public IRankTableConfig getConfig() {
+		return config;
 	}
 }
 

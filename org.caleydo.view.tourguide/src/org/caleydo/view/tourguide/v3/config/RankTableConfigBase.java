@@ -17,39 +17,51 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v3.model;
+package org.caleydo.view.tourguide.v3.config;
 
-import java.awt.Color;
+import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
+import org.caleydo.view.tourguide.v3.model.ACompositeRankColumnModel;
+import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
+import org.caleydo.view.tourguide.v3.model.MaxCompositeRankColumnModel;
 
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 /**
  * @author Samuel Gratzl
  *
  */
-public class RankRankColumnModel extends ARankColumnModel {
+public class RankTableConfigBase implements IRankTableConfig {
+	@Override
+	public boolean isMoveAble(ARankColumnModel model) {
+		return true;
+	}
 
-	public RankRankColumnModel() {
-		super(Color.GRAY, new Color(0.95f, .95f, .95f));
-		setHeaderRenderer(GLRenderers.drawText("Rank", VAlign.CENTER));
-		setValueRenderer(new IGLRenderer() {
-			@Override
-			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				if (h < 5 || w < 15)
-					return;
-				float hi = Math.min(h, 16);
-				String value = String.format("%2d.", parent.getLayoutDataAs(IRow.class, null).getRank() + 1);
-				g.drawText(value, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
-			}
-		});
-		setWeight(20);
+
+	@Override
+	public ACompositeRankColumnModel createNewCombined() {
+		return new MaxCompositeRankColumnModel(RowHeightLayouts.HINTS);
+	}
+
+
+	@Override
+	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
+		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
+			return false;
+		return true;
+	}
+
+
+	@Override
+	public boolean isDefaultCollapseAble() {
+		return true;
 	}
 
 	@Override
-	public GLElement createSummary(boolean interactive) {
-		return new GLElement(); // dummy
+	public boolean isDefaultHideAble() {
+		return true;
 	}
+
+	@Override
+	public boolean isInteractive() {
+		return true;
+	}
+
 }

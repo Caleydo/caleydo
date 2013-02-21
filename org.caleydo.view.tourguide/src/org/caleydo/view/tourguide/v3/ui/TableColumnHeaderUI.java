@@ -92,13 +92,15 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		this.interactive = interactive;
 		setLayout(this);
 		setLayoutData(model);
-		this.setVisibility(EVisibility.PICKABLE).onPick(new IPickingListener() {
+		if (interactive)
+			this.setVisibility(EVisibility.PICKABLE);
+		this.onPick(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
 				onMainPick(pick);
 			}
 		});
-		this.add(model.createSummary().setLayoutData(Durations.NO), 0);
+		this.add(model.createSummary(interactive).setLayoutData(Durations.NO), 0);
 		if (interactive) {
 			this.add(new DragElement().setLayoutData(MoveTransitions.GROW_LINEAR), 0);
 			this.add(
@@ -188,11 +190,13 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		g.incZ();
-		g.pushName(headerPickingId);
-		g.fillRect(0, 0, w, 20);
-		g.popName();
-		g.decZ();
+		if (interactive) {
+			g.incZ();
+			g.pushName(headerPickingId);
+			g.fillRect(0, 0, w, 20);
+			g.popName();
+			g.decZ();
+		}
 		super.renderPickImpl(g, w, h);
 	}
 

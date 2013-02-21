@@ -33,7 +33,6 @@ import java.util.regex.Pattern;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.tourguide.v3.data.IDataProvider;
 import org.caleydo.view.tourguide.v3.event.FilterEvent;
@@ -116,8 +115,8 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 	}
 
 	@Override
-	public GLElement createSummary() {
-		return new GLElement(GLRenderers.fillRect(new Color(0.95f, 0.95f, 0.95f)));
+	public GLElement createSummary(boolean interactive) {
+		return new GLElement();
 	}
 
 	@Override

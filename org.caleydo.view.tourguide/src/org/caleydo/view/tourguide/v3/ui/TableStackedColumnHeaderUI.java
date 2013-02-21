@@ -55,20 +55,24 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			onChildrenChanged((IndexedPropertyChangeEvent) evt);
 		}
 	};
+	private final boolean interactive;
 
-	public TableStackedColumnHeaderUI(StackedRankColumnModel model) {
+	public TableStackedColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
 		this.model = model;
+		this.interactive = interactive;
 		setLayout(this);
 		setLayoutData(model);
-		this.add(model.createSummary());
+		this.add(model.createSummary(interactive));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
 		for (ARankColumnModel col : model) {
 			this.add(wrap(col));
 			numColumns++;
 		}
-		this.add(new StackedSeparatorUI(this, -1)); // left
-		for (int i = 0; i < numColumns; ++i)
-			this.add(new StackedSeparatorUI(this, i));
+		if (interactive) {
+			this.add(new StackedSeparatorUI(this, 0)); // left
+			for (int i = 0; i < numColumns; ++i)
+				this.add(new StackedSeparatorUI(this, i + 1));
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -89,14 +93,17 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			}
 			numColumns += news.size();
 			asList().addAll(index + FIRST_COLUMN, news);
-			for (int i = 0; i < news.size(); ++i)
+			if (interactive) {
+				for (int i = 0; i < news.size(); ++i)
 				add(new StackedSeparatorUI(this));
+			}
 		} else if (evt.getNewValue() == null) { //removed
 			remove(index + FIRST_COLUMN);
 			numColumns--;
-			remove(this.size() - 1); // remove last separator
+			if (interactive)
+				remove(this.size() - 1); // remove last separator
 		} else { //replaced
-			this.set(index + FIRST_COLUMN, new TableColumnHeaderUI((ARankColumnModel) evt.getNewValue(), true));
+			this.set(index + FIRST_COLUMN, wrap((ARankColumnModel) evt.getNewValue()));
 		}
 	}
 
@@ -105,7 +112,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	 * @return
 	 */
 	private TableColumnHeaderUI wrap(ARankColumnModel model) {
-		return new TableColumnHeaderUI(model, true);
+		return new TableColumnHeaderUI(model, interactive);
 	}
 
 	@Override
@@ -120,23 +127,28 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 		summary.setBounds(3, 0, w - 6, 40);
 
 		List<? extends IGLLayoutElement> columns = children.subList(1, numColumns+1);
-		List<? extends IGLLayoutElement> separators = children.subList(numColumns + 2, children.size());
-		assert separators.size() == columns.size();
+		List<? extends IGLLayoutElement> separators = null;
 
-		final IGLLayoutElement sep0 = children.get(numColumns + 1);
-		sep0.setBounds(3, 40, COLUMN_SPACE, h - 40); // left separator
-		((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment() == 0);
+		if (interactive) {
+			separators = children.subList(numColumns + 2, children.size());
+			assert separators.size() == columns.size();
+			final IGLLayoutElement sep0 = children.get(numColumns + 1);
+			sep0.setBounds(3, 40, COLUMN_SPACE, h - 40); // left separator
+			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment() == 0);
+		}
 		// align the columns normally
 		float x = COLUMN_SPACE + 3;
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
-			IGLLayoutElement sep = separators.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			col.setBounds(x, 40, model.getPreferredWidth(), h - 40);
 			x += model.getPreferredWidth() + COLUMN_SPACE;
-			sep.setBounds(x - COLUMN_SPACE, 40, COLUMN_SPACE, h - 40);
-			((SeparatorUI) sep.asElement()).setIndex(i);
-			((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment() == (i + 1));
+			if (interactive && separators != null) {
+				IGLLayoutElement sep = separators.get(i);
+				sep.setBounds(x - COLUMN_SPACE, 40, COLUMN_SPACE, h - 40);
+				((SeparatorUI) sep.asElement()).setIndex(i + 1);
+				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment() == i);
+			}
 		}
 	}
 
@@ -148,13 +160,13 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 
 	@Override
 	public boolean canMoveHere(int index, ARankColumnModel model) {
-		return this.model.isMoveAble(model, index + 1);
+		return this.model.isMoveAble(model, index);
 	}
 
 	@Override
 	public void moveHere(int index, ARankColumnModel model) {
 		assert canMoveHere(index, model);
-		this.model.move(model, index + 1);
+		this.model.move(model, index);
 	}
 
 	public static class AlignmentDragInfo implements IDragInfo {
@@ -162,7 +174,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	}
 
 	public void setAlignment(int index) {
-		model.setAlignment(index + 1);
+		model.setAlignment(index);
 		relayout();
 	}
 

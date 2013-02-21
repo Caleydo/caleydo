@@ -56,22 +56,26 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 	private boolean hasStacked = false;
 
 	private int numColumns = 0;
+	private final boolean interactive;
 
 	public TableHeaderUI(RankTableModel table) {
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
+		this.interactive = table.getConfig().isInteractive();
 		for (ARankColumnModel col : table.getColumns()) {
 			if (col instanceof StackedRankColumnModel) {
 				init(col);
-				this.add(new TableStackedColumnHeaderUI((StackedRankColumnModel) col));
+				this.add(new TableStackedColumnHeaderUI((StackedRankColumnModel) col, interactive));
 				this.hasStacked = true;
 			} else
 				this.add(wrap(col));
 			numColumns++;
 		}
-		this.add(new SeparatorUI(this, -1)); // left
-		for (int i = 0; i < numColumns; ++i)
-			this.add(new SeparatorUI(this, i));
+		if (interactive) {
+			this.add(new SeparatorUI(this, -1)); // left
+			for (int i = 0; i < numColumns; ++i)
+				this.add(new SeparatorUI(this, i));
+		}
 		setLayout(this);
 		setSize(-1, (hasStacked ? 40 : 0) + 60);
 	}
@@ -105,13 +109,16 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 			}
 			numColumns += news.size();
 			asList().addAll(index, news);
-			for (int i = 0; i < news.size(); ++i)
+			if (interactive) {
+				for (int i = 0; i < news.size(); ++i)
 				add(new SeparatorUI(this));
+			}
 		} else if (evt.getNewValue() == null) { // removed
 			takeDown(get(index).getLayoutDataAs(ARankColumnModel.class, null));
 			remove(index);
 			numColumns--;
-			remove(this.size() - 1); // remove last separator
+			if (interactive)
+				remove(this.size() - 1); // remove last separator
 		} else { // replaced
 			takeDown(get(index).getLayoutDataAs(ARankColumnModel.class, null));
 			set(index, wrap((ARankColumnModel) evt.getNewValue()));
@@ -120,7 +127,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 	private GLElement wrap(ARankColumnModel model) {
 		init(model);
-		return new TableColumnHeaderUI(model, true);
+		return new TableColumnHeaderUI(model, interactive);
 	}
 
 	@Override
@@ -142,24 +149,29 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 		float x = COLUMN_SPACE;
 
 		List<? extends IGLLayoutElement> columns = children.subList(0, numColumns);
-		List<? extends IGLLayoutElement> separators = children.subList(numColumns + 1, children.size());
-		assert separators.size() == columns.size();
 
 		float y = hasStacked ? 40 : 0;
 		float hn = hasStacked ? h - 40 : h;
-		children.get(numColumns).setBounds(0, y, COLUMN_SPACE, hn); // left separator
+		List<? extends IGLLayoutElement> separators = null;
+		if (interactive) {
+			separators = children.subList(numColumns + 1, children.size());
+			assert separators.size() == columns.size();
+			children.get(numColumns).setBounds(0, y, COLUMN_SPACE, hn); // left separator
+		}
 
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
-			IGLLayoutElement sep = separators.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			if (model instanceof StackedRankColumnModel)
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);
 			x += model.getPreferredWidth() + COLUMN_SPACE;
-			sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);
-			((SeparatorUI) sep.asElement()).setIndex(i);
+			if (interactive && separators != null) {
+				IGLLayoutElement sep = separators.get(i);
+				sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);
+				((SeparatorUI) sep.asElement()).setIndex(i);
+			}
 		}
 	}
 

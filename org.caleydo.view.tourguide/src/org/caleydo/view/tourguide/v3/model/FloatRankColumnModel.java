@@ -110,8 +110,8 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 	}
 
 	@Override
-	public GLElement createSummary() {
-		return new FloatSummary();
+	public GLElement createSummary(boolean interactive) {
+		return new FloatSummary(interactive);
 	}
 
 	@Override
@@ -176,10 +176,22 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			}
 		};
 		private IRow selectedRow = null;
+		private final boolean interactive;
+
+		/**
+		 * @param interactive
+		 */
+		public FloatSummary(boolean interactive) {
+			this.interactive = interactive;
+			if (interactive) {
+				setzDelta(.2f);
+			} else {
+				setVisibility(EVisibility.VISIBLE); // disable picking
+			}
+		}
 
 		@Override
 		protected void init(IGLElementContext context) {
-			setzDelta(.2f);
 			super.init(context);
 
 			RankTableModel table = getTable();
@@ -295,7 +307,7 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 		@Override
 		protected void renderPickImpl(GLGraphics g, float w, float h) {
 			super.renderPickImpl(g, w, h);
-			if (w <= 20)
+			if (w <= 20 || !interactive)
 				return;
 			g.incZ().incZ();
 			float from = selectionMin;

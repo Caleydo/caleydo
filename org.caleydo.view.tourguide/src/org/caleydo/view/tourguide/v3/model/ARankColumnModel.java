@@ -105,7 +105,7 @@ public abstract class ARankColumnModel implements IDragInfo {
 		return weight;
 	}
 
-	public abstract GLElement createSummary();
+	public abstract GLElement createSummary(boolean interactive);
 
 	public final IGLRenderer getHeaderRenderer() {
 		return header;

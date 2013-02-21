@@ -141,7 +141,7 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 
 	@Override
 	public boolean isHideAble(ARankColumnModel model) {
-		return children.size() > 1;
+		return children.size() > 1 && getTable().isHideAble(model);
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 	}
 
 	@Override
-	public GLElement createSummary() {
+	public GLElement createSummary(boolean interactive) {
 		return new StackedScoreSummary(this);
 	}
 
