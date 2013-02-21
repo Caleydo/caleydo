@@ -303,6 +303,6 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	public Vec2f getAbsoluteLocation() {
-		return new Vec2f(viewFrustum.getLeft(), viewFrustum.getTop());
+		return new Vec2f(viewFrustum.getLeft(), viewFrustum.getBottom());
 	}
 }
