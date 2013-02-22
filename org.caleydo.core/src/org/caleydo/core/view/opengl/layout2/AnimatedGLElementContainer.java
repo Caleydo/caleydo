@@ -306,6 +306,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		animate();
 	}
 
+
 	public final void remove(GLElement child) {
 		remove(child, animateByDefault ? 300 : 0);
 	}
@@ -322,6 +323,16 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			children.remove(child);
 		dirtyAnimation = true;
 		animate();
+	}
+
+	public final void clear() {
+		clear(animateByDefault ? 300 : 0);
+	}
+
+	public final void clear(int duration) {
+		List<GLElement> seenIn = new ArrayList<>(asSeenIn(0));
+		for (GLElement s : seenIn)
+			remove(s, duration);
 	}
 
 	public final GLElement get(int index) {

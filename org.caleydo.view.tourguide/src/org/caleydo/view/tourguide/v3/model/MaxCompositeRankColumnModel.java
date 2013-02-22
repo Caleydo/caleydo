@@ -20,9 +20,11 @@
 package org.caleydo.view.tourguide.v3.model;
 
 import java.awt.Color;
+import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts.IRowHeightLayout;
@@ -30,6 +32,7 @@ import org.caleydo.view.tourguide.v3.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IHideableColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
+import org.caleydo.view.tourguide.v3.ui.GLPropertyChangeListeners;
 import org.caleydo.view.tourguide.v3.ui.detail.MultiRenderer;
 import org.caleydo.view.tourguide.v3.ui.detail.StackedScoreSummary;
 
@@ -40,7 +43,7 @@ import org.caleydo.view.tourguide.v3.ui.detail.StackedScoreSummary;
 public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel implements IRankableColumnMixin,
 		IHideableColumnMixin, IExplodeableColumnMixin, IMultiColumnMixin {
 
-	private final MultiRenderer valueRenderer;;
+	private final MultiRenderer valueRenderer;
 
 	public MaxCompositeRankColumnModel(IRowHeightLayout layout) {
 		this(GLRenderers.drawText("Multiple", VAlign.CENTER), layout);
@@ -54,14 +57,13 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new StackedScoreSummary(this);
+		return new StackedScoreSummary(this, interactive);
 	}
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(valueRenderer);
+		return new RepaintingGLElement(valueRenderer);
 	}
-
 
 	@Override
 	protected boolean canAdd(ARankColumnModel model) {
@@ -135,5 +137,24 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 		if (isDestroyAble())
 			return getTable().destroy(this);
 		return false;
+	}
+
+	private class RepaintingGLElement extends GLElement {
+		private final PropertyChangeListener l = GLPropertyChangeListeners.repaintOnEvent(this);
+
+		public RepaintingGLElement(IGLRenderer renderer) {
+			super(renderer);
+		}
+		@Override
+		protected void init(IGLElementContext context) {
+			super.init(context);
+			addPropertyChangeListener(PROP_CHILDREN, l);
+		}
+
+		@Override
+		protected void takeDown() {
+			removePropertyChangeListener(PROP_CHILDREN, l);
+			super.takeDown();
+		}
 	}
 }

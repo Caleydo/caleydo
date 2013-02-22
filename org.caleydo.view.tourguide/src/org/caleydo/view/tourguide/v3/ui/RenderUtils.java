@@ -20,9 +20,7 @@
 package org.caleydo.view.tourguide.v3.ui;
 
 import java.awt.Color;
-import java.beans.PropertyChangeListener;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
@@ -34,7 +32,7 @@ public class RenderUtils {
 	public static void renderHist(GLGraphics g, SimpleHistogram hist, float w, float h, int selectedBin, Color color,
 			Color selectionColor) {
 		w -= 2;
-		float factor = h / hist.getLargestValue();
+		float factor = h / hist.getLargestValue(false);
 		float delta = w / hist.size();
 
 		g.save();

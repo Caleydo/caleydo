@@ -50,8 +50,6 @@ public class SimpleHistogram implements Iterable<Integer> {
 	public void add(float value) {
 		if (Float.isNaN(value)) {
 			nans++;
-			if (nans > largestValue)
-				largestValue = nans;
 			return;
 		}
 		int bin = Math.round(value * (bins.length - 1));
@@ -71,7 +69,9 @@ public class SimpleHistogram implements Iterable<Integer> {
 	/**
 	 * @return the largestValue, see {@link #largestValue}
 	 */
-	public int getLargestValue() {
+	public int getLargestValue(boolean includeNaN) {
+		if (includeNaN && nans > largestValue)
+			return nans;
 		return largestValue;
 	}
 

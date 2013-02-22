@@ -440,7 +440,8 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			renderBackground(g, w, h);
-			get(HIST).render(g);
+			if (get(HIST).getParent() != null)
+				get(HIST).render(g);
 		}
 	}
 

@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.v3.model.mixin;
 
 import java.awt.Color;
 
+import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 import org.caleydo.view.tourguide.v3.model.IRow;
 import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
@@ -28,7 +29,7 @@ import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
  * @author Samuel Gratzl
  *
  */
-public interface IMultiColumnMixin extends IRankableColumnMixin {
+public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankColumnModel> {
 	MultiFloat getSplittedValue(IRow row);
 
 	public static final class MultiFloat {
