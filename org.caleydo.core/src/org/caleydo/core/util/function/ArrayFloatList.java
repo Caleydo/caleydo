@@ -17,20 +17,29 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.internal;
-
-import javax.media.opengl.GLCapabilitiesImmutable;
-
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.eclipse.swt.widgets.Composite;
+package org.caleydo.core.util.function;
 
 /**
+ * a {@link IFloatList} based on an array
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IGLCanvasFactory {
-	IGLCanvas create(GLCapabilitiesImmutable caps, Composite parent);
+public class ArrayFloatList extends AFloatList {
+	private final float[] data;
 
-	void showPopupMenu(final IGLCanvas canvas, final Iterable<? extends AContextMenuItem> items);
+	public ArrayFloatList(float[] data) {
+		this.data = data;
+	}
+
+	@Override
+	public float getPrimitive(int index) {
+		return data[index];
+	}
+
+	@Override
+	public int size() {
+		return data.length;
+	}
+
 }

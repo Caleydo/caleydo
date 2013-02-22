@@ -10,6 +10,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -145,6 +147,11 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
+	public void showContextMenu(Iterable<? extends AContextMenuItem> items) {
+		ViewManager.get().getCanvasFactory().showPopupMenu(view.getParentGLCanvas(), items);
+	}
+
+	@Override
 	public int registerPickingListener(IPickingListener l, int objectId) {
 		String key = pickingBaseType + "_" + (pickingNameCounter++);
 		view.addIDPickingListener(l, key, objectId);
@@ -190,7 +197,7 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	@Override
 	public void init(GLElement element) {
 		// scan object for event listeners but only the subclasses
-		eventListeners.register(element, null, GLElement.class);
+		eventListeners.register(element, null, AGLElementView.isNotBaseClass);
 	}
 
 	@Override
@@ -200,13 +207,18 @@ public final class LayoutRendererAdapter extends ALayoutRenderer implements IGLE
 	}
 
 	@Override
-	public DisplayListPool getDisplayListPool() {
+	public final DisplayListPool getDisplayListPool() {
 		return pool;
 	}
 
 	@Override
-	public IMouseLayer getMouseLayer() {
+	public final IMouseLayer getMouseLayer() {
 		return root.getMouseLayer();
+	}
+
+	@Override
+	public final IPopupLayer getPopupLayer() {
+		return root.getPopupLayer();
 	}
 
 	private static class PickingMetaData {

@@ -60,7 +60,7 @@ public abstract class AContextMenuItemContainer implements Iterable<AContextMenu
 	 * Adds a separator to the context menu
 	 */
 	public void addSeparator() {
-		entries.add(new SeparatorMenuItem());
+		entries.add(SeparatorMenuItem.INSTANCE);
 	}
 
 	/**

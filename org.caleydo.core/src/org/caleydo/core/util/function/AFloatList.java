@@ -17,20 +17,48 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.internal;
+package org.caleydo.core.util.function;
 
-import javax.media.opengl.GLCapabilitiesImmutable;
-
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.eclipse.swt.widgets.Composite;
+import java.util.AbstractList;
 
 /**
+ * basic implementation of a {@link IFloatList}
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IGLCanvasFactory {
-	IGLCanvas create(GLCapabilitiesImmutable caps, Composite parent);
+public abstract class AFloatList extends AbstractList<Float> implements IFloatList {
 
-	void showPopupMenu(final IGLCanvas canvas, final Iterable<? extends AContextMenuItem> items);
+	@Override
+	public final IFloatListView map(IFloatFunction f) {
+		return new TransformedFloatListView(this, f);
+	}
+
+	@Override
+	public final Float get(int index) {
+		return getPrimitive(index);
+	}
+
+	@Override
+	public final float[] computeStats() {
+		float min = Float.POSITIVE_INFINITY;
+		float max = Float.NEGATIVE_INFINITY;
+		boolean any = false;
+		int s = size();
+		for (int i = 0; i < s; ++i) {
+			float v = get(i);
+			if (Float.isNaN(v))
+				continue;
+			if (v < min)
+				min = v;
+			if (max < v)
+				max = v;
+			any = true;
+		}
+		if (!any)
+			return new float[] { Float.NaN, Float.NaN };
+		return new float[] { min, max };
+	}
+
+
 }

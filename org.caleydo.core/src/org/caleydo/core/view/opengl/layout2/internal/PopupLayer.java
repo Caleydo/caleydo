@@ -17,51 +17,48 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2;
+package org.caleydo.core.view.opengl.layout2.internal;
 
-import org.caleydo.core.view.opengl.layout2.internal.MouseLayer;
-import org.caleydo.core.view.opengl.layout2.internal.PopupLayer;
+import gleem.linalg.Vec4f;
+
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.IMouseLayer;
+import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 
 /**
- * can act as a root element with a dedicated mouse layer
+ * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
+ * elements
  *
  * @author Samuel Gratzl
  *
  */
-public final class WindowGLElement extends GLElementContainer {
-	private final GLElement root;
-	private final PopupLayer popupLayer;
-	private final MouseLayer mouseLayer;
+public final class PopupLayer extends GLElementContainer implements IPopupLayer {
 
-	public WindowGLElement(GLElement root) {
-		super(GLLayouts.LAYERS);
-		this.root = root;
-		this.add(root);
-		this.popupLayer = new PopupLayer();
-		this.add(popupLayer.setzDelta(2.f));
-		this.mouseLayer = new MouseLayer();
-		this.add(mouseLayer.setzDelta(5.f));
+	public PopupLayer() {
+		super();
+		setLayout(GLLayouts.NONE);
 	}
 
-	/**
-	 * @return the root, see {@link #root}
-	 */
-	public GLElement getRoot() {
-		return root;
+	@Override
+	public void show(GLElement popup, Vec4f bounds) {
+		show(popup, bounds, true, true);
 	}
 
-	/**
-	 * @return the popupLayer, see {@link #popupLayer}
-	 */
-	public PopupLayer getPopupLayer() {
-		return popupLayer;
+	@Override
+	public void hide(GLElement popup) {
+		for(GLElement g : this) {
+			if (((PopupElement) g).getContent() == popup) {
+				remove(g);
+				return;
+			}
+		}
 	}
 
-	/**
-	 * @return the mouseLayer, see {@link #mouseLayer}
-	 */
-	public MouseLayer getMouseLayer() {
-		return mouseLayer;
+	@Override
+	public void show(GLElement popup, Vec4f bounds, boolean closeAble, boolean resizeAble) {
+		this.add(new PopupElement(popup, bounds, closeAble, resizeAble));
 	}
+
 }

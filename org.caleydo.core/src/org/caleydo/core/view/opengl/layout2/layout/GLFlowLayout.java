@@ -49,7 +49,7 @@ public class GLFlowLayout implements IGLLayout {
 		for (IGLLayoutElement child : children) {
 			float fix = horizontal ? child.getSetWidth() : child.getSetHeight();
 			float ratio = child.getLayoutDataAs(Number.class, Float.NaN).floatValue();
-			if (Float.isNaN(fix) && Float.isNaN(ratio)) {
+			if (isDefault(fix) && isDefault(fix)) {
 				unbounded++;
 			} else if (fix >= 0) {
 				fixUsed += fix;
@@ -64,7 +64,7 @@ public class GLFlowLayout implements IGLLayout {
 		for (IGLLayoutElement child : children) {
 			float fix = horizontal ? child.getSetWidth() : child.getSetHeight();
 			float ratio = child.getLayoutDataAs(Number.class, Float.NaN).floatValue();
-			if (Float.isNaN(fix) && Float.isNaN(ratio)) {
+			if (isDefault(fix) && isDefault(ratio)) {
 				setSize(w, h, child, unboundedSpace);
 			} else if (fix >= 0) {
 				setSize(w, h, child, fix);
@@ -87,6 +87,10 @@ public class GLFlowLayout implements IGLLayout {
 		}
 	}
 
+	private static boolean isDefault(float v) {
+		return v < 0 || Float.isNaN(v);
+	}
+
 	private void setSize(float w, float h, IGLLayoutElement child, float value) {
 		if (horizontal)
 			child.setSize(value, grab(child.getSetHeight(), h));
@@ -95,6 +99,6 @@ public class GLFlowLayout implements IGLLayout {
 	}
 
 	static float grab(float v, float v_full) {
-		return (Float.isNaN(v) || v < 0) ? v_full : v;
+		return isDefault(v) ? v_full : v;
 	}
 }

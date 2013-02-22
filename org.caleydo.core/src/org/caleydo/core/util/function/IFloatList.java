@@ -17,20 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.internal;
+package org.caleydo.core.util.function;
 
-import javax.media.opengl.GLCapabilitiesImmutable;
-
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.eclipse.swt.widgets.Composite;
+import java.util.List;
 
 /**
+ * a special version of a {@link List} for float handling
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IGLCanvasFactory {
-	IGLCanvas create(GLCapabilitiesImmutable caps, Composite parent);
+public interface IFloatList extends List<Float> {
+	/**
+	 * returns the primitive version of {@link #get(int)}
+	 *
+	 * @param index
+	 * @return
+	 */
+	float getPrimitive(int index);
 
-	void showPopupMenu(final IGLCanvas canvas, final Iterable<? extends AContextMenuItem> items);
+	/**
+	 * returns a view of this list where, the given function will be applied
+	 * 
+	 * @param f
+	 * @return
+	 */
+	IFloatListView map(IFloatFunction f);
+
+	/**
+	 * simple statistics 0...min 1...max, more may follow
+	 *
+	 * @return
+	 */
+	float[] computeStats();
 }

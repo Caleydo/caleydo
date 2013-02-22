@@ -23,6 +23,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import com.google.common.base.Predicate;
+
 /**
  * set of utility function for reflection
  *
@@ -52,23 +54,24 @@ public final class ClassUtils {
 	 * @param stopAt
 	 * @return
 	 */
-	public static Iterable<Method> findAllDeclaredMethods(final Class<?> clazz, final Class<?> stopAt) {
+	public static Iterable<Method> findAllDeclaredMethods(final Class<?> clazz,
+			final Predicate<? super Class<?>> scanWhile) {
 		return new Iterable<Method>() {
 			@Override
 			public Iterator<Method> iterator() {
-				return new MethodIterator(clazz, stopAt);
+				return new MethodIterator(clazz, scanWhile);
 			}
 		};
 	}
 
 	private static class MethodIterator implements Iterator<Method> {
-		private final Class<?> stopAt;
+		private final Predicate<? super Class<?>> scanWhile;
 		private Class<?> clazz;
 		private Iterator<Method> methods = null;
 
-		public MethodIterator(Class<?> clazz, Class<?> stopAt) {
+		public MethodIterator(Class<?> clazz, Predicate<? super Class<?>> scanWhile) {
 			this.clazz = clazz;
-			this.stopAt = stopAt;
+			this.scanWhile = scanWhile;
 		}
 
 		@Override
@@ -76,7 +79,7 @@ public final class ClassUtils {
 			if (methods == null && clazz == null)
 				return false;
 			if (methods == null || !methods.hasNext()) {
-				if (clazz.equals(stopAt))
+				if (scanWhile != null && !scanWhile.apply(clazz))
 					return false;
 				methods = Arrays.asList(clazz.getDeclaredMethods()).iterator();
 				clazz = clazz.getSuperclass();

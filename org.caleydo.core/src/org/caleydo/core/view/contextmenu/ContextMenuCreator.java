@@ -20,6 +20,7 @@
 package org.caleydo.core.view.contextmenu;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.event.AEvent;
@@ -28,8 +29,9 @@ import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.canvas.IGLView;
 
-public class ContextMenuCreator {
-	private static final SeparatorMenuItem SEPARATOR = new SeparatorMenuItem();
+import com.google.common.collect.Iterators;
+
+public class ContextMenuCreator implements Iterable<AContextMenuItem> {
 	private final List<AContextMenuItem> menuItems = new ArrayList<>();
 
 	/**
@@ -43,7 +45,7 @@ public class ContextMenuCreator {
 	}
 
 	public synchronized void addSeparator() {
-		menuItems.add(SEPARATOR);
+		menuItems.add(SeparatorMenuItem.INSTANCE);
 	}
 
 	public synchronized void addContextMenuItem(AContextMenuItem menuItem) {
@@ -72,7 +74,12 @@ public class ContextMenuCreator {
 	}
 
 	public synchronized void open(final IGLView view) {
-		ViewManager.get().getCanvasFactory().showPopupMenu(view, menuItems);
+		ViewManager.get().getCanvasFactory().showPopupMenu(view.getParentGLCanvas(), menuItems);
+	}
+
+	@Override
+	public Iterator<AContextMenuItem> iterator() {
+		return Iterators.unmodifiableIterator(menuItems.iterator());
 	}
 
 }

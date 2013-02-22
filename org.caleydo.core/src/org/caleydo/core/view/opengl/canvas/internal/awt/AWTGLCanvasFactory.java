@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLView;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -60,7 +60,7 @@ public class AWTGLCanvasFactory implements IGLCanvasFactory {
 	}
 
 	@Override
-	public void showPopupMenu(final IGLView view, final Iterable<AContextMenuItem> items) {
+	public void showPopupMenu(final IGLCanvas canvas, final Iterable<? extends AContextMenuItem> items) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -68,7 +68,7 @@ public class AWTGLCanvasFactory implements IGLCanvasFactory {
 				for (AContextMenuItem item : items)
 					create(menu, item);
 
-				AWTGLCanvas glcanvas = (AWTGLCanvas) view.getParentGLCanvas();
+				AWTGLCanvas glcanvas = (AWTGLCanvas) canvas;
 				GLCanvas canvas = glcanvas.getCanvas();
 				Point location = MouseInfo.getPointerInfo().getLocation();
 				int cursorLocationX = location.x - canvas.getLocationOnScreen().x;

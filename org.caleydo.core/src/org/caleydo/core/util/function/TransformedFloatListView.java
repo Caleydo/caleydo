@@ -17,20 +17,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.internal;
-
-import javax.media.opengl.GLCapabilitiesImmutable;
-
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.eclipse.swt.widgets.Composite;
+package org.caleydo.core.util.function;
 
 /**
+ * a {@link IFloatListView} that applies a {@link IFloatFunction} to the underlying data
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IGLCanvasFactory {
-	IGLCanvas create(GLCapabilitiesImmutable caps, Composite parent);
+public final class TransformedFloatListView extends AFloatList implements IFloatListView {
+	private final AFloatList underlying;
+	private final IFloatFunction f;
 
-	void showPopupMenu(final IGLCanvas canvas, final Iterable<? extends AContextMenuItem> items);
+	public TransformedFloatListView(AFloatList underlying, IFloatFunction f) {
+		this.underlying = underlying;
+		this.f = f;
+	}
+
+	@Override
+	public float getPrimitive(int index) {
+		return f.apply(underlying.getPrimitive(index));
+	}
+
+	@Override
+	public Float remove(int index) {
+		return underlying.remove(index);
+	}
+
+	@Override
+	public int size() {
+		return underlying.size();
+	}
+
+	@Override
+	public IFloatList toList() {
+		int s = size();
+		float[] data = new float[s];
+		for (int i = 0; i < s; ++i)
+			data[i] = getPrimitive(i);
+		return new ArrayFloatList(data);
+	}
 }
+

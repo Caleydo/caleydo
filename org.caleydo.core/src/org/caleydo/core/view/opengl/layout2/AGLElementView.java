@@ -36,7 +36,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.AView;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -52,6 +53,8 @@ import org.caleydo.data.loader.ResourceLocators.IResourceLocator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import com.google.common.base.Predicate;
+
 /**
  * a {@link IGLView} based on {@link GLElement}s its NOT a {@link AGLView}
  *
@@ -60,7 +63,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public abstract class AGLElementView extends AView implements IGLView, GLEventListener, IGLElementContext,
 		IGLElementParent {
-	private final IGLCanvas canvas;
+	protected final IGLCanvas canvas;
 
 	protected final QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
 
@@ -77,10 +80,9 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	private TextureManager textures;
 	private IResourceLocator locator;
 
-	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
-
-	public AGLElementView(IGLCanvas glCanvas, Composite parentComposite, String viewType, String viewName) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite, viewType,
+	public AGLElementView(IGLCanvas glCanvas, String viewType, String viewName) {
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), glCanvas.asComposite(),
+				viewType,
 				viewName);
 		this.canvas = glCanvas;
 		this.canvas.addGLEventListener(this);
@@ -99,6 +101,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public final IPickingListener createTooltip(ILabelProvider label) {
 		return canvas.createTooltip(label);
+	}
+
+	@Override
+	public final void showContextMenu(Iterable<? extends AContextMenuItem> items) {
+		ViewManager.get().getCanvasFactory().showPopupMenu(canvas, items);
 	}
 
 	@Override
@@ -174,7 +181,7 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	@Override
-	public final void display(GLAutoDrawable drawable) {
+	public void display(GLAutoDrawable drawable) {
 		eventListeners.processEvents();
 
 		if (!visible)
@@ -204,8 +211,6 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 			root.getMouseLayer().relayout();
 		}
 
-		contextMenuCreator.clear();
-
 		pickingManager.doPicking(g.gl, new Runnable() {
 			@Override
 			public void run() {
@@ -214,15 +219,13 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 		});
 		g.checkError();
 
-		if (contextMenuCreator.hasMenuItems())
-			contextMenuCreator.open(this);
-
-
 		root.render(g);
 		g.checkError();
 
 		g.destroy();
 	}
+
+
 
 	@Override
 	public final void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -255,6 +258,11 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	}
 
 	@Override
+	public final IPopupLayer getPopupLayer() {
+		return root.getPopupLayer();
+	}
+
+	@Override
 	public final boolean moved(GLElement child) {
 		return true;
 	}
@@ -262,8 +270,18 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 	@Override
 	public void init(GLElement element) {
 		// scan object for event listeners but only the subclasses
-		eventListeners.register(element, null, GLElement.class);
+		eventListeners.register(element, null, isNotBaseClass);
 	}
+
+	static final Predicate<Class<?>> isNotBaseClass = new Predicate<Class<?>>() {
+		@Override
+		public boolean apply(Class<?> c) {
+			if (c.isAssignableFrom(GLElement.class) || c.isAssignableFrom(GLElementContainer.class)
+					|| c.isAssignableFrom(AnimatedGLElementContainer.class))
+				return false;
+			return true;
+		}
+	};
 
 	@Override
 	public void takeDown(GLElement element) {

@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.layout2;
 
 import gleem.linalg.Vec2f;
 
+import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.media.opengl.GL;
@@ -13,6 +14,7 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -24,6 +26,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.SimplePickingManager;
 import org.caleydo.core.view.opengl.util.text.CompositeTextRenderer;
+import org.caleydo.core.view.opengl.util.text.ITextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.data.loader.ResourceLocators;
@@ -49,7 +52,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementContext {
 	private final FPSAnimator animator;
 	private TextureManager textures;
-	private CompositeTextRenderer text;
+	private ITextRenderer text;
 	private final WindowGLElement root;
 	private boolean dirty = true;
 
@@ -112,6 +115,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	@Override
+	public void showContextMenu(Iterable<? extends AContextMenuItem> items) {
+		new SWTGLCanvasFactory().showPopupMenu(canvas, items);
+	}
+
+	@Override
 	public void repaintPick() {
 
 	}
@@ -135,6 +143,11 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	@Override
 	public IMouseLayer getMouseLayer() {
 		return root.getMouseLayer();
+	}
+
+	@Override
+	public IPopupLayer getPopupLayer() {
+		return root.getPopupLayer();
 	}
 
 	@Override
@@ -278,23 +291,26 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	public static void main(String[] args, GLElement root, GLPadding padding) {
+		main(args, root, padding, new Dimension(800, 600));
+	}
+
+	public static void main(String[] args, GLElement root, GLPadding padding, Dimension dim) {
 		IResourceLocator l = ResourceLocators.chain(ResourceLocators.classLoader(root.getClass().getClassLoader()),
 				ResourceLocators.FILE);
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		shell.setLayout(new FillLayout());
-		shell.setSize(800, 600);
 		IGLCanvasFactory canvasFactory = new SWTGLCanvasFactory();
 		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 		IGLCanvas canvas = canvasFactory.create(caps, shell);
 		// canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL));
-		canvas.asComposite().setSize(800, 600);
+		canvas.asComposite().setSize(dim.width, dim.height);
 
 		try {
 			GLSandBox sandbox = new GLSandBox(canvas, root, l);
 			sandbox.padding = padding;
 			canvas.addGLEventListener(sandbox);
-
+			shell.setSize(dim.width, dim.height);
 			shell.open();
 			sandbox.animator.start();
 

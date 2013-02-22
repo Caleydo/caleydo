@@ -50,5 +50,44 @@ public final class FloatFunctions {
 			return (in < 0 ? 0 : (in > 1 ? 1 : in));
 		}
 	};
+
+
+	/**
+	 * returns a function that normalizes the input
+	 *
+	 * <pre>
+	 * @code (x -min) / (max-min)
+	 * </pre>
+	 *
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static IFloatFunction normalize(final float min, float max) {
+		final float delta = max - min;
+		return new AFloatFunction() {
+			@Override
+			public float apply(float in) {
+				return (in - min) / delta;
+			}
+		};
+	}
+
+	/**
+	 * reverse operation of {@link #normalize(float, float)}
+	 *
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static IFloatFunction unnormalize(final float min, final float max) {
+		final float delta = max - min;
+		return new AFloatFunction() {
+			@Override
+			public float apply(float in) {
+				return delta * in + min;
+			}
+		};
+	}
 }
 

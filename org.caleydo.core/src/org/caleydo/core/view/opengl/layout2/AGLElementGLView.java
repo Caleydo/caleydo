@@ -10,6 +10,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
@@ -178,12 +180,12 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	public int registerPickingListener(IPickingListener l) {
+	public final int registerPickingListener(IPickingListener l) {
 		return registerPickingListener(l, 0);
 	}
 
 	@Override
-	public int registerPickingListener(IPickingListener l, int objectId) {
+	public final int registerPickingListener(IPickingListener l, int objectId) {
 		String key = pickingBaseType + "_" + (pickingNameCounter++);
 		this.addIDPickingListener(l, key, objectId);
 		int id = this.getPickingManager().getPickingID(this.getID(), key, objectId);
@@ -192,7 +194,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 
-	private void unregisterPickingListener(IPickingListener l) {
+	private final void unregisterPickingListener(IPickingListener l) {
 		PickingMetaData data = pickingMetaData.remove(l);
 		if (data == null)
 			return;
@@ -200,12 +202,17 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	public IPickingListener createTooltip(ILabelProvider label) {
+	public final IPickingListener createTooltip(ILabelProvider label) {
 		return getParentGLCanvas().createTooltip(label);
 	}
 
 	@Override
-	public void unregisterPickingListener(int pickingID) {
+	public final void showContextMenu(Iterable<? extends AContextMenuItem> items) {
+		ViewManager.get().getCanvasFactory().showPopupMenu(getParentGLCanvas(), items);
+	}
+
+	@Override
+	public final void unregisterPickingListener(int pickingID) {
 		for (Map.Entry<IPickingListener, PickingMetaData> entry : pickingMetaData.entrySet()) {
 			if (entry.getValue().pickingId == pickingID) {
 				unregisterPickingListener(entry.getKey());
@@ -230,7 +237,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	public void setCursor(final int swtCursorConst) {
+	public final void setCursor(final int swtCursorConst) {
 		final Composite c = this.getParentGLCanvas().asComposite();
 		final Display d = c.getDisplay();
 		d.asyncExec(new Runnable() {
@@ -244,7 +251,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	@Override
 	public void init(GLElement element) {
 		// scan object for event listeners but only the subclasses
-		eventListeners.register(element, null, GLElement.class);
+		eventListeners.register(element, null, AGLElementView.isNotBaseClass);
 	}
 
 	@Override
@@ -254,18 +261,23 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	public IGLElementParent getParent() {
+	public final IGLElementParent getParent() {
 		return null;
 	}
 
 	@Override
-	public DisplayListPool getDisplayListPool() {
+	public final DisplayListPool getDisplayListPool() {
 		return pool;
 	}
 
 	@Override
-	public IMouseLayer getMouseLayer() {
+	public final IMouseLayer getMouseLayer() {
 		return root.getMouseLayer();
+	}
+
+	@Override
+	public final IPopupLayer getPopupLayer() {
+		return root.getPopupLayer();
 	}
 
 	private static class PickingMetaData {
@@ -282,7 +294,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	public boolean moved(GLElement child) {
+	public final boolean moved(GLElement child) {
 		return true;
 	}
 
@@ -302,7 +314,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	}
 
 	@Override
-	public Vec2f getAbsoluteLocation() {
+	public final Vec2f getAbsoluteLocation() {
 		return new Vec2f(viewFrustum.getLeft(), viewFrustum.getBottom());
 	}
 }

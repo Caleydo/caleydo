@@ -280,10 +280,10 @@ public class GLGraphics {
 			segments = 2;
 		else
 			segments = 8;
-		return fillRoundecRect(x, y, w, h, radius, segments);
+		return fillRoundedRect(x, y, w, h, radius, segments);
 	}
 
-	public GLGraphics fillRoundecRect(float x, float y, float w, float h, float radius, int segments) {
+	public GLGraphics fillRoundedRect(float x, float y, float w, float h, float radius, int segments) {
 		return renderRoundedRect(true, x, y, w, h, radius, segments, true, true, true, true);
 	}
 

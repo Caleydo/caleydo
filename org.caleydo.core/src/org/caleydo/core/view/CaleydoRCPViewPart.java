@@ -203,7 +203,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 						inconsistentSerializedView = true;
 						break;
 					}
-					if (multiTablePerspectiveBasedView.getDataSupportDefinition().isDataDomainSupported(
+					if (multiTablePerspectiveBasedView.getDataSupportDefinition().apply(
 							tablePerspective.getDataDomain())) {
 						multiTablePerspectiveBasedView.addTablePerspective(tablePerspective);
 					}
@@ -302,7 +302,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 						supportDefinition = (IDataSupportDefinition) dataSupportConfigForCurrentView
 								.createExecutableExtension("class");
 
-						if (supportDefinition.isDataDomainSupported(dataDomain)) {
+						if (supportDefinition.apply(dataDomain)) {
 							supportedDataDomains.add(dataDomain);
 						}
 					} catch (CoreException e) {

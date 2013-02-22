@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.layout2;
 
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.swt.SWT;
@@ -37,7 +38,7 @@ public interface IGLElementContext {
 	 * @param l
 	 * @return the pickingID to use for rendering
 	 */
-	public int registerPickingListener(IPickingListener l);
+	int registerPickingListener(IPickingListener l);
 
 	/**
 	 * see {@link #registerPickingListener(IPickingListener)} with a dedicated objectId
@@ -46,49 +47,51 @@ public interface IGLElementContext {
 	 * @param objectId
 	 * @return
 	 */
-	public int registerPickingListener(IPickingListener l, int objectId);
+	int registerPickingListener(IPickingListener l, int objectId);
 
 	/**
 	 * unregisters a picking listener, given by its pickingId
 	 *
 	 * @param pickingID
 	 */
-	public void unregisterPickingListener(int pickingID);
+	void unregisterPickingListener(int pickingID);
 
 	/**
 	 * returns the {@link TextureManager} of this context
 	 *
 	 * @return
 	 */
-	public TextureManager getTextureManager();
+	TextureManager getTextureManager();
 
 	/**
 	 * returns the {@link DisplayListPool} of this context
 	 *
 	 * @return
 	 */
-	public DisplayListPool getDisplayListPool();
+	DisplayListPool getDisplayListPool();
 
 	/**
 	 * returns a special {@link GLElementContainer} that will be positioned at the mouse position
 	 *
 	 * @return
 	 */
-	public IMouseLayer getMouseLayer();
+	IMouseLayer getMouseLayer();
+
+	IPopupLayer getPopupLayer();
 
 	/**
 	 * chance for a context to initialize an added element
 	 *
 	 * @param element
 	 */
-	public void init(GLElement element);
+	void init(GLElement element);
 
 	/**
 	 * chance for a context to undo the initialization of added element, see {@link #init(GLElement)}
 	 *
 	 * @param element
 	 */
-	public void takeDown(GLElement element);
+	void takeDown(GLElement element);
 
 	/**
 	 * the the current cursor, using {@link SWT} constants
@@ -96,7 +99,15 @@ public interface IGLElementContext {
 	 * @param the
 	 *            SWT constant or -1 for the default
 	 */
-	public void setCursor(int swtCursorConst);
+	void setCursor(int swtCursorConst);
 
-	public IPickingListener createTooltip(ILabelProvider label);
+	/**
+	 * creates a gl canvas specific picking listener that shows the given label
+	 *
+	 * @param label
+	 * @return
+	 */
+	IPickingListener createTooltip(ILabelProvider label);
+
+	void showContextMenu(Iterable<? extends AContextMenuItem> items);
 }

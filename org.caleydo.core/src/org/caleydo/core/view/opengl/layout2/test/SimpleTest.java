@@ -44,7 +44,7 @@ public class SimpleTest extends GLElementContainer {
 
 			@Override
 			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				g.color(Color.GREEN).fillRoundecRect(0, 0, w, h, 20, 10);
+				g.color(Color.GREEN).fillRoundedRect(0, 0, w, h, 20, 10);
 
 			}
 		}).setSize(Float.NaN, 200), 0.3f);
@@ -93,6 +93,7 @@ public class SimpleTest extends GLElementContainer {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.drawText("test", 0, 0, w, h);
 		// g.color(Color.CYAN).fillRoundecRect(0, 0, w, h, 10);
 		super.renderImpl(g, w, h);
 	}

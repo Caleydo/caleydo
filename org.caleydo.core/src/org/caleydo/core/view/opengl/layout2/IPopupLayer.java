@@ -17,20 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas.internal;
+package org.caleydo.core.view.opengl.layout2;
 
-import javax.media.opengl.GLCapabilitiesImmutable;
-
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.eclipse.swt.widgets.Composite;
+import gleem.linalg.Vec4f;
 
 /**
+ * a layer above the content, i.e. for popups
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IGLCanvasFactory {
-	IGLCanvas create(GLCapabilitiesImmutable caps, Composite parent);
+public interface IPopupLayer {
+	void show(GLElement popup, Vec4f bounds);
 
-	void showPopupMenu(final IGLCanvas canvas, final Iterable<? extends AContextMenuItem> items);
+	void show(GLElement popup, Vec4f bounds, boolean closeAble, boolean resizeAble);
+
+	void hide(GLElement popup);
 }
+
