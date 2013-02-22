@@ -33,7 +33,6 @@ import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
 import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
-import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -276,7 +275,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 					contexMenuItemContainer.setDataDomain(dataDomain);
 					contexMenuItemContainer.setData(recordIDType, pickingID);
 					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+					contextMenuCreator.addSeparator();
 				} else {
 					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
 							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
@@ -313,7 +312,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 					contexMenuItemContainer.setDataDomain(dataDomain);
 					contexMenuItemContainer.setData(dimensionIDType, pickingID);
 					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+					contextMenuCreator.addSeparator();
 				} else {
 
 					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
