@@ -29,24 +29,15 @@ public class ExternalGroupLabelScoreParser extends AExternalScoreParser<GroupLab
 		super(spec);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.view.tourguide.data.load.AExternalScoreParser#extractID(java.lang.String)
-	 */
 	@Override
 	protected String extractID(String originalID) {
 		return originalID;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.view.tourguide.data.load.AExternalScoreParser#addScore(java.lang.String, boolean, java.util.Map)
-	 */
 	@Override
 	protected ExternalGroupLabelScore createScore(String label, boolean isRank, Map<String, Float> scores) {
-		return new ExternalGroupLabelScore(label, spec.getPerspectiveKey(), isRank, scores);
+		// FIXME
+		return new ExternalGroupLabelScore(label, spec.getPerspectiveKey(), scores);
 	}
 
 }

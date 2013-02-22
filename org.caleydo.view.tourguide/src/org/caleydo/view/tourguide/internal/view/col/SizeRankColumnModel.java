@@ -19,12 +19,15 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
+import static org.caleydo.core.event.EventListenerManager.triggerEvent;
+
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.List;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -39,6 +42,18 @@ import org.caleydo.view.tourguide.v3.model.ABasicFilterableRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.IRow;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
 import org.caleydo.view.tourguide.v3.ui.GLPropertyChangeListeners;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * @author Samuel Gratzl
@@ -63,10 +78,27 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 		return new MyElement();
 	}
 
+
+	@Override
+	public void editFilter(GLElement summary) {
+		System.out.println("eding");
+		new Throwable().printStackTrace();
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				new FilterDialog(new Shell()).open();
+			}
+		});
+	}
+
 	@ListenTo(sendToMe = true)
 	private void onSetFilter(FilterEvent event) {
 		invalidAllFilter();
-		// propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = (String) event.getFilter());
+		@SuppressWarnings("unchecked")
+		Pair<Integer, Integer> p = (Pair<Integer, Integer>) event.getFilter();
+		min = p.getFirst() == null ? 0 : p.getFirst().intValue();
+		max = p.getSecond() == null ? Integer.MAX_VALUE : p.getSecond().intValue();
+		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(min, max), p);
 	}
 
 	@Override
@@ -131,7 +163,8 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 		protected void onMouseReleased(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			// editFilter();
+			System.out.println("start edit");
+			editFilter(this);
 		}
 
 		@Override
@@ -140,10 +173,73 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 			if (w < 20)
 				return;
 			g.drawText("Filter:", 4, 2, w - 4, 12);
-			// String t = "<None>";
-			// if (filter != null)
-			// t = filter;
-			// g.drawText(t, 4, 18, w - 4, 12);
+			StringBuilder b = new StringBuilder();
+			if (min > 0)
+				b.append(min).append(" <= v");
+			if (max < Integer.MAX_VALUE)
+				b.append(b.length() > 0 ? " <= " : "v <= ").append(max);
+			if (b.length() == 0)
+				b.append("<None>");
+			g.drawText(b.toString(), 4, 18, w - 4, 12);
+		}
+	}
+
+	private class FilterDialog extends Dialog {
+		private Text minUI;
+		private Text maxUI;
+
+		public FilterDialog(Shell parentShell) {
+			super(parentShell);
+		}
+
+		@Override
+		public void create() {
+			super.create();
+			getShell().setText("Edit Filter of Size");
+		}
+
+		@Override
+		protected Control createDialogArea(Composite parent) {
+			parent = (Composite) super.createDialogArea(parent);
+			GridData d = new GridData(SWT.LEFT, SWT.CENTER, true, true);
+			d.minimumWidth = 100;
+
+			Composite p = new Composite(parent, SWT.NONE);
+			p.setLayout(new GridLayout(3, true));
+			p.setLayoutData(d);
+			VerifyListener isNumber = new VerifyListener() {
+				@Override
+				public void verifyText(VerifyEvent e) {
+					String text = e.text;
+					text = text.replaceAll("\\D|-", "");
+					e.text = text;
+				}
+			};
+			minUI = new Text(p, SWT.BORDER);
+			minUI.setLayoutData(d);
+			if (min > 0)
+				minUI.setText(min + "");
+			minUI.addVerifyListener(isNumber);
+			Label l = new Label(p, SWT.NONE);
+			l.setText("<= VALUE <= ");
+			l.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
+			maxUI = new Text(p, SWT.BORDER);
+			maxUI.setLayoutData(d);
+			if (max < Integer.MAX_VALUE)
+				maxUI.setText(max + "");
+			maxUI.addVerifyListener(isNumber);
+			applyDialogFont(parent);
+			return parent;
+		}
+
+		@Override
+		protected void okPressed() {
+			String t = minUI.getText().trim();
+			Integer minV = t.length() > 0 ? new Integer(t) : null;
+			t = maxUI.getText().trim();
+			Integer maxV = t.length() > 0 ? new Integer(t) : null;
+			triggerEvent(new FilterEvent(Pair.make(minV, maxV)).to(SizeRankColumnModel.this));
+			super.okPressed();
 		}
 	}
 }

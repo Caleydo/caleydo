@@ -17,31 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v2.r.ui;
+package org.caleydo.view.tourguide.v3.model;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.view.tourguide.v2.r.model.ScoreTable;
+import org.caleydo.core.util.function.IFloatList;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class RowLabelUI extends GLElement {
-	private final ScoreTable table;
-	private int row;
-
-	public RowLabelUI(ScoreTable table, int row) {
-		this.table = table;
-		this.row = row;
-	}
-
-	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		super.renderImpl(g, w, h);
-		if (h > ScoreItemUI.RENDER_TEXT)
-			g.drawText(table.getLabel(row), 0, 0, w, h);
-		else if (h >= 3)
-			g.color(0.5f, 0.5f, 0.5f).fillRect(1, 1, w - 2, h - 2);
+public class DataUtils {
+	public static SimpleHistogram getHist(int bins, IFloatList l) {
+		SimpleHistogram hist = new SimpleHistogram(bins);
+		int s = l.size();
+		for (int i = 0; i < s; ++i) {
+			float value = l.getPrimitive(i);
+			hist.add(value);
+		}
+		return hist;
 	}
 }

@@ -27,7 +27,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.util.BitSet;
-import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
@@ -42,7 +41,7 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.tourguide.v3.data.IFloatDataProvider;
+import org.caleydo.view.tourguide.v3.data.IFloatFunction;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
@@ -56,31 +55,24 @@ import org.eclipse.swt.SWT;
  * @author Samuel Gratzl
  *
  */
-public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilterColumnMixin, IMappedColumnMixin,
+public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IFilterColumnMixin,
+		IMappedColumnMixin,
 		IRankableColumnMixin {
 	private float selectionMin = 0;
 	private float selectionMax = 1;
-	private final BitSet mask = new BitSet();
-	private final BitSet maskInvalid = new BitSet();
 
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyMinMax = true;
 	private final PiecewiseLinearMapping mapping;
 
-	private final IFloatDataProvider data;
+	private final IFloatFunction<IRow> data;
 	private final PropertyChangeListener listerner = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case RankTableModel.PROP_DATA:
-				@SuppressWarnings("unchecked")
-				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
-				data.prepareFor(news);
-				maskInvalid.set(getTable().getDataSize() - news.size(), getTable().getDataSize());
-				break;
 			case RankTableModel.PROP_INVALID:
 				if (!mapping.hasDefinedMappingBounds())
-					maskInvalid.set(0, getTable().getDataSize());
+					invalidAllFilter();
 				cacheHist = null;
 				dirtyMinMax = true;
 				break;
@@ -91,14 +83,14 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 		@Override
 		public void on(PiecewiseLinearMapping data) {
 			cacheHist = null;
-			maskInvalid.set(0, getTable().getDataSize());
+			invalidAllFilter();
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 		}
 	};
 
 	private IGLRenderer valueRenderer = new ScoreBarRenderer(this);
 
-	public FloatRankColumnModel(IFloatDataProvider data, IGLRenderer header, Color color, Color bgColor,
+	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
 			PiecewiseLinearMapping mapping) {
 		super(color, bgColor);
 		this.data = data;
@@ -118,20 +110,17 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			this.selectionMax += delta;
 		}
 		propertySupport.firePropertyChange(PROP_FILTER, bak, Pair.make(selectionMin, selectionMax));
-		maskInvalid.set(0, getTable().getDataSize());
+		invalidAllFilter();
 	}
 
 	@Override
 	protected void init(RankTableModel table) {
-		table.addPropertyChangeListener(RankTableModel.PROP_DATA, listerner);
 		table.addPropertyChangeListener(RankTableModel.PROP_INVALID, listerner);
-		this.data.prepareFor(table.getData());
 		super.init(table);
 	}
 
 	@Override
 	protected void takeDown(RankTableModel table) {
-		table.removePropertyChangeListener(RankTableModel.PROP_DATA, listerner);
 		table.removePropertyChangeListener(RankTableModel.PROP_INVALID, listerner);
 		super.takeDown(table);
 	}
@@ -144,6 +133,11 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 	@Override
 	public GLElement createValue() {
 		return new GLElement(valueRenderer);
+	}
+
+	@Override
+	public void editFilter(GLElement summary) {
+		// inline
 	}
 
 	@Override
@@ -207,23 +201,10 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 	}
 
 	@Override
-	public void filter(List<IRow> data, BitSet mask) {
-		if (selectionMin <= 0 && selectionMax >= 1)
-			return;
-		updateMask(data, mask);
-		mask.and(this.mask);
-	}
-
-	private void updateMask(List<IRow> data, BitSet mask) {
-		if (maskInvalid.isEmpty())
-			return;
-
-		for (int i = mask.nextSetBit(0); i >= 0; i = mask.nextSetBit(i + 1)) {
-			if (maskInvalid.get(i)) {
-				maskInvalid.clear(i);
-				float v = getValue(data.get(i));
-				this.mask.set(i++, (!Float.isNaN(v) && v >= selectionMin && v <= selectionMax));
-			}
+	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
+		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
+			float v = getValue(data.get(i));
+			mask.set(i++, (!Float.isNaN(v) && v >= selectionMin && v <= selectionMax));
 		}
 	}
 

@@ -27,7 +27,6 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
@@ -47,7 +46,7 @@ public interface IScoreFactory {
 	 *            the receiver to use for the {@link AddScoreColumnEvent} event
 	 * @return
 	 */
-	Dialog createCreateDialog(Shell shell, ScoreQueryUI receiver);
+	Dialog createCreateDialog(Shell shell, Object receiver);
 
 	/**
 	 * returns entries to generate a context menu for the given stratification and group
@@ -68,7 +67,7 @@ public interface IScoreFactory {
 
 	/**
 	 * determines, whether the current factory supports this {@link EDataDomainQueryMode} mode
-	 * 
+	 *
 	 * @param mode
 	 * @return
 	 */

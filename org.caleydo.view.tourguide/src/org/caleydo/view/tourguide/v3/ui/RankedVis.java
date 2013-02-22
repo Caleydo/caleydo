@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.v3.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -33,7 +32,6 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
 import org.caleydo.view.tourguide.v3.data.AFloatFunction;
-import org.caleydo.view.tourguide.v3.data.IFloatDataProvider;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
 import org.caleydo.view.tourguide.v3.model.ARow;
 import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
@@ -71,7 +69,7 @@ public class RankedVis extends GLElementContainer {
 		});
 		table.addColumn(new RankRankColumnModel());
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
-				StringRankColumnModel.TO_STRING));
+				StringRankColumnModel.DFEAULT));
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.addColumn(stacked);
@@ -99,7 +97,7 @@ public class RankedVis extends GLElementContainer {
 		GLSandBox.main(args, new RankedVis(table), new GLPadding(5));
 	}
 
-	private static class SimpleAcc extends AFloatFunction<IRow> implements IFloatDataProvider {
+	private static class SimpleAcc extends AFloatFunction<IRow> {
 		private final int what;
 
 		public SimpleAcc(int what) {
@@ -119,23 +117,6 @@ public class RankedVis extends GLElementContainer {
 			case 4:
 				return r.value4;
 			}
-			return 0;
-		}
-
-		@Override
-		public void prepareFor(Collection<IRow> data) {
-
-		}
-
-		@Override
-		public float getMin() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public float getMax() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 	}

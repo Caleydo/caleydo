@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import java.awt.Color;
 import java.util.Objects;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -33,12 +34,8 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 	protected Perspective stratification;
 	protected Group group;
 
-	public AReferenceGroupScore() {
-		super("");
-	}
-
-	public AReferenceGroupScore(String label, Perspective stratification, Group group) {
-		super(label == null ? stratification.getLabel() + ": " + group.getLabel() : label);
+	public AReferenceGroupScore(String label, Perspective stratification, Group group, Color color, Color bgColor) {
+		super(label == null ? stratification.getLabel() + ": " + group.getLabel() : label, color, bgColor);
 		this.stratification = stratification;
 		this.group = group;
 		put(this.group, Float.NaN); // add self
@@ -74,11 +71,7 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 		return group;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -88,11 +81,6 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import java.awt.Color;
+
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -36,8 +38,8 @@ public class DefaultComputedReferenceStratificationScore extends AReferenceStrat
 	private final IComputeScoreFilter filter;
 
 	public DefaultComputedReferenceStratificationScore(String label, Perspective reference,
-			IStratificationAlgorithm algorithm, IComputeScoreFilter filter) {
-		super(label, reference);
+			IStratificationAlgorithm algorithm, IComputeScoreFilter filter, Color color, Color bgColor) {
+		super(label, reference, color, bgColor);
 		this.algorithm = algorithm;
 		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 	}
@@ -61,6 +63,7 @@ public class DefaultComputedReferenceStratificationScore extends AReferenceStrat
 	public String getAbbreviation() {
 		return algorithm.getAbbreviation();
 	}
+
 
 	@Override
 	public IComputeScoreFilter getFilter() {

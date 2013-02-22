@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,10 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.query.ESorting;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
-import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
 import com.google.common.base.Objects;
 
@@ -46,7 +47,6 @@ import com.google.common.base.Objects;
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class ExternalGroupLabelScore extends DefaultLabelProvider implements ISerializeableScore {
 	private String perspectiveKey;
-	private boolean isRank;
 	private Map<String, Float> scores = new HashMap<>();
 
 	public ExternalGroupLabelScore() {
@@ -63,22 +63,10 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 		return mode == EDataDomainQueryMode.TABLE_BASED;
 	}
 
-	public ExternalGroupLabelScore(String label, String perspectiveKey, boolean isRank,
-			Map<String, Float> scores) {
+	public ExternalGroupLabelScore(String label, String perspectiveKey, Map<String, Float> scores) {
 		super(label);
 		this.perspectiveKey = perspectiveKey;
-		this.isRank = isRank;
 		this.scores.putAll(scores);
-	}
-
-	@Override
-	public final EScoreType getScoreType() {
-		return isRank ? EScoreType.GROUP_RANK : EScoreType.GROUP_SCORE;
-	}
-
-	@Override
-	public ESorting getDefaultSorting() {
-		return isRank ? ESorting.ASC : ESorting.DESC;
 	}
 
 	@Override
@@ -92,7 +80,8 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 	}
 
 	@Override
-	public float getScore(ScoringElement elem) {
+	public float applyPrimitive(IRow eleme) {
+		PerspectiveRow elem = (PerspectiveRow) eleme;
 		if (elem.getGroup() == null)
 			return Float.NaN;
 
@@ -109,8 +98,30 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 	}
 
 	@Override
+	public Float apply(IRow elem) {
+		return applyPrimitive(elem);
+	}
+
+	@Override
+	public PiecewiseLinearMapping createMapping() {
+		// FIXME
+		return new PiecewiseLinearMapping(0, 1);
+	}
+
+	@Override
+	public Color getBGColor() {
+		// FIXME
+		return new Color(0.95f, .95f, .95f);
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.GRAY;
+	}
+
+	@Override
 	public int hashCode() {
-		return Objects.hashCode(getLabel(), perspectiveKey, isRank);
+		return Objects.hashCode(getLabel(), perspectiveKey);
 	}
 
 	@Override
@@ -123,8 +134,6 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 			return false;
 		ExternalGroupLabelScore other = (ExternalGroupLabelScore) obj;
 		if (Objects.equal(perspectiveKey, other.perspectiveKey))
-			return false;
-		if (Objects.equal(isRank, other.isRank))
 			return false;
 		if (Objects.equal(getLabel(), other.getLabel()))
 			return false;

@@ -68,7 +68,6 @@ import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankMetric;
 import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankPValue;
 import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -211,17 +210,17 @@ public class StratomexAdapter {
 	 *            the currently visible scores of the new_ element
 	 * @param mode
 	 */
-	public void updatePreview(PerspectiveRow old, PerspectiveRow new_, Collection<ARankColumnModel> visibleColumns,
+	public void updatePreview(PerspectiveRow old, PerspectiveRow new_, Collection<IScore> visibleColumns,
 			EDataDomainQueryMode mode) {
 		if (!hasOne())
 			return;
 
 		switch (mode) {
 		case GENE_SET:
-			// updatePathwayPreview(old, new_, visibleColumns);
+			updatePathwayPreview(old, new_, visibleColumns);
 			break;
 		case TABLE_BASED:
-			// updateTableBased(old, new_, visibleColumns);
+			updateTableBased(old, new_, visibleColumns);
 			break;
 		}
 

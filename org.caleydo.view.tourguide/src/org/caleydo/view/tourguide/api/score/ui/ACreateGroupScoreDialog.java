@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score.ui;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +28,9 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.score.CollapseScore;
+import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -63,14 +63,14 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		ALL_GROUP.setLabel("--ALL--");
 	}
 
-	private final ScoreQueryUI receiver;
+	private final Object receiver;
 
 	private Text labelUI;
 	private ComboViewer dataDomainUI;
 	private ComboViewer stratificationUI;
 	private ComboViewer groupUI;
 
-	public ACreateGroupScoreDialog(Shell shell, ScoreQueryUI sender) {
+	public ACreateGroupScoreDialog(Shell shell, Object sender) {
 		super(shell);
 		this.receiver = sender;
 	}
@@ -143,8 +143,9 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 			this.stratificationUI.setInput(null);
 			this.stratificationUI.getCombo().setEnabled(false);
 		} else {
-			List<TablePerspective> data = new ArrayList<TablePerspective>(receiver.getQuery().getQuery()
-					.getPerspectives(dataDomain));
+			// receiver.getQuery().getQuery().getPerspectives(dataDomain)
+			// FIXME
+			List<TablePerspective> data = new ArrayList<TablePerspective>();
 			this.stratificationUI.setInput(data);
 			this.stratificationUI.getCombo().setEnabled(true);
 		}
@@ -189,7 +190,8 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 				.getFirstElement();
 		IScore s;
 		if (group == null || group == ALL_GROUP) { // score all
-			CollapseScore composite = new CollapseScore(label == null ? strat.getLabel() : label);
+			MultiScore composite = new MultiScore(label == null ? strat.getLabel() : label, Color.GRAY, new Color(
+					0.95f, .95f, .95f));
 			for (Group g : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
 				composite.add(createScore(null, strat, g));
 			}

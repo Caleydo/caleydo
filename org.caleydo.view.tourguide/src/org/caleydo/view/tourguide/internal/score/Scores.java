@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
-import org.caleydo.view.tourguide.spi.compute.ICompositeScore;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -98,18 +97,11 @@ public final class Scores {
 	public final Function<IScore, IScore> registerScores = new Function<IScore, IScore>() {
 		@Override
 		public IScore apply(IScore in) {
-			if (in instanceof ICompositeScore) {
-				return addIfAbsent((ICompositeScore) in);
-			} else if (in instanceof IRegisteredScore)
+			if (in instanceof IRegisteredScore)
 				return addIfAbsent((IRegisteredScore) in);
 			return in;
 		}
 	};
-
-	public synchronized <T extends ICompositeScore> T addIfAbsent(T score) {
-		score.mapChildren(registerScores);
-		return score;
-	}
 
 	public synchronized void remove(IScore score) {
 		scores.remove(score);
@@ -123,7 +115,7 @@ public final class Scores {
 
 	/**
 	 * flatten the given scores, {@link ICompositeScore} and {@link IDecoratedScore} will be flattened
-	 * 
+	 *
 	 * @param scores
 	 * @return
 	 */
@@ -144,9 +136,7 @@ public final class Scores {
 			IScore s = queue.pollFirst();
 			if (!result.add(s))
 				continue;
-			if (s instanceof ICompositeScore)
-				queue.addAll(((ICompositeScore) s).getChildren());
-			else if (s instanceof IDecoratedScore) {
+			if (s instanceof IDecoratedScore) {
 				queue.add(((IDecoratedScore) s).getUnderlying());
 			}
 		}

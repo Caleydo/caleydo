@@ -20,58 +20,56 @@
 package org.caleydo.view.tourguide.api.score;
 
 import java.awt.Color;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
-import org.caleydo.core.data.perspective.variable.Perspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.v3.model.IRow;
 import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
+import com.google.common.collect.Iterators;
+
 /**
+ * marker for a default multi score
+ *
  * @author Samuel Gratzl
  *
  */
-public abstract class AComputedGroupScore extends DefaultLabelProvider implements IScore {
-	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
-	private final Color color;
-	private final Color bgColor;
+public class MultiScore extends DefaultLabelProvider implements IScore, Iterable<IScore> {
+	private Collection<IScore> children = new ArrayList<>();
+	private Color color;
+	private Color bgColor;
 
-	public AComputedGroupScore(String label, Color color, Color bgColor) {
-		super(label);
+	public MultiScore(String label, Color color, Color bgColor) {
+		setLabel(label);
 		this.color = color;
 		this.bgColor = bgColor;
 	}
 
-	public boolean contains(Perspective perspective, Group elem) {
-		// have the value or it the same stratification
-		return scores.containsKey(elem.getID());
-	}
-
-	public final void put(Group elem, float value) {
-		scores.put(elem.getID(), value);
-	}
-
-	@Override
-	public final float applyPrimitive(IRow elem) {
-		PerspectiveRow pelem = (PerspectiveRow) elem;
-		if (pelem.getGroup() == null)
-			return Float.NaN;
-		Float f = scores.get(pelem.getGroup().getID());
-		return f == null ? Float.NaN : f.floatValue();
+	/**
+	 * @param createJaccardME
+	 */
+	public void add(IScore score) {
+		children.add(score);
 	}
 
 	@Override
-	public final Float apply(IRow elem) {
-		return applyPrimitive(elem);
+	public Iterator<IScore> iterator() {
+		return Iterators.unmodifiableIterator(children.iterator());
 	}
 
 	@Override
-	public Color getColor() {
-		return color;
+	public PiecewiseLinearMapping createMapping() {
+		return null;
+	}
+
+	@Override
+	public String getAbbreviation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -80,7 +78,23 @@ public abstract class AComputedGroupScore extends DefaultLabelProvider implement
 	}
 
 	@Override
-	public PiecewiseLinearMapping createMapping() {
-		return new PiecewiseLinearMapping(0, 1);
+	public Color getColor() {
+		return color;
 	}
+
+	@Override
+	public Float apply(IRow row) {
+		return applyPrimitive(row);
+	}
+
+	@Override
+	public float applyPrimitive(IRow row) {
+		return Float.NaN;
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return false;
+	}
+
 }

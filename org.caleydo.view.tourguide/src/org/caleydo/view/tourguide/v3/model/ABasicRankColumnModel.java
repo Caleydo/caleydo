@@ -30,6 +30,7 @@ import org.caleydo.view.tourguide.v3.model.mixin.IHideableColumnMixin;
  */
 public abstract class ABasicRankColumnModel extends ARankColumnModel implements IHideableColumnMixin,
 		ICollapseableColumnMixin {
+	public static final int COLLAPSED_WIDTH = 16;
 	private boolean collapsed = false;
 
 	public ABasicRankColumnModel(Color color, Color bgColor) {
@@ -44,7 +45,7 @@ public abstract class ABasicRankColumnModel extends ARankColumnModel implements 
 	@Override
 	public float getPreferredWidth() {
 		if (isCollapsed())
-			return 16;
+			return COLLAPSED_WIDTH;
 		return getWeight();
 	}
 

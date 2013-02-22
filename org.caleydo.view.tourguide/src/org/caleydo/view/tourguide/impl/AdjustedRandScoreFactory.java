@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,15 +30,15 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.score.CollapseScore;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
+import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.impl.algorithm.AdjustedRandIndex;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -60,8 +61,20 @@ import org.eclipse.swt.widgets.Text;
  *
  */
 public class AdjustedRandScoreFactory implements IScoreFactory {
+	private final static Color color = Color.decode("#5fd3bc");
+	private final static Color bgColor = Color.decode("#d5fff6");
+
 	private IRegisteredScore create(String label, Perspective reference) {
-		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null);
+		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null, color, bgColor) {
+			@Override
+			public PiecewiseLinearMapping createMapping() {
+				PiecewiseLinearMapping m = new PiecewiseLinearMapping(-1, 1);
+				m.put(-1,1);
+				m.put(0, 0);
+				m.put(1, 1);
+				return m;
+			}
+		};
 	}
 
 	@Override
@@ -81,19 +94,19 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public Dialog createCreateDialog(Shell shell, ScoreQueryUI sender) {
-		return new CreateAdjustedRandScoreDialog(shell, sender);
+	public Dialog createCreateDialog(Shell shell, Object receiver) {
+		return new CreateAdjustedRandScoreDialog(shell, receiver);
 	}
 
 	class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
 
-		private final ScoreQueryUI receiver;
+		private final Object receiver;
 
 		private Text labelUI;
 		private ComboViewer dataDomainUI;
 		private ComboViewer stratificationUI;
 
-		public CreateAdjustedRandScoreDialog(Shell shell, ScoreQueryUI sender) {
+		public CreateAdjustedRandScoreDialog(Shell shell, Object sender) {
 			super(shell);
 			this.receiver = sender;
 		}
@@ -145,8 +158,9 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 				this.stratificationUI.setInput(null);
 				this.stratificationUI.getCombo().setEnabled(false);
 			} else {
-				List<Perspective> data = new ArrayList<Perspective>(receiver.getQuery().getQuery()
-						.getJustStratifications(dataDomain));
+				// receiver.getQuery().getQuery().getJustStratifications(dataDomain)
+				// FIXME
+				List<Perspective> data = new ArrayList<Perspective>();
 				this.stratificationUI.setInput(data);
 				this.stratificationUI.getCombo().setEnabled(true);
 			}
@@ -175,7 +189,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 			IScore s;
 			if (strat == null) { // score all
-				CollapseScore composite = new CollapseScore(label);
+				MultiScore composite = new MultiScore(label, color, bgColor);
 				@SuppressWarnings("unchecked")
 				Iterable<Perspective> it = (Iterable<Perspective>) stratificationUI.getInput();
 				for (Perspective g : it) {

@@ -49,7 +49,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.tourguide.v2.r.model.DataUtils;
+import org.caleydo.view.tourguide.v3.model.DataUtils;
 import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 

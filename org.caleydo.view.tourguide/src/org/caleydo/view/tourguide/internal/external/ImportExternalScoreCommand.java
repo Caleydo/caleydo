@@ -14,20 +14,19 @@ import org.caleydo.view.tourguide.internal.external.ui.ImportExternalIDTypeScore
 import org.caleydo.view.tourguide.internal.score.ExternalGroupLabelScore;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.internal.score.Scores;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.swt.widgets.Shell;
 
 public final class ImportExternalScoreCommand implements Runnable {
 	private final ATableBasedDataDomain dataDomain;
 
-	private final ScoreQueryUI receiver;
+	private final Object receiver;
 	private final boolean inDimensionDirection;
 	private final Class<? extends ISerializeableScore> type;
 
 
 	public ImportExternalScoreCommand(ATableBasedDataDomain dataDomain, boolean dimensionDirection,
-			Class<? extends ISerializeableScore> type, ScoreQueryUI scoreQueryUI) {
+			Class<? extends ISerializeableScore> type, Object scoreQueryUI) {
 		this.dataDomain = dataDomain;
 		this.inDimensionDirection = dimensionDirection;
 		this.type = type;

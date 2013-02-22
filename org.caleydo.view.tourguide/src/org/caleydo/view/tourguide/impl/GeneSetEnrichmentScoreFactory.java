@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,18 +29,17 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
 import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -52,12 +52,15 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
+	private final static Color color = Color.decode("#80ffb3");
+	private final static Color bgColor = Color.decode("#e3f4d7");
+
 	private IRegisteredScore createGSEA(String label, TablePerspective reference, Group group) {
-		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f));
+		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f), false);
 	}
 
 	private IRegisteredScore createPGSEA(String label, TablePerspective reference, Group group) {
-		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group));
+		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group), false);
 	}
 
 	@Override
@@ -74,15 +77,15 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		{
 			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat, group, 1.0f);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm);
-			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue());
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
+			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
 			col.add(new ScoreEntry("Gene Set Enrichment Analysis of Group", gsea, pValue));
 		}
 
 		{
 			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat, group);
-			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm);
-			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue());
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm, false);
+			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue(), true);
 			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of Group", gsea, pValue));
 		}
 		return col;
@@ -94,14 +97,14 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public Dialog createCreateDialog(Shell shell, ScoreQueryUI sender) {
+	public Dialog createCreateDialog(Shell shell, Object sender) {
 		return new CreateGSEADialog(shell, sender);
 	}
 
 	class CreateGSEADialog extends ACreateGroupScoreDialog {
 		private Button parametricUI;
 
-		public CreateGSEADialog(Shell shell, ScoreQueryUI sender) {
+		public CreateGSEADialog(Shell shell, Object sender) {
 			super(shell, sender);
 		}
 
@@ -128,18 +131,29 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	public static class GeneSetScore extends DefaultComputedStratificationScore {
-		public GeneSetScore(String label, IStratificationAlgorithm algorithm) {
-			super(label, algorithm, ComputeScoreFilters.ALL);
-		}
+		private final boolean isPValue;
 
-		@Override
-		public ESorting getDefaultSorting() {
-			return (getAlgorithm() instanceof GSEAAlgorithmPValue) ? ESorting.ASC : ESorting.DESC;
+		public GeneSetScore(String label, IStratificationAlgorithm algorithm, boolean isPValue) {
+			super(label, algorithm, ComputeScoreFilters.ALL, isPValue ? color.darker() : color, bgColor);
+			this.isPValue = isPValue;
 		}
 
 		@Override
 		public boolean supports(EDataDomainQueryMode mode) {
 			return mode == EDataDomainQueryMode.GENE_SET;
+		}
+
+		@Override
+		public PiecewiseLinearMapping createMapping() {
+			PiecewiseLinearMapping m;
+			if (isPValue) {
+				m = new PiecewiseLinearMapping(0, 1);
+				m.put(0, 1);
+				m.put(1, 0);
+			} else {
+				m = new PiecewiseLinearMapping(0, Float.NaN);
+			}
+			return m;
 		}
 	}
 

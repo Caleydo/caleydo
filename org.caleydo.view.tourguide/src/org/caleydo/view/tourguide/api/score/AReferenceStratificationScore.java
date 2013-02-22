@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import java.awt.Color;
+
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 
@@ -30,8 +32,8 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 		IStratificationScore {
 	protected final Perspective reference;
 
-	public AReferenceStratificationScore(String label, Perspective reference) {
-		super(label == null ? reference.getLabel() : label);
+	public AReferenceStratificationScore(String label, Perspective reference, Color color, Color bgColor) {
+		super(label == null ? reference.getLabel() : label, color, bgColor);
 		this.reference = reference;
 	}
 
@@ -50,11 +52,6 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 		return reference.getProviderName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -63,11 +60,6 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

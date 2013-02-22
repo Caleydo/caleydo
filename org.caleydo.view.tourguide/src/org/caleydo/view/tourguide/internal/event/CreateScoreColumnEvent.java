@@ -20,7 +20,6 @@
 package org.caleydo.view.tourguide.internal.event;
 
 import org.caleydo.core.event.ADirectedEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 
 /**
  * @author Samuel Gratzl
@@ -37,7 +36,7 @@ public class CreateScoreColumnEvent extends ADirectedEvent {
 
 	}
 
-	public CreateScoreColumnEvent(Type type, ScoreQueryUI sender) {
+	public CreateScoreColumnEvent(Type type, Object sender) {
 		this.type = type;
 		this.setSender(sender);
 	}

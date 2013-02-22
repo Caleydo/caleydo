@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import java.awt.Color;
+
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
@@ -32,11 +34,12 @@ public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore imp
 	private final IGroupAlgorithm algorithm;
 
 	public DefaultComputedReferenceGroupScore(String label, Perspective stratification, Group group,
-			IGroupAlgorithm algorithm, IComputeScoreFilter filter) {
-		super(label, stratification, group);
+			IGroupAlgorithm algorithm, IComputeScoreFilter filter, Color color, Color bgColor) {
+		super(label, stratification, group, color, bgColor);
 		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 		this.algorithm = algorithm;
 	}
+
 
 	@Override
 	public void onRegistered() {

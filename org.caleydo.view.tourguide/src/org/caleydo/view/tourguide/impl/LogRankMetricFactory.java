@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import java.awt.Color;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataClass;
@@ -32,10 +33,7 @@ import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.query.ESorting;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
-import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IMetricFactory;
@@ -43,6 +41,8 @@ import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
 import com.google.common.collect.Sets;
 
@@ -55,10 +55,11 @@ public class LogRankMetricFactory implements IMetricFactory {
 	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver) {
 		GroupContextMenuItem logRanks = new GroupContextMenuItem("Create LogRank of");
 		boolean hasOne = false;
+		ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
 		for (ClinicalVariable var : DataDomainOracle.getClinicalVariables()) {
 			if (var.getDataClass() != EDataClass.NATURAL_NUMBER)
 				continue;
-			LogRankMetric score = new LogRankMetric(var.getLabel(), var.getDimId());
+			LogRankMetric score = new LogRankMetric(var.getLabel(), var.getDimId(), dataDomain);
 			if (visible.contains(score))
 				continue;
 			hasOne = true;
@@ -78,9 +79,8 @@ public class LogRankMetricFactory implements IMetricFactory {
 	public static class LogRankMetric extends DefaultComputedGroupScore {
 		private final Integer clinicalVariable;
 
-		public LogRankMetric(String label, final Integer clinicalVariable) {
+		public LogRankMetric(String label, final Integer clinicalVariable, final ATableBasedDataDomain clinical) {
 			super(label, new IGroupAlgorithm() {
-				final ATableBasedDataDomain clinical = DataDomainOracle.getClinicalDataDomain();
 				final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 
 				@Override
@@ -98,8 +98,17 @@ public class LogRankMetricFactory implements IMetricFactory {
 					// me versus the rest
 					return underlying.compute(a, Sets.difference(b, a));
 				}
-			}, null);
+			}, null, wrap(clinical.getColor()), darker(clinical.getColor()));
 			this.clinicalVariable = clinicalVariable;
+		}
+
+		private static Color wrap(org.caleydo.core.util.color.Color color) {
+			return new Color(color.r, color.g, color.b, color.a);
+		}
+
+		private static Color darker(org.caleydo.core.util.color.Color color) {
+			Color c = new Color(color.r * 0.8f, color.g * 0.8f, color.b * 0.8f, color.a);
+			return c;
 		}
 
 		public Integer getClinicalVariable() {
@@ -121,13 +130,26 @@ public class LogRankMetricFactory implements IMetricFactory {
 		}
 
 		@Override
-		public ESorting getDefaultSorting() {
-			return ESorting.ASC;
+		public String getAbbreviation() {
+			return "LR-P";
 		}
 
 		@Override
-		public String getAbbreviation() {
-			return "LR-P";
+		public Color getColor() {
+			return logRankScore.getColor().darker();
+		}
+
+		@Override
+		public Color getBGColor() {
+			return logRankScore.getBGColor();
+		}
+
+		@Override
+		public PiecewiseLinearMapping createMapping() {
+			PiecewiseLinearMapping m = new PiecewiseLinearMapping(0, 1);
+			m.put(0, 1);
+			m.put(1, 0);
+			return m;
 		}
 
 		@Override
@@ -136,18 +158,18 @@ public class LogRankMetricFactory implements IMetricFactory {
 		}
 
 		@Override
-		public EScoreType getScoreType() {
-			return logRankScore.getScoreType();
-		}
-
-		@Override
 		public IScore getUnderlying() {
 			return logRankScore;
 		}
 
 		@Override
-		public float getScore(ScoringElement elem) {
-			return LogRank.getPValue(logRankScore.getScore(elem));
+		public float applyPrimitive(IRow elem) {
+			return LogRank.getPValue(logRankScore.applyPrimitive(elem));
+		}
+
+		@Override
+		public Float apply(IRow elem) {
+			return applyPrimitive(elem);
 		}
 
 		public Integer getClinicalVariable() {

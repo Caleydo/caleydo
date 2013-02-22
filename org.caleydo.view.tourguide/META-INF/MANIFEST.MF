@@ -12,14 +12,12 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.caleydo.data.loader
 Export-Package: org.caleydo.view.tourguide.api.compute,
  org.caleydo.view.tourguide.api.query,
- org.caleydo.view.tourguide.api.query.filter,
  org.caleydo.view.tourguide.api.score,
  org.caleydo.view.tourguide.api.score.ui,
  org.caleydo.view.tourguide.api.util,
  org.caleydo.view.tourguide.api.util.ui,
  org.caleydo.view.tourguide.spi.algorithm,
  org.caleydo.view.tourguide.spi.compute,
- org.caleydo.view.tourguide.spi.query.filter,
  org.caleydo.view.tourguide.spi.score
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

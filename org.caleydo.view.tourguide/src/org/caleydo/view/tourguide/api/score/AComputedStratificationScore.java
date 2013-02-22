@@ -19,14 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import java.awt.Color;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.api.query.ESorting;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
+import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
 /**
  * @author Samuel Gratzl
@@ -34,14 +36,13 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  */
 public abstract class AComputedStratificationScore extends DefaultLabelProvider implements IScore {
 	protected final Map<String, Float> scores = new ConcurrentHashMap<>();
+	private final Color color;
+	private final Color bgColor;
 
-	public AComputedStratificationScore(String label) {
+	public AComputedStratificationScore(String label, Color color, Color bgColor) {
 		super(label);
-	}
-
-	@Override
-	public ESorting getDefaultSorting() {
-		return ESorting.DESC;
+		this.color = color;
+		this.bgColor = bgColor;
 	}
 
 	public boolean contains(Perspective elem) {
@@ -49,19 +50,35 @@ public abstract class AComputedStratificationScore extends DefaultLabelProvider 
 		return scores.containsKey(elem.getPerspectiveID());
 	}
 
-	public void put(Perspective elem, float value) {
+	public final void put(Perspective elem, float value) {
 		scores.put(elem.getPerspectiveID(), value);
 	}
 
 	@Override
-	public float getScore(ScoringElement elem) {
-		Perspective p = elem.getStratification();
+	public final float applyPrimitive(IRow elem) {
+		Perspective p = ((PerspectiveRow) elem).getStratification();
 		Float f = scores.get(p.getPerspectiveID());
 		return f == null ? Float.NaN : f.floatValue();
 	}
 
 	@Override
-	public final EScoreType getScoreType() {
-		return EScoreType.STRATIFICATION_SCORE;
+	public final Float apply(IRow elem) {
+		return applyPrimitive(elem);
 	}
+
+	@Override
+	public Color getColor() {
+		return color;
+	}
+
+	@Override
+	public Color getBGColor() {
+		return bgColor;
+	}
+
+	@Override
+	public PiecewiseLinearMapping createMapping() {
+		return new PiecewiseLinearMapping(0, 1);
+	}
+
 }

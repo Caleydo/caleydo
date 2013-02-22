@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import java.awt.Color;
+
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
@@ -31,8 +33,8 @@ public class DefaultComputedStratificationScore extends AComputedStratificationS
 	private final IStratificationAlgorithm algorithm;
 
 	public DefaultComputedStratificationScore(String label, IStratificationAlgorithm algorithm,
-			IComputeScoreFilter filter) {
-		super(label);
+			IComputeScoreFilter filter, Color color, Color bgColor) {
+		super(label, color, bgColor);
 		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 		this.algorithm = algorithm;
 	}
@@ -92,5 +94,4 @@ public class DefaultComputedStratificationScore extends AComputedStratificationS
 			return false;
 		return true;
 	}
-
 }

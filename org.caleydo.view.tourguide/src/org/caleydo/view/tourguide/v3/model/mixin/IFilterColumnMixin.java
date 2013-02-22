@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.v3.model.mixin;
 import java.util.BitSet;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.view.tourguide.v3.model.IRow;
 
 /**
@@ -34,4 +35,6 @@ public interface IFilterColumnMixin {
 	boolean isFiltered();
 
 	void filter(List<IRow> data, BitSet mask);
+
+	void editFilter(GLElement summary);
 }

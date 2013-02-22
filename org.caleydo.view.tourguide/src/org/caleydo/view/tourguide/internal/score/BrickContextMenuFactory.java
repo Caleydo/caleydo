@@ -48,9 +48,7 @@ public class BrickContextMenuFactory implements IContextMenuBrickFactory {
 		GLTourGuideView firstVisible = getVisibleTourGuide();
 		if (firstVisible == null) // show context menu only if the tour guide view is visible
 			return Collections.emptyList();
-		// return ScoreFactories.createGroupEntries(brick.getTablePerspective(), group.getRecordGroup(),
-		// firstVisible.getScoreQueryUI());
-		return Collections.emptyList();
+		return ScoreFactories.createGroupEntries(brick.getTablePerspective(), group.getRecordGroup(), firstVisible);
 	}
 
 
@@ -59,8 +57,7 @@ public class BrickContextMenuFactory implements IContextMenuBrickFactory {
 		GLTourGuideView firstVisible = getVisibleTourGuide();
 		if (firstVisible == null) // show context menu only if the tour guide view is visible
 			return Collections.emptyList();
-		// return ScoreFactories.createStratEntries(brick.getTablePerspective(), firstVisible.getScoreQueryUI());
-		return Collections.emptyList();
+		return ScoreFactories.createStratEntries(brick.getTablePerspective(), firstVisible);
 	}
 
 	private static GLTourGuideView getVisibleTourGuide() {

@@ -35,7 +35,7 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 	private final StratomexAdapter stratomex;
 
 	public PerspectiveRankColumnModel(StratomexAdapter stratomex) {
-		super(GLRenderers.drawText("Match", VAlign.CENTER), TO_LABEL);
+		super(GLRenderers.drawText("Match", VAlign.CENTER), StringRankColumnModel.DFEAULT);
 		this.stratomex = stratomex;
 	}
 

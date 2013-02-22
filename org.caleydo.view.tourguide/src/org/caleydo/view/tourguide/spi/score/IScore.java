@@ -19,11 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.score;
 
+import java.awt.Color;
+
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.query.ESorting;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
-import org.caleydo.view.tourguide.api.score.EScoreType;
+import org.caleydo.view.tourguide.v3.data.IFloatFunction;
+import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
 /**
  * basic abstraction of a score
@@ -31,23 +33,23 @@ import org.caleydo.view.tourguide.api.score.EScoreType;
  * @author Samuel Gratzl
  *
  */
-public interface IScore extends ILabelProvider {
+public interface IScore extends ILabelProvider, IFloatFunction<IRow> {
 	/**
 	 * determines whether the current score support the given {@link EDataDomainQueryMode} mode
-	 * 
+	 *
 	 * @param mode
 	 * @return
 	 */
 	public boolean supports(EDataDomainQueryMode mode);
 
-	public EScoreType getScoreType();
-
-	public float getScore(ScoringElement elem);
-
-	public ESorting getDefaultSorting();
-
 	/**
 	 * @return
 	 */
 	public String getAbbreviation();
+
+	public Color getColor();
+
+	public Color getBGColor();
+
+	public PiecewiseLinearMapping createMapping();
 }

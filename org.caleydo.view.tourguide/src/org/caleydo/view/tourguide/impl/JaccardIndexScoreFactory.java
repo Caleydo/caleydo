@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -27,11 +28,10 @@ import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.score.CollapseScore;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
+import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
 import org.caleydo.view.tourguide.impl.algorithm.JaccardIndex;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -47,13 +47,16 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class JaccardIndexScoreFactory implements IScoreFactory {
+	private final static Color color = Color.decode("#ffb380");
+	private final static Color bgColor = Color.decode("#ffe6d5");
+
 	private IRegisteredScore createJaccard(String label, Perspective reference, Group group) {
-		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null);
+		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null, color, bgColor);
 	}
 
 	private IRegisteredScore createJaccardME(String label, Perspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
-				ComputeScoreFilters.MUTUAL_EXCLUSIVE);
+				ComputeScoreFilters.MUTUAL_EXCLUSIVE, color, bgColor);
 	}
 
 	@Override
@@ -69,12 +72,12 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	public Iterable<ScoreEntry> createStratEntries(TablePerspective strat) {
 		Collection<ScoreEntry> col = new ArrayList<>();
 		final Perspective rs = strat.getRecordPerspective();
-		CollapseScore composite = new CollapseScore(rs.getLabel());
+		MultiScore composite = new MultiScore(rs.getLabel(), color, bgColor);
 		for (Group group : rs.getVirtualArray().getGroupList()) {
 			composite.add(createJaccard(null, rs, group));
 		}
 		col.add(new ScoreEntry("Score all groups in column", (IScore) composite));
-		composite = new CollapseScore(rs.getLabel());
+		composite = new MultiScore(rs.getLabel(), color, bgColor);
 		for (Group group : rs.getVirtualArray().getGroupList()) {
 			composite.add(createJaccardME(null, rs, group));
 		}
@@ -88,14 +91,14 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	}
 
 	@Override
-	public Dialog createCreateDialog(Shell shell, ScoreQueryUI sender) {
+	public Dialog createCreateDialog(Shell shell, Object sender) {
 		return new CreateJaccardIndexScoreDialog(shell, sender);
 	}
 
 	class CreateJaccardIndexScoreDialog extends ACreateGroupScoreDialog {
 		private Button mututalExclusiveUI;
 
-		public CreateJaccardIndexScoreDialog(Shell shell, ScoreQueryUI sender) {
+		public CreateJaccardIndexScoreDialog(Shell shell, Object sender) {
 			super(shell, sender);
 		}
 

@@ -30,7 +30,7 @@ import com.google.common.base.Function;
  *
  */
 public enum ECombinedOperator implements Function<float[], Float>, ILabelProvider {
-	MAX, MIN, MEAN, MEDIAN, PRODUCT, GEOMETRIC_MEAN, SUM;
+	MAX, MIN, MEAN, MEDIAN, GEOMETRIC_MEAN;
 
 	@Override
 	public Float apply(float[] data) {
@@ -49,10 +49,6 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabelProvide
 			return "MED";
 		case MIN:
 			return "MIN";
-		case SUM:
-			return "\u2211";
-		case PRODUCT:
-			return "\u220F";
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}
@@ -70,10 +66,6 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabelProvide
 			return "Median";
 		case MIN:
 			return "Minium";
-		case SUM:
-			return "Sum \u2211";
-		case PRODUCT:
-			return "Product \u220F";
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}
@@ -107,13 +99,6 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabelProvide
 			for (int i = 0; i < data.length; ++i)
 				c += data[i];
 			return c / data.length;
-		case PRODUCT:
-			if (data.length == 0)
-				return 1;
-			c = 1;
-			for (int i = 0; i < data.length; ++i)
-				c *= data[i];
-			return c;
 		case GEOMETRIC_MEAN:
 			if (data.length == 0)
 				return 1;
@@ -128,11 +113,6 @@ public enum ECombinedOperator implements Function<float[], Float>, ILabelProvide
 				return 0.5f * (data[center] + data[center + 1]);
 			else
 				return data[center + 1];
-		case SUM:
-			c = 0;
-			for (int i = 0; i < data.length; ++i)
-				c += data[i];
-			return c;
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}

@@ -264,11 +264,20 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/filter_disabled.png"));
 			b.setSelectedRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/filter.png"));
 			b.setSelected(m.isFiltered());
-			b.setVisibility(EVisibility.VISIBLE);
+			b.setTooltip("Edit the filter of this column");
+			final ISelectionCallback callback = new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					m.editFilter(get(HIST));
+				}
+			};
+			b.setCallback(callback);
 			filterChangedListener = new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
+					b.setCallback(null);
 					b.setSelected(m.isFiltered());
+					b.setCallback(callback);
 				}
 			};
 			model.addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, filterChangedListener);

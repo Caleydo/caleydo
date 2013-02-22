@@ -82,14 +82,6 @@
    <extension
          point="org.caleydo.tourguide.scorefactory">
       <factory
-            class="org.caleydo.view.tourguide.impl.CombinedScoreFactory"
-            name="Combined Score">
-      </factory>
-      <factory
-            class="org.caleydo.view.tourguide.impl.CollapseScoreFactory"
-            name="Collapse Score">
-      </factory>
-      <factory
             class="org.caleydo.view.tourguide.impl.AdjustedRandScoreFactory"
             name="Adjusted Rank Score">
       </factory>
@@ -104,9 +96,6 @@
    </extension>
    <extension
          point="org.caleydo.tourguide.metricfactory">
-      <factory
-            class="org.caleydo.view.tourguide.impl.SizeMetricFactory"
-            name="Size Metric"></factory>
       <factory
             class="org.caleydo.view.tourguide.impl.LogRankMetricFactory"
             name="Log Rank Score">

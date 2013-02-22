@@ -227,6 +227,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			for (ARankColumnModel child : ((ACompositeRankColumnModel) col))
 				takeDown(child);
 		}
+		propertySupport.firePropertyChange(PROP_REGISTER, col, null);
 	}
 
 	private void remove(ARankColumnModel model) {
@@ -242,7 +243,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public boolean destroy(ARankColumnModel col) {
 		removeFromPool(col);
 		takeDown(col);
-		propertySupport.firePropertyChange(PROP_REGISTER, col, null);
 		return true;
 	}
 
@@ -335,7 +335,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		return Collections.unmodifiableList(pool);
 	}
 
-	private Iterator<ARankColumnModel> findAllColumns() {
+	public Iterator<ARankColumnModel> findAllColumns() {
 		Collection<ARankColumnModel> c = new ArrayList<>();
 		findAllColumns(c, this.columns);
 		return c.iterator();

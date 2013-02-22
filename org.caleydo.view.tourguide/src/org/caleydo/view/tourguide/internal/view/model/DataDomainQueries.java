@@ -131,6 +131,7 @@ public class DataDomainQueries {
 		List<?> m = table.getData();
 		q.setData(new CustomSubList<PerspectiveRow>((List<PerspectiveRow>) m, offset, m.size() - offset));
 		updateMask();
+		// FIXME compute data
 	}
 
 	private void updateMask() {

@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,12 +45,12 @@ import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.query.ESorting;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
-import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
+import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
+import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -114,15 +115,6 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 	public String getAbbreviation() {
 		return "EX";
 	}
-	@Override
-	public final EScoreType getScoreType() {
-		return isRank ? EScoreType.RANK : EScoreType.SCORE;
-	}
-
-	@Override
-	public ESorting getDefaultSorting() {
-		return isRank ? ESorting.ASC : ESorting.DESC;
-	}
 
 	@Override
 	public String getProviderName() {
@@ -134,7 +126,8 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 	}
 
 	@Override
-	public float getScore(ScoringElement elem) {
+	public float applyPrimitive(IRow eleme) {
+		PerspectiveRow elem = (PerspectiveRow) eleme;
 		TablePerspective strat = elem.getPerspective();
 		Iterator<Integer> it;
 		IDType target;
@@ -184,6 +177,28 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 		if (scores.size() == 1)
 			return scores.iterator().next().floatValue();
 		return operator.combine(Floats.toArray(scores));
+	}
+
+	@Override
+	public Float apply(IRow elem) {
+		return applyPrimitive(elem);
+	}
+
+	@Override
+	public PiecewiseLinearMapping createMapping() {
+		// FIXME
+		return new PiecewiseLinearMapping(0, 1);
+	}
+
+	@Override
+	public Color getBGColor() {
+		// FIXME
+		return new Color(0.95f, .95f, .95f);
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.GRAY;
 	}
 
 	/**

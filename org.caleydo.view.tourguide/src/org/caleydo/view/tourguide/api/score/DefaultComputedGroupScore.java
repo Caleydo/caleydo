@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import java.awt.Color;
+
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
@@ -29,8 +31,9 @@ public class DefaultComputedGroupScore extends AComputedGroupScore implements IC
 	private final IComputeScoreFilter filter;
 	private final IGroupAlgorithm algorithm;
 
-	public DefaultComputedGroupScore(String label, IGroupAlgorithm algorithm, IComputeScoreFilter filter) {
-		super(label);
+	public DefaultComputedGroupScore(String label, IGroupAlgorithm algorithm, IComputeScoreFilter filter, Color color,
+			Color bgColor) {
+		super(label, color, bgColor);
 		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 		this.algorithm = algorithm;
 	}
