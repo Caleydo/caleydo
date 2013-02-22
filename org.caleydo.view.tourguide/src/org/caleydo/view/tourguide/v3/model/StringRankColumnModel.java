@@ -162,7 +162,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
-		String regex = Pattern.quote(filter).replace("\\*", ".*");
+		String regex = "\\Q" + filter.replace("*", "\\E.*\\Q") + "\\E";
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
 			String v = this.data.apply(data.get(i));
 			mask.set(i, Pattern.matches(regex, v));

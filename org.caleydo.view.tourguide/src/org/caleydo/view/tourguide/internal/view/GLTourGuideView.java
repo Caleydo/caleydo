@@ -75,6 +75,16 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
 				onSelectRow((PerspectiveRow) evt.getOldValue(), (PerspectiveRow) evt.getNewValue());
 			}
 		});
+		this.table.addPropertyChangeListener(RankTableModel.PROP_REGISTER, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getOldValue() != null)
+					eventListeners.unregister(evt.getOldValue());
+				if (evt.getNewValue() != null)
+					eventListeners.register(evt.getNewValue());
+			}
+		});
+
 		this.table.addColumn(new RankRankColumnModel());
 		this.table.addColumn(new PerspectiveRankColumnModel(stratomex));
 		this.stacked = new StackedRankColumnModel();

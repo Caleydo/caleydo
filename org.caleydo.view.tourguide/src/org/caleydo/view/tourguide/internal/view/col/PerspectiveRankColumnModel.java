@@ -46,11 +46,16 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
+		float hint = Math.min(h - 2, 12);
+		if (hint <= 0)
+			return;
+		PerspectiveRow r = parent.getLayoutDataAs(PerspectiveRow.class, null);
+		g.color(r.getDataDomain().getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
 		if (h < 5)
 			return;
+		float x = hint + 2;
 		float hi = Math.min(h, 18);
-		PerspectiveRow r = parent.getLayoutDataAs(PerspectiveRow.class, null);
-		g.drawText(r.getLabel(), 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+		g.drawText(r.getLabel(), x, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
 	}
 
 	// AdvancedTextureRenderer cAdd = new AdvancedTextureRenderer(null, view.getTextureManager());

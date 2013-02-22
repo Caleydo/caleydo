@@ -49,6 +49,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public static final String PROP_COLUMNS = "columns";
 	public static final String PROP_POOL = "pool";
 	public static final String PROP_INVALID = "invalid";
+	public static final String PROP_REGISTER = "register";
 
 	private final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
@@ -214,6 +215,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			for (ARankColumnModel child : ((ACompositeRankColumnModel) col))
 				setup(child);
 		}
+		propertySupport.firePropertyChange(PROP_REGISTER, null, col);
 	}
 
 	private void takeDown(ARankColumnModel col) {
@@ -240,6 +242,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public boolean destroy(ARankColumnModel col) {
 		removeFromPool(col);
 		takeDown(col);
+		propertySupport.firePropertyChange(PROP_REGISTER, col, null);
 		return true;
 	}
 
