@@ -36,8 +36,7 @@ public class ExternalGroupLabelScoreParser extends AExternalScoreParser<GroupLab
 
 	@Override
 	protected ExternalGroupLabelScore createScore(String label, boolean isRank, Map<String, Float> scores) {
-		// FIXME
-		return new ExternalGroupLabelScore(label, spec.getPerspectiveKey(), scores);
+		return new ExternalGroupLabelScore(label, spec, scores);
 	}
 
 }

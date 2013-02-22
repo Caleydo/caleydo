@@ -288,8 +288,10 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
 	// return deco;
 	// }
 
-	@ListenTo(sendToMe = true)
+	@ListenTo
 	private void onImportExternalScore(ImportExternalScoreEvent event) {
+		if (event.getSender() != this)
+			return;
 		Display.getDefault().asyncExec(
 				new ImportExternalScoreCommand(event.getDataDomain(), event.isInDimensionDirection(), event.getType(),
 						this));
@@ -312,7 +314,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
 	}
 
 	public void cloneFrom(GLTourGuideView view) {
-		// TODO Auto-generated method stub
+		// FIXME
 
 	}
 

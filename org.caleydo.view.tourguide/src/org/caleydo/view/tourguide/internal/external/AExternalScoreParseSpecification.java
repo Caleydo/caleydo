@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.external;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,13 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 	private ECombinedOperator operator;
 
 	private boolean normalizeScores;
+
+	// FIXME set
+	private Color color;
+
+	private float mappingMin;
+
+	private float mappingMax;
 
 	public AExternalScoreParseSpecification() {
 	}
@@ -107,6 +115,51 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 
 	public boolean isRankParsing() {
 		return columns == null || columns.isEmpty();
+	}
+
+	/**
+	 * @return the color, see {@link #color}
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * @param color
+	 *            setter, see {@link color}
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	/**
+	 * @return the mappingMin, see {@link #mappingMin}
+	 */
+	public float getMappingMin() {
+		return mappingMin;
+	}
+
+	/**
+	 * @param mappingMin
+	 *            setter, see {@link mappingMin}
+	 */
+	public void setMappingMin(float mappingMin) {
+		this.mappingMin = mappingMin;
+	}
+
+	/**
+	 * @return the mappingMax, see {@link #mappingMax}
+	 */
+	public float getMappingMax() {
+		return mappingMax;
+	}
+
+	/**
+	 * @param mappingMax
+	 *            setter, see {@link mappingMax}
+	 */
+	public void setMappingMax(float mappingMax) {
+		this.mappingMax = mappingMax;
 	}
 
 	/*

@@ -17,58 +17,79 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.api.score;
+package org.caleydo.view.tourguide.internal.score;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
 import org.caleydo.view.tourguide.v3.model.IRow;
 import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
-import com.google.common.collect.Iterators;
-
 /**
- * marker for a default multi score
- *
  * @author Samuel Gratzl
  *
  */
-public class MultiScore extends DefaultLabelProvider implements IScore, Iterable<IScore> {
-	private Collection<IScore> children = new ArrayList<>();
-	private Color color;
+public abstract class AExternalScore extends DefaultLabelProvider implements ISerializeableScore {
+	private float mappingMin;
+	private float mappingMax;
 	private Color bgColor;
+	private Color color;
 
-	public MultiScore(String label, Color color, Color bgColor) {
-		setLabel(label);
-		this.color = color;
-		this.bgColor = bgColor;
+
+	public AExternalScore() {
+		super("");
 	}
 
-	/**
-	 * @param createJaccardME
-	 */
-	public void add(IScore score) {
-		children.add(score);
-	}
-
-	@Override
-	public Iterator<IScore> iterator() {
-		return Iterators.unmodifiableIterator(children.iterator());
+	public AExternalScore(String label, AExternalScoreParseSpecification spec) {
+		super(label);
+		this.color = spec.getColor();
+		this.bgColor = spec.getColor().brighter().brighter();
+		this.mappingMin = spec.getMappingMin();
+		this.mappingMax = spec.getMappingMax();
 	}
 
 	@Override
-	public PiecewiseLinearMapping createMapping() {
-		return null;
+	public void onRegistered() {
+
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
 	}
 
 	@Override
 	public String getAbbreviation() {
-		return null;
+		return "EX";
+	}
+
+	@Override
+	public String getProviderName() {
+		return "External";
+	}
+
+	@Override
+	public Float apply(IRow elem) {
+		return applyPrimitive(elem);
+	}
+
+	@Override
+	public PiecewiseLinearMapping createMapping() {
+		boolean tnan = Float.isNaN(mappingMax);
+		PiecewiseLinearMapping m;
+		if (tnan) {
+			m = new PiecewiseLinearMapping(mappingMin, mappingMax);
+		} else if (mappingMin > mappingMax) {
+			m = new PiecewiseLinearMapping(mappingMax, mappingMin);
+			m.put(mappingMax, 1);
+			m.put(mappingMin, 0);
+		} else {
+			m = new PiecewiseLinearMapping(mappingMin, mappingMax);
+		}
+		return m;
 	}
 
 	@Override
@@ -79,21 +100,6 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 	@Override
 	public Color getColor() {
 		return color;
-	}
-
-	@Override
-	public Float apply(IRow row) {
-		return applyPrimitive(row);
-	}
-
-	@Override
-	public float applyPrimitive(IRow row) {
-		return Float.NaN;
-	}
-
-	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
-		return false;
 	}
 
 }

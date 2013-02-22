@@ -129,4 +129,9 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 //		return row;
 //	}
 
+	@Override
+	public String toString() {
+		return score.getLabel();
+	}
+
 }

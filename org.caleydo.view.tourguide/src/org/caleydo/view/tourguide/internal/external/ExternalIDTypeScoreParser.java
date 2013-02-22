@@ -79,6 +79,6 @@ public class ExternalIDTypeScoreParser extends AExternalScoreParser<ScoreParseSp
 	 */
 	@Override
 	protected ExternalIDTypeScore createScore(String label, boolean isRank, Map<Integer, Float> scores) {
-		return new ExternalIDTypeScore(label, this.targetIDType, spec.getOperator(), isRank, scores);
+		return new ExternalIDTypeScore(label, spec, this.targetIDType, isRank, scores);
 	}
 }

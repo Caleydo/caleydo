@@ -93,7 +93,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 				activePage.showView(getViewGUIID(), "" + SECONDARY_IDs++, IWorkbenchPage.VIEW_VISIBLE);
 			}
 		} catch (PartInitException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

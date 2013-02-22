@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,16 +40,13 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
-import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.v3.model.IRow;
-import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -65,7 +61,7 @@ import com.google.common.primitives.Floats;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class ExternalIDTypeScore extends DefaultLabelProvider implements ISerializeableScore {
+public final class ExternalIDTypeScore extends AExternalScore {
 	private static final Logger log = Logger.create(ExternalIDTypeScore.class);
 
 	@XmlJavaTypeAdapter(IDTypeAdapter.class)
@@ -89,36 +85,16 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 			});
 
 	public ExternalIDTypeScore() {
-		super("");
+		super();
 	}
 
-	public ExternalIDTypeScore(String label, IDType idType, ECombinedOperator operator, boolean isRank,
+	public ExternalIDTypeScore(String label, ScoreParseSpecification spec, IDType idType, boolean isRank,
 			Map<Integer, Float> scores) {
-		super(label);
+		super(label, spec);
 		this.idType = idType;
 		this.isRank = isRank;
-		this.operator = operator;
+		this.operator = spec.getOperator();
 		this.scores.putAll(scores);
-	}
-
-	@Override
-	public void onRegistered() {
-
-	}
-
-	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
-	}
-
-	@Override
-	public String getAbbreviation() {
-		return "EX";
-	}
-
-	@Override
-	public String getProviderName() {
-		return "External";
 	}
 
 	private boolean isCompatible(IDType type) {
@@ -177,28 +153,6 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 		if (scores.size() == 1)
 			return scores.iterator().next().floatValue();
 		return operator.combine(Floats.toArray(scores));
-	}
-
-	@Override
-	public Float apply(IRow elem) {
-		return applyPrimitive(elem);
-	}
-
-	@Override
-	public PiecewiseLinearMapping createMapping() {
-		// FIXME
-		return new PiecewiseLinearMapping(0, 1);
-	}
-
-	@Override
-	public Color getBGColor() {
-		// FIXME
-		return new Color(0.95f, .95f, .95f);
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.GRAY;
 	}
 
 	/**

@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.score;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +27,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.internal.external.GroupLabelParseSpecification;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.v3.model.IRow;
-import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 
 import com.google.common.base.Objects;
 
@@ -45,40 +42,20 @@ import com.google.common.base.Objects;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class ExternalGroupLabelScore extends DefaultLabelProvider implements ISerializeableScore {
+public final class ExternalGroupLabelScore extends AExternalScore implements ISerializeableScore {
 	private String perspectiveKey;
 	private Map<String, Float> scores = new HashMap<>();
 
 	public ExternalGroupLabelScore() {
-		super("");
+		super();
 	}
 
-	@Override
-	public void onRegistered() {
-
-	}
-
-	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
-	}
-
-	public ExternalGroupLabelScore(String label, String perspectiveKey, Map<String, Float> scores) {
-		super(label);
-		this.perspectiveKey = perspectiveKey;
+	public ExternalGroupLabelScore(String label, GroupLabelParseSpecification spec, Map<String, Float> scores) {
+		super(label, spec);
+		this.perspectiveKey = spec.getPerspectiveKey();
 		this.scores.putAll(scores);
 	}
-
-	@Override
-	public String getAbbreviation() {
-		return "EX";
-	}
-
-	@Override
-	public String getProviderName() {
-		return "External";
-	}
-
+	
 	@Override
 	public float applyPrimitive(IRow eleme) {
 		PerspectiveRow elem = (PerspectiveRow) eleme;
@@ -95,28 +72,6 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 		if (v == null)
 			return Float.NaN;
 		return v.floatValue();
-	}
-
-	@Override
-	public Float apply(IRow elem) {
-		return applyPrimitive(elem);
-	}
-
-	@Override
-	public PiecewiseLinearMapping createMapping() {
-		// FIXME
-		return new PiecewiseLinearMapping(0, 1);
-	}
-
-	@Override
-	public Color getBGColor() {
-		// FIXME
-		return new Color(0.95f, .95f, .95f);
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.GRAY;
 	}
 
 	@Override
