@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -53,7 +54,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView {
+public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
+		IMultiFormChangeListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.subgraph";
 
@@ -70,7 +72,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private GLElementContainer baseContainer = new GLElementContainer(GLLayouts.flowHorizontal(10));
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
 	private GLElementContainer pathwayColumn = new GLElementContainer(GLLayouts.flowVertical(10));
-	private SubGraphAugmentation augmentation = new SubGraphAugmentation();
+	private GLSubGraphAugmentation augmentation = new GLSubGraphAugmentation();
 	private GLElementContainer nodeInfoContainer = new GLElementContainer(GLLayouts.flowHorizontal(10));
 
 	private GLPathwayBackground currentActiveBackground = null;
@@ -246,6 +248,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		// Different renderers should receive path updates from the beginning on, therefore no lazy creation.
 		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
+		renderer.addChangeListener(this);
 
 		for (String viewID : remoteRenderedPathwayMultiformViewIDs) {
 			int id = renderer.addPluginVisualization(viewID, getViewType(), embeddingID, tablePerspectives,
@@ -335,7 +338,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			PathwayVertexRep vertexRep, GLElement element) {
 
 		Vec2f elementPosition = element.getAbsoluteLocation();
-		Rectangle2D location = pathwayRepresentation.getVertexRepLocation(vertexRep);
+		Rectangle2D location = pathwayRepresentation.getVertexRepBounds(vertexRep);
 		if (location != null) {
 			return new Rectangle2D.Float((float) (location.getX() + elementPosition.x()),
 					(float) (location.getY() + elementPosition.y()), (float) location.getWidth(),
@@ -390,7 +393,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, end,
 								rendererPair.getSecond());
 						if (rect != null) {
-							augmentation.addRenderer(new SubGraphAugmentation.ConnectionRenderer(referenceRectangle,
+							augmentation.addRenderer(new GLSubGraphAugmentation.ConnectionRenderer(referenceRectangle,
 									rect));
 						}
 						// }
@@ -437,6 +440,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			nodeInfoContainer.setSize(Float.NaN, 80);
 			// nodeInfoContainer.relayout();
 		}
+
+	}
+
+	@Override
+	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
+		updatePathLinks();
+	}
+
+	@Override
+	public void rendererAdded(MultiFormRenderer multiFormRenderer, int rendererID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void rendererRemoved(MultiFormRenderer multiFormRenderer, int rendererID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void destroyed(MultiFormRenderer multiFormRenderer) {
+		// TODO Auto-generated method stub
 
 	}
 

@@ -33,7 +33,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
  * @author Christian Partl
  *
  */
-public class SubGraphAugmentation extends GLElement {
+public class GLSubGraphAugmentation extends GLElement {
 
 	private List<IGLRenderer> renderers = new ArrayList<>();
 
@@ -54,14 +54,9 @@ public class SubGraphAugmentation extends GLElement {
 					.lineWidth(2)
 					.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
 							(float) loc2.getCenterY());
-			g.color(0, 1, 0, 1)
-					.lineWidth(2)
-					.drawRect((float) loc1.getX(), (float) loc1.getY(), (float) loc1.getWidth(),
-							(float) loc1.getHeight());
-			g.color(0, 1, 0, 1)
-					.lineWidth(2)
-					.drawRect((float) loc2.getX(), (float) loc2.getY(), (float) loc2.getWidth(),
-							(float) loc2.getHeight());
+			g.drawRect((float) loc1.getX(), (float) loc1.getY(), (float) loc1.getWidth(), (float) loc1.getHeight());
+			g.drawRect((float) loc2.getX(), (float) loc2.getY(), (float) loc2.getWidth(), (float) loc2.getHeight());
+			g.lineWidth(1);
 			// g.color(0, 1, 0, 1).fillCircle((float) loc1.getX(), (float) loc1.getY(), 50);
 			// g.color(0, 1, 0, 1).fillCircle((float) loc2.getX(), (float) loc2.getY(), 50);
 			g.incZ(-0.5f);
