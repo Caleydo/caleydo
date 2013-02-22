@@ -37,14 +37,14 @@ public final class DataSupportDefinitions {
 	 */
 	public static final IDataSupportDefinition tableBased = new IDataSupportDefinition() {
 		@Override
-		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+		public boolean apply(IDataDomain dataDomain) {
 			return dataDomain instanceof ATableBasedDataDomain;
 		}
 	};
 
 	public static final IDataSupportDefinition homogenousTables = new IDataSupportDefinition() {
 		@Override
-		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+		public boolean apply(IDataDomain dataDomain) {
 			return (dataDomain instanceof ATableBasedDataDomain)
 					&& ((ATableBasedDataDomain) dataDomain).getTable().isDataHomogeneous();
 		}
@@ -52,7 +52,7 @@ public final class DataSupportDefinitions {
 
 	public static final IDataSupportDefinition numericalTables = new IDataSupportDefinition() {
 		@Override
-		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+		public boolean apply(IDataDomain dataDomain) {
 			return (dataDomain instanceof ATableBasedDataDomain)
 					&& (((ATableBasedDataDomain) dataDomain).getTable() instanceof NumericalTable);
 		}
@@ -60,7 +60,7 @@ public final class DataSupportDefinitions {
 
 	public static final IDataSupportDefinition categoricalTables = new IDataSupportDefinition() {
 		@Override
-		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+		public boolean apply(IDataDomain dataDomain) {
 			return (dataDomain instanceof ATableBasedDataDomain)
 					&& (((ATableBasedDataDomain) dataDomain).getTable() instanceof CategoricalTable);
 		}
@@ -71,7 +71,7 @@ public final class DataSupportDefinitions {
 	 */
 	public static final IDataSupportDefinition all = new IDataSupportDefinition() {
 		@Override
-		public boolean isDataDomainSupported(IDataDomain dataDomain) {
+		public boolean apply(IDataDomain dataDomain) {
 			return true;
 		}
 	};
@@ -79,8 +79,8 @@ public final class DataSupportDefinitions {
 	public static IDataSupportDefinition not(final IDataSupportDefinition toNegate) {
 		return new IDataSupportDefinition() {
 			@Override
-			public boolean isDataDomainSupported(IDataDomain dataDomain) {
-				return !toNegate.isDataDomainSupported(dataDomain);
+			public boolean apply(IDataDomain dataDomain) {
+				return !toNegate.apply(dataDomain);
 			}
 		};
 	}

@@ -35,6 +35,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.ClassUtils;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 /**
@@ -93,7 +94,7 @@ public class EventListenerManager {
 	 *            the eventSpace to set
 	 */
 	public final void register(Object listener, String eventSpace) {
-		register(listener, eventSpace, Object.class);
+		register(listener, eventSpace, Predicates.alwaysFalse());
 	}
 
 	/**
@@ -104,9 +105,9 @@ public class EventListenerManager {
 	 * @param eventSpace
 	 * @param stopAtClass
 	 */
-	public final void register(Object listener, String eventSpace, Class<?> stopAtClass) {
+	public final void register(Object listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
 		Class<?> clazz = listener.getClass();
-		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, stopAtClass), matches)) {
+		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, scanWhile), matches)) {
 			Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
 			final ListenTo a = m.getAnnotation(ListenTo.class);
 			boolean toMe = a.sendToMe() && ADirectedEvent.class.isAssignableFrom(event);

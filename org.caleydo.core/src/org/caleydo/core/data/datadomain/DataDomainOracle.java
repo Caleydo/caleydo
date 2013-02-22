@@ -40,7 +40,7 @@ public final class DataDomainOracle {
 	private final static CategoricalTablePerspectiveCreator perspectiveCreator = new CategoricalTablePerspectiveCreator();
 
 	public static boolean isCategoricalDataDomain(IDataDomain dataDomain) {
-		return DataSupportDefinitions.categoricalTables.isDataDomainSupported(dataDomain);
+		return DataSupportDefinitions.categoricalTables.apply(dataDomain);
 	}
 
 	public synchronized static void initDataDomain(ATableBasedDataDomain dataDomain) {

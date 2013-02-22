@@ -5,9 +5,9 @@ import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 
 /**
  * Defines the {@link DataDomain}s supported by {@link GLEnRoutePathway}.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class GeneticDataSupportDefinition
 	implements IDataSupportDefinition {
@@ -16,7 +16,7 @@ public class GeneticDataSupportDefinition
 	}
 
 	@Override
-	public boolean isDataDomainSupported(IDataDomain dataDomain) {
+	public boolean apply(IDataDomain dataDomain) {
 		return dataDomain != null && dataDomain instanceof GeneticDataDomain;
 	}
 
