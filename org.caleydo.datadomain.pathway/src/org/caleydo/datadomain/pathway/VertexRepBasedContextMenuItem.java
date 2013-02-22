@@ -61,6 +61,7 @@ public class VertexRepBasedContextMenuItem extends AContextMenuItem {
 			AVertexRepBasedEvent event = eventClass.newInstance();
 			event.setVertexRep(vertexRep);
 			event.setEventSpace(eventSpace);
+			clearEvents();
 			registerEvent(event);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | SecurityException e) {
 			Logger.log(new Status(IStatus.WARNING, "VertexRepBasedContextMenuItem",

@@ -27,9 +27,9 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * Abstract base class for items in the context menu. A item must be supplied with a string to display its
- * function in the context menu as well as with a list of event which can be triggered. The events are of type
- * {@link AEvent} and are published via the {@link EventPublisher}.
+ * Abstract base class for items in the context menu. A item must be supplied with a string to display its function in
+ * the context menu as well as with a list of event which can be triggered. The events are of type {@link AEvent} and
+ * are published via the {@link EventPublisher}.
  *
  * @author Marc Streit
  */
@@ -91,8 +91,8 @@ public abstract class AContextMenuItem {
 	}
 
 	/**
-	 * Sets the event which is associated with the item. This event will be triggered when requested by the
-	 * context menu. It is mandatory to set an event.
+	 * Sets the event which is associated with the item. This event will be triggered when requested by the context
+	 * menu. It is mandatory to set an event.
 	 *
 	 * @param event
 	 *            the event triggered when requested by the context menu
@@ -109,6 +109,12 @@ public abstract class AContextMenuItem {
 			for (AEvent event : events) {
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
+		}
+	}
+
+	protected void clearEvents() {
+		if (events != null) {
+			events.clear();
 		}
 	}
 
