@@ -31,10 +31,9 @@ public final class RenderCache {
 	private int validCounter = 0;
 	private int displayListIndex = -1;
 
-	public void invalidate(IGLElementContext context) {
+	public void invalidate(DisplayListPool pool) {
 		validCounter = 0;
 		if (displayListIndex >= 0) { // free the display list
-			DisplayListPool pool = context.getDisplayListPool();
 			if (pool.isRecording(displayListIndex)) {
 				// lazy stopping
 				return;
@@ -55,16 +54,15 @@ public final class RenderCache {
 	 * @param g
 	 * @return true if a cache was used
 	 */
-	public boolean render(IGLElementContext context, GLGraphics g) {
+	public boolean render(DisplayListPool pool, GL2 gl) {
 		if (displayListIndex <= 0)
 			return false;
-		DisplayListPool pool = context.getDisplayListPool();
 		if (pool.isRecording() && validCounter < 100) {
 			// use the higher display list for caching and release me if I'm not a really long stable part
 			freeDisplayList(pool);
 			return false;
 		}
-		g.gl.glCallList(displayListIndex);
+		gl.glCallList(displayListIndex);
 		return true;
 	}
 
@@ -74,13 +72,12 @@ public final class RenderCache {
 	 * @param context
 	 * @param g
 	 */
-	public void begin(IGLElementContext context, GLGraphics g, float w, float h) {
-		DisplayListPool pool = context.getDisplayListPool();
+	public void begin(DisplayListPool pool, GL2 gl, float w, float h) {
 		if (enableCaching(pool, w, h)) {
-			displayListIndex = pool.checkOut(g);
+			displayListIndex = pool.checkOut(gl);
 			if (displayListIndex >= 0) { // got one
 				pool.startRecording(displayListIndex);
-				g.gl.glNewList(displayListIndex, GL2.GL_COMPILE_AND_EXECUTE);
+				gl.glNewList(displayListIndex, GL2.GL_COMPILE_AND_EXECUTE);
 			}
 		}
 		if (validCounter < 0)
@@ -104,10 +101,9 @@ public final class RenderCache {
 	 *
 	 * @param g
 	 */
-	public void end(IGLElementContext context, GLGraphics g) {
+	public void end(DisplayListPool pool, GL2 gl) {
 		if (displayListIndex >= 0) {
-			DisplayListPool pool = context.getDisplayListPool();
-			g.gl.glEndList();
+			gl.glEndList();
 			pool.stopRecording();
 			if (validCounter == 0) { // invalidated inbetween
 				freeDisplayList(pool);
@@ -115,8 +111,8 @@ public final class RenderCache {
 		}
 	}
 
-	public void takeDown(IGLElementContext context) {
-		invalidate(context);
+	public void takeDown(DisplayListPool pool) {
+		invalidate(pool);
 	}
 }
 

@@ -28,9 +28,9 @@ import java.util.List;
 public class GLFlowLayout implements IGLLayout {
 	private final boolean horizontal;
 	private final float gap;
-	private final float padding;
+	private final GLPadding padding;
 
-	public GLFlowLayout(boolean horizontal, float gap, float padding) {
+	public GLFlowLayout(boolean horizontal, float gap, GLPadding padding) {
 		this.horizontal = horizontal;
 		this.gap = gap;
 		this.padding = padding;
@@ -38,8 +38,8 @@ public class GLFlowLayout implements IGLLayout {
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		w -= padding * 2;
-		h -= padding * 2;
+		w -= padding.hor();
+		h -= padding.vert();
 		float freeSpace = (horizontal ? w : h) - gap * (children.size() - 1);
 		int unbounded = 0;
 		float fixUsed = 0;
@@ -75,8 +75,8 @@ public class GLFlowLayout implements IGLLayout {
 		}
 
 		// set all locations
-		float x_acc = padding;
-		float y_acc = padding;
+		float x_acc = padding.left;
+		float y_acc = padding.top;
 		for (IGLLayoutElement child : children) {
 			child.setLocation(x_acc, y_acc);
 			if (horizontal) {

@@ -17,48 +17,39 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2.internal;
-
-import gleem.linalg.Vec4f;
-
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.IMouseLayer;
-import org.caleydo.core.view.opengl.layout2.IPopupLayer;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+package org.caleydo.core.view.opengl.layout2.layout;
 
 /**
- * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
- * elements
+ * padding similar to html padding
  *
  * @author Samuel Gratzl
  *
  */
-public final class PopupLayer extends GLElementContainer implements IPopupLayer {
+public final class GLPadding {
+	public static final GLPadding ZERO = new GLPadding(0, 0, 0, 0);
 
-	public PopupLayer() {
-		super();
-		setLayout(GLLayouts.NONE);
+	public final float left, top, right, bottom;
+
+	public GLPadding(float value) {
+		this(value, value);
 	}
 
-	@Override
-	public void show(GLElement popup, Vec4f bounds) {
-		show(popup, bounds, FLAG_CLOSEABLE | FLAG_RESIZEABLE);
+	public GLPadding(float hor, float vert) {
+		this(hor, vert, hor, vert);
 	}
 
-	@Override
-	public void hide(GLElement popup) {
-		for(GLElement g : this) {
-			if (((PopupElement) g).getContent() == popup) {
-				remove(g);
-				return;
-			}
-		}
+	public GLPadding(float left, float top, float right, float bottom) {
+		this.left = left;
+		this.top = top;
+		this.right = right;
+		this.bottom = bottom;
 	}
 
-	@Override
-	public void show(GLElement popup, Vec4f bounds, int flags) {
-		this.add(new PopupElement(popup, bounds, flags));
+	public float hor() {
+		return left + right;
 	}
 
+	public float vert() {
+		return top + bottom;
+	}
 }

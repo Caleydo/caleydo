@@ -44,7 +44,7 @@ public class GLLayouts {
 	 * @return
 	 */
 	public static IGLLayout flowHorizontal(float gap) {
-		return new GLFlowLayout(true, gap, 0);
+		return new GLFlowLayout(true, gap, GLPadding.ZERO);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class GLLayouts {
 	 * @return
 	 */
 	public static IGLLayout flowVertical(float gap) {
-		return new GLFlowLayout(false, gap, 0);
+		return new GLFlowLayout(false, gap, GLPadding.ZERO);
 	}
 
 	/**

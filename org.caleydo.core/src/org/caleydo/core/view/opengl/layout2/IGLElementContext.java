@@ -71,12 +71,17 @@ public interface IGLElementContext {
 	DisplayListPool getDisplayListPool();
 
 	/**
-	 * returns a special {@link GLElementContainer} that will be positioned at the mouse position
+	 * returns a special kind of a {@link GLElementContainer} that will be positioned at the mouse position
 	 *
 	 * @return
 	 */
 	IMouseLayer getMouseLayer();
 
+	/**
+	 * returns a special kind of a {@link GLElementContainer} that will be renderer on top of the content
+	 *
+	 * @return
+	 */
 	IPopupLayer getPopupLayer();
 
 	/**
@@ -109,5 +114,10 @@ public interface IGLElementContext {
 	 */
 	IPickingListener createTooltip(ILabelProvider label);
 
+	/**
+	 * shows the context menu, defined by the given items
+	 * 
+	 * @param items
+	 */
 	void showContextMenu(Iterable<? extends AContextMenuItem> items);
 }

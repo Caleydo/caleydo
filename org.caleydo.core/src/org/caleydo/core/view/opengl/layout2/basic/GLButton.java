@@ -28,6 +28,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
+ * a simple basic widget for a button with a lot of basic effects
+ *
  * @author Samuel Gratzl
  *
  */
@@ -67,6 +69,14 @@ public class GLButton extends PickableGLElement {
 	 * mode controlling the behavior on clicked
 	 */
 	private EButtonMode mode = EButtonMode.BUTTON;
+
+	public GLButton() {
+
+	}
+
+	public GLButton(EButtonMode mode) {
+		this.mode = mode;
+	}
 
 	/**
 	 * @param mode
@@ -234,10 +244,23 @@ public class GLButton extends PickableGLElement {
 			armedEffect.render(g, w, h, this);
 	}
 
+	/**
+	 * mode of this button, the _COMPATIBLE versions are for the old picking manager, where the mouse pressed is the
+	 * trigger, the basic versions react on the mouse released event
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
 	public enum EButtonMode {
 		BUTTON, BUTTON_COMPATIBLE, CHECKBOX, CHECKBOX_COMPATIBLE
 	}
 
+	/**
+	 * callback interface for selection changes of a button
+	 * 
+	 * @author Samuel Gratzl
+	 * 
+	 */
 	public interface ISelectionCallback {
 		void onSelectionChanged(GLButton button, boolean selected);
 	}

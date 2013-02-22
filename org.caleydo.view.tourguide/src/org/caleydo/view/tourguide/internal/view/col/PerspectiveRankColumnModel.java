@@ -51,17 +51,18 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 			return;
 		PerspectiveRow r = parent.getLayoutDataAs(PerspectiveRow.class, null);
 		g.color(r.getDataDomain().getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
-		if (h < 5)
+		if (h < 5 || w < 20)
 			return;
 		float x = hint + 2;
 		float hi = Math.min(h, 18);
-		g.drawText(r.getLabel(), x, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+		g.drawText(r.getLabel(), x, 1 + (h - hi) * 0.5f, w - 2 - x, hi - 2);
+
+		// TODO add to Stratomex Button
 	}
 
 	// AdvancedTextureRenderer cAdd = new AdvancedTextureRenderer(null, view.getTextureManager());
 	// if (!this.stratomex.contains(elem.getPerspective()))
 	// cAdd.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX);
-	// ElementLayout l = wrap(cAdd, DATADOMAIN_TYPE_WIDTH);
 	// PickingRenderer pick = new PickingRenderer(ScoreQueryUI.ADD_TO_STRATOMEX, i, view);
 	// pick.setColor(elem.getDataDomain().getColor());
 	// l.addBackgroundRenderer(pick);

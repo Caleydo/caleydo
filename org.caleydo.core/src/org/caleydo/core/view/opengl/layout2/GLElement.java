@@ -181,7 +181,7 @@ public class GLElement implements IHasGLLayoutData {
 		if (dirtyLayout)
 			layout();
 		if (!needToRender()) {
-			cache.invalidate(context);
+			cache.invalidate(context.getDisplayListPool());
 			return;
 		}
 		float x = bounds_layout.x;
@@ -191,10 +191,10 @@ public class GLElement implements IHasGLLayoutData {
 
 		g.incZ(zDelta);
 		g.move(x, y);
-		if (!cache.render(context, g)) {
-			cache.begin(context, g, w, h);
+		if (!cache.render(context.getDisplayListPool(), g.gl)) {
+			cache.begin(context.getDisplayListPool(), g.gl, w, h);
 			renderImpl(g, w, h);
-			cache.end(context, g);
+			cache.end(context.getDisplayListPool(), g.gl);
 			// } else {
 			// // cache visualization
 			// g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
@@ -225,7 +225,7 @@ public class GLElement implements IHasGLLayoutData {
 		if (dirtyLayout)
 			layout();
 		if (!needToRender()) {
-			pickCache.invalidate(context);
+			pickCache.invalidate(context.getDisplayListPool());
 			return;
 		}
 		float x = bounds_layout.x;
@@ -235,15 +235,15 @@ public class GLElement implements IHasGLLayoutData {
 
 		g.incZ(zDelta);
 		g.move(x, y);
-		if (!pickCache.render(context, g)) {
-			pickCache.begin(context, g, w, h);
+		if (!pickCache.render(context.getDisplayListPool(), g.gl)) {
+			pickCache.begin(context.getDisplayListPool(), g.gl, w, h);
 			boolean pushed = pickingID >= 0;
 			if (pushed)
 				g.pushName(this.pickingID);
 			renderPickImpl(g, w, h);
 			if (pushed)
 				g.popName();
-			pickCache.end(context, g);
+			pickCache.end(context.getDisplayListPool(), g.gl);
 		}
 		g.move(-x, -y);
 		g.incZ(-zDelta);
@@ -501,7 +501,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repainted
 	 */
 	public void repaint() {
-		cache.invalidate(context);
+		cache.invalidate(context.getDisplayListPool());
 		if (parent != null)
 			parent.repaint();
 	}
@@ -510,7 +510,7 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repaint the picking representation
 	 */
 	public void repaintPick() {
-		pickCache.invalidate(context);
+		pickCache.invalidate(context.getDisplayListPool());
 		if (parent != null)
 			parent.repaintPick();
 	}
@@ -559,8 +559,8 @@ public class GLElement implements IHasGLLayoutData {
 	 */
 	protected void takeDown() {
 		context.takeDown(this);
-		cache.takeDown(context);
-		pickCache.takeDown(context);
+		cache.takeDown(context.getDisplayListPool());
+		pickCache.takeDown(context.getDisplayListPool());
 		if (pickingID >= 0) {
 			context.unregisterPickingListener(pickingID);
 			pickingID = -1;
@@ -574,8 +574,8 @@ public class GLElement implements IHasGLLayoutData {
 	 */
 	protected void layout() {
 		dirtyLayout = false;
-		cache.invalidate(context);
-		pickCache.invalidate(context);
+		cache.invalidate(context.getDisplayListPool());
+		pickCache.invalidate(context.getDisplayListPool());
 	}
 
 	private void setLayoutSize(float w, float h) {

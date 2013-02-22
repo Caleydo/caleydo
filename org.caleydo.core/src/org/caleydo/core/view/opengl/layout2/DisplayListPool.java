@@ -43,11 +43,11 @@ public class DisplayListPool {
 	 * @param g
 	 * @return
 	 */
-	public int checkOut(GLGraphics g) {
+	public int checkOut(GL2 gl) {
 		if (isRecording()) // no new display lists during recording
 			return -1;
 		if (displayListIndices.isEmpty())
-			createDisplayListIndices(g);
+			createDisplayListIndices(gl);
 		if (displayListIndices.isEmpty()) { // have no
 			return -1;
 		}
@@ -55,12 +55,12 @@ public class DisplayListPool {
 		return i;
 	}
 
-	private void createDisplayListIndices(GLGraphics g) {
+	private void createDisplayListIndices(GL2 gl) {
 		if (isRecording()) // no allocation if we are recording
 			return;
 		if (totalAllocated >= MAX_DISPLAY_LISTS) // not more than 100
 			return;
-		int start = g.gl.glGenLists(10);
+		int start = gl.glGenLists(10);
 		totalAllocated += 10;
 		for (int i = 0; i < 10; ++i)
 			displayListIndices.push(start + i);

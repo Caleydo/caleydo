@@ -137,6 +137,11 @@ public class GLGraphics {
 		return false;
 	}
 
+	/**
+	 * returns whether we are currently in the picking pass
+	 * 
+	 * @return
+	 */
 	public boolean isPickingPass() {
 		int[] r = new int[1];
 		gl.glGetIntegerv(GL2.GL_RENDER_MODE, r, 0);

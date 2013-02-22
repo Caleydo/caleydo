@@ -47,9 +47,8 @@ public final class ClassUtils {
 	}
 
 	/**
-	 * see {@link #findAllDeclaredMethods(Class)} but with a optional stop criteria, when to stop going upwards the
-	 * class hierarchy
-	 *
+	 * see {@link #findAllDeclaredMethods(Class)} but with a predicate when to stop going upwards the hiearchy
+	 * 
 	 * @param clazz
 	 * @param stopAt
 	 * @return

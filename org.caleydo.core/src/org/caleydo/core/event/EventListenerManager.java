@@ -159,6 +159,11 @@ public class EventListenerManager {
 		listeners.clear();
 	}
 
+	/**
+	 * simple wrapper for the singleton access of the {@link EventPublisher}, e.g. used as a static import in java
+	 * 
+	 * @param event
+	 */
 	public static void triggerEvent(AEvent event) {
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}

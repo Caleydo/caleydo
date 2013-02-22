@@ -17,46 +17,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2;
-
-import gleem.linalg.Vec4f;
-
 /**
- * a layer above the content, i.e. for popups
- *
+ * layouting package for {@link org.caleydo.core.view.opengl.layout2.GLElementContainer}
  * @author Samuel Gratzl
  *
  */
-public interface IPopupLayer {
-	int FLAG_CLOSEABLE = 1 << 0;
-	int FLAG_RESIZEABLE = 1 << 1;
-	int FLAG_MOVEABLE = 2 << 1;
-
-	/**
-	 * see {@link #show(GLElement, Vec4f, int)} with all flags set
-	 *
-	 * @param popup
-	 *            the popup to show
-	 * @param bounds
-	 *            its bounds
-	 */
-	void show(GLElement popup, Vec4f bounds);
-
-	/**
-	 * shows a popup with the given content and the given bounds
-	 *
-	 * @param popup
-	 * @param bounds
-	 * @param flags
-	 *            see {@link #FLAG_CLOSEABLE} and others
-	 */
-	void show(GLElement popup, Vec4f bounds, int flags);
-
-	/**
-	 * hides a popup again
-	 *
-	 * @param popup
-	 */
-	void hide(GLElement popup);
-}
-
+package org.caleydo.core.view.opengl.layout2.layout;

@@ -20,8 +20,10 @@
 package org.caleydo.core.view.opengl.layout2;
 
 /**
+ * visitor pattern for {@link GLElement}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface IGLElementVisitor<P, R> {
 	R visit(GLElement elem, P para);

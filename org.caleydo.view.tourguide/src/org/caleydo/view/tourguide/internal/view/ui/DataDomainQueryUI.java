@@ -3,6 +3,8 @@ package org.caleydo.view.tourguide.internal.view.ui;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
+import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
@@ -13,9 +15,9 @@ import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 public class DataDomainQueryUI extends GLElementContainer {
 
 	public DataDomainQueryUI(DataDomainQueries model) {
-		super(new GLFlowLayout(true, 5, 5));
+		super(new GLFlowLayout(true, 5, new GLPadding(5)));
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
-			GLElementContainer c = new GLElementContainer(new GLFlowLayout(false, 2, 0));
+			GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
 			for (ADataDomainQuery q : model.getQueries()) {
 				if (mode.isCompatible(q.getDataDomain()))
 					c.add(createFor(q));

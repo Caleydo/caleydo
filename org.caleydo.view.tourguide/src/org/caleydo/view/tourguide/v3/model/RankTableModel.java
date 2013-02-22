@@ -456,10 +456,15 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	public void selectNextRow() {
-		setSelectedRow(selectedRow.getRank() + 1);
+		if (selectedRow == null)
+			setSelectedRow(0);
+		else
+			setSelectedRow(selectedRow.getRank() + 1);
 	}
 
 	public void selectPreviousRow() {
+		if (selectedRow == null)
+			return;
 		setSelectedRow(selectedRow.getRank() - 1);
 	}
 

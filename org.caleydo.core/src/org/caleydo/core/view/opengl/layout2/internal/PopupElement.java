@@ -27,6 +27,7 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -39,19 +40,22 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISelectionCallback, IGLRenderer {
 	private final GLElement content;
 
-	public PopupElement(GLElement content, Vec4f bounds, boolean closeAble, boolean resizeAble) {
+	public PopupElement(GLElement content, Vec4f bounds, int flags) {
 		this.content = content;
 		setLayout(this);
 		this.add(content);
 		this.setBounds(bounds.x(), bounds.y(), bounds.w(), bounds.z());
-		if (closeAble) {
+		if ((flags & IPopupLayer.FLAG_CLOSEABLE) != 0) {
 			GLButton close = new GLButton();
 			close.setRenderer(this);
 			close.setCallback(this);
 			close.setzDelta(0.5f);
 			this.add(close);
 		}
-		if (resizeAble) {
+		if ((flags & IPopupLayer.FLAG_RESIZEABLE) != 0) {
+			// TODO
+		}
+		if ((flags & IPopupLayer.FLAG_MOVEABLE) != 0) {
 			// TODO
 		}
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying

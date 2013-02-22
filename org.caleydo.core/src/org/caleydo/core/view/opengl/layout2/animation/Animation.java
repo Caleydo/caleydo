@@ -34,7 +34,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 public abstract class Animation implements Comparable<Animation> {
 	private int startIn;
 	private int remaining;
-	private final IDuration duration;
+	private final IDuration duration; // TODO
 	private int durationValue;
 	protected final IGLLayoutElement animated;
 

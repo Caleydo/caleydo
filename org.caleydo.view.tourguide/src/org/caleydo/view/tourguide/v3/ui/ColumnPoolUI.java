@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 import org.caleydo.view.tourguide.v3.model.RankTableModel;
@@ -59,7 +60,7 @@ public class ColumnPoolUI extends GLElementContainer {
 	public ColumnPoolUI(RankTableModel table) {
 		this.table = table;
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
-		setLayout(new GLFlowLayout(true, 5, 5));
+		setLayout(new GLFlowLayout(true, 5, new GLPadding(5)));
 		setSize(-1, 60);
 		for (ARankColumnModel hidden : table.getPool()) {
 			add(wrap(hidden));
