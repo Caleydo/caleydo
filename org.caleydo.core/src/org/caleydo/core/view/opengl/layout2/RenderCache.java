@@ -30,6 +30,8 @@ import javax.media.opengl.GL2;
 public final class RenderCache {
 	private int validCounter = 0;
 	private int displayListIndex = -1;
+	private int numChars;
+	private int numVertices;
 
 	public void invalidate(DisplayListPool pool) {
 		validCounter = 0;
@@ -72,44 +74,66 @@ public final class RenderCache {
 	 * @param context
 	 * @param g
 	 */
-	public void begin(DisplayListPool pool, GL2 gl, float w, float h) {
-		if (enableCaching(pool, w, h)) {
-			displayListIndex = pool.checkOut(gl);
+	public void begin(DisplayListPool pool, GLGraphics g, float w, float h) {
+		if (enableCaching(pool, g.getStats(), w, h)) {
+			displayListIndex = pool.checkOut(g.gl);
 			if (displayListIndex >= 0) { // got one
 				pool.startRecording(displayListIndex);
-				gl.glNewList(displayListIndex, GL2.GL_COMPILE_AND_EXECUTE);
+				g.gl.glNewList(displayListIndex, GL2.GL_COMPILE_AND_EXECUTE);
 			}
 		}
+		updateStats(g.getStats(), false);
 		if (validCounter < 0)
 			validCounter--;
 		else
 			validCounter++;
 	}
 
-	private boolean enableCaching(DisplayListPool pool, float w, float h) {
+	private boolean enableCaching(DisplayListPool pool, GLGraphicsStats stats, float w, float h) {
 		// TODO better determine strategy + ensure that it will be correctly notified
 		if (validCounter <= 0 || pool.isRecording())
 			return false;
-		if (w * h < 1000) // too small area
+		if (validCounter < 30) // 30 frames no change and not yet recording
 			return false;
-		if (validCounter > 30) // 30 frames no change and not yet recording
-			return true;
-		return false;
+		if (w * h < 1000 || numVertices < 50) // too small area
+			return false;
+		// TODO no cache on text
+		// if (numChars > 0)
+		// return false;
+		return true;
 	}
+
+	/**
+	 * @param stats
+	 */
+	private void updateStats(GLGraphicsStats stats, boolean end) {
+		if (validCounter < 20)
+			return;
+		if (end) {
+			numChars += stats.getNumChars();
+			numVertices += stats.getNumVertices();
+		} else {
+			numChars = -stats.getNumChars();
+			numVertices = -stats.getNumVertices();
+		}
+	}
+
 	/**
 	 * stops recording
 	 *
 	 * @param g
 	 */
-	public void end(DisplayListPool pool, GL2 gl) {
+	public void end(DisplayListPool pool, GLGraphics g) {
+		updateStats(g.getStats(), true);
 		if (displayListIndex >= 0) {
-			gl.glEndList();
+			g.gl.glEndList();
 			pool.stopRecording();
 			if (validCounter == 0) { // invalidated inbetween
 				freeDisplayList(pool);
 			}
 		}
 	}
+
 
 	public void takeDown(DisplayListPool pool) {
 		invalidate(pool);

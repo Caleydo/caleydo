@@ -192,12 +192,12 @@ public class GLElement implements IHasGLLayoutData {
 		g.incZ(zDelta);
 		g.move(x, y);
 		if (!cache.render(context.getDisplayListPool(), g.gl)) {
-			cache.begin(context.getDisplayListPool(), g.gl, w, h);
+			cache.begin(context.getDisplayListPool(), g, w, h);
 			renderImpl(g, w, h);
-			cache.end(context.getDisplayListPool(), g.gl);
-			// } else {
-			// // cache visualization
-			// g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
+			cache.end(context.getDisplayListPool(), g);
+//		} else {
+//			// cache visualization
+//			g.color(1, 0, 1, 0.1f).incZ(1).fillRect(0, 0, w, h).incZ(-1);
 		}
 		g.move(-x, -y);
 		g.incZ(-zDelta);
@@ -236,14 +236,14 @@ public class GLElement implements IHasGLLayoutData {
 		g.incZ(zDelta);
 		g.move(x, y);
 		if (!pickCache.render(context.getDisplayListPool(), g.gl)) {
-			pickCache.begin(context.getDisplayListPool(), g.gl, w, h);
+			pickCache.begin(context.getDisplayListPool(), g, w, h);
 			boolean pushed = pickingID >= 0;
 			if (pushed)
 				g.pushName(this.pickingID);
 			renderPickImpl(g, w, h);
 			if (pushed)
 				g.popName();
-			pickCache.end(context.getDisplayListPool(), g.gl);
+			pickCache.end(context.getDisplayListPool(), g);
 		}
 		g.move(-x, -y);
 		g.incZ(-zDelta);

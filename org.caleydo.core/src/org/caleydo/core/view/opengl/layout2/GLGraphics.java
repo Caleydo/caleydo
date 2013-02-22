@@ -55,6 +55,8 @@ public class GLGraphics {
 
 	private GLU glu = null; // lazy
 
+	private GLGraphicsStats stats = new GLGraphicsStats();
+
 	public GLGraphics(GL2 gl, ITextRenderer text, TextureManager textures, IResourceLocator loader,
 			boolean originInTopLeft) {
 		this.gl = gl;
@@ -63,6 +65,13 @@ public class GLGraphics {
 		this.locator.push(loader);
 		this.textures = textures;
 		this.originInTopLeft = originInTopLeft;
+	}
+
+	/**
+	 * @return the stats, see {@link #stats}
+	 */
+	GLGraphicsStats getStats() {
+		return stats;
 	}
 
 	/**
@@ -139,7 +148,7 @@ public class GLGraphics {
 
 	/**
 	 * returns whether we are currently in the picking pass
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isPickingPass() {
@@ -268,6 +277,7 @@ public class GLGraphics {
 	}
 
 	public GLGraphics renderRect(boolean fill, float x, float y, float w, float h) {
+		stats.incRect();
 		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
 		gl.glVertex3f(x, y, z);
 		gl.glVertex3f(x + w, y, z);
@@ -298,7 +308,7 @@ public class GLGraphics {
 		assert h < radius * 2;
 		if (radius <= 0)
 			return renderRect(fill, x, y, w, h);
-
+		int count = 0;
 		if (segments % 2 == 1) // make it even
 			segments++;
 		float[] offsets;
@@ -318,12 +328,15 @@ public class GLGraphics {
 
 		gl.glBegin(fill ? GL2.GL_POLYGON : GL.GL_LINE_LOOP);
 
+		count += 4;
+
 		if (topLeft) {
 			gl.glVertex3f(x, y + radius, z);
 			for (int i = 0; i < offsets.length; ++i) {
 				gl.glVertex3f(x + offsets[ol - i], y + offsets[i], z);
 			}
 			gl.glVertex3f(x + radius, y, z);
+			count += offsets.length;
 		} else
 			gl.glVertex3f(x, y, z);
 
@@ -334,6 +347,7 @@ public class GLGraphics {
 				gl.glVertex3f(x + w - offsets[i], y + offsets[ol - i], z);
 			}
 			gl.glVertex3f(x + w, y + radius, z);
+			count += offsets.length;
 		} else
 			gl.glVertex3f(x + w, y, z);
 
@@ -343,6 +357,7 @@ public class GLGraphics {
 				gl.glVertex3f(x + w - offsets[ol - i], y + h - offsets[i], z);
 			}
 			gl.glVertex3f(x + w - radius, y + h, z);
+			count += offsets.length;
 		} else
 			gl.glVertex3f(x + w, y + h, z);
 
@@ -352,10 +367,12 @@ public class GLGraphics {
 				gl.glVertex3f(x + offsets[i], y + h - offsets[ol - i], z);
 			}
 			gl.glVertex3f(x, y + h - radius, z);
+			count += offsets.length;
 		} else
 			gl.glVertex3f(x, y + h, z);
 
 		gl.glEnd();
+		stats.incRoundedRect(count);
 		return this;
 	}
 
@@ -384,6 +401,7 @@ public class GLGraphics {
 	 * @return
 	 */
 	public GLGraphics fillImage(Texture texture, float x, float y, float w, float h, Color color) {
+		stats.incImage();
 		Vec3f lowerLeftCorner = new Vec3f(x, y, z);
 		Vec3f lowerRightCorner = new Vec3f(x + w, y, z);
 		Vec3f upperRightCorner = new Vec3f(x + w, y + h, z);
@@ -421,8 +439,16 @@ public class GLGraphics {
 	}
 
 	public GLGraphics fillCircle(float x, float y, float radius, int numSlices) {
+		return renderCircle(true, x, y, radius, numSlices);
+	}
+
+	private GLGraphics renderCircle(boolean fill, float x, float y, float radius, int numSlices) {
+		stats.incCircle(numSlices);
 		gl.glTranslatef(x, y, z);
-		GLPrimitives.renderCircle(glu(), radius, numSlices);
+		if (fill)
+			GLPrimitives.renderCircle(glu(), radius, numSlices);
+		else
+			GLPrimitives.renderCircleBorder(glu(), radius, numSlices);
 		gl.glTranslatef(-x, -y, -z);
 		return this;
 	}
@@ -432,10 +458,7 @@ public class GLGraphics {
 	}
 
 	public GLGraphics drawCircle(float x, float y, float radius, int numSlices) {
-		gl.glTranslatef(x, y, z);
-		GLPrimitives.renderCircleBorder(glu(), radius, numSlices);
-		gl.glTranslatef(-x, -y, -z);
-		return this;
+		return renderCircle(false, x, y, radius, numSlices);
 	}
 
 	/**
@@ -451,6 +474,7 @@ public class GLGraphics {
 	public GLGraphics drawText(String text, float x, float y, float w, float h, VAlign valign) {
 		if (text == null)
 			return this;
+		stats.incText(text.length());
 		if (originInTopLeft) {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, y + h, 0);
@@ -520,6 +544,7 @@ public class GLGraphics {
 	 * renders a line between the two given points
 	 */
 	public GLGraphics drawLine(float x, float y, float x2, float y2) {
+		stats.incLine();
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(x, y, z);
 		gl.glVertex3f(x2, y2, z);
@@ -551,10 +576,14 @@ public class GLGraphics {
 	}
 
 	private GLGraphics render(int mode, Iterable<Vec2f> points) {
+		int count = 0;
 		gl.glBegin(mode);
-		for (Vec2f p : points)
+		for (Vec2f p : points) {
+			count++;
 			gl.glVertex3f(p.x(), p.y(), z);
+		}
 		gl.glEnd();
+		stats.incPath(count);
 		return this;
 	}
 
