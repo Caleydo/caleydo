@@ -22,11 +22,17 @@ package org.caleydo.view.tourguide.internal.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.media.opengl.GLAutoDrawable;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -38,28 +44,37 @@ import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
+import org.caleydo.view.tourguide.internal.compute.ComputeAllOfJob;
+import org.caleydo.view.tourguide.internal.compute.ComputeForScoreJob;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.view.col.PerspectiveRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
-import org.caleydo.view.tourguide.internal.view.model.DataDomainQueries;
+import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
+import org.caleydo.view.tourguide.internal.view.model.CustomSubList;
+import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
+import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.ui.DataDomainQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
+import org.caleydo.view.tourguide.v3.config.IRankTableConfig;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
 import org.caleydo.view.tourguide.v3.model.ACompositeRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
+import org.caleydo.view.tourguide.v3.model.MaxCompositeRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.RankRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.RankTableModel;
 import org.caleydo.view.tourguide.v3.model.StackedRankColumnModel;
@@ -67,28 +82,42 @@ import org.caleydo.view.tourguide.v3.ui.TableBodyUI;
 import org.caleydo.view.tourguide.v3.ui.TableHeaderUI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 /**
  * @author Samuel Gratzl
  *
  */
-public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
+public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IRankTableConfig {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
 	private StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
 
-	private final DataDomainQueries dataDomainQueries;
+	private final BitSet mask = new BitSet();
+	private final List<ADataDomainQuery> queries = new ArrayList<>();
 
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+			case ADataDomainQuery.PROP_ACTIVE:
+				onActiveChanged((ADataDomainQuery) evt.getSource(), (boolean) evt.getNewValue());
+				break;
+			case ADataDomainQuery.PROP_MASK:
+				updateMask();
+			}
+		}
+	};
 	private final StackedRankColumnModel stacked;
 
 	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
 
+	private WaitingPopup waiting = new WaitingPopup();
+
 	public GLTourGuideView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
 
-		this.table = new RankTableModel(new RankTableConfigBase());
+		this.table = new RankTableModel(this);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -113,9 +142,127 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
 		this.table.addColumn(stacked);
 		this.table.addColumn(new SizeRankColumnModel());
 
-		dataDomainQueries = new DataDomainQueries(table);
+		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
+			for (IDataDomain dd : mode.getAllDataDomains()) {
+				final ADataDomainQuery q = createFor(dd);
+				q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
+				q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
+				queries.add(q);
+			}
+		}
 	}
 
+	private static ADataDomainQuery createFor(IDataDomain dd) {
+		if (DataSupportDefinitions.categoricalTables.apply(dd))
+			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
+		if (dd instanceof PathwayDataDomain)
+			return new PathwayDataDomainQuery((PathwayDataDomain) dd);
+		return new TableDataDomainQuery((ATableBasedDataDomain) dd);
+	}
+
+	// @ListenTo
+	// private void onAddDataDomain(final NewDataDomainEvent event) {
+	// IDataDomain dd = event.getDataDomain();
+	//
+	// int i = 0;
+	// for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
+	// if (mode.isCompatible(dd)) {
+	// GLElementContainer c = (GLElementContainer) get(i);
+	// c.add(createFor(dd).setCallback(callback));
+	// c.setSize(-1, c.size() * 20);
+	// break;
+	// }
+	// i++;
+	// }
+	// pack(false, true);
+	// }
+	//
+	// @ListenTo
+	// private void onRemoveDataDomain(final RemoveDataDomainEvent event) {
+	// final String id = event.getEventSpace();
+	// for (GLElement elem : this) {
+	// GLElementContainer c = (GLElementContainer) elem;
+	// for (GLElement b : c) {
+	// if (Objects.equals(b.getLayoutDataAs(IDataDomain.class, null).getDataDomainID(), id)) {
+	// c.remove(b);
+	// break;
+	// }
+	// }
+	// c.setSize(-1, c.size() * 20);
+	// }
+	// pack(false, true);
+	// relayoutParent();
+	// }
+
+	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
+		if (q.isInitialized()) {
+			if (active) {
+				scheduleAllOf(q);
+			} else
+				updateMask();
+			return;
+		} else
+			scheduleAllOf(q);
+	}
+
+	/**
+	 * @param q
+	 */
+	private void scheduleAllOf(final ADataDomainQuery q) {
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores());
+		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
+		if (job.hasThingsToDo()) {
+			getPopupLayer().show(waiting, getRoot().getBounds(), 0);
+			job.schedule();
+		} else {
+			updateMask();
+		}
+	}
+
+	private void scheduleAllOf(Collection<IScore> toCompute) {
+		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getFilter(), this);
+		if (job.hasThingsToDo()) {
+			getPopupLayer().show(waiting, getRoot().getBounds(), 0);
+			job.schedule();
+		} else {
+			EventListenerManager.triggerEvent(new AddScoreColumnEvent(toCompute, true).to(this));
+		}
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@ListenTo(sendToMe = true)
+	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
+		getPopupLayer().hide(waiting);
+		if (event.getNewQuery() != null) {
+			int offset = table.getDataSize();
+			ADataDomainQuery q = event.getNewQuery();
+			System.out.println("add data of " + q.getDataDomain().getLabel());
+			table.addData(q.getData());
+			List<?> m = table.getData();
+			// use sublists to save memory
+			q.init(offset, new CustomSubList<PerspectiveRow>((List<PerspectiveRow>) m, offset, m.size() - offset));
+			updateMask();
+		} else {
+			updateMask();
+		}
+	}
+
+	private void updateMask() {
+		this.mask.clear();
+		for (ADataDomainQuery q : this.queries) {
+			if (!q.isInitialized())
+				continue;
+			int offset = q.getOffset();
+			int size = q.getSize();
+			if (!q.isActive())
+				this.mask.set(offset, offset + size, false);
+			else {
+				this.mask.or(q.getMask());
+			}
+		}
+		table.setDataMask(this.mask);
+	}
 
 	private TourGuideVis getVis() {
 		return (TourGuideVis) getRoot();
@@ -242,22 +389,40 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
 
 	@ListenTo(sendToMe = true)
 	private void onAddColumn(AddScoreColumnEvent event) {
-		Scores scores = Scores.get();
-		for (IScore s : event.getScores()) {
-			if (s instanceof IRegisteredScore)
-				s = scores.addIfAbsent((IRegisteredScore) s);
-			if (s instanceof MultiScore) {
-				ACompositeRankColumnModel combined = table.createCombined();
-				for (IScore s2 : ((MultiScore) s)) {
-					if (s2 instanceof IRegisteredScore)
-						s2 = scores.addIfAbsent((IRegisteredScore) s2);
-					table.addColumnTo(combined, new ScoreRankColumnModel(s2));
+		if (event.isComputed()) {
+			getPopupLayer().hide(waiting);
+			for (IScore s : event.getScores()) {
+				if (s instanceof MultiScore) {
+					ACompositeRankColumnModel combined = table.createCombined();
+					for (IScore s2 : ((MultiScore) s)) {
+						table.addColumnTo(combined, new ScoreRankColumnModel(s2));
+					}
+				} else {
+					table.addColumnTo(stacked, new ScoreRankColumnModel(s));
 				}
-			} else {
-				table.addColumnTo(stacked, new ScoreRankColumnModel(s));
 			}
+		} else {
+			Collection<IScore> toCompute = new ArrayList<>();
+			Scores scores = Scores.get();
+			for (IScore s : event.getScores()) {
+				if (s instanceof IRegisteredScore)
+					s = scores.addIfAbsent((IRegisteredScore) s);
+				if (s instanceof MultiScore) {
+					MultiScore sm = (MultiScore)s;
+					MultiScore tmp = new MultiScore(sm.getLabel(),sm.getColor(), sm.getBGColor());
+					for (IScore s2 : ((MultiScore) s)) {
+						if (s2 instanceof IRegisteredScore)
+							s2 = scores.addIfAbsent((IRegisteredScore) s2);
+						tmp.add(s2);
+					}
+					toCompute.add(tmp);
+				} else
+					toCompute.add(s);
+			}
+			scheduleAllOf(toCompute);
 		}
 	}
+
 
 	@ListenTo(sendToMe = true)
 	private void onCreateScore(final CreateScoreEvent event) {
@@ -270,23 +435,17 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
 		});
 	}
 
-	// private void recomputeScores() {
-	// if (scoreQuery.isJobRunning()) {
-	// if (!this.computing) {
-	// this.computing = true;
-	// getComputeDecoration().setImagePath(EIconTextures.LOADING_CIRCLE.getFileName());
-	// }
-	// } else {
-	// GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(this.scoreQuery));
-	// }
+	// protected void onModeChanged(EDataDomainQueryMode mode) {
+	// //remove all not valid orders
+	// for (IScore s : Lists.newArrayList(orderBy.keySet()))
+	// if (!s.supports(mode))
+	// sortBy(s, ESorting.NONE);
 	//
-	// }
+	// //remove all not valid scores
+	// for(IScore s : Lists.newArrayList(selection))
+	// if (!s.supports(mode))
+	// removeSelection(s);
 	//
-	// private DecorationTextureRenderer getComputeDecoration() {
-	// DecorationTextureRenderer deco = (DecorationTextureRenderer) this.mainColumn.get(this.mainColumn.size() - 1)
-	// .getForegroundRenderer().get(0);
-	// return deco;
-	// }
 
 	@ListenTo
 	private void onImportExternalScore(ImportExternalScoreEvent event) {
@@ -318,12 +477,47 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener {
 
 	}
 
+	@Override
+	public boolean isMoveAble(ARankColumnModel model) {
+		return true;
+	}
 
+	@Override
+	public ACompositeRankColumnModel createNewCombined() {
+		return new MaxCompositeRankColumnModel(RowHeightLayouts.HINTS);
+	}
+
+	@Override
+	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
+		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean isDefaultCollapseAble() {
+		return true;
+	}
+
+	@Override
+	public boolean isDefaultHideAble() {
+		return true;
+	}
+
+	@Override
+	public boolean isInteractive() {
+		return true;
+	}
+
+	@Override
+	public boolean isDestroyOnHide() {
+		return true;
+	}
 
 	private class TourGuideVis extends GLElementContainer {
 		public TourGuideVis() {
 			setLayout(GLLayouts.flowVertical(0));
-			this.add(new DataDomainQueryUI(dataDomainQueries));
+			this.add(new DataDomainQueryUI(queries));
 			this.add(new TableHeaderUI(table));
 			this.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
 		}

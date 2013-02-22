@@ -24,7 +24,6 @@ public class ComputeStratificationJob extends AScoreJob {
 
 	public ComputeStratificationJob(Collection<Perspective> data,
 			Collection<IComputedStratificationScore> scores) {
-		super("Compute Tour Guide Scores");
 		this.data = data;
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
 				scores, IComputedReferenceStratificationScore.class);
@@ -33,7 +32,7 @@ public class ComputeStratificationJob extends AScoreJob {
 	}
 
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
+	public IStatus run(IProgressMonitor monitor) {
 		if (data.isEmpty() || (stratScores.isEmpty() && stratMetrics.isEmpty()))
 			return Status.OK_STATUS;
 

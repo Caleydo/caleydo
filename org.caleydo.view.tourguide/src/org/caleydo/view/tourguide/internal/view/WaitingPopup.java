@@ -17,49 +17,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v3.config;
+package org.caleydo.view.tourguide.internal.view;
 
-import org.caleydo.view.tourguide.v3.model.ACompositeRankColumnModel;
-import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IRankTableConfig {
+public class WaitingPopup extends GLElement {
+	public WaitingPopup() {
+		setVisibility(EVisibility.PICKABLE);
+	}
 
-	boolean isMoveAble(ARankColumnModel model);
-
-	/**
-	 * @return
-	 */
-	ACompositeRankColumnModel createNewCombined();
-
-	/**
-	 * @param model
-	 * @param with
-	 * @return
-	 */
-	boolean isCombineAble(ARankColumnModel model, ARankColumnModel with);
-
-	/**
-	 * @return
-	 */
-	boolean isDefaultCollapseAble();
-
-	/**
-	 * @return
-	 */
-	boolean isDefaultHideAble();
-
-	/**
-	 * @return
-	 */
-	boolean isInteractive();
-
-	/**
-	 * @return
-	 */
-	boolean isDestroyOnHide();
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		// g.color(1, 1, 1, 0.3f).fillRect(0, 0, w, h);
+		g.fillImage("resources/loading/loading_circle.png", (w - 250) * 0.5f, (h - 250) * 0.5f, 250, 250);
+	}
 
 }

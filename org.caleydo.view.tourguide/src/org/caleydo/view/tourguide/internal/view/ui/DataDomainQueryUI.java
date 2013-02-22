@@ -8,17 +8,16 @@ import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
-import org.caleydo.view.tourguide.internal.view.model.DataDomainQueries;
 import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
 
 public class DataDomainQueryUI extends GLElementContainer {
 
-	public DataDomainQueryUI(DataDomainQueries model) {
+	public DataDomainQueryUI(Iterable<ADataDomainQuery> queries) {
 		super(new GLFlowLayout(true, 5, new GLPadding(5)));
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
 			GLElementContainer c = new GLElementContainer(GLLayouts.flowVertical(2));
-			for (ADataDomainQuery q : model.getQueries()) {
+			for (ADataDomainQuery q : queries) {
 				if (mode.isCompatible(q.getDataDomain()))
 					c.add(createFor(q));
 			}

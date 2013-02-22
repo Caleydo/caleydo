@@ -80,8 +80,27 @@ public abstract class ADataDomainQuery {
 		return active;
 	}
 
-	public void setData(List<PerspectiveRow> data) {
+	public void init(int offset, List<PerspectiveRow> data) {
 		this.data = data;
+		if (this.offset != offset && this.mask != null) {
+			this.offset = offset;
+			this.mask = null;
+		}
+		this.offset = offset;
+	}
+
+	/**
+	 * @return the data, see {@link #data}
+	 */
+	public List<PerspectiveRow> getData() {
+		return data;
+	}
+
+	public List<PerspectiveRow> getOrCreate() {
+		if (isInitialized())
+			return getData();
+		data = getAll();
+		return data;
 	}
 
 	/**
@@ -105,10 +124,10 @@ public abstract class ADataDomainQuery {
 	}
 
 	private BitSet computeMask() {
-		BitSet m = new BitSet(data.size());
+		BitSet m = new BitSet(offset + data.size());
 		int i = 0;
 		for (PerspectiveRow r : data) {
-			m.set(i++, include(r.getStratification(), r.getGroup()));
+			m.set(offset + i++, include(r.getStratification(), r.getGroup()));
 		}
 		return m;
 	}

@@ -96,4 +96,8 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 		return false;
 	}
 
+	public Collection<? extends IScore> getChildren() {
+		return children;
+	}
+
 }

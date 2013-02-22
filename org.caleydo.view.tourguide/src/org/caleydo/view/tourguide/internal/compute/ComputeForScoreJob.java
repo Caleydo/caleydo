@@ -17,53 +17,48 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.event;
+package org.caleydo.view.tourguide.internal.compute;
 
-import java.util.Arrays;
+import static org.caleydo.core.event.EventListenerManager.triggerEvent;
+
+import java.util.BitSet;
 import java.util.Collection;
+import java.util.List;
 
-import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddScoreColumnEvent extends ADirectedEvent {
-	private Collection<IScore> scores;
-	private boolean computed;
+public class ComputeForScoreJob extends AComputeJob {
+	private final Collection<IScore> scores;
+	private final List<PerspectiveRow> data;
+	private final BitSet mask;
 
-	public AddScoreColumnEvent() {
-
-	}
-
-	public AddScoreColumnEvent(Collection<IScore> scores) {
-		this(scores, false);
-	}
-
-	public AddScoreColumnEvent(Collection<IScore> scores, boolean computed) {
+	@SuppressWarnings("unchecked")
+	public ComputeForScoreJob(Collection<IScore> scores, List<?> data, BitSet mask, Object receiver) {
+		super(scores, receiver);
+		this.data = (List<PerspectiveRow>) data;
+		this.mask = mask;
 		this.scores = scores;
-		this.computed = computed;
-	}
-
-	public AddScoreColumnEvent(IScore... scores) {
-		this(Arrays.asList(scores));
-	}
-
-	/**
-	 * @return the computed, see {@link #computed}
-	 */
-	public boolean isComputed() {
-		return computed;
-	}
-
-	public Collection<IScore> getScores() {
-		return scores;
 	}
 
 	@Override
-	public boolean checkIntegrity() {
-		return scores != null;
+	public boolean hasThingsToDo() {
+		if (mask.isEmpty())
+			return false;
+		return super.hasThingsToDo();
+	}
+
+	@Override
+	public IStatus run(IProgressMonitor monitor) {
+		IStatus result = runImpl(monitor, data, mask);
+		triggerEvent(new AddScoreColumnEvent(scores, true).to(receiver));
+		return result;
 	}
 }
-

@@ -34,7 +34,6 @@ public class ComputeScoreJob extends AScoreJob {
 
 	public ComputeScoreJob(Multimap<Perspective, Group> data,
 			Collection<IComputedStratificationScore> stratScores, Collection<IComputedGroupScore> groupScores) {
-		super("Compute Tour Guide Scores");
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
 				stratScores, IComputedReferenceStratificationScore.class);
 		this.stratMetrics = strats.getFirst();
@@ -48,7 +47,7 @@ public class ComputeScoreJob extends AScoreJob {
 	}
 
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
+	public IStatus run(IProgressMonitor monitor) {
 		if (data.isEmpty()
 				|| (groupMetrics.isEmpty() && groupScores.isEmpty() && stratScores.isEmpty() && stratMetrics.isEmpty()))
 			return Status.OK_STATUS;

@@ -43,7 +43,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
@@ -435,12 +434,13 @@ public class StratomexAdapter {
 	}
 
 	private void hightlightRows(PerspectiveRow new_, Collection<IScore> visibleColumns) {
-		Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns);
-
-		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
-				this.previewSelectionType, receiver, this);
-		event.setEventSpace(new_.getDataDomain().getDataDomainID());
-		triggerEvent(event);
+		return;
+		// Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns);
+		//
+		// AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
+		// this.previewSelectionType, receiver, this);
+		// event.setEventSpace(new_.getDataDomain().getDataDomainID());
+		// triggerEvent(event);
 	}
 
 

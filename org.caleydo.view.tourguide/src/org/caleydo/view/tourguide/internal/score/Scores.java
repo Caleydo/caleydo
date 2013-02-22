@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
+import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -136,7 +137,9 @@ public final class Scores {
 			IScore s = queue.pollFirst();
 			if (!result.add(s))
 				continue;
-			if (s instanceof IDecoratedScore) {
+			if (s instanceof MultiScore)
+				queue.addAll(((MultiScore) s).getChildren());
+			else if (s instanceof IDecoratedScore) {
 				queue.add(((IDecoratedScore) s).getUnderlying());
 			}
 		}

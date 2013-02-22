@@ -20,7 +20,6 @@ import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -31,14 +30,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 
-public abstract class AScoreJob extends Job {
+public abstract class AScoreJob {
 	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
 	private final Table<Perspective, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
 	private final Table<Group, Pair<IDType, IDType>, Set<Integer>> groupCache = HashBasedTable.create();
 
-	public AScoreJob(String label) {
-		super(label);
-	}
+	public abstract IStatus run(IProgressMonitor monitor);
 
 	protected final void clear(Perspective strat) {
 		stratCache.row(strat).clear();

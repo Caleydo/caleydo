@@ -17,56 +17,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v3.config;
+package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
-import org.caleydo.view.tourguide.v3.model.ACompositeRankColumnModel;
-import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
-import org.caleydo.view.tourguide.v3.model.MaxCompositeRankColumnModel;
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class RankTableConfigBase implements IRankTableConfig {
+public class ScoreQueryReadyEvent extends ADirectedEvent {
+	private ADataDomainQuery newQuery;
+
+	public ScoreQueryReadyEvent() {
+
+	}
+
+	public ScoreQueryReadyEvent(ADataDomainQuery newQuery) {
+		this.newQuery = newQuery;
+	}
+
 	@Override
-	public boolean isMoveAble(ARankColumnModel model) {
+	public boolean checkIntegrity() {
 		return true;
 	}
 
-
-	@Override
-	public ACompositeRankColumnModel createNewCombined() {
-		return new MaxCompositeRankColumnModel(RowHeightLayouts.HINTS);
+	/**
+	 * @return the newQuery, see {@link #newQuery}
+	 */
+	public ADataDomainQuery getNewQuery() {
+		return newQuery;
 	}
-
-
-	@Override
-	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
-		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
-			return false;
-		return true;
-	}
-
-
-	@Override
-	public boolean isDefaultCollapseAble() {
-		return true;
-	}
-
-	@Override
-	public boolean isDefaultHideAble() {
-		return true;
-	}
-
-	@Override
-	public boolean isInteractive() {
-		return true;
-	}
-
-	@Override
-	public boolean isDestroyOnHide() {
-		return false;
-	}
-
 }
+

@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.v3.config.IRankTableConfig;
@@ -93,6 +94,8 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	public void addData(Collection<? extends IRow> rows) {
+		if (rows == null || rows.isEmpty())
+			return;
 		int s = this.data.size();
 		for (IRow r : rows)
 			r.setIndex(s++);
@@ -107,9 +110,20 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	public void setDataMask(BitSet dataMask) {
-		this.dataMask = dataMask;
-		dirtyFilter = true;
-		fireInvalid();
+		if (Objects.equals(dataMask, this.dataMask))
+			return;
+		boolean change = true;
+		if (this.dataMask != null && dataMask != null) {
+			this.dataMask.xor(dataMask);
+			if (getDataSize() < this.dataMask.size())
+				this.dataMask.clear(getDataSize(), this.dataMask.size());
+			change = !this.dataMask.isEmpty(); // same data subset
+		}
+		this.dataMask = (BitSet) dataMask.clone();
+		if (change) {
+			dirtyFilter = true;
+			fireInvalid();
+		}
 	}
 
 	public void addColumn(ARankColumnModel col) {
@@ -270,7 +284,10 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	@Override
 	public boolean hide(ARankColumnModel model) {
 		remove(model);
-		addToPool(model);
+		if (config.isDestroyOnHide()) {
+			destroy(model);
+		} else
+			addToPool(model);
 		return true;
 	}
 
@@ -358,6 +375,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public int size() {
 		checkOrder();
 		return order.length;
+	}
+
+	public BitSet getFilter() {
+		filter();
+		return filter;
 	}
 
 	private void filter() {
