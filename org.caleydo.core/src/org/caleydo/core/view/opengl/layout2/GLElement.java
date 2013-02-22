@@ -501,7 +501,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repainted
 	 */
 	public void repaint() {
-		cache.invalidate(context.getDisplayListPool());
+		if (context != null)
+			cache.invalidate(context.getDisplayListPool());
 		if (parent != null)
 			parent.repaint();
 	}
@@ -510,7 +511,8 @@ public class GLElement implements IHasGLLayoutData {
 	 * triggers that me and my parents get repaint the picking representation
 	 */
 	public void repaintPick() {
-		pickCache.invalidate(context.getDisplayListPool());
+		if (context != null)
+			pickCache.invalidate(context.getDisplayListPool());
 		if (parent != null)
 			parent.repaintPick();
 	}
@@ -574,8 +576,10 @@ public class GLElement implements IHasGLLayoutData {
 	 */
 	protected void layout() {
 		dirtyLayout = false;
-		cache.invalidate(context.getDisplayListPool());
-		pickCache.invalidate(context.getDisplayListPool());
+		if (context != null) {
+			cache.invalidate(context.getDisplayListPool());
+			pickCache.invalidate(context.getDisplayListPool());
+		}
 	}
 
 	private void setLayoutSize(float w, float h) {
