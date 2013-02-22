@@ -94,7 +94,7 @@ public class EventListenerManager {
 	 *            the eventSpace to set
 	 */
 	public final void register(Object listener, String eventSpace) {
-		register(listener, eventSpace, Predicates.alwaysFalse());
+		register(listener, eventSpace, Predicates.alwaysTrue());
 	}
 
 	/**
