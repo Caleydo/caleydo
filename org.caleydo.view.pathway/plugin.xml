@@ -100,5 +100,20 @@
             </Embedding>
          </ParentView>
       </EmbeddingInfo>
+      <EmbeddingInfo
+            viewID="org.caleydo.view.pathway.topological.path">
+         <ParentView
+               viewID="org.caleydo.view.subgraph">
+            <Embedding
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
+                  icon="resources/icons/pathway.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+               <ViewCreator
+                     class="org.caleydo.view.pathway.TopologicalPathwayPathCreator">
+               </ViewCreator>
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
    </extension>
 </plugin>
