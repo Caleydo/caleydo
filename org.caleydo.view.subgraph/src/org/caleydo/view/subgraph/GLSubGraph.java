@@ -71,13 +71,17 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
 	private GLElementContainer pathwayColumn = new GLElementContainer(GLLayouts.flowVertical(10));
 	private SubGraphAugmentation augmentation = new SubGraphAugmentation();
+	private GLElementContainer nodeInfoContainer = new GLElementContainer(GLLayouts.flowHorizontal(10));
 
 	private GLPathwayBackground currentActiveBackground = null;
 
-	private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
+	// private List<IPathwayRepresentation> pathwayRepresentations = new ArrayList<>();
 
 	private PathEventSpaceHandler pathEventSpaceHandler = new PathEventSpaceHandler();
 
+	/**
+	 * All segments of the currently selected path.
+	 */
 	private List<PathwayPath> pathSegments = new ArrayList<>();
 
 	/**
@@ -96,9 +100,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+		GLElementContainer column = new GLElementContainer(GLLayouts.flowVertical(10));
+		column.add(baseContainer);
+		nodeInfoContainer.setSize(Float.NaN, 0);
+		column.add(nodeInfoContainer);
 		baseContainer.add(pathwayColumn, 0.4f);
 
-		root.add(baseContainer);
+		root.add(column);
 		root.add(augmentation);
 
 	}
@@ -191,7 +199,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
 			pathwayTablePerspectives.add(pathwayTablePerspective);
 
-			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn);
+			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
+					Float.NaN);
 
 			pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(), pathwayDataDomain,
 					newRecordPerspective, newDimensionPerspective, PathwayManager.get().getPathwayByTitle(
@@ -200,17 +209,19 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 			pathwayTablePerspectives.clear();
 			pathwayTablePerspectives.add(pathwayTablePerspective);
-			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn);
+			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
+					Float.NaN);
 
-			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer);
+			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer, 0.6f);
 
 		}
 	}
 
 	private void addMultiformRenderer(List<TablePerspective> tablePerspectives, String embeddingID,
-			GLElementContainer parent) {
+			GLElementContainer parent, Object layoutData) {
 
 		GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
+		backgroundContainer.setLayoutData(layoutData);
 		GLElementContainer container = new GLElementContainer(GLLayouts.flowVertical(6));
 		// GLPathwayBackground bg = new GLPathwayBackground();
 
@@ -420,7 +431,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onShowNodeInfo(ShowNodeInfoEvent event) {
-
+			GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
+			nodeInfo.setSize(80, 80);
+			nodeInfoContainer.add(nodeInfo);
+			nodeInfoContainer.setSize(Float.NaN, 80);
+			// nodeInfoContainer.relayout();
 		}
 
 	}
