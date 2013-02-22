@@ -1836,7 +1836,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	@Override
-	public Rectangle2D getVertexRepLocation(PathwayVertexRep vertexRep) {
+	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
 		if (vecTranslation == null || vecScaling == null || vertexRep.getPathway() != getPathway())
 			return null;
 		int x = pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x() + vecScaling.x()
@@ -1853,9 +1853,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	@Override
-	public List<Rectangle2D> getVertexRepLocations(PathwayVertexRep vertexRep) {
+	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		List<Rectangle2D> pathways = new ArrayList<>(1);
-		Rectangle2D location = getVertexRepLocation(vertexRep);
+		Rectangle2D location = getVertexRepBounds(vertexRep);
 		if (location != null)
 			pathways.add(location);
 		return null;

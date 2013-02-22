@@ -19,7 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.path;
 
+import gleem.linalg.Vec3f;
+
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -44,6 +48,8 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -72,7 +78,7 @@ import org.jgrapht.graph.GraphPathImpl;
  *
  */
 public abstract class APathwayPathRenderer extends ALayoutRenderer implements IEventBasedSelectionManagerUser,
-		IListenerOwner {
+		IListenerOwner, IPathwayRepresentation {
 
 	/**
 	 * The list of path segments that are a list of {@link PathwayVertexRep}s.
@@ -128,6 +134,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * The queue which holds the events
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
+
+	/**
+	 * Context menu items that shall be displayed when right-clicking on a path node.
+	 */
+	protected List<VertexRepBasedContextMenuItem> nodeContextMenuItems = new ArrayList<>();
 
 	protected EventBasedSelectionManager geneSelectionManager;
 	protected EventBasedSelectionManager metaboliteSelectionManager;
@@ -663,6 +674,86 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.sizeConfig = sizeConfig;
 		if (pathSegments != null && !pathSegments.isEmpty())
 			updateLayout();
+	}
+
+	@Override
+	public PathwayGraph getPathway() {
+		if (pathway != null)
+			return pathway;
+		if (pathSegments != null && pathSegments.size() > 0) {
+			return pathSegments.get(pathSegments.size() - 1).get(0).getPathway();
+		}
+		return null;
+	}
+
+	@Override
+	public List<PathwayGraph> getPathways() {
+		List<PathwayGraph> pathways = new ArrayList<>();
+		if (pathway != null) {
+			pathways.add(pathway);
+		} else if (pathSegments != null) {
+			for (List<PathwayVertexRep> segment : pathSegments) {
+				pathways.add(segment.get(0).getPathway());
+			}
+			// we do not want duplicates, but the general order should be preserved.
+			pathways = new ArrayList<>(new LinkedHashSet<PathwayGraph>(pathways));
+		}
+
+		return pathways;
+	}
+
+	@Override
+	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+		for (ALinearizableNode node : pathNodes) {
+			for (PathwayVertexRep vertexRepOfNode : node.getVertexReps()) {
+				if (vertexRepOfNode == vertexRep) {
+					Rectangle2D bounds = getLeftTopAlignedNodeBounds(node);
+					if (bounds != null)
+						return bounds;
+				}
+			}
+		}
+		return null;
+	}
+
+	protected Rectangle2D getLeftTopAlignedNodeBounds(ALinearizableNode node) {
+		Vec3f glNodePosition = node.getPosition();
+		if (glNodePosition == null)
+			return null;
+
+		int posX = pixelGLConverter.getPixelWidthForGLWidth(glNodePosition.x()) - (int) (node.getWidthPixels() / 2.0f);
+		int posY = pixelGLConverter.getPixelHeightForGLHeight(y - glNodePosition.y())
+				- (int) (node.getHeightPixels() / 2.0f);
+
+		return new Rectangle2D.Float(posX, posY, node.getWidthPixels(), node.getHeightPixels());
+	}
+
+	@Override
+	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+		List<Rectangle2D> boundsList = new ArrayList<>();
+
+		for (ALinearizableNode node : pathNodes) {
+			for (PathwayVertexRep vertexRepOfNode : node.getVertexReps()) {
+				if (vertexRepOfNode == vertexRep) {
+					Rectangle2D bounds = getLeftTopAlignedNodeBounds(node);
+					if (bounds != null)
+						boundsList.add(bounds);
+				}
+			}
+		}
+		return boundsList;
+	}
+
+	@Override
+	public synchronized void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
+		nodeContextMenuItems.add(item);
+	}
+
+	/**
+	 * @return the nodeContextMenuItems, see {@link #nodeContextMenuItems}
+	 */
+	public List<VertexRepBasedContextMenuItem> getNodeContextMenuItems() {
+		return nodeContextMenuItems;
 	}
 
 }

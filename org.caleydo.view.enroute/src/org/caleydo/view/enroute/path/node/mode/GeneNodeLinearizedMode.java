@@ -14,6 +14,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer.LabelAlignment;
 import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
@@ -146,6 +147,16 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 				pathwayPathRenderer.setDisplayListDirty();
 
 			}
+
+			@Override
+			protected void rightClicked(Pick pick) {
+				for (VertexRepBasedContextMenuItem item : pathwayPathRenderer.getNodeContextMenuItems()) {
+					// Only use primary vertex rep
+					item.setVertexRep(node.getPrimaryPathwayVertexRep());
+					view.getContextMenuCreator().addContextMenuItem(item);
+				}
+			}
+
 		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 
 	}

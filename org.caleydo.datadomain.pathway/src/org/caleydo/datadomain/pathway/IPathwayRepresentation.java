@@ -52,12 +52,12 @@ public interface IPathwayRepresentation {
 	/**
 	 * Gets the location of the specified vertexRep as rectangle. The coordinates are specified in pixels with the
 	 * origin of the coordinate system at the left top. If there are multiple locations for the vertexRep, just the
-	 * primary one is returned. To retrieve all locations, use {@link #getVertexRepLocations(PathwayVertexRep)}.
+	 * primary one is returned. To retrieve all locations, use {@link #getVertexRepsBounds(PathwayVertexRep)}.
 	 *
 	 * @param vertexRep
 	 * @return The location of the specified vertexRep or null, if the vertexRep does not exist.
 	 */
-	public Rectangle2D getVertexRepLocation(PathwayVertexRep vertexRep);
+	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep);
 
 	/**
 	 * Gets all locations of the specified vertexRep as rectangles. The coordinates are specified in pixels with the
@@ -66,7 +66,7 @@ public interface IPathwayRepresentation {
 	 * @param vertexRep
 	 * @return The locations of the specified vertexRep or null, if the vertexRep does not exist.
 	 */
-	public List<Rectangle2D> getVertexRepLocations(PathwayVertexRep vertexRep);
+	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep);
 
 	/**
 	 * Adds the specified context menu item to the context menu of all vertexReps in this pathway. The selected

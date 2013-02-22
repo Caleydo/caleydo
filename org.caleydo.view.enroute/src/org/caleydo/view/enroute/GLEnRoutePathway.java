@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -55,6 +56,10 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
+import org.caleydo.datadomain.pathway.IPathwayRepresentation;
+import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
@@ -69,7 +74,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 
 public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveBasedView,
-		IEventBasedSelectionManagerUser {
+		IEventBasedSelectionManagerUser, IPathwayRepresentation {
 
 	public static String VIEW_TYPE = "org.caleydo.view.enroute";
 	public static String VIEW_NAME = "enRoute";
@@ -661,6 +666,41 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void setFrustum(ViewFrustum viewFrustum) {
 		super.setFrustum(viewFrustum);
 		setLayoutDirty();
+	}
+
+	@Override
+	public PathwayGraph getPathway() {
+		if (pathRenderer != null)
+			return pathRenderer.getPathway();
+		return null;
+	}
+
+	@Override
+	public List<PathwayGraph> getPathways() {
+		if (pathRenderer != null)
+			return pathRenderer.getPathways();
+		return null;
+	}
+
+	@Override
+	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+		if (pathRenderer != null)
+			return pathRenderer.getVertexRepBounds(vertexRep);
+		return null;
+	}
+
+	@Override
+	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
+		if (pathRenderer != null)
+			return pathRenderer.getVertexRepsBounds(vertexRep);
+		return null;
+	}
+
+	@Override
+	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
+		if (pathRenderer != null)
+			pathRenderer.addVertexRepBasedContextMenuItem(item);
+
 	}
 
 }
