@@ -47,7 +47,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 	/**
 	 * do we need to perform a layout
 	 */
-	private boolean dirtyLayout = true;
+	protected boolean isLayoutDirty = true;
 
 	public AGLElementGLView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum, String viewType,
 			String viewName) {
@@ -113,10 +113,10 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 		gl.glTranslatef(0, viewFrustum.getTop(), 0);
 		gl.glScalef(1, -1, 1);
 
-		if (dirtyLayout) {
+		if (isLayoutDirty) {
 			root.setBounds(0, 0, viewFrustum.getRight(), viewFrustum.getTop());
 			root.layout();
-			dirtyLayout = false;
+			isLayoutDirty = false;
 		}
 
 		GLGraphics g = new GLGraphics(gl, this.getTextRenderer(), this.getTextureManager(), locator, true);
@@ -288,7 +288,7 @@ public abstract class AGLElementGLView extends AGLView implements IGLElementCont
 
 	@Override
 	public void relayout() {
-		dirtyLayout = true;
+		isLayoutDirty = true;
 	}
 
 	@Override
