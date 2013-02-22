@@ -38,6 +38,7 @@ import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
 import org.caleydo.view.tourguide.v3.model.ARow;
 import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 import org.caleydo.view.tourguide.v3.model.RankRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.RankTableModel;
 import org.caleydo.view.tourguide.v3.model.StackedRankColumnModel;
@@ -65,12 +66,12 @@ public class RankedVis extends GLElementContainer {
 		RankTableModel table = new RankTableModel(new RankTableConfigBase() {
 			@Override
 			public boolean isInteractive() {
-				return false;
+				return true;
 			}
 		});
 		table.addColumn(new RankRankColumnModel());
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
-				StringRankColumnModel.TO_STRING, false));
+				StringRankColumnModel.TO_STRING));
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.addColumn(stacked);
@@ -78,15 +79,15 @@ public class RankedVis extends GLElementContainer {
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new SimpleAcc(1), GLRenderers.drawText("Float", VAlign.CENTER), Color
-				.decode("#ffb380"), Color.decode("#ffe6d5")));
+						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, 1)));
 		table.addColumnTo(stacked,
 				new FloatRankColumnModel(new SimpleAcc(2), GLRenderers.drawText("Float2", VAlign.CENTER), Color
-				.decode("#80ffb3"), Color.decode("#e3f4d7")));
+						.decode("#80ffb3"), Color.decode("#e3f4d7"), new PiecewiseLinearMapping(0, 1)));
 
 		table.addColumn(new FloatRankColumnModel(new SimpleAcc(3), GLRenderers.drawText("Float3", VAlign.CENTER), Color
-				.decode("#5fd3bc"), Color.decode("#d5fff6")));
+				.decode("#5fd3bc"), Color.decode("#d5fff6"), new PiecewiseLinearMapping(0, 1)));
 		table.addColumn(new FloatRankColumnModel(new SimpleAcc(4), GLRenderers.drawText("Float4", VAlign.CENTER), Color
-				.decode("#ffb380"), Color.decode("#ffe6d5")));
+				.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, 1)));
 
 
 		Random r = new Random(200);
@@ -124,6 +125,18 @@ public class RankedVis extends GLElementContainer {
 		@Override
 		public void prepareFor(Collection<IRow> data) {
 
+		}
+
+		@Override
+		public float getMin() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public float getMax() {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 	}
 

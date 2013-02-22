@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.view.tourguide.internal.view.VendingMachine;
+import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 
 /**
  * Serialized <INSERT VIEW NAME> view.
@@ -42,6 +42,6 @@ public class SerializedTourGuideView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return VendingMachine.VIEW_TYPE;
+		return GLTourGuideView.VIEW_TYPE;
 	}
 }

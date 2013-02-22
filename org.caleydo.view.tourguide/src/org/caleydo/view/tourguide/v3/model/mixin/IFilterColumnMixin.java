@@ -33,7 +33,5 @@ public interface IFilterColumnMixin {
 
 	boolean isFiltered();
 
-	void editFilter();
-
-	BitSet getSelectedRows(List<IRow> rows);
+	void filter(List<IRow> data, BitSet mask);
 }

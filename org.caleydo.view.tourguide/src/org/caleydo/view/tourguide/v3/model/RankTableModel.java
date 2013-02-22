@@ -91,13 +91,14 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		this.config = config;
 	}
 
-	public void addData(Collection<IRow> rows) {
+	public void addData(Collection<? extends IRow> rows) {
 		int s = this.data.size();
 		for (IRow r : rows)
 			r.setIndex(s++);
 		this.data.addAll(rows);
 		propertySupport.fireIndexedPropertyChange(PROP_DATA, s, null, rows);
-		filter();
+		dirtyFilter = true;
+		fireInvalid();
 	}
 
 	protected void fireInvalid() {
@@ -369,7 +370,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		}
 
 		for (Iterator<IFilterColumnMixin> it = findAllFiltered(); it.hasNext();) {
-			filter.and(it.next().getSelectedRows(data));
+			it.next().filter(data, filter);
 		}
 
 		if (selectedRow != null && !filter.get(selectedRow.getIndex()))
@@ -482,8 +483,12 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		propertySupport.removePropertyChangeListener(propertyName, listener);
 	}
 
-	public Collection<IRow> getData() {
-		return Collections.unmodifiableCollection(this.data);
+	public List<IRow> getData() {
+		return Collections.unmodifiableList(this.data);
+	}
+
+	public int getDataSize() {
+		return this.data.size();
 	}
 
 	/**

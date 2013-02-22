@@ -134,7 +134,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			assert separators.size() == columns.size();
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
 			sep0.setBounds(3, 40, COLUMN_SPACE, h - 40); // left separator
-			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment() == 0);
+			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment());
 		}
 		// align the columns normally
 		float x = COLUMN_SPACE + 3;
@@ -147,7 +147,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 				IGLLayoutElement sep = separators.get(i);
 				sep.setBounds(x - COLUMN_SPACE, 40, COLUMN_SPACE, h - 40);
 				((SeparatorUI) sep.asElement()).setIndex(i + 1);
-				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment() == i);
+				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment());
 			}
 		}
 	}

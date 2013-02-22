@@ -208,7 +208,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			int bak = this.pickingIDs.length;
 			this.pickingIDs = Arrays.copyOf(this.pickingIDs, rowPositions.length);
 			for (int i = bak; i < this.pickingIDs.length; ++i)
-				this.pickingIDs[bak] = context.registerPickingListener(selectRowListener, i);
+				this.pickingIDs[i] = context.registerPickingListener(selectRowListener, i);
 		}
 		//align the columns normally
 		float x = TableHeaderUI.COLUMN_SPACE;

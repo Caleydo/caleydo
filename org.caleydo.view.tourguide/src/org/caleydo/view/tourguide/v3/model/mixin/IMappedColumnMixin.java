@@ -19,11 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.model.mixin;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
+
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IMappedColumnMixin {
 	String PROP_MAPPING = "mapping";
-	void editMapping();
+
+	void editMapping(GLElement summary);
 }

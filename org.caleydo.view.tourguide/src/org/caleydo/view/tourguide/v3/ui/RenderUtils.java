@@ -20,7 +20,6 @@
 package org.caleydo.view.tourguide.v3.ui;
 
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -97,14 +96,5 @@ public class RenderUtils {
 			x += delta;
 		}
 		g.restore();
-	}
-
-	public static PropertyChangeListener repaintOnEvent(final GLElement elem) {
-		return new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				elem.repaint();
-			}
-		};
 	}
 }

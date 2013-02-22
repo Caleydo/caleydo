@@ -62,13 +62,13 @@ import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory.GeneSetScore;
 import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankMetric;
 import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankPValue;
 import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -211,17 +211,17 @@ public class StratomexAdapter {
 	 *            the currently visible scores of the new_ element
 	 * @param mode
 	 */
-	public void updatePreview(ScoringElement old, ScoringElement new_, Collection<IScore> visibleColumns,
+	public void updatePreview(PerspectiveRow old, PerspectiveRow new_, Collection<ARankColumnModel> visibleColumns,
 			EDataDomainQueryMode mode) {
 		if (!hasOne())
 			return;
 
 		switch (mode) {
 		case GENE_SET:
-			updatePathwayPreview(old, new_, visibleColumns);
+			// updatePathwayPreview(old, new_, visibleColumns);
 			break;
 		case TABLE_BASED:
-			updateTableBased(old, new_, visibleColumns);
+			// updateTableBased(old, new_, visibleColumns);
 			break;
 		}
 
@@ -256,7 +256,7 @@ public class StratomexAdapter {
 		return Lists.newArrayList(r);
 	}
 
-	private void updatePathwayPreview(ScoringElement old, ScoringElement new_, Collection<IScore> visibleColumns) {
+	private void updatePathwayPreview(PerspectiveRow old, PerspectiveRow new_, Collection<IScore> visibleColumns) {
 		PathwayGraph pathway = new_ == null ? null : ((PathwayRecordPerspective) new_.getStratification()).getPathway();
 
 		Pair<TablePerspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
@@ -324,7 +324,7 @@ public class StratomexAdapter {
 		return pathwayDimensionGroup;
 	}
 
-	private void updateTableBased(ScoringElement old, ScoringElement new_, Collection<IScore> visibleColumns) {
+	private void updateTableBased(PerspectiveRow old, PerspectiveRow new_, Collection<IScore> visibleColumns) {
 		TablePerspective strat = new_ == null ? null : new_.getPerspective();
 		Group group = new_ == null ? null : new_.getGroup();
 
@@ -435,7 +435,7 @@ public class StratomexAdapter {
 		triggerEvent(event);
 	}
 
-	private void hightlightRows(ScoringElement new_, Collection<IScore> visibleColumns) {
+	private void hightlightRows(PerspectiveRow new_, Collection<IScore> visibleColumns) {
 		Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns);
 
 		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
@@ -453,7 +453,7 @@ public class StratomexAdapter {
 	 * @param visibleColumns
 	 * @param mode
 	 */
-	public void addToStratomex(ScoringElement elem, Collection<IScore> visibleColumns, EDataDomainQueryMode mode) {
+	public void addToStratomex(PerspectiveRow elem, Collection<IScore> visibleColumns, EDataDomainQueryMode mode) {
 		if (!hasOne())
 			return;
 		switch (mode) {
@@ -475,7 +475,7 @@ public class StratomexAdapter {
 	}
 
 
-	private void addToStratomexGeneSet(ScoringElement elem, Collection<IScore> visibleColumns) {
+	private void addToStratomexGeneSet(PerspectiveRow elem, Collection<IScore> visibleColumns) {
 		Pair<TablePerspective, Group> undderlyingPair = findReferencingGSEATablePerspective(visibleColumns);
 		if (undderlyingPair == null)
 			return; // can't add no reference given

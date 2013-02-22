@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
 import org.caleydo.view.tourguide.v3.ui.TableHeaderUI;
+import org.caleydo.view.tourguide.v3.ui.detail.ScoreBarRenderer;
 import org.caleydo.view.tourguide.v3.ui.detail.ScoreSummary;
 
 /**
@@ -85,6 +86,11 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new ScoreSummary(this, interactive);
+	}
+
+	@Override
+	public GLElement createValue() {
+		return new GLElement(new ScoreBarRenderer(this));
 	}
 
 	@Override

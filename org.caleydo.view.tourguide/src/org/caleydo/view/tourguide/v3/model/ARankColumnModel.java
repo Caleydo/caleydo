@@ -43,7 +43,6 @@ public abstract class ARankColumnModel implements IDragInfo {
 	private float weight = 100;
 
 	private IGLRenderer header = GLRenderers.DUMMY;
-	private IGLRenderer value = GLRenderers.DUMMY;
 	protected final Color color;
 	protected final Color bgColor;
 
@@ -52,10 +51,6 @@ public abstract class ARankColumnModel implements IDragInfo {
 	public ARankColumnModel(Color color, Color bgColor) {
 		this.color = color;
 		this.bgColor = bgColor;
-	}
-
-	protected final void setValueRenderer(IGLRenderer value) {
-		this.value = value;
 	}
 
 	protected final void setHeaderRenderer(IGLRenderer header) {
@@ -107,12 +102,10 @@ public abstract class ARankColumnModel implements IDragInfo {
 
 	public abstract GLElement createSummary(boolean interactive);
 
+	public abstract GLElement createValue();
+
 	public final IGLRenderer getHeaderRenderer() {
 		return header;
-	}
-
-	public final IGLRenderer getValueRenderer() {
-		return value;
 	}
 
 
@@ -200,5 +193,4 @@ public abstract class ARankColumnModel implements IDragInfo {
 		if (model instanceof ICollapseableColumnMixin)
 			((ICollapseableColumnMixin) model).setCollapsed(false);
 	}
-
 }

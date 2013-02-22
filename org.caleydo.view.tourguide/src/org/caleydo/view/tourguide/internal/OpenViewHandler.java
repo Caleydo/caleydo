@@ -20,10 +20,10 @@
 package org.caleydo.view.tourguide.internal;
 
 import org.caleydo.core.gui.command.AOpenViewHandler;
-import org.caleydo.view.tourguide.internal.view.VendingMachine;
+import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 
 public class OpenViewHandler extends AOpenViewHandler {
 	public OpenViewHandler() {
-		super(VendingMachine.VIEW_TYPE);
+		super(GLTourGuideView.VIEW_TYPE);
 	}
 }

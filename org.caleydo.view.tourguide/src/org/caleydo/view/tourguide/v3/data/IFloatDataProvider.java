@@ -27,4 +27,7 @@ import org.caleydo.view.tourguide.v3.model.IRow;
  */
 public interface IFloatDataProvider extends IFloatFunction<IRow>, IDataProvider<Float> {
 
+	float getMin();
+
+	float getMax();
 }

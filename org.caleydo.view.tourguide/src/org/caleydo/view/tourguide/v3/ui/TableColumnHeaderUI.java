@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.ui;
 
+import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
 import gleem.linalg.Vec2f;
 
 import java.awt.Color;
@@ -263,13 +264,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/filter_disabled.png"));
 			b.setSelectedRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/filter.png"));
 			b.setSelected(m.isFiltered());
-			b.setTooltip("Edit the filter of this column");
-			b.setCallback(new ISelectionCallback() {
-				@Override
-				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.editFilter();
-				}
-			});
+			b.setVisibility(EVisibility.VISIBLE);
 			filterChangedListener = new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
@@ -288,7 +283,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.editMapping();
+					m.editMapping(get(HIST));
 				}
 			});
 			buttons.add(b);
@@ -358,7 +353,12 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 			IGLLayoutElement uncollapse = children.get(UNCOLLAPSE);
 			uncollapse.setBounds((w - 12) * .5f, 2, 12, canDrag ? 12 : 0);
+
+			for (IGLLayoutElement r : children.subList(UNCOLLAPSE + 1, children.size()))
+				r.setBounds(defaultValue(r.getSetX(), 0), defaultValue(r.getSetY(), h),
+						defaultValue(r.getSetWidth(), w), defaultValue(r.getSetHeight(), 40));
 		}
+
 	}
 
 

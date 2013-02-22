@@ -17,36 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.view;
+package org.caleydo.view.tourguide.internal.view.model;
 
-import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import java.util.AbstractList;
+import java.util.List;
 
 /**
+ * sub list variant, not checking any concurrent modifications
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class SelectChangeKeyListener implements IGLKeyListener {
+public class CustomSubList<T> extends AbstractList<T> {
+	private final int offset;
+	private final List<T> backend;
+	private final int size;
 
-	private final ScoreQueryUI scoreQueryUI;
-
-	/**
-	 * @param scoreQueryUI
-	 */
-	public SelectChangeKeyListener(ScoreQueryUI scoreQueryUI) {
-		this.scoreQueryUI = scoreQueryUI;
+	public CustomSubList(List<T> backend, int offset, int size) {
+		super();
+		this.backend = backend;
+		this.offset = offset;
+		this.size = size;
 	}
 
 	@Override
-	public void keyPressed(IKeyEvent e) {
-
+	public T get(int index) {
+		return backend.get(offset + index);
 	}
 
 	@Override
-	public void keyReleased(IKeyEvent e) {
-		if (e.isKey(ESpecialKey.DOWN))
-			scoreQueryUI.selectNext();
-		else if (e.isKey(ESpecialKey.UP))
-			scoreQueryUI.selectPrevious();
+	public int size() {
+		return size;
 	}
+
 }
-

@@ -19,9 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
-import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
-import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.SELECTED_COLOR;
-
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -36,16 +33,12 @@ import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.base.ILabelHolder;
-import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -71,10 +64,8 @@ import org.caleydo.view.tourguide.internal.score.MetricFactories;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.view.col.ATableColumn;
-import org.caleydo.view.tourguide.internal.view.col.AddQueryColumn;
 import org.caleydo.view.tourguide.internal.view.col.MatchColumn;
 import org.caleydo.view.tourguide.internal.view.col.QueryColumn;
-import org.caleydo.view.tourguide.internal.view.col.RankColumn;
 import org.caleydo.view.tourguide.internal.view.col.Separator;
 import org.caleydo.view.tourguide.internal.view.ui.ScoreFilterDialog;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
@@ -155,89 +146,7 @@ public class ScoreQueryUI extends Row {
 		this.query.addPropertyChangeListener(ScoreQuery.PROP_ORDER_BY, orderByChanged);
 		this.query.addPropertyChangeListener(ScoreQuery.PROP_FILTER, filterChanged);
 		// initial
-		createColumns(query);
-	}
-
-	private void createColumns(ScoreQuery query) {
-		this.clear();
-		this.columns.clear();
-		this.columns.add(new RankColumn(view));
-		this.columns.add(new MatchColumn(view, stratomex));
-		int i = 0;
-		this.queryColumns.clear();
-		for (IScore column : query.getSelection()) {
-			QueryColumn col = QueryColumn.create(column, i++, query.getSorting(column), view);
-			this.columns.add(col);
-			this.queryColumns.add(col);
-		}
-		this.columns.add(new AddQueryColumn(view));
-
-		final ElementLayout colSpace = createXSpacer(1);
-		this.add(colSpace);
-		this.add(columns.get(0));
-		this.add(colSpace);
-		this.add(columns.get(1));
-		for (QueryColumn col : this.queryColumns) {
-			this.add(new Separator(size(), view, this)).add(col);
-		}
-		this.add(columns.get(columns.size() - 1));
-
-		invalidate();
-		this.setPixelSizeY(columns.get(1).getPixelSizeY());
-	}
-
-	public void setData(List<ScoringElement> data) {
-		setSelected(-1);
-		this.data = data;
-		for (ATableColumn col : this.columns)
-			col.setData(data, query);
-		this.setPixelSizeY(columns.get(1).getPixelSizeY());
-		invalidate();
-	}
-
-	private void invalidate() {
-		if (layoutManager != null) {
-			layoutManager.updateLayout();
-			updateSubLayout();
-		}
-	}
-
-	public void setSelected(int row) {
-		if (selectedRow == row)
-			return;
-		if (row < -1 || row >= data.size())
-			return;
-		ScoringElement old = null;
-		if (selectedRow != -1) {
-			old = data.get(selectedRow);
-			for (ATableColumn tcol : this.columns) {
-				ElementLayout l = tcol.getTd(selectedRow);
-				if (l == null)
-					continue;
-				List<ALayoutRenderer> renderers = l.getBackgroundRenderer();
-				if (renderers.isEmpty() || !(renderers.get(0) instanceof PickingRenderer))
-					continue;
-				((PickingRenderer) renderers.get(0)).setColor(Colors.TRANSPARENT);
-			}
-			layoutManager.setRenderingDirty();
-		}
-		selectedRow = row;
-		ScoringElement new_ = null;
-		if (selectedRow != -1) {
-			new_ = data.get(selectedRow);
-			for (ATableColumn tcol : this.columns) {
-				ElementLayout l = tcol.getTd(selectedRow);
-				if (l == null)
-					continue;
-				List<ALayoutRenderer> renderers = l.getBackgroundRenderer();
-				if (renderers.isEmpty() || !(renderers.get(0) instanceof PickingRenderer))
-					continue;
-				((PickingRenderer) renderers.get(0)).setColor(SELECTED_COLOR);
-			}
-			layoutManager.setRenderingDirty();
-		}
-		invalidate();
-		stratomex.updatePreview(old, new_, getVisibleColumns(new_), query.getMode());
+		// createColumns(query);
 	}
 
 	public void updateAddToStratomexState() {
@@ -304,7 +213,7 @@ public class ScoreQueryUI extends Row {
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				setSelected(pick.getObjectID());
+				// setSelected(pick.getObjectID());
 			}
 		}, SELECT_ROW);
 		view.addTypePickingListener(new APickingListener() {
@@ -378,9 +287,9 @@ public class ScoreQueryUI extends Row {
 	}
 
 	protected void onSelectionChanged(PropertyChangeEvent evt) {
-		createColumns(this.query);
-		if (this.data != null)
-			setData(data);
+		// createColumns(this.query);
+		// if (this.data != null)
+		// setData(data);
 	}
 
 	protected void onOrderByChanged(PropertyChangeEvent evt) {
@@ -542,7 +451,7 @@ public class ScoreQueryUI extends Row {
 	}
 
 	protected void onAddToStratomex(int row) {
-		stratomex.addToStratomex(data.get(row), getVisibleColumns(data.get(row)), query.getMode());
+		// stratomex.addToStratomex(data.get(row), getVisibleColumns(data.get(row)), query.getMode());
 		updateAddToStratomexState();
 	}
 
@@ -557,10 +466,10 @@ public class ScoreQueryUI extends Row {
 
 
 	public void selectNext() {
-		setSelected(selectedRow + 1);
+		// setSelected(selectedRow + 1);
 	}
 
 	public void selectPrevious() {
-		setSelected(selectedRow - 1);
+		// setSelected(selectedRow - 1);
 	}
 }

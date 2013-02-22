@@ -17,43 +17,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.v3.model;
+package org.caleydo.view.tourguide.v3.ui;
 
-import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+
 /**
+ * simple property change listeners for gl elements
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer {
-
-	public RankRankColumnModel() {
-		super(Color.GRAY, new Color(0.95f, .95f, .95f));
-		setHeaderRenderer(GLRenderers.drawText("Rank", VAlign.CENTER));
-		setWeight(20);
+public class GLPropertyChangeListeners {
+	public static PropertyChangeListener repaintOnEvent(GLElement elem) {
+		return new GLPropertyChangeListener(elem, false);
 	}
 
-	@Override
-	public GLElement createSummary(boolean interactive) {
-		return new GLElement(); // dummy
+	public static PropertyChangeListener relayoutOnEvent(GLElement elem) {
+		return new GLPropertyChangeListener(elem, true);
 	}
 
-	@Override
-	public GLElement createValue() {
-		return new GLElement(this);
-	}
+	private static class GLPropertyChangeListener implements PropertyChangeListener {
+		private final GLElement elem;
+		private final boolean relayout;
 
-	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		if (h < 5 || w < 15)
-			return;
-		float hi = Math.min(h, 16);
-		String value = String.format("%2d.", parent.getLayoutDataAs(IRow.class, null).getRank() + 1);
-		g.drawText(value, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+		public GLPropertyChangeListener(GLElement elem, boolean relayout) {
+			super();
+			this.elem = elem;
+			this.relayout = relayout;
+		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (relayout)
+				elem.relayout();
+			else
+				elem.repaint();
+		}
 	}
 }
+

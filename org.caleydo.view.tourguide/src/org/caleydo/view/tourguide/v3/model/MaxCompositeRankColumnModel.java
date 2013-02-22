@@ -40,6 +40,8 @@ import org.caleydo.view.tourguide.v3.ui.detail.StackedScoreSummary;
 public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel implements IRankableColumnMixin,
 		IHideableColumnMixin, IExplodeableColumnMixin, IMultiColumnMixin {
 
+	private final MultiRenderer valueRenderer;;
+
 	public MaxCompositeRankColumnModel(IRowHeightLayout layout) {
 		this(GLRenderers.drawText("Multiple", VAlign.CENTER), layout);
 	}
@@ -47,12 +49,17 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 	public MaxCompositeRankColumnModel(IGLRenderer renderer, IRowHeightLayout layout) {
 		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f));
 		setHeaderRenderer(renderer);
-		setValueRenderer(new MultiRenderer(this, layout));
+		this.valueRenderer = new MultiRenderer(this, layout);
 	}
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new StackedScoreSummary(this);
+	}
+
+	@Override
+	public GLElement createValue() {
+		return new GLElement(valueRenderer);
 	}
 
 

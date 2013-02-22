@@ -31,12 +31,17 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.v3.data.IDataProvider;
 import org.caleydo.view.tourguide.v3.event.FilterEvent;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
+import org.caleydo.view.tourguide.v3.ui.GLPropertyChangeListeners;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -44,8 +49,8 @@ import org.eclipse.swt.widgets.Display;
  * @author Samuel Gratzl
  *
  */
-public class StringRankColumnModel extends ABasicRankColumnModel implements IFilterColumnMixin {
-	public static IDataProvider<String> TO_STRING = new IDataProvider<String>() {
+public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IFilterColumnMixin, IGLRenderer {
+	public static final IDataProvider<String> TO_STRING = new IDataProvider<String>() {
 		@Override
 		public String apply(IRow row) {
 			return Objects.toString(row);
@@ -57,11 +62,24 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 		}
 	};
 
+	public static final IDataProvider<String> TO_LABEL = new IDataProvider<String>() {
+		@Override
+		public String apply(IRow row) {
+			if (row instanceof ILabelProvider) {
+				return ((ILabelProvider) row).getLabel();
+			}
+			return Objects.toString(row);
+		}
+
+		@Override
+		public void prepareFor(Collection<IRow> data) {
+
+		}
+	};
+
 	private final IDataProvider<String> data;
 	private String filter;
-	private boolean removeAble;
 
-	private BitSet cacheFilter = null;
 	private final PropertyChangeListener listerner = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -70,30 +88,15 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 				@SuppressWarnings("unchecked")
 				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
 				data.prepareFor(news);
-				cacheFilter = null;
 				break;
 			}
 		}
 	};
 
-	public StringRankColumnModel(IGLRenderer header, final IDataProvider<String> data,
-			boolean removeAble) {
+	public StringRankColumnModel(IGLRenderer header, final IDataProvider<String> data) {
 		super(Color.GRAY, new Color(.95f, .95f, .95f));
 		setHeaderRenderer(header);
-		setValueRenderer(new IGLRenderer() {
-			@Override
-			public void render(GLGraphics g, float w, float h, GLElement parent) {
-				if (h < 5)
-					return;
-				String value = data.apply(parent.getLayoutDataAs(IRow.class, null));
-				if (value == null)
-					return;
-				float hi = Math.min(h, 18);
-				g.drawText(value, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
-			}
-		});
 		this.data = data;
-		this.removeAble = removeAble;
 	}
 
 	@Override
@@ -110,16 +113,26 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 	}
 
 	@Override
-	public boolean isDestroyAble() {
-		return super.isDestroyAble() && removeAble;
-	}
-
-	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new GLElement();
+		return new MyElement(interactive);
 	}
 
 	@Override
+	public GLElement createValue() {
+		return new GLElement(this);
+	}
+
+	@Override
+	public void render(GLGraphics g, float w, float h, GLElement parent) {
+		if (h < 5)
+			return;
+		String value = data.apply(parent.getLayoutDataAs(IRow.class, null));
+		if (value == null)
+			return;
+		float hi = Math.min(h, 18);
+		g.drawText(value, 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+	}
+
 	public void editFilter() {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -138,7 +151,7 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 
 	@ListenTo(sendToMe = true)
 	private void onSetFilter(FilterEvent event) {
-		cacheFilter = null;
+		invalidAllFilter();
 		propertySupport.firePropertyChange(PROP_FILTER, this.filter, this.filter = (String) event.getFilter());
 	}
 
@@ -148,21 +161,52 @@ public class StringRankColumnModel extends ABasicRankColumnModel implements IFil
 	}
 
 	@Override
-	public BitSet getSelectedRows(List<IRow> rows) {
-		if (cacheFilter != null)
-			return cacheFilter;
-		BitSet b = new BitSet(rows.size());
-		if (filter == null) {
-			b.set(0, rows.size());
-		} else {
-			String regex = Pattern.quote(filter);
-			int i = 0;
-			for (IRow row : rows) {
-				String v = data.apply(row);
-				b.set(i++, Pattern.matches(regex, v));
-			}
+	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
+		String regex = Pattern.quote(filter).replace("\\*", ".*");
+		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
+			String v = this.data.apply(data.get(i));
+			mask.set(i, Pattern.matches(regex, v));
 		}
-		cacheFilter = b;
-		return b;
+	}
+
+	private class MyElement extends PickableGLElement {
+		private final PropertyChangeListener repaintListner = GLPropertyChangeListeners.repaintOnEvent(this);
+
+		public MyElement(boolean interactive) {
+			setzDelta(0.25f);
+			if (!interactive)
+				setVisibility(EVisibility.VISIBLE);
+		}
+
+		@Override
+		protected void init(IGLElementContext context) {
+			super.init(context);
+			addPropertyChangeListener(PROP_FILTER, repaintListner);
+		}
+
+		@Override
+		protected void takeDown() {
+			removePropertyChangeListener(PROP_FILTER, repaintListner);
+			super.takeDown();
+		}
+
+		@Override
+		protected void onMouseReleased(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			editFilter();
+		}
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			super.renderImpl(g, w, h);
+			if (w < 20)
+				return;
+			g.drawText("Filter:", 4, 2, w - 4, 12);
+			String t = "<None>";
+			if (filter != null)
+				t = filter;
+			g.drawText(t, 4, 18, w - 4, 12);
+		}
 	}
 }

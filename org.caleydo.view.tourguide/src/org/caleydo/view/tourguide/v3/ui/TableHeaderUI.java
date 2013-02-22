@@ -40,12 +40,7 @@ import org.caleydo.view.tourguide.v3.ui.SeparatorUI.IMoveHereChecker;
 public final class TableHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
 	public static final float COLUMN_SPACE = 2;
 	private final RankTableModel table;
-	private final PropertyChangeListener layoutOnChange = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			relayout();
-		}
-	};
+	private final PropertyChangeListener layoutOnChange = GLPropertyChangeListeners.relayoutOnEvent(this);
 	private final PropertyChangeListener columnsChanged = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -133,7 +128,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 	@Override
 	protected void takeDown() {
 		this.table.removePropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
-		for (GLElement col : asList().subList(1, size())) {
+		for (GLElement col : asList().subList(0, numColumns)) {
 			takeDown(col.getLayoutDataAs(ARankColumnModel.class, null));
 		}
 		super.takeDown();

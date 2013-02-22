@@ -46,11 +46,14 @@ public class StackedSeparatorUI extends SeparatorUI {
 		super(model, index);
 	}
 
+	public void setAlignment(int alignentIndex) {
+		this.setAlignment(alignentIndex == index);
+	}
 	/**
 	 * @param isAlignment
 	 *            setter, see {@link isAlignment}
 	 */
-	public void setAlignment(boolean isAlignment) {
+	private void setAlignment(boolean isAlignment) {
 		if (this.isAlignment == isAlignment)
 			return;
 		this.isAlignment = isAlignment;

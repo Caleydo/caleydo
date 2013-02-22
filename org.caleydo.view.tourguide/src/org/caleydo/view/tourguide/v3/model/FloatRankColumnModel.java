@@ -20,15 +20,21 @@
 package org.caleydo.view.tourguide.v3.model;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec4f;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.function.AFloatList;
+import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -40,6 +46,8 @@ import org.caleydo.view.tourguide.v3.data.IFloatDataProvider;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
+import org.caleydo.view.tourguide.v3.ui.GLPropertyChangeListeners;
+import org.caleydo.view.tourguide.v3.ui.PiecewiseLinearMappingUI;
 import org.caleydo.view.tourguide.v3.ui.RenderUtils;
 import org.caleydo.view.tourguide.v3.ui.detail.ScoreBarRenderer;
 import org.eclipse.swt.SWT;
@@ -52,11 +60,14 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 		IRankableColumnMixin {
 	private float selectionMin = 0;
 	private float selectionMax = 1;
-	private BitSet cacheFilter = null;
+	private final BitSet mask = new BitSet();
+	private final BitSet maskInvalid = new BitSet();
+
 	private SimpleHistogram cacheHist = null;
+	private boolean dirtyMinMax = true;
+	private final PiecewiseLinearMapping mapping;
 
 	private final IFloatDataProvider data;
-
 	private final PropertyChangeListener listerner = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -65,20 +76,36 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 				@SuppressWarnings("unchecked")
 				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
 				data.prepareFor(news);
-				cacheFilter = null;
+				maskInvalid.set(getTable().getDataSize() - news.size(), getTable().getDataSize());
 				break;
 			case RankTableModel.PROP_INVALID:
+				if (!mapping.hasDefinedMappingBounds())
+					maskInvalid.set(0, getTable().getDataSize());
 				cacheHist = null;
+				dirtyMinMax = true;
 				break;
 			}
 		}
 	};
+	private final ICallback<PiecewiseLinearMapping> callback = new ICallback<PiecewiseLinearMapping>() {
+		@Override
+		public void on(PiecewiseLinearMapping data) {
+			cacheHist = null;
+			maskInvalid.set(0, getTable().getDataSize());
+			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
+		}
+	};
 
-	public FloatRankColumnModel(IFloatDataProvider data, IGLRenderer header, Color color, Color bgColor) {
+	private IGLRenderer valueRenderer = new ScoreBarRenderer(this);
+
+	public FloatRankColumnModel(IFloatDataProvider data, IGLRenderer header, Color color, Color bgColor,
+			PiecewiseLinearMapping mapping) {
 		super(color, bgColor);
 		this.data = data;
+		this.mapping = mapping;
+
 		setHeaderRenderer(header);
-		setValueRenderer(new ScoreBarRenderer(this));
+
 	}
 
 	public void addSelection(boolean isMin, float delta) {
@@ -91,7 +118,7 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			this.selectionMax += delta;
 		}
 		propertySupport.firePropertyChange(PROP_FILTER, bak, Pair.make(selectionMin, selectionMax));
-		cacheFilter = null;
+		maskInvalid.set(0, getTable().getDataSize());
 	}
 
 	@Override
@@ -115,23 +142,56 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 	}
 
 	@Override
-	public void editMapping() {
-		// TODO Auto-generated method stub
+	public GLElement createValue() {
+		return new GLElement(valueRenderer);
 	}
+
+	@Override
+	public void editMapping(GLElement summary) {
+		PiecewiseLinearMappingUI m = new PiecewiseLinearMappingUI(mapping, asData(), getColor(), getBgColor(), callback);
+		m.setzDelta(0.5f);
+		FloatSummary s = (FloatSummary) summary;
+		Vec2f location = s.getAbsoluteLocation();
+		Vec2f size = s.getSize();
+		s.getContext().getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 260));
+	}
+
+	private IFloatList asData() {
+		return new AFloatList() {
+			@Override
+			public float getPrimitive(int index) {
+				return getValue(getTable().get(index));
+			}
+
+			@Override
+			public int size() {
+				return getTable().size();
+			}
+		};
+	}
+
 
 	@Override
 	public boolean isFiltered() {
 		return selectionMin > 0 || selectionMax < 1;
 	}
 
-	@Override
-	public void editFilter() {
-		// inline
+	protected float map(float value) {
+		checkMapping();
+		return mapping.apply(value);
+	}
+
+	private void checkMapping() {
+		if (dirtyMinMax && mapping.isMappingDefault() && !mapping.hasDefinedMappingBounds()) {
+			float[] minmax = asData().computeStats();
+			mapping.setAct(minmax[0], minmax[1]);
+			dirtyMinMax = false;
+		}
 	}
 
 	@Override
 	public float getValue(IRow row) {
-		return data.applyPrimitive(row);
+		return map(data.applyPrimitive(row));
 	}
 
 	@Override
@@ -140,35 +200,38 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			return cacheHist;
 		SimpleHistogram hist = new SimpleHistogram(bins);
 		for (IRow row : getTable()) {
-			hist.add(data.applyPrimitive(row));
+			hist.add(getValue(row));
 		}
 		cacheHist = hist;
 		return hist;
 	}
 
 	@Override
-	public BitSet getSelectedRows(List<IRow> rows) {
-		if (cacheFilter != null)
-			return cacheFilter;
-		BitSet b = new BitSet(rows.size());
-		if (selectionMin <= 0 && selectionMax >= 1) {
-			b.set(0, rows.size());
-		} else {
-			int i = 0;
-			for(IRow row : rows) {
-				Float v = data.applyPrimitive(row);
-				b.set(i++, (v != null && !Float.isNaN(v) && v >= selectionMin && v <= selectionMax));
+	public void filter(List<IRow> data, BitSet mask) {
+		if (selectionMin <= 0 && selectionMax >= 1)
+			return;
+		updateMask(data, mask);
+		mask.and(this.mask);
+	}
+
+	private void updateMask(List<IRow> data, BitSet mask) {
+		if (maskInvalid.isEmpty())
+			return;
+
+		for (int i = mask.nextSetBit(0); i >= 0; i = mask.nextSetBit(i + 1)) {
+			if (maskInvalid.get(i)) {
+				maskInvalid.clear(i);
+				float v = getValue(data.get(i));
+				this.mask.set(i++, (!Float.isNaN(v) && v >= selectionMin && v <= selectionMax));
 			}
 		}
-		cacheFilter = b;
-		return b;
 	}
 
 	class FloatSummary extends PickableGLElement {
 		private int cursorMinPickingID = -1, cursorMaxPickingID = -1;
 		private boolean cursorMinHovered = false, cursorMaxHovered = true;
 
-		private final PropertyChangeListener repaintOnEvent = RenderUtils.repaintOnEvent(this);
+		private final PropertyChangeListener repaintOnEvent = GLPropertyChangeListeners.repaintOnEvent(this);
 		private final PropertyChangeListener selectRowListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -190,6 +253,10 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			}
 		}
 
+		public IGLElementContext getContext() {
+			return context;
+		}
+
 		@Override
 		protected void init(IGLElementContext context) {
 			super.init(context);
@@ -198,7 +265,8 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, selectRowListener);
 			this.selectedRow = table.getSelectedRow();
 
-			addPropertyChangeListener(IFilterColumnMixin.PROP_FILTER, repaintOnEvent);
+			addPropertyChangeListener(PROP_FILTER, repaintOnEvent);
+			addPropertyChangeListener(PROP_MAPPING, repaintOnEvent);
 
 			cursorMinPickingID = context.registerPickingListener(new IPickingListener() {
 				@Override
@@ -221,6 +289,7 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			RankTableModel table = getTable();
 			table.removePropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, selectRowListener);
 			removePropertyChangeListener(PROP_FILTER, repaintOnEvent);
+			removePropertyChangeListener(PROP_MAPPING, repaintOnEvent);
 			super.takeDown();
 		}
 
@@ -297,11 +366,20 @@ public class FloatRankColumnModel extends ABasicRankColumnModel implements IFilt
 			// hist
 			int bins = Math.round(w);
 			SimpleHistogram hist = getHist(bins);
-			int selectedBin = selectedRow == null ? -1 : hist.getBinOf(data.applyPrimitive(selectedRow));
+			int selectedBin = selectedRow == null ? -1 : hist.getBinOf(getValue(selectedRow));
 			RenderUtils.renderHist(g, hist, w, h, selectedBin, color, color.darker());
 			// selection
 			if (w > 20)
 				renderSelection(g, selectionMin, selectionMax, w, h);
+			checkMapping();
+			DecimalFormat d = new DecimalFormat("#.##");
+			float[] m = mapping.getMappedMin();
+			g.drawText(d.format(m[0]), 1, h - 23, 15, 10);
+			g.drawText(d.format(m[1]), 1, h - 12, 15, 10);
+			m = mapping.getMappedMax();
+			g.drawText(d.format(m[0]), w - 16, h - 23, 15, 10, VAlign.RIGHT);
+			g.drawText(d.format(m[1]), w - 16, h - 12, 15, 10,
+					VAlign.RIGHT);
 		}
 
 		@Override

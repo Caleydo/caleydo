@@ -19,13 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.RcpGLStratomexView;
-import org.caleydo.view.tourguide.internal.view.VendingMachine;
+import org.caleydo.view.tourguide.internal.view.GLTourGuideView;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
@@ -38,17 +35,18 @@ import org.eclipse.ui.PlatformUI;
 
 public class RcpGLTourGuideView extends ARcpGLViewPart {
 	private static int SECONDARY_IDs = 0;
-	/**
-	 * Constructor.
-	 */
-	public RcpGLTourGuideView() {
-		super();
 
-		try {
-			viewContext = JAXBContext.newInstance(SerializedTourGuideView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
+	public RcpGLTourGuideView() {
+		super(SerializedTourGuideView.class);
+	}
+
+	@Override
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		view = new GLTourGuideView(glCanvas);
+		initializeView();
+		createPartControlGL();
+		stratomexListener.partActivated(getSite().getPage().getActivePartReference());
 	}
 
 	@Override
@@ -57,11 +55,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		site.getPage().addPartListener(stratomexListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.ARcpGLViewPart#dispose()
-	 */
+
 	@Override
 	public void dispose() {
 		getSite().getPage().removePartListener(stratomexListener);
@@ -69,21 +63,8 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
-		super.createPartControl(parent);
-
-		view = new VendingMachine(glCanvas, parentComposite, serializedView.getViewFrustum());
-		initializeView();
-		createPartControlGL();
-		stratomexListener.partActivated(getSite().getPage().getActivePartReference());
-	}
-
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.view.CaleydoRCPViewPart#getView()
-	 */
-	@Override
-	public VendingMachine getView() {
-		return (VendingMachine) super.getView();
+	public GLTourGuideView getView() {
+		return (GLTourGuideView) super.getView();
 	}
 
 	@Override
@@ -92,11 +73,6 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		determineDataConfiguration(serializedView, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.CaleydoRCPViewPart#addToolBarContent()
-	 */
 	@Override
 	public void addToolBarContent() {
 		super.addToolBarContent();
@@ -125,7 +101,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return VendingMachine.VIEW_TYPE;
+		return GLTourGuideView.VIEW_TYPE;
 	}
 
 	private final IPartListener2 stratomexListener = new IPartListener2() {
@@ -170,7 +146,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 				return;
 			IWorkbenchPart part = partRef.getPart(false);
 
-			VendingMachine m = getView();
+			GLTourGuideView m = getView();
 
 			if (ignorePartChange(part))
 				return;

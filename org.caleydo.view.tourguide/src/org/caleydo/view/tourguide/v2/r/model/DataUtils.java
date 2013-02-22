@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.v2.r.model;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.column.container.FloatContainer;
+import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
 /**
@@ -42,6 +43,16 @@ public class DataUtils {
 		SimpleHistogram hist = new SimpleHistogram(bins);
 		for (int i = 0; i < c.size(); ++i) {
 			float value = c.getPrimitive(i);
+			hist.add(value);
+		}
+		return hist;
+	}
+
+	public static SimpleHistogram getHist(int bins, IFloatList l) {
+		SimpleHistogram hist = new SimpleHistogram(bins);
+		int s = l.size();
+		for (int i = 0; i < s; ++i) {
+			float value = l.getPrimitive(i);
 			hist.add(value);
 		}
 		return hist;

@@ -33,7 +33,7 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout {
 				it.remove();
 		}
 		for (IRow row : target) {
-			this.add(new GLElement(model.getValueRenderer()).setLayoutData(row));
+			this.add(model.createValue().setLayoutData(row));
 		}
 		return this;
 	}
