@@ -79,7 +79,7 @@ public final class ClassUtils {
 			if (methods == null && clazz == null)
 				return false;
 			if (methods == null || !methods.hasNext()) {
-				if (scanWhile != null && !scanWhile.apply(clazz))
+				if (clazz == null || (scanWhile != null && !scanWhile.apply(clazz)))
 					return false;
 				methods = Arrays.asList(clazz.getDeclaredMethods()).iterator();
 				clazz = clazz.getSuperclass();
