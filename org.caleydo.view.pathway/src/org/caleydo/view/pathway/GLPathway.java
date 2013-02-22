@@ -78,6 +78,7 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
@@ -229,6 +230,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 */
 	private String pathwayPathEventSpace = DEFAULT_PATHWAY_PATH_EVENT_SPACE;
 
+	/**
+	 * Context menu items that shall be displayed on right click on a {@link PathwayVertexRep}. Added via
+	 * {@link #addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem)}.
+	 */
+	List<VertexRepBasedContextMenuItem> addedContextMenuItems = new ArrayList<>();
+
 	EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	/**
@@ -267,7 +274,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		bubblesetCanvas.setDefaultView();
 		isBubbleTextureDirty = true;
 		selectedPathID = 0;
-		
+
 	}
 
 	private void selectNextPath() {
@@ -494,6 +501,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 							contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
 							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 						}
+					}
+					for (VertexRepBasedContextMenuItem item : addedContextMenuItems) {
+						item.setVertexRep(vertexRep);
+						contextMenuCreator.addContextMenuItem(item);
 					}
 				}
 
@@ -759,11 +770,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			outlineThickness = 3;
 
 			for (PathwayPath pathSegment : pathSegments) {
-				if(pathSegment.getPathway() == pathway)
-				{
+				if (pathSegment.getPathway() == pathway) {
 					bbGroupID++;
-					bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1], colorValues[2]), outlineThickness,
-							true);
+					bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1], colorValues[2]),
+							outlineThickness, true);
 					for (DefaultEdge edge : pathSegment.getPath().getEdgeList()) {
 						PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 						PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
@@ -779,8 +789,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 						bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
 					}
 					// add last item
-					if(pathSegment.getPath().getEdgeList().size()>0)
-					{
+					if (pathSegment.getPath().getEdgeList().size() > 0) {
 						DefaultEdge lastEdge = pathSegment.getPath().getEdgeList()
 								.get(pathSegment.getPath().getEdgeList().size() - 1);
 						if (lastEdge != null) {
@@ -958,18 +967,16 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// if (allPaths.size() == 0)
 		// return;
 
-
-
 		if (allPaths.size() <= selectedPathID)
-				selectedPathID = 0;
-		
+			selectedPathID = 0;
+
 		bubblesetCanvas.setSelection(selectedPathID); // the selected set will
 														// be rendered on top of
 														// all others
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
 		Graphics2D g2d = texRenderer.createGraphics();
-			
-		if (bbGroupID >= 0){
+
+		if (bbGroupID >= 0) {
 			bubblesetCanvas.paint(g2d);
 		}
 
@@ -1548,7 +1555,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				// no interaction with the previous selected path
 				// select vertexRep as startPoint and switch to
 				// end_point_selection_mode
-				
+
 				if (selectionType == SelectionType.SELECTION) {
 
 					boolean isPortalNode = false;
@@ -1558,9 +1565,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 						}
 					}
 					if (!isPortalNode) {
-						pathSegments.clear();							
+						pathSegments.clear();
 					}
-								
+
 					generateSingleNodePath(vertexRep);
 					pathSegments.add(new PathwayPath(selectedPath));
 					isPathStartSelected = true;
@@ -1572,7 +1579,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, pathStartVertexRep, MAX_PATHS);
 			List<GraphPath<PathwayVertexRep, DefaultEdge>> allPathsTmp = null;
-			if(vertexRep!=null){
+			if (vertexRep != null) {
 				if (vertexRep != pathStartVertexRep) {
 					allPathsTmp = pathAlgo.getPaths(vertexRep);
 					// if at least one path exist update the selected path
@@ -1586,9 +1593,9 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					generateSingleNodePath(vertexRep);
 				}
 			}
-			//update 
-			if(pathSegments.size()>0)
-				pathSegments.set(pathSegments.size()-1,new PathwayPath(selectedPath));			
+			// update
+			if (pathSegments.size() > 0)
+				pathSegments.set(pathSegments.size() - 1, new PathwayPath(selectedPath));
 			if (selectionType == SelectionType.SELECTION) {// click on
 															// end node
 				isPathStartSelected = false;
@@ -1625,7 +1632,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			selectPath(vertexRep, selectionType);
 
 			// TODO: make sure that this is the last vertex of the last path segment
-			if (selectedPath != null && vertexRep == selectedPath.getEndVertex()) {
+			if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
+					&& selectedPath.getEdgeList().size() > 0) {
 				ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
 				e.setSender(this);
 				e.setEventSpace(pathwayPathEventSpace);
@@ -1647,16 +1655,16 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	private void triggerPathUpdate() {
-//		List<PathwayPath> pathSegments = new ArrayList<>(1);
+		// List<PathwayPath> pathSegments = new ArrayList<>(1);
 		PathwayPathSelectionEvent pathEvent = new PathwayPathSelectionEvent();
 
-//		for (PathwayPath pathSegment : pathSegmentList) {
-//			pathSegments.add(pathSegment);
-//		}
-//		if (selectedPath != null && pathSegments!=null && pathSegments.size()>0) {
-//			//pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
-//			//pathSegments.set(pathSeg, element)
-//		}
+		// for (PathwayPath pathSegment : pathSegmentList) {
+		// pathSegments.add(pathSegment);
+		// }
+		// if (selectedPath != null && pathSegments!=null && pathSegments.size()>0) {
+		// //pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
+		// //pathSegments.set(pathSeg, element)
+		// }
 		pathEvent.setPathSegments(pathSegments);
 		pathEvent.setSender(this);
 		pathEvent.setEventSpace(pathwayPathEventSpace);
@@ -1670,8 +1678,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public void setSelectedPathSegments(List<PathwayPath> pathSegmentsBroadcasted) {
 		if (pathSegmentsBroadcasted == null)
 			return;
-		pathSegments=pathSegmentsBroadcasted;
-		this.selectedPath=null;
+		pathSegments = pathSegmentsBroadcasted;
+		this.selectedPath = null;
 		for (PathwayPath path : pathSegments) {
 			// TODO: Handle multiple path segments
 			if (path.getPathway() == pathway) {
@@ -1851,6 +1859,11 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (location != null)
 			pathways.add(location);
 		return null;
+	}
+
+	@Override
+	public synchronized void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
+		addedContextMenuItems.add(item);
 	}
 
 }

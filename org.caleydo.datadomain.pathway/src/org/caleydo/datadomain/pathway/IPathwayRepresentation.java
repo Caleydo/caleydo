@@ -50,9 +50,9 @@ public interface IPathwayRepresentation {
 	public List<PathwayGraph> getPathways();
 
 	/**
-	 * Gets the location of the specified vertexRep as rectangle. The coordinates are specified in pixels. If there are
-	 * multiple locations for the vertexRep, just the primary one is returned. To retrieve all locations, use
-	 * {@link #getVertexRepLocations(PathwayVertexRep)}.
+	 * Gets the location of the specified vertexRep as rectangle. The coordinates are specified in pixels with the
+	 * origin of the coordinate system at the left top. If there are multiple locations for the vertexRep, just the
+	 * primary one is returned. To retrieve all locations, use {@link #getVertexRepLocations(PathwayVertexRep)}.
 	 *
 	 * @param vertexRep
 	 * @return The location of the specified vertexRep or null, if the vertexRep does not exist.
@@ -60,10 +60,19 @@ public interface IPathwayRepresentation {
 	public Rectangle2D getVertexRepLocation(PathwayVertexRep vertexRep);
 
 	/**
-	 * Gets all locations of the specified vertexRep as rectangles. The coordinates are specified in pixels.
+	 * Gets all locations of the specified vertexRep as rectangles. The coordinates are specified in pixels with the
+	 * origin of the coordinate system at the left top.
 	 *
 	 * @param vertexRep
 	 * @return The locations of the specified vertexRep or null, if the vertexRep does not exist.
 	 */
 	public List<Rectangle2D> getVertexRepLocations(PathwayVertexRep vertexRep);
+
+	/**
+	 * Adds the specified context menu item to the context menu of all vertexReps in this pathway. The selected
+	 * vertexRep is set in the item using {@link VertexRepBasedContextMenuItem#setVertexRep(PathwayVertexRep)}.
+	 *
+	 * @param item
+	 */
+	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item);
 }
