@@ -140,6 +140,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	protected List<VertexRepBasedContextMenuItem> nodeContextMenuItems = new ArrayList<>();
 
+
 	protected EventBasedSelectionManager geneSelectionManager;
 	protected EventBasedSelectionManager metaboliteSelectionManager;
 	protected EventBasedSelectionManager sampleSelectionManager;
