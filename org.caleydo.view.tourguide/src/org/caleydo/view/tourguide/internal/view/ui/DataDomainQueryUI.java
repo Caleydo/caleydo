@@ -1,7 +1,6 @@
 package org.caleydo.view.tourguide.internal.view.ui;
 
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
@@ -10,6 +9,8 @@ import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.PathwayDataDomainQuery;
 import org.caleydo.view.tourguide.internal.view.model.TableDataDomainQuery;
+
+import com.google.common.collect.Iterables;
 
 public class DataDomainQueryUI extends GLElementContainer {
 
@@ -27,11 +28,19 @@ public class DataDomainQueryUI extends GLElementContainer {
 		pack(false, true);
 	}
 
-	private GLButton createFor(ADataDomainQuery q) {
+	private ADataDomainElement createFor(ADataDomainQuery q) {
 		if (q instanceof CategoricalDataDomainQuery)
 			return new CategoricalDataDomainElement((CategoricalDataDomainQuery) q);
 		if (q instanceof PathwayDataDomainQuery)
 			return new PathwayDataDomainElement((PathwayDataDomainQuery) q);
 		return new TableDataDomainElement((TableDataDomainQuery) q);
+	}
+
+	public void updateSelections() {
+		for (GLElementContainer elem : Iterables.filter(this, GLElementContainer.class)) {
+			for (ADataDomainElement c : Iterables.filter(elem, ADataDomainElement.class)) {
+				c.updateSelection();
+			}
+		}
 	}
 }

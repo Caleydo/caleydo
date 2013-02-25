@@ -19,6 +19,7 @@ package org.caleydo.datadomain.pathway;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,11 +30,13 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
@@ -42,6 +45,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -158,8 +162,8 @@ public class PathwayDataDomain extends ADataDomain {
 
 		pathwayManager.loadPathwaysByType(pathwayDatabase);
 
-		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS,
-				"data/xml/", "data/images/", "");
+		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS, "data/xml/",
+				"data/images/", "");
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.data.pathway.PathwayParser");
@@ -182,8 +186,19 @@ public class PathwayDataDomain extends ADataDomain {
 		pathwayManager.notifyPathwayLoadingFinished(true);
 
 		pathwayRecordPerspectives.clear();
+		IIDTypeMapper<Integer, Integer> mapper = getGeneIDMappingManager().getIDTypeMapper(
+				PathwayVertexRep.getIdType(), getDavidIDType());
 		for (PathwayGraph pathway : pathwayManager.getAllItems()) {
 			PathwayRecordPerspective p = new PathwayRecordPerspective(pathway, this);
+			List<Integer> idsInPathway = new ArrayList<Integer>();
+			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
+				Set<Integer> ids = mapper.apply(vertexRep.getID());
+				if (ids != null)
+					idsInPathway.addAll(ids);
+			}
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(idsInPathway);
+			p.init(data);
 			// p.reset();
 			pathwayRecordPerspectives.add(p);
 		}

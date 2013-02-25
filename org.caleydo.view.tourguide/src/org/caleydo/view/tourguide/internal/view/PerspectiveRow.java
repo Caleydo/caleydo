@@ -43,7 +43,7 @@ import org.caleydo.view.tourguide.v3.model.ARow;
  * @author Samuel Gratzl
  *
  */
-public final class PerspectiveRow extends ARow implements ILabelProvider {
+public class PerspectiveRow extends ARow implements ILabelProvider {
 	private final TablePerspective perspective;
 	private final Perspective stratification;
 	private final Group group;
@@ -83,6 +83,15 @@ public final class PerspectiveRow extends ARow implements ILabelProvider {
 		return perspective;
 	}
 
+	private VirtualArray getVirtualArray() {
+		return stratification.getVirtualArray();
+	}
+
+	private IDType getIdType() {
+		return stratification.getIdType();
+	}
+
+
 	public Group getGroup() {
 		return group;
 	}
@@ -100,7 +109,7 @@ public final class PerspectiveRow extends ARow implements ILabelProvider {
 		// select nearest score
 		Collection<IStratificationScore> relevant = filterRelevantColumns(visibleColumns);
 
-		IDType target = stratification.getIdType();
+		IDType target = getIdType();
 		for (IStratificationScore elem : relevant) {
 			IDType type = elem.getStratification().getIdType();
 			if (!target.getIDCategory().equals(type.getIDCategory()))
@@ -112,9 +121,9 @@ public final class PerspectiveRow extends ARow implements ILabelProvider {
 		CachedIDTypeMapper mapper = new CachedIDTypeMapper();
 
 		// compute the intersection of all
-		IDType source = stratification.getIdType();
+		IDType source = getIdType();
 
-		VirtualArray va = stratification.getVirtualArray();
+		VirtualArray va = getVirtualArray();
 		Collection<Integer> ids = (group == null) ? va.getIDs() : va.getIDsOfGroup(group.getGroupIndex());
 
 		if (!relevant.isEmpty()) {
@@ -134,6 +143,7 @@ public final class PerspectiveRow extends ARow implements ILabelProvider {
 		return Pair.make(ids, target);
 	}
 
+
 	private Set<IStratificationScore> filterRelevantColumns(Collection<IScore> columns) {
 		Set<IStratificationScore> relevant = new HashSet<>();
 		for (IScore score : columns) {
@@ -141,5 +151,16 @@ public final class PerspectiveRow extends ARow implements ILabelProvider {
 				relevant.add((IStratificationScore) score);
 		}
 		return relevant;
+	}
+
+	/**
+	 * @return
+	 */
+	public int size() {
+		if (getGroup() != null)
+			return getGroup().getSize();
+		if (getVirtualArray() != null)
+			return getVirtualArray().size();
+		return 0;
 	}
 }

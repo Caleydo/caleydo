@@ -154,7 +154,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		return new AFloatList() {
 			@Override
 			public float getPrimitive(int index) {
-				return getValue(getTable().get(index));
+				return data.applyPrimitive(getTable().get(index));
 			}
 
 			@Override

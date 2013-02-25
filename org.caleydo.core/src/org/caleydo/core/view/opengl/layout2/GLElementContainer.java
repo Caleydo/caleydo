@@ -260,6 +260,7 @@ public class GLElementContainer extends GLElement implements IGLElementParent, I
 		return Iterators.unmodifiableIterator(children.iterator());
 	}
 
+
 	@Override
 	public <P, R> R accept(IGLElementVisitor<P, R> visitor, P para) {
 		return visitor.visit(this, para);

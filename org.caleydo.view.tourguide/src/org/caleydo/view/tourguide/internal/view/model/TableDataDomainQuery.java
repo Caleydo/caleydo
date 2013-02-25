@@ -32,6 +32,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
 /**
@@ -44,8 +45,8 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 	private String matches = null;
 	private Perspective dimensionSelection = null;
 
-	public TableDataDomainQuery(ATableBasedDataDomain dataDomain) {
-		super(dataDomain);
+	public TableDataDomainQuery(EDataDomainQueryMode mode, ATableBasedDataDomain dataDomain) {
+		super(mode, dataDomain);
 	}
 
 	@Override

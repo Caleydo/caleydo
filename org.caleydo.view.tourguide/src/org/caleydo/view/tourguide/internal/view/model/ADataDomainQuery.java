@@ -28,6 +28,7 @@ import java.util.Objects;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
 /**
@@ -41,14 +42,16 @@ public abstract class ADataDomainQuery {
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
 	protected final IDataDomain dataDomain;
+	protected final EDataDomainQueryMode mode;
 
 	private int offset;
 	private BitSet mask = null;
 	private List<PerspectiveRow> data;
 	private boolean active = false;
 
-	public ADataDomainQuery(IDataDomain dataDomain) {
+	public ADataDomainQuery(EDataDomainQueryMode mode, IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		this.mode = mode;
 	}
 
 	public abstract boolean hasFilter();
@@ -63,6 +66,13 @@ public abstract class ADataDomainQuery {
 		return dataDomain;
 	}
 
+	/**
+	 * @return the mode, see {@link #mode}
+	 */
+	public EDataDomainQueryMode getMode() {
+		return mode;
+	}
+
 	public boolean isInitialized() {
 		return data != null;
 	}
@@ -71,6 +81,12 @@ public abstract class ADataDomainQuery {
 		if (this.active == active)
 			return;
 		propertySupport.firePropertyChange(PROP_ACTIVE, this.active, this.active = active);
+	}
+
+	public void setJustActive(boolean active) {
+		if (this.active == active)
+			return;
+		this.active = active;
 	}
 
 	/**

@@ -93,7 +93,11 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
-		return false;
+		for (IScore s : children) {
+			if (!s.supports(mode))
+				return false;
+		}
+		return true;
 	}
 
 	public Collection<? extends IScore> getChildren() {

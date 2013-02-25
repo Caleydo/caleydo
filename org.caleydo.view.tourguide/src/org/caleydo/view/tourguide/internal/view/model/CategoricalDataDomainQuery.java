@@ -33,6 +33,7 @@ import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
 /**
@@ -42,8 +43,8 @@ import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 public class CategoricalDataDomainQuery extends ADataDomainQuery {
 	private Set<CategoryProperty<?>> selected = new HashSet<>();
 
-	public CategoricalDataDomainQuery(ATableBasedDataDomain dataDomain) {
-		super(dataDomain);
+	public CategoricalDataDomainQuery(EDataDomainQueryMode mode, ATableBasedDataDomain dataDomain) {
+		super(mode, dataDomain);
 		assert (DataDomainOracle.isCategoricalDataDomain(dataDomain));
 		this.selected.addAll(getCategories());
 	}

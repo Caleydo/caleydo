@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -163,7 +164,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
 			for (IDataDomain dd : mode.getAllDataDomains()) {
-				final ADataDomainQuery q = createFor(dd);
+				final ADataDomainQuery q = createFor(mode, dd);
 				q.addPropertyChangeListener(ADataDomainQuery.PROP_ACTIVE, listener);
 				q.addPropertyChangeListener(ADataDomainQuery.PROP_MASK, listener);
 				queries.add(q);
@@ -171,12 +172,12 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		}
 	}
 
-	private static ADataDomainQuery createFor(IDataDomain dd) {
+	private static ADataDomainQuery createFor(EDataDomainQueryMode mode, IDataDomain dd) {
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
-			return new CategoricalDataDomainQuery((ATableBasedDataDomain) dd);
+			return new CategoricalDataDomainQuery(mode, (ATableBasedDataDomain) dd);
 		if (dd instanceof PathwayDataDomain)
-			return new PathwayDataDomainQuery((PathwayDataDomain) dd);
-		return new TableDataDomainQuery((ATableBasedDataDomain) dd);
+			return new PathwayDataDomainQuery(mode, (PathwayDataDomain) dd);
+		return new TableDataDomainQuery(mode, (ATableBasedDataDomain) dd);
 	}
 
 	// @ListenTo
@@ -214,6 +215,9 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	// }
 
 	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
+		if (q.getMode() != mode) {
+			changeMode(q.getMode());
+		}
 		if (q.isInitialized()) {
 			if (active) {
 				scheduleAllOf(q);
@@ -351,6 +355,51 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	/**
+	 * @param mode2
+	 */
+	private void changeMode(EDataDomainQueryMode mode) {
+		// check visible columns if they support the new mode
+		for (ARankColumnModel model : new ArrayList<>(table.getColumns())) {
+			if (needToHide(model,mode))
+				table.hide(model);
+			else if (model instanceof StackedRankColumnModel) {
+				StackedRankColumnModel s = (StackedRankColumnModel)model;
+				for (ARankColumnModel model2 : new ArrayList<>(s.getChildren())) {
+					if (needToHide(model2, mode))
+						s.hide(model2);
+				}
+			}
+		}
+		for (ADataDomainQuery q : this.queries) {
+			if (q.isActive() && q.getMode() != mode) {
+				q.setJustActive(false);
+			}
+		}
+		((DataDomainQueryUI) getVis().get(0)).updateSelections();
+		this.mode = mode;
+
+	}
+
+	/**
+	 * @param model
+	 * @param mode2
+	 * @return
+	 */
+	private static boolean needToHide(ARankColumnModel model, EDataDomainQueryMode mode) {
+		if ((model instanceof ScoreRankColumnModel) && !((ScoreRankColumnModel) model).getScore().supports(mode)) {
+			return true;
+		} else if (model instanceof MaxCompositeRankColumnModel) {
+			MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
+			for (ARankColumnModel model2 : max) {
+				if ((model2 instanceof ScoreRankColumnModel)
+						&& !((ScoreRankColumnModel) model2).getScore().supports(mode)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	/**
 	 * @return
 	 */
 	private Collection<IScore> getVisibleScores(PerspectiveRow row) {
@@ -371,6 +420,10 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 					cols.addAll(max.getChildren());
 				}
 			}
+		}
+		for (Iterator<IScore> it = r.iterator(); it.hasNext();) {
+			if (!it.next().supports(mode))
+				it.remove();
 		}
 		return r;
 	}
@@ -466,6 +519,8 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		Collection<IScore> toCompute = new ArrayList<>();
 		Scores scores = Scores.get();
 		for (IScore s : event.getScores()) {
+			if (!s.supports(this.mode))
+				continue;
 			if (s instanceof IRegisteredScore)
 				s = scores.addIfAbsent((IRegisteredScore) s);
 			if (s instanceof MultiScore) {
@@ -539,6 +594,11 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	@Override
 	public boolean isMoveAble(ARankColumnModel model) {
+		if (model instanceof ScoreRankColumnModel) {
+			IScore s = ((ScoreRankColumnModel) model).getScore();
+			if (!s.supports(mode))
+				return false;
+		}
 		return true;
 	}
 

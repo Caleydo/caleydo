@@ -116,11 +116,7 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 	}
 
 	private int getValue(PerspectiveRow prow) {
-		if (prow.getGroup() != null)
-			return prow.getGroup().getSize();
-		if (prow.getStratification() != null && prow.getStratification().getVirtualArray() != null)
-			return prow.getStratification().getVirtualArray().size();
-		return 0;
+		return prow.size();
 	}
 
 	@Override

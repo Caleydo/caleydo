@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 
 import com.google.common.collect.Lists;
@@ -37,8 +38,8 @@ import com.google.common.collect.Lists;
 public class PathwayDataDomainQuery extends ADataDomainQuery {
 	private String matches = null;
 
-	public PathwayDataDomainQuery(PathwayDataDomain dataDomain) {
-		super(dataDomain);
+	public PathwayDataDomainQuery(EDataDomainQueryMode mode, PathwayDataDomain dataDomain) {
+		super(mode, dataDomain);
 	}
 
 	@Override

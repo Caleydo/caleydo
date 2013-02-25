@@ -274,13 +274,29 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 			GL2 gl = g.gl;
 			final float z = g.z();
 			gl.glBegin(GL.GL_LINES);
-			for (int i = 0; i < raw.size(); ++i) {
-				float v = raw.getPrimitive(i);
-				float x = normalizeRaw(v) * w;
-				float y = (1 - model.apply(v)) * h;
-				gl.glVertex3f(x, h, z);
-				gl.glVertex3f(0, y, z);
+			if (raw.size() < 1000) {
+				for (int i = 0; i < raw.size(); ++i) {
+					float v = raw.getPrimitive(i);
+					float x = normalizeRaw(v) * w;
+					float y = (1 - model.apply(v)) * h;
+					gl.glVertex3f(x, h, z);
+					gl.glVertex3f(0, y, z);
+				}
+			} else {
+				// sample 1000 elements
+				List<Integer> r = new ArrayList<>(1000);
+				for (int i = 0; i < 1000; ++i)
+					r.add(i);
+				Collections.shuffle(r);
+				for (int i = 0; i < 1000; ++i) {
+					float v = raw.getPrimitive(r.get(i));
+					float x = normalizeRaw(v) * w;
+					float y = (1 - model.apply(v)) * h;
+					gl.glVertex3f(x, h, z);
+					gl.glVertex3f(0, y, z);
+				}
 			}
+
 			gl.glEnd();
 		}
 

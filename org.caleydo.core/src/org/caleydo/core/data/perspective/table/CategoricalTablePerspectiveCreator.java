@@ -211,7 +211,7 @@ public class CategoricalTablePerspectiveCreator {
 						+ table.getRaw(dimensionID, recordID));
 
 			} else {
-				System.out.println(" raw: " + table.getRaw(dimensionID, recordID));
+				// System.out.println(" raw: " + table.getRaw(dimensionID, recordID));
 				ArrayList<Integer> bin = bins.get(property);
 				bin.add(recordID);
 			}
