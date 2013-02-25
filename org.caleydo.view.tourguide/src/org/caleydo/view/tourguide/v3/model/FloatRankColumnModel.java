@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -48,7 +49,7 @@ import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
 import org.caleydo.view.tourguide.v3.ui.GLPropertyChangeListeners;
 import org.caleydo.view.tourguide.v3.ui.PiecewiseLinearMappingUI;
 import org.caleydo.view.tourguide.v3.ui.RenderUtils;
-import org.caleydo.view.tourguide.v3.ui.detail.ScoreBarRenderer;
+import org.caleydo.view.tourguide.v3.ui.detail.ScoreSummary;
 import org.eclipse.swt.SWT;
 
 /**
@@ -57,7 +58,7 @@ import org.eclipse.swt.SWT;
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IFilterColumnMixin,
 		IMappedColumnMixin,
-		IRankableColumnMixin {
+ IRankableColumnMixin, IGLRenderer {
 	private float selectionMin = 0;
 	private float selectionMax = 1;
 
@@ -87,8 +88,6 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
 		}
 	};
-
-	private IGLRenderer valueRenderer = new ScoreBarRenderer(this);
 
 	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
 			PiecewiseLinearMapping mapping) {
@@ -132,7 +131,30 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(valueRenderer);
+		return new GLElement(this);
+	}
+
+	@Override
+	public void render(GLGraphics g, float w, float h, GLElement parent) {
+		final IRow r = parent.getLayoutDataAs(IRow.class, null);
+		float v = getValue(r);
+		if (Float.isNaN(v))
+			return;
+		if (w < 20) {
+			float[] c = getColor().getColorComponents(null);
+			g.color(c[0], c[1], c[2], v).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
+		} else {
+			g.color(getColor()).fillRect(0, h * 0.1f, w * v, h * 0.8f);
+			if (getTable().getSelectedRow() == r) {
+				float raw = data.applyPrimitive(r);
+				String rawT = Formatter.formatNumber(raw);
+				float rw = g.text.getRequiredTextWidthWithMax(rawT, h * 0.45f, w * v);
+				if (rw < w * v)
+					g.drawText(rawT, 1, h * 0.2f, w * v - 2, h * 0.45f, VAlign.RIGHT);
+				else
+					g.drawText(rawT, w * v + 1, h * 0.2f, w - w * v, h * 0.45f);
+			}
+		}
 	}
 
 	@Override
@@ -345,8 +367,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			// background
 			g.color(bgColor).fillRect(0, 0, w, h);
 			// hist
-			int bins = Math.round(w);
-			SimpleHistogram hist = getHist(bins);
+			SimpleHistogram hist = getHist(ScoreSummary.binsForWidth(w));
 			int selectedBin = selectedRow == null ? -1 : hist.getBinOf(getValue(selectedRow));
 			RenderUtils.renderHist(g, hist, w, h, selectedBin, color, color.darker());
 			// selection
@@ -416,6 +437,5 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			repaint();
 		}
 	}
-
 
 }

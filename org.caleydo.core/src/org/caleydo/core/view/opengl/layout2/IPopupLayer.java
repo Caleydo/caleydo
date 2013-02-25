@@ -30,7 +30,9 @@ import gleem.linalg.Vec4f;
 public interface IPopupLayer {
 	int FLAG_CLOSEABLE = 1 << 0;
 	int FLAG_RESIZEABLE = 1 << 1;
-	int FLAG_MOVEABLE = 2 << 1;
+	int FLAG_MOVEABLE = 1 << 2;
+	int FLAG_BORDER = 1 << 3;
+	int FLAG_ALL = FLAG_CLOSEABLE | FLAG_RESIZEABLE | FLAG_MOVEABLE | FLAG_BORDER;
 
 	/**
 	 * see {@link #show(GLElement, Vec4f, int)} with all flags set

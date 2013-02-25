@@ -201,7 +201,6 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	 */
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		System.out.println("compute layout");
 		rowPositions = preScan(rowLayout.compute(table.size(), table.getSelectedRow() == null ? -1 : table
 				.getSelectedRow().getRank(), h - 5));
 		if (rowPositions.length > pickingIDs.length) {

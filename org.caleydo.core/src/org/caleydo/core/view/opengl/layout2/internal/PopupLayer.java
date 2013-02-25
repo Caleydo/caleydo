@@ -43,7 +43,7 @@ public final class PopupLayer extends GLElementContainer implements IPopupLayer 
 
 	@Override
 	public void show(GLElement popup, Vec4f bounds) {
-		show(popup, bounds, FLAG_CLOSEABLE | FLAG_RESIZEABLE);
+		show(popup, bounds, FLAG_ALL);
 	}
 
 	@Override

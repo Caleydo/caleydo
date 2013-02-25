@@ -558,5 +558,12 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public IRankTableConfig getConfig() {
 		return config;
 	}
+
+	/**
+	 * @return
+	 */
+	public int getSelectedRank() {
+		return selectedRank;
+	}
 }
 

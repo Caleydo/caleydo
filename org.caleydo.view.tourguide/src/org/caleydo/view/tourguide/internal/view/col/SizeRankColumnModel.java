@@ -118,7 +118,9 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 	private int getValue(PerspectiveRow prow) {
 		if (prow.getGroup() != null)
 			return prow.getGroup().getSize();
-		return prow.getStratification().getVirtualArray().size();
+		if (prow.getStratification() != null && prow.getStratification().getVirtualArray() != null)
+			return prow.getStratification().getVirtualArray().size();
+		return 0;
 	}
 
 	@Override
@@ -134,7 +136,9 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 			super.renderImpl(g, w, h);
 			float hi = Math.min(h, 18);
 			PerspectiveRow r = getLayoutDataAs(PerspectiveRow.class, null);
-			g.drawText(getValue(r) + "", 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+			int f = getValue(r);
+			if (f > 0)
+				g.drawText(f + "", 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
 		}
 	}
 

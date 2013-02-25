@@ -39,9 +39,11 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
  */
 class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISelectionCallback, IGLRenderer {
 	private final GLElement content;
+	private final int flags;
 
 	public PopupElement(GLElement content, Vec4f bounds, int flags) {
 		this.content = content;
+		this.flags = flags;
 		setLayout(this);
 		this.add(content);
 		this.setBounds(bounds.x(), bounds.y(), bounds.z(), bounds.w());
@@ -93,8 +95,10 @@ class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISe
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		// g.color(Color.LIGHT_GRAY).fillRoundedRect(0, 0, w, h, 3);
-		g.color(Color.BLACK).drawRoundedRect(0, 0, w, h, 3);
+		if ((flags & IPopupLayer.FLAG_BORDER) != 0) {
+			// g.color(Color.LIGHT_GRAY).fillRoundedRect(0, 0, w, h, 3);
+			g.color(Color.BLACK).drawRoundedRect(0, 0, w, h, 3);
+		}
 		super.renderImpl(g, w, h);
 	}
 }

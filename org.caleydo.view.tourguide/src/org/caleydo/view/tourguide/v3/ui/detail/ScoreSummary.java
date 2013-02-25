@@ -55,8 +55,7 @@ public class ScoreSummary extends GLElement {
 		// background
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		// hist
-		int bins = Math.round(w);
-		SimpleHistogram hist = model.getHist(bins);
+		SimpleHistogram hist = model.getHist(binsForWidth(w));
 		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.getValue(selectedRow));
 		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker());
 	}
@@ -66,5 +65,13 @@ public class ScoreSummary extends GLElement {
 			return;
 		this.selectedRow = selectedRow;
 		repaint();
+	}
+
+	/**
+	 * @param w
+	 * @return
+	 */
+	public static int binsForWidth(float w) {
+		return Math.round(w * 0.25f);
 	}
 }

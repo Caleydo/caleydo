@@ -155,6 +155,7 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 		if (index != combinedAlign) {
 			// moving around
 			int[] ranks = stacked.getTable().getOrder();
+			IRow selected = stacked.getTable().getSelectedRow();
 			float[] rowPositions = ((TableBodyUI) getParent()).getRowPositions();
 			float[] weights = new float[stacked.size()];
 			for (int i = 0; i < weights.length; ++i)
@@ -169,18 +170,22 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 				IGLLayoutElement row = children.get(r);
 				used.clear(r);
 				IRow data = row.getLayoutDataAs(IRow.class, null);
-				float x = 0;
-				MultiFloat vs = stacked.getSplittedValue(data);
-				if (index < combinedAlign) {
-					for (int i = index; i < combinedAlign; ++i)
-						x += -vs.values[i] + weights[i] - COLUMN_SPACE;
-					x += COLUMN_SPACE;
+				if (data == selected) {
+					row.setBounds(COLUMN_SPACE, y, w, hr - y);
 				} else {
-					for (int i = combinedAlign; i < index; ++i)
-						x += vs.values[i] - weights[i] + COLUMN_SPACE;
-					x += COLUMN_SPACE;
+					float x = 0;
+					MultiFloat vs = stacked.getSplittedValue(data);
+					if (index < combinedAlign) {
+						for (int i = index; i < combinedAlign; ++i)
+							x += -vs.values[i] + weights[i] - COLUMN_SPACE;
+						x += COLUMN_SPACE;
+					} else {
+						for (int i = combinedAlign; i < index; ++i)
+							x += vs.values[i] - weights[i] + COLUMN_SPACE;
+						x += COLUMN_SPACE;
+					}
+					row.setBounds(x, y, w, hr - y);
 				}
-				row.setBounds(x, y, w, hr - y);
 				y = hr;
 			}
 			for (int unused = used.nextSetBit(0); unused >= 0; unused = used.nextSetBit(unused + 1)) {

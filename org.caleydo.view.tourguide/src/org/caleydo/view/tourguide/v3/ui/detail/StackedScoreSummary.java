@@ -70,13 +70,11 @@ public class StackedScoreSummary extends GLElementContainer implements IGLLayout
 			return;
 		switch (pick.getPickingMode()) {
 		case MOUSE_OVER:
-			System.out.println("add");
 			for (ARankColumnModel m : this.model) {
 				this.add(new Child(m));
 			}
 			break;
 		case MOUSE_OUT:
-			System.out.println("remove");
 			this.clear();
 			break;
 		default:
@@ -114,10 +112,9 @@ public class StackedScoreSummary extends GLElementContainer implements IGLLayout
 		// background
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		// hist
-		int bins = Math.round(w);
 		int size = model.size();
 		// create a stacked histogram of all values
-		SimpleHistogram[] hists = model.getHists(bins);
+		SimpleHistogram[] hists = model.getHists(ScoreSummary.binsForWidth(w));
 		Color[] colors = model.getColors();
 		Color[] selectedColors = new Color[size];
 		int[] selectedBins = new int[size];

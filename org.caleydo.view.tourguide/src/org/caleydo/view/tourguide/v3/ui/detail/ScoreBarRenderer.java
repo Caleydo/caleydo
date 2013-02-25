@@ -22,6 +22,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 			float[] c = model.getColor().getColorComponents(null);
 			g.color(c[0], c[1], c[2], v).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
 		} else {
+
 			g.color(model.getColor()).fillRect(0, h * 0.1f, w * v, h * 0.8f);
 		}
 	}

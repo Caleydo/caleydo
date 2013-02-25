@@ -45,7 +45,7 @@ public class RowHeightLayouts {
 		public float[] compute(int numRows, int selectedRowIndex, float h) {
 			float[] r = new float[numRows];
 			float act = 22;
-			float delta = -0.75f;
+			float delta = -0.25f;
 			float acc = 0;
 			for (int i = 0; i < numRows; ++i) {
 				r[i] = act;
@@ -56,7 +56,7 @@ public class RowHeightLayouts {
 					r[i] = 30;
 				}
 				acc += r[i];
-				if (acc >= h) {
+				if (acc >= (h - act)) {
 					r = Arrays.copyOf(r, i + 1);
 					break;
 				}

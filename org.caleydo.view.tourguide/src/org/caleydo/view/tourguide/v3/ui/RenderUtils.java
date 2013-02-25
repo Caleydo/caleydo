@@ -21,6 +21,8 @@ package org.caleydo.view.tourguide.v3.ui;
 
 import java.awt.Color;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
@@ -34,7 +36,10 @@ public class RenderUtils {
 		w -= 2;
 		float factor = h / hist.getLargestValue(false);
 		float delta = w / hist.size();
+		float lineWidth = delta;
 
+		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
+		g.lineWidth(lineWidth);
 		g.save();
 		float x = 1 + delta / 2;
 		g.move(0, h - 1).color(color);
@@ -53,6 +58,7 @@ public class RenderUtils {
 			x += delta;
 		}
 		g.restore();
+		g.gl.glPopAttrib();
 	}
 
 	public static void renderStackedHist(GLGraphics g, SimpleHistogram[] hists, float w, float h, int[] selectedBins,
@@ -73,7 +79,10 @@ public class RenderUtils {
 		}
 		float factor = h / largest;
 		float delta = w / size;
+		float lineWidth = delta;
 
+		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
+		g.lineWidth(lineWidth);
 		g.save();
 		float x = 1 + delta / 2;
 		g.move(0, h - 1);
@@ -94,5 +103,6 @@ public class RenderUtils {
 			x += delta;
 		}
 		g.restore();
+		g.gl.glPopAttrib();
 	}
 }
