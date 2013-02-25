@@ -445,7 +445,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	@Override
 	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
-		updatePathLinks();
+		isLayoutDirty = true;
 	}
 
 	@Override
