@@ -24,7 +24,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -61,6 +62,7 @@ import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
+import org.caleydo.view.tourguide.internal.view.col.IAddToStratomex;
 import org.caleydo.view.tourguide.internal.view.col.PerspectiveRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.ScoreRankColumnModel;
 import org.caleydo.view.tourguide.internal.view.col.SizeRankColumnModel;
@@ -89,7 +91,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IRankTableConfig {
+public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IRankTableConfig, IAddToStratomex {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
@@ -154,7 +156,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		});
 
 		this.table.addColumn(new RankRankColumnModel());
-		this.table.addColumn(new PerspectiveRankColumnModel(stratomex));
+		this.table.addColumn(new PerspectiveRankColumnModel(this));
 		this.stacked = new StackedRankColumnModel();
 		this.table.addColumn(stacked);
 		this.table.addColumn(new SizeRankColumnModel());
@@ -226,7 +228,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	 * @param q
 	 */
 	private void scheduleAllOf(final ADataDomainQuery q) {
-		Collection<IScore> scores = new ArrayList<>(getVisibleScores());
+		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
 			getPopupLayer().show(waiting, getRoot().getBounds(), 0);
@@ -271,7 +273,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		for (IScore s : scores) {
 			if (s instanceof MultiScore) {
 				ACompositeRankColumnModel combined = table.createCombined();
-				table.addColumn(combined);
+				table.addColumnTo(stacked, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					table.addColumnTo(combined, new ScoreRankColumnModel(s2));
 				}
@@ -345,18 +347,29 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	protected void onSelectRow(PerspectiveRow old, PerspectiveRow new_) {
-		stratomex.updatePreview(old, new_, getVisibleScores(), mode);
+		stratomex.updatePreview(old, new_, getVisibleScores(new_), mode);
 	}
 
 	/**
 	 * @return
 	 */
-	private Collection<IScore> getVisibleScores() {
+	private Collection<IScore> getVisibleScores(PerspectiveRow row) {
 		Collection<IScore> r = new ArrayList<>();
-		for (Iterator<ARankColumnModel> it = table.findAllColumns(); it.hasNext();) {
-			ARankColumnModel model = it.next();
+		Deque<ARankColumnModel> cols = new LinkedList<>(table.getColumns());
+		while (!cols.isEmpty()) {
+			ARankColumnModel model = cols.pollFirst();
 			if (model instanceof ScoreRankColumnModel) {
 				r.add(((ScoreRankColumnModel) model).getScore());
+			} else if (model instanceof StackedRankColumnModel) {
+				cols.addAll(((StackedRankColumnModel) model).getChildren());
+			} else if (model instanceof MaxCompositeRankColumnModel) {
+				MaxCompositeRankColumnModel max = (MaxCompositeRankColumnModel) model;
+				if (row != null) {
+					int repr = max.getSplittedValue(row).getRepr();
+					cols.add(max.get(repr));
+				} else {
+					cols.addAll(max.getChildren());
+				}
 			}
 		}
 		return r;
@@ -390,6 +403,17 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		if (popupLayer == null)
 			return;
 		updateStratomexState();
+	}
+
+	@Override
+	public void add2Stratomex(PerspectiveRow r) {
+		stratomex.addToStratomex(r, getVisibleScores(r), mode);
+	}
+
+	@Override
+	public boolean canAdd2Stratomex(PerspectiveRow r) {
+		return r.getPerspective() != null
+				&& (!stratomex.contains(r.getPerspective()) || stratomex.isTemporaryPreviewed(r.getPerspective()));
 	}
 
 	@ListenTo

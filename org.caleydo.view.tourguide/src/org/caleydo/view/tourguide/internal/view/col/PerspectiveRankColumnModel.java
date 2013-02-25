@@ -22,9 +22,11 @@ package org.caleydo.view.tourguide.internal.view.col;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.view.tourguide.internal.view.StratomexAdapter;
 import org.caleydo.view.tourguide.v3.model.StringRankColumnModel;
 
 /**
@@ -32,9 +34,9 @@ import org.caleydo.view.tourguide.v3.model.StringRankColumnModel;
  *
  */
 public class PerspectiveRankColumnModel extends StringRankColumnModel {
-	private final StratomexAdapter stratomex;
+	private final IAddToStratomex stratomex;
 
-	public PerspectiveRankColumnModel(StratomexAdapter stratomex) {
+	public PerspectiveRankColumnModel(IAddToStratomex stratomex) {
 		super(GLRenderers.drawText("Match", VAlign.CENTER), StringRankColumnModel.DFEAULT);
 		this.stratomex = stratomex;
 	}
@@ -45,19 +47,72 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 	}
 
 	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		float hint = Math.min(h - 2, 12);
-		if (hint <= 0)
-			return;
-		PerspectiveRow r = parent.getLayoutDataAs(PerspectiveRow.class, null);
-		g.color(r.getDataDomain().getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
-		if (h < 5 || w < 20)
-			return;
-		float x = hint + 2;
-		float hi = Math.min(h, 18);
-		g.drawText(r.getLabel(), x, 1 + (h - hi) * 0.5f, w - 2 - x, hi - 2);
+	public GLElement createValue() {
+		return new MyElement();
+	}
 
-		// TODO add to Stratomex Button
+	class MyElement extends GLElement {
+		private final IPickingListener addto = new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				onAddToPick(pick);
+			}
+		};
+		private int addtoPickingId;
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			float hint = Math.min(h - 2, 12);
+			if (hint <= 0)
+				return;
+			PerspectiveRow r = this.getLayoutDataAs(PerspectiveRow.class, null);
+			g.color(r.getDataDomain().getColor()).fillRect(1, (h - hint) * 0.5f, hint, hint);
+			if (stratomex.canAdd2Stratomex(r)) {
+				g.fillImage("resources/icons/view/tourguide/add.png", 1, (h - hint) * 0.5f, hint, hint);
+			}
+			if (h < 5 || w < 20)
+				return;
+			float x = hint + 2;
+			float hi = Math.min(h, 18);
+			g.drawText(r.getLabel(), x, 1 + (h - hi) * 0.5f, w - 2 - x, hi - 2);
+		}
+
+		protected void onAddToPick(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			switch(pick.getPickingMode()) {
+			case MOUSE_RELEASED:
+				PerspectiveRow r = this.getLayoutDataAs(PerspectiveRow.class, null);
+				if (stratomex.canAdd2Stratomex(r)) {
+					stratomex.add2Stratomex(r);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		protected void init(IGLElementContext context) {
+			super.init(context);
+			this.addtoPickingId = context.registerPickingListener(addto);
+		}
+
+		@Override
+		protected void takeDown() {
+			context.unregisterPickingListener(addtoPickingId);
+			addtoPickingId = -1;
+			super.takeDown();
+		}
+
+		@Override
+		protected void renderPickImpl(GLGraphics g, float w, float h) {
+			float hint = Math.min(h - 2, 12);
+			if (hint <= 0)
+				return;
+			g.pushName(addtoPickingId);
+			g.fillRect(1, (h - hint) * 0.5f, hint, hint);
+			g.popName();
+		}
 	}
 
 	// AdvancedTextureRenderer cAdd = new AdvancedTextureRenderer(null, view.getTextureManager());
