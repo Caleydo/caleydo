@@ -67,6 +67,11 @@ public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore imp
 	}
 
 	@Override
+	public String getDescription() {
+		return algorithm.getDescription() + getLabel();
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();

@@ -124,6 +124,11 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 		g.drawText("Group Size", 0, 0, w, h, VAlign.CENTER);
 	}
 
+	@Override
+	public String toString() {
+		return "Group Size Metric";
+	}
+
 	class MyElement extends GLElementContainer {
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {

@@ -94,6 +94,11 @@ public class LogRankMetricFactory implements IMetricFactory {
 				}
 
 				@Override
+				public String getDescription() {
+					return "Log Rank of ";
+				}
+
+				@Override
 				public float compute(Set<Integer> a, Set<Integer> b) {
 					// me versus the rest
 					return underlying.compute(a, Sets.difference(b, a));
@@ -132,6 +137,11 @@ public class LogRankMetricFactory implements IMetricFactory {
 		@Override
 		public String getAbbreviation() {
 			return "LR-P";
+		}
+
+		@Override
+		public String getDescription() {
+			return "Log Rank p-Value of " + getLabel();
 		}
 
 		@Override

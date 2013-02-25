@@ -55,6 +55,11 @@ public class DefaultComputedStratificationScore extends AComputedStratificationS
 	}
 
 	@Override
+	public String getDescription() {
+		return algorithm.getDescription() + getLabel();
+	}
+
+	@Override
 	public String getAbbreviation() {
 		return algorithm.getAbbreviation();
 	}

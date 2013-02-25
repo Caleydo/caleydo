@@ -67,6 +67,11 @@ public abstract class AExternalScore extends DefaultLabelProvider implements ISe
 	}
 
 	@Override
+	public String getDescription() {
+		return "External Score " + getLabel();
+	}
+
+	@Override
 	public String getProviderName() {
 		return "External";
 	}

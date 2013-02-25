@@ -131,7 +131,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 
 	@Override
 	public String toString() {
-		return score.getLabel();
+		return score.getDescription();
 	}
 
 }

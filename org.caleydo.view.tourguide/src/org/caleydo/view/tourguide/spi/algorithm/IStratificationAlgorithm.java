@@ -49,4 +49,5 @@ public interface IStratificationAlgorithm {
 	 */
 	String getAbbreviation();
 
+	String getDescription();
 }

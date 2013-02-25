@@ -228,4 +228,9 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 	public String getAbbreviation() {
 		return "GSEA";
 	}
+
+	@Override
+	public String getDescription() {
+		return "GSEA score against ";
+	}
 }

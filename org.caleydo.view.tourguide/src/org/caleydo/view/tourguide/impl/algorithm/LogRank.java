@@ -51,6 +51,11 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
+	public String getDescription() {
+		return "Log Rank of ";
+	}
+
+	@Override
 	public IDType getTargetType(Perspective a, Perspective b) {
 		return clinical.getRecordIDType();
 	}

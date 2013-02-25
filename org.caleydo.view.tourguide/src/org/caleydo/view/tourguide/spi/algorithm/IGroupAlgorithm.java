@@ -46,4 +46,6 @@ public interface IGroupAlgorithm {
 	 * @return
 	 */
 	String getAbbreviation();
+
+	String getDescription();
 }

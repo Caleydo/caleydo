@@ -92,6 +92,11 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 		}
 
 		@Override
+		public String getDescription() {
+			return underlying.getDescription().replace("score", "p-Value");
+		}
+
+		@Override
 		public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
 			return underlying.computePValue(a.iterator().next());
 		}

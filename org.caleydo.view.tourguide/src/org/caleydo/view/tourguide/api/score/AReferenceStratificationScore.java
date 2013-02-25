@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.api.score;
 import java.awt.Color;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 
 /**
@@ -33,7 +34,8 @@ public abstract class AReferenceStratificationScore extends AComputedStratificat
 	protected final Perspective reference;
 
 	public AReferenceStratificationScore(String label, Perspective reference, Color color, Color bgColor) {
-		super(label == null ? reference.getLabel() : label, color, bgColor);
+		super(label == null ? reference.getLabel() : label, Colors.of(reference.getDataDomain().getColor()), Colors.of(
+				reference.getDataDomain().getColor()).brighter());
 		this.reference = reference;
 	}
 

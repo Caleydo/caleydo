@@ -47,6 +47,11 @@ public class JaccardIndex implements IGroupAlgorithm {
 	}
 
 	@Override
+	public String getDescription() {
+		return "Jaccard Index against ";
+	}
+
+	@Override
 	public IDType getTargetType(Perspective a, Perspective b) {
 		return a.getIdType();
 	}

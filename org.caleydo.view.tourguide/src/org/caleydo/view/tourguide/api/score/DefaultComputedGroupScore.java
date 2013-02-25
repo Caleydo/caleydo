@@ -59,6 +59,11 @@ public class DefaultComputedGroupScore extends AComputedGroupScore implements IC
 	}
 
 	@Override
+	public String getDescription() {
+		return algorithm.getDescription() + getLabel();
+	}
+
+	@Override
 	public IComputeScoreFilter getFilter() {
 		return filter;
 	}

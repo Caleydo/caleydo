@@ -42,6 +42,10 @@ public final class Colors {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 	}
 
+	public static java.awt.Color of(Color color) {
+		return new java.awt.Color(color.r, color.g, color.b, color.a);
+	}
+
 	public static float[] rgba(java.awt.Color color) {
 		return of(color).getRGBA();
 	}

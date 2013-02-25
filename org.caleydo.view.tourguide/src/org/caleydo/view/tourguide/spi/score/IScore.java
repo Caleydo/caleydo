@@ -40,16 +40,18 @@ public interface IScore extends ILabelProvider, IFloatFunction<IRow> {
 	 * @param mode
 	 * @return
 	 */
-	public boolean supports(EDataDomainQueryMode mode);
+	boolean supports(EDataDomainQueryMode mode);
 
 	/**
 	 * @return
 	 */
-	public String getAbbreviation();
+	String getAbbreviation();
 
-	public Color getColor();
+	String getDescription();
 
-	public Color getBGColor();
+	Color getColor();
 
-	public PiecewiseLinearMapping createMapping();
+	Color getBGColor();
+
+	PiecewiseLinearMapping createMapping();
 }

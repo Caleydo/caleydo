@@ -48,6 +48,11 @@ public class AdjustedRandIndex implements IStratificationAlgorithm {
 	}
 
 	@Override
+	public String getDescription() {
+		return "Adjusted Rand of ";
+	}
+
+	@Override
 	public IDType getTargetType(Perspective a, Perspective b) {
 		return a.getIdType();
 	}

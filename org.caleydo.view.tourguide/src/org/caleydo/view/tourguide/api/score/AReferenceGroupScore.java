@@ -24,6 +24,7 @@ import java.util.Objects;
 
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 
 /**
@@ -35,7 +36,9 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 	protected Group group;
 
 	public AReferenceGroupScore(String label, Perspective stratification, Group group, Color color, Color bgColor) {
-		super(label == null ? stratification.getLabel() + ": " + group.getLabel() : label, color, bgColor);
+		super(label == null ? stratification.getLabel() + ": " + group.getLabel() : label, Colors.of(stratification
+				.getDataDomain().getColor()), Colors.of(stratification.getDataDomain().getColor()).brighter()
+				.brighter());
 		this.stratification = stratification;
 		this.group = group;
 		put(this.group, Float.NaN); // add self

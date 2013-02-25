@@ -68,7 +68,12 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 
 	@Override
 	public String getAbbreviation() {
-		return null;
+		return "";
+	}
+
+	@Override
+	public String getDescription() {
+		return "";
 	}
 
 	@Override

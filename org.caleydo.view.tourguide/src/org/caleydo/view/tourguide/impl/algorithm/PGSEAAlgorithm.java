@@ -19,9 +19,9 @@ import com.google.common.collect.Sets;
  * Parametric Gene Set Expression Analysis based on <a href="http://www.biomedcentral.com/1471-2105/6/144">PAGE:
  * Parametric Analysis of Gene Set Enrichment</a> and R package <a
  * href="http://bioconductor.org/packages/2.4/bioc/html/PGSEA.html">PGSEA</a>
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class PGSEAAlgorithm extends AGSEAAlgorithm {
 	private Map<Integer, Float> foldChanges = Maps.newHashMap();
@@ -115,5 +115,10 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 	@Override
 	public String getAbbreviation() {
 		return "PGSEA";
+	}
+
+	@Override
+	public String getDescription() {
+		return "PGSEA score against ";
 	}
 }

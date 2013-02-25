@@ -64,6 +64,10 @@ public class DefaultComputedReferenceStratificationScore extends AReferenceStrat
 		return algorithm.getAbbreviation();
 	}
 
+	@Override
+	public String getDescription() {
+		return algorithm.getDescription() + getLabel();
+	}
 
 	@Override
 	public IComputeScoreFilter getFilter() {
