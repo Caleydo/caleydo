@@ -32,7 +32,6 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -40,10 +39,14 @@ import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AGLElementView;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IPopupLayer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -112,7 +115,21 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
 
-	private WaitingPopup waiting = new WaitingPopup();
+	private final GLElement waiting = new GLElement(new IGLRenderer() {
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			// g.color(1, 1, 1, 0.3f).fillRect(0, 0, w, h);
+			g.fillImage("resources/loading/loading_circle.png", (w - 250) * 0.5f, (h - 250) * 0.5f, 250, 250);
+		}
+	});
+	private boolean noStratomexVisible = false;
+	private final GLElement noStratomex = new GLElement(new IGLRenderer() {
+		@Override
+		public void render(GLGraphics g, float w, float h, GLElement parent) {
+			// g.color(1, 1, 1, 0.3f).fillRect(0, 0, w, h);
+			g.drawText("No active StratomeX", 10, h * 0.5f - 12, w - 20, 24, VAlign.CENTER);
+		}
+	});
 
 	public GLTourGuideView(IGLCanvas glCanvas) {
 		super(glCanvas, VIEW_TYPE, VIEW_NAME);
@@ -225,7 +242,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			getPopupLayer().show(waiting, getRoot().getBounds(), 0);
 			job.schedule();
 		} else {
-			EventListenerManager.triggerEvent(new AddScoreColumnEvent(toCompute, true).to(this));
+			addColumns(toCompute);
 		}
 	}
 
@@ -234,7 +251,9 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	@ListenTo(sendToMe = true)
 	private void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		getPopupLayer().hide(waiting);
-		if (event.getNewQuery() != null) {
+		if (event.getScores() != null) {
+			addColumns(event.getScores());
+		} else if (event.getNewQuery() != null) {
 			int offset = table.getDataSize();
 			ADataDomainQuery q = event.getNewQuery();
 			System.out.println("add data of " + q.getDataDomain().getLabel());
@@ -245,6 +264,20 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 			updateMask();
 		} else {
 			updateMask();
+		}
+	}
+
+	private void addColumns(Collection<IScore> scores) {
+		for (IScore s : scores) {
+			if (s instanceof MultiScore) {
+				ACompositeRankColumnModel combined = table.createCombined();
+				table.addColumn(combined);
+				for (IScore s2 : ((MultiScore) s)) {
+					table.addColumnTo(combined, new ScoreRankColumnModel(s2));
+				}
+			} else {
+				table.addColumnTo(stacked, new ScoreRankColumnModel(s));
+			}
 		}
 	}
 
@@ -273,6 +306,19 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		super.init(drawable);
 		eventListeners.register(stratomex);
 		this.canvas.addKeyListener(this);
+		updateStratomexState();
+	}
+
+	private void updateStratomexState() {
+		boolean act = stratomex.hasOne();
+		boolean prev = !this.noStratomexVisible;
+		if (act == prev)
+			return;
+		if (prev)
+			getPopupLayer().show(noStratomex, getRoot().getBounds(), 0);
+		else
+			getPopupLayer().hide(noStratomex);
+		this.noStratomexVisible = !this.noStratomexVisible;
 	}
 
 	@Override
@@ -340,6 +386,10 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	public void switchToStratomex(GLStratomex stratomex) {
 		if (this.stratomex.setStratomex(stratomex))
 			repaint();
+		IPopupLayer popupLayer = getPopupLayer();
+		if (popupLayer == null)
+			return;
+		updateStratomexState();
 	}
 
 	@ListenTo
@@ -389,38 +439,24 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	@ListenTo(sendToMe = true)
 	private void onAddColumn(AddScoreColumnEvent event) {
-		if (event.isComputed()) {
-			getPopupLayer().hide(waiting);
-			for (IScore s : event.getScores()) {
-				if (s instanceof MultiScore) {
-					ACompositeRankColumnModel combined = table.createCombined();
-					for (IScore s2 : ((MultiScore) s)) {
-						table.addColumnTo(combined, new ScoreRankColumnModel(s2));
-					}
-				} else {
-					table.addColumnTo(stacked, new ScoreRankColumnModel(s));
+		Collection<IScore> toCompute = new ArrayList<>();
+		Scores scores = Scores.get();
+		for (IScore s : event.getScores()) {
+			if (s instanceof IRegisteredScore)
+				s = scores.addIfAbsent((IRegisteredScore) s);
+			if (s instanceof MultiScore) {
+				MultiScore sm = (MultiScore) s;
+				MultiScore tmp = new MultiScore(sm.getLabel(), sm.getColor(), sm.getBGColor());
+				for (IScore s2 : ((MultiScore) s)) {
+					if (s2 instanceof IRegisteredScore)
+						s2 = scores.addIfAbsent((IRegisteredScore) s2);
+					tmp.add(s2);
 				}
-			}
-		} else {
-			Collection<IScore> toCompute = new ArrayList<>();
-			Scores scores = Scores.get();
-			for (IScore s : event.getScores()) {
-				if (s instanceof IRegisteredScore)
-					s = scores.addIfAbsent((IRegisteredScore) s);
-				if (s instanceof MultiScore) {
-					MultiScore sm = (MultiScore)s;
-					MultiScore tmp = new MultiScore(sm.getLabel(),sm.getColor(), sm.getBGColor());
-					for (IScore s2 : ((MultiScore) s)) {
-						if (s2 instanceof IRegisteredScore)
-							s2 = scores.addIfAbsent((IRegisteredScore) s2);
-						tmp.add(s2);
-					}
-					toCompute.add(tmp);
-				} else
-					toCompute.add(s);
-			}
-			scheduleAllOf(toCompute);
+				toCompute.add(tmp);
+			} else
+				toCompute.add(s);
 		}
+		scheduleAllOf(toCompute);
 	}
 
 

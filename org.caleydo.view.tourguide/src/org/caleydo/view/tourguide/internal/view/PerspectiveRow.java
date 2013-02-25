@@ -19,16 +19,24 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.internal.compute.CachedIDTypeMapper;
+import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 import org.caleydo.view.tourguide.v3.model.ARow;
 
 /**
@@ -82,63 +90,56 @@ public final class PerspectiveRow extends ARow implements ILabelProvider {
 	/**
 	 * returns the list of row ids that intersects all the relevant visible columns based on this stratifaction and
 	 * group
-	 * 
+	 *
 	 * @param pair
 	 *            containing the ids and the type in which the ids are
 	 * @return
 	 */
 	public Pair<Collection<Integer>, IDType> getIntersection(Collection<IScore> visibleColumns) {
-		return null;
+
+		// select nearest score
+		Collection<IStratificationScore> relevant = filterRelevantColumns(visibleColumns);
+
+		IDType target = stratification.getIdType();
+		for (IStratificationScore elem : relevant) {
+			IDType type = elem.getStratification().getIdType();
+			if (!target.getIDCategory().equals(type.getIDCategory()))
+				continue;
+			if (!target.equals(type))
+				target = target.getIDCategory().getPrimaryMappingType();
+		}
+
+		CachedIDTypeMapper mapper = new CachedIDTypeMapper();
+
+		// compute the intersection of all
+		IDType source = stratification.getIdType();
+
+		VirtualArray va = stratification.getVirtualArray();
+		Collection<Integer> ids = (group == null) ? va.getIDs() : va.getIDsOfGroup(group.getGroupIndex());
+
+		if (!relevant.isEmpty()) {
+			Collection<Integer> intersection = new ArrayList<>(mapper.get(source, target).apply(ids));
+			for (IStratificationScore score : relevant) {
+				va = score.getStratification().getVirtualArray();
+				Group g = (score instanceof IGroupScore) ? ((IGroupScore) score).getGroup() : null;
+				ids = (g == null) ? va.getIDs() : va.getIDsOfGroup(g.getGroupIndex());
+				Set<Integer> mapped = mapper.get(score.getStratification().getIdType(), target).apply(ids);
+				for (Iterator<Integer> it = intersection.iterator(); it.hasNext();) {
+					if (!mapped.contains(it.next())) // not part of
+						it.remove();
+				}
+			}
+			ids = intersection;
+		}
+		return Pair.make(ids, target);
 	}
-	// // select nearest score
-	// Collection<IStratificationScore> relevant = filterRelevantColumns(visibleColumns);
-	//
-	// IDType target = stratification.getIdType();
-	// for (IStratificationScore elem : relevant) {
-	// IDType type = elem.getStratification().getIdType();
-	// if (!target.getIDCategory().equals(type.getIDCategory()))
-	// continue;
-	// if (!target.equals(type))
-	// target = target.getIDCategory().getPrimaryMappingType();
-	// }
-	//
-	// CachedIDTypeMapper mapper = new CachedIDTypeMapper();
-	//
-	// // compute the intersection of all
-	// IDType source = stratification.getIdType();
-	//
-	// VirtualArray va = stratification.getVirtualArray();
-	// Collection<Integer> ids = (group == null) ? va.getIDs() : va.getIDsOfGroup(group.getGroupIndex());
-	//
-	// if (!relevant.isEmpty()) {
-	// Collection<Integer> intersection = new ArrayList<>(mapper.get(source, target).apply(ids));
-	// for (IStratificationScore score : relevant) {
-	// va = score.getStratification().getVirtualArray();
-	// Group g = (score instanceof IGroupScore) ? ((IGroupScore) score).getGroup() : null;
-	// ids = (g == null) ? va.getIDs() : va.getIDsOfGroup(g.getGroupIndex());
-	// Set<Integer> mapped = mapper.get(score.getStratification().getIdType(), target)
-	// .apply(ids);
-	// for (Iterator<Integer> it = intersection.iterator(); it.hasNext();) {
-	// if (!mapped.contains(it.next())) // not part of
-	// it.remove();
-	// }
-	// }
-	// ids = intersection;
-	// }
-	// return Pair.make(ids, target);
-	// }
-	//
-	// private Set<IStratificationScore> filterRelevantColumns(Collection<IScore> columns) {
-	// Set<IStratificationScore> relevant = new HashSet<>();
-	// for (IScore score : columns) {
-	// if (score instanceof CollapseScore)
-	// score = getSelected((CollapseScore) score);
-	// if (score instanceof IStratificationScore)
-	// relevant.add((IStratificationScore) score);
-	// if (score instanceof ICompositeScore) {
-	// relevant.addAll(filterRelevantColumns(((ICompositeScore) score).getChildren()));
-	// }
-	// }
-	// return relevant;
-	// }
+
+	private Set<IStratificationScore> filterRelevantColumns(Collection<IScore> columns) {
+		Set<IStratificationScore> relevant = new HashSet<>();
+		for (IScore score : columns) {
+			if (score instanceof IStratificationScore)
+				relevant.add((IStratificationScore) score);
+		}
+		return relevant;
+	}
 }

@@ -31,31 +31,19 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  */
 public class AddScoreColumnEvent extends ADirectedEvent {
 	private Collection<IScore> scores;
-	private boolean computed;
 
 	public AddScoreColumnEvent() {
 
 	}
 
 	public AddScoreColumnEvent(Collection<IScore> scores) {
-		this(scores, false);
-	}
-
-	public AddScoreColumnEvent(Collection<IScore> scores, boolean computed) {
 		this.scores = scores;
-		this.computed = computed;
 	}
 
 	public AddScoreColumnEvent(IScore... scores) {
 		this(Arrays.asList(scores));
 	}
 
-	/**
-	 * @return the computed, see {@link #computed}
-	 */
-	public boolean isComputed() {
-		return computed;
-	}
 
 	public Collection<IScore> getScores() {
 		return scores;

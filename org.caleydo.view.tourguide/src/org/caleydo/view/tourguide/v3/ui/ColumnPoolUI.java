@@ -70,7 +70,7 @@ public class ColumnPoolUI extends GLElementContainer {
 	}
 
 	private GLElement wrap(ARankColumnModel hidden) {
-		return new TableColumnHeaderUI(hidden, false).setSize(100, -1);
+		return new TableColumnHeaderUI(hidden, false, true).setSize(100, -1);
 	}
 
 	@Override

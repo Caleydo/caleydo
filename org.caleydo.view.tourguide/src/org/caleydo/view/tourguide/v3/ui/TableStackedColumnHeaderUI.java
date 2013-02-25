@@ -112,7 +112,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	 * @return
 	 */
 	private TableColumnHeaderUI wrap(ARankColumnModel model) {
-		return new TableColumnHeaderUI(model, interactive);
+		return new TableColumnHeaderUI(model, interactive, interactive);
 	}
 
 	@Override

@@ -19,8 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
+import java.util.Collection;
+
 import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
+import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
@@ -28,6 +31,7 @@ import org.caleydo.view.tourguide.internal.view.model.ADataDomainQuery;
  */
 public class ScoreQueryReadyEvent extends ADirectedEvent {
 	private ADataDomainQuery newQuery;
+	private Collection<IScore> scores;
 
 	public ScoreQueryReadyEvent() {
 
@@ -35,6 +39,17 @@ public class ScoreQueryReadyEvent extends ADirectedEvent {
 
 	public ScoreQueryReadyEvent(ADataDomainQuery newQuery) {
 		this.newQuery = newQuery;
+	}
+
+	public ScoreQueryReadyEvent(Collection<IScore> scores) {
+		this.scores = scores;
+	}
+
+	/**
+	 * @return the scores, see {@link #scores}
+	 */
+	public Collection<IScore> getScores() {
+		return scores;
 	}
 
 	@Override

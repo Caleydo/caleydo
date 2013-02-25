@@ -85,15 +85,17 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 	private final PickingListenerComposite headerPick = new PickingListenerComposite(2);
 	private int headerPickingId = -1;
 	private boolean headerHovered;
+	private boolean draggable;
 
 
-	public TableColumnHeaderUI(final ARankColumnModel model, boolean interactive) {
+	public TableColumnHeaderUI(final ARankColumnModel model, boolean interactive, boolean draggable) {
 		this.model = model;
 		model.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, collapsedChanged);
 		this.interactive = interactive;
+		this.draggable = draggable;
 		setLayout(this);
 		setLayoutData(model);
-		if (interactive)
+		if (draggable)
 			this.setVisibility(EVisibility.PICKABLE);
 		this.onPick(new IPickingListener() {
 			@Override
@@ -191,7 +193,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		if (interactive) {
+		if (draggable) {
 			g.incZ();
 			g.pushName(headerPickingId);
 			g.fillRect(0, 0, w, 20);

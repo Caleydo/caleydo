@@ -25,7 +25,7 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -58,7 +58,7 @@ public class ComputeForScoreJob extends AComputeJob {
 	@Override
 	public IStatus run(IProgressMonitor monitor) {
 		IStatus result = runImpl(monitor, data, mask);
-		triggerEvent(new AddScoreColumnEvent(scores, true).to(receiver));
+		triggerEvent(new ScoreQueryReadyEvent(scores).to(receiver));
 		return result;
 	}
 }

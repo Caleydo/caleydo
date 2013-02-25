@@ -122,7 +122,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 	private GLElement wrap(ARankColumnModel model) {
 		init(model);
-		return new TableColumnHeaderUI(model, interactive);
+		return new TableColumnHeaderUI(model, interactive, interactive);
 	}
 
 	@Override

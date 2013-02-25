@@ -254,12 +254,12 @@ public abstract class AGLElementView extends AView implements IGLView, GLEventLi
 
 	@Override
 	public final IMouseLayer getMouseLayer() {
-		return root.getMouseLayer();
+		return root == null ? null : root.getMouseLayer();
 	}
 
 	@Override
 	public final IPopupLayer getPopupLayer() {
-		return root.getPopupLayer();
+		return root == null ? null : root.getPopupLayer();
 	}
 
 	@Override

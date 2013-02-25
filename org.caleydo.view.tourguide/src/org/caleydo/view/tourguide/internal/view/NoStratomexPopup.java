@@ -26,8 +26,8 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
  * @author Samuel Gratzl
  *
  */
-public class WaitingPopup extends GLElement {
-	public WaitingPopup() {
+public class NoStratomexPopup extends GLElement {
+	public NoStratomexPopup() {
 		setVisibility(EVisibility.PICKABLE);
 	}
 
