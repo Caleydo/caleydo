@@ -53,7 +53,8 @@ public class TableDataDomainElement extends ADataDomainElement {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					InputDialog d = new InputDialog(null, "Filter Table", "Edit Record Perspective Regex Filter",
+					InputDialog d = new InputDialog(null, "Filter Table (* = wildcard)",
+							"Edit Record Perspective Filter",
 							getModel().getMatches(), null);
 					if (d.open() == Window.OK) {
 						String v = d.getValue().trim();

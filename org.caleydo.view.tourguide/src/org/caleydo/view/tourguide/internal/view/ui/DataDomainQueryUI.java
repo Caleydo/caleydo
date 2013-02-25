@@ -43,4 +43,31 @@ public class DataDomainQueryUI extends GLElementContainer {
 			}
 		}
 	}
+
+	/**
+	 * @param query
+	 */
+	public void add(ADataDomainQuery query) {
+		GLElementContainer c = (GLElementContainer) get(query.getMode().ordinal());
+		c.add(createFor(query));
+		c.setSize(-1, c.size() * 20);
+		pack(false, true);
+		relayoutParent();
+	}
+
+	/**
+	 * @param query
+	 */
+	public void remove(ADataDomainQuery query) {
+		GLElementContainer c = (GLElementContainer) get(query.getMode().ordinal());
+		for (ADataDomainElement d : Iterables.filter(c, ADataDomainElement.class)) {
+			if (d.getModel() == query) {
+				c.remove(d);
+				break;
+			}
+		}
+		c.setSize(-1, c.size() * 20);
+		pack(false, true);
+		relayoutParent();
+	}
 }

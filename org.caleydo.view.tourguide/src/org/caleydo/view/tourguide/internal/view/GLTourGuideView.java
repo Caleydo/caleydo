@@ -28,6 +28,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.media.opengl.GLAutoDrawable;
 
@@ -35,6 +36,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -95,6 +98,10 @@ import org.eclipse.swt.widgets.Shell;
 public class GLTourGuideView extends AGLElementView implements IGLKeyListener, IRankTableConfig, IAddToStratomex {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
+
+	private static final int DATADOMAIN_QUERY = 0;
+	private static final int TABLE_HEADER = 1;
+	private static final int TABLE_BODY = 2;
 
 	private StratomexAdapter stratomex = new StratomexAdapter();
 	private final RankTableModel table;
@@ -180,39 +187,33 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		return new TableDataDomainQuery(mode, (ATableBasedDataDomain) dd);
 	}
 
-	// @ListenTo
-	// private void onAddDataDomain(final NewDataDomainEvent event) {
-	// IDataDomain dd = event.getDataDomain();
-	//
-	// int i = 0;
-	// for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
-	// if (mode.isCompatible(dd)) {
-	// GLElementContainer c = (GLElementContainer) get(i);
-	// c.add(createFor(dd).setCallback(callback));
-	// c.setSize(-1, c.size() * 20);
-	// break;
-	// }
-	// i++;
-	// }
-	// pack(false, true);
-	// }
-	//
-	// @ListenTo
-	// private void onRemoveDataDomain(final RemoveDataDomainEvent event) {
-	// final String id = event.getEventSpace();
-	// for (GLElement elem : this) {
-	// GLElementContainer c = (GLElementContainer) elem;
-	// for (GLElement b : c) {
-	// if (Objects.equals(b.getLayoutDataAs(IDataDomain.class, null).getDataDomainID(), id)) {
-	// c.remove(b);
-	// break;
-	// }
-	// }
-	// c.setSize(-1, c.size() * 20);
-	// }
-	// pack(false, true);
-	// relayoutParent();
-	// }
+	@ListenTo
+	private void onAddDataDomain(final NewDataDomainEvent event) {
+		IDataDomain dd = event.getDataDomain();
+
+		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
+			if (mode.isCompatible(dd)) {
+				ADataDomainQuery query = createFor(mode, dd);
+				queries.add(query);
+				getDataDomainQueryUI().add(query);
+				break;
+			}
+		}
+	}
+
+	@ListenTo
+	private void onRemoveDataDomain(final RemoveDataDomainEvent event) {
+		final String id = event.getEventSpace();
+		for (ADataDomainQuery query : queries) {
+			if (Objects.equals(query.getDataDomain().getDataDomainID(), id)) {
+				queries.remove(query);
+				getDataDomainQueryUI().remove(query);
+				if (query.isActive())
+					updateMask();
+				break;
+			}
+		}
+	}
 
 	protected void onActiveChanged(ADataDomainQuery q, boolean active) {
 		if (q.getMode() != mode) {
@@ -376,9 +377,13 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 				q.setJustActive(false);
 			}
 		}
-		((DataDomainQueryUI) getVis().get(0)).updateSelections();
+		getDataDomainQueryUI().updateSelections();
 		this.mode = mode;
 
+	}
+
+	private DataDomainQueryUI getDataDomainQueryUI() {
+		return (DataDomainQueryUI) getVis().get(DATADOMAIN_QUERY);
 	}
 
 	/**
@@ -577,7 +582,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		if (!stratomex.is(event.getReceiver()))
 			return;
 		stratomex.addBricks(event.getTablePerspectives());
-		// FIXME
+		// TODO correctly repaint
 		// this.scoreQueryUI.updateAddToStratomexState();
 	}
 

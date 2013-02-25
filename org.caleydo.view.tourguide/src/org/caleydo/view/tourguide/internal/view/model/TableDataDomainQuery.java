@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.model;
 
+import static org.caleydo.view.tourguide.v3.model.StringRankColumnModel.starToRegex;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,7 +61,7 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 		assert perspective.getDataDomain() == dataDomain;
 		if (matches == null)
 			return true;
-		return Pattern.matches(matches, perspective.getLabel());
+		return Pattern.matches(starToRegex(matches), perspective.getLabel());
 	}
 
 	@Override

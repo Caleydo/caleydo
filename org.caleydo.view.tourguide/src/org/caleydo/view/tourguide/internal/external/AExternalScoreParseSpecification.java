@@ -35,7 +35,6 @@ public abstract class AExternalScoreParseSpecification extends MatrixDefinition 
 
 	private boolean normalizeScores;
 
-	// FIXME set
 	private Color color;
 
 	private float mappingMin;
