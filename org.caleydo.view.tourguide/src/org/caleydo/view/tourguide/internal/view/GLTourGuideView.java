@@ -235,7 +235,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		Collection<IScore> scores = new ArrayList<>(getVisibleScores(null));
 		ComputeAllOfJob job = new ComputeAllOfJob(q, scores, this);
 		if (job.hasThingsToDo()) {
-			getPopupLayer().show(waiting, getRoot().getBounds(), 0);
+			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
 			updateMask();
@@ -245,7 +245,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	private void scheduleAllOf(Collection<IScore> toCompute) {
 		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getFilter(), this);
 		if (job.hasThingsToDo()) {
-			getPopupLayer().show(waiting, getRoot().getBounds(), 0);
+			getPopupLayer().show(waiting, null, 0);
 			job.schedule();
 		} else {
 			addColumns(toCompute);
@@ -312,6 +312,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		super.init(drawable);
 		eventListeners.register(stratomex);
 		this.canvas.addKeyListener(this);
+		this.noStratomexVisible = stratomex.hasOne();
 		updateStratomexState();
 	}
 
@@ -321,7 +322,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		if (act == prev)
 			return;
 		if (prev)
-			getPopupLayer().show(noStratomex, getRoot().getBounds(), 0);
+			getPopupLayer().show(noStratomex, null, 0);
 		else
 			getPopupLayer().hide(noStratomex);
 		this.noStratomexVisible = !this.noStratomexVisible;

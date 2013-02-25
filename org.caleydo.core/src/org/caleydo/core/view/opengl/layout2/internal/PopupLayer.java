@@ -19,13 +19,17 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.internal;
 
+import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
 import gleem.linalg.Vec4f;
+
+import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.IPopupLayer;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
+import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * implementation of {@link IMouseLayer} using a {@link GLElementContainer} by using the layout data for meta data about
@@ -34,11 +38,19 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
  * @author Samuel Gratzl
  *
  */
-public final class PopupLayer extends GLElementContainer implements IPopupLayer {
+public final class PopupLayer extends GLElementContainer implements IPopupLayer, IGLLayout {
 
 	public PopupLayer() {
 		super();
-		setLayout(GLLayouts.NONE);
+		setLayout(this);
+	}
+
+	@Override
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		for (IGLLayoutElement child : children) {
+			child.setBounds(defaultValue(child.getSetX(), 0), defaultValue(child.getSetY(), 0),
+					defaultValue(child.getSetWidth(), w), defaultValue(child.getSetHeight(), h));
+		}
 	}
 
 	@Override

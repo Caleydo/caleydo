@@ -75,7 +75,8 @@ class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISe
 		if (isFlagSet(FLAG_RESIZEABLE)) {
 			// TODO
 		}
-		this.setBounds(bounds.x(), bounds.y(), bounds.z() + 6, bounds.w() + 3 + (hasHeader ? 8 : 3));
+		if (bounds != null)
+			this.setBounds(bounds.x(), bounds.y(), bounds.z() + 6, bounds.w() + 3 + (hasHeader ? 8 : 3));
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
 	}
 
