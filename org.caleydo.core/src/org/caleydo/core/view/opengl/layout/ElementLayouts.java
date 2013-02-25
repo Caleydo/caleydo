@@ -19,14 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
-import org.caleydo.core.util.base.ConstantLabelProvider;
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.builder.ElementLayoutBuilder;
-import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
-import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 
@@ -49,32 +43,6 @@ public final class ElementLayouts {
 		return create().width(width).height(1).build();
 	}
 
-	public static ElementLayout createXSeparator(int width) {
-		return wrap(new LineSeparatorRenderer(true), width);
-	}
-
-	public static ElementLayout createYSpacer(int height) {
-		return create().height(height).width(1).build();
-	}
-
-	public static ElementLayout createYSeparator(int height) {
-		ElementLayout l = createYSpacer(height);
-		l.setGrabX(true);
-		l.setRenderer(new LineSeparatorRenderer(false));
-		return l;
-	}
-
-	public static ElementLayout createLabel(AGLView view, String label, int width) {
-		return createLabel(view, new ConstantLabelProvider(label), width);
-	}
-
-	public static ElementLayout createLabel(AGLView view, ILabelProvider label, int width) {
-		return create().width(width).render(Renderers.createLabel(label, view.getTextRenderer())).build();
-	}
-
-	public static ElementLayout createColor(IColor color, int width) {
-		return wrap(new ColorRenderer(color.getRGBA()), width);
-	}
 
 	public static ElementLayout createButton(AGLView view, Button button) {
 		return createButton(view, button, 16, 16, 0.02f);

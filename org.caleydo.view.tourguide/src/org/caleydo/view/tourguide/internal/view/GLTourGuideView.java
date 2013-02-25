@@ -129,7 +129,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	private final GLElement noStratomex = new GLElement(new IGLRenderer() {
 		@Override
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
-			// g.color(1, 1, 1, 0.3f).fillRect(0, 0, w, h);
+			g.color(1, 1, 1, 0.5f).fillRect(0, 0, w, h);
 			g.drawText("No active StratomeX", 10, h * 0.5f - 12, w - 20, 24, VAlign.CENTER);
 		}
 	});

@@ -21,8 +21,6 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.builder.LabelRendererBuilder;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * @author Samuel Gratzl
@@ -39,9 +37,5 @@ public final class Renderers {
 
 	public static LabelRenderer createLabel(ILabelProvider label, AGLView view) {
 		return new LabelRenderer(view, label);
-	}
-
-	public static LabelRendererBuilder createLabel(ILabelProvider label, CaleydoTextRenderer textRenderer) {
-		return new LabelRendererBuilder(textRenderer, label);
 	}
 }

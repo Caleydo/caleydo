@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.util;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
@@ -154,23 +153,4 @@ public class GLPrimitives {
 
 		glu.gluDeleteQuadric(quadric);
 	}
-
-	public static void fillRect(GL2 gl, float x, float y, float w, float h) {
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(x, y, 0);
-		gl.glVertex3f(x + w, y, 0);
-		gl.glVertex3f(x + w, y + h, 0);
-		gl.glVertex3f(x, y + h, 0);
-		gl.glEnd();
-	}
-
-	public static void drawRect(GL2 gl, float x, float y, float w, float h) {
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(x, y, 0);
-		gl.glVertex3f(x + w, y, 0);
-		gl.glVertex3f(x + w, y + h, 0);
-		gl.glVertex3f(x, y + h, 0);
-		gl.glEnd();
-	}
-
 }
