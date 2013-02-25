@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.v3.model.mixin;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.view.tourguide.v3.model.IRow;
 
 /**
  * @author Samuel Gratzl
@@ -29,4 +30,6 @@ public interface IMappedColumnMixin {
 	String PROP_MAPPING = "mapping";
 
 	void editMapping(GLElement summary);
+
+	String getRawValue(IRow row);
 }

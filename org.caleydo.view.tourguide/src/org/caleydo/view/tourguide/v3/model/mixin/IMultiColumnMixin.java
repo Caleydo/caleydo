@@ -68,4 +68,6 @@ public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankC
 	 * @return
 	 */
 	int size();
+
+	ARankColumnModel get(int index);
 }

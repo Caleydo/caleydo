@@ -53,16 +53,13 @@ public class RowHeightLayouts {
 				if (act <= 3)
 					delta = 0;
 				if (i == selectedRowIndex) {
-					r[i] = 30;
+					r[i] = 40;
 				}
 				acc += r[i];
 				if (acc >= (h - act)) {
 					r = Arrays.copyOf(r, i + 1);
 					break;
 				}
-			}
-			if (selectedRowIndex >= 0 && selectedRowIndex < r.length) {
-				r[selectedRowIndex] = 30;
 			}
 			return r;
 		}

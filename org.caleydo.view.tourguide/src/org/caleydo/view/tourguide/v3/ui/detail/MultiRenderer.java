@@ -21,11 +21,14 @@ package org.caleydo.view.tourguide.v3.ui.detail;
 
 import java.awt.Color;
 
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts.IRowHeightLayout;
+import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin.MultiFloat;
 
@@ -44,9 +47,11 @@ public class MultiRenderer implements IGLRenderer {
 
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		MultiFloat v = model.getSplittedValue(parent.getLayoutDataAs(IRow.class, null));
+		final IRow r = parent.getLayoutDataAs(IRow.class, null);
+		MultiFloat v = model.getSplittedValue(r);
 		Color[] colors = model.getColors();
 		if (v.repr >= 0) {
+			boolean selected = model.getTable().getSelectedRow() == r;
 			float[] heights = layout.compute(v.size(), v.repr, h * 0.9f);
 			float y = h * 0.05f;
 			for (int i = 0; i < heights.length; ++i) {
@@ -54,6 +59,12 @@ public class MultiRenderer implements IGLRenderer {
 				if (hi <= 0)
 					continue;
 				g.color(colors[i]).fillRect(0, y, w * v.values[i], hi);
+				if (selected) {
+					ARankColumnModel modeli = model.get(i);
+					String text = (modeli instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) modeli).getRawValue(r)
+								: Formatter.formatNumber(v.values[i]);
+					ScoreBarRenderer.renderLabel(g, y, w, hi * 0.8f, text, v.values[i]);
+				}
 				y += hi;
 			}
 		}
