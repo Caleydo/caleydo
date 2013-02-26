@@ -1,10 +1,9 @@
 /**
  * 
  */
-package org.caleydo.view.pathway.event;
+package org.caleydo.datadomain.pathway.listener;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.view.pathway.GLPathway;
 
 /**
  * Event that tells whether path selection mode should be enabled.
@@ -12,7 +11,7 @@ import org.caleydo.view.pathway.GLPathway;
  * @author Christian Partl
  * 
  */
-public class SelectPathModeEvent extends AEvent {
+public class EnablePathSelectionEvent extends AEvent {
 
 	/**
 	 * Determines whether the path selection mode should be enabled in a
@@ -20,7 +19,8 @@ public class SelectPathModeEvent extends AEvent {
 	 */
 	private boolean isPathSelectionMode = false;
 
-	public SelectPathModeEvent(boolean isPathSelectionMode) {
+
+	public EnablePathSelectionEvent(boolean isPathSelectionMode) {
 		this.isPathSelectionMode = isPathSelectionMode;
 	}
 

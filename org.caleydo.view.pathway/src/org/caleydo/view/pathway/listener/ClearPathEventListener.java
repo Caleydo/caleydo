@@ -5,8 +5,8 @@ package org.caleydo.view.pathway.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.datadomain.pathway.listener.ClearPathEvent;
 import org.caleydo.view.pathway.GLPathway;
-import org.caleydo.view.pathway.event.ClearPathEvent;
 
 /**
  * Listener for {@link ClearPathEvent}.

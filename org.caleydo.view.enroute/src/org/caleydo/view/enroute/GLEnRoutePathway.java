@@ -703,4 +703,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
+	@Override
+	public void enablePathSelection(boolean isPathSelection) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

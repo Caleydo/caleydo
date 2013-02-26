@@ -14,31 +14,54 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.pathway.toolbar.actions;
+package org.caleydo.datadomain.pathway.toolbar;
+
+import java.util.ArrayList;
 
 import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.view.pathway.event.SelectPathModeEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 
 /**
- * Button for toggling path selection.
+ * Button to clear a selected path in the pathway view.
  *
  * @author Christian Partl
  *
  */
-public class SelectPathAction extends SimpleAction {
-	public static final String LABEL = "Toggle path selection (Ctrl + O)";
-	public static final String ICON = "resources/icons/view/pathway/path_selection.png";
+public class ClearPathAction extends SimpleAction {
 
-	public SelectPathAction(boolean isChecked) {
+	public static final String LABEL = "Clear path";
+	public static final String ICON = "resources/icons/view/pathway/clear_path.png";
+
+	private String eventSpace;
+
+	/**
+	 * Constructor.
+	 */
+	public ClearPathAction(String eventSpace) {
 		super(LABEL, ICON);
-		setChecked(isChecked);
+		setChecked(false);
+		this.eventSpace = eventSpace;
 	}
 
 	@Override
 	public void run() {
 		super.run();
+		setChecked(false);
+		PathwayPathSelectionEvent pathEvent = new PathwayPathSelectionEvent();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new SelectPathModeEvent(isChecked()));
+		// for (PathwayPath pathSegment : pathSegmentList) {
+		// pathSegments.add(pathSegment);
+		// }
+		// if (selectedPath != null && pathSegments!=null && pathSegments.size()>0) {
+		// //pathSegments.get(pathSegments.size()-1).setPathway(selectedPath);
+		// //pathSegments.set(pathSeg, element)
+		// }
+
+		pathEvent.setPathSegments(new ArrayList<PathwayPath>());
+		pathEvent.setSender(this);
+		pathEvent.setEventSpace(eventSpace);
+		GeneralManager.get().getEventPublisher().triggerEvent(pathEvent);
 	}
 }

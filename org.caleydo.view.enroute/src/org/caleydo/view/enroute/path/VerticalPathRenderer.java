@@ -45,6 +45,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	// public final static int PATHWAY_TITLE_COLUMN_WIDTH_PIXELS = 20;
 	// protected final static int PATHWAY_TITLE_TEXT_HEIGHT_PIXELS = 16;
 
+	protected boolean isPathSelection = false;
+
 	/**
 	 * @param view
 	 * @param tablePerspectives
@@ -169,6 +171,12 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return true;
+	}
+
+	@Override
+	public void enablePathSelection(boolean isPathSelection) {
+		this.isPathSelection = isPathSelection;
+
 	}
 
 }

@@ -33,11 +33,11 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.AddPathwayListener;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
+import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.pathway.toolbar.DatasetSelectionBox;
 import org.caleydo.view.pathway.toolbar.PathwaySearchBox;
 import org.caleydo.view.pathway.toolbar.SampleSelectionMode;
-import org.caleydo.view.pathway.toolbar.actions.ClearPathAction;
-import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
@@ -126,12 +126,12 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 	@Override
 	public void addToolBarContent() {
 
-		SelectPathAction selectPathAction = new SelectPathAction(false);
+		SelectPathAction selectPathAction = new SelectPathAction(false, GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE);
 
 		if (view instanceof GLPathway)
 			((GLPathway) view).setSelectPathAction(selectPathAction);
 		toolBarManager.add(selectPathAction);
-		toolBarManager.add(new ClearPathAction());
+		toolBarManager.add(new ClearPathAction(GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE));
 
 		SampleSelectionMode sampleSelectionMode = new SampleSelectionMode(
 				((SerializedPathwayView) serializedView).getMappingMode());

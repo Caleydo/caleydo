@@ -87,25 +87,25 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.ClearPathEvent;
+import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.caleydo.view.pathway.event.ClearMappingEvent;
-import org.caleydo.view.pathway.event.ClearPathEvent;
 import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeListener;
-import org.caleydo.view.pathway.event.SelectPathModeEvent;
 import org.caleydo.view.pathway.listener.ClearMappingListener;
 import org.caleydo.view.pathway.listener.ClearPathEventListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
-import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -381,7 +381,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			public void keyPressed(IKeyEvent e) {
 				// //comment_1/2:
 				if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
-					setPathSelectionMode(!isPathSelectionMode);
+					enablePathSelection(!isPathSelectionMode);
 					getParentComposite().getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
@@ -1212,10 +1212,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		eventPublisher.addListener(PathwayPathSelectionEvent.class, enRoutePathEventListener);
 
 		selectPathModeEventListener = new SelectPathModeEventListener();
+		selectPathModeEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
 		selectPathModeEventListener.setHandler(this);
-		eventPublisher.addListener(SelectPathModeEvent.class, selectPathModeEventListener);
+		eventPublisher.addListener(EnablePathSelectionEvent.class, selectPathModeEventListener);
 
 		clearPathEventListener = new ClearPathEventListener();
+		clearPathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
 		clearPathEventListener.setHandler(this);
 		eventPublisher.addListener(ClearPathEvent.class, clearPathEventListener);
 
@@ -1726,15 +1728,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	}
 
 	/**
-	 * @param isPathSelectionMode
-	 *            setter, see {@link #isPathSelectionMode}
-	 */
-	public void setPathSelectionMode(boolean isPathSelectionMode) {
-		this.isPathSelectionMode = isPathSelectionMode;
-		isPathStartSelected = false;
-	}
-
-	/**
 	 * @return the isPathSelectionMode, see {@link #isPathSelectionMode}
 	 */
 	public boolean isPathSelectionMode() {
@@ -1864,6 +1857,13 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	@Override
 	public synchronized void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		addedContextMenuItems.add(item);
+	}
+
+	@Override
+	public void enablePathSelection(boolean isPathSelection) {
+		this.isPathSelectionMode = isPathSelection;
+		isPathStartSelected = false;
+
 	}
 
 }

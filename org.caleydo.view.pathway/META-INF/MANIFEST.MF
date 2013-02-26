@@ -11,8 +11,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.pathway,
  org.caleydo.view.pathway.event,
  org.caleydo.view.pathway.listener,
- org.caleydo.view.pathway.toolbar,
- org.caleydo.view.pathway.toolbar.actions
+ org.caleydo.view.pathway.toolbar
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.pathway.Activator

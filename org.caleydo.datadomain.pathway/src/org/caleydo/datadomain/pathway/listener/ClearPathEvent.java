@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.view.pathway.event;
+package org.caleydo.datadomain.pathway.listener;
 
 import org.caleydo.core.event.AEvent;
 

@@ -269,4 +269,11 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	public void setPathway(PathwayGraph pathway) {
 		this.pathway = pathway;
 	}
+
+	@Override
+	public void enablePathSelection(boolean isPathSelection) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
