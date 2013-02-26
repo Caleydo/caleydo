@@ -22,7 +22,10 @@ package org.caleydo.view.subgraph;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.datadomain.pathway.toolbar.ClearPathAction;
+import org.caleydo.datadomain.pathway.toolbar.SelectPathAction;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -54,6 +57,23 @@ public class RcpGLSubGraphView extends ARcpGLViewPart {
 		initializeView();
 
 		createPartControlGL();
+	}
+
+	@Override
+	public void addToolBarContent() {
+
+		GLSubGraph subgraph = (GLSubGraph) view;
+
+		SelectPathAction selectPathAction = new SelectPathAction(false, subgraph.getPathEventSpace());
+
+		// if (view instanceof GLSubGraph)
+		// ((GLSubGraph) view).setSelectPathAction(selectPathAction);
+		toolBarManager.add(selectPathAction);
+		toolBarManager.add(new ClearPathAction(subgraph.getPathEventSpace()));
+
+		toolBarManager.add(new OpenOnlineHelpAction(
+				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/pathways", false));
+
 	}
 
 	@Override

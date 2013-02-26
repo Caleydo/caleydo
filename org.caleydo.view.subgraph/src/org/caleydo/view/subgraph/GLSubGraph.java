@@ -71,7 +71,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private Set<String> remoteRenderedPathwayMultiformViewIDs;
 
-	private String pathEventSpace;
+	private String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();;
 
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(GLLayouts.flowHorizontal(10));
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
@@ -105,7 +105,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public GLSubGraph(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-		pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 		GLElementContainer column = new GLElementContainer(GLLayouts.flowVertical(10));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
@@ -523,4 +522,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		this.currentActiveBackground = currentActiveBackground;
 	}
 
+	/**
+	 * @return the pathEventSpace, see {@link #pathEventSpace}
+	 */
+	public String getPathEventSpace() {
+		return pathEventSpace;
+	}
 }
