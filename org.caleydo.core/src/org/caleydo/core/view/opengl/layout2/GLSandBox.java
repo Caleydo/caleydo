@@ -91,8 +91,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			}
 		});
 		this.root = new WindowGLElement(root);
-		this.root.setParent(this);
-		this.root.init(this);
 	}
 
 	@Override
@@ -175,6 +173,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		AGLView.initGLContext(gl);
 
 		gl.glLoadIdentity();
+		this.root.setParent(this);
+		this.root.init(this);
 	}
 
 	@Override
