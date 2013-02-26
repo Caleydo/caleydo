@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.subgraph.GLSubGraph;
 import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
 import org.caleydo.view.tourguide.v3.data.AFloatFunction;
 import org.caleydo.view.tourguide.v3.data.IFloatFunction;
@@ -43,14 +44,13 @@ import org.caleydo.view.tourguide.v3.model.StringRankColumnModel;
 import org.caleydo.view.tourguide.v3.ui.TableBodyUI;
 import org.caleydo.view.tourguide.v3.ui.TableHeaderUI;
 
-import com.google.common.base.Function;
-
 /**
  * @author Samuel Gratzl
  *
  */
 public class RankingElement extends GLElementContainer {
 	private final RankTableModel table;
+	private final GLSubGraph view;
 	private final PropertyChangeListener onSelectRow = new PropertyChangeListener() {
 
 		@Override
@@ -59,7 +59,8 @@ public class RankingElement extends GLElementContainer {
 		}
 	};
 
-	public RankingElement() {
+	public RankingElement(GLSubGraph view) {
+		this.view = view;
 		this.table = new RankTableModel(new RankTableConfigBase() {
 			@Override
 			public boolean isInteractive() {
@@ -77,8 +78,7 @@ public class RankingElement extends GLElementContainer {
 	 * @param newValue
 	 */
 	protected void rowSelected(PathwayRow newValue) {
-		// TODO Auto-generated method stub
-
+		view.addPathway(newValue.getPathway());
 	}
 
 	/**
@@ -88,19 +88,19 @@ public class RankingElement extends GLElementContainer {
 		// add columns
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
-				new Function<IRow,String>() {
-			@Override
-			public String apply(IRow in) {
-				PathwayRow r = (PathwayRow)in;
-				return r.getPathway().getType().getName();
-			}
-		}));
+		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
+		// new Function<IRow, String>() {
+		// @Override
+		// public String apply(IRow in) {
+		// PathwayRow r = (PathwayRow) in;
+		// return r.getPathway().getType().getName();
+		// }
+		// }));
 
 		IFloatFunction<IRow> pathwaySize = new AFloatFunction<IRow>() {
 			@Override
 			public float applyPrimitive(IRow in) {
-				PathwayRow r = (PathwayRow)in;
+				PathwayRow r = (PathwayRow) in;
 				return r.getPathway().vertexSet().size();
 			}
 		};

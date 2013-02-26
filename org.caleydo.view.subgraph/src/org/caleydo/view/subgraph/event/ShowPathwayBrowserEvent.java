@@ -17,31 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.subgraph.ranking;
+package org.caleydo.view.subgraph.event;
 
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.tourguide.v3.model.ARow;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.AVertexRepBasedEvent;
 
 /**
- * @author Samuel Gratzl
+ * Event that triggers showing all pathways related to a specific {@link PathwayVertexRep}.
+ *
+ * @author Christian Partl
  *
  */
-public class PathwayRow extends ARow {
-	private final PathwayGraph pathway;
-
-	public PathwayRow(PathwayGraph pathway) {
-		this.pathway = pathway;
+public class ShowPathwayBrowserEvent extends AVertexRepBasedEvent {
+	public ShowPathwayBrowserEvent() {
 	}
 
-	/**
-	 * @return the pathway, see {@link #pathway}
-	 */
-	public PathwayGraph getPathway() {
-		return pathway;
-	}
-
-	@Override
-	public String toString() {
-		return pathway.getTitle();
+	public ShowPathwayBrowserEvent(PathwayVertexRep vertexRep) {
+		super(vertexRep);
 	}
 }

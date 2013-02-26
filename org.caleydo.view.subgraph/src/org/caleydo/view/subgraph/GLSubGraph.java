@@ -34,24 +34,27 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
+import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
+import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.InOutTransitionBase;
+import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
+import org.caleydo.view.subgraph.event.ShowPathwayBrowserEvent;
 import org.caleydo.view.subgraph.ranking.RankingElement;
 import org.eclipse.swt.widgets.Composite;
 
@@ -70,11 +73,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private String pathEventSpace;
 
-	private GLElementContainer baseContainer = new GLElementContainer(GLLayouts.flowHorizontal(10));
+	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(GLLayouts.flowHorizontal(10));
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
-	private GLElementContainer pathwayColumn = new GLElementContainer(GLLayouts.flowVertical(10));
+	private AnimatedGLElementContainer pathwayColumn = new AnimatedGLElementContainer(GLLayouts.flowVertical(10));
 	private GLSubGraphAugmentation augmentation = new GLSubGraphAugmentation();
-	private GLElementContainer nodeInfoContainer = new GLElementContainer(GLLayouts.flowHorizontal(10));
+	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(GLLayouts.flowHorizontal(10));
 
 	private GLPathwayBackground currentActiveBackground = null;
 
@@ -107,8 +110,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		column.add(nodeInfoContainer);
-		baseContainer.add(pathwayColumn, 0.4f);
-		baseContainer.add(new RankingElement(), 0.4f);
+		pathwayColumn.setLayoutData(0.4f);
+		RankingElement rankingElement = new RankingElement(this);
+		rankingElement.setLayoutData(0.4f);
+		baseContainer.add(rankingElement);
+		baseContainer.add(pathwayColumn);
 
 		root.add(column);
 		root.add(augmentation);
@@ -173,78 +179,95 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private void createRemoteRenderedViews() {
 		if (remoteRenderedPathwayMultiformViewIDs == null) {
+			//
+			// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+			// PathwayDataDomain.DATA_DOMAIN_TYPE);
+			//
+			// TablePerspective tablePerspective = tablePerspectives.get(0);
+			//
+			// Perspective oldRecordPerspective = tablePerspective.getRecordPerspective();
+			// Perspective newRecordPerspective = new Perspective(tablePerspective.getDataDomain(),
+			// oldRecordPerspective.getIdType());
+			//
+			// PerspectiveInitializationData data = new PerspectiveInitializationData();
+			// data.setData(oldRecordPerspective.getVirtualArray());
+			//
+			// newRecordPerspective.init(data);
+			//
+			// Perspective oldDimensionPerspective = tablePerspective.getDimensionPerspective();
+			// Perspective newDimensionPerspective = new Perspective(tablePerspective.getDataDomain(),
+			// oldDimensionPerspective.getIdType());
+			// data = new PerspectiveInitializationData();
+			// data.setData(oldDimensionPerspective.getVirtualArray());
+			//
+			// newDimensionPerspective.init(data);
+			// PathwayTablePerspective pathwayTablePerspective = new PathwayTablePerspective(
+			// tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective, newDimensionPerspective,
+			// PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
+			// pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
+			//
+			// List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
+			// pathwayTablePerspectives.add(pathwayTablePerspective);
+			//
+			// addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
+			// Float.NaN);
+			//
+			// pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(),
+			// pathwayDataDomain,
+			// newRecordPerspective, newDimensionPerspective, PathwayManager.get().getPathwayByTitle(
+			// "Pathways in cancer", EPathwayDatabaseType.KEGG));
+			// pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
+			//
+			// pathwayTablePerspectives.clear();
+			// pathwayTablePerspectives.add(pathwayTablePerspective);
+			// addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
+			// Float.NaN);
 
-			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-					PathwayDataDomain.DATA_DOMAIN_TYPE);
-
-			TablePerspective tablePerspective = tablePerspectives.get(0);
-
-			Perspective oldRecordPerspective = tablePerspective.getRecordPerspective();
-			Perspective newRecordPerspective = new Perspective(tablePerspective.getDataDomain(),
-					oldRecordPerspective.getIdType());
-
-			PerspectiveInitializationData data = new PerspectiveInitializationData();
-			data.setData(oldRecordPerspective.getVirtualArray());
-
-			newRecordPerspective.init(data);
-
-			Perspective oldDimensionPerspective = tablePerspective.getDimensionPerspective();
-			Perspective newDimensionPerspective = new Perspective(tablePerspective.getDataDomain(),
-					oldDimensionPerspective.getIdType());
-			data = new PerspectiveInitializationData();
-			data.setData(oldDimensionPerspective.getVirtualArray());
-
-			newDimensionPerspective.init(data);
-			PathwayTablePerspective pathwayTablePerspective = new PathwayTablePerspective(
-					tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective, newDimensionPerspective,
-					PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-			pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
-
-			List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
-			pathwayTablePerspectives.add(pathwayTablePerspective);
-
-			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
-					Float.NaN);
-
-			pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(), pathwayDataDomain,
-					newRecordPerspective, newDimensionPerspective, PathwayManager.get().getPathwayByTitle(
-							"Pathways in cancer", EPathwayDatabaseType.KEGG));
-			pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
-
-			pathwayTablePerspectives.clear();
-			pathwayTablePerspectives.add(pathwayTablePerspective);
-			addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
-					Float.NaN);
-
-			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer, 0.6f);
+			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer, 0.2f);
 
 		}
 	}
 
+	public void addPathway(PathwayGraph pathway) {
+
+		if (tablePerspectives.size() <= 0)
+			return;
+
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
+
+		TablePerspective tablePerspective = tablePerspectives.get(0);
+		Perspective oldRecordPerspective = tablePerspective.getRecordPerspective();
+		Perspective newRecordPerspective = new Perspective(tablePerspective.getDataDomain(),
+				oldRecordPerspective.getIdType());
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(oldRecordPerspective.getVirtualArray());
+
+		newRecordPerspective.init(data);
+
+		Perspective oldDimensionPerspective = tablePerspective.getDimensionPerspective();
+		Perspective newDimensionPerspective = new Perspective(tablePerspective.getDataDomain(),
+				oldDimensionPerspective.getIdType());
+		data = new PerspectiveInitializationData();
+		data.setData(oldDimensionPerspective.getVirtualArray());
+
+		newDimensionPerspective.init(data);
+		PathwayTablePerspective pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(),
+				pathwayDataDomain, newRecordPerspective, newDimensionPerspective, pathway);
+		pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
+
+		List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
+		pathwayTablePerspectives.add(pathwayTablePerspective);
+
+		addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn, Float.NaN);
+	}
+
 	private void addMultiformRenderer(List<TablePerspective> tablePerspectives, String embeddingID,
-			GLElementContainer parent, Object layoutData) {
+			AnimatedGLElementContainer parent, Object layoutData) {
 
 		GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
 		backgroundContainer.setLayoutData(layoutData);
-		GLElementContainer container = new GLElementContainer(GLLayouts.flowVertical(6));
-		// GLPathwayBackground bg = new GLPathwayBackground();
-
-		final GLPathwayBackground bg = new GLPathwayBackground();
-		backgroundContainer.add(bg);
-		backgroundContainer.add(container);
-
-		bg.onPick(new APickingListener() {
-			@Override
-			protected void mouseOver(Pick pick) {
-				if (currentActiveBackground != null && currentActiveBackground != bg) {
-					currentActiveBackground.hovered = false;
-					currentActiveBackground.repaint();
-				}
-				currentActiveBackground = bg;
-				bg.hovered = true;
-				bg.repaint();
-			}
-		});
 
 		remoteRenderedPathwayMultiformViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, embeddingID);
 
@@ -257,17 +280,23 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 					pathEventSpace);
 			IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(renderer, id);
 			if (pathwayRepresentation != null) {
-				pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem("Show Info",
-						ShowNodeInfoEvent.class, pathEventSpace));
+				pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
+						"Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
+				pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
+						"Show Related Pathways", ShowPathwayBrowserEvent.class, pathEventSpace));
 			}
 		}
 
 		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer);
 		// multiFormRendererAdapter.onPick(pl);
-		container.add(multiFormRendererAdapter);
 
 		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
-		container.add(viewSwitchingBar);
+		viewSwitchingBar.setVisibility(EVisibility.NONE);
+		GLPathwayBackground bg = new GLPathwayBackground(this, viewSwitchingBar);
+
+		backgroundContainer.add(bg);
+		backgroundContainer.add(multiFormRendererAdapter);
+		backgroundContainer.add(viewSwitchingBar);
 
 		List<Pair<MultiFormRenderer, GLElement>> embeddingSpecificRenderers = multiFormRenderers.get(embeddingID);
 
@@ -438,8 +467,19 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		public void onShowNodeInfo(ShowNodeInfoEvent event) {
 			GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
 			nodeInfo.setSize(80, 80);
-			nodeInfoContainer.add(nodeInfo);
+			nodeInfoContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.BOTTOM,
+					MoveTransitions.MOVE_LINEAR));
 			nodeInfoContainer.setSize(Float.NaN, 80);
+			// nodeInfoContainer.relayout();
+		}
+
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		public void onShowPathwayBrowser(ShowPathwayBrowserEvent event) {
+			// GLNodeInfo nodeInfo = new GLNodeInfo(event.getVertexRep());
+			// nodeInfo.setSize(80, 80);
+			// baseContainer.add(nodeInfo, 200, new InOutTransitionBase(InOutInitializers.RIGHT,
+			// MoveTransitions.GROW_LINEAR));
+			// baseContainer.setSize(Float.NaN, 80);
 			// nodeInfoContainer.relayout();
 		}
 
@@ -466,6 +506,21 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public void destroyed(MultiFormRenderer multiFormRenderer) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the currentActiveBackground, see {@link #currentActiveBackground}
+	 */
+	public GLPathwayBackground getCurrentActiveBackground() {
+		return currentActiveBackground;
+	}
+
+	/**
+	 * @param currentActiveBackground
+	 *            setter, see {@link currentActiveBackground}
+	 */
+	public void setCurrentActiveBackground(GLPathwayBackground currentActiveBackground) {
+		this.currentActiveBackground = currentActiveBackground;
 	}
 
 }

@@ -22,6 +22,8 @@ package org.caleydo.view.subgraph;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
+import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
  * Renders a pickable background behind pathway elements.
@@ -32,6 +34,13 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 public class GLPathwayBackground extends PickableGLElement {
 
 	protected boolean hovered = false;
+	protected GLSubGraph view;
+	protected GLElementViewSwitchingBar bar;
+
+	public GLPathwayBackground(GLSubGraph view, GLElementViewSwitchingBar bar) {
+		this.view = view;
+		this.bar = bar;
+	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
@@ -40,7 +49,6 @@ public class GLPathwayBackground extends PickableGLElement {
 		if (hovered) {
 			g.incZ(-0.2f);
 			g.color(new Color(255, 234, 183)).fillRoundedRect(0, 0, w, h, 10);
-			// g.color(new Color(255, 234, 183)).lineWidth(4).drawRoundedRect(0, 0, w, h, 10);
 			g.incZ(0.2f);
 		}
 
@@ -51,6 +59,21 @@ public class GLPathwayBackground extends PickableGLElement {
 		g.incZ(-0.2f);
 		super.renderPickImpl(g, w, h);
 		g.incZ(0.2f);
+	}
+
+	@Override
+	protected void onMouseOver(Pick pick) {
+		GLPathwayBackground currentActiveBackground = view.getCurrentActiveBackground();
+
+		if (currentActiveBackground != null && currentActiveBackground != this) {
+			currentActiveBackground.hovered = false;
+			currentActiveBackground.bar.setVisibility(EVisibility.NONE);
+			currentActiveBackground.repaint();
+		}
+		view.setCurrentActiveBackground(this);
+		bar.setVisibility(EVisibility.VISIBLE);
+		hovered = true;
+		repaint();
 	}
 
 }
