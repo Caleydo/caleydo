@@ -124,6 +124,21 @@
             </Embedding>
          </ParentView>
       </EmbeddingInfo>
+      <EmbeddingInfo
+            viewID="org.caleydo.view.enroute.path.alternatives">
+         <ParentView
+               viewID="org.caleydo.view.subgraph">
+            <Embedding
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
+                  icon="resources/icons/enroute.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.enroute.path.PathAlternativesCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
    </extension>
 
 </plugin>

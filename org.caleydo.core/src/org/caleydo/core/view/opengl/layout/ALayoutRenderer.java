@@ -99,7 +99,7 @@ public abstract class ALayoutRenderer {
 
 		prepare();
 
-		if (isDisplayListDirty && permitsWrappingDisplayLists() && displayListsAllowedByLayoutManager) {
+		if (isDisplayListDirty() && permitsWrappingDisplayLists() && displayListsAllowedByLayoutManager) {
 			gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 			renderContent(gl);
 			gl.glEndList();

@@ -255,9 +255,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	protected void createNodes(List<List<PathwayVertexRep>> pathSegments) {
 
-		for (ANode node : pathNodes) {
-			node.destroy();
-		}
+		destroyNodes();
 		pathNodes.clear();
 		for (List<PathwayVertexRep> vertexReps : pathSegments) {
 			List<ALinearizableNode> currentNodes = new ArrayList<>();
@@ -267,6 +265,15 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			}
 		}
 
+	}
+
+	/**
+	 * Destroys all nodes.
+	 */
+	protected void destroyNodes() {
+		for (ANode node : pathNodes) {
+			node.destroy();
+		}
 	}
 
 	/**
@@ -377,6 +384,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	@Override
 	public void destroy(GL2 gl) {
+		destroyNodes();
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
 		sampleSelectionManager.unregisterEventListeners();

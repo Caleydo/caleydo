@@ -60,16 +60,25 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		float currentPositionY = y - pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing);
 		float nodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.minNodeSpacing);
 
-		for (ALinearizableNode node : pathNodes) {
-			node.setPosition(new Vec3f(x / 2.0f, currentPositionY, 0));
-			currentPositionY -= nodeSpacing;
-		}
 		if (pathNodes.size() == 0) {
 			minHeightPixels = 0;
 		} else {
 			minHeightPixels = sizeConfig.pathStartSpacing + sizeConfig.pathEndSpacing + (pathNodes.size() - 1)
 					* sizeConfig.minNodeSpacing;
 		}
+		if (pixelGLConverter.getGLHeightForPixelHeight(minHeightPixels) > y) {
+			nodeSpacing = Math.max(
+					(y - pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing
+							+ sizeConfig.pathEndSpacing))
+							/ (pathNodes.size() - 1),
+					pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.rectangleNodeHeight));
+		}
+
+		for (ALinearizableNode node : pathNodes) {
+			node.setPosition(new Vec3f(x / 2.0f, currentPositionY, 0));
+			currentPositionY -= nodeSpacing;
+		}
+
 	}
 
 	@Override

@@ -200,6 +200,10 @@ public class ALayoutContainer extends ElementLayout implements Iterable<ElementL
 		return elements.remove(index);
 	}
 
+	public void removeAll() {
+		elements.clear();
+	}
+
 	public int indexOf(ElementLayout child) {
 		return elements.indexOf(child);
 	}

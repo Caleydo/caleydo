@@ -22,6 +22,7 @@ package org.caleydo.datadomain.pathway.manager;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,6 +56,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -514,5 +516,52 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		}
 
 		return equivalentVertexReps;
+	}
+
+	/**
+	 * Calculates a path consisting of {@link PathwayVertexRep} objects for a specified vertexRep. This path ends if
+	 * there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
+	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
+	 * start of the path is added at the beginning of the path.
+	 * 
+	 * @param vertexRep
+	 *            The <code>PathwayVertexRep</code> that represents the start of the branch path.
+	 * 
+	 * @param isLeavingPath
+	 *            Determines whether the path leaves or comes into the specified vertexRep.
+	 * @param maxPathLength
+	 *            Maximum length of the returned path. Specify -1 if there should be no limit.
+	 * @return
+	 */
+	public List<PathwayVertexRep> determineDirectionalPath(PathwayVertexRep vertexRep, boolean isLeavingPath,
+			int maxPathLength) {
+
+		List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
+		vertexReps.add(vertexRep);
+		// DefaultEdge existingEdge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
+		// if (existingEdge == null)
+		// existingEdge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
+
+		PathwayVertexRep currentVertexRep = vertexRep;
+		PathwayGraph pathway = vertexRep.getPathway();
+
+		for (int i = 0; i < maxPathLength; i++) {
+			List<PathwayVertexRep> nextVertices = null;
+			if (!isLeavingPath) {
+				nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
+			} else {
+				nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
+			}
+
+			if (nextVertices.size() == 0 || nextVertices.size() > 1) {
+				return vertexReps;
+			} else {
+				currentVertexRep = nextVertices.get(0);
+				vertexReps.add(currentVertexRep);
+			}
+
+		}
+
+		return vertexReps;
 	}
 }

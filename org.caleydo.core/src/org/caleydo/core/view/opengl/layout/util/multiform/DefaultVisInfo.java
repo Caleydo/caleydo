@@ -20,37 +20,21 @@
 package org.caleydo.core.view.opengl.layout.util.multiform;
 
 /**
- * Provides information such as scaling characteristics about an embedded visualization that is rendered by a
- * {@link MultiFormRenderer}.
+ * Vis info that does not scale with any entity
  *
  * @author Christian Partl
  *
  */
-public interface IEmbeddedVisualizationInfo {
+public class DefaultVisInfo implements IEmbeddedVisualizationInfo {
 
-
-
-	/**
-	 * Entities whose counts cause a visualization to scale either in width or height.
-	 *
-	 * @author Christian
-	 *
-	 */
-	public enum EScalingEntity {
-		RECORD, DIMENSION, RECORD_PERSPECTIVE, DIMENSION_PERSPECTIVE, DATA_DOMAIN, IMAGE_PIXEL, PATHWAY_VERTEX;
-
+	@Override
+	public EScalingEntity getPrimaryWidthScalingEntity() {
+		return null;
 	}
 
-	/**
-	 * @return The entity whose count that is primarily responsible for the visualization to scale in width. Null, if
-	 *         the visualization's width is independent of such an entity.
-	 */
-	public EScalingEntity getPrimaryWidthScalingEntity();
-
-	/**
-	 * @return The entity whose count that is primarily responsible for the visualization to scale in height. Null, if
-	 *         the visualization's height is independent of such an entity.
-	 */
-	public EScalingEntity getPrimaryHeightScalingEntity();
+	@Override
+	public EScalingEntity getPrimaryHeightScalingEntity() {
+		return null;
+	}
 
 }
