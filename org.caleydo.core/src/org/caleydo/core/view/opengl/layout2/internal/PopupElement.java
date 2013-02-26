@@ -33,9 +33,11 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.basic.GLButton;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -45,7 +47,7 @@ import org.eclipse.swt.SWT;
  * @author Samuel Gratzl
  *
  */
-class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISelectionCallback, IGLRenderer {
+class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer, GLButton.ISelectionCallback {
 	private final GLElement content;
 	private final int flags;
 	private int headerPickingId = -1;
@@ -65,16 +67,20 @@ class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISe
 		if (isFlagSet(FLAG_MOVEABLE)) {
 			hasHeader = true;
 		}
-		if (isFlagSet(FLAG_CLOSEABLE)) {
-			GLButton close = new GLButton();
-			close.setRenderer(this);
-			close.setCallback(this);
-			close.setzDelta(0.5f);
-			this.add(close);
-		}
-		if (isFlagSet(FLAG_RESIZEABLE)) {
-			// TODO
-		}
+
+		GLButton close = new GLButton();
+
+		close.setRenderer(this);
+		close.setCallback(this);
+		close.setzDelta(0.5f);
+		close.setVisibility(isFlagSet(FLAG_CLOSEABLE) ? EVisibility.PICKABLE : EVisibility.HIDDEN);
+		this.add(close);
+
+		GLElement resize = new Resize();
+		resize.setzDelta(0.5f);
+		resize.setVisibility(isFlagSet(FLAG_RESIZEABLE) ? EVisibility.PICKABLE : EVisibility.HIDDEN);
+		this.add(resize);
+
 		if (bounds != null)
 			this.setBounds(bounds.x(), bounds.y(), bounds.z() + 6, bounds.w() + 3 + (hasHeader ? 8 : 3));
 		setVisibility(EVisibility.PICKABLE); // as a barrier to the underlying
@@ -133,23 +139,10 @@ class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISe
 		IGLLayoutElement body = children.get(0);
 		boolean moveAble = isFlagSet(FLAG_MOVEABLE);
 		body.setBounds(3, (moveAble ? 8 : 3), w - 6, h - 3 - (moveAble ? 8 : 3));
-		if (children.size() > 1) {
-			IGLLayoutElement b = children.get(1);
-			b.setBounds(w - 8, -2, 12, 12);
-		}
-	}
-
-	@Override
-	public void onSelectionChanged(GLButton button, boolean selected) {
-		((PopupLayer) getParent()).hide(content);
-	}
-
-	@Override
-	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		g.color(new Color(210, 210, 210)).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
-		g.color(Color.BLACK);
-		g.drawLine(2, 2, w - 2, h - 2);
-		g.drawLine(w - 2, 2, 2, h - 2);
+		IGLLayoutElement close = children.get(1);
+		close.setBounds(w - 8, -2, 12, 12);
+		IGLLayoutElement resize = children.get(2);
+		resize.setBounds(w - 12, h - 12, 12, 12);
 	}
 
 	/**
@@ -185,5 +178,64 @@ class PopupElement extends GLElementContainer implements IGLLayout, GLButton.ISe
 
 	private boolean isFlagSet(int f) {
 		return (flags & f) != 0;
+	}
+
+	@Override
+	public void onSelectionChanged(GLButton button, boolean selected) {
+		((PopupLayer) getParent()).hide(content);
+	}
+
+	@Override
+	public void render(GLGraphics g, float w, float h, GLElement parent) {
+		g.color(new Color(210, 210, 210)).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
+		g.color(Color.BLACK);
+		g.drawLine(2, 2, w - 2, h - 2);
+		g.drawLine(w - 2, 2, 2, h - 2);
+	}
+
+	/**
+	 * @param dx
+	 * @param dy
+	 */
+	protected void resize(int dx, int dy) {
+		Vec2f s = this.getSize();
+		setSize(s.x() + dx, s.y() + dy);
+		relayout();
+	}
+
+	class Resize extends PickableGLElement {
+		public Resize() {
+			setPicker(GLRenderers.DUMMY);
+		}
+
+		@Override
+		protected void onClicked(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			pick.setDoDragging(true);
+		}
+
+		@Override
+		protected void onDragged(Pick pick) {
+			if (!pick.isDoDragging())
+				return;
+			resize(pick.getDx(), pick.getDy());
+
+		}
+
+		@Override
+		protected void renderImpl(GLGraphics g, float w, float h) {
+			g.color(Color.BLACK);
+			g.drawLine(0, h, w, 0);
+			g.drawLine(3, h, w, 3);
+			g.drawLine(6, h, w, 6);
+			super.renderImpl(g, w, h);
+		}
+
+		@Override
+		protected void renderPickImpl(GLGraphics g, float w, float h) {
+			super.renderPickImpl(g, w, h);
+			g.color(Color.RED).fillPolygon(new Vec2f(0, h), new Vec2f(w, 0), new Vec2f(w, h));
+		}
 	}
 }
