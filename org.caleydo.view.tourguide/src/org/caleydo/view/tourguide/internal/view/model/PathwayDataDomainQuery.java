@@ -50,6 +50,12 @@ public class PathwayDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
+	public void cloneFrom(ADataDomainQuery clone) {
+		super.cloneFrom(clone);
+		this.matches = ((PathwayDataDomainQuery) clone).matches;
+	}
+
+	@Override
 	public boolean include(Perspective perspective, Group group) {
 		assert perspective.getDataDomain() == dataDomain;
 		if (matches == null)

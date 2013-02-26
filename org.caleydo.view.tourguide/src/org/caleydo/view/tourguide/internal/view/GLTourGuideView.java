@@ -179,6 +179,23 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		}
 	}
 
+	public void cloneFrom(GLTourGuideView view) {
+		// FIXME
+		int initialized = 0;
+		// clone data
+		for (int i = 0; i < queries.size(); ++i) {
+			ADataDomainQuery q = queries.get(i);
+			ADataDomainQuery clone = view.queries.get(i);
+			q.cloneFrom(clone);
+
+			if (clone.isInitialized()) {
+				// TODO
+			}
+		}
+		// clone columns
+		// for(ARankColumnModel model : )
+	}
+
 	private static ADataDomainQuery createFor(EDataDomainQueryMode mode, IDataDomain dd) {
 		if (DataSupportDefinitions.categoricalTables.apply(dd))
 			return new CategoricalDataDomainQuery(mode, (ATableBasedDataDomain) dd);
@@ -593,11 +610,6 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
 	}
 
-	public void cloneFrom(GLTourGuideView view) {
-		// FIXME
-
-	}
-
 	@Override
 	public boolean isMoveAble(ARankColumnModel model) {
 		if (model instanceof ScoreRankColumnModel) {
@@ -610,7 +622,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 	@Override
 	public ACompositeRankColumnModel createNewCombined() {
-		return new MaxCompositeRankColumnModel(RowHeightLayouts.HINTS);
+		return new MaxCompositeRankColumnModel(RowHeightLayouts.JUST_SELECTED);
 	}
 
 	@Override

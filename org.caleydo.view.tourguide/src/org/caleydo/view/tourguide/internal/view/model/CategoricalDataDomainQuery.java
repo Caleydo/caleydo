@@ -54,6 +54,13 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		return (ATableBasedDataDomain) super.getDataDomain();
 	}
 
+	@Override
+	public void cloneFrom(ADataDomainQuery clone) {
+		super.cloneFrom(clone);
+		this.selected.clear();
+		this.selected.addAll(((CategoricalDataDomainQuery) clone).selected);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<CategoryProperty<?>> getCategories() {
 		final CategoricalTable<?> table = (CategoricalTable<?>) getDataDomain().getTable();
@@ -88,6 +95,7 @@ public class CategoricalDataDomainQuery extends ADataDomainQuery {
 		}
 		return r;
 	}
+
 
 	public void setSelection(Set<CategoryProperty<?>> selected) {
 		if (Objects.equals(selected, this.selected))

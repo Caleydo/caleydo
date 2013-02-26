@@ -37,7 +37,7 @@ public class RankTableConfigBase implements IRankTableConfig {
 
 	@Override
 	public ACompositeRankColumnModel createNewCombined() {
-		return new MaxCompositeRankColumnModel(RowHeightLayouts.HINTS);
+		return new MaxCompositeRankColumnModel(RowHeightLayouts.JUST_SELECTED);
 	}
 
 

@@ -43,7 +43,7 @@ import org.caleydo.view.tourguide.v3.model.ARow;
  * @author Samuel Gratzl
  *
  */
-public class PerspectiveRow extends ARow implements ILabelProvider {
+public final class PerspectiveRow extends ARow implements ILabelProvider, Cloneable {
 	private final TablePerspective perspective;
 	private final Perspective stratification;
 	private final Group group;
@@ -162,5 +162,14 @@ public class PerspectiveRow extends ARow implements ILabelProvider {
 		if (getVirtualArray() != null)
 			return getVirtualArray().size();
 		return 0;
+	}
+
+	@Override
+	public PerspectiveRow clone() {
+		try {
+			return (PerspectiveRow) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 }

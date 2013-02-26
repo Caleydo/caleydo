@@ -57,6 +57,13 @@ public class TableDataDomainQuery extends ADataDomainQuery {
 	}
 
 	@Override
+	public void cloneFrom(ADataDomainQuery clone) {
+		super.cloneFrom(clone);
+		this.matches = ((TableDataDomainQuery) clone).matches;
+		this.dimensionSelection = ((TableDataDomainQuery) clone).dimensionSelection;
+	}
+
+	@Override
 	public boolean include(Perspective perspective, Group group) {
 		assert perspective.getDataDomain() == dataDomain;
 		if (matches == null)

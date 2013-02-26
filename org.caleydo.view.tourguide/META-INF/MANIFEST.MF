@@ -18,7 +18,15 @@ Export-Package: org.caleydo.view.tourguide.api.compute,
  org.caleydo.view.tourguide.api.util.ui,
  org.caleydo.view.tourguide.spi.algorithm,
  org.caleydo.view.tourguide.spi.compute,
- org.caleydo.view.tourguide.spi.score
+ org.caleydo.view.tourguide.spi.score,
+ org.caleydo.view.tourguide.v3.config,
+ org.caleydo.view.tourguide.v3.data,
+ org.caleydo.view.tourguide.v3.event,
+ org.caleydo.view.tourguide.v3.layout,
+ org.caleydo.view.tourguide.v3.model,
+ org.caleydo.view.tourguide.v3.model.mixin,
+ org.caleydo.view.tourguide.v3.ui,
+ org.caleydo.view.tourguide.v3.ui.detail
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.tourguide.internal.Activator

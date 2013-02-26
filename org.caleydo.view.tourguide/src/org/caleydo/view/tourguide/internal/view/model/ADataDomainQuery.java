@@ -54,6 +54,14 @@ public abstract class ADataDomainQuery {
 		this.mode = mode;
 	}
 
+	public void cloneFrom(ADataDomainQuery clone) {
+		this.mask = clone.mask != null ? (BitSet) clone.mask.clone() : null;
+		this.active = clone.active;
+		if (clone.data != null) {
+			// TODO
+		}
+	}
+
 	public abstract boolean hasFilter();
 	protected abstract boolean include(Perspective perspective, Group group);
 
