@@ -87,7 +87,6 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.ClearPathEvent;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
@@ -101,7 +100,6 @@ import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeListener;
 import org.caleydo.view.pathway.listener.ClearMappingListener;
-import org.caleydo.view.pathway.listener.ClearPathEventListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
@@ -184,7 +182,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private EnableGeneMappingListener enableGeneMappingListener;
 	private EnRoutePathEventListener enRoutePathEventListener;
 	private SelectPathModeEventListener selectPathModeEventListener;
-	private ClearPathEventListener clearPathEventListener;
 	private AddTablePerspectivesListener addTablePerspectivesListener;
 	private SampleMappingModeListener sampleMappingModeListener;
 	private UpdateColorMappingListener updateColorMappingListener;
@@ -1216,11 +1213,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		selectPathModeEventListener.setHandler(this);
 		eventPublisher.addListener(EnablePathSelectionEvent.class, selectPathModeEventListener);
 
-		clearPathEventListener = new ClearPathEventListener();
-		clearPathEventListener.setExclusiveEventSpace(pathwayPathEventSpace);
-		clearPathEventListener.setHandler(this);
-		eventPublisher.addListener(ClearPathEvent.class, clearPathEventListener);
-
 		addTablePerspectivesListener = new AddTablePerspectivesListener();
 		addTablePerspectivesListener.setHandler(this);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
@@ -1263,11 +1255,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (selectPathModeEventListener != null) {
 			eventPublisher.removeListener(selectPathModeEventListener);
 			selectPathModeEventListener = null;
-		}
-
-		if (clearPathEventListener != null) {
-			eventPublisher.removeListener(clearPathEventListener);
-			clearPathEventListener = null;
 		}
 
 		if (addTablePerspectivesListener != null) {
@@ -1694,15 +1681,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (selectedPath != null)
 			allPaths.add(selectedPath);
 
-		isBubbleTextureDirty = true;
-		setDisplayListDirty();
-	}
-
-	public void clearPath() {
-		selectedPath = null;
-		allPaths = null;
-
-		triggerPathUpdate();
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();
 	}
