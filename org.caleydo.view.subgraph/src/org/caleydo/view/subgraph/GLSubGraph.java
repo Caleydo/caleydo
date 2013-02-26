@@ -52,6 +52,7 @@ import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
+import org.caleydo.view.subgraph.ranking.RankingElement;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
@@ -107,6 +108,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		column.add(nodeInfoContainer);
 		baseContainer.add(pathwayColumn, 0.4f);
+		baseContainer.add(new RankingElement(), 0.4f);
 
 		root.add(column);
 		root.add(augmentation);

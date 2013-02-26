@@ -8,6 +8,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="2.1.0",
  org.caleydo.datadomain.genetic;bundle-version="2.1.0",
- org.caleydo.datadomain.pathway;bundle-version="2.2.0"
+ org.caleydo.datadomain.pathway;bundle-version="2.2.0",
+ org.caleydo.view.tourguide;bundle-version="2.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
