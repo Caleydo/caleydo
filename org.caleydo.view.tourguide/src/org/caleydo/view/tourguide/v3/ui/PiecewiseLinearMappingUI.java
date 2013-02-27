@@ -305,9 +305,13 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 			Vec2f size = getSize();
 			float from = inverseNormalize(loc.x() / size.x());
 			float to = (size.y() - loc.y()) / size.y();
-			g.textColor(Color.LIGHT_GRAY);
-			g.drawText(Formatter.formatNumber(from), loc.x() + 1, h - 12 + GAP, 40, 10);
-			g.drawText(Formatter.formatNumber(to), 1 - GAP, loc.y() + 1, 40, 10);
+			g.textColor(Color.GRAY);
+			g.drawText(Formatter.formatNumber(from), loc.x() + 1, h - 12 + GAP, 40, 11);
+			g.drawText(Formatter.formatNumber(to), 1 - GAP, loc.y() + 1, 40, 11);
+
+			g.textColor(Color.BLACK).drawText(
+					"m(" + Formatter.formatNumber(from) + ") = " + Formatter.formatNumber(to), loc.x() + 5,
+					loc.y() - 5, 100, 11);
 		}
 
 		@Override
