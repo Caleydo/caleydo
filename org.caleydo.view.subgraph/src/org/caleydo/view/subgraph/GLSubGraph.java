@@ -53,6 +53,8 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
 import org.caleydo.view.subgraph.event.ShowPathwayBrowserEvent;
 import org.caleydo.view.subgraph.ranking.RankingElement;
@@ -221,7 +223,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			// pathwayTablePerspectives.add(pathwayTablePerspective);
 			// addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
 			// Float.NaN);
-
+			addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
+			addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
 			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer, 0.2f);
 
 		}
