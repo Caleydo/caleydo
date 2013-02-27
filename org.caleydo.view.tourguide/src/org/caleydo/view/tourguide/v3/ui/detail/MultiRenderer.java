@@ -55,6 +55,8 @@ public class MultiRenderer implements IGLRenderer {
 			float[] heights = layout.compute(v.size(), v.repr, h * 0.8f);
 			float y = h * 0.1f;
 			for (int i = 0; i < heights.length; ++i) {
+				if (v.values[i] <= 0 || Float.isNaN(v.values[i]))
+					continue;
 				float hi = heights[i];
 				if (hi <= 0)
 					continue;

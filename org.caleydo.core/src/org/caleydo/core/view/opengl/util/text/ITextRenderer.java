@@ -32,14 +32,14 @@ import javax.media.opengl.GL2;
 public interface ITextRenderer {
 	/**
 	 * set the text color to the specified one
-	 * 
+	 *
 	 * @param color
 	 */
 	public void setColor(Color color);
 
 	/**
 	 * set the text color to the specified one
-	 * 
+	 *
 	 * @param r
 	 * @param g
 	 * @param b
@@ -47,16 +47,7 @@ public interface ITextRenderer {
 	 */
 	public void setColor(float r, float g, float b, float a);
 
-	/**
-	 * Same as {@link #getRequiredTextWidth(String, float)}, but returns the specified maximum width if the required
-	 * text width exceeds this maximum.
-	 *
-	 * @param text
-	 * @param height
-	 * @param maxWidth
-	 * @return
-	 */
-	public float getRequiredTextWidthWithMax(String text, float height, float maxWidth);
+	public float getTextWidth(String text, float height);
 
 	/**
 	 * Render the text at the position specified (lower left corner) within the bounding box The height is scaled to

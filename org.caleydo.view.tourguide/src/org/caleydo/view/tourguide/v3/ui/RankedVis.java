@@ -77,7 +77,7 @@ public class RankedVis extends GLElementContainer {
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new SimpleAcc(1), GLRenderers.drawText("Float", VAlign.CENTER), Color
-						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, 1)));
+						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, Float.NaN)));
 		table.addColumnTo(stacked,
 				new FloatRankColumnModel(new SimpleAcc(2), GLRenderers.drawText("Float2", VAlign.CENTER), Color
 						.decode("#80ffb3"), Color.decode("#e3f4d7"), new PiecewiseLinearMapping(0, 1)));

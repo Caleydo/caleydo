@@ -38,7 +38,7 @@ public interface IFloatList extends List<Float> {
 
 	/**
 	 * returns a view of this list where, the given function will be applied
-	 * 
+	 *
 	 * @param f
 	 * @return
 	 */
@@ -50,4 +50,7 @@ public interface IFloatList extends List<Float> {
 	 * @return
 	 */
 	float[] computeStats();
+
+	@Override
+	IFloatIterator iterator();
 }

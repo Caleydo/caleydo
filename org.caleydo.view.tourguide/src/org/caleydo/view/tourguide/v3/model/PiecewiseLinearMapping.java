@@ -127,6 +127,8 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 
 	@Override
 	public float apply(float in) {
+		if (Float.isNaN(in))
+			return in;
 		if (mapping.size() < 2) {// default clamping
 			if (in < actMin)
 				return Float.NaN;
@@ -169,15 +171,15 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 	}
 
 	public float[] getMappedMin() {
-		if (mapping.isEmpty())
+		if (mapping.size() < 2)
 			return new float[] { actMin, 0 };
 		float k = mapping.firstKey();
 		return new float[] { k, mapping.get(k) };
 	}
 
 	public float[] getMappedMax() {
-		if (mapping.isEmpty())
-			return new float[] { actMax, 0 };
+		if (mapping.size() < 2)
+			return new float[] { actMax, 1 };
 		float k = mapping.lastKey();
 		return new float[] { k, mapping.get(k) };
 	}

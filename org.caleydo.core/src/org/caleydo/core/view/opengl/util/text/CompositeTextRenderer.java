@@ -31,9 +31,9 @@ import org.caleydo.core.util.function.IFloatFunction;
 /**
  * composite pattern, that has a pool of underlying renderer with different text sizes and automatically selects the
  * best matching one using the given height of the desired text
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class CompositeTextRenderer implements ITextRenderer {
 	/**
@@ -77,9 +77,9 @@ public class CompositeTextRenderer implements ITextRenderer {
 	}
 
 	@Override
-	public float getRequiredTextWidthWithMax(String text, float height, float maxWidth) {
+	public float getTextWidth(String text, float height) {
 		CaleydoTextRenderer best = selectBest(height);
-		return best.getRequiredTextWidthWithMax(text, height, maxWidth);
+		return best.getRequiredTextWidth(text, height);
 	}
 
 	@Override

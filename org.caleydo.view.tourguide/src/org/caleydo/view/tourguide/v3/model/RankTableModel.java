@@ -387,7 +387,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		if (!dirtyFilter)
 			return;
 		dirtyFilter = false;
-		System.out.println("filter");
+		// System.out.println("filter");
 		if (dataMask != null)
 			filter = (BitSet) dataMask.clone();
 		else {
@@ -417,7 +417,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		if (!dirtyOrder)
 			return;
 		dirtyOrder = false;
-		System.out.println("sort");
+		// System.out.println("sort");
 		int[] bak = order;
 
 		orderBy = findFirstRankable();

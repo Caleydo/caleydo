@@ -17,31 +17,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2.internal;
+package org.caleydo.core.util.function;
 
-import java.awt.Color;
-
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import java.util.Iterator;
 
 /**
- * the default element to render a string tooltip
- *
  * @author Samuel Gratzl
  *
  */
-final class TooltipElement extends GLElement {
-	private final String text;
-
-	public TooltipElement(String text) {
-		this.text = text;
-		this.setLocation(5, 5);
-	}
-
-	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		float textWidth = Math.min(g.text.getTextWidth(this.text, 12), w);
-		g.color(0.9f, 0.9f, 0.9f).fillRect(0, 0, textWidth + 3, 15);
-		g.textColor(Color.BLACK).drawText(text, 1, 1, textWidth + 1, 12);
-	}
+public interface IFloatIterator extends Iterator<Float> {
+	float nextPrimitive();
 }
+

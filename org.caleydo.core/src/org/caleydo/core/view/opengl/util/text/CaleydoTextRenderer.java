@@ -285,11 +285,15 @@ public class CaleydoTextRenderer extends TextRenderer implements ITextRenderer {
 	 * @param maxWidth
 	 * @return
 	 */
-	@Override
 	public float getRequiredTextWidthWithMax(String text, float height, float maxWidth) {
 
 		float requiredWidth = getRequiredTextWidth(text, height);
 		return (requiredWidth > maxWidth) ? maxWidth : requiredWidth;
+	}
+
+	@Override
+	public float getTextWidth(String text, float height) {
+		return getRequiredTextWidth(text, height);
 	}
 
 	/**

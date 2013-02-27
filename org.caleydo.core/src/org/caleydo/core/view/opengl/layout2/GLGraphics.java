@@ -481,7 +481,7 @@ public class GLGraphics {
 			y = 0;
 			gl.glScalef(1, -1, 1);
 		}
-		float textWidth = this.text.getRequiredTextWidthWithMax(text, h, w);
+		float textWidth = Math.min(this.text.getTextWidth(text, h), w);
 		switch (valign) {
 		case CENTER:
 			x += w * 0.5f - textWidth * 0.5f;

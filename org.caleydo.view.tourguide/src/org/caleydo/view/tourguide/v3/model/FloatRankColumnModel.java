@@ -33,6 +33,7 @@ import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.function.AFloatList;
+import org.caleydo.core.util.function.IFloatIterator;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -151,16 +152,48 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	private IFloatList asData() {
+		final RankTableModel table = getTable();
 		return new AFloatList() {
 			@Override
 			public float getPrimitive(int index) {
-				return data.applyPrimitive(getTable().get(index));
+				return data.applyPrimitive(table.get(index));
 			}
 
 			@Override
 			public int size() {
-				return getTable().size();
+				return table.size();
 			}
+		};
+	}
+
+	private IFloatIterator asDataIterator() {
+		final RankTableModel table = getTable();
+		final List<IRow> data2 = table.getData();
+		final BitSet filter = table.getFilter();
+		return new IFloatIterator() {
+			int act = 0;
+			@Override
+			public boolean hasNext() {
+				return act >= 0 && filter.nextSetBit(act + 1) >= 0;
+			}
+
+			@Override
+			public Float next() {
+				return nextPrimitive();
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public float nextPrimitive() {
+				int bak = act;
+				act = filter.nextSetBit(act + 1);
+				return data.applyPrimitive(data2.get(bak));
+			}
+
 		};
 	}
 
@@ -172,12 +205,15 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	protected float map(float value) {
 		checkMapping();
-		return mapping.apply(value);
+		float r = mapping.apply(value);
+		if (Float.isNaN(r))
+			return 0;
+		return r;
 	}
 
 	private void checkMapping() {
 		if (dirtyMinMax && mapping.isMappingDefault() && !mapping.hasDefinedMappingBounds()) {
-			float[] minmax = asData().computeStats();
+			float[] minmax = AFloatList.computeStats(asDataIterator());
 			mapping.setAct(minmax[0], minmax[1]);
 			dirtyMinMax = false;
 		}
@@ -360,14 +396,14 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			if (w > 20)
 				renderSelection(g, selectionMin, selectionMax, w, h);
 			checkMapping();
-			DecimalFormat d = new DecimalFormat("#.##");
+			DecimalFormat d = new DecimalFormat("#####.##");
+			// TODO
 			float[] m = mapping.getMappedMin();
-			g.drawText(d.format(m[0]), 1, h - 23, 15, 10);
-			g.drawText(d.format(m[1]), 1, h - 12, 15, 10);
+			g.drawText(d.format(m[0]), 1, h - 23, w * 0.4f, 10);
+			g.drawText(d.format(m[1]), 1, h - 12, w * 0.4f, 10);
 			m = mapping.getMappedMax();
-			g.drawText(d.format(m[0]), w - 16, h - 23, 15, 10, VAlign.RIGHT);
-			g.drawText(d.format(m[1]), w - 16, h - 12, 15, 10,
-					VAlign.RIGHT);
+			g.drawText(d.format(m[0]), w * 0.6f, h - 23, w * 0.4f - 1, 10, VAlign.RIGHT);
+			g.drawText(d.format(m[1]), w * 0.6f, h - 12, w * 0.4f - 1, 10, VAlign.RIGHT);
 		}
 
 		@Override

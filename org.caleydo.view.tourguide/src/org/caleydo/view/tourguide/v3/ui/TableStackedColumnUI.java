@@ -158,7 +158,7 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 		for (IGLLayoutElement c : children) {
 			StackedRenderInfo data = c.getLayoutDataAs(StackedRenderInfo.class, null);
 			if (data != null) {
-				data.setHasFreeSpace(index >= combinedAlign ? (index == (stacked.size() + 1)) : (index == 0));
+				data.setHasFreeSpace(index >= combinedAlign ? (index == (stacked.size() - 1)) : (index == 0));
 				data.setValign(index >= combinedAlign ? VAlign.LEFT : VAlign.RIGHT);
 			}
 		}
