@@ -49,8 +49,8 @@ public class GeneNode extends ALinearizableNode implements ILabelHolder {
 	 * @param pixelGLConverter
 	 */
 	public GeneNode(APathwayPathRenderer pathwayPathRenderer, CaleydoTextRenderer textRenderer, AGLView view,
-			int nodeId, ALinearizeableNodeMode mode) {
-		super(pathwayPathRenderer, view, nodeId, mode);
+			ALinearizeableNodeMode mode) {
+		super(pathwayPathRenderer, view, mode);
 		this.textRenderer = textRenderer;
 	}
 

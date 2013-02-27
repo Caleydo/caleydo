@@ -92,8 +92,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	 */
 	protected Map<ALinearizableNode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<>();
 
-	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
-		super(view, tablePerspectives);
+	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives, boolean isPathSelectable) {
+		super(view, tablePerspectives, isPathSelectable);
 		setSizeConfig(PathSizeConfiguration.ENROUTE_DEFAULT);
 		// setSizeConfig(new PathSizeConfiguration.Builder(PathSizeConfiguration.ENROUTE_COMPACT).minNodeSpacing(40)
 		// .build());
@@ -127,9 +127,9 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 		for (int i = 0; i < pathNodes.size(); i++) {
 
 			ALinearizableNode currentNode = pathNodes.get(i);
-			BranchSummaryNode incomingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
+			BranchSummaryNode incomingNode = new BranchSummaryNode(view, currentNode, this);
 			incomingNode.init();
-			BranchSummaryNode outgoingNode = new BranchSummaryNode(view, lastNodeID++, currentNode, this);
+			BranchSummaryNode outgoingNode = new BranchSummaryNode(view, currentNode, this);
 			outgoingNode.init();
 			List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
 			List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();

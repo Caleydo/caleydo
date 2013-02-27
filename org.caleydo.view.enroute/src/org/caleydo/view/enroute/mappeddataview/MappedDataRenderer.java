@@ -649,8 +649,10 @@ public class MappedDataRenderer {
 	}
 
 	public void destroy(GL2 gl) {
-		highlightLayoutManger.destroy(gl);
-		baseLayoutManger.destroy(gl);
+		if (highlightLayoutManger != null)
+			highlightLayoutManger.destroy(gl);
+		if (baseLayoutManger != null)
+			baseLayoutManger.destroy(gl);
 		sampleGroupSelectionManager.unregisterEventListeners();
 	}
 

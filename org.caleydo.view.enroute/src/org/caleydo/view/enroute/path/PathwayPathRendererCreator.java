@@ -16,7 +16,7 @@ public class PathwayPathRendererCreator implements IRemoteRendererCreator {
 	public ALayoutRenderer createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
 
-		APathwayPathRenderer renderer = new VerticalPathRenderer(remoteRenderingView, tablePerspectives);
+		APathwayPathRenderer renderer = new VerticalPathRenderer(remoteRenderingView, tablePerspectives, false);
 		renderer.setPathwayPathEventSpace(embeddingEventSpace);
 		renderer.setSizeConfig(PathSizeConfiguration.COMPACT);
 		renderer.init();

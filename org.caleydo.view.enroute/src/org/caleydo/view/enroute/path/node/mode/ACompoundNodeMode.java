@@ -45,7 +45,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 
 	protected void renderCircle(GL2 gl, GLU glu, Vec3f position, float radius) {
 
-		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
+		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
 		gl.glColor4fv(backgroundColor, 0);

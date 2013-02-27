@@ -42,7 +42,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 		if (node.getParentNode() == null) {
 			RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(view, node,
 					pathwayPathRenderer);
-			attributeRenderer.addNodeId(node.getNodeId());
+			attributeRenderer.addNodeId(node.hashCode());
 			attributeRenderer.registerPickingListeners();
 			addAttributeRenderer(attributeRenderer);
 		}
@@ -106,13 +106,13 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				// circleColor = DEFAULT_CIRCLE_COLOR;
 				pathwayPathRenderer.setDisplayListDirty();
 			}
-		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 	@Override

@@ -39,8 +39,8 @@ public class CompoundNode extends ALinearizableNode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public CompoundNode(APathwayPathRenderer pathwayPathRenderer, AGLView view, int nodeId, ALinearizeableNodeMode mode) {
-		super(pathwayPathRenderer, view, nodeId, mode);
+	public CompoundNode(APathwayPathRenderer pathwayPathRenderer, AGLView view, ALinearizeableNodeMode mode) {
+		super(pathwayPathRenderer, view, mode);
 	}
 
 	@Override

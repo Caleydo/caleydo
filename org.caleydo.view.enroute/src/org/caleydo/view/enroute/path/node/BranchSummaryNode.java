@@ -92,9 +92,9 @@ public class BranchSummaryNode extends ANode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public BranchSummaryNode(AGLView view, int nodeId, ALinearizableNode associatedLinearizedNode,
+	public BranchSummaryNode(AGLView view, ALinearizableNode associatedLinearizedNode,
 			EnRoutePathRenderer pathwayPathRenderer) {
-		super(view, nodeId);
+		super(view);
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
 		this.associatedLinearizedNode = associatedLinearizedNode;
 		this.pathwayPathRenderer = pathwayPathRenderer;
@@ -160,13 +160,13 @@ public class BranchSummaryNode extends ANode {
 				}
 				// view.setLayoutDirty();
 			}
-		}, EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
+		}, EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), hashCode());
 
 	}
 
 	@Override
 	public void destroy() {
-		view.removeAllIDPickingListeners(EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
+		view.removeAllIDPickingListeners(EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), hashCode());
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class BranchSummaryNode extends ANode {
 		colorRenderer.setColor(new float[] { 0.9f, 0.9f, 0.9f, 1 });
 		colorRenderer.setDrawBorder(true);
 		colorRenderer.setView(view);
-		colorRenderer.addPickingID(EPickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
+		colorRenderer.addPickingID(EPickingType.BRANCH_SUMMARY_NODE.name(), hashCode());
 		baseColumn.addBackgroundRenderer(colorRenderer);
 		baseColumn.setBottomUp(false);
 
@@ -206,7 +206,7 @@ public class BranchSummaryNode extends ANode {
 		baseRow.setPixelSizeY(textHeight);
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
-		collapseButton = new Button(EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId,
+		collapseButton = new Button(EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), hashCode(),
 				EIconTextures.GROUPER_COLLAPSE_PLUS);
 		ButtonRenderer collapseButtonRenderer = new ButtonRenderer.Builder(view, collapseButton).build();
 		collapseButtonLayout.setRenderer(collapseButtonRenderer);

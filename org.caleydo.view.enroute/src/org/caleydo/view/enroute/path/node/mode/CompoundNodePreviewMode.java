@@ -68,7 +68,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 		determineBackgroundColor(pathwayPathRenderer.getMetaboliteSelectionManager());
 
-		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
+		gl.glPushName(pickingManager.getPickingID(view.getID(), EPickingType.LINEARIZABLE_NODE.name(), node.hashCode()));
 		gl.glColor4fv(backgroundColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(leftX, bottomY, nodePosition.z());
@@ -141,13 +141,13 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 				// circleColor = DEFAULT_CIRCLE_COLOR;
 				pathwayPathRenderer.setDisplayListDirty();
 			}
-		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 
 	}
 

@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 
 /**
  * Interface for classes that represent one or more pathway(s) or parts of pathways. Specifies methods for accessing
@@ -77,12 +76,4 @@ public interface IPathwayRepresentation {
 	 */
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item);
 
-	/**
-	 * Enables or disables path selection for this {@link IPathwayRepresentation}. If path selection is supported by the
-	 * pathway presentation any changes to the currently selected path are propagated via
-	 * {@link PathwayPathSelectionEvent}.
-	 *
-	 * @param isPathSelection
-	 */
-	public void enablePathSelection(boolean isPathSelection);
 }

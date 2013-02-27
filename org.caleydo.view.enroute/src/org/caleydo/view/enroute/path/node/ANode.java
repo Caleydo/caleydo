@@ -46,11 +46,6 @@ public abstract class ANode implements ILabelProvider {
 	protected PixelGLConverter pixelGLConverter;
 
 	/**
-	 * ID that identifies the node.
-	 */
-	protected int nodeId;
-
-	/**
 	 * Position of the node center.
 	 */
 	protected Vec3f position;
@@ -59,11 +54,10 @@ public abstract class ANode implements ILabelProvider {
 
 	protected PickingManager pickingManager;
 
-	public ANode(AGLView view, int nodeId) {
+	public ANode(AGLView view) {
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.view = view;
 		this.pickingManager = view.getPickingManager();
-		this.nodeId = nodeId;
 	}
 
 	/**
@@ -145,13 +139,6 @@ public abstract class ANode implements ILabelProvider {
 
 	public float getWidth() {
 		return pixelGLConverter.getGLHeightForPixelHeight(getWidthPixels());
-	}
-
-	/**
-	 * @return the nodeId, see {@link #nodeId}
-	 */
-	public int getNodeId() {
-		return nodeId;
 	}
 
 }

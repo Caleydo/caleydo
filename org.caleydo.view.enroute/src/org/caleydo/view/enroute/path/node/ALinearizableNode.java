@@ -31,6 +31,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
@@ -74,9 +75,8 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	 * @param view
 	 * @param nodeId
 	 */
-	public ALinearizableNode(APathwayPathRenderer pathwayPathRenderer, AGLView view, int nodeId,
-			ALinearizeableNodeMode mode) {
-		super(view, nodeId);
+	public ALinearizableNode(APathwayPathRenderer pathwayPathRenderer, AGLView view, ALinearizeableNodeMode mode) {
+		super(view);
 		this.pathwayPathRenderer = pathwayPathRenderer;
 		this.mode = mode;
 		mode.apply(this);
@@ -167,12 +167,12 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 
 	@Override
 	public void init() {
-		view.addIDPickingTooltipListener(this, EPickingType.LINEARIZABLE_NODE.name(), nodeId);
+		view.addIDPickingTooltipListener(this, EPickingType.LINEARIZABLE_NODE.name(), hashCode());
 	}
 
 	@Override
 	public void destroy() {
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), nodeId);
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), hashCode());
 		mode.destroy();
 	}
 
@@ -196,6 +196,10 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	 */
 	public List<PathwayVertexRep> getVertexReps() {
 		return vertexReps;
+	}
+
+	public void addPickingListener(IPickingListener listener) {
+		view.addIDPickingListener(listener, EPickingType.LINEARIZABLE_NODE.name(), hashCode());
 	}
 
 }

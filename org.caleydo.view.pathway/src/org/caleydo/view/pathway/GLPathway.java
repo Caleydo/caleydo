@@ -1837,11 +1837,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		addedContextMenuItems.add(item);
 	}
 
-	@Override
+
 	public void enablePathSelection(boolean isPathSelection) {
 		this.isPathSelectionMode = isPathSelection;
 		isPathStartSelected = false;
-
 	}
 
 }

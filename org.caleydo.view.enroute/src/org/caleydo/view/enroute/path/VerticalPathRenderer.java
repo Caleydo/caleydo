@@ -51,8 +51,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	 * @param view
 	 * @param tablePerspectives
 	 */
-	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
-		super(view, tablePerspectives);
+	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives, boolean isPathSelectable) {
+		super(view, tablePerspectives, isPathSelectable);
 		minWidthPixels = sizeConfig.rectangleNodeWidth + 2 * sizeConfig.pathwayTitleAreaWidth;
 	}
 
@@ -171,12 +171,6 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return true;
-	}
-
-	@Override
-	public void enablePathSelection(boolean isPathSelection) {
-		this.isPathSelection = isPathSelection;
-
 	}
 
 }

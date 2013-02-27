@@ -76,7 +76,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer.setDrawBorder(true);
-		colorRenderer.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		colorRenderer.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
@@ -250,14 +250,14 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				}
 			}
 
-		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 }

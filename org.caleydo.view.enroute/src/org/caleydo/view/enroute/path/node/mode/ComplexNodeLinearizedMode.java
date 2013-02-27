@@ -48,7 +48,7 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 			List<Integer> nodeIds = new ArrayList<Integer>();
 
 			for (ALinearizableNode n : complexNode.getNodes()) {
-				nodeIds.add(n.getNodeId());
+				nodeIds.add(n.hashCode());
 			}
 			attributeRenderer.setNodeIds(nodeIds);
 			attributeRenderer.registerPickingListeners();

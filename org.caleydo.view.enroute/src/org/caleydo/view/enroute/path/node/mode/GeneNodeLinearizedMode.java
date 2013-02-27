@@ -47,7 +47,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 		if (node.getParentNode() == null) {
 			RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(view, node,
 					pathwayPathRenderer);
-			attributeRenderer.addNodeId(node.getNodeId());
+			attributeRenderer.addNodeId(node.hashCode());
 			addAttributeRenderer(attributeRenderer);
 			attributeRenderer.registerPickingListeners();
 		}
@@ -58,7 +58,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer.setDrawBorder(true);
-		colorRenderer.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		colorRenderer.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
@@ -157,14 +157,14 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 				}
 			}
 
-		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 }

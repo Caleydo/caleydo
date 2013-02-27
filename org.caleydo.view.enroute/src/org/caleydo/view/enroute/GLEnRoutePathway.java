@@ -182,7 +182,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			sampleSelectionManager.registerEventListeners();
 		}
 
-		pathRenderer = new EnRoutePathRenderer(this, new ArrayList<TablePerspective>());
+		pathRenderer = new EnRoutePathRenderer(this, new ArrayList<TablePerspective>(), false);
 		mappedDataRenderer = new MappedDataRenderer(this);
 
 	}
@@ -700,12 +700,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		if (pathRenderer != null)
 			pathRenderer.addVertexRepBasedContextMenuItem(item);
-
-	}
-
-	@Override
-	public void enablePathSelection(boolean isPathSelection) {
-		// TODO Auto-generated method stub
 
 	}
 

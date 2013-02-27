@@ -53,8 +53,8 @@ public class ComplexNode extends ALinearizableNode {
 	 * @param pixelGLConverter
 	 */
 	public ComplexNode(APathwayPathRenderer pathwayPathRenderer, CaleydoTextRenderer textRenderer, AGLView view,
-			int nodeId, ALinearizeableNodeMode mode) {
-		super(pathwayPathRenderer, view, nodeId, mode);
+			ALinearizeableNodeMode mode) {
+		super(pathwayPathRenderer, view, mode);
 	}
 
 	@Override
