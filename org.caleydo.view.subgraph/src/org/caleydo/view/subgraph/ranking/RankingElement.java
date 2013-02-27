@@ -29,6 +29,8 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraph;
@@ -71,7 +73,23 @@ public class RankingElement extends GLElementContainer {
 		initTable(table);
 		setLayout(GLLayouts.flowVertical(0));
 		this.add(new TableHeaderUI(table));
-		this.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
+		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.LINEAR);
+		body.addOnRowPick(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				onRowPick(pick);
+			}
+		});
+		this.add(body);
+	}
+
+	/**
+	 * @param pick
+	 */
+	protected void onRowPick(Pick pick) {
+		int rank = pick.getObjectID();
+		PathwayRow row = (PathwayRow) table.get(rank);
+		System.out.println(row + " " + pick.getPickingMode());
 	}
 
 	/**
