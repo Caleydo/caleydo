@@ -195,8 +195,6 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 			}
 		}
 
-		updateStrategy.nodesCreated();
-
 	}
 
 	public void setPreviewMode(ALinearizableNode node) {

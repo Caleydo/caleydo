@@ -169,6 +169,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		this.pathSegments = pathSegments;
 
 		createNodes(pathSegments);
+		updateStrategy.nodesCreated();
 
 		PathRendererChangedEvent event = new PathRendererChangedEvent(this);
 		event.setSender(this);

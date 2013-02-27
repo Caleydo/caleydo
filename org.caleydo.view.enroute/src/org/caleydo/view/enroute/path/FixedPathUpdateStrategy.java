@@ -72,17 +72,13 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
 	@Override
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-		// TODO Auto-generated method stub
-
+		selectedPathSegments = event.getPathSegmentsAsVertexList();
 	}
-
 
 	@Override
 	public void triggerPathUpdate() {
-		// TODO Auto-generated method stub
-
+		triggerPathUpdate(selectedPathSegments);
 	}
-
 
 	@Override
 	public void nodesCreated() {
@@ -124,18 +120,20 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 				Pair<Integer, Integer> toIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(node,
 						node.getPrimaryPathwayVertexRep());
 
-				List<List<PathwayVertexRep>> segments = renderer.pathSegments.subList(fromIndexPair.getFirst(),
-						toIndexPair.getFirst() + 1);
+
+				List<List<PathwayVertexRep>> segments = new ArrayList<>(renderer.pathSegments.subList(
+						fromIndexPair.getFirst(), toIndexPair.getFirst() + 1));
 
 				if (fromIndexPair.getFirst() == toIndexPair.getFirst()) {
-					List<PathwayVertexRep> segment = segments.get(0).subList(fromIndexPair.getSecond(),
-							toIndexPair.getSecond() + 1);
+					List<PathwayVertexRep> segment = new ArrayList<>(segments.get(0).subList(fromIndexPair.getSecond(),
+							toIndexPair.getSecond() + 1));
 					segments.set(0, segment);
 				} else {
-					List<PathwayVertexRep> startSegment = segments.get(0).subList(0, fromIndexPair.getSecond() + 1);
+					List<PathwayVertexRep> startSegment = new ArrayList<>(segments.get(0).subList(0,
+							fromIndexPair.getSecond() + 1));
 					segments.set(0, startSegment);
 					List<PathwayVertexRep> endSegment = segments.get(segments.size() - 1);
-					endSegment = endSegment.subList(toIndexPair.getSecond(), endSegment.size());
+					endSegment = new ArrayList<>(endSegment.subList(toIndexPair.getSecond(), endSegment.size()));
 					segments.set(segments.size() - 1, startSegment);
 				}
 				selectedPathSegments = segments;

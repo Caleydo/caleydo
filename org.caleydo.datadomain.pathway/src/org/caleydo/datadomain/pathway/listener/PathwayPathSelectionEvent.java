@@ -22,10 +22,12 @@
  */
 package org.caleydo.datadomain.pathway.listener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
 /**
  * Event that specifies a list of pathway path segments.
@@ -50,6 +52,14 @@ public class PathwayPathSelectionEvent extends AEvent {
 	 */
 	public List<PathwayPath> getPathSegments() {
 		return pathSegments;
+	}
+
+	public List<List<PathwayVertexRep>> getPathSegmentsAsVertexList() {
+		List<List<PathwayVertexRep>> segments = new ArrayList<>(pathSegments.size());
+		for (PathwayPath path : pathSegments) {
+			segments.add(path.getNodes());
+		}
+		return segments;
 	}
 
 	/**

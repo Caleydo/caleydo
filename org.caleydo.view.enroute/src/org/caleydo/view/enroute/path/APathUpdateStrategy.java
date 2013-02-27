@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.path;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -28,9 +30,16 @@ import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
+import org.jgrapht.GraphPath;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Strategy that defines how a path reacts to path selections.
@@ -88,6 +97,36 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 	 */
 	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
 		this.pathwayPathEventSpace = pathwayPathEventSpace;
+	}
+
+	protected void triggerPathUpdate(List<List<PathwayVertexRep>> pathSegments) {
+		List<PathwayPath> segments = new ArrayList<>(pathSegments.size());
+		for (List<PathwayVertexRep> segment : pathSegments) {
+			PathwayVertexRep startVertexRep = segment.get(0);
+			PathwayVertexRep endVertexRep = segment.get(segment.size() - 1);
+			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+			PathwayGraph pathway = startVertexRep.getPathway();
+
+			for (int i = 0; i < segment.size() - 1; i++) {
+				PathwayVertexRep currentVertexRep = segment.get(i);
+				PathwayVertexRep nextVertexRep = segment.get(i + 1);
+
+				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
+				if (edge == null)
+					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
+				edges.add(edge);
+			}
+			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+					pathway, startVertexRep, endVertexRep, edges, edges.size());
+
+			segments.add(new PathwayPath(graphPath));
+		}
+
+		PathwayPathSelectionEvent event = new PathwayPathSelectionEvent();
+		event.setEventSpace(pathwayPathEventSpace);
+		event.setPathSegments(segments);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)

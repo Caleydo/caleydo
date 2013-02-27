@@ -19,18 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.path;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.PathwayPath;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
-import org.jgrapht.GraphPath;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Strategy for {@link APathwayPathRenderer}s that shall always be in sync with the currently selected path.
@@ -54,45 +44,12 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 
 	@Override
 	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-		List<PathwayPath> segments = event.getPathSegments();
-		List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(segments.size());
-		for (PathwayPath path : segments) {
-			pathSegments.add(path.getNodes());
-		}
-
-		renderer.setPath(pathSegments);
+		renderer.setPath(event.getPathSegmentsAsVertexList());
 	}
 
 	@Override
 	public void triggerPathUpdate() {
-
-		List<PathwayPath> segments = new ArrayList<>(renderer.pathSegments.size());
-		for (List<PathwayVertexRep> segment : renderer.pathSegments) {
-			PathwayVertexRep startVertexRep = segment.get(0);
-			PathwayVertexRep endVertexRep = segment.get(segment.size() - 1);
-			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
-			PathwayGraph pathway = startVertexRep.getPathway();
-
-			for (int i = 0; i < segment.size() - 1; i++) {
-				PathwayVertexRep currentVertexRep = segment.get(i);
-				PathwayVertexRep nextVertexRep = segment.get(i + 1);
-
-				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
-				if (edge == null)
-					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
-				edges.add(edge);
-			}
-			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-					pathway, startVertexRep, endVertexRep, edges, edges.size());
-
-			segments.add(new PathwayPath(graphPath));
-		}
-
-		PathwayPathSelectionEvent event = new PathwayPathSelectionEvent();
-		event.setEventSpace(pathwayPathEventSpace);
-		event.setPathSegments(segments);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		triggerPathUpdate(renderer.pathSegments);
 	}
 
 	@Override
