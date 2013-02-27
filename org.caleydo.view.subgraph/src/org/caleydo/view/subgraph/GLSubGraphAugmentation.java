@@ -64,8 +64,20 @@ public class GLSubGraphAugmentation extends GLElement {
 
 	}
 
+	protected List<Rectangle2D> path;
+
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+
+		if (path != null) {
+			for (Rectangle2D rect : path) {
+				g.incZ(0.5f);
+				g.color(1, 0, 0, 0.5f);
+				g.fillRect((float) rect.getX(), (float) rect.getY(), (float) rect.getWidth(), (float) rect.getHeight());
+				g.incZ(-0.5f);
+			}
+		}
+
 		for (IGLRenderer renderer : renderers) {
 			renderer.render(g, w, h, this);
 		}
@@ -81,6 +93,14 @@ public class GLSubGraphAugmentation extends GLElement {
 	public void clearRenderers() {
 		renderers.clear();
 		repaint();
+	}
+
+	/**
+	 * @param path
+	 *            setter, see {@link path}
+	 */
+	public void setPath(List<Rectangle2D> path) {
+		this.path = path;
 	}
 
 }

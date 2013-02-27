@@ -386,6 +386,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		PathwayVertexRep end = null;
 		List<Pair<MultiFormRenderer, GLElement>> rendererList = multiFormRenderers.get(EEmbeddingID.PATHWAY_MULTIFORM
 				.id());
+		if (rendererList == null)
+			return;
 
 		for (PathwayPath path : pathSegments) {
 			if (start == null) {
@@ -433,6 +435,24 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				end = null;
 			}
 		}
+		List<Rectangle2D> path = new ArrayList<>();
+		for (Pair<MultiFormRenderer, GLElement> rendererPair : rendererList) {
+			MultiFormRenderer renderer = rendererPair.getFirst();
+			IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(renderer,
+					renderer.getActiveRendererID());
+
+			for (PathwayPath segment : pathSegments) {
+				if (segment.getPathway() == pathwayRepresentation.getPathway()) {
+					for (PathwayVertexRep v : segment.getNodes()) {
+						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, rendererPair.getSecond());
+						if (rect != null)
+							path.add(rect);
+					}
+				}
+			}
+
+		}
+		augmentation.setPath(path);
 	}
 
 	@Override
