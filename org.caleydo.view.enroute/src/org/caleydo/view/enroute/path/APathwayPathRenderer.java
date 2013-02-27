@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL2;
 
@@ -35,32 +33,21 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventListenerManager;
-import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventListenerManagers;
-import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
-import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
@@ -71,9 +58,6 @@ import org.caleydo.view.enroute.path.node.mode.ComplexNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.CompoundNodeLinearizedMode;
 import org.caleydo.view.enroute.path.node.mode.GeneNodeLinearizedMode;
 import org.caleydo.view.pathway.GLPathway;
-import org.jgrapht.GraphPath;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Renderer that is responsible for rendering a single pathway path.
@@ -82,34 +66,12 @@ import org.jgrapht.graph.GraphPathImpl;
  *
  */
 public abstract class APathwayPathRenderer extends ALayoutRenderer implements IEventBasedSelectionManagerUser,
-		IListenerOwner, IPathwayRepresentation {
+		IPathwayRepresentation {
 
 	/**
-	 * The node that is the first node of the selected path that appears this path renderer.
+	 * Strategy that defines the update behavior of this path renderer.F
 	 */
-	protected ALinearizableNode selectedPathStartNode;
-
-	/**
-	 * Determines whether clicking a path node will create a new selected path or finish path selection.
-	 */
-	protected boolean createNewPathSelection = true;
-
-	/**
-	 * Determines whether the path will be selected by moving the mouse over nodes. This is only possible if
-	 * {@link #isPathSelectable} is ture.
-	 */
-	protected boolean isPathSelectionMode = false;
-
-	/**
-	 * Determines whether a path can be selected from this path renderer.
-	 */
-	protected final boolean isPathSelectable;
-
-	/**
-	 * The segments of the currently selected path. If !{@link #isPathSelectable}, this should always be the same as
-	 * {@link #pathSegments}.
-	 */
-	protected List<List<PathwayVertexRep>> selectedPathSegments = new ArrayList<>();
+	protected APathUpdateStrategy updateStrategy;
 
 	/**
 	 * The list of path segments that are a list of {@link PathwayVertexRep}s.
@@ -157,11 +119,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected PathSizeConfiguration sizeConfig = PathSizeConfiguration.DEFAULT;
 
 	/**
-	 * The queue which holds the events
-	 */
-	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
-
-	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
 	 */
 	protected List<VertexRepBasedContextMenuItem> nodeContextMenuItems = new ArrayList<>();
@@ -173,14 +130,11 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected PixelGLConverter pixelGLConverter;
 	protected CaleydoTextRenderer textRenderer;
 
-	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
-
-	public APathwayPathRenderer(AGLView view, List<TablePerspective> tablePerspectives, boolean isPathSelectable) {
+	public APathwayPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		this.view = view;
 		this.tablePerspectives = tablePerspectives;
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.textRenderer = view.getTextRenderer();
-		this.isPathSelectable = isPathSelectable;
 
 		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
@@ -200,7 +154,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * Method that initializes the {@link APathwayPathRenderer}. Shall be called once prior use.
 	 */
 	public void init() {
-		registerEventListeners();
+		updateStrategy.registerEventListeners();
 	}
 
 	/**
@@ -213,9 +167,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void setPath(List<List<PathwayVertexRep>> pathSegments) {
 		this.pathSegments = pathSegments;
-		if (!isPathSelectable) {
-			selectedPathSegments = pathSegments;
-		}
 
 		createNodes(pathSegments);
 
@@ -227,26 +178,26 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	}
 
-	@ListenTo
-	protected void onEnablePathSelection(EnablePathSelectionEvent event) {
-		if (isPathSelectable)
-			isPathSelectionMode = event.isPathSelectionMode();
-	}
+	// @ListenTo(restrictExclusiveToEventSpace = true)
+	// protected void onEnablePathSelection(EnablePathSelectionEvent event) {
+	// if (isPathSelectable)
+	// isPathSelectionMode = event.isPathSelectionMode();
+	// }
 
-	@ListenTo(restrictExclusiveToEventSpace = true)
-	protected void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-		List<PathwayPath> segments = event.getPathSegments();
-		List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(segments.size());
-		for (PathwayPath path : segments) {
-			pathSegments.add(path.getNodes());
-		}
-		if (isPathSelectable) {
-			selectedPathSegments = new ArrayList<>(pathSegments);
-		}
-
-		if (!isPathSelectable || !containsPath(this.pathSegments, pathSegments))
-			setPath(pathSegments);
-	}
+	// @ListenTo(restrictExclusiveToEventSpace = true)
+	// protected void onSelectedPathChanged(PathwayPathSelectionEvent event) {
+	// List<PathwayPath> segments = event.getPathSegments();
+	// List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(segments.size());
+	// for (PathwayPath path : segments) {
+	// pathSegments.add(path.getNodes());
+	// }
+	// if (isPathSelectable) {
+	// selectedPathSegments = new ArrayList<>(pathSegments);
+	// }
+	//
+	// if (!isPathSelectable || !containsPath(this.pathSegments, pathSegments))
+	// setPath(pathSegments);
+	// }
 
 	/**
 	 * @param pathSegments1
@@ -375,8 +326,8 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				List<PathwayVertexRep> groupedReps = groupRep.getGroupedVertexReps();
 				List<ALinearizableNode> groupedNodes = new ArrayList<ALinearizableNode>();
 				createNodesForList(groupedNodes, groupedReps);
-				ComplexNode complexNode = new ComplexNode(this, textRenderer, view,
-						new ComplexNodeLinearizedMode(view, this));
+				ComplexNode complexNode = new ComplexNode(this, textRenderer, view, new ComplexNodeLinearizedMode(view,
+						this));
 				complexNode.setNodes(groupedNodes);
 				for (ALinearizableNode groupedNode : groupedNodes) {
 					groupedNode.setParentNode(complexNode);
@@ -385,8 +336,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				complexNode.init();
 				node = complexNode;
 			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
-				CompoundNode compoundNode = new CompoundNode(this, view, new CompoundNodeLinearizedMode(
-						view, this));
+				CompoundNode compoundNode = new CompoundNode(this, view, new CompoundNodeLinearizedMode(view, this));
 
 				compoundNode.addPathwayVertexRep(currentVertexRep);
 				compoundNode.init();
@@ -396,8 +346,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 				// TODO: Verify that this is also the right approach for
 				// enzymes and ortholog
-				GeneNode geneNode = new GeneNode(this, textRenderer, view, new GeneNodeLinearizedMode(
-						view, this));
+				GeneNode geneNode = new GeneNode(this, textRenderer, view, new GeneNodeLinearizedMode(view, this));
 				int commaIndex = currentVertexRep.getName().indexOf(',');
 				if (commaIndex > 0) {
 					geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
@@ -407,9 +356,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				geneNode.addPathwayVertexRep(currentVertexRep);
 				geneNode.init();
 				node = geneNode;
-			}
-			if (isPathSelectable) {
-				node.addPickingListener(new PathSelectionPickingListener(node));
 			}
 			nodes.add(node);
 		}
@@ -422,7 +368,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
 		sampleSelectionManager.unregisterEventListeners();
-		unregisterEventListeners();
+		updateStrategy.unregisterEventListeners();
 		super.destroy(gl);
 	}
 
@@ -481,49 +427,12 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return view;
 	}
 
-	/**
-	 * @param pathwayPathEventSpace
-	 *            setter, see {@link pathwayPathEventSpace}
-	 */
-	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
-		this.pathwayPathEventSpace = pathwayPathEventSpace;
-	}
-
-	@Override
-	public final synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
-	}
-
-	/**
-	 * This method should be called every display cycle when it is save to change the state of the object. It processes
-	 * all the previously submitted events.
-	 */
-	protected final void processEvents() {
-		Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
-		while (queue.peek() != null) {
-			pair = queue.poll();
-			pair.getFirst().handleEvent(pair.getSecond());
-		}
-	}
-
 	@Override
 	protected void prepare() {
-		processEvents();
+		updateStrategy.processEvents();
 		if (isDisplayListDirty()) {
 			updateLayout();
 		}
-	}
-
-	@Override
-	public void registerEventListeners() {
-		listeners.register(this, pathwayPathEventSpace);
-
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		listeners.unregisterAll();
-
 	}
 
 	/**
@@ -560,7 +469,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 		setPath(pathSegments);
 
-		broadcastPath();
+		updateStrategy.triggerPathUpdate();
 	}
 
 	/**
@@ -636,37 +545,37 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return null;
 	}
 
-	protected void broadcastPath() {
-
-		List<PathwayPath> segments = new ArrayList<>(selectedPathSegments.size());
-		for (List<PathwayVertexRep> segment : selectedPathSegments) {
-			PathwayVertexRep startVertexRep = segment.get(0);
-			PathwayVertexRep endVertexRep = segment.get(segment.size() - 1);
-			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
-			PathwayGraph pathway = startVertexRep.getPathway();
-
-			for (int i = 0; i < segment.size() - 1; i++) {
-				PathwayVertexRep currentVertexRep = segment.get(i);
-				PathwayVertexRep nextVertexRep = segment.get(i + 1);
-
-				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
-				if (edge == null)
-					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
-				edges.add(edge);
-			}
-			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-					pathway, startVertexRep, endVertexRep, edges, edges.size());
-
-			segments.add(new PathwayPath(graphPath));
-		}
-
-		PathwayPathSelectionEvent event = new PathwayPathSelectionEvent();
-		event.setEventSpace(pathwayPathEventSpace);
-		event.setPathSegments(segments);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-
-	}
+	// protected void broadcastPath() {
+	//
+	// List<PathwayPath> segments = new ArrayList<>(selectedPathSegments.size());
+	// for (List<PathwayVertexRep> segment : selectedPathSegments) {
+	// PathwayVertexRep startVertexRep = segment.get(0);
+	// PathwayVertexRep endVertexRep = segment.get(segment.size() - 1);
+	// List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+	// PathwayGraph pathway = startVertexRep.getPathway();
+	//
+	// for (int i = 0; i < segment.size() - 1; i++) {
+	// PathwayVertexRep currentVertexRep = segment.get(i);
+	// PathwayVertexRep nextVertexRep = segment.get(i + 1);
+	//
+	// DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
+	// if (edge == null)
+	// edge = pathway.getEdge(nextVertexRep, currentVertexRep);
+	// edges.add(edge);
+	// }
+	// GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+	// pathway, startVertexRep, endVertexRep, edges, edges.size());
+	//
+	// segments.add(new PathwayPath(graphPath));
+	// }
+	//
+	// PathwayPathSelectionEvent event = new PathwayPathSelectionEvent();
+	// event.setEventSpace(pathwayPathEventSpace);
+	// event.setPathSegments(segments);
+	// event.setSender(this);
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	//
+	// }
 
 	@Override
 	public int getMinWidthPixels() {
@@ -799,57 +708,24 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return nodeContextMenuItems;
 	}
 
-	protected class PathSelectionPickingListener extends APickingListener {
-
-		private final ALinearizableNode node;
-
-		public PathSelectionPickingListener(ALinearizableNode node) {
-			this.node = node;
+	/**
+	 * Sets the update strategy of this path. Note, that a strategy can only be set once.
+	 *
+	 * @param updateStrategy
+	 *            setter, see {@link updateStrategy}
+	 */
+	public void setUpdateStrategy(APathUpdateStrategy updateStrategy) {
+		if (this.updateStrategy != null) {
+			return;
 		}
+		this.updateStrategy = updateStrategy;
+	}
 
-		@Override
-		protected void clicked(Pick pick) {
-
-			if (isPathSelectionMode) {
-				if (createNewPathSelection) {
-					selectedPathSegments.clear();
-					List<PathwayVertexRep> firstSegment = new ArrayList<>();
-					node.getVertexReps().get(node.getVertexReps().size() - 1);
-					selectedPathSegments.add(firstSegment);
-					broadcastPath();
-					selectedPathStartNode = node;
-				}
-				createNewPathSelection = !createNewPathSelection;
-			}
-		}
-
-		@Override
-		protected void mouseOver(Pick pick) {
-			if (isPathSelectionMode && !createNewPathSelection
-					&& pathNodes.indexOf(node) > pathNodes.indexOf(selectedPathStartNode)) {
-				Pair<Integer, Integer> fromIndexPair = determinePathSegmentAndIndexOfPathNode(selectedPathStartNode,
-						selectedPathSegments.get(0).get(0));
-				Pair<Integer, Integer> toIndexPair = determinePathSegmentAndIndexOfPathNode(node,
-						node.getPrimaryPathwayVertexRep());
-
-				List<List<PathwayVertexRep>> segments = pathSegments.subList(fromIndexPair.getFirst(),
-						toIndexPair.getFirst() + 1);
-
-				if (fromIndexPair.getFirst() == toIndexPair.getFirst()) {
-					List<PathwayVertexRep> segment = segments.get(0).subList(fromIndexPair.getSecond(),
-							toIndexPair.getSecond() + 1);
-					segments.set(0, segment);
-				} else {
-					List<PathwayVertexRep> startSegment = segments.get(0).subList(0, fromIndexPair.getSecond() + 1);
-					segments.set(0, startSegment);
-					List<PathwayVertexRep> endSegment = segments.get(segments.size() - 1);
-					endSegment = endSegment.subList(toIndexPair.getSecond(), endSegment.size());
-					segments.set(segments.size() - 1, startSegment);
-				}
-				selectedPathSegments = segments;
-				broadcastPath();
-			}
-		}
+	/**
+	 * @return the updateStrategy, see {@link #updateStrategy}
+	 */
+	public APathUpdateStrategy getUpdateStrategy() {
+		return updateStrategy;
 	}
 
 }

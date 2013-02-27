@@ -92,8 +92,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	 */
 	protected Map<ALinearizableNode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<>();
 
-	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives, boolean isPathSelectable) {
-		super(view, tablePerspectives, isPathSelectable);
+	public EnRoutePathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
+		super(view, tablePerspectives);
 		setSizeConfig(PathSizeConfiguration.ENROUTE_DEFAULT);
 		// setSizeConfig(new PathSizeConfiguration.Builder(PathSizeConfiguration.ENROUTE_COMPACT).minNodeSpacing(40)
 		// .build());
@@ -194,6 +194,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 				}
 			}
 		}
+
+		updateStrategy.nodesCreated();
 
 	}
 
@@ -363,7 +365,7 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 		setPath(newPathSegments);
 
-		broadcastPath();
+		updateStrategy.triggerPathUpdate();
 	}
 
 	/**

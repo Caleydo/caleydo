@@ -45,14 +45,12 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	// public final static int PATHWAY_TITLE_COLUMN_WIDTH_PIXELS = 20;
 	// protected final static int PATHWAY_TITLE_TEXT_HEIGHT_PIXELS = 16;
 
-	protected boolean isPathSelection = false;
-
 	/**
 	 * @param view
 	 * @param tablePerspectives
 	 */
-	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives, boolean isPathSelectable) {
-		super(view, tablePerspectives, isPathSelectable);
+	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
+		super(view, tablePerspectives);
 		minWidthPixels = sizeConfig.rectangleNodeWidth + 2 * sizeConfig.pathwayTitleAreaWidth;
 	}
 

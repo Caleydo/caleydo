@@ -132,9 +132,8 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	}
 
 	private void addAlternative(List<List<PathwayVertexRep>> pathSegments) {
-		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives, true);
-		// Listen to event space that is not used
-		renderer.setPathwayPathEventSpace(ALTERNATIVES_EVENTSPACE);
+		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
+		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace));
 
 		if (tablePerspectives.size() > 0) {
 			renderer.setPathway(pathway);

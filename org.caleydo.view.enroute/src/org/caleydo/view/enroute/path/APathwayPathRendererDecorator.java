@@ -33,7 +33,6 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 
 /**
@@ -51,8 +50,8 @@ public abstract class APathwayPathRendererDecorator extends APathwayPathRenderer
 	 * @param tablePerspectives
 	 */
 	public APathwayPathRendererDecorator(AGLView view, List<TablePerspective> tablePerspectives,
-			APathwayPathRenderer decoratee, boolean isPathSelectable) {
-		super(view, tablePerspectives, isPathSelectable);
+			APathwayPathRenderer decoratee) {
+		super(view, tablePerspectives);
 		// We do not want to listen here
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -83,11 +82,6 @@ public abstract class APathwayPathRendererDecorator extends APathwayPathRenderer
 	@Override
 	public void setPath(List<List<PathwayVertexRep>> pathSegments) {
 		decoratee.setPath(pathSegments);
-	}
-
-	@Override
-	protected void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-		decoratee.onSelectedPathChanged(event);
 	}
 
 	@Override
@@ -162,23 +156,8 @@ public abstract class APathwayPathRendererDecorator extends APathwayPathRenderer
 	}
 
 	@Override
-	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
-		decoratee.setPathwayPathEventSpace(pathwayPathEventSpace);
-	}
-
-	@Override
 	protected void prepare() {
 		decoratee.prepare();
-	}
-
-	@Override
-	public void registerEventListeners() {
-		decoratee.registerEventListeners();
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		decoratee.unregisterEventListeners();
 	}
 
 	@Override
@@ -200,11 +179,6 @@ public abstract class APathwayPathRendererDecorator extends APathwayPathRenderer
 	protected Pair<Integer, Integer> determinePathSegmentAndIndexOfPathNode(ALinearizableNode node,
 			PathwayVertexRep vertexRep) {
 		return decoratee.determinePathSegmentAndIndexOfPathNode(node, vertexRep);
-	}
-
-	@Override
-	protected void broadcastPath() {
-		decoratee.broadcastPath();
 	}
 
 	@Override

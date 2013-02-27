@@ -64,6 +64,8 @@ import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.path.EnRoutePathRenderer;
+import org.caleydo.view.enroute.path.SelectedPathUpdateStrategy;
+import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -182,7 +184,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			sampleSelectionManager.registerEventListeners();
 		}
 
-		pathRenderer = new EnRoutePathRenderer(this, new ArrayList<TablePerspective>(), false);
+		pathRenderer = new EnRoutePathRenderer(this, new ArrayList<TablePerspective>());
+		pathRenderer.setUpdateStrategy(new SelectedPathUpdateStrategy(pathRenderer,
+				GLPathway.DEFAULT_PATHWAY_PATH_EVENT_SPACE));
 		mappedDataRenderer = new MappedDataRenderer(this);
 
 	}
@@ -194,6 +198,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		textRenderer = new CaleydoTextRenderer(24);
 
 		detailLevel = EDetailLevel.HIGH;
+
 		pathRenderer.setTextRenderer(textRenderer);
 		pathRenderer.setPixelGLConverter(pixelGLConverter);
 		pathRenderer.init();
@@ -645,7 +650,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * Sets the event space for path related events.
 	 */
 	public void setPathwayPathEventSpace(String pathwayPathEventSpace) {
-		pathRenderer.setPathwayPathEventSpace(pathwayPathEventSpace);
+		pathRenderer.getUpdateStrategy().setPathwayPathEventSpace(pathwayPathEventSpace);
 	}
 
 	/**
