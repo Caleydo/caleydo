@@ -30,7 +30,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
-import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
@@ -66,8 +65,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public static String VIEW_TYPE = "org.caleydo.view.subgraph";
 
 	public static String VIEW_NAME = "SubGraph";
-
-	private LayoutManager layoutManager;
 
 	private List<TablePerspective> tablePerspectives = new ArrayList<>();
 
@@ -150,7 +147,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		layoutManager.destroy(gl);
 	}
 
 	@Override

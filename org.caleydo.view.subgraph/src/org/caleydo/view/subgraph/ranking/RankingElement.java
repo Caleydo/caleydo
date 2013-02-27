@@ -123,7 +123,7 @@ public class RankingElement extends GLElementContainer {
 			}
 		};
 		table.addColumn(new FloatRankColumnModel(pathwaySize, GLRenderers.drawText("Score", VAlign.CENTER), Color.BLUE,
-				Color.LIGHT_GRAY, new PiecewiseLinearMapping(0, 200)));
+				Color.LIGHT_GRAY, new PiecewiseLinearMapping(0, Float.NaN)));
 
 		// add data
 		Collection<PathwayRow> data = new ArrayList<>();
