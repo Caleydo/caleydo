@@ -22,7 +22,6 @@ package org.caleydo.view.tourguide.v3.model.mixin;
 import java.awt.Color;
 
 import org.caleydo.view.tourguide.v3.model.IRow;
-import org.caleydo.view.tourguide.v3.model.RankTableModel;
 import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 
 
@@ -30,7 +29,7 @@ import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
  * @author Samuel Gratzl
  *
  */
-public interface IRankableColumnMixin {
+public interface IRankableColumnMixin extends IRankColumnModel {
 	float getValue(IRow row);
 
 	SimpleHistogram getHist(int bins);
@@ -38,10 +37,5 @@ public interface IRankableColumnMixin {
 	Color getBgColor();
 
 	Color getColor();
-
-	/**
-	 * @return
-	 */
-	RankTableModel getTable();
 
 }

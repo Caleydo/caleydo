@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
+import org.caleydo.view.tourguide.v3.model.IRow;
 
 /**
  * @author Samuel Gratzl
@@ -30,4 +31,6 @@ import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
  */
 interface IColumModelLayout {
 	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h);
+
+	Object createLayoutData(IRow row);
 }

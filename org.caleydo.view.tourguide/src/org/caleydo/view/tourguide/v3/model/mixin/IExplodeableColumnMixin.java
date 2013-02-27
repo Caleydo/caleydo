@@ -23,7 +23,7 @@ package org.caleydo.view.tourguide.v3.model.mixin;
  * @author Samuel Gratzl
  *
  */
-public interface IExplodeableColumnMixin {
+public interface IExplodeableColumnMixin extends IRankColumnModel {
 	void explode();
 }
 

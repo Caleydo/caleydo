@@ -35,6 +35,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.v3.config.IRankTableConfig;
 import org.caleydo.view.tourguide.v3.model.mixin.IFilterColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
+import org.caleydo.view.tourguide.v3.model.mixin.IRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
 
 import com.google.common.collect.Iterators;
@@ -564,6 +565,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	 */
 	public int getSelectedRank() {
 		return selectedRank;
+	}
+
+	@Override
+	public IRankColumnModel getParent() {
+		return null;
 	}
 }
 

@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -70,13 +71,15 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		for (ARankColumnModel col2 : model) {
-			TableColumnUI ui = new TableColumnUI(col2);
-			ui.setData(model.getTable().getData());
-			this.add(ui);
+			this.add(wrap(col2));
 		}
 	}
 
 
+	@Override
+	public Object createLayoutData(IRow row) {
+		return new StackedRenderInfo(row);
+	}
 
 	protected void onChildrenChanged(IndexedPropertyChangeEvent evt) {
 		int index = evt.getIndex();
@@ -117,7 +120,7 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 
 	private GLElement wrap(ARankColumnModel model) {
 		TableColumnUI ui = new TableColumnUI(model);
-		ui.setData(model.getTable().getData());
+		ui.setData(model.getTable().getData(), this);
 		return ui;
 	}
 
@@ -152,10 +155,16 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
 		int combinedAlign = stacked.getAlignment();
 		int index = stacked.indexOf(model);
+		for (IGLLayoutElement c : children) {
+			StackedRenderInfo data = c.getLayoutDataAs(StackedRenderInfo.class, null);
+			if (data != null) {
+				data.setHasFreeSpace(index >= combinedAlign ? (index == (stacked.size() + 1)) : (index == 0));
+				data.setValign(index >= combinedAlign ? VAlign.LEFT : VAlign.RIGHT);
+			}
+		}
 		if (index != combinedAlign) {
 			// moving around
 			int[] ranks = stacked.getTable().getOrder();
-			IRow selected = stacked.getTable().getSelectedRow();
 			float[] rowPositions = ((TableBodyUI) getParent()).getRowPositions();
 			float[] weights = new float[stacked.size()];
 			for (int i = 0; i < weights.length; ++i)
@@ -170,22 +179,18 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 				IGLLayoutElement row = children.get(r);
 				used.clear(r);
 				IRow data = row.getLayoutDataAs(IRow.class, null);
-				if (data == selected) {
-					row.setBounds(COLUMN_SPACE, y, w, hr - y);
+				float x = 0;
+				MultiFloat vs = stacked.getSplittedValue(data);
+				if (index < combinedAlign) {
+					for (int i = index; i < combinedAlign; ++i)
+						x += -vs.values[i] + weights[i] - COLUMN_SPACE;
+					x += COLUMN_SPACE;
 				} else {
-					float x = 0;
-					MultiFloat vs = stacked.getSplittedValue(data);
-					if (index < combinedAlign) {
-						for (int i = index; i < combinedAlign; ++i)
-							x += -vs.values[i] + weights[i] - COLUMN_SPACE;
-						x += COLUMN_SPACE;
-					} else {
-						for (int i = combinedAlign; i < index; ++i)
-							x += vs.values[i] - weights[i] + COLUMN_SPACE;
-						x += COLUMN_SPACE;
-					}
-					row.setBounds(x, y, w, hr - y);
+					for (int i = combinedAlign; i < index; ++i)
+						x += vs.values[i] - weights[i] + COLUMN_SPACE;
+					x += COLUMN_SPACE;
 				}
+				row.setBounds(x, y, w, hr - y);
 				y = hr;
 			}
 			for (int unused = used.nextSetBit(0); unused >= 0; unused = used.nextSetBit(unused + 1)) {
@@ -202,7 +207,7 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 	 */
 	public void setData(Collection<IRow> data) {
 		for (GLElement col : this)
-			((TableColumnUI) col).setData(data);
+			((TableColumnUI) col).setData(data, this);
 	}
 
 	/**

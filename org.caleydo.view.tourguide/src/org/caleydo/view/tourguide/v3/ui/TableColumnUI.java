@@ -24,7 +24,7 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout {
 		this.setLayout(this);
 	}
 
-	public TableColumnUI setData(Collection<IRow> rows) {
+	public TableColumnUI setData(Collection<IRow> rows, IColumModelLayout parent) {
 		Set<IRow> target = new LinkedHashSet<>(rows);
 		for (Iterator<GLElement> it = asList().iterator(); it.hasNext();) {
 			GLElement elem = it.next();
@@ -33,7 +33,7 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout {
 				it.remove();
 		}
 		for (IRow row : target) {
-			this.add(model.createValue().setLayoutData(row));
+			this.add(model.createValue().setLayoutData(parent.createLayoutData(row)));
 		}
 		return this;
 	}

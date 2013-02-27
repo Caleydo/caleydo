@@ -23,7 +23,7 @@ package org.caleydo.view.tourguide.v3.model.mixin;
  * @author Samuel Gratzl
  *
  */
-public interface ICollapseableColumnMixin {
+public interface ICollapseableColumnMixin extends IRankColumnModel {
 	String PROP_COLLAPSED = "collapsed";
 
 	boolean isCollapsed();

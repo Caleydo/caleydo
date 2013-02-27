@@ -52,8 +52,8 @@ public class MultiRenderer implements IGLRenderer {
 		Color[] colors = model.getColors();
 		if (v.repr >= 0) {
 			boolean selected = model.getTable().getSelectedRow() == r;
-			float[] heights = layout.compute(v.size(), v.repr, h * 0.9f);
-			float y = h * 0.05f;
+			float[] heights = layout.compute(v.size(), v.repr, h * 0.8f);
+			float y = h * 0.1f;
 			for (int i = 0; i < heights.length; ++i) {
 				float hi = heights[i];
 				if (hi <= 0)
@@ -63,7 +63,7 @@ public class MultiRenderer implements IGLRenderer {
 					ARankColumnModel modeli = model.get(i);
 					String text = (modeli instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) modeli).getRawValue(r)
 								: Formatter.formatNumber(v.values[i]);
-					ScoreBarRenderer.renderLabel(g, y, w, hi * 0.8f, text, v.values[i]);
+					ScoreBarRenderer.renderLabel(g, y, w, hi * 0.8f, text, v.values[i], parent);
 				}
 				y += hi;
 			}

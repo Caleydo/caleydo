@@ -25,7 +25,7 @@ import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
  * @author Samuel Gratzl
  *
  */
-public interface IHideableColumnMixin extends IDragInfo {
+public interface IHideableColumnMixin extends IDragInfo, IRankColumnModel {
 	boolean isHideAble();
 
 	boolean hide();

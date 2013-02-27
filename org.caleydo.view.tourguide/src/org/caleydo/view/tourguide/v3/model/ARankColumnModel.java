@@ -76,7 +76,7 @@ public abstract class ARankColumnModel implements IDragInfo {
 	/**
 	 * @return the parent, see {@link #parent}
 	 */
-	IRankColumnParent getParent() {
+	public IRankColumnParent getParent() {
 		return parent;
 	}
 

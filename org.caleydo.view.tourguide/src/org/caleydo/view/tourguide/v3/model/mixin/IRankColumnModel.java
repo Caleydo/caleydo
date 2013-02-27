@@ -19,17 +19,18 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.model.mixin;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.RankTableModel;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IMappedColumnMixin extends IRankColumnModel {
-	String PROP_MAPPING = "mapping";
+public interface IRankColumnModel {
 
-	void editMapping(GLElement summary);
+	/**
+	 * @return
+	 */
+	RankTableModel getTable();
 
-	String getRawValue(IRow row);
+	IRankColumnModel getParent();
 }

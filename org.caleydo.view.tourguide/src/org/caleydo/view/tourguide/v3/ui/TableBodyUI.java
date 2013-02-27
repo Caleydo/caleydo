@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts.IRowHeightLayout;
 import org.caleydo.view.tourguide.v3.model.ACompositeRankColumnModel;
@@ -76,17 +77,11 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		}
 	};
 	private int[] pickingIDs = null;
-	private IPickingListener selectRowListener = new IPickingListener() {
-		@Override
-		public void pick(Pick pick) {
-			if (pick.getPickingMode() == PickingMode.CLICKED)
-				table.setSelectedRow(pick.getObjectID());
-		}
-	};
+	private PickingListenerComposite selectRowListener = new PickingListenerComposite();
 	private float[] rowPositions;
 
 
-	public TableBodyUI(RankTableModel table, IRowHeightLayout rowLayout) {
+	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout) {
 		this.table = table;
 		this.rowLayout = rowLayout;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
@@ -105,7 +100,22 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 				this.add(wrap(col));
 			}
 		}
+		selectRowListener.add(new IPickingListener() {
+			@Override
+			public void pick(Pick pick) {
+				if (pick.getPickingMode() == PickingMode.CLICKED)
+					table.setSelectedRow(pick.getObjectID());
+			}
+		});
 		setLayout(this);
+	}
+
+	public void addOnRowPick(IPickingListener l) {
+		this.selectRowListener.add(l);
+	}
+
+	public void removeOnRowPick(IPickingListener l) {
+		this.selectRowListener.remove(l);
 	}
 
 	private void init(ARankColumnModel col) {
@@ -145,7 +155,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 	private GLElement wrap(ARankColumnModel new_) {
 		init(new_);
-		return new TableColumnUI(new_).setData(table.getData());
+		return new TableColumnUI(new_).setData(table.getData(), this);
 	}
 
 	protected void updateData() {
@@ -154,7 +164,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			if (col instanceof TableStackedColumnUI) {
 				((TableStackedColumnUI) col).setData(data);
 			} else
-				((TableColumnUI) col).setData(data);
+				((TableColumnUI) col).setData(data, this);
 		}
 	}
 
@@ -225,6 +235,11 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			acc = compute[i];
 		}
 		return compute;
+	}
+
+	@Override
+	public Object createLayoutData(IRow row) {
+		return row;
 	}
 
 	@Override

@@ -23,25 +23,28 @@ public class ScoreBarRenderer implements IGLRenderer {
 		if (Float.isNaN(v))
 			return;
 		if (w < 20) {
-			float[] c = model.getColor().getColorComponents(null);
-			g.color(c[0], c[1], c[2], v).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
+			g.color(1 - v, 1 - v, 1 - v, 1).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
 		} else {
 			g.color(model.getColor()).fillRect(0, h * 0.1f, w * v, h * 0.8f);
 			if (model.getTable().getSelectedRow() == r) {
 				String text = (model instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) model).getRawValue(r)
 						: Formatter.formatNumber(v);
-				renderLabel(g, h * 0.2f, w, h * 0.45f, text, v);
+				renderLabel(g, h * 0.2f, w, h * 0.45f, text, v, parent);
 			}
 		}
 	}
 
-	static void renderLabel(GLGraphics g, float y, float w, float h, String text, float v) {
+	static void renderLabel(GLGraphics g, float y, float w, float h, String text, float v, GLElement parent) {
 		if (h < 7)
 			return;
 		float rw = g.text.getRequiredTextWidthWithMax(text, h, w * v);
 		if (rw < w * v)
 			g.drawText(text, 1, y, w * v - 2, h, VAlign.RIGHT);
-		else
+		else {
+			VAlign alignment = parent.getLayoutDataAs(VAlign.class, VAlign.LEFT);
+			boolean hasFreeSpace = parent.getLayoutDataAs(Boolean.class, Boolean.FALSE);
+			// TODO
 			g.drawText(text, w * v + 1, y, w - w * v, h);
+		}
 	}
 }

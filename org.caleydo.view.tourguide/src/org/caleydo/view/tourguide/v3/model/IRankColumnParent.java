@@ -19,12 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.model;
 
+import org.caleydo.view.tourguide.v3.model.mixin.IRankColumnModel;
+
+
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IRankColumnParent {
-	RankTableModel getTable();
+public interface IRankColumnParent extends IRankColumnModel {
 
 	/**
 	 * @param aBasicRankColumnModel

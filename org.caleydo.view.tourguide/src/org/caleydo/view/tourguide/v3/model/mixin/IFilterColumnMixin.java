@@ -29,7 +29,7 @@ import org.caleydo.view.tourguide.v3.model.IRow;
  * @author Samuel Gratzl
  *
  */
-public interface IFilterColumnMixin {
+public interface IFilterColumnMixin extends IRankColumnModel {
 	String PROP_FILTER = "filter";
 
 	boolean isFiltered();
