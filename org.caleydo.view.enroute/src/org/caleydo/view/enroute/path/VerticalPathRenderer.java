@@ -57,7 +57,6 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	 */
 	public VerticalPathRenderer(AGLView view, List<TablePerspective> tablePerspectives) {
 		super(view, tablePerspectives);
-		minWidthPixels = sizeConfig.rectangleNodeWidth + 2 * sizeConfig.pathwayTitleAreaWidth;
 	}
 
 	/**
@@ -92,8 +91,9 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
 
-		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathwayTitleAreaWidth
-				+ sizeConfig.branchNodeLeftSideSpacing);
+		float sideSpacing = pixelGLConverter
+				.getGLHeightForPixelHeight((pathway == null ? sizeConfig.pathwayTitleAreaWidth : 0)
+						+ sizeConfig.branchNodeLeftSideSpacing);
 		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
 				.getGLHeightForPixelHeight(sizeConfig.branchNodeToPathNodeVerticalSpacing);
 		float width = summaryNode.getWidth();
@@ -118,6 +118,13 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	protected void updateLayout() {
 
+		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.branchAreaWidth);
+		float pathColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathAreaWidth);
+		float pathwayTitleColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathwayTitleAreaWidth);
+
+		float nodePositionX = (pathway == null ? pathwayTitleColumnWidth : 0) + branchColumnWidth + pathColumnWidth
+				/ 2.0f;
+
 		float currentPositionY = y - pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing);
 		float nodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.minNodeSpacing);
 
@@ -139,7 +146,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		}
 
 		for (ALinearizableNode node : pathNodes) {
-			node.setPosition(new Vec3f(x / 2.0f, currentPositionY, 0));
+			node.setPosition(new Vec3f(nodePositionX, currentPositionY, 0));
 			int minViewHeight = calculatePositionsOfBranchNodes(node);
 			if (minViewHeight > minViewHeightRequiredByBranchNodes) {
 				minViewHeightRequiredByBranchNodes = minViewHeight;
@@ -162,6 +169,9 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	protected void renderContent(GL2 gl) {
 		GLU glu = new GLU();
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
 
 		renderPathwayBorders(gl);
 
@@ -304,6 +314,8 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 	private void renderPathwayTitle(GL2 gl, int pathSegmentIndex, float topPathwayTitleLimit,
 			float bottomPathwayTitleLimit) {
+		if (pathway != null)
+			return;
 		float pathwayTitlePositionX = pixelGLConverter.getGLWidthForPixelWidth(sizeConfig.pathwayTitleAreaWidth
 				- (int) ((sizeConfig.pathwayTitleAreaWidth - sizeConfig.pathwayTextHeight) / 2.0f));
 		float pathwayTitleTextHeight = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathwayTextHeight);
@@ -331,6 +343,13 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return true;
+	}
+
+	@Override
+	public void setSizeConfig(PathSizeConfiguration sizeConfig) {
+		super.setSizeConfig(sizeConfig);
+		minWidthPixels = sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth
+				+ (pathway == null ? sizeConfig.pathwayTitleAreaWidth : 0);
 	}
 
 }

@@ -129,7 +129,8 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings(pathNodes);
 
-		Vec3f currentPosition = new Vec3f(pathwayTitleColumnWidth + branchColumnWidth + pathColumnWidth / 2.0f, y, 0.2f);
+		Vec3f currentPosition = new Vec3f((pathway == null ? pathwayTitleColumnWidth : 0) + branchColumnWidth
+				+ pathColumnWidth / 2.0f, y, 0.2f);
 
 		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.minNodeSpacing);
 
@@ -208,12 +209,6 @@ public class EnRoutePathRenderer extends VerticalPathRenderer {
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return true;
-	}
-
-	@Override
-	public void setSizeConfig(PathSizeConfiguration sizeConfig) {
-		super.setSizeConfig(sizeConfig);
-		minWidthPixels = sizeConfig.branchAreaWidth + sizeConfig.pathAreaWidth + sizeConfig.pathwayTitleAreaWidth;
 	}
 
 }

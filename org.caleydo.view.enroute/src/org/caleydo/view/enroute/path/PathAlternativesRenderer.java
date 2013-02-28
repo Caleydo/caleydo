@@ -22,7 +22,10 @@ package org.caleydo.view.enroute.path;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -65,7 +68,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	protected PathwayGraph pathway;
 	protected String eventSpace;
 	protected Row baseRow;
-	protected List<APathwayPathRenderer> renderers = new ArrayList<>();
+	protected Map<APathwayPathRenderer, ElementLayout> renderers = new LinkedHashMap<>();
 	protected AGLView view;
 	protected List<TablePerspective> tablePerspectives = new ArrayList<>();
 
@@ -114,20 +117,35 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 
 	@Override
 	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
-		for (APathwayPathRenderer renderer : renderers) {
-			Rectangle2D bounds = renderer.getVertexRepBounds(vertexRep);
+		for (Entry<APathwayPathRenderer, ElementLayout> entry : renderers.entrySet()) {
+			APathwayPathRenderer renderer = entry.getKey();
+			ElementLayout layout = entry.getValue();
+			Rectangle2D bounds = getAbsolutePosition(renderer.getVertexRepBounds(vertexRep), layout);
 			if (bounds != null)
 				return bounds;
 		}
 		return null;
 	}
 
+	protected Rectangle2D getAbsolutePosition(Rectangle2D rect, ElementLayout layout) {
+		if (rect == null || layout == null)
+			return null;
+		return new Rectangle2D.Float(layout.getTranslateX() + (float) rect.getMinX(), layout.getTranslateY()
+				+ (float) rect.getMinY(), (float) rect.getWidth(), (float) rect.getHeight());
+	}
+
 	@Override
 	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
 		List<Rectangle2D> allBounds = new ArrayList<>();
 
-		for (APathwayPathRenderer renderer : renderers) {
-			allBounds.addAll(renderer.getVertexRepsBounds(vertexRep));
+		for (Entry<APathwayPathRenderer, ElementLayout> entry : renderers.entrySet()) {
+			APathwayPathRenderer renderer = entry.getKey();
+			ElementLayout layout = entry.getValue();
+			for (Rectangle2D bounds : renderer.getVertexRepsBounds(vertexRep)) {
+				Rectangle2D absoluteBounds = getAbsolutePosition(bounds, layout);
+				if (absoluteBounds != null)
+					allBounds.add(absoluteBounds);
+			}
 		}
 		return allBounds;
 	}
@@ -135,7 +153,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	@Override
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		nodeContextMenuItems.add(item);
-		for (APathwayPathRenderer renderer : renderers) {
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			renderer.addVertexRepBasedContextMenuItem(item);
 		}
 	}
@@ -167,7 +185,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 
 		renderer.init();
 		renderer.setPath(pathSegments);
-		renderers.add(renderer);
+		renderers.put(renderer, layout);
 	}
 
 	@Override
@@ -228,7 +246,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 				pathway);
 		baseRow.removeAll();
 
-		for (APathwayPathRenderer renderer : renderers) {
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			renderer.destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
 		}
 		renderers.clear();
@@ -250,7 +268,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	public boolean isDisplayListDirty() {
 		if (isDisplayListDirty)
 			return true;
-		for (APathwayPathRenderer renderer : renderers) {
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			if (renderer.isDisplayListDirty())
 				return true;
 		}

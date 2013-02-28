@@ -40,7 +40,7 @@ public class PathSizeConfiguration {
 
 	public static final PathSizeConfiguration COMPACT = new Builder().rectangleNodeWidth(40).rectangleNodeHeight(14)
 			.circleNodeRadius(7).minNodeSpacing(40).nodeTextHeight(12).pathStartSpacing(30).pathEndSpacing(14)
-			.rowHeight(40).branchNodeToPathNodeVerticalSpacing(10).branchAreaWidth(65).pathAreaWidth(80)
+			.rowHeight(40).branchNodeToPathNodeVerticalSpacing(10).branchAreaWidth(65).pathAreaWidth(50)
 			.branchNodeLeftSideSpacing(6).pathwayTextHeight(12).pathwayTitleAreaWidth(14).dataPreviewRowHeight(20)
 			.branchSummaryNodeWidth(50).branchSummaryNodeTextHeight(12).branchSummaryNodeBranchAreaSpacing(4)
 			.branchSummaryNodeBranchNodeSpacing(10).pathwayBorderWidth(6).edgeArrowSize(10).edgeArrwoBaseLineSize(6)
