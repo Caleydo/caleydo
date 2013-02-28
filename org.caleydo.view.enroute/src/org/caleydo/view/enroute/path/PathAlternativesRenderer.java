@@ -69,6 +69,11 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	protected AGLView view;
 	protected List<TablePerspective> tablePerspectives = new ArrayList<>();
 
+	/**
+	 * Context menu items that shall be displayed when right-clicking on a path node.
+	 */
+	protected List<VertexRepBasedContextMenuItem> nodeContextMenuItems = new ArrayList<>();
+
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
 	/**
@@ -109,20 +114,30 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 
 	@Override
 	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
-
+		for (APathwayPathRenderer renderer : renderers) {
+			Rectangle2D bounds = renderer.getVertexRepBounds(vertexRep);
+			if (bounds != null)
+				return bounds;
+		}
 		return null;
 	}
 
 	@Override
 	public List<Rectangle2D> getVertexRepsBounds(PathwayVertexRep vertexRep) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Rectangle2D> allBounds = new ArrayList<>();
+
+		for (APathwayPathRenderer renderer : renderers) {
+			allBounds.addAll(renderer.getVertexRepsBounds(vertexRep));
+		}
+		return allBounds;
 	}
 
 	@Override
 	public void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
-		// TODO Auto-generated method stub
-
+		nodeContextMenuItems.add(item);
+		for (APathwayPathRenderer renderer : renderers) {
+			renderer.addVertexRepBasedContextMenuItem(item);
+		}
 	}
 
 	/**
@@ -141,6 +156,9 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 		}
 
 		renderer.setSizeConfig(PathSizeConfiguration.COMPACT);
+		for (VertexRepBasedContextMenuItem item : nodeContextMenuItems) {
+			renderer.addVertexRepBasedContextMenuItem(item);
+		}
 
 		ElementLayout layout = new ElementLayout();
 		layout.setDynamicSizeUnitsX(1);

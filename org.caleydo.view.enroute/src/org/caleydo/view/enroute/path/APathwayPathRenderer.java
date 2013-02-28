@@ -39,6 +39,8 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
@@ -358,6 +360,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 				geneNode.init();
 				node = geneNode;
 			}
+			node.addPickingListener(new NodeContextMenuPickingListener(node));
 			nodes.add(node);
 		}
 
@@ -703,13 +706,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * @return the nodeContextMenuItems, see {@link #nodeContextMenuItems}
-	 */
-	public List<VertexRepBasedContextMenuItem> getNodeContextMenuItems() {
-		return nodeContextMenuItems;
-	}
-
-	/**
 	 * Sets the update strategy of this path. Note, that a strategy can only be set once.
 	 *
 	 * @param updateStrategy
@@ -727,6 +723,23 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public APathUpdateStrategy getUpdateStrategy() {
 		return updateStrategy;
+	}
+
+	protected class NodeContextMenuPickingListener extends APickingListener {
+		private ALinearizableNode node;
+
+		public NodeContextMenuPickingListener(ALinearizableNode node) {
+			this.node = node;
+		}
+
+		@Override
+		protected void rightClicked(Pick pick) {
+			for (VertexRepBasedContextMenuItem item : nodeContextMenuItems) {
+				// Only use primary vertex rep
+				item.setVertexRep(node.getPrimaryPathwayVertexRep());
+				view.getContextMenuCreator().addContextMenuItem(item);
+			}
+		}
 	}
 
 }

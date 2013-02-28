@@ -246,9 +246,4 @@ public abstract class APathwayPathRendererDecorator extends APathwayPathRenderer
 		decoratee.addVertexRepBasedContextMenuItem(item);
 	}
 
-	@Override
-	public List<VertexRepBasedContextMenuItem> getNodeContextMenuItems() {
-		return decoratee.getNodeContextMenuItems();
-	}
-
 }
