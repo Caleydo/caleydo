@@ -24,6 +24,13 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout {
 		this.setLayout(this);
 	}
 
+	/**
+	 * @return the model, see {@link #model}
+	 */
+	public ARankColumnModel getModel() {
+		return model;
+	}
+
 	public TableColumnUI setData(Collection<IRow> rows, IColumModelLayout parent) {
 		Set<IRow> target = new LinkedHashSet<>(rows);
 		for (Iterator<GLElement> it = asList().iterator(); it.hasNext();) {

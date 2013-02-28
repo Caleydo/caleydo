@@ -5,9 +5,12 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.view.tourguide.v3.model.ARankColumnModel;
 import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.view.tourguide.v3.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
+import org.caleydo.view.tourguide.v3.ui.TableColumnUI;
 
 public class ScoreBarRenderer implements IGLRenderer {
 	private final IRankableColumnMixin model;
@@ -22,7 +25,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 		float v = model.getValue(r);
 		if (Float.isNaN(v) || v <= 0)
 			return;
-		if (w < 20) {
+		if (isCollapsed((TableColumnUI)parent.getParent())) {
 			g.color(1 - v, 1 - v, 1 - v, 1).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
 		} else {
 			g.color(model.getColor()).fillRect(0, h * 0.1f, w * v, h * 0.8f);
@@ -32,6 +35,15 @@ public class ScoreBarRenderer implements IGLRenderer {
 				renderLabel(g, h * 0.2f, w, h * 0.45f, text, v, parent);
 			}
 		}
+	}
+	/**
+	 * @return
+	 */
+	private static boolean isCollapsed(TableColumnUI p) {
+		ARankColumnModel m = p.getModel();
+		if (m instanceof ICollapseableColumnMixin && ((ICollapseableColumnMixin)m).isCollapsed())
+			return true;
+		return false;
 	}
 
 	static void renderLabel(GLGraphics g, float y, float w, float h, String text, float v, GLElement parent) {
