@@ -38,7 +38,7 @@ import org.caleydo.view.tourguide.v3.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.view.tourguide.v3.ui.SeparatorUI.IMoveHereChecker;
 
 public final class TableHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
-	public static final float COLUMN_SPACE = 2;
+	public static final float COLUMN_SPACE = 1;
 	private final RankTableModel table;
 	private final PropertyChangeListener layoutOnChange = GLPropertyChangeListeners.relayoutOnEvent(this);
 	private final PropertyChangeListener columnsChanged = new PropertyChangeListener() {

@@ -271,7 +271,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			if (rank < rowPositions.length && rank >= 0) {
 				float prev = rank == 0 ? 0 : rowPositions[rank - 1];
 				float next = rowPositions[rank];
-				g.color(Color.YELLOW).fillRect(0, prev + 3, w, next - prev);
+				g.color(Color.LIGHT_GRAY).fillRect(0, prev + 3, w, next - prev);
 			}
 		}
 		super.renderImpl(g, w, h);
