@@ -107,7 +107,7 @@
          </ParentView>
       </EmbeddingInfo>
       <EmbeddingInfo
-            viewID="org.caleydo.view.enroute.path.alternatives">
+            viewID="org.caleydo.view.enroute.contextual.paths">
          <ParentView
                viewID="org.caleydo.view.subgraph">
             <Embedding
@@ -116,7 +116,7 @@
                   isDefaultView="false"
                   visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
                <RendererCreator
-                     class="org.caleydo.view.enroute.path.PathAlternativesCreator">
+                     class="org.caleydo.view.enroute.path.ContextualPathsCreator">
                </RendererCreator>
             </Embedding>
          </ParentView>

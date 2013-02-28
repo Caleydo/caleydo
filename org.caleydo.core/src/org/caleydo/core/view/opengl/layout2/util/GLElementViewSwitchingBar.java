@@ -158,6 +158,8 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 		}
 		buttons.put(rendererID, new Pair<>(button, buttonElement));
 
+		setSize(buttons.size() * DEFAULT_HEIGHT_PIXELS + (buttons.size() - 1) * BUTTON_SPACING_PIXELS,
+				DEFAULT_HEIGHT_PIXELS);
 	}
 
 	/**

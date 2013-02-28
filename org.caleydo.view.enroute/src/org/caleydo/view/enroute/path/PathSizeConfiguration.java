@@ -50,7 +50,7 @@ public class PathSizeConfiguration {
 			.pathEndSpacing(60).minNodeSpacing(40).build();
 
 	public static final PathSizeConfiguration ENROUTE_COMPACT = new Builder(COMPACT).pathStartSpacing(60)
-			.pathEndSpacing(60).minNodeSpacing(26).build();
+			.pathEndSpacing(60).minNodeSpacing(26).pathAreaWidth(80).build();
 
 	/**
 	 * Height of labels for edges.

@@ -66,7 +66,7 @@ import org.caleydo.view.pathway.GLPathway;
  * @author Christian Partl
  *
  */
-public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwayRepresentation, IListenerOwner {
+public class ContextualPathsRenderer extends ALayoutRenderer implements IPathwayRepresentation, IListenerOwner {
 
 	protected final String ALTERNATIVES_EVENTSPACE = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 
@@ -93,7 +93,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
-	public PathAlternativesRenderer(AGLView view, String eventSpace, PathwayGraph pathway,
+	public ContextualPathsRenderer(AGLView view, String eventSpace, PathwayGraph pathway,
 			List<TablePerspective> tablePerspectives) {
 		this.view = view;
 		this.eventSpace = eventSpace;
@@ -207,7 +207,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	}
 
 	/**
-	 * Method that initializes the {@link PathAlternativesRenderer}. Shall be called once prior use.
+	 * Method that initializes the {@link ContextualPathsRenderer}. Shall be called once prior use.
 	 */
 	public void init() {
 		registerEventListeners();
