@@ -21,6 +21,7 @@ package org.caleydo.view.enroute.path;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -215,7 +216,10 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 		renderers.clear();
 
 		for (PathwayVertexRep vertexRep : vertexReps) {
-			List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, true, 5);
+			List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 5);
+			segment.remove(0);
+			Collections.reverse(segment);
+			segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 5));
 			List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(1);
 			pathSegments.add(segment);
 			addAlternative(pathSegments);
