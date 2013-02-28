@@ -84,12 +84,14 @@ public abstract class ARankColumnModel implements IDragInfo {
 	 * @param weight
 	 *            setter, see {@link weight}
 	 */
-	public void setWeight(float weight) {
+	public ARankColumnModel setWeight(float weight) {
 		propertySupport.firePropertyChange(PROP_WEIGHT, this.weight, this.weight = weight);
+		return this;
 	}
 
-	public void addWeight(float delta) {
+	public ARankColumnModel addWeight(float delta) {
 		setWeight(weight + delta);
+		return this;
 	}
 
 	public float getWeight() {

@@ -154,7 +154,7 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		if (dx == 0 && dy == 0) // no change
 			return;
 		Vec2f size = getCanvas().getSize();
-		float from = point.from + dx / (size.x());
+		float from = normalizeRaw(point.from) + dx / (size.x());
 		float to = point.to - dy / (size.y());
 		updateMapping(point, from, to);
 		getCanvas().repaintAll();
@@ -182,7 +182,6 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		from = (from < 0 ? 0 : (from > 1 ? 1 : from));
 		to = (to < 0 ? 0 : (to > 1 ? 1 : to));
 
-		oldFrom = inverseNormalize(oldFrom);
 		from = inverseNormalize(from);
 		model.update(oldFrom, oldTo, from, to);
 

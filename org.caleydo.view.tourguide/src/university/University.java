@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,23 +79,45 @@ public class University extends GLElementContainer {
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Country", VAlign.CENTER), new ReflectionData(
 				field("country"))));
 
-		final StackedRankColumnModel stacked = new StackedRankColumnModel();
-		table.addColumn(stacked);
 
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
 				new ReflectionData(field("yearFounded"))));
-		table.addColumn(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText("Overall Score", VAlign.CENTER), Color
-				.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, 100)));
 
-		table.addColumnTo(stacked, column("Teaching", "teaching", 30));
-		table.addColumnTo(stacked, column("Research", "research", 30));
-		table.addColumnTo(stacked, column("Citations", "citations", 30));
-		table.addColumnTo(stacked, column("Income From Industry", "incomeFromIndustry", 7.5f));
-		table.addColumnTo(stacked, column("International Mix", "internationalMix", 2.5f));
+		final StackedRankColumnModel stacked = new StackedRankColumnModel();
+		table.addColumn(stacked);
+		table.addColumnTo(
+				stacked,
+				new FloatRankColumnModel(new ReflectionFloatData(field("teaching")), GLRenderers.drawText("Teaching",
+						VAlign.CENTER), Color.decode("#8DD3C7"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
+						100)).setWeight((float) 30 * 5));
+		table.addColumnTo(
+				stacked,
+				new FloatRankColumnModel(new ReflectionFloatData(field("research")), GLRenderers.drawText("Research",
+						VAlign.CENTER), Color.decode("#FFFFB3"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
+						100)).setWeight((float) 30 * 5));
+		table.addColumnTo(
+				stacked,
+				new FloatRankColumnModel(new ReflectionFloatData(field("citations")), GLRenderers.drawText("Citations",
+						VAlign.CENTER), Color.decode("#BEBADA"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
+						100)).setWeight((float) 30 * 5));
+		table.addColumnTo(
+				stacked,
+				new FloatRankColumnModel(new ReflectionFloatData(field("incomeFromIndustry")), GLRenderers.drawText(
+						"Income From Industry", VAlign.CENTER), Color.decode("#FB8072"), Color.decode("#EEEEEE"),
+						new PiecewiseLinearMapping(0, 100)).setWeight(7.5f * 5));
+		table.addColumnTo(
+				stacked,
+				new FloatRankColumnModel(new ReflectionFloatData(field("internationalMix")), GLRenderers.drawText(
+						"International Mix", VAlign.CENTER), Color.decode("#80B1D3"), Color.decode("#EEEEEE"),
+						new PiecewiseLinearMapping(0, 100)).setWeight(2.5f * 5));
+
+		table.addColumn(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
+				"Overall Score", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
+				new PiecewiseLinearMapping(0, 100)));
 
 		List<UniversityRow> rows = new ArrayList<>();
 		try (BufferedReader r = new BufferedReader(new InputStreamReader(
-				University.class.getResourceAsStream("top100under50.txt")))) {
+				University.class.getResourceAsStream("top100under50.txt"), Charset.forName("UTF-8")))) {
 			String line;
 			r.readLine();
 			while ((line = r.readLine()) != null) {
@@ -119,19 +142,9 @@ public class University extends GLElementContainer {
 
 	public static float toFloat(String[] l, int i) {
 		String v = l[i];
-		if (v.equalsIgnoreCase("–"))
+		if (v.equalsIgnoreCase("-"))
 			return Float.NaN;
 		return Float.parseFloat(v);
-	}
-
-	public static FloatRankColumnModel column(String name, String field, float weight) throws NumberFormatException,
-			NoSuchFieldException {
-		FloatRankColumnModel f = new FloatRankColumnModel(new ReflectionFloatData(field(field)),
-				GLRenderers.drawText(name,
- VAlign.CENTER), Color.decode("#5fd3bc"), Color.decode("#d5fff6"), new PiecewiseLinearMapping(0,
-				100));
-		f.setWeight(weight * 5);
-		return f;
 	}
 
 	public static Field field(String f) throws NoSuchFieldException {
