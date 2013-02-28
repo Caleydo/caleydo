@@ -2,6 +2,7 @@ package org.caleydo.view.tourguide.v3.ui.detail;
 
 import static org.caleydo.core.view.opengl.layout2.animation.Transitions.LINEAR;
 import static org.caleydo.core.view.opengl.layout2.animation.Transitions.NO;
+import static org.caleydo.view.tourguide.v3.ui.RenderStyle.binsForWidth;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
@@ -27,7 +28,6 @@ import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.view.tourguide.v3.ui.RenderUtils;
-
 public class StackedScoreSummary extends GLElementContainer implements IGLLayout {
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
@@ -114,7 +114,7 @@ public class StackedScoreSummary extends GLElementContainer implements IGLLayout
 		// hist
 		int size = model.size();
 		// create a stacked histogram of all values
-		SimpleHistogram[] hists = model.getHists(ScoreSummary.binsForWidth(w));
+		SimpleHistogram[] hists = model.getHists(binsForWidth(w));
 		Color[] colors = model.getColors();
 		Color[] selectedColors = new Color[size];
 		int[] selectedBins = new int[size];

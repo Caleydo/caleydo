@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.v3.ui;
 
+import static org.caleydo.view.tourguide.v3.ui.RenderStyle.binsForWidth;
 import gleem.linalg.Vec2f;
 
 import java.awt.Color;
@@ -52,7 +53,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.v3.model.DataUtils;
 import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 import org.caleydo.view.tourguide.v3.model.SimpleHistogram;
-
 /**
  * @author Samuel Gratzl
  *
@@ -188,8 +188,8 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		current.set(from, to);
 	}
 
-	public SimpleHistogram computeHist() {
-		return DataUtils.getHist(200, raw.map(model));
+	public SimpleHistogram computeHist(float w) {
+		return DataUtils.getHist(binsForWidth(w), raw.map(model));
 	}
 
 	/**
@@ -404,10 +404,9 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 	}
 
 	class RawHistogramElement extends GLElement {
-		private final SimpleHistogram rawHist;
-
+		private IFloatList data;
 		private RawHistogramElement(IFloatList raw) {
-			rawHist = DataUtils.getHist(200, raw);
+			this.data = raw;
 		}
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
@@ -425,8 +424,20 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 			g.color(backgroundColor);
 			gl.glVertex3f(0, h, z);
 			gl.glEnd();
-			RenderUtils.renderHist(g, rawHist, w, h, -1, color, Color.BLACK);
+			RenderUtils.renderHist(g, DataUtils.getHist(binsForWidth(w), data), w, h, -1, color,
+					Color.BLACK);
 			g.color(color).drawRect(0, 0, w, h);
+
+			float[] m = model.getMappedMin();
+			if (m[0] > model.getActMin()) {
+				float from = normalizeRaw(m[0]);
+				g.color(0, 0, 0, 0.25f).fillRect(0, 0, from * w, h);
+			}
+			m = model.getMappedMax();
+			if (m[0] < model.getActMax()) {
+				float to = normalizeRaw(m[0]);
+				g.color(0, 0, 0, 0.25f).fillRect(to * w, 0, (1 - to) * w, h);
+			}
 		}
 	}
 
@@ -441,7 +452,19 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 			g.save();
 			g.gl.glRotatef(-90, 0, 0, 1);
 			g.move(-h, 0);
-			RenderUtils.renderHist(g, computeHist(), h, w, -1, color, Color.BLACK);
+			RenderUtils.renderHist(g, computeHist(h), h, w, -1, color, Color.BLACK);
+
+			float[] m = model.getMappedMin();
+			if (m[1] > 0) {
+				float from = m[1];
+				g.color(0, 0, 0, 0.25f).fillRect(0, 0, from * h, w);
+			}
+			m = model.getMappedMax();
+			if (m[1] < 1) {
+				float to = m[1];
+				g.color(0, 0, 0, 0.25f).fillRect(to * h, 0, (1 - to) * h, w);
+			}
+
 			g.restore();
 		}
 	}

@@ -49,9 +49,9 @@ import org.caleydo.view.tourguide.v3.model.mixin.IMappedColumnMixin;
 import org.caleydo.view.tourguide.v3.model.mixin.IRankableColumnMixin;
 import org.caleydo.view.tourguide.v3.ui.GLPropertyChangeListeners;
 import org.caleydo.view.tourguide.v3.ui.PiecewiseLinearMappingUI;
+import org.caleydo.view.tourguide.v3.ui.RenderStyle;
 import org.caleydo.view.tourguide.v3.ui.RenderUtils;
 import org.caleydo.view.tourguide.v3.ui.detail.ScoreBarRenderer;
-import org.caleydo.view.tourguide.v3.ui.detail.ScoreSummary;
 import org.eclipse.swt.SWT;
 
 /**
@@ -389,7 +389,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			// background
 			g.color(bgColor).fillRect(0, 0, w, h);
 			// hist
-			SimpleHistogram hist = getHist(ScoreSummary.binsForWidth(w));
+			SimpleHistogram hist = getHist(RenderStyle.binsForWidth(w));
 			int selectedBin = selectedRow == null ? -1 : hist.getBinOf(getValue(selectedRow));
 			RenderUtils.renderHist(g, hist, w, h, selectedBin, color, color.darker());
 			// selection

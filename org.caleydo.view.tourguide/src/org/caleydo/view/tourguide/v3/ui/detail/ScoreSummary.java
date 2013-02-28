@@ -1,5 +1,7 @@
 package org.caleydo.view.tourguide.v3.ui.detail;
 
+import static org.caleydo.view.tourguide.v3.ui.RenderStyle.binsForWidth;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -65,13 +67,5 @@ public class ScoreSummary extends GLElement {
 			return;
 		this.selectedRow = selectedRow;
 		repaint();
-	}
-
-	/**
-	 * @param w
-	 * @return
-	 */
-	public static int binsForWidth(float w) {
-		return Math.round(w * 0.25f);
 	}
 }
