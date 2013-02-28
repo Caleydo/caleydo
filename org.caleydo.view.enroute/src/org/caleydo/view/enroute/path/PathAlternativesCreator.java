@@ -39,20 +39,20 @@ public class PathAlternativesCreator implements IRemoteRendererCreator {
 	public ALayoutRenderer createRemoteView(AGLView remoteRenderingView, List<TablePerspective> tablePerspectives,
 			String embeddingEventSpace) {
 
-		PathAlternativesRenderer renderer = new PathAlternativesRenderer(remoteRenderingView);
 		if (tablePerspectives.size() > 0) {
 			TablePerspective tablePerspective = tablePerspectives.get(0);
 			if (!(tablePerspective instanceof PathwayTablePerspective)) {
 				throw new IllegalArgumentException(
 						"The provided table perspective must be of type PathwayTablePerspective.");
 			}
-			renderer.setPathway(((PathwayTablePerspective) tablePerspective).getPathway());
-		}
-		renderer.setTablePerspectives(tablePerspectives);
-		renderer.setEventSpace(embeddingEventSpace);
-		renderer.init();
+			PathAlternativesRenderer renderer = new PathAlternativesRenderer(remoteRenderingView, embeddingEventSpace,
+					((PathwayTablePerspective) tablePerspective).getPathway(), tablePerspectives);
+			renderer.init();
 
-		return renderer;
+			return renderer;
+		}
+
+		return null;
 	}
 
 }

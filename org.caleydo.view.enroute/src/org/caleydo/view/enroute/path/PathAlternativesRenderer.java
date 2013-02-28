@@ -41,18 +41,24 @@ import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
+import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.pathway.GLPathway;
 
 /**
  * Renderer that shows the alternative entrances
@@ -67,10 +73,11 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	protected LayoutManager layout;
 	protected PathwayGraph pathway;
 	protected String eventSpace;
-	protected Row baseRow;
+	protected Row pathRow;
 	protected Map<APathwayPathRenderer, ElementLayout> renderers = new LinkedHashMap<>();
 	protected AGLView view;
 	protected List<TablePerspective> tablePerspectives = new ArrayList<>();
+	protected GLPathway pathwayView;
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -79,27 +86,67 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 
 	private final EventListenerManager listeners = EventListenerManagers.wrap(this);
 
+	private boolean pathwayViewInitialized = false;
+
 	/**
 	 * The queue which holds the events
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
-	public PathAlternativesRenderer(AGLView view) {
+	public PathAlternativesRenderer(AGLView view, String eventSpace, PathwayGraph pathway,
+			List<TablePerspective> tablePerspectives) {
 		this.view = view;
+		this.eventSpace = eventSpace;
+		this.pathway = pathway;
 		layout = new LayoutManager(new ViewFrustum(), view.getPixelGLConverter());
-		baseRow = new Row();
-		layout.setBaseElementLayout(baseRow);
+		layout.setUseDisplayLists(true);
+		Column baseColumn = new Column();
+		pathRow = new Row();
+		ElementLayout pathwayTextureLayout = new ElementLayout();
+		pathwayTextureLayout.setPixelSizeY(100);
+
+		// This should probably be a renderer in the final version.
+		pathwayView = (GLPathway) GeneralManager
+				.get()
+				.getViewManager()
+				.createGLView(GLPathway.class, view.getParentGLCanvas(), view.getParentComposite(),
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
+
+		if (tablePerspectives.size() > 0) {
+			TablePerspective tablePerspective = tablePerspectives.get(0);
+			if (!(tablePerspective instanceof PathwayTablePerspective)) {
+				throw new IllegalArgumentException(
+						"The provided table perspective must be of type PathwayTablePerspective.");
+			}
+
+			pathwayView.setRemoteRenderingGLView((IGLRemoteRenderingView) view);
+			pathwayView.setDataDomain(tablePerspective.getDataDomain());
+			pathwayView.setTablePerspective(tablePerspective);
+		}
+		pathwayView.setPathwayPathEventSpace(eventSpace);
+		pathwayView.initialize();
+
+		ViewLayoutRenderer viewRenderer = new ViewLayoutRenderer(pathwayView);
+		baseColumn.setBottomUp(false);
+		baseColumn.add(pathwayTextureLayout);
+		baseColumn.add(pathRow);
+		pathwayTextureLayout.setRenderer(viewRenderer);
+		layout.setBaseElementLayout(baseColumn);
 
 	}
 
 	@Override
 	protected void renderContent(GL2 gl) {
+		if (!pathwayViewInitialized) {
+			pathwayView.initRemote(gl, view, view.getGLMouseListener());
+			pathwayViewInitialized = true;
+		}
 		layout.render(gl);
 	}
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -130,7 +177,8 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	protected Rectangle2D getAbsolutePosition(Rectangle2D rect, ElementLayout layout) {
 		if (rect == null || layout == null)
 			return null;
-		return new Rectangle2D.Float(layout.getTranslateX() + (float) rect.getMinX(), layout.getTranslateY()
+		return new Rectangle2D.Float(layout.getTranslateX() + (float) rect.getMinX(), y - layout.getTranslateY()
+				- layout.getSizeScaledY()
 				+ (float) rect.getMinY(), (float) rect.getWidth(), (float) rect.getHeight());
 	}
 
@@ -181,7 +229,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 		ElementLayout layout = new ElementLayout();
 		layout.setDynamicSizeUnitsX(1);
 		layout.setRenderer(renderer);
-		baseRow.add(layout);
+		pathRow.add(layout);
 
 		renderer.init();
 		renderer.setPath(pathSegments);
@@ -244,7 +292,7 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	public void onShowPortalNodes(ShowPortalNodesEvent event) {
 		Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(event.getVertexRep(),
 				pathway);
-		baseRow.removeAll();
+		pathRow.removeAll();
 
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			renderer.destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
@@ -299,14 +347,6 @@ public class PathAlternativesRenderer extends ALayoutRenderer implements IPathwa
 	 */
 	public String getEventSpace() {
 		return eventSpace;
-	}
-
-	/**
-	 * @param pathway
-	 *            setter, see {@link pathway}
-	 */
-	public void setPathway(PathwayGraph pathway) {
-		this.pathway = pathway;
 	}
 
 }
