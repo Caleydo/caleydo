@@ -18,11 +18,7 @@ package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.PixelGrabber;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -106,7 +102,6 @@ import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
@@ -202,7 +197,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private PathwayBubbleSet bubbleSet = new PathwayBubbleSet();
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
-	
+
 
 	/**
 	 * Determines whether the paths should be selectable via mouse click.
@@ -263,13 +258,13 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		if (allPaths.size() == 1)
 			selectedPathID = 0;
-		else 
+		else
 		{
 			selectedPathID++;
-			
+
 			if (selectedPathID > allPaths.size() - 1)
 				selectedPathID = 0;
-			
+
 			if (allPaths.size() > 0) {
 				selectedPath = allPaths.get(selectedPathID);
 
@@ -718,16 +713,16 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (allPaths == null)
 			return;
 
-		if (isBubbleTextureDirty) {			
+		if (isBubbleTextureDirty) {
 //			//allPaths
 			this.bubbleSet.clear();
 			this.bubbleSet.setPathwayGraph(pathway);
-			
+
 			//this.bubbleSet.addAllPaths(allPaths);
-			
+
 			this.bubbleSet.addPathSegements(pathSegments);
 			this.bubbleSet.addPortals(portalVertexReps);
-			
+
 			//update texture
 			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
 			this.bubbleSet.getBubbleSetGLRenderer().update(gl,SelectionType.SELECTION.getColor(),selectedPathID);
@@ -1298,12 +1293,12 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			// TODO: make sure that this is the last vertex of the last path segment
 			if (selectedPath != null && vertexRep == selectedPath.getEndVertex()
 					&& selectedPath.getEdgeList().size() > 0) {
-				ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
-				e.setSender(this);
-				e.setEventSpace(pathwayPathEventSpace);
-				eventPublisher.triggerEvent(e);
+				// ShowPortalNodesEvent e = new ShowPortalNodesEvent(vertexRep);
+				// e.setSender(this);
+				// e.setEventSpace(pathwayPathEventSpace);
+				// eventPublisher.triggerEvent(e);
 				// the event will not be sent back to this pathway object, so highlight must be triggered here
-				highlightPortalNodes(vertexRep);
+				// highlightPortalNodes(vertexRep);
 			}
 		}
 

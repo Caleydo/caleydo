@@ -29,6 +29,9 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  */
 public class ShowPortalNodesEvent extends AVertexRepBasedEvent {
 
+	public ShowPortalNodesEvent() {
+	}
+
 	public ShowPortalNodesEvent(PathwayVertexRep vertexRep) {
 		super(vertexRep);
 	}
