@@ -19,64 +19,30 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
-import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
- * Renders a pickable background behind pathway elements.
+ * Bar with text on it.
  *
  * @author Christian Partl
  *
  */
-public class GLPathwayBackground extends PickableGLElement {
+public class GLTextBar extends PickableGLElement {
 
-	protected boolean hovered = false;
-	protected GLSubGraph view;
-	protected GLElementViewSwitchingBar bar;
+	protected String text;
 
-	public GLPathwayBackground(GLSubGraph view, GLElementViewSwitchingBar bar) {
-		this.view = view;
-		this.bar = bar;
+	public GLTextBar(String text) {
+		super();
+		this.text = text;
+		setSize(Float.NaN, 16);
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-
-		if (hovered) {
-			g.color(new Color(255, 234, 183));
-		} else {
-			g.color(0.8f, 0.8f, 0.8f, 1f);
-		}
-		g.incZ(-0.2f);
-		g.fillRoundedRect(0, 0, w, h, 10);
-		g.incZ(0.2f);
-
-	}
-
-	@Override
-	protected void renderPickImpl(GLGraphics g, float w, float h) {
-		g.incZ(-0.2f);
-		super.renderPickImpl(g, w, h);
-		g.incZ(0.2f);
-	}
-
-	@Override
-	protected void onMouseOver(Pick pick) {
-		GLPathwayBackground currentActiveBackground = view.getCurrentActiveBackground();
-
-		if (currentActiveBackground != null && currentActiveBackground != this) {
-			currentActiveBackground.hovered = false;
-			currentActiveBackground.bar.setVisibility(EVisibility.NONE);
-			currentActiveBackground.repaint();
-		}
-		view.setCurrentActiveBackground(this);
-		bar.setVisibility(EVisibility.VISIBLE);
-		hovered = true;
-		repaint();
+		g.color(0.5f, 0.5f, 0.5f, 1f).fillRoundedRect(0, 0, w, h, 10);
+		g.drawText(text, 0, 0, w, h);
 	}
 
 }
