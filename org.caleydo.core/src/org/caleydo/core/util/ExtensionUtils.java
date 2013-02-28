@@ -55,7 +55,10 @@ public final class ExtensionUtils {
 	 */
 	public static <T> Collection<T> findImplementation(String extensionPoint, String property, Class<T> type) {
 		Collection<T> factories = new ArrayList<>();
+		if (RegistryFactory.getRegistry() == null)
+			return factories;
 		try {
+
 			for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPoint)) {
 				final Object o = elem.createExecutableExtension(property);
 				if (type.isInstance(o))

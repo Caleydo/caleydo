@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.Math;
+package org.caleydo.core.util.math;
 
 /**
  * @author Alexander Lex
@@ -22,6 +22,8 @@ package org.caleydo.core.util.Math;
  */
 public class MathHelper {
 	public static double log(double value, double base) {
+		if (base == 10)
+			return Math.log10(value);
 		return Math.log(value) / Math.log(base);
 	}
 }

@@ -21,7 +21,7 @@ import org.caleydo.core.data.collection.column.container.INumericalContainer;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.io.DataDescription;
-import org.caleydo.core.util.Math.MathHelper;
+import org.caleydo.core.util.math.MathHelper;
 
 /**
  * INumericalDimension is a specialization of IDimension. It is meant for numerical data of a continuous range,

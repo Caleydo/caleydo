@@ -23,10 +23,12 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.CategoricalColumn;
+import org.caleydo.core.data.collection.column.GenericColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
+import org.caleydo.core.data.collection.column.container.GenericContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
 import org.caleydo.core.data.collection.column.container.IntContainer;
 import org.caleydo.core.data.collection.table.CategoricalTable;
@@ -191,7 +193,7 @@ public class TabularDataParser extends ATextParser {
 					if (table instanceof CategoricalTable<?>) {
 						categoricalColumn.setCategoryDescriptions(((CategoricalTable<String>) table)
 								.getCategoryDescriptions());
-					} else {
+					} else if (dataDescription.getCategoricalClassDescription() != null) {
 						categoricalColumn.setCategoryDescriptions((CategoricalClassDescription<String>) dataDescription
 								.getCategoricalClassDescription());
 					}
@@ -210,7 +212,7 @@ public class TabularDataParser extends ATextParser {
 					if (table instanceof CategoricalTable<?>) {
 						categoricalIntColumn.setCategoryDescriptions(((CategoricalTable<Integer>) table)
 								.getCategoryDescriptions());
-					} else {
+					} else if (dataDescription.getCategoricalClassDescription() != null) {
 						categoricalIntColumn
 								.setCategoryDescriptions((CategoricalClassDescription<Integer>) dataDescription
 										.getCategoricalClassDescription());
@@ -226,6 +228,12 @@ public class TabularDataParser extends ATextParser {
 
 				break;
 			case UNIQUE_OBJECT:
+				GenericContainer<String> container = new GenericContainer<>(numberOfDataLines);
+				targetRawContainer.add(container);
+				GenericColumn<String> column = new GenericColumn<>(dataDescription);
+				column.setRawData(container);
+				columnID = table.addColumn(column);
+				break;
 			default:
 				throw new IllegalStateException("Unknown or unimplemented column data type: " + columnDescription
 						+ " in " + parsingPattern);

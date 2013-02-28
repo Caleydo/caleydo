@@ -27,9 +27,7 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.manager.BasicInformation;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.RegistryFactory;
+import org.caleydo.core.util.ExtensionUtils;
 
 /**
  * Central access point for xml-serialization related tasks.
@@ -54,17 +52,7 @@ public class SerializationManager {
 	private Collection<ISerializationAddon> addons;
 
 	private SerializationManager() {
-		addons = new ArrayList<>();
-		try {
-			for (IConfigurationElement elem : RegistryFactory.getRegistry()
-					.getConfigurationElementsFor(EXTENSION_POINT)) {
-				final Object o = elem.createExecutableExtension("class");
-				if (o instanceof ISerializationAddon)
-					addons.add((ISerializationAddon) o);
-			}
-		} catch (CoreException ex) {
-			System.err.println(ex.getMessage());
-		}
+		addons = ExtensionUtils.findImplementation(EXTENSION_POINT, "class", ISerializationAddon.class);
 		try {
 			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
 			Class<?>[] classes = new Class<?>[eventTypes.size()];

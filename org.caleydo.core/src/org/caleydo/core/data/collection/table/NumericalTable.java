@@ -22,8 +22,8 @@ import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.util.Math.MathHelper;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.math.MathHelper;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 

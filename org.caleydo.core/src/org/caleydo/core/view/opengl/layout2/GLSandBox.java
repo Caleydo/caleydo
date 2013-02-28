@@ -13,6 +13,8 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
+import org.caleydo.core.event.EventListenerManagers;
+import org.caleydo.core.event.EventListenerManagers.QueuedEventListenerManager;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
@@ -69,6 +71,9 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	protected boolean renderPick;
 
 	private GLPadding padding = GLPadding.ZERO;
+
+	private QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
+
 	/**
 	 * @param canvas
 	 */
@@ -136,7 +141,12 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public void init(GLElement element) {
+		eventListeners.register(element, null, AGLElementView.isNotBaseClass);
+	}
 
+	@Override
+	public void takeDown(GLElement element) {
+		eventListeners.unregister(element);
 	}
 
 	@Override
@@ -154,10 +164,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		return true;
 	}
 
-	@Override
-	public void takeDown(GLElement element) {
 
-	}
 
 	@Override
 	public IGLElementParent getParent() {
@@ -200,6 +207,8 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
+		eventListeners.processEvents();
+
 		GL2 gl = drawable.getGL().getGL2();
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
