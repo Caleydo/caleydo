@@ -40,7 +40,6 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
 import org.caleydo.view.tourguide.v3.model.ARow;
-import org.caleydo.view.tourguide.v3.model.CategoricalRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.CategoricalRankColumnModel.CategoryInfo;
 import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
@@ -100,8 +99,12 @@ public class University extends GLSandBox {
 		table.addColumn(eventListeners.register(new RankRankColumnModel()));
 		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT)));
-		table.addColumn(eventListeners.register(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
-				new ReflectionData(field("country")), metaData)));
+		// as categorical
+//		table.addColumn(eventListeners.register(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
+//				new ReflectionData(field("country")), metaData)));
+		// as string
+		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Country", VAlign.CENTER),
+ new ReflectionData(field("country")))));
 
 
 		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
