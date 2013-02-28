@@ -9,3 +9,5 @@ Export-Package: setvis,
  setvis.ch,
  setvis.gui,
  setvis.shape
+Require-Bundle: org.caleydo.lib.jogl,
+ org.caleydo.core;bundle-version="2.2.0"

@@ -106,20 +106,13 @@ import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.ShowPortalNodesEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
 
-import setvis.SetOutline;
-import setvis.bubbleset.BubbleSet;
-import setvis.gui.CanvasComponent;
-import setvis.shape.AbstractShapeGenerator;
-import setvis.shape.BSplineShapeGenerator;
-
-import com.jogamp.opengl.util.awt.TextureRenderer;
-import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * Single OpenGL2 pathway view
@@ -203,18 +196,13 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	 * All paths which are available between two user selected nodes.
 	 */
 	private List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths = null;
-
-	private TextureRenderer texRenderer;
-	private SetOutline setOutline;
-	private AbstractShapeGenerator shaper;
-	private CanvasComponent bubblesetCanvas;
-	private Texture bubbleSetsTexture;
 	private boolean isBubbleTextureDirty;
 	private boolean isPathStartSelected = false;
-
+	private int selectedPathID;
+	private PathwayBubbleSet bubbleSet = new PathwayBubbleSet();
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
-	private int selectedPathID;
+	
 
 	/**
 	 * Determines whether the paths should be selectable via mouse click.
@@ -264,11 +252,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		// ///////////////////////////////////////////////////
 		// / bubble sets
-		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
-		((BubbleSet) setOutline).useVirtualEdges(false);
-		shaper = new BSplineShapeGenerator(setOutline);
-		bubblesetCanvas = new CanvasComponent(shaper);
-		bubblesetCanvas.setDefaultView();
 		isBubbleTextureDirty = true;
 		selectedPathID = 0;
 
@@ -280,10 +263,13 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		if (allPaths.size() == 1)
 			selectedPathID = 0;
-		else {
+		else 
+		{
 			selectedPathID++;
+			
 			if (selectedPathID > allPaths.size() - 1)
 				selectedPathID = 0;
+			
 			if (allPaths.size() > 0) {
 				selectedPath = allPaths.get(selectedPathID);
 
@@ -295,7 +281,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 							endPrevVertex, edgePrevList, 0);
 				}
 			}
-
 		}
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();
@@ -347,9 +332,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		displayListIndex = gl.glGenLists(1);
 
-		// we will adapt the dimensions in each frame
-		texRenderer = new TextureRenderer(1280, 768, true);
-
+		bubbleSet.getBubbleSetGLRenderer().init(gl);
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
@@ -556,22 +539,14 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 				// code adapted from documentation at
 				// http://docs.oracle.com/javase/6/docs/api/java/awt/image/PixelGrabber.html
-				int[] pixels = new int[1];
-				Image img = texRenderer.getImage();
-				PixelGrabber pxlGrabber = new PixelGrabber(img, pickX, pickY, 1, 1, pixels, 0, 1);
-				try {
-					pxlGrabber.grabPixels();
-				} catch (InterruptedException e) {
-					System.err.println("interrupted waiting for pixels!");
-					return;
-				}
-				// int alpha = (pixels[0] >> 24) & 0xff;
+				int[] pixels = bubbleSet.getBubbleSetGLRenderer().getPxl(pickX, pickX);
+				 int alpha = (pixels[0] >> 24) & 0xff;
 				int red = (pixels[0] >> 16) & 0xff;
-				// int green = (pixels[0] >> 8) & 0xff;
-				// int blue = (pixels[0]) & 0xff;
-				// System.out.println("DENIS_DEBUG:: pickedRed:" + red +
-				// " pickedGreen:" + green + " pickedBlue:" + blue
-				// + " pickedAlpha:" + alpha);
+				 int green = (pixels[0] >> 8) & 0xff;
+				 int blue = (pixels[0]) & 0xff;
+//				 System.out.println("DENIS_DEBUG:: pickedRed:" + red +
+//				 " pickedGreen:" + green + " pickedBlue:" + blue
+//				 + " pickedAlpha:" + alpha);
 				// look up color
 				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
 						.getColorList("qualitativeColors");
@@ -583,8 +558,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					cComponents = c.getRGB();
 					if (red > (int) (cComponents[0] * 255f) - threshold
 							&& red < (int) (cComponents[0] * 255f) + threshold) {
-						// System.out.println("DENIS_DEBUG:: found usedColor id="
-						// + i);
+						 System.out.println("DENIS_DEBUG:: found usedColor id="+ i);
 						// select
 						selectedPathID = i;
 						if (selectedPathID > allPaths.size() - 1)
@@ -739,334 +713,35 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		gl.glPopMatrix();
 	}
 
-	private void updateBubbleSetsTexture(GL2 gl) {
-		int groupID = bubblesetCanvas.getGroupCount() - 1;
-		while (bubblesetCanvas.getGroupCount() > 0) {
-			bubblesetCanvas.setCurrentGroup(groupID);
-			bubblesetCanvas.removeCurrentGroup();
-			groupID--;
-		}
-
-		// updateSingleBubbleSet(gl, selectedPath);
-		// updateSingleBubbleSet(gl, mouseOverPath);
-
-		int bbGroupID = -1;
-		HashSet<PathwayVertexRep> visitedNodes = new HashSet<PathwayVertexRep>();
-		int numNodes = 0;
-		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
-			numNodes += path.getEdgeList().size();
-			numNodes++;
-		}
-		int pos = 1;
-		double nodeOffsetScale = 2.0;
-		float[] colorValues = new float[3];
-		Integer outlineThickness;
-		// pathSegmentList
-		if (pathSegments.size() > 0) {
-			colorValues = SelectionType.SELECTION.getColor();
-			outlineThickness = 3;
-
-			for (PathwayPath pathSegment : pathSegments) {
-				if (pathSegment.getPathway() == pathway) {
-					bbGroupID++;
-					bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1], colorValues[2]),
-							outlineThickness, true);
-					for (DefaultEdge edge : pathSegment.getPath().getEdgeList()) {
-						PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-						PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-						// src
-						double bbItemW = sourceVertexRep.getWidth();
-						double bbItemH = sourceVertexRep.getHeight();
-						double posX = sourceVertexRep.getLowerLeftCornerX();
-						double posY = sourceVertexRep.getLowerLeftCornerY();
-						bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-						//
-						double tX = targetVertexRep.getLowerLeftCornerX();
-						double tY = targetVertexRep.getLowerLeftCornerY();
-						bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-					}
-					// add last item
-					if (pathSegment.getPath().getEdgeList().size() > 0) {
-						DefaultEdge lastEdge = pathSegment.getPath().getEdgeList()
-								.get(pathSegment.getPath().getEdgeList().size() - 1);
-						if (lastEdge != null) {
-							PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
-							double posX = targetVertexRep.getLowerLeftCornerX();
-							double posY = targetVertexRep.getLowerLeftCornerY();
-							double bbItemW = targetVertexRep.getWidth();
-							double bbItemH = targetVertexRep.getHeight();
-							bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-						}
-					}
-				}
-			}
-		}
-		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
-			// updateSingleBubbleSet(gl, path, bbGroupID,visitedNodes);
-			if (path == null)
-				return;
-
-			double bbItemW = 10;
-			double bbItemH = 10;
-
-			// group0
-
-			gl.glPushName(generalManager.getViewManager().getPickingManager()
-					.getPickingID(uniqueID, EPickingType.PATHWAY_PATH_SELECTION.name(), allPaths.indexOf(path)));
-
-			bbGroupID++;
-			if (path == selectedPath) {
-				colorValues = SelectionType.SELECTION.getColor();
-				outlineThickness = 3;
-				// bubble sets do not allow to delete
-				bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1], colorValues[2]), outlineThickness,
-						true);
-			} else {
-				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
-						.getColorList("qualitativeColors");
-				int colorID;
-				// avoid the last two colors because they are close to orange
-				// (the selection color)
-				if (bbGroupID < colorTable.size() - 2)
-					colorID = bbGroupID;
-				else
-					colorID = colorTable.size() - 1;
-				org.caleydo.core.util.color.Color c = colorTable.get(colorID);
-				outlineThickness = 1;
-				// bubble sets do not allow to delete
-				bubblesetCanvas.addGroup(new Color(c.r, c.g, c.b), outlineThickness, true);
-			}
-
-			if (path.getEndVertex() == path.getStartVertex()) {
-				PathwayVertexRep sourceVertexRep = path.getEndVertex();
-				bbItemW = sourceVertexRep.getWidth();
-				bbItemH = sourceVertexRep.getHeight();
-				double posX = sourceVertexRep.getLowerLeftCornerX();
-				double posY = sourceVertexRep.getLowerLeftCornerY();
-				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-			} else {
-				for (DefaultEdge edge : path.getEdgeList()) {
-					PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-					PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-
-					bbItemW = sourceVertexRep.getWidth();
-					bbItemH = sourceVertexRep.getHeight();
-					double posX = sourceVertexRep.getLowerLeftCornerX();
-					double posY = sourceVertexRep.getLowerLeftCornerY();
-					if (!visitedNodes.contains(sourceVertexRep)) {
-						visitedNodes.add(sourceVertexRep);
-					} else {
-						double high = 1.0;
-						double low = 0.0;
-						// double offX=Math.random() * (high - low) + low;
-						double offX = nodeOffsetScale * (pos / numNodes) * (high - low) + low;
-						double offY = nodeOffsetScale * (pos / numNodes) * (high - low) + low;
-						// System.out.println("offX="+offX);
-						// System.out.println("offY="+offY);
-						posX += offX;
-						posY += offY;
-					}
-					pos++;
-					double tX = targetVertexRep.getLowerLeftCornerX();
-					double tY = targetVertexRep.getLowerLeftCornerY();
-
-					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-
-					//
-					// bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
-					// System.out.println("bubblesetCanvas.addItem(" + bbGroupID + "," + tX + "," + tY + "," + bbItemW +
-					// "," + bbItemH + ")");
-					//
-					bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-
-				}
-				DefaultEdge lastEdge = path.getEdgeList().get(path.getEdgeList().size() - 1);
-				if (lastEdge != null) {
-					PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
-					double posX = targetVertexRep.getLowerLeftCornerX();
-					double posY = targetVertexRep.getLowerLeftCornerY();
-					if (!visitedNodes.contains(targetVertexRep)) {
-						visitedNodes.add(targetVertexRep);
-					} else {
-						double high = 1.0;
-						double low = 0.0;
-						double offX = nodeOffsetScale * (pos / numNodes) * (high - low) + low;
-						double offY = nodeOffsetScale * (pos / numNodes) * (high - low) + low;
-						// System.out.println("offX="+offX);
-						// System.out.println("offY="+offY);
-						posX += offX;
-						posY += offY;
-					}
-
-					bbItemW = targetVertexRep.getWidth();
-					bbItemH = targetVertexRep.getHeight();
-					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-
-				}
-
-			}
-
-			gl.glPopName();
-			//
-
-		}
-		// /////////////////////
-		// highlight portals
-
-		for (PathwayVertexRep portal : portalVertexReps) {
-			bbGroupID++;
-			bubblesetCanvas.addGroup(new Color(1.0f, 0.0f, 0.0f), 6, true);
-			double posX = portal.getLowerLeftCornerX();
-			double posY = portal.getLowerLeftCornerY();
-			double bbItemW = portal.getWidth();
-			double bbItemH = portal.getHeight();
-			bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-		}
-
-		//
-		// HashSet<PathwayVertexRep> otherNodes = new HashSet();
-		// HashSet<Rectangle2D> otherRects = new HashSet();
-		// Set<PathwayVertexRep> vSet = pathway.vertexSet();
-		// double bbItemW = 10;
-		// double bbItemH = 10;
-		// Iterator iter=vSet.iterator();
-		// while(iter.hasNext()){
-		// PathwayVertexRep pathwayVertexRep=(PathwayVertexRep)iter.next();
-		// if(!visitedNodes.contains(pathwayVertexRep)){
-		// otherNodes.add(pathwayVertexRep);
-		// double posX = pathwayVertexRep.getLowerLeftCornerX();
-		// double posY = pathwayVertexRep.getLowerLeftCornerY();
-		// bbItemW=pathwayVertexRep.getWidth();
-		// bbItemH=pathwayVertexRep.getHeight();
-		// final double x = bubblesetCanvas.getXForScreen(posX);
-		// final double y = bubblesetCanvas.getYForScreen(posY);
-		// otherRects.add(new Rectangle2D.Double(x - bbItemW * 0.5, y - bbItemH
-		// * 0.5,bbItemW, bbItemH));
-		// }
-		// }
-		// bubblesetCanvas.resolveEdgeIntersections(otherRects);
-		// // add all other vertices
-		// bubblesetCanvas.addGroup(new Color(0f,0f,0f),1, false); // bubble
-		// sets do not allow to delete
-		// bbGroupID++;
-		// Iterator otherNodesIter=otherNodes.iterator();
-		// while(otherNodesIter.hasNext()){
-		// PathwayVertexRep
-		// pathwayVertexRep=(PathwayVertexRep)otherNodesIter.next();
-		// double posX = pathwayVertexRep.getLowerLeftCornerX();
-		// double posY = pathwayVertexRep.getLowerLeftCornerY();
-		// bbItemW=pathwayVertexRep.getWidth();
-		// bbItemH=pathwayVertexRep.getHeight();
-		// bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-		// }
-		//
-		// /////////////////////
-		// if (allPaths.size() == 0)
-		// return;
-
-		if (allPaths.size() <= selectedPathID)
-			selectedPathID = 0;
-
-		bubblesetCanvas.setSelection(selectedPathID); // the selected set will
-														// be rendered on top of
-														// all others
-		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
-		Graphics2D g2d = texRenderer.createGraphics();
-
-		if (bbGroupID >= 0) {
-			bubblesetCanvas.paint(g2d);
-		}
-
-		g2d.dispose();
-	}
 
 	private void overlayBubbleSets(GL2 gl) {
-
 		if (allPaths == null)
 			return;
 
-		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
-		if (isBubbleTextureDirty) {
-			updateBubbleSetsTexture(gl);
+		if (isBubbleTextureDirty) {			
+//			//allPaths
+			this.bubbleSet.clear();
+			this.bubbleSet.setPathwayGraph(pathway);
+			
+			//this.bubbleSet.addAllPaths(allPaths);
+			
+			this.bubbleSet.addPathSegements(pathSegments);
+			this.bubbleSet.addPortals(portalVertexReps);
+			
+			//update texture
+			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
+			this.bubbleSet.getBubbleSetGLRenderer().update(gl,SelectionType.SELECTION.getColor(),selectedPathID);
 			isBubbleTextureDirty = false;
 		}
-		bubbleSetsTexture = texRenderer.getTexture();
-
-		float textureWidth = pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth());
-		float textureHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
 
 		gl.glPushName(generalManager.getViewManager().getPickingManager()
 				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
-
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-		bubbleSetsTexture.enable(gl);
-		bubbleSetsTexture.bind(gl);
-		gl.glBegin(GL2.GL_QUADS);
-
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(0.0f, 0.0f, 0.0f);
-		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(textureWidth, 0.0f, 0.0f);
-		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(textureWidth, textureHeight, 0.0f);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(0.0f, textureHeight, 0.0f);
-
-		gl.glEnd();
-		bubbleSetsTexture.disable(gl);
+		this.bubbleSet.getBubbleSetGLRenderer().render(gl,
+					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
+					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight())
+					);
 		gl.glPopName();
-
 	}
-
-	// private void renderPaths(GL2 gl) {
-	//
-	// if (allPaths == null)
-	// return;
-	//
-	// for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths)
-	// renderSinglePath(gl, path);
-	// }
-	//
-	// private void renderSinglePath(GL2 gl, GraphPath<PathwayVertexRep,
-	// DefaultEdge> path) {
-	//
-	// if (path == null)
-	// return;
-	//
-	// gl.glLineWidth(5);
-	//
-	// gl.glPushName(generalManager
-	// .getViewManager()
-	// .getPickingManager()
-	// .getPickingID(uniqueID, EPickingType.PATHWAY_PATH_SELECTION.name(),
-	// allPaths.indexOf(path)));
-	//
-	// if (path == selectedPath)
-	// gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-	// else
-	// gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
-	//
-	// for (DefaultEdge edge : path.getEdgeList()) {
-	//
-	// PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-	// PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-	//
-	// // gl.glBegin(GL.GL_LINES);
-	// // gl.glVertex3f(sourceVertexRep.getCenterX() *
-	// // PathwayRenderStyle.SCALING_FACTOR_X,
-	// // -sourceVertexRep.getCenterY() *
-	// // PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-	// // gl.glVertex3f(targetVertexRep.getCenterX() *
-	// // PathwayRenderStyle.SCALING_FACTOR_X,
-	// // -targetVertexRep.getCenterY() *
-	// // PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-	// // gl.glEnd();
-	// }
-	//
-	// gl.glPopName();
-	// }
 
 	private void rebuildPathwayDisplayList(final GL2 gl, int displayListIndex) {
 		gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, pathway);

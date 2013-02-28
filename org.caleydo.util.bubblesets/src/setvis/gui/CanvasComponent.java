@@ -751,9 +751,16 @@ public class CanvasComponent extends JComponent implements Canvas {
     {
     	selectionID=id;
     }
-
+    
+    private Color selectionColor=new Color(0f,1f,0f); 
+    
+    public void setSelectionColor(float[] newSelectionColor){
+    	selectionColor=new Color(newSelectionColor[0],newSelectionColor[1],newSelectionColor[2]);
+    }
+    
     @Override
-    public void paint(final Graphics gfx) {
+    public void paint(final Graphics gfx) 
+    {
         boolean textChanged = false;
         final Graphics2D g2d = (Graphics2D) gfx;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -793,7 +800,6 @@ public class CanvasComponent extends JComponent implements Canvas {
             final Color t = new Color(~0x80000000 & c.getRGB(), true);
         	//final Color t = colorList.get(i);//new Color(~0x80000000 & c.getRGB(), true);
 
-
             final Shape gs = groupShapes[i];
             if (gs != null) {
                 g2d.setColor(t);
@@ -822,7 +828,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         //render selected set
      	if(isVisibleList.get(selectionID))
      	{
-        	final Color c = colorList.get(selectionID);
+        	//final Color c = colorList.get(selectionID);
+     		final Color c = selectionColor;
             final Color t = new Color(~0x80000000 & c.getRGB(), true);
         	//final Color t = colorList.get(i);//new Color(~0x80000000 & c.getRGB(), true);
 
@@ -852,7 +859,9 @@ public class CanvasComponent extends JComponent implements Canvas {
                 }
             }
         }
-
+     	else{
+     		System.out.println("isVisibleList.get(selectionID) = false");
+     	}
 //        hue = 0f;
 //        pos = 0;
 //        int rects = 0;
