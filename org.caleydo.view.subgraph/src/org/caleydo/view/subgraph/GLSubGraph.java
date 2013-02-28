@@ -283,6 +283,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 						"Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
 				pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 						"Show Related Pathways", ShowPathwayBrowserEvent.class, pathEventSpace));
+				pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
+						"Show Portal Nodes", ShowPortalNodesEvent.class, pathEventSpace));
 			}
 		}
 		GLElementContainer multiFormContainer = new GLElementContainer(GLLayouts.flowVertical(1));
