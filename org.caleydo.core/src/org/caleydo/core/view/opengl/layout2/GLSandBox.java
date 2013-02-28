@@ -66,19 +66,34 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 
 	private final SimplePickingManager pickingManager = new SimplePickingManager();
 
-	private final IGLCanvas canvas;
+	protected final IGLCanvas canvas;
 	private final IResourceLocator loader;
 	protected boolean renderPick;
 
 	private GLPadding padding = GLPadding.ZERO;
 
-	private QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
+	protected final QueuedEventListenerManager eventListeners = EventListenerManagers.createQueued();
+	protected final Display display;
+	protected final Shell shell;
 
 	/**
 	 * @param canvas
 	 */
-	public GLSandBox(IGLCanvas canvas, GLElement root, IResourceLocator loader) {
-		this.canvas = canvas;
+	public GLSandBox(GLElement root, GLPadding padding, Dimension dim) {
+		IResourceLocator loader = ResourceLocators.chain(
+				ResourceLocators.classLoader(root.getClass().getClassLoader()), ResourceLocators.FILE);
+		this.display = new Display();
+		this.shell = new Shell(display);
+		shell.setLayout(new FillLayout());
+		IGLCanvasFactory canvasFactory = new SWTGLCanvasFactory();
+		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
+		this.canvas = canvasFactory.create(caps, shell);
+		// canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL));
+		canvas.asComposite().setSize(dim.width, dim.height);
+		this.padding = padding;
+		canvas.addGLEventListener(this);
+		shell.setSize(dim.width, dim.height);
+
 		this.animator = new FPSAnimator(canvas.asGLAutoDrawAble(), 30);
 		this.loader = loader;
 		this.canvas.addMouseListener(pickingManager.getListener());
@@ -96,6 +111,14 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			}
 		});
 		this.root = new WindowGLElement(root);
+
+	}
+
+	/**
+	 * @return the root, see {@link #root}
+	 */
+	public GLElement getRoot() {
+		return this.root.getRoot();
 	}
 
 	@Override
@@ -292,6 +315,30 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 		});
 	}
 
+	public void run() {
+		try {
+			shell.open();
+			animator.start();
+
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch())
+					display.sleep();
+			}
+			animator.stop();
+			display.dispose();
+		} catch (IllegalArgumentException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (java.lang.NoClassDefFoundError e) {
+			// expected error as we aren't part of eclipse
+			System.exit(0);
+		} finally {
+			System.err.flush();
+			System.out.flush();
+			// System.exit(0);
+		}
+	}
+
 	public static void main(String[] args, IGLRenderer renderer) {
 		main(args, new GLElement(renderer));
 	}
@@ -305,43 +352,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	public static void main(String[] args, GLElement root, GLPadding padding, Dimension dim) {
-		IResourceLocator l = ResourceLocators.chain(ResourceLocators.classLoader(root.getClass().getClassLoader()),
-				ResourceLocators.FILE);
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		shell.setLayout(new FillLayout());
-		IGLCanvasFactory canvasFactory = new SWTGLCanvasFactory();
-		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
-		IGLCanvas canvas = canvasFactory.create(caps, shell);
-		// canvas.asComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL));
-		canvas.asComposite().setSize(dim.width, dim.height);
-
-		try {
-			GLSandBox sandbox = new GLSandBox(canvas, root, l);
-			sandbox.padding = padding;
-			canvas.addGLEventListener(sandbox);
-			shell.setSize(dim.width, dim.height);
-			shell.open();
-			sandbox.animator.start();
-
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch())
-					display.sleep();
-			}
-			sandbox.animator.stop();
-			display.dispose();
-
-		} catch (IllegalArgumentException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (java.lang.NoClassDefFoundError e) {
-			// expected error as we aren't part of eclipse
-			System.exit(0);
-		} finally {
-			System.err.flush();
-			System.out.flush();
-			// System.exit(0);
-		}
+		new GLSandBox(root, padding, dim).run();
 	}
 
 }

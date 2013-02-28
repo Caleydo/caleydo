@@ -77,8 +77,8 @@ public class EventListenerManager {
 	 *
 	 * @param listener
 	 */
-	public final void register(Object listener) {
-		register(listener, null);
+	public final <T> T register(T listener) {
+		return register(listener, null);
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class EventListenerManager {
 	 *            if {@link ListenTo#restrictToEventSpace()} or {@link ListenTo#restrictExclusiveToEventSpace()} is used
 	 *            the eventSpace to set
 	 */
-	public final void register(Object listener, String eventSpace) {
-		register(listener, eventSpace, Predicates.alwaysTrue());
+	public final <T> T register(T listener, String eventSpace) {
+		return register(listener, eventSpace, Predicates.alwaysTrue());
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class EventListenerManager {
 	 * @param eventSpace
 	 * @param stopAtClass
 	 */
-	public final void register(Object listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
+	public final <T> T register(T listener, String eventSpace, Predicate<? super Class<?>> scanWhile) {
 		Class<?> clazz = listener.getClass();
 		for (Method m : Iterables.filter(ClassUtils.findAllDeclaredMethods(clazz, scanWhile), matches)) {
 			Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
@@ -123,6 +123,7 @@ public class EventListenerManager {
 
 			register(event, l);
 		}
+		return listener;
 	}
 
 	private static final Predicate<Method> matches = new Predicate<Method>() {
@@ -161,7 +162,7 @@ public class EventListenerManager {
 
 	/**
 	 * simple wrapper for the singleton access of the {@link EventPublisher}, e.g. used as a static import in java
-	 * 
+	 *
 	 * @param event
 	 */
 	public static void triggerEvent(AEvent event) {

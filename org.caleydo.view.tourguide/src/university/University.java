@@ -20,6 +20,7 @@
 package university;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +28,8 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
@@ -37,6 +40,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
 import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
 import org.caleydo.view.tourguide.v3.model.ARow;
+import org.caleydo.view.tourguide.v3.model.CategoricalRankColumnModel;
+import org.caleydo.view.tourguide.v3.model.CategoricalRankColumnModel.CategoryInfo;
 import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
 import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
 import org.caleydo.view.tourguide.v3.model.RankRankColumnModel;
@@ -51,37 +56,56 @@ import org.caleydo.view.tourguide.v3.ui.TableHeaderUI;
  * @author Samuel Gratzl
  *
  */
-public class University extends GLElementContainer {
+public class University extends GLSandBox {
 
 	private final RankTableModel table;
 
-	public University(RankTableModel table) {
-		this.table = table;
-		setLayout(GLLayouts.flowVertical(0));
+	public University() throws NoSuchFieldException, NumberFormatException, IOException {
+		super(new GLElementContainer(GLLayouts.flowVertical(0)), new GLPadding(5), new Dimension(800, 600));
 
-		this.add(new TableHeaderUI(table));
-		this.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
-
-		this.add(new ColumnPoolUI(table));
-	}
-
-	public static void main(String[] args) throws NumberFormatException, NoSuchFieldException, IOException {
-
-		RankTableModel table = new RankTableModel(new RankTableConfigBase() {
+		this.table = new RankTableModel(new RankTableConfigBase() {
 			@Override
 			public boolean isInteractive() {
 				return true;
 			}
 		});
-		table.addColumn(new RankRankColumnModel());
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
-				StringRankColumnModel.DFEAULT));
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Country", VAlign.CENTER), new ReflectionData(
-				field("country"))));
+
+		List<UniversityRow> rows = new ArrayList<>();
+		Map<String, CategoryInfo> metaData = new TreeMap<>();
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(
+				University.class.getResourceAsStream("top100under50.txt"), Charset.forName("UTF-8")))) {
+			String line;
+			r.readLine();
+			while ((line = r.readLine()) != null) {
+				String[] l = line.split("\t");
+				UniversityRow row = new UniversityRow();
+				row.rank = Integer.parseInt(l[0]);
+				row.institution = l[2];
+				row.country = l[3];
+				if (!metaData.containsKey(row.country)) {
+					metaData.put(row.country, new CategoryInfo(row.country, Color.PINK));
+				}
+				row.yearFounded = Integer.parseInt(l[4]);
+				row.teaching = toFloat(l, 5);
+				row.research = toFloat(l, 6);
+				row.citations = toFloat(l, 7);
+				row.incomeFromIndustry = toFloat(l, 8);
+				row.internationalMix = toFloat(l, 9);
+				row.overallScore = toFloat(l, 10);
+				rows.add(row);
+			}
+		}
+		table.addData(rows);
+
+		table.addColumn(eventListeners.register(new RankRankColumnModel()));
+		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
+				StringRankColumnModel.DFEAULT)));
+		table.addColumn(eventListeners.register(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
+				new ReflectionData(field("country")), metaData)));
 
 
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
-				new ReflectionData(field("yearFounded"))));
+		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
+				new ReflectionData(field("yearFounded")))));
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.addColumn(stacked);
@@ -115,29 +139,16 @@ public class University extends GLElementContainer {
 				"Overall Score", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
 				new PiecewiseLinearMapping(0, 100)));
 
-		List<UniversityRow> rows = new ArrayList<>();
-		try (BufferedReader r = new BufferedReader(new InputStreamReader(
-				University.class.getResourceAsStream("top100under50.txt"), Charset.forName("UTF-8")))) {
-			String line;
-			r.readLine();
-			while ((line = r.readLine()) != null) {
-				String[] l = line.split("\t");
-				UniversityRow row = new UniversityRow();
-				row.rank = Integer.parseInt(l[0]);
-				row.institution = l[2];
-				row.country = l[3];
-				row.yearFounded = Integer.parseInt(l[4]);
-				row.teaching = toFloat(l, 5);
-				row.research = toFloat(l, 6);
-				row.citations = toFloat(l, 7);
-				row.incomeFromIndustry = toFloat(l, 8);
-				row.internationalMix = toFloat(l, 9);
-				row.overallScore = toFloat(l, 10);
-				rows.add(row);
-			}
-		}
-		table.addData(rows);
-		GLSandBox.main(args, new University(table), new GLPadding(5));
+		GLElementContainer root = (GLElementContainer) getRoot();
+		root.add(new TableHeaderUI(table));
+		root.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
+
+		root.add(new ColumnPoolUI(table));
+
+	}
+
+	public static void main(String[] args) throws NumberFormatException, NoSuchFieldException, IOException {
+		new University().run();
 	}
 
 	public static float toFloat(String[] l, int i) {

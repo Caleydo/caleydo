@@ -48,7 +48,7 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IFilterColumnMixin, IGLRenderer {
+public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGLRenderer {
 	public static final Function<IRow, String> DFEAULT = new Function<IRow, String>() {
 		@Override
 		public String apply(IRow row) {
