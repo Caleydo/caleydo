@@ -35,7 +35,6 @@ import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout2.AGLElementGLView;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElement.EVisibility;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
@@ -108,9 +107,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		column.add(nodeInfoContainer);
-		pathwayColumn.setLayoutData(0.4f);
+		pathwayColumn.setLayoutData(0.5f);
 		RankingElement rankingElement = new RankingElement(this);
-		rankingElement.setLayoutData(0.4f);
+		rankingElement.setLayoutData(0.2f);
 		baseContainer.add(rankingElement);
 		baseContainer.add(pathwayColumn);
 
@@ -221,7 +220,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			// Float.NaN);
 			addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
 			addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
-			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer, 0.2f);
+			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer, 0.3f);
 
 		}
 	}
@@ -273,28 +272,38 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
 		renderer.addChangeListener(this);
 
+		PathwayGraph pathway = null;
 		for (String viewID : remoteRenderedPathwayMultiformViewIDs) {
 			int id = renderer.addPluginVisualization(viewID, getViewType(), embeddingID, tablePerspectives,
 					pathEventSpace);
 			IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(renderer, id);
 			if (pathwayRepresentation != null) {
+				pathway = pathwayRepresentation.getPathway();
 				pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 						"Show Node Info", ShowNodeInfoEvent.class, pathEventSpace));
 				pathwayRepresentation.addVertexRepBasedContextMenuItem(new VertexRepBasedContextMenuItem(
 						"Show Related Pathways", ShowPathwayBrowserEvent.class, pathEventSpace));
 			}
 		}
-
+		GLElementContainer multiFormContainer = new GLElementContainer(GLLayouts.flowVertical(1));
+		multiFormContainer.add(new GLTitleBar(pathway == null ? "" : pathway.getTitle()));
 		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer);
+		multiFormContainer.add(multiFormRendererAdapter);
 		// multiFormRendererAdapter.onPick(pl);
 
 		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
-		viewSwitchingBar.setVisibility(EVisibility.NONE);
 		GLPathwayBackground bg = new GLPathwayBackground(this, viewSwitchingBar);
+		GLElementContainer barContainer = new GLElementContainer(GLLayouts.flowVertical(0));
+		GLElementContainer barRow = new GLElementContainer(GLLayouts.flowHorizontal(0));
+		barContainer.add(new GLElement().setSize(Float.NaN, 2));
+		barContainer.add(barRow);
+		barRow.add(new GLElement());
+		barRow.add(viewSwitchingBar);
+		barRow.add(new GLElement().setSize(5, Float.NaN));
 
 		backgroundContainer.add(bg);
-		backgroundContainer.add(multiFormRendererAdapter);
-		backgroundContainer.add(viewSwitchingBar);
+		backgroundContainer.add(multiFormContainer);
+		backgroundContainer.add(barContainer);
 
 		List<Pair<MultiFormRenderer, GLElement>> embeddingSpecificRenderers = multiFormRenderers.get(embeddingID);
 

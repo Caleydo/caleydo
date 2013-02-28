@@ -49,10 +49,10 @@ public class GLPathwayBackground extends PickableGLElement {
 		if (hovered) {
 			g.color(new Color(255, 234, 183));
 		} else {
-			g.color(0.8f, 0.8f, 0.8f, 1f);
+			g.color(0.95f, 0.95f, 0.95f, 1f);
 		}
 		g.incZ(-0.2f);
-		g.fillRoundedRect(0, 0, w, h, 10);
+		g.fillRoundedRect(0, 0, w, h, 7);
 		g.incZ(0.2f);
 
 	}
@@ -70,11 +70,11 @@ public class GLPathwayBackground extends PickableGLElement {
 
 		if (currentActiveBackground != null && currentActiveBackground != this) {
 			currentActiveBackground.hovered = false;
-			currentActiveBackground.bar.setVisibility(EVisibility.NONE);
+			// currentActiveBackground.bar.setVisibility(EVisibility.NONE);
 			currentActiveBackground.repaint();
 		}
 		view.setCurrentActiveBackground(this);
-		bar.setVisibility(EVisibility.VISIBLE);
+		// bar.setVisibility(EVisibility.VISIBLE);
 		hovered = true;
 		repaint();
 	}

@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.subgraph;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 
 /**
  * Bar with text on it.
@@ -28,21 +28,21 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
  * @author Christian Partl
  *
  */
-public class GLTextBar extends PickableGLElement {
+public class GLTitleBar extends GLElement {
 
 	protected String text;
 
-	public GLTextBar(String text) {
+	public GLTitleBar(String text) {
 		super();
 		this.text = text;
-		setSize(Float.NaN, 16);
+		setSize(Float.NaN, 20);
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
-		g.color(0.5f, 0.5f, 0.5f, 1f).fillRoundedRect(0, 0, w, h, 10);
-		g.drawText(text, 0, 0, w, h);
+		g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(0, 0, w, h, 7);
+		g.drawText(text, 3, 0, w - 3, 16);
 	}
 
 }
