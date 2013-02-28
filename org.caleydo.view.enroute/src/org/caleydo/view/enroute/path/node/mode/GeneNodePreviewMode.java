@@ -22,7 +22,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.mappeddataview.CategoricalContentPreviewRenderer;
 import org.caleydo.view.enroute.mappeddataview.ContinuousContentPreviewRenderer;
-import org.caleydo.view.enroute.path.EnRoutePathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.GeneNode;
 
@@ -41,7 +41,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 	protected ColorRenderer colorRenderer;
 
-	protected EnRoutePathRenderer enRoutePathRenderer;
+	// protected EnRoutePathRenderer enRoutePathRenderer;
 
 	/**
 	 * Specifies the pixel height of the node layout defined by this mode.
@@ -51,9 +51,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	/**
 	 * @param view
 	 */
-	public GeneNodePreviewMode(AGLView view, EnRoutePathRenderer pathwayPathRenderer) {
+	public GeneNodePreviewMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
-		this.enRoutePathRenderer = pathwayPathRenderer;
 	}
 
 	@Override
@@ -200,7 +199,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 			@Override
 			public void clicked(Pick pick) {
-				enRoutePathRenderer.setExpandedBranchSummaryNode(null);
+				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
@@ -210,7 +209,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
-				enRoutePathRenderer.selectBranch(branchNode);
+				pathwayPathRenderer.selectBranch(branchNode);
 
 			}
 

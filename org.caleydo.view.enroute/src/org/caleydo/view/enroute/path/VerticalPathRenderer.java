@@ -21,6 +21,7 @@ package org.caleydo.view.enroute.path;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -29,7 +30,12 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
+import org.caleydo.view.enroute.path.node.ANode;
+import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 
 /**
  * Renders a vertical path of nodes with constant spacings. No branches are rendered.
@@ -54,19 +60,77 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 		minWidthPixels = sizeConfig.rectangleNodeWidth + 2 * sizeConfig.pathwayTitleAreaWidth;
 	}
 
+	/**
+	 * @param node
+	 *            The node for which the positions of associated branch nodes shall be calculated
+	 * @return the minimum view height in pixels that would be required by the nodes to be displayed.
+	 */
+	protected int calculatePositionsOfBranchNodes(ANode node) {
+		int minViewHeightPixelsIncoming = 0;
+		int minViewHeightPixelsOutgoing = 0;
+		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
+			minViewHeightPixelsIncoming = calculateBranchNodePosition((BranchSummaryNode) incomingNode);
+		}
+
+		ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+		if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
+			minViewHeightPixelsOutgoing = calculateBranchNodePosition((BranchSummaryNode) outgoingNode);
+		}
+		return Math.max(minViewHeightPixelsIncoming, minViewHeightPixelsOutgoing);
+	}
+
+	/**
+	 * Calculates the position for a single branch node.
+	 *
+	 * @param summaryNode
+	 * @return
+	 */
+	protected int calculateBranchNodePosition(BranchSummaryNode summaryNode) {
+		boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(summaryNode
+				.getAssociatedLinearizedNode()) == summaryNode;
+		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
+		Vec3f linearizedNodePosition = linearizedNode.getPosition();
+
+		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathwayTitleAreaWidth
+				+ sizeConfig.branchNodeLeftSideSpacing);
+		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
+				.getGLHeightForPixelHeight(sizeConfig.branchNodeToPathNodeVerticalSpacing);
+		float width = summaryNode.getWidth();
+		float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode.getTitleAreaHeightPixels());
+
+		float nodePositionY = linearizedNodePosition.y()
+				+ (isIncomingNode ? branchSummaryNodeToLinearizedNodeDistance
+						: -branchSummaryNodeToLinearizedNodeDistance) - (summaryNode.getHeight() / 2.0f)
+				+ titleAreaHeight / 2.0f;
+
+		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY, (summaryNode.isCollapsed() ? 0
+				: 0.2f)));
+
+		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
+		int minViewHeightPixels = 0;
+		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(y - bottomPositionY);
+
+		return minViewHeightPixels;
+
+	}
+
 	@Override
 	protected void updateLayout() {
 
 		float currentPositionY = y - pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing);
 		float nodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.minNodeSpacing);
 
+		int minViewHeightRequiredByBranchNodes = 0;
+		int minPathHeight = 0;
+
 		if (pathNodes.size() == 0) {
-			minHeightPixels = 0;
+			minPathHeight = 0;
 		} else {
-			minHeightPixels = sizeConfig.pathStartSpacing + sizeConfig.pathEndSpacing + (pathNodes.size() - 1)
+			minPathHeight = sizeConfig.pathStartSpacing + sizeConfig.pathEndSpacing + (pathNodes.size() - 1)
 					* sizeConfig.minNodeSpacing;
 		}
-		if (pixelGLConverter.getGLHeightForPixelHeight(minHeightPixels) > y) {
+		if (pixelGLConverter.getGLHeightForPixelHeight(minPathHeight) > y) {
 			nodeSpacing = Math.max(
 					(y - pixelGLConverter.getGLHeightForPixelHeight(sizeConfig.pathStartSpacing
 							+ sizeConfig.pathEndSpacing))
@@ -76,8 +140,22 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 
 		for (ALinearizableNode node : pathNodes) {
 			node.setPosition(new Vec3f(x / 2.0f, currentPositionY, 0));
+			int minViewHeight = calculatePositionsOfBranchNodes(node);
+			if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+				minViewHeightRequiredByBranchNodes = minViewHeight;
+			}
 			currentPositionY -= nodeSpacing;
 		}
+
+		if (expandedBranchSummaryNode != null) {
+			int minViewHeight = calculateBranchNodePosition(expandedBranchSummaryNode);
+			if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+				minViewHeightRequiredByBranchNodes = minViewHeight;
+			}
+		}
+
+		minHeightPixels = Math.max(minViewHeightRequiredByBranchNodes,
+				pixelGLConverter.getPixelHeightForGLHeight(minPathHeight));
 
 	}
 
@@ -91,9 +169,93 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 			ALinearizableNode node = pathNodes.get(i);
 
 			node.render(gl, glu);
+			renderBranchNodes(gl, glu, node);
+		}
+
+		if (expandedBranchSummaryNode != null) {
+			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
+			gl.glColor4f(1, 1, 1, 0.9f);
+
+			gl.glBegin(GL2.GL_QUADS);
+			gl.glVertex3f(0, 0, 0.1f);
+			gl.glVertex3f(x, 0, 0.1f);
+			gl.glVertex3f(x, y, 0.1f);
+			gl.glVertex3f(0, y, 0.1f);
+			gl.glEnd();
 		}
 
 		renderEdges(gl, pathNodes);
+	}
+
+	/**
+	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
+	 *
+	 * @param node
+	 */
+	protected void renderBranchNodes(GL2 gl, GLU glu, ANode node) {
+
+		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
+
+			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) incomingNode);
+
+			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+			List<Vec3f> linePoints = new ArrayList<Vec3f>();
+			Vec3f sourcePosition = incomingNode.getRightConnectionPoint();
+			Vec3f targetPosition = node.getLeftConnectionPoint();
+			sourcePosition.setZ(0);
+			targetPosition.setZ(0);
+			linePoints.add(sourcePosition);
+			linePoints.add(targetPosition);
+
+			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+			arrowRenderer.setBaseWidthPixels(sizeConfig.edgeArrwoBaseLineSize);
+			arrowRenderer.setHeadToBasePixels(sizeConfig.edgeArrowSize);
+			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
+			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
+
+			connectionLineRenderer.renderLine(gl, linePoints);
+		}
+
+		ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+		if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
+
+			renderBranchSummaryNode(gl, glu, (BranchSummaryNode) outgoingNode);
+
+			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
+			List<Vec3f> linePoints = new ArrayList<Vec3f>();
+
+			Vec3f sourcePosition = node.getLeftConnectionPoint();
+			Vec3f targetPosition = outgoingNode.getRightConnectionPoint();
+			sourcePosition.setZ(0);
+			targetPosition.setZ(0);
+			linePoints.add(sourcePosition);
+			linePoints.add(targetPosition);
+
+			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+			arrowRenderer.setBaseWidthPixels(sizeConfig.edgeArrwoBaseLineSize);
+			arrowRenderer.setHeadToBasePixels(sizeConfig.edgeArrowSize);
+			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
+			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
+
+			connectionLineRenderer.renderLine(gl, linePoints);
+		}
+	}
+
+	protected void renderBranchSummaryNode(GL2 gl, GLU glu, BranchSummaryNode summaryNode) {
+
+		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
+		summaryNode.render(gl, glu);
+
+		if (!summaryNode.isCollapsed()) {
+			List<ALinearizableNode> branchNodes = summaryNode.getBranchNodes();
+			for (ALinearizableNode node : branchNodes) {
+				EdgeRenderUtil.renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
+						linearizedNode.getLeftConnectionPoint(), 0.2f, false, pixelGLConverter, textRenderer,
+						sizeConfig);
+			}
+		}
+
 	}
 
 	protected void renderPathwayBorders(GL2 gl) {

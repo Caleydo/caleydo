@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.EnRoutePathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
 
@@ -26,14 +26,14 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 
 	// public static final int MIN_NODE_WIDTH_PIXELS = 70;
 
-	protected EnRoutePathRenderer enRoutePathRenderer;
+	// protected EnRoutePathRenderer enRoutePathRenderer;
 
 	/**
 	 * @param view
 	 */
-	public ComplexNodePreviewMode(AGLView view, EnRoutePathRenderer pathwayPathRenderer) {
+	public ComplexNodePreviewMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
-		this.enRoutePathRenderer = pathwayPathRenderer;
+		// this.enRoutePathRenderer = pathwayPathRenderer;
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 		layoutManager.setBaseElementLayout(baseColumn);
 
 		for (ALinearizableNode childNode : ((ComplexNode) node).getNodes()) {
-			enRoutePathRenderer.setPreviewMode(childNode);
+			pathwayPathRenderer.setPreviewMode(childNode);
 		}
 	}
 
@@ -95,13 +95,13 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				enRoutePathRenderer.setExpandedBranchSummaryNode(null);
+				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
 				}
 
-				enRoutePathRenderer.selectBranch(branchNode);
+				pathwayPathRenderer.selectBranch(branchNode);
 			}
 		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 

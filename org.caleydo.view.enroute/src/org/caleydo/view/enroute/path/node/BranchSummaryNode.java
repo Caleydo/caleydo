@@ -45,7 +45,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.EnRoutePathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 
 /**
  * Node that represents multiple nodes in a branch.
@@ -87,13 +87,13 @@ public class BranchSummaryNode extends ANode {
 
 	private Button collapseButton;
 
-	private final EnRoutePathRenderer pathwayPathRenderer;
+	private final APathwayPathRenderer pathwayPathRenderer;
 
 	/**
 	 * @param pixelGLConverter
 	 */
 	public BranchSummaryNode(AGLView view, ALinearizableNode associatedLinearizedNode,
-			EnRoutePathRenderer pathwayPathRenderer) {
+			APathwayPathRenderer pathwayPathRenderer) {
 		super(view);
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
 		this.associatedLinearizedNode = associatedLinearizedNode;

@@ -15,7 +15,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
-import org.caleydo.view.enroute.path.EnRoutePathRenderer;
+import org.caleydo.view.enroute.path.APathwayPathRenderer;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANodeAttributeRenderer;
 import org.caleydo.view.enroute.path.node.CompoundNode;
@@ -32,14 +32,13 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 	// protected static final int TEXT_HEIGHT_PIXELS = 12;
 	// protected static final int SPACING_PIXELS = 4;
 
-	protected EnRoutePathRenderer enRoutePathRenderer;
+	// protected EnRoutePathRenderer enRoutePathRenderer;
 
 	/**
 	 * @param view
 	 */
-	public CompoundNodePreviewMode(AGLView view, EnRoutePathRenderer pathwayPathRenderer) {
+	public CompoundNodePreviewMode(AGLView view, APathwayPathRenderer pathwayPathRenderer) {
 		super(view, pathwayPathRenderer);
-		this.enRoutePathRenderer = pathwayPathRenderer;
 	}
 
 	@Override
@@ -102,7 +101,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				enRoutePathRenderer.setExpandedBranchSummaryNode(null);
+				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
@@ -112,7 +111,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 
-				enRoutePathRenderer.selectBranch(branchNode);
+				pathwayPathRenderer.selectBranch(branchNode);
 			}
 
 			@Override

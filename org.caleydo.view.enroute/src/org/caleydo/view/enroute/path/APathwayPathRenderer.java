@@ -24,8 +24,10 @@ import gleem.linalg.Vec3f;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 
@@ -50,16 +52,23 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
+import org.caleydo.view.enroute.path.node.BranchSummaryNode;
 import org.caleydo.view.enroute.path.node.ComplexNode;
 import org.caleydo.view.enroute.path.node.CompoundNode;
 import org.caleydo.view.enroute.path.node.GeneNode;
 import org.caleydo.view.enroute.path.node.mode.ComplexNodeLinearizedMode;
+import org.caleydo.view.enroute.path.node.mode.ComplexNodePreviewMode;
 import org.caleydo.view.enroute.path.node.mode.CompoundNodeLinearizedMode;
+import org.caleydo.view.enroute.path.node.mode.CompoundNodePreviewMode;
 import org.caleydo.view.enroute.path.node.mode.GeneNodeLinearizedMode;
+import org.caleydo.view.enroute.path.node.mode.GeneNodePreviewMode;
 import org.caleydo.view.pathway.GLPathway;
+import org.jgrapht.Graphs;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Renderer that is responsible for rendering a single pathway path.
@@ -69,6 +78,8 @@ import org.caleydo.view.pathway.GLPathway;
  */
 public abstract class APathwayPathRenderer extends ALayoutRenderer implements IEventBasedSelectionManagerUser,
 		IPathwayRepresentation {
+
+	protected static final int MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
 	/**
 	 * Strategy that defines the update behavior of this path renderer.F
@@ -124,6 +135,26 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * Context menu items that shall be displayed when right-clicking on a path node.
 	 */
 	protected List<VertexRepBasedContextMenuItem> nodeContextMenuItems = new ArrayList<>();
+
+	/**
+	 * Branch summary node that is currently expanded
+	 */
+	protected BranchSummaryNode expandedBranchSummaryNode;
+
+	/**
+	 * Map that associates the linearized nodes with their incoming branch summary nodes.
+	 */
+	protected Map<ANode, BranchSummaryNode> linearizedNodesToIncomingBranchSummaryNodesMap = new HashMap<>();
+
+	/**
+	 * Map that associates the linearized nodes with their outgoing branch summary nodes.
+	 */
+	protected Map<ANode, BranchSummaryNode> linearizedNodesToOutgoingBranchSummaryNodesMap = new HashMap<>();
+
+	/**
+	 * Map that associates every node in a branch with a linearized node.
+	 */
+	protected Map<ALinearizableNode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<>();
 
 	protected EventBasedSelectionManager geneSelectionManager;
 	protected EventBasedSelectionManager metaboliteSelectionManager;
@@ -181,27 +212,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 	}
 
-	// @ListenTo(restrictExclusiveToEventSpace = true)
-	// protected void onEnablePathSelection(EnablePathSelectionEvent event) {
-	// if (isPathSelectable)
-	// isPathSelectionMode = event.isPathSelectionMode();
-	// }
-
-	// @ListenTo(restrictExclusiveToEventSpace = true)
-	// protected void onSelectedPathChanged(PathwayPathSelectionEvent event) {
-	// List<PathwayPath> segments = event.getPathSegments();
-	// List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(segments.size());
-	// for (PathwayPath path : segments) {
-	// pathSegments.add(path.getNodes());
-	// }
-	// if (isPathSelectable) {
-	// selectedPathSegments = new ArrayList<>(pathSegments);
-	// }
-	//
-	// if (!isPathSelectable || !containsPath(this.pathSegments, pathSegments))
-	// setPath(pathSegments);
-	// }
-
 	/**
 	 * @param pathSegments1
 	 * @param pathSegments2
@@ -251,6 +261,93 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			}
 		}
 
+		expandedBranchSummaryNode = null;
+
+		branchNodesToLinearizedNodesMap.clear();
+		linearizedNodesToIncomingBranchSummaryNodesMap.clear();
+		linearizedNodesToOutgoingBranchSummaryNodesMap.clear();
+
+		// Create branch nodes
+		for (int i = 0; i < pathNodes.size(); i++) {
+
+			ALinearizableNode currentNode = pathNodes.get(i);
+			BranchSummaryNode incomingNode = new BranchSummaryNode(view, currentNode, this);
+			incomingNode.init();
+			BranchSummaryNode outgoingNode = new BranchSummaryNode(view, currentNode, this);
+			outgoingNode.init();
+			List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
+			List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
+
+			for (PathwayVertexRep currentVertexRep : currentNode.getVertexReps()) {
+				PathwayVertexRep prevVertexRep = null;
+				PathwayVertexRep nextVertexRep = null;
+				PathwayGraph pathway = currentVertexRep.getPathway();
+
+				if (i > 0) {
+					ALinearizableNode prevNode = pathNodes.get(i - 1);
+					for (PathwayVertexRep prevVR : prevNode.getVertexReps()) {
+						if (prevVR.getPathway() == pathway) {
+							DefaultEdge edge = pathway.getEdge(prevVR, currentVertexRep);
+							if (edge != null) {
+								prevVertexRep = prevVR;
+							}
+						}
+					}
+				}
+				if (i != pathNodes.size() - 1) {
+					ALinearizableNode nextNode = pathNodes.get(i + 1);
+					for (PathwayVertexRep nextVR : nextNode.getVertexReps()) {
+						if (nextVR.getPathway() == pathway) {
+							DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVR);
+							if (edge != null) {
+								nextVertexRep = nextVR;
+							}
+						}
+					}
+				}
+
+				List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
+				sourceVertexReps.remove(prevVertexRep);
+				List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
+				targetVertexReps.remove(nextVertexRep);
+
+				if (sourceVertexReps.size() > 0) {
+					createNodesForList(sourceNodes, sourceVertexReps);
+				}
+
+				if (targetVertexReps.size() > 0) {
+					createNodesForList(targetNodes, targetVertexReps);
+				}
+			}
+
+			if (sourceNodes.size() > 0) {
+				incomingNode.setBranchNodes(sourceNodes);
+				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
+				for (ALinearizableNode node : sourceNodes) {
+					setPreviewMode(node);
+					branchNodesToLinearizedNodesMap.put(node, currentNode);
+				}
+			}
+
+			if (targetNodes.size() > 0) {
+				outgoingNode.setBranchNodes(targetNodes);
+				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
+				for (ALinearizableNode node : targetNodes) {
+					setPreviewMode(node);
+					branchNodesToLinearizedNodesMap.put(node, currentNode);
+				}
+			}
+		}
+	}
+
+	public void setPreviewMode(ALinearizableNode node) {
+		if (node instanceof ComplexNode) {
+			node.setMode(new ComplexNodePreviewMode(view, this));
+		} else if (node instanceof CompoundNode) {
+			node.setMode(new CompoundNodePreviewMode(view, this));
+		} else {
+			node.setMode(new GeneNodePreviewMode(view, this));
+		}
 	}
 
 	/**
@@ -258,6 +355,15 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	protected void destroyNodes() {
 		for (ANode node : pathNodes) {
+			node.destroy();
+		}
+		for (ALinearizableNode node : branchNodesToLinearizedNodesMap.keySet()) {
+			node.destroy();
+		}
+		for (BranchSummaryNode node : linearizedNodesToIncomingBranchSummaryNodesMap.values()) {
+			node.destroy();
+		}
+		for (BranchSummaryNode node : linearizedNodesToOutgoingBranchSummaryNodesMap.values()) {
 			node.destroy();
 		}
 	}
@@ -437,6 +543,91 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		if (isDisplayListDirty()) {
 			updateLayout();
 		}
+	}
+
+	/**
+	 * Selects a branch node to be linearized.
+	 *
+	 * @param node
+	 */
+	public void selectBranch(ALinearizableNode node) {
+
+		ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
+		BranchSummaryNode summaryNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(linearizedNode);
+
+		boolean isIncomingBranch = false;
+		if (summaryNode != null && summaryNode.getBranchNodes().contains(node)) {
+			isIncomingBranch = true;
+		}
+
+		// A branch node should only have one vertex rep.
+		PathwayVertexRep branchVertexRep = node.getPrimaryPathwayVertexRep();
+		PathwayGraph pathway = branchVertexRep.getPathway();
+		PathwayVertexRep linearizedVertexRep = null;
+		for (PathwayVertexRep vertexRep : linearizedNode.getVertexReps()) {
+			DefaultEdge edge = null;
+			if (isIncomingBranch) {
+				edge = pathway.getEdge(branchVertexRep, vertexRep);
+			} else {
+				edge = pathway.getEdge(vertexRep, branchVertexRep);
+			}
+			if (edge != null) {
+				linearizedVertexRep = vertexRep;
+			}
+		}
+
+		Pair<Integer, Integer> indexPair = determinePathSegmentAndIndexOfPathNode(linearizedNode, linearizedVertexRep);
+		int segmentIndex = indexPair.getFirst();
+		int vertexRepIndex = indexPair.getSecond();
+
+		List<PathwayVertexRep> newSegment = null;
+		List<List<PathwayVertexRep>> newPathSegments = new ArrayList<>();
+		List<PathwayVertexRep> branchPath = PathwayManager.get().determineDirectionalPath(branchVertexRep,
+				!isIncomingBranch, MAX_BRANCH_SWITCHING_PATH_LENGTH);
+
+		if (isIncomingBranch) {
+			// insert above linearized node
+			Collections.reverse(branchPath);
+			newSegment = pathSegments.get(segmentIndex).subList(vertexRepIndex, pathSegments.get(segmentIndex).size());
+			newSegment.addAll(0, branchPath);
+			newPathSegments.add(newSegment);
+			if (segmentIndex + 1 < pathSegments.size())
+				newPathSegments.addAll(pathSegments.subList(segmentIndex + 1, pathSegments.size()));
+
+		} else {
+			// insert below linearized node
+
+			newSegment = pathSegments.get(segmentIndex).subList(0, vertexRepIndex + 1);
+			newSegment.addAll(branchPath);
+			if (segmentIndex > 0)
+				newPathSegments.addAll(pathSegments.subList(0, segmentIndex));
+			newPathSegments.add(newSegment);
+		}
+
+		setPath(newPathSegments);
+
+		updateStrategy.triggerPathUpdate();
+	}
+
+	/**
+	 * @param currentExpandedBranchNode
+	 *            setter, see {@link #expandedBranchSummaryNode}
+	 */
+	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
+		if (this.expandedBranchSummaryNode != expandedBranchSummaryNode) {
+			this.expandedBranchSummaryNode = expandedBranchSummaryNode;
+			PathRendererChangedEvent event = new PathRendererChangedEvent(this);
+			event.setSender(this);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			updateLayout();
+		}
+	}
+
+	/**
+	 * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
+	 */
+	public BranchSummaryNode getExpandedBranchSummaryNode() {
+		return expandedBranchSummaryNode;
 	}
 
 	/**
