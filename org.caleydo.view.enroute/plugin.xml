@@ -81,7 +81,7 @@
          <ParentView
                viewID="org.caleydo.view.subgraph">
             <Embedding
-                  embeddingID="org.caleydo.view.subgraph.path"
+                  embeddingID="org.caleydo.view.subgraph.path.level1"
                   icon="resources/icons/enroute.png"
                   isDefaultView="false"
                   visInfo="org.caleydo.view.enroute.enRouteVisInfo">
@@ -96,7 +96,7 @@
          <ParentView
                viewID="org.caleydo.view.subgraph">
             <Embedding
-                  embeddingID="org.caleydo.view.subgraph.path"
+                  embeddingID="org.caleydo.view.subgraph.path.level2"
                   icon="resources/icons/enroute.png"
                   isDefaultView="true"
                   visInfo="org.caleydo.view.enroute.path.PathVisInfo">
@@ -111,7 +111,7 @@
          <ParentView
                viewID="org.caleydo.view.subgraph">
             <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform"
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level2"
                   icon="resources/icons/enroute.png"
                   isDefaultView="false"
                   visInfo="org.caleydo.core.view.opengl.layout.util.multiform.DefaultVisInfo">
