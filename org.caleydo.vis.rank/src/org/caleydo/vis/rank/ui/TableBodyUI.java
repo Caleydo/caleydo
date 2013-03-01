@@ -51,6 +51,8 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 
 /**
+ * a visualization of the body of the {@link RankTableModel}, in HTML it would be the tbody
+ *
  * @author Samuel Gratzl
  *
  */
@@ -76,6 +78,9 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			onColumsChanged((IndexedPropertyChangeEvent) evt);
 		}
 	};
+	/**
+	 * ids for row selection
+	 */
 	private int[] pickingIDs = null;
 	private PickingListenerComposite selectRowListener = new PickingListenerComposite();
 	private float[] rowPositions;

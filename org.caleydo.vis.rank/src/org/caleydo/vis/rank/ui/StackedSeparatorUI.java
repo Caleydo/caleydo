@@ -32,8 +32,10 @@ import org.caleydo.vis.rank.ui.TableStackedColumnHeaderUI.AlignmentDragInfo;
 
 
 /**
+ * a special {@link SeparatorUI}, which is draggable determined by the given {@link IMoveHereChecker}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class StackedSeparatorUI extends SeparatorUI {
 	private boolean isAlignment = false;

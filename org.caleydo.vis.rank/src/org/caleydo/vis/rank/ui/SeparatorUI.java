@@ -32,6 +32,8 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 
 /**
+ * a visual glyph for a separator, i.e. a place where to drop a column
+ *
  * @author Samuel Gratzl
  *
  */
@@ -78,7 +80,8 @@ public class SeparatorUI extends PickableGLElement {
 	@Override
 	protected void renderPickImpl(GLGraphics g, float w, float h) {
 		super.renderPickImpl(g, w, h);
-		renderTriangle(g, w);
+		if (getVisibility() == EVisibility.PICKABLE)
+			renderTriangle(g, w);
 	}
 
 	@Override

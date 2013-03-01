@@ -134,8 +134,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			separators = children.subList(numColumns + 2, children.size());
 			assert separators.size() == columns.size();
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
-			sep0.setBounds(3, HIST_HEIGHT, COLUMN_SPACE, h - HIST_HEIGHT); // left
-																												// separator
+			sep0.setBounds(3, HIST_HEIGHT, COLUMN_SPACE, h - HIST_HEIGHT); // left separator
 			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment());
 		}
 		// align the columns normally

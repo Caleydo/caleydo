@@ -43,6 +43,12 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
 
+/**
+ * a visualzation of the table header row, in HTML it would be the thead section
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public final class TableHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
 	private final RankTableModel table;
 	private final PropertyChangeListener layoutOnChange = GLPropertyChangeListeners.relayoutOnEvent(this);

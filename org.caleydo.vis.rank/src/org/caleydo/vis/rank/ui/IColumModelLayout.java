@@ -25,10 +25,6 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 
-/**
- * @author Samuel Gratzl
- *
- */
 interface IColumModelLayout {
 	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h);
 
