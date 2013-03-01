@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="package" name="Create Runnable Jar for Project org.caleydo.vis.rank with Jar-in-Jar Loader">
+	<!--this file was created by Eclipse Runnable JAR Export Wizard-->
+	<property name="eclipse.plugins" location="${eclipse.pdebuild.home}/../" />
+	<property name="caleydo.workspace" location="${basedir}/../" />
+
+	<condition property="swt.platform" value="win32.win32">
+		<os family="windows" />
+	</condition>
+	<condition property="swt.platform" value="gtk.linux">
+		<os family="unix" />
+	</condition>
+	<condition property="swt.platform" value="cocoa.macosx">
+		<os family="mac" />
+	</condition>
+	<condition property="jogl.platform" value="windows-amd64">
+		<os family="windows" />
+	</condition>
+	<condition property="jogl.platform" value="linux-amd64">
+		<os family="unix" />
+	</condition>
+	<condition property="jogl.platform" value="macosx-universal">
+		<os family="mac" />
+	</condition>
+	
+	<!-- ================================= 
+          target: clean              
+         ================================= -->
+	<target name="clean" description="description">
+		<delete file="target/University.jar" />
+	</target>
+	
+	
+	<target name="package" depends="clean">
+		<mkdir dir="target" />
+		<tempfile destdir="target" prefix="tmp" property="tmp.location" />
+		<mkdir dir="${tmp.location}" />
+		<copy todir="${tmp.location}">
+			<fileset dir="${eclipse.plugins}">
+				<include name="org.eclipse.core.runtime_3.8.0.v20120521-2346.jar" />
+				<include name="org.eclipse.osgi_3.8.1.v20120830-144521.jar" />
+				<include name="org.eclipse.equinox.common_3.6.100.v20120522-1841.jar" />
+				<include name="org.eclipse.core.jobs_3.5.300.v20120622-204750.jar" />
+				<include name="org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar" />
+				<include name="org.eclipse.equinox.preferences_3.5.0.v20120522-1841.jar" />
+				<include name="org.eclipse.core.contenttype_3.4.200.v20120523-2004.jar" />
+				<include name="org.eclipse.equinox.app_1.3.100.v20120522-1841.jar" />
+				<include name="org.eclipse.rcp_4.2.0.v201209141800.jar" />
+				<include name="org.eclipse.swt_3.100.1.v4234e.jar" />
+				<include name="org.eclipse.swt.${swt.platform}.x86_64_3.100.1.v4234e.jar"/><!--win32.win32.x86_64_3.100.1.v4234e.jar-->
+				<include name="org.eclipse.jface_3.8.101.v20120817-083647.jar" />
+				<include name="org.eclipse.core.commands_3.6.1.v20120814-150512.jar" />
+				<include name="org.eclipse.e4.ui.model.workbench_0.10.1.v20120523-1955.jar" />
+				<include name="org.eclipse.emf.ecore_2.8.1.v20120911-0500.jar" />
+				<include name="org.eclipse.emf.common_2.8.0.v20120911-0500.jar" />
+				<include name="org.eclipse.emf.ecore.xmi_2.8.0.v20120911-0500.jar" />
+				<include name="org.eclipse.core.resources_3.8.1.v20120802-154922.jar" />
+				<include name="org.eclipse.ui_3.103.0.v20120705-114351.jar" />
+				<include name="org.eclipse.ui.workbench_3.103.1.v20120906-120042.jar" />
+				<include name="org.eclipse.e4.ui.workbench3_0.12.0.v20120521-2329.jar" />
+				<include name="com.google.guava_10.0.1.v201203051515.jar" />
+			</fileset>
+			<fileset dir="${eclipse.plugins}\org.eclipse.core.runtime.compatibility.registry_3.5.100.v20120521-2346">
+				<include name="runtime_registry_compatibility.jar" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${tmp.location}" flatten="true">
+			<fileset dir="${caleydo.workspace}/libs/org.caleydo.lib.jogl/lib/jogl">
+				<include name="gluegen-rt.jar"/>
+				<include name="jogl-all.jar" />
+			</fileset>
+			<!--<fileset dir="${caleydo.workspace}/libs">
+				<include name="org.caleydo.lib.args4j/args4j-2.0.16.jar" />
+				<include name="org.caleydo.lib.jgrapht/jgrapht-0.8.3-jdk1.6.jar" />
+				<include name="org.caleydo.lib.jsap/JSAP-2.1.jar" />
+				<include name="org.caleydo.lib.tagsoup/tagsoup-1.2.1.jar" />
+				<include name="org.caleydo.lib.weka/weka-stable-3.6.8.jar" />
+			</fileset>-->
+		</copy>
+		
+		<!-- all relevant jars copied no compute the classpath-->
+		<pathconvert targetos="unix" property="university.classpath" pathsep=" " >
+			<fileset dir="${tmp.location}" />
+			<map from="${tmp.location}/" to=''/>
+		</pathconvert>
+			
+			
+		<copy todir="${tmp.location}" flatten="true">
+			<fileset dir="${caleydo.workspace}/libs/org.caleydo.lib.jogl/lib/jogl">
+				<include name="gluegen-rt-natives-${jogl.platform}.jar"/>
+				<include name="jogl-all-natives-${jogl.platform}.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${tmp.location}">
+			<fileset dir="${caleydo.workspace}/org.caleydo.data/bin" />
+			<!--<fileset dir="${caleydo.workspace}/org.caleydo.data/resources" />-->
+			<fileset dir="${caleydo.workspace}/org.caleydo.util.gleem/bin" />
+			<fileset dir="${caleydo.workspace}/org.caleydo.core/bin/class" />
+			<fileset dir="${caleydo.workspace}/org.caleydo.vis.rank/bin" />
+			<fileset dir="${caleydo.workspace}/org.caleydo.vis.rank" includes="resources/**" />
+		</copy>
+		
+		<copy todir="${tmp.location}">
+			<zipfileset src="deploy/jar-in-jar-loader.zip" />
+		</copy>
+		
+		<jar destfile="target/University.jar" basedir="${tmp.location}">
+			<manifest>
+				<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader" />
+				<attribute name="Rsrc-Main-Class" value="university.University" />
+				<attribute name="Class-Path" value="." />
+				<attribute name="Rsrc-Class-Path" value="./ ${university.classpath}" />
+			</manifest>
+		</jar>
+					
+		<delete dir="${tmp.location}" />
+	</target>
+</project>

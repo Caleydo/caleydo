@@ -128,6 +128,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		col.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, layoutOnChange);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void onColumsChanged(IndexedPropertyChangeEvent evt) {
 		int index = evt.getIndex();
 		if (evt.getOldValue() instanceof Integer) {// moved
