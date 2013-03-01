@@ -26,10 +26,31 @@ package org.caleydo.vis.rank.ui;
 public class RenderStyle {
 
 	/**
+	 * returns the to use bins for a histogram of the given width
+	 *
 	 * @param w
 	 * @return
 	 */
 	public static int binsForWidth(float w) {
 		return Math.round(w * 0.25f);
 	}
+
+	private static final String ICON_PREFIX = "resources/icons/";
+	public static final String ICON_TRASH = ICON_PREFIX + "user_trash_full.png";
+	public static final String ICON_CIRCLE = ICON_PREFIX + "circle.png";
+	public static final String ICON_ARROW = ICON_PREFIX + "arrow.png";
+	public static final String ICON_COLLAPSE = ICON_PREFIX + "bullet_toggle_plus.png";
+	public static final String ICON_FILTER_DISABLED = ICON_PREFIX + "filter_disabled.png";
+	public static final String ICON_FILTER = ICON_PREFIX + "filter.png";
+	public static final String ICON_MAPPING = ICON_PREFIX + "pencil_ruler.png";
+	public static final String ICON_EXPLODE = ICON_PREFIX + "dynamite.png";
+	public static final String ICON_UNCOLLAPSE = ICON_PREFIX + "bullet_toggle_minus.png";
+	public static final String ICON_HIDE = ICON_PREFIX + "delete.png";
+	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
+
+	/**
+	 * space between columns
+	 */
+	public static final float COLUMN_SPACE = 1;
+
 }

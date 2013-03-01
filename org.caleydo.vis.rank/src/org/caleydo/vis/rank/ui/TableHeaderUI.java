@@ -29,8 +29,10 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -38,7 +40,6 @@ import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
 
 public final class TableHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
-	public static final float COLUMN_SPACE = 1;
 	private final RankTableModel table;
 	private final PropertyChangeListener layoutOnChange = GLPropertyChangeListeners.relayoutOnEvent(this);
 	private final PropertyChangeListener columnsChanged = new PropertyChangeListener() {
@@ -134,6 +135,13 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 		super.takeDown();
 	}
 
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
+		super.renderImpl(g, w, h);
+		g.popResourceLocator();
+	}
+
 
 	/**
 	 * layout cols
@@ -141,7 +149,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		//align the columns normally
-		float x = COLUMN_SPACE;
+		float x = RenderStyle.COLUMN_SPACE;
 
 		List<? extends IGLLayoutElement> columns = children.subList(0, numColumns);
 
@@ -151,7 +159,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 		if (interactive) {
 			separators = children.subList(numColumns + 1, children.size());
 			assert separators.size() == columns.size();
-			children.get(numColumns).setBounds(0, y, COLUMN_SPACE, hn); // left separator
+			children.get(numColumns).setBounds(0, y, RenderStyle.COLUMN_SPACE, hn); // left separator
 		}
 
 		for (int i = 0; i < columns.size(); ++i) {
@@ -161,10 +169,10 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);
-			x += model.getPreferredWidth() + COLUMN_SPACE;
+			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
 			if (interactive && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
-				sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);
+				sep.setBounds(x - RenderStyle.COLUMN_SPACE, y, RenderStyle.COLUMN_SPACE, hn);
 				((SeparatorUI) sep.asElement()).setIndex(i);
 			}
 		}

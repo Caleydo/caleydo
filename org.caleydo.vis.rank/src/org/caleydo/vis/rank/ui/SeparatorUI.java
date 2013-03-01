@@ -67,7 +67,7 @@ public class SeparatorUI extends PickableGLElement {
 
 	protected void renderHint(GLGraphics g, float w, float h) {
 		float c = w * 0.5f;
-		g.fillImage(g.getTexture("resources/icons/arrow.png"), c - 7, -20, 14, 27, Color.BLUE);
+		g.fillImage(g.getTexture(RenderStyle.ICON_ARROW), c - 7, -20, 14, 27, Color.BLUE);
 		g.color(Color.BLUE).fillRect(0, -20, w, h + 20);
 	}
 

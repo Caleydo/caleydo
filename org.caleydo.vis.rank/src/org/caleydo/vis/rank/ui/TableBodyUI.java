@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import static org.caleydo.vis.rank.ui.TableHeaderUI.COLUMN_SPACE;
 
 import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
@@ -42,6 +41,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingListenerComposite;
 import org.caleydo.core.view.opengl.picking.PickingMode;
+import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -220,11 +220,11 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 				this.pickingIDs[i] = context.registerPickingListener(selectRowListener, i);
 		}
 		//align the columns normally
-		float x = TableHeaderUI.COLUMN_SPACE;
+		float x = RenderStyle.COLUMN_SPACE;
 		for (IGLLayoutElement col : children) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			col.setBounds(x, 3, model.getPreferredWidth(), h - 3);
-			x += model.getPreferredWidth() + TableHeaderUI.COLUMN_SPACE;
+			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
 		}
 	}
 
@@ -254,7 +254,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			int r = ranks[i++];
 			IGLLayoutElement row = children.get(r);
 			used.clear(r);
-			row.setBounds(COLUMN_SPACE, y, w, hr - y);
+			row.setBounds(RenderStyle.COLUMN_SPACE, y, w, hr - y);
 			y = hr;
 		}
 		for (int unused = used.nextSetBit(0); unused >= 0; unused = used.nextSetBit(unused + 1)) {
@@ -264,6 +264,8 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
+
 		// highlight selected row
 		IRow selectedRow = table.getSelectedRow();
 		if (selectedRow != null) {
@@ -275,6 +277,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			}
 		}
 		super.renderImpl(g, w, h);
+		g.popResourceLocator();
 	}
 
 	@Override

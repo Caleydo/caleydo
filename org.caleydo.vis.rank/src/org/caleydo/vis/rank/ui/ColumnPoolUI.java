@@ -138,7 +138,7 @@ public class ColumnPoolUI extends GLElementContainer {
 
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
-			g.fillImage("resources/icons/view/tourguide/user_trash_full.png", 5, 5, w - 10, h - 10);
+			g.fillImage(RenderStyle.ICON_TRASH, 5, 5, w - 10, h - 10);
 			if (armed) {
 				g.color(Color.BLACK).drawRoundedRect(0, 0, w, h, 10);
 			}

@@ -26,7 +26,7 @@ import java.beans.PropertyChangeListener;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
-import org.caleydo.vis.rank.ui.TableHeaderUI;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
 import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 
@@ -58,7 +58,7 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 
 	@Override
 	public float getPreferredWidth() {
-		return getWeight() + TableHeaderUI.COLUMN_SPACE * size() + 6;
+		return getWeight() + RenderStyle.COLUMN_SPACE * size() + 6;
 	}
 
 	@Override

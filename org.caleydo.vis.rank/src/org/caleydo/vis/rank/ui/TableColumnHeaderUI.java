@@ -116,7 +116,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 			GLButton b = new GLButton();
 			b.setzDelta(0.5f);
-			b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/bullet_toggle_plus.png"));
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_COLLAPSE));
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
@@ -263,8 +263,8 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			final IFilterColumnMixin m = (IFilterColumnMixin) model;
 			final GLButton b = new GLButton();
 			b.setSize(button_width, -1);
-			b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/filter_disabled.png"));
-			b.setSelectedRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/filter.png"));
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FILTER_DISABLED));
+			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_FILTER));
 			b.setSelected(m.isFiltered());
 			b.setTooltip("Edit the filter of this column");
 			final ISelectionCallback callback = new ISelectionCallback() {
@@ -289,7 +289,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			final IMappedColumnMixin m = (IMappedColumnMixin) model;
 			GLButton b = new GLButton();
 			b.setSize(button_width, -1);
-			b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/pencil_ruler.png"));
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_MAPPING));
 			b.setTooltip("Edit the mapping of this column");
 			b.setCallback(new ISelectionCallback() {
 				@Override
@@ -303,7 +303,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			final IExplodeableColumnMixin m = (IExplodeableColumnMixin) model;
 			GLButton b = new GLButton();
 			b.setSize(button_width, -1);
-			b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/dynamite.png"));
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_EXPLODE));
 			b.setTooltip("Split this combined column in individual ones");
 			b.setCallback(new ISelectionCallback() {
 				@Override
@@ -320,7 +320,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			if (m.isCollapseAble()) {
 				GLButton b = new GLButton();
 				b.setSize(button_width, -1);
-				b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/bullet_toggle_minus.png"));
+				b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_UNCOLLAPSE));
 				b.setCallback(new ISelectionCallback() {
 					@Override
 					public void onSelectionChanged(GLButton button, boolean selected) {
@@ -335,7 +335,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 			final IHideableColumnMixin m = (IHideableColumnMixin) model;
 			GLButton b = new GLButton();
 			b.setSize(button_width, -1);
-			b.setRenderer(GLRenderers.fillImage("resources/icons/view/tourguide/delete.png"));
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_HIDE));
 			b.setTooltip("Removes this column");
 			b.setCallback(new ISelectionCallback() {
 				@Override
@@ -459,7 +459,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 	class DragElement extends PickableGLElement {
 		private boolean hovered = false;
 		public DragElement() {
-			setRenderer(GLRenderers.fillImage("resources/icons/drag.png"));
+			setRenderer(GLRenderers.fillImage(RenderStyle.ICON_DRAG));
 			setTooltip("Drag this element to change the weight of this column");
 			setzDelta(.5f);
 		}

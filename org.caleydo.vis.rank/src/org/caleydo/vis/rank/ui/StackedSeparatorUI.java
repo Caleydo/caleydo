@@ -69,7 +69,7 @@ public class StackedSeparatorUI extends SeparatorUI {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (this.isAlignment) {
 			float c = w * 0.5f;
-			g.fillImage(g.getTexture("resources/icons/arrow.png"), c - 7, -20, 14, 27, new Color(0, 0, 1, 0.5f));
+			g.fillImage(g.getTexture(RenderStyle.ICON_ARROW), c - 7, -20, 14, 27, new Color(0, 0, 1, 0.5f));
 		}
 		super.renderImpl(g, w, h);
 	}

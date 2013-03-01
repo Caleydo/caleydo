@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import static org.caleydo.vis.rank.ui.TableHeaderUI.COLUMN_SPACE;
 
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -133,19 +132,19 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			separators = children.subList(numColumns + 2, children.size());
 			assert separators.size() == columns.size();
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
-			sep0.setBounds(3, 40, COLUMN_SPACE, h - 40); // left separator
+			sep0.setBounds(3, 40, RenderStyle.COLUMN_SPACE, h - 40); // left separator
 			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment());
 		}
 		// align the columns normally
-		float x = COLUMN_SPACE + 3;
+		float x = RenderStyle.COLUMN_SPACE + 3;
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			col.setBounds(x, 40, model.getPreferredWidth(), h - 40);
-			x += model.getPreferredWidth() + COLUMN_SPACE;
+			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
 			if (interactive && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
-				sep.setBounds(x - COLUMN_SPACE, 40, COLUMN_SPACE, h - 40);
+				sep.setBounds(x - RenderStyle.COLUMN_SPACE, 40, RenderStyle.COLUMN_SPACE, h - 40);
 				((SeparatorUI) sep.asElement()).setIndex(i + 1);
 				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment());
 			}

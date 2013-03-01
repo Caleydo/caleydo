@@ -262,7 +262,7 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 			}
 			if (this.lineHovered) {
 				drawHintLines(g, this.linePoint, h);
-				g.fillImage(g.getTexture("resources/icons/circle.png"), this.linePoint.x() - 5, this.linePoint.y() - 5,
+				g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), this.linePoint.x() - 5, this.linePoint.y() - 5,
 						10, 10,
 						Color.LIGHT_GRAY);
 			}
@@ -348,7 +348,7 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			Color color = this.hovered ? Color.RED : Color.BLACK;
-			g.fillImage(g.getTexture("resources/icons/circle.png"), -5, -5, 10, 10, color);
+			g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5, -5, 10, 10, color);
 			// g.fillCircle(0, 0, 5);
 		}
 

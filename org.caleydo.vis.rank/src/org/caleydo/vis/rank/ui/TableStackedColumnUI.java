@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import static org.caleydo.vis.rank.ui.TableHeaderUI.COLUMN_SPACE;
 
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -143,11 +142,11 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		float x = TableHeaderUI.COLUMN_SPACE;
+		float x = RenderStyle.COLUMN_SPACE;
 		for (IGLLayoutElement col : children) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			col.setBounds(x, 0, model.getPreferredWidth(), h);
-			x += model.getPreferredWidth() + TableHeaderUI.COLUMN_SPACE;
+			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
 		}
 	}
 
@@ -183,12 +182,12 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 				MultiFloat vs = stacked.getSplittedValue(data);
 				if (index < combinedAlign) {
 					for (int i = index; i < combinedAlign; ++i)
-						x += -vs.values[i] + weights[i] - COLUMN_SPACE;
-					x += COLUMN_SPACE;
+						x += -vs.values[i] + weights[i] - RenderStyle.COLUMN_SPACE;
+					x += RenderStyle.COLUMN_SPACE;
 				} else {
 					for (int i = combinedAlign; i < index; ++i)
-						x += vs.values[i] - weights[i] + COLUMN_SPACE;
-					x += COLUMN_SPACE;
+						x += vs.values[i] - weights[i] + RenderStyle.COLUMN_SPACE;
+					x += RenderStyle.COLUMN_SPACE;
 				}
 				row.setBounds(x, y, w, hr - y);
 				y = hr;
