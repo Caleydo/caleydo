@@ -17,42 +17,39 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
-
-import java.awt.Color;
-
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.SimpleHistogram;
+package org.caleydo.core.util.function;
 
 
 /**
- * contract that this column can be used to rank a table
- *
  * @author Samuel Gratzl
  *
  */
-public interface IRankableColumnMixin extends IRankColumnModel {
+public class FloatReductions {
+	public static final IFloatReduction SUM = new IFloatReduction() {
+		@Override
+		public float reduce(float a, float b) {
+			return a + b;
+		}
+	};
 
-	/**
-	 * returns the normalized value of the given row
-	 *
-	 * @param row
-	 * @return
-	 */
-	float getValue(IRow row);
+	public static final IFloatReduction MAX = new IFloatReduction() {
+		@Override
+		public float reduce(float a, float b) {
+			return Math.max(a, b);
+		}
+	};
 
-	boolean isValueInferred(IRow row);
+	public static final IFloatReduction MIN = new IFloatReduction() {
+		@Override
+		public float reduce(float a, float b) {
+			return Math.min(a, b);
+		}
+	};
 
-	/**
-	 * returns a summary of the current filtered data as a simple histogram
-	 *
-	 * @param bins
-	 * @return
-	 */
-	SimpleHistogram getHist(int bins);
-
-	Color getBgColor();
-
-	Color getColor();
-
+	public static final IFloatReduction PRODUCT = new IFloatReduction() {
+		@Override
+		public float reduce(float a, float b) {
+			return a * b;
+		}
+	};
 }

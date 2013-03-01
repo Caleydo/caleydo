@@ -106,6 +106,11 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 	}
 
 	@Override
+	public boolean isValueInferred(IRow row) {
+		return false;
+	}
+
+	@Override
 	public MultiFloat getSplittedValue(IRow row) {
 		float[] s = new float[this.size()];
 		int i = 0;

@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.vis.rank.config.IRankTableConfig;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
@@ -39,6 +38,7 @@ import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
 import com.google.common.collect.Iterators;
+import com.jogamp.common.util.IntIntHashMap;
 
 /**
  * basic model abstraction of a ranked list
@@ -117,6 +117,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	 * </pre>
 	 */
 	private int[] order;
+	private IntIntHashMap exaequoOffsets = new IntIntHashMap();
 
 	/**
 	 *
@@ -435,6 +436,10 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 
 	public int size() {
+		if (!dirtyOrder && order != null)
+			return order.length;
+		if (!dirtyFilter && filter != null)
+			return filter.cardinality();
 		checkOrder();
 		return order.length;
 	}
@@ -491,37 +496,65 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 		// by what
 		orderBy = findFirstRankable();
+		exaequoOffsets.clear();
 		if (orderBy == null) {
 			int rank = 0; // natural order
 			for (int i = 0; i < data.size(); ++i) {
 				if (!filter.get(i)) {
 					data.get(i).setRank(-1);
 				} else {
-					data.get(i).setRank(rank++);
+					data.get(i).setRank(rank);
+					exaequoOffsets.put(rank, -rank);
+					rank++;
 				}
 			}
 			order = new int[rank];
 			for(int i = 0; i < order.length; ++i)
 				order[i] = i;
 		} else {
-			List<Pair<Integer,Float>> tmp = new ArrayList<>(data.size());
+			List<IntFloat> tmp = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
 				if (!filter.get(i)) {
 					data.get(i).setRank(-1);
 				} else {
-					tmp.add(Pair.make(i, -orderBy.getValue(data.get(i))));
+					tmp.add(new IntFloat(i, orderBy.getValue(data.get(i))));
 				}
 			}
-			Collections.sort(tmp, Pair.<Float> compareSecond());
+			Collections.sort(tmp);
 
 			order = new int[tmp.size()];
+			int offset = 0;
+			float last = Float.NaN;
 			for (int i = 0; i < tmp.size(); ++i) {
-				order[i] = tmp.get(i).getFirst();
+				IntFloat pair = tmp.get(i);
+				order[i] = pair.id;
 				data.get(order[i]).setRank(i);
+				if (last == pair.value) {
+					offset++;
+					exaequoOffsets.put(i, -offset);
+				} else {
+					offset = 0;
+				}
+				last = pair.value;
 			}
 		}
 		if (!Arrays.equals(bak, order))
 			propertySupport.firePropertyChange(PROP_ORDER, bak, order);
+	}
+
+	private static class IntFloat implements Comparable<IntFloat> {
+		private final int id;
+		private final float value;
+
+		public IntFloat(int id, float value) {
+			this.id = id;
+			this.value = value;
+		}
+
+		@Override
+		public int compareTo(IntFloat o) {
+			return -Float.compare(value, o.value);
+		}
 	}
 
 	/**
@@ -543,7 +576,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	/**
 	 * returns the element at the given rank
-	 * 
+	 *
 	 * @param rank
 	 * @return
 	 */
@@ -552,6 +585,16 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			return null;
 		checkOrder();
 		return data.get(order[rank]);
+	}
+
+	public int getVisualRank(IRow row) {
+		int r = row.getRank();
+		if (r < 0)
+			return -1;
+		if (exaequoOffsets.containsKey(r)) {
+			return r - exaequoOffsets.get(r) + 1;
+		}
+		return r + 1;
 	}
 
 	public void selectNextRow() {

@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.data.IFloatFunction;
+import org.caleydo.vis.rank.data.IFloatInferrer;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -66,6 +67,8 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyMinMax = true;
 	private final PiecewiseLinearMapping mapping;
+	private float missingValue;
+	private final IFloatInferrer missingValueInferer;
 
 	private final IFloatFunction<IRow> data;
 	private final PropertyChangeListener listerner = new PropertyChangeListener() {
@@ -77,6 +80,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 					invalidAllFilter();
 				cacheHist = null;
 				dirtyMinMax = true;
+				missingValue = Float.NaN;
 				break;
 			}
 		}
@@ -92,10 +96,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	private final IGLRenderer valueRenderer = new ScoreBarRenderer(this);
 
 	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
-			PiecewiseLinearMapping mapping) {
+			PiecewiseLinearMapping mapping, IFloatInferrer missingValue) {
 		super(color, bgColor);
 		this.data = data;
 		this.mapping = mapping;
+		this.missingValueInferer = missingValue;
 
 		setHeaderRenderer(header);
 
@@ -204,11 +209,20 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	protected float map(float value) {
+		if (Float.isNaN(value))
+			value = computeMissingValue();
 		checkMapping();
 		float r = mapping.apply(value);
 		if (Float.isNaN(r))
 			return 0;
 		return r;
+	}
+
+	private float computeMissingValue() {
+		if (Float.isNaN(missingValue)) {
+			missingValue = missingValueInferer.infer(asDataIterator(), getTable().size());
+		}
+		return missingValue;
 	}
 
 	private void checkMapping() {
@@ -222,6 +236,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	@Override
 	public float getValue(IRow row) {
 		return map(data.applyPrimitive(row));
+	}
+
+	@Override
+	public boolean isValueInferred(IRow row) {
+		return Float.isNaN(data.applyPrimitive(row));
 	}
 
 	@Override

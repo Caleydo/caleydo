@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -46,18 +48,33 @@ public class ScoreBarRenderer implements IGLRenderer {
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null); // current row
 		float v = model.getValue(r);
+		boolean inferred = model.isValueInferred(r);
 		if (Float.isNaN(v) || v <= 0)
 			return;
 		if (getRenderInfo(parent).isCollapsed()) {
 			// if collapsed use a brightness encoding
 			g.color(1 - v, 1 - v, 1 - v, 1).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
+			if (inferred) {
+				g.gl.glLineStipple(4, (short) 0xAAAA);
+				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+				g.color(0, 0, 0, .5f).drawRect(w * 0.1f + 1, h * 0.1f + 1, w * 0.8f - 2, h * 0.8f - 2);
+				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+			}
 		} else {
 			// score bar
 			g.color(model.getColor()).fillRect(0, h * 0.1f, w * v, h * 0.8f);
+			if (inferred) {
+				g.gl.glLineStipple(1, (short) 0xAAAA);
+				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+				g.color(0, 0, 0, .5f).drawRect(1, h * 0.1f + 1, w * v - 1, h * 0.8f - 2);
+				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+			}
+
 			if (model.getTable().getSelectedRow() == r) { // is selected, render the value
 				String text = (model instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) model).getRawValue(r)
 						: Formatter.formatNumber(v);
-				renderLabel(g, h * 0.2f, w, h * 0.45f, text, v, parent);
+				float hi = Math.min(h * 0.45f, 12);
+				renderLabel(g, (h - hi) * 0.5f, w, hi, text, v, parent);
 			}
 		}
 	}

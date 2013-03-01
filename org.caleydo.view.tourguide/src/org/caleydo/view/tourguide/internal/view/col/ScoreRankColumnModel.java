@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
+import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 
@@ -43,7 +44,7 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 	}
 
 	public ScoreRankColumnModel(IScore score) {
-		super(score, null, score.getColor(), score.getBGColor(), score.createMapping());
+		super(score, null, score.getColor(), score.getBGColor(), score.createMapping(), FloatInferrers.fix(0));
 		this.score = score;
 		this.headerMode = EHeaderMode.LABEL;
 		if (score instanceof IGroupScore) {// have a group and a common stratification

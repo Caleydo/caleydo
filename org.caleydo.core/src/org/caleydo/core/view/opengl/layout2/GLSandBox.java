@@ -111,7 +111,6 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 			}
 		});
 		this.root = new WindowGLElement(root);
-
 	}
 
 	/**

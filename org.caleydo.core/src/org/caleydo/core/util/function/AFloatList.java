@@ -20,6 +20,7 @@
 package org.caleydo.core.util.function;
 
 import java.util.AbstractList;
+import java.util.BitSet;
 
 /**
  * basic implementation of a {@link IFloatList}
@@ -35,6 +36,40 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	}
 
 	@Override
+	public float reduce(float start, IFloatReduction r) {
+		return reduceImpl(this, start, r);
+	}
+
+	private float reduceImpl(AFloatList list, float start, IFloatReduction r) {
+		float result = start;
+		for (IFloatIterator it = list.iterator(); it.hasNext();) {
+			result = r.reduce(result, it.nextPrimitive());
+		}
+		return result;
+	}
+
+	@Override
+	public IFloatList filter(IFloatPredicate p) {
+		return filterImpl(this, p);
+	}
+
+	public static IFloatList filterImpl(AFloatList list, IFloatPredicate p) {
+		BitSet si = new BitSet();
+		int i = 0;
+		for (IFloatIterator it = list.iterator(); it.hasNext(); i++) {
+			if (p.apply(it.nextPrimitive()))
+				si.set(i);
+		}
+		int s = si.cardinality();
+		float[] data = new float[s];
+		i = 0;
+		for (int j = si.nextSetBit(0); j >= 0; j = si.nextSetBit(j + 1)) {
+			data[i++] = list.getPrimitive(j);
+		}
+		return new ArrayFloatList(data);
+	}
+
+	@Override
 	public final Float get(int index) {
 		return getPrimitive(index);
 	}
@@ -47,11 +82,17 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 	public static float[] computeStats(IFloatIterator it) {
 		float min = Float.POSITIVE_INFINITY;
 		float max = Float.NEGATIVE_INFINITY;
+		int count = 0;
+		float sum = 0;
+		float sqrsum=0;
 		boolean any = false;
 		while (it.hasNext()) {
 			float v = it.nextPrimitive();
 			if (Float.isNaN(v))
 				continue;
+			count++;
+			sum+=v;
+			sqrsum+=v*v;
 			if (v < min)
 				min = v;
 			if (max < v)
@@ -59,8 +100,8 @@ public abstract class AFloatList extends AbstractList<Float> implements IFloatLi
 			any = true;
 		}
 		if (!any)
-			return new float[] { Float.NaN, Float.NaN };
-		return new float[] { min, max };
+			return new float[] { Float.NaN, Float.NaN, Float.NaN, 0, 0, 0 };
+		return new float[] { min, max, sum / count, count, sum, sqrsum };
 	}
 
 	@Override

@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.util.function;
 
+import com.google.common.base.Function;
 
 /**
  * factory for various {@link IFloatFunction}s
@@ -86,6 +87,19 @@ public final class FloatFunctions {
 			@Override
 			public float apply(float in) {
 				return delta * in + min;
+			}
+		};
+	}
+
+	public static IFloatFunction wrap(final Function<Float,Float> f) {
+		return new IFloatFunction() {
+			@Override
+			public final Float apply(Float in) {
+				return f.apply(in);
+			}
+			@Override
+			public float apply(float in) {
+				return f.apply(in);
 			}
 		};
 	}

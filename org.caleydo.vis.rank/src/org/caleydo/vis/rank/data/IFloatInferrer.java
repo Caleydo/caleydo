@@ -17,42 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.vis.rank.data;
 
-import java.awt.Color;
-
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.SimpleHistogram;
-
+import org.caleydo.core.util.function.IFloatIterator;
 
 /**
- * contract that this column can be used to rank a table
- *
  * @author Samuel Gratzl
  *
  */
-public interface IRankableColumnMixin extends IRankColumnModel {
-
-	/**
-	 * returns the normalized value of the given row
-	 *
-	 * @param row
-	 * @return
-	 */
-	float getValue(IRow row);
-
-	boolean isValueInferred(IRow row);
-
-	/**
-	 * returns a summary of the current filtered data as a simple histogram
-	 *
-	 * @param bins
-	 * @return
-	 */
-	SimpleHistogram getHist(int bins);
-
-	Color getBgColor();
-
-	Color getColor();
-
+public interface IFloatInferrer {
+	float infer(IFloatIterator it, int size);
 }

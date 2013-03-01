@@ -95,6 +95,11 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 	}
 
 	@Override
+	public boolean isValueInferred(IRow row) {
+		return false;
+	}
+
+	@Override
 	public float getValue(IRow row) {
 		if (children.isEmpty())
 			return 0;

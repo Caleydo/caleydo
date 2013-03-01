@@ -32,6 +32,7 @@ import java.util.Map;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
@@ -74,31 +75,31 @@ public class University extends ARankTableDemo {
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("teaching")), GLRenderers.drawText("Teaching",
 						VAlign.CENTER), Color.decode("#8DD3C7"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
-						100)).setWeight((float) 30 * 5));
+						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("research")), GLRenderers.drawText("Research",
 						VAlign.CENTER), Color.decode("#FFFFB3"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
-						100)).setWeight((float) 30 * 5));
+						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("citations")), GLRenderers.drawText("Citations",
 						VAlign.CENTER), Color.decode("#BEBADA"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
-						100)).setWeight((float) 30 * 5));
+						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("incomeFromIndustry")), GLRenderers.drawText(
 						"Income From Industry", VAlign.CENTER), Color.decode("#FB8072"), Color.decode("#EEEEEE"),
-						new PiecewiseLinearMapping(0, 100)).setWeight(7.5f * 5));
+						new PiecewiseLinearMapping(0, 100), FloatInferrers.MEDIAN).setWeight(7.5f * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("internationalMix")), GLRenderers.drawText(
 						"International Mix", VAlign.CENTER), Color.decode("#80B1D3"), Color.decode("#EEEEEE"),
-						new PiecewiseLinearMapping(0, 100)).setWeight(2.5f * 5));
+						new PiecewiseLinearMapping(0, 100), FloatInferrers.MEDIAN).setWeight(2.5f * 5));
 
 		table.addColumn(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
 				"Overall Score", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
-				new PiecewiseLinearMapping(0, 100)));
+				new PiecewiseLinearMapping(0, 100), FloatInferrers.MEDIAN));
 	}
 
 	private static Map<String, CategoryInfo> readCountriesCategories() throws IOException {

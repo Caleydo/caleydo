@@ -17,42 +17,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.vis.rank.data;
 
-import java.awt.Color;
+import java.util.Arrays;
 
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.SimpleHistogram;
-
+import org.caleydo.core.util.function.AFloatList;
+import org.caleydo.core.util.function.IFloatIterator;
 
 /**
- * contract that this column can be used to rank a table
- *
  * @author Samuel Gratzl
  *
  */
-public interface IRankableColumnMixin extends IRankColumnModel {
+public class FloatInferrers {
+	public static IFloatInferrer MEAN = new IFloatInferrer() {
+		@Override
+		public float infer(IFloatIterator it, int size) {
+			return AFloatList.computeStats(it)[2];
+		}
+	};
 
-	/**
-	 * returns the normalized value of the given row
-	 *
-	 * @param row
-	 * @return
-	 */
-	float getValue(IRow row);
+	public static IFloatInferrer MEDIAN = new IFloatInferrer() {
+		@Override
+		public float infer(IFloatIterator it, int size) {
+			float[] tmp = new float[size];
+			for (int i = 0; it.hasNext(); ++i)
+				tmp[i] = it.nextPrimitive();
+			Arrays.sort(tmp);
+			if (size % 2 == 0)
+				return 0.5f*(tmp[size/2]+tmp[size/2+1]);
+			else
+				return tmp[size / 2 + 1];
+		}
+	};
 
-	boolean isValueInferred(IRow row);
-
-	/**
-	 * returns a summary of the current filtered data as a simple histogram
-	 *
-	 * @param bins
-	 * @return
-	 */
-	SimpleHistogram getHist(int bins);
-
-	Color getBgColor();
-
-	Color getColor();
-
+	public static IFloatInferrer fix(final float value) {
+		return new IFloatInferrer() {
+			@Override
+			public float infer(IFloatIterator it, int size) {
+				return value;
+			}
+		};
+	}
 }
