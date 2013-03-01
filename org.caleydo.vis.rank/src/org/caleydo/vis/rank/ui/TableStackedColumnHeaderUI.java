@@ -21,7 +21,9 @@ package org.caleydo.vis.rank.ui;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
+import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
+import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,7 +31,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
@@ -129,7 +133,8 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement summary = children.get(0);
-		summary.setBounds(3, 0, w - 6, HIST_HEIGHT);
+		float offset = LABEL_HEIGHT + HIST_HEIGHT;
+		summary.setBounds(3, 0, w - 6, HIST_HEIGHT + 4);
 
 		List<? extends IGLLayoutElement> columns = children.subList(1, numColumns+1);
 		List<? extends IGLLayoutElement> separators = null;
@@ -138,7 +143,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			separators = children.subList(numColumns + 2, children.size());
 			assert separators.size() == columns.size();
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
-			sep0.setBounds(3, HIST_HEIGHT, COLUMN_SPACE, h - HIST_HEIGHT); // left separator
+			sep0.setBounds(3, offset, COLUMN_SPACE, h - offset); // left separator
 			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment());
 		}
 		// align the columns normally
@@ -146,11 +151,11 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			col.setBounds(x, HIST_HEIGHT, model.getPreferredWidth(), h - HIST_HEIGHT);
+			col.setBounds(x, offset, model.getPreferredWidth(), h - offset);
 			x += model.getPreferredWidth() + COLUMN_SPACE;
 			if (interactive && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
-				sep.setBounds(x - COLUMN_SPACE, HIST_HEIGHT, COLUMN_SPACE, h - HIST_HEIGHT);
+				sep.setBounds(x - COLUMN_SPACE, offset, COLUMN_SPACE, h - offset);
 				((SeparatorUI) sep.asElement()).setIndex(i + 1);
 				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment());
 			}
@@ -160,6 +165,22 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
+		// render the distributions
+		float[] distributions = model.getDistributions();
+		float yi = HIST_HEIGHT + 7;
+		float hi = LABEL_HEIGHT - 6;
+		float x = COLUMN_SPACE + 2;
+		g.color(Color.GRAY).drawLine(x, yi - 4, w - 2, yi - 4);
+		for (int i = 0; i < numColumns; ++i) {
+			float wi = model.get(i).getPreferredWidth() + COLUMN_SPACE;
+			// g.drawLine(x, yi, x, yi + hi + 2);
+			g.drawText(String.format(Locale.ENGLISH, "%.2f%%", distributions[i] * 100), x, yi, wi, hi - 4,
+					VAlign.CENTER);
+			// g.drawLine(x, yi + hi, x + wi, yi + hi);
+			x += wi;
+		}
+		// g.drawLine(x, yi, x, yi + hi + 2);
+
 		super.renderImpl(g, w, h);
 	}
 

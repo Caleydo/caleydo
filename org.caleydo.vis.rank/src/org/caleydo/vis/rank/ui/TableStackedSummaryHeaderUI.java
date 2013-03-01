@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
-import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -117,7 +115,7 @@ public class TableStackedSummaryHeaderUI extends AnimatedGLElementContainer impl
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement hist = children.get(HIST);
-		hist.setBounds(1, LABEL_HEIGHT, w - 2, h - LABEL_HEIGHT);
+		hist.setBounds(1, 1, w - 2, h - 2);
 
 		if (interactive) {
 			IGLLayoutElement buttons = children.get(BUTTONS);

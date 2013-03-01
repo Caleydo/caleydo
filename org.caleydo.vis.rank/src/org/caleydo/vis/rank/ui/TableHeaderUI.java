@@ -45,9 +45,9 @@ import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
 
 /**
  * a visualzation of the table header row, in HTML it would be the thead section
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public final class TableHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
 	private final RankTableModel table;
@@ -83,7 +83,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 				this.add(new SeparatorUI(this, i));
 		}
 		setLayout(this);
-		setSize(-1, (hasStacked ? HIST_HEIGHT : 0) + HIST_HEIGHT + LABEL_HEIGHT);
+		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * (hasStacked ? 2 : 1));
 	}
 
 	private void init(ARankColumnModel col) {
@@ -163,8 +163,8 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 		List<? extends IGLLayoutElement> columns = children.subList(0, numColumns);
 
-		float y = hasStacked ? HIST_HEIGHT : 0;
-		float hn = hasStacked ? h - HIST_HEIGHT : h;
+		float y = hasStacked ? HIST_HEIGHT + LABEL_HEIGHT : 0;
+		float hn = hasStacked ? h - HIST_HEIGHT - LABEL_HEIGHT : h;
 		List<? extends IGLLayoutElement> separators = null;
 		if (interactive) {
 			separators = children.subList(numColumns + 1, children.size());
