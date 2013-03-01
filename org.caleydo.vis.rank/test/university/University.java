@@ -20,7 +20,6 @@
 package university;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,64 +30,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
-import org.caleydo.core.view.opengl.layout2.GLSandBox;
-import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
-import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.vis.rank.config.RankTableConfigBase;
-import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
-import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.caleydo.vis.rank.ui.ColumnPoolUI;
-import org.caleydo.vis.rank.ui.TableBodyUI;
-import org.caleydo.vis.rank.ui.TableHeaderUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class University extends GLSandBox {
+public class University extends ARankTableDemo {
 
-	private final RankTableModel table;
-
-	public University() throws NoSuchFieldException, NumberFormatException, IOException {
-		super(new GLElementContainer(GLLayouts.flowVertical(0)), new GLPadding(5), new Dimension(800, 600));
-		this.table = new RankTableModel(new RankTableConfigBase() {
-			@Override
-			public boolean isInteractive() {
-				return true;
-			}
-		});
-		createModel();
-		canvas.addKeyListener(new IGLKeyListener() {
-			@Override
-			public void keyPressed(IKeyEvent e) {
-				if (e.isKey(ESpecialKey.DOWN))
-					table.selectNextRow();
-				else if (e.isKey(ESpecialKey.UP))
-					table.selectPreviousRow();
-			}
-
-			@Override
-			public void keyReleased(IKeyEvent e) {
-
-			}
-		});
-		createUI();
-
-	}
-
-	private void createModel() throws IOException, NoSuchFieldException {
+	@Override
+	protected void createModel() throws IOException, NoSuchFieldException {
 		List<UniversityRow> rows = readData();
 		table.addData(rows);
 		Map<String, CategoryInfo> metaData = readCountriesCategories();
@@ -181,22 +141,6 @@ public class University extends GLSandBox {
 		return rows;
 	}
 
-	private void createUI() {
-		// visual part
-		GLElementContainer root = (GLElementContainer) getRoot();
-		root.add(new TableHeaderUI(table));
-		root.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
-
-		root.add(new ColumnPoolUI(table));
-	}
-
-	public static float toFloat(String[] l, int i) {
-		String v = l[i];
-		if (v.equalsIgnoreCase("-"))
-			return Float.NaN;
-		return Float.parseFloat(v);
-	}
-
 	public static Field field(String f) throws NoSuchFieldException {
 		return UniversityRow.class.getDeclaredField(f);
 	}
@@ -219,7 +163,7 @@ public class University extends GLSandBox {
 		}
 	}
 
-	public static void main(String[] args) throws NumberFormatException, NoSuchFieldException, IOException {
+	public static void main(String[] args) {
 		new University().run();
 	}
 }

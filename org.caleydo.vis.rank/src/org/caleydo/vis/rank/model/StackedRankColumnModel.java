@@ -46,7 +46,7 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 		}
 	};
 	/**
-	 * which is the current aligned column index
+	 * which is the current aligned column index or -1 for all
 	 */
 	private int alignment = 0;
 
@@ -127,8 +127,6 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 	 *            setter, see {@link alignment}
 	 */
 	public void setAlignment(int alignment) {
-		if (alignment < 0)
-			alignment = 0;
 		if (alignment > this.children.size())
 			alignment = this.children.size();
 		if (alignment == this.alignment)
@@ -153,5 +151,15 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 		for (i = 0; i < r.length; ++i)
 			r[i] /= sum;
 		return r;
+	}
+
+	public boolean isAlignAll() {
+		return alignment < 0;
+	}
+
+	public void setAlignAll(boolean alignAll) {
+		if (isAlignAll() == alignAll)
+			return;
+		this.setAlignment(-alignment - 1);
 	}
 }

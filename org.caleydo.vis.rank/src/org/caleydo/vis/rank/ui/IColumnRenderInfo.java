@@ -19,10 +19,16 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
+
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IColumnRenderInfo {
 	boolean isCollapsed();
+
+	VAlign getAlignment();
+
+	boolean hasFreeSpace();
 }

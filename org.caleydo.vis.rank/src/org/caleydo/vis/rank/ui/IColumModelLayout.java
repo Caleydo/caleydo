@@ -21,12 +21,22 @@ package org.caleydo.vis.rank.ui;
 
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.IRow;
 
 interface IColumModelLayout {
 	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h);
 
-	Object createLayoutData(IRow row);
+	/**
+	 * @param tableColumnUI
+	 * @return
+	 */
+	boolean hasFreeSpace(TableColumnUI tableColumnUI);
+
+	/**
+	 * @param tableColumnUI
+	 * @return
+	 */
+	VAlign getAlignment(TableColumnUI tableColumnUI);
 }

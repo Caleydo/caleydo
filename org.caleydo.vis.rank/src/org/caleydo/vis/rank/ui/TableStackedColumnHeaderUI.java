@@ -56,6 +56,8 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			onChildrenChanged((IndexedPropertyChangeEvent) evt);
 		}
 	};
+	private final PropertyChangeListener alignmentChanged = GLPropertyChangeListeners.relayoutOnEvent(this);
+
 	private final boolean interactive;
 
 	public TableStackedColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
@@ -63,8 +65,9 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 		this.interactive = interactive;
 		setLayout(this);
 		setLayoutData(model);
-		this.add(model.createSummary(interactive));
+		this.add(new TableStackedSummaryHeaderUI(model, interactive));
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, alignmentChanged);
 		for (ARankColumnModel col : model) {
 			this.add(wrap(col));
 			numColumns++;
@@ -119,6 +122,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, childrenChanged);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, alignmentChanged);
 		super.takeDown();
 	}
 
@@ -176,8 +180,6 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 
 	public void setAlignment(int index) {
 		model.setAlignment(index);
-		relayout();
 	}
-
 }
 

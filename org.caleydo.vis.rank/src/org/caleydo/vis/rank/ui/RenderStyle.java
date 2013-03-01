@@ -47,6 +47,8 @@ public class RenderStyle {
 	public static final String ICON_UNCOLLAPSE = ICON_PREFIX + "bullet_toggle_minus.png";
 	public static final String ICON_HIDE = ICON_PREFIX + "delete.png";
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
+	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
+	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
 
 	/**
 	 * space between columns

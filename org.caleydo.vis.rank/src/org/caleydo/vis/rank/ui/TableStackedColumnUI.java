@@ -75,11 +75,6 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 	}
 
 
-	@Override
-	public Object createLayoutData(IRow row) {
-		return new StackedRenderInfo(row);
-	}
-
 	protected void onChildrenChanged(IndexedPropertyChangeEvent evt) {
 		int index = evt.getIndex();
 		if (evt.getOldValue() instanceof Integer) {
@@ -154,14 +149,7 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
 		int combinedAlign = stacked.getAlignment();
 		int index = stacked.indexOf(model);
-		for (IGLLayoutElement c : children) {
-			StackedRenderInfo data = c.getLayoutDataAs(StackedRenderInfo.class, null);
-			if (data != null) {
-				data.setHasFreeSpace(index >= combinedAlign ? (index == (stacked.size() - 1)) : (index == 0));
-				data.setValign(index >= combinedAlign ? VAlign.LEFT : VAlign.RIGHT);
-			}
-		}
-		if (index != combinedAlign) {
+		if (combinedAlign >= 0 && index != combinedAlign) {
 			// moving around
 			int[] ranks = stacked.getTable().getOrder();
 			float[] rowPositions = ((TableBodyUI) getParent()).getRowPositions();
@@ -199,6 +187,24 @@ public class TableStackedColumnUI extends GLElementContainer implements IGLLayou
 			// simple
 			((TableBodyUI) getParent()).layoutRows(model, children, w, h);
 		}
+	}
+
+	@Override
+	public VAlign getAlignment(TableColumnUI model) {
+		int combinedAlign = stacked.getAlignment();
+		if (combinedAlign < 0)
+			return VAlign.LEFT;
+		int index = stacked.indexOf(model.getModel());
+		return index >= combinedAlign ? VAlign.LEFT : VAlign.RIGHT;
+	}
+
+	@Override
+	public boolean hasFreeSpace(TableColumnUI model) {
+		int combinedAlign = stacked.getAlignment();
+		if (combinedAlign < 0)
+			return true;
+		int index = stacked.indexOf(model.getModel());
+		return index >= combinedAlign ? (index == (stacked.size() - 1)) : (index == 0);
 	}
 
 	/**

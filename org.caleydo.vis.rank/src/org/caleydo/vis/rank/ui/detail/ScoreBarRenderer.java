@@ -48,7 +48,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 		float v = model.getValue(r);
 		if (Float.isNaN(v) || v <= 0)
 			return;
-		if (((IColumnRenderInfo) parent.getParent()).isCollapsed()) {
+		if (getRenderInfo(parent).isCollapsed()) {
 			// if collapsed use a brightness encoding
 			g.color(1 - v, 1 - v, 1 - v, 1).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
 		} else {
@@ -62,16 +62,20 @@ public class ScoreBarRenderer implements IGLRenderer {
 		}
 	}
 
+	private static IColumnRenderInfo getRenderInfo(GLElement parent) {
+		return (IColumnRenderInfo) parent.getParent();
+	}
+
 	static void renderLabel(GLGraphics g, float y, float w, float h, String text, float v, GLElement parent) {
 		if (h < 7)
 			return;
 		float tw = g.text.getTextWidth(text, h);
-		boolean hasFreeSpace = parent.getLayoutDataAs(Boolean.class, Boolean.TRUE);
+		boolean hasFreeSpace = getRenderInfo(parent).hasFreeSpace();
 
 		if (tw < w * v)
 			g.drawText(text, 1, y, w * v - 2, h, VAlign.RIGHT);
 		else if (tw < w && hasFreeSpace) {
-			VAlign alignment = parent.getLayoutDataAs(VAlign.class, VAlign.LEFT);
+			VAlign alignment = getRenderInfo(parent).getAlignment();
 			if (alignment == VAlign.LEFT)
 				g.drawText(text, w * v + 1, y, w - w * v, h);
 			else

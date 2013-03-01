@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -244,8 +245,13 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	}
 
 	@Override
-	public Object createLayoutData(IRow row) {
-		return row;
+	public VAlign getAlignment(TableColumnUI tableColumnUI) {
+		return VAlign.LEFT;
+	}
+
+	@Override
+	public boolean hasFreeSpace(TableColumnUI tableColumnUI) {
+		return true;
 	}
 
 	@Override

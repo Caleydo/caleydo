@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -41,7 +42,7 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout, ICol
 				it.remove();
 		}
 		for (IRow row : target) {
-			this.add(model.createValue().setLayoutData(parent.createLayoutData(row)));
+			this.add(model.createValue().setLayoutData(row));
 		}
 		return this;
 	}
@@ -54,6 +55,16 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout, ICol
 	@Override
 	public boolean isCollapsed() {
 		return ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed());
+	}
+
+	@Override
+	public VAlign getAlignment() {
+		return ((IColumModelLayout) getParent()).getAlignment(this);
+	}
+
+	@Override
+	public boolean hasFreeSpace() {
+		return ((IColumModelLayout) getParent()).hasFreeSpace(this);
 	}
 
 	@Override

@@ -141,6 +141,16 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 	}
 
 	@Override
+	public VAlign getAlignment() {
+		return VAlign.LEFT;
+	}
+
+	@Override
+	public boolean hasFreeSpace() {
+		return false;
+	}
+
+	@Override
 	protected void init(IGLElementContext context) {
 		super.init(context);
 		headerPick.add(context.createTooltip(new ILabelProvider() {
