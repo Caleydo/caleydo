@@ -531,7 +531,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 				data.get(order[i]).setRank(i);
 				if (last == pair.value) {
 					offset++;
-					exaequoOffsets.put(i, -offset);
+					exaequoOffsets.put(i, offset);
 				} else {
 					offset = 0;
 				}

@@ -1,3 +1,4 @@
+package demo;
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
@@ -17,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -42,6 +43,9 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.ui.ColumnPoolUI;
+import org.caleydo.vis.rank.ui.TableBodyUI;
+import org.caleydo.vis.rank.ui.TableHeaderUI;
 
 /**
  * @author Samuel Gratzl

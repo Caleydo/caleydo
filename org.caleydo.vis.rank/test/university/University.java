@@ -42,9 +42,11 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
 
+import demo.ARankTableDemo;
+
 /**
  * @author Samuel Gratzl
- *
+ * 
  */
 public class University extends ARankTableDemo {
 
