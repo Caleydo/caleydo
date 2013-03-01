@@ -121,7 +121,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	@Override
 	public void init(GL2 gl) {
 		super.init(gl);
-
+		augmentation.init(gl);
 	}
 
 	@Override
@@ -392,6 +392,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected void updatePathLinks() {
 
+		augmentation.setPxlSize(
+				this.getParentGLCanvas().getWidth(),
+				this.getParentGLCanvas().getHeight());
+		
 		augmentation.clearRenderers();
 		PathwayVertexRep start = null;
 		PathwayVertexRep end = null;
@@ -464,8 +468,10 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		}
 		augmentation.setPath(path);
+
 	}
 
+	
 	@Override
 	public void display(GL2 gl) {
 		boolean updateAugmentation = false;
@@ -477,6 +483,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		if (updateAugmentation) {
 			updatePathLinks();
 		}
+
 	}
 
 	private class PathEventSpaceHandler {
