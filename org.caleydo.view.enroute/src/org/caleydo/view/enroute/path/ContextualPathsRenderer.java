@@ -55,7 +55,10 @@ import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
+import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.GLPathway;
@@ -78,6 +81,8 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected AGLView view;
 	protected List<TablePerspective> tablePerspectives = new ArrayList<>();
 	protected GLPathway pathwayView;
+	protected boolean isPathSelectionMode = false;
+	protected APathwayPathRenderer selectedPathRenderer;
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -178,8 +183,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		if (rect == null || layout == null)
 			return null;
 		return new Rectangle2D.Float(layout.getTranslateX() + (float) rect.getMinX(), y - layout.getTranslateY()
-				- layout.getSizeScaledY()
-				+ (float) rect.getMinY(), (float) rect.getWidth(), (float) rect.getHeight());
+				- layout.getSizeScaledY() + (float) rect.getMinY(), (float) rect.getWidth(), (float) rect.getHeight());
 	}
 
 	@Override
@@ -213,13 +217,12 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		registerEventListeners();
 	}
 
-	private void addAlternative(List<List<PathwayVertexRep>> pathSegments) {
+	private APathwayPathRenderer addAlternative(List<List<PathwayVertexRep>> pathSegments) {
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
-		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace));
 
-		if (tablePerspectives.size() > 0) {
-			renderer.setPathway(pathway);
-		}
+		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode));
+		renderer.setTablePerspectives(tablePerspectives);
+		renderer.setPathway(pathway);
 
 		renderer.setSizeConfig(PathSizeConfiguration.COMPACT);
 		for (VertexRepBasedContextMenuItem item : nodeContextMenuItems) {
@@ -234,6 +237,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		renderer.init();
 		renderer.setPath(pathSegments);
 		renderers.put(renderer, layout);
+		return renderer;
 	}
 
 	@Override
@@ -288,16 +292,33 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		this.tablePerspectives = tablePerspectives;
 	}
 
+	/**
+	 * Removes all paths except the one that shows the currently selected path.
+	 */
+	protected void removeContextPaths() {
+
+		ElementLayout selectedPathLayout = renderers.get(selectedPathRenderer);
+		for (ElementLayout layout : renderers.values()) {
+			if (layout != selectedPathLayout) {
+				pathRow.remove(layout);
+			}
+		}
+
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
+			if (renderer != selectedPathRenderer)
+				renderer.destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
+		}
+		renderers.clear();
+		if (selectedPathRenderer != null) {
+			renderers.put(selectedPathRenderer, selectedPathLayout);
+		}
+	}
+
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onShowPortalNodes(ShowPortalNodesEvent event) {
 		Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(event.getVertexRep(),
 				pathway);
-		pathRow.removeAll();
-
-		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			renderer.destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
-		}
-		renderers.clear();
+		removeContextPaths();
 
 		for (PathwayVertexRep vertexRep : vertexReps) {
 			List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 5);
@@ -310,6 +331,55 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		}
 		setDisplayListDirty();
 		layout.updateLayout();
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onEnablePathSelection(EnablePathSelectionEvent event) {
+		isPathSelectionMode = event.isPathSelectionMode();
+	}
+
+	@ListenTo(restrictExclusiveToEventSpace = true)
+	public void onSelectedPathChanged(PathwayPathSelectionEvent event) {
+		if (!isPathFromPathway(event.getPathSegments(), pathway)) {
+			selectedPathRenderer = null;
+			return;
+		}
+
+		List<List<PathwayVertexRep>> selectedPathSegments = event.getPathSegmentsAsVertexList();
+
+		boolean isSelectedPathShown = false;
+
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
+			isSelectedPathShown = renderer.isPathShown(selectedPathSegments);
+			if (isSelectedPathShown) {
+				selectedPathRenderer = renderer;
+				return;
+			}
+		}
+
+		APathwayPathRenderer pathRendererWithMostEqualNodes = null;
+		int maxEqualVertices = 0;
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
+			int numEqualVertices = renderer.getNumEqualVertices(selectedPathSegments);
+			if (maxEqualVertices < numEqualVertices) {
+				pathRendererWithMostEqualNodes = renderer;
+				maxEqualVertices = numEqualVertices;
+			}
+		}
+		if (pathRendererWithMostEqualNodes == null) {
+			selectedPathRenderer = addAlternative(selectedPathSegments);
+		} else {
+			pathRendererWithMostEqualNodes.setPath(selectedPathSegments);
+		}
+	}
+
+	private boolean isPathFromPathway(List<PathwayPath> pathSegments, PathwayGraph pathway) {
+		for (PathwayPath path : pathSegments) {
+			if (path.getPathway() == pathway) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

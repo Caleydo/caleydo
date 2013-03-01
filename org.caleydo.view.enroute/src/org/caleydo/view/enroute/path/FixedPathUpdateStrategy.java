@@ -61,8 +61,10 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	 * @param renderer
 	 * @param pathwayPathEventSpace
 	 */
-	public FixedPathUpdateStrategy(APathwayPathRenderer renderer, String pathwayPathEventSpace) {
+	public FixedPathUpdateStrategy(APathwayPathRenderer renderer, String pathwayPathEventSpace,
+			boolean isPathSelectionMode) {
 		super(renderer, pathwayPathEventSpace);
+		this.isPathSelectionMode = isPathSelectionMode;
 	}
 
 	@Override
@@ -119,7 +121,6 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 						selectedPathStartNode, selectedPathSegments.get(0).get(0));
 				Pair<Integer, Integer> toIndexPair = renderer.determinePathSegmentAndIndexOfPathNode(node,
 						node.getPrimaryPathwayVertexRep());
-
 
 				List<List<PathwayVertexRep>> segments = new ArrayList<>(renderer.pathSegments.subList(
 						fromIndexPair.getFirst(), toIndexPair.getFirst() + 1));

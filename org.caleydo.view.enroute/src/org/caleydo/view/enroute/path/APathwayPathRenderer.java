@@ -213,19 +213,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * @param pathSegments1
-	 * @param pathSegments2
-	 * @return True, if pathSegments1 contains pathSegments2, false otherwise.
-	 */
-	protected boolean containsPath(List<List<PathwayVertexRep>> pathSegments1,
-			List<List<PathwayVertexRep>> pathSegments2) {
-
-		List<PathwayVertexRep> flattenedSegments1 = flattenSegments(pathSegments1);
-		List<PathwayVertexRep> flattenedSegments2 = flattenSegments(pathSegments2);
-		return Collections.indexOfSubList(flattenedSegments1, flattenedSegments2) != -1;
-	}
-
-	/**
 	 * @param segments
 	 * @return One list of {@link PathwayVertexRep}s that contains all objects of the list of lists.
 	 */
@@ -914,6 +901,58 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public APathUpdateStrategy getUpdateStrategy() {
 		return updateStrategy;
+	}
+
+	/**
+	 * Determines, whether the specified path segments are shown within this pathway. If this renderer only shows the
+	 * nodes of a specific pathway, only segments referring to this pathway are considered.
+	 *
+	 * @param segments
+	 * @return
+	 */
+	public boolean isPathShown(List<List<PathwayVertexRep>> segments) {
+		List<PathwayVertexRep> sourceSegments = flattenSegments(pathSegments);
+		List<PathwayVertexRep> targetSegments = flattenSegments(segments);
+		int startIndex = 0;
+		boolean equalityStarted = false;
+		for (PathwayVertexRep vTarget : targetSegments) {
+			// Ignore other pathway paths if this renderer only repersents a single pathway
+			if (pathway != null && pathway != vTarget.getPathway())
+				continue;
+			if (startIndex >= sourceSegments.size())
+				return false;
+			for (int i = startIndex; i < sourceSegments.size(); i++) {
+				PathwayVertexRep vSource = sourceSegments.get(i);
+				startIndex = i + 1;
+				// Ignore other pathway paths if this renderer only repersents a single pathway
+				if (pathway != null && pathway != vSource.getPathway())
+					continue;
+				if (vTarget == vSource) {
+					equalityStarted = true;
+					break;
+				} else if (equalityStarted) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public int getNumEqualVertices(List<List<PathwayVertexRep>> segments) {
+		List<PathwayVertexRep> sourceSegments = flattenSegments(pathSegments);
+		List<PathwayVertexRep> targetSegments = flattenSegments(segments);
+
+		int numEqualVertices = 0;
+		for (PathwayVertexRep vTarget : targetSegments) {
+			for (PathwayVertexRep vSource : sourceSegments) {
+				if (vSource == vTarget) {
+					numEqualVertices++;
+					break;
+				}
+			}
+		}
+
+		return numEqualVertices;
 	}
 
 	protected class NodeContextMenuPickingListener extends APickingListener {
