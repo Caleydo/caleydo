@@ -37,19 +37,19 @@ import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
-import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
-import org.caleydo.view.tourguide.v3.model.ARow;
-import org.caleydo.view.tourguide.v3.model.CategoricalRankColumnModel.CategoryInfo;
-import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
-import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
-import org.caleydo.view.tourguide.v3.model.RankRankColumnModel;
-import org.caleydo.view.tourguide.v3.model.RankTableModel;
-import org.caleydo.view.tourguide.v3.model.StackedRankColumnModel;
-import org.caleydo.view.tourguide.v3.model.StringRankColumnModel;
-import org.caleydo.view.tourguide.v3.ui.ColumnPoolUI;
-import org.caleydo.view.tourguide.v3.ui.TableBodyUI;
-import org.caleydo.view.tourguide.v3.ui.TableHeaderUI;
+import org.caleydo.vis.rank.config.RankTableConfigBase;
+import org.caleydo.vis.rank.layout.RowHeightLayouts;
+import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
+import org.caleydo.vis.rank.model.FloatRankColumnModel;
+import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.ui.ColumnPoolUI;
+import org.caleydo.vis.rank.ui.TableBodyUI;
+import org.caleydo.vis.rank.ui.TableHeaderUI;
 
 /**
  * @author Samuel Gratzl

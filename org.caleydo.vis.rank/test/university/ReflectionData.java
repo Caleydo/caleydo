@@ -22,7 +22,7 @@ package university;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.vis.rank.model.IRow;
 
 import com.google.common.base.Function;
 

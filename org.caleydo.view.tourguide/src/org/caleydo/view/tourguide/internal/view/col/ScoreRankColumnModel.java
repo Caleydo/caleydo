@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
+import org.caleydo.vis.rank.model.FloatRankColumnModel;
 
 /**
  * @author Samuel Gratzl

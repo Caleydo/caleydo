@@ -46,7 +46,7 @@ import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.internal.external.ScoreParseSpecification;
 import org.caleydo.view.tourguide.internal.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.vis.rank.model.IRow;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;

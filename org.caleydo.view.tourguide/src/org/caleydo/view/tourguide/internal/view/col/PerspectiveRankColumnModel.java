@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.view.tourguide.v3.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.StringRankColumnModel;
 
 /**
  * @author Samuel Gratzl

@@ -23,9 +23,9 @@ import java.awt.Color;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.v3.data.IFloatFunction;
-import org.caleydo.view.tourguide.v3.model.IRow;
-import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.data.IFloatFunction;
+import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 
 /**
  * basic abstraction of a score

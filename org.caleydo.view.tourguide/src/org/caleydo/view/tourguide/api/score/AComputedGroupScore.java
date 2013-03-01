@@ -28,8 +28,8 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.view.tourguide.v3.model.IRow;
-import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 
 /**
  * @author Samuel Gratzl

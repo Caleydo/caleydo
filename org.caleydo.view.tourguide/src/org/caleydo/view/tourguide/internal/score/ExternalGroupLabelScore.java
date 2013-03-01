@@ -30,7 +30,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.external.GroupLabelParseSpecification;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.vis.rank.model.IRow;
 
 import com.google.common.base.Objects;
 

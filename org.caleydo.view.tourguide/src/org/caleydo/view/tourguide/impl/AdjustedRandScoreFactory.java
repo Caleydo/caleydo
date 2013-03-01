@@ -38,7 +38,7 @@ import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;

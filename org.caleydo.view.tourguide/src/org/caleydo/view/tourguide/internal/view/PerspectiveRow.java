@@ -37,7 +37,7 @@ import org.caleydo.view.tourguide.internal.compute.CachedIDTypeMapper;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
-import org.caleydo.view.tourguide.v3.model.ARow;
+import org.caleydo.vis.rank.model.ARow;
 
 /**
  * @author Samuel Gratzl

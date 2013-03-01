@@ -21,8 +21,8 @@ package university;
 
 import java.lang.reflect.Field;
 
-import org.caleydo.view.tourguide.v3.data.AFloatFunction;
-import org.caleydo.view.tourguide.v3.model.IRow;
+import org.caleydo.vis.rank.data.AFloatFunction;
+import org.caleydo.vis.rank.model.IRow;
 
 /**
  * @author Samuel Gratzl

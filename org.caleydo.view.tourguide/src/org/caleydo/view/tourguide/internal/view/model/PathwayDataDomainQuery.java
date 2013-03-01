@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.model;
 
-import static org.caleydo.view.tourguide.v3.model.StringRankColumnModel.starToRegex;
+import static org.caleydo.vis.rank.model.StringRankColumnModel.starToRegex;
 
 import java.util.List;
 import java.util.Objects;
