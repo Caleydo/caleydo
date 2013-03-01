@@ -62,17 +62,18 @@ import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.enroute.event.ShowPathEvent;
 import org.caleydo.view.pathway.GLPathway;
 
 /**
  * Renderer that shows the alternative entrances
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class ContextualPathsRenderer extends ALayoutRenderer implements IPathwayRepresentation, IListenerOwner {
 
-	protected final String ALTERNATIVES_EVENTSPACE = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+	protected final String BRANCH_PATH_EVENTSPACE = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 
 	protected LayoutManager layout;
 	protected PathwayGraph pathway;
@@ -84,6 +85,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	protected GLPathway pathwayView;
 	protected boolean isPathSelectionMode = false;
 	protected APathwayPathRenderer selectedPathRenderer;
+	private BranchPathEventSpaceListener branchPathEventSpaceListener = new BranchPathEventSpaceListener();
 
 	/**
 	 * Context menu items that shall be displayed when right-clicking on a path node.
@@ -170,6 +172,12 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 	@Override
 	public Rectangle2D getVertexRepBounds(PathwayVertexRep vertexRep) {
+		if (selectedPathRenderer != null) {
+			Rectangle2D bounds = getAbsolutePosition(selectedPathRenderer.getVertexRepBounds(vertexRep),
+					renderers.get(selectedPathRenderer));
+			if (bounds != null)
+				return bounds;
+		}
 		for (Entry<APathwayPathRenderer, ElementLayout> entry : renderers.entrySet()) {
 			APathwayPathRenderer renderer = entry.getKey();
 			ElementLayout layout = entry.getValue();
@@ -218,12 +226,14 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		registerEventListeners();
 	}
 
-	private APathwayPathRenderer addAlternative(List<List<PathwayVertexRep>> pathSegments) {
+	private APathwayPathRenderer addPath(List<List<PathwayVertexRep>> pathSegments) {
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
 
 		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this));
 		renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);
+		renderer.setBranchPathExtractionEventSpace(BRANCH_PATH_EVENTSPACE);
+		renderer.setAllowBranchPathExtraction(true);
 
 		renderer.setSizeConfig(PathSizeConfiguration.COMPACT);
 		for (VertexRepBasedContextMenuItem item : nodeContextMenuItems) {
@@ -244,7 +254,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	@Override
 	public void registerEventListeners() {
 		listeners.register(this, eventSpace);
-
+		listeners.register(branchPathEventSpaceListener, BRANCH_PATH_EVENTSPACE);
 	}
 
 	@Override
@@ -329,7 +339,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 				segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 5));
 				List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(1);
 				pathSegments.add(segment);
-				addAlternative(pathSegments);
+				addPath(pathSegments);
 			}
 		}
 		for (APathwayPathRenderer renderer : renderersToRemove) {
@@ -355,6 +365,12 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		List<List<PathwayVertexRep>> selectedPathSegments = event.getPathSegmentsAsVertexList();
 
 		boolean isSelectedPathShown = false;
+		if (selectedPathRenderer != null) {
+			isSelectedPathShown = PathUtility.isPathShown(selectedPathRenderer.pathSegments, selectedPathSegments,
+					pathway);
+			if (isSelectedPathShown)
+				return;
+		}
 
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			isSelectedPathShown = PathUtility.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
@@ -366,16 +382,24 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 
 		APathwayPathRenderer pathRendererWithMostEqualNodes = null;
 		int maxEqualVertices = 0;
+		int selectedPathRendererEqualVertices = 0;
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
 			int numEqualVertices = PathUtility.getNumEqualVertices(renderer.pathSegments, selectedPathSegments);
 			if (maxEqualVertices < numEqualVertices) {
 				pathRendererWithMostEqualNodes = renderer;
 				maxEqualVertices = numEqualVertices;
 			}
+			if (renderer == selectedPathRenderer) {
+				selectedPathRendererEqualVertices = numEqualVertices;
+			}
 		}
 		if (pathRendererWithMostEqualNodes == null) {
-			selectedPathRenderer = addAlternative(selectedPathSegments);
+			selectedPathRenderer = addPath(selectedPathSegments);
 		} else {
+			// We want the selected path renderer to stay the same if possible.
+			if (selectedPathRendererEqualVertices >= maxEqualVertices) {
+				pathRendererWithMostEqualNodes = selectedPathRenderer;
+			}
 			pathRendererWithMostEqualNodes.setPath(selectedPathSegments);
 		}
 	}
@@ -431,6 +455,23 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	 */
 	public APathwayPathRenderer getSelectedPathRenderer() {
 		return selectedPathRenderer;
+	}
+
+	private class BranchPathEventSpaceListener {
+
+		@ListenTo(restrictExclusiveToEventSpace = true)
+		protected void onShowBranchPath(ShowPathEvent event) {
+			boolean isPathShown = false;
+			for (APathwayPathRenderer renderer : renderers.keySet()) {
+				isPathShown = PathUtility.isPathShown(renderer.pathSegments, event.getPathSegments(), pathway);
+				if (renderer.expandedBranchSummaryNode != null) {
+					renderer.expandedBranchSummaryNode.setCollapsed(true);
+					renderer.setExpandedBranchSummaryNode(null);
+				}
+			}
+			if (!isPathShown)
+				addPath(event.getPathSegments());
+		}
 	}
 
 }

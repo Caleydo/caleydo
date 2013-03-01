@@ -10,6 +10,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
@@ -27,6 +28,7 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 	// public static final int MIN_NODE_WIDTH_PIXELS = 70;
 
 	// protected EnRoutePathRenderer enRoutePathRenderer;
+	protected IPickingListener pickingListener;
 
 	/**
 	 * @param view
@@ -92,10 +94,10 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 
 	@Override
 	protected void init() {
-		view.addIDPickingListener(new APickingListener() {
+		pickingListener = new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
+
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
@@ -103,14 +105,15 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements ICom
 
 				pathwayPathRenderer.selectBranch(branchNode);
 			}
-		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
+		};
+		view.addIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
+		view.removeIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 	@Override

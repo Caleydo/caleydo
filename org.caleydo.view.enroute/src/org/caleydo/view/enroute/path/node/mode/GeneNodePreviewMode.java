@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer.LabelAlignment;
 import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.mappeddataview.CategoricalContentPreviewRenderer;
@@ -40,6 +41,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	// protected static final int GENE_ROW_HEIGHT_PIXELS = 30;
 
 	protected ColorRenderer colorRenderer;
+	protected IPickingListener pickingListener;
 
 	// protected EnRoutePathRenderer enRoutePathRenderer;
 
@@ -195,11 +197,11 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 	@Override
 	protected void init() {
-		view.addIDPickingListener(new APickingListener() {
+		pickingListener = new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
-				pathwayPathRenderer.setExpandedBranchSummaryNode(null);
+
 				ALinearizableNode branchNode = node;
 				while (branchNode.getParentNode() != null) {
 					branchNode = branchNode.getParentNode();
@@ -239,14 +241,15 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				pathwayPathRenderer.setDisplayListDirty();
 			}
 
-		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
+		};
+		view.addIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
+		view.removeIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 }

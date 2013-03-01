@@ -10,6 +10,7 @@ import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.path.APathwayPathRenderer;
@@ -25,6 +26,8 @@ import org.caleydo.view.enroute.path.node.RemoveNodeButtonAttributeRenderer;
  *
  */
 public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
+
+	protected IPickingListener pickingListener;
 
 	/**
 	 * @param view
@@ -63,7 +66,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 	@Override
 	protected void init() {
-		view.addIDPickingListener(new APickingListener() {
+		pickingListener = new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -106,13 +109,14 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				// circleColor = DEFAULT_CIRCLE_COLOR;
 				pathwayPathRenderer.setDisplayListDirty();
 			}
-		}, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
+		};
+		view.addIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
+		view.removeIDPickingListener(pickingListener, EPickingType.LINEARIZABLE_NODE.name(), node.hashCode());
 	}
 
 	@Override

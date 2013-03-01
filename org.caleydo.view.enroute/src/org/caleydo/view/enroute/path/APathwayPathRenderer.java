@@ -38,6 +38,7 @@ import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
@@ -54,6 +55,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.PathRendererChangedEvent;
+import org.caleydo.view.enroute.event.ShowPathEvent;
 import org.caleydo.view.enroute.path.node.ALinearizableNode;
 import org.caleydo.view.enroute.path.node.ANode;
 import org.caleydo.view.enroute.path.node.BranchSummaryNode;
@@ -132,7 +134,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	protected PathSizeConfiguration sizeConfig = PathSizeConfiguration.DEFAULT;
 
 	/**
-	 * Context menu items that shall be displayed when right-clicking on a path node.
+	 * Context menu items that shall be displayed when right-clicking on any node.
 	 */
 	protected List<VertexRepBasedContextMenuItem> nodeContextMenuItems = new ArrayList<>();
 
@@ -155,6 +157,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 * Map that associates every node in a branch with a linearized node.
 	 */
 	protected Map<ALinearizableNode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<>();
+
+	/**
+	 * Allows to trigger a {@link ShowPathEvent} for branch paths via context menu.
+	 */
+	protected boolean allowBranchPathExtraction = false;
+
+	/**
+	 * Event space that shall be used when triggering a {@link ShowPathEvent}.
+	 */
+	protected String branchPathExtractionEventSpace;
 
 	protected EventBasedSelectionManager geneSelectionManager;
 	protected EventBasedSelectionManager metaboliteSelectionManager;
@@ -527,16 +539,33 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void selectBranch(ALinearizableNode node) {
 
-		ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
+		List<List<PathwayVertexRep>> newPathSegments = getBranchPath(node);
+
+		if (updateStrategy.isPathChangePermitted(newPathSegments)) {
+			setExpandedBranchSummaryNode(null);
+			setPath(newPathSegments);
+			updateStrategy.triggerPathUpdate();
+		}
+	}
+
+	/**
+	 * Determines the path consisting of the original path up to the node where the branching occurrs, and the branch.
+	 *
+	 * @param branchNode
+	 *            The branch node.
+	 * @return
+	 */
+	protected List<List<PathwayVertexRep>> getBranchPath(ALinearizableNode branchNode) {
+		ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(branchNode);
 		BranchSummaryNode summaryNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(linearizedNode);
 
 		boolean isIncomingBranch = false;
-		if (summaryNode != null && summaryNode.getBranchNodes().contains(node)) {
+		if (summaryNode != null && summaryNode.getBranchNodes().contains(branchNode)) {
 			isIncomingBranch = true;
 		}
 
 		// A branch node should only have one vertex rep.
-		PathwayVertexRep branchVertexRep = node.getPrimaryPathwayVertexRep();
+		PathwayVertexRep branchVertexRep = branchNode.getPrimaryPathwayVertexRep();
 		PathwayGraph pathway = branchVertexRep.getPathway();
 		PathwayVertexRep linearizedVertexRep = null;
 		for (PathwayVertexRep vertexRep : linearizedNode.getVertexReps()) {
@@ -580,10 +609,7 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 			newPathSegments.add(newSegment);
 		}
 
-		if (updateStrategy.isPathChangePermitted(newPathSegments)) {
-			setPath(newPathSegments);
-			updateStrategy.triggerPathUpdate();
-		}
+		return newPathSegments;
 	}
 
 	/**
@@ -877,7 +903,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 
 		@Override
 		protected void rightClicked(Pick pick) {
-			for (VertexRepBasedContextMenuItem item : nodeContextMenuItems) {
+			addContextMenuItems(nodeContextMenuItems);
+			if (allowBranchPathExtraction && branchNodesToLinearizedNodesMap.keySet().contains(node)) {
+				ShowPathEvent event = new ShowPathEvent(getBranchPath(node));
+				event.setEventSpace(branchPathExtractionEventSpace);
+				view.getContextMenuCreator().addContextMenuItem(new GenericContextMenuItem("Show Branch Path", event));
+			}
+		}
+
+		private void addContextMenuItems(List<VertexRepBasedContextMenuItem> items) {
+			for (VertexRepBasedContextMenuItem item : items) {
 				// Only use primary vertex rep
 				item.setVertexRep(node.getPrimaryPathwayVertexRep());
 				view.getContextMenuCreator().addContextMenuItem(item);
@@ -885,4 +920,19 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 	}
 
+	/**
+	 * @param allowBranchPathExtraction
+	 *            setter, see {@link allowBranchPathExtraction}
+	 */
+	public void setAllowBranchPathExtraction(boolean allowBranchPathExtraction) {
+		this.allowBranchPathExtraction = allowBranchPathExtraction;
+	}
+
+	/**
+	 * @param branchPathExtractionEventSpace
+	 *            setter, see {@link branchPathExtractionEventSpace}
+	 */
+	public void setBranchPathExtractionEventSpace(String branchPathExtractionEventSpace) {
+		this.branchPathExtractionEventSpace = branchPathExtractionEventSpace;
+	}
 }

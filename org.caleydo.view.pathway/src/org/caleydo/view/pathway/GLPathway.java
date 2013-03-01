@@ -483,7 +483,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					}
 				}
 
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
+				// handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
 		}, EPickingType.PATHWAY_ELEMENT_SELECTION.name());
 
