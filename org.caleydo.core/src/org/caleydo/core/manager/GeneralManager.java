@@ -110,7 +110,7 @@ public class GeneralManager {
 
 		basicInfo = new BasicInformation();
 
-		eventPublisher = new EventPublisher();
+		eventPublisher = EventPublisher.INSTANCE;
 		viewManager = ViewManager.get();
 		swtGUIManager = new SWTGUIManager();
 		xmlParserManager = new XmlParserManager();

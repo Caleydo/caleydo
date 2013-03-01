@@ -38,6 +38,8 @@ import java.util.Set;
  */
 public class EventPublisher {
 
+	public static final EventPublisher INSTANCE = new EventPublisher();
+
 	/** map of events (=key) to the listeners (=value, a collection of listeners) registered to it */
 	private final ListenerMap listenerMap = new ListenerMap();
 
@@ -50,6 +52,13 @@ public class EventPublisher {
 	 * Number of the last event space that was created using {@link #createUniqueEventSpace()}.
 	 */
 	private int lastCreatedEventSpaceNumber = 0;
+
+	/**
+	 *
+	 */
+	private EventPublisher() {
+
+	}
 
 	/**
 	 * adds a receiver to the list of event handlers
@@ -155,5 +164,9 @@ public class EventPublisher {
 			} else
 				receiver.queueEvent(event);
 		}
+	}
+
+	public static void publishEvent(AEvent event) {
+		INSTANCE.triggerEvent(event);
 	}
 }

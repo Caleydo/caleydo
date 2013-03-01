@@ -42,9 +42,9 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -601,7 +601,7 @@ public class StratomexAdapter {
 		if (event == null)
 			return;
 		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		EventPublisher.publishEvent(event);
 	}
 
 	private void triggerDelayedEvent(AEvent event) {

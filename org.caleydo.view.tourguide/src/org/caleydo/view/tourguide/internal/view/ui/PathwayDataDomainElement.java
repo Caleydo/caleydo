@@ -1,8 +1,7 @@
 package org.caleydo.view.tourguide.internal.view.ui;
 
-import static org.caleydo.core.event.EventListenerManager.triggerEvent;
-
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
@@ -41,7 +40,7 @@ public class PathwayDataDomainElement extends ADataDomainElement {
 						String v = d.getValue().trim();
 						if (v.length() == 0)
 							v = "";
-						triggerEvent(new EditDataDomainFilterEvent(v).to(PathwayDataDomainElement.this));
+						EventPublisher.publishEvent(new EditDataDomainFilterEvent(v).to(PathwayDataDomainElement.this));
 					}
 				}
 			});

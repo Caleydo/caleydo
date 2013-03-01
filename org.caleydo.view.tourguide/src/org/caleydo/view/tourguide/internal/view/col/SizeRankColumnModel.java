@@ -19,14 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
-import static org.caleydo.core.event.EventListenerManager.triggerEvent;
-
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.List;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
@@ -243,7 +242,7 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 			Integer minV = t.length() > 0 ? new Integer(t) : null;
 			t = maxUI.getText().trim();
 			Integer maxV = t.length() > 0 ? new Integer(t) : null;
-			triggerEvent(new FilterEvent(Pair.make(minV, maxV)).to(SizeRankColumnModel.this));
+			EventPublisher.publishEvent(new FilterEvent(Pair.make(minV, maxV)).to(SizeRankColumnModel.this));
 			super.okPressed();
 		}
 	}

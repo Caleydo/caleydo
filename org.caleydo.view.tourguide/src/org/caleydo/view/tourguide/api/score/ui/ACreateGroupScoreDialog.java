@@ -26,7 +26,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.MultiScore;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
@@ -199,6 +199,6 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		} else { // score single
 			s = createScore(label, strat, group);
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s).to(receiver));
+		EventPublisher.publishEvent(new AddScoreColumnEvent(s).to(receiver));
 	}
 }

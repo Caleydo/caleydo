@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import static org.caleydo.core.event.EventListenerManager.triggerEvent;
-
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -29,6 +27,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
@@ -37,7 +36,6 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.event.FilterEvent;
-import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -110,7 +108,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 					String v = d.getValue().trim();
 					if (v.length() == 0)
 						v = null;
-					triggerEvent(new FilterEvent(v).to(StringRankColumnModel.this));
+					EventPublisher.publishEvent(new FilterEvent(v).to(StringRankColumnModel.this));
 				}
 			}
 		});

@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.ClassUtils;
 
 import com.google.common.base.Predicate;
@@ -45,8 +44,6 @@ import com.google.common.collect.Iterables;
  *
  */
 public class EventListenerManager {
-	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
-
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
 	protected final IListenerOwner owner;
@@ -65,7 +62,7 @@ public class EventListenerManager {
 	public void register(Class<? extends AEvent> event, AEventListener<?> listener) {
 		assert listener.getHandler() == owner;
 		listeners.add(listener);
-		EVENT_PUBLISHER.addListener(event, listener);
+		EventPublisher.INSTANCE.addListener(event, listener);
 	}
 
 	/**
@@ -139,7 +136,7 @@ public class EventListenerManager {
 	 */
 	public final void unregisterAll() {
 		for (AEventListener<?> listener : listeners) {
-			EVENT_PUBLISHER.removeListener(listener);
+			EventPublisher.INSTANCE.removeListener(listener);
 		}
 		listeners.clear();
 	}
@@ -153,20 +150,11 @@ public class EventListenerManager {
 		for (Iterator<AEventListener<?>> it = listeners.iterator(); it.hasNext();) {
 			AEventListener<?> e = it.next();
 			if (e instanceof AnnotationBasedEventListener && ((AnnotationBasedEventListener) e).listener == listener) {
-				EVENT_PUBLISHER.removeListener(e);
+				EventPublisher.INSTANCE.removeListener(e);
 				it.remove();
 			}
 		}
 		listeners.clear();
-	}
-
-	/**
-	 * simple wrapper for the singleton access of the {@link EventPublisher}, e.g. used as a static import in java
-	 *
-	 * @param event
-	 */
-	public static void triggerEvent(AEvent event) {
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	/**

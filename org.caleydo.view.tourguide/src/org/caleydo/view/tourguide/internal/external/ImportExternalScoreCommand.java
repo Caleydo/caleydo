@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.external.ui.ImportExternalGroupLabelScoreDialog;
@@ -50,7 +50,7 @@ public final class ImportExternalScoreCommand implements Runnable {
 			last = scoreManager.addPersistentScoreIfAbsent(score);
 		}
 		if (last != null) // add the last newly created one to the list
-			GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(last).to(receiver));
+			EventPublisher.publishEvent(new AddScoreColumnEvent(last).to(receiver));
 	}
 
 	private Collection<ISerializeableScore> importExternalIDScore() {

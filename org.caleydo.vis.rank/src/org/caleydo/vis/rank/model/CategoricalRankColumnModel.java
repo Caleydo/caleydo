@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model;
 
-import static org.caleydo.core.event.EventListenerManager.triggerEvent;
+import static org.caleydo.core.event.EventPublisher.publishEvent;
 
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -193,7 +194,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			for (Object score : categoriesUI.getCheckedElements()) {
 				r.add(score);
 			}
-			triggerEvent(new FilterEvent(r).to(CategoricalRankColumnModel.this));
+			publishEvent(new FilterEvent(r).to(CategoricalRankColumnModel.this));
 			super.okPressed();
 		}
 	}

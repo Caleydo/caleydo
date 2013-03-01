@@ -19,12 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.compute;
 
-import static org.caleydo.core.event.EventListenerManager.triggerEvent;
-
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
@@ -67,7 +66,7 @@ public class ComputeAllOfJob extends AComputeJob {
 		System.out.println("done in " + w);
 
 		IStatus result = runImpl(monitor, data, mask);
-		triggerEvent(new ScoreQueryReadyEvent(creating ? query : null).to(receiver));
+		EventPublisher.publishEvent(new ScoreQueryReadyEvent(creating ? query : null).to(receiver));
 		return result;
 	}
 

@@ -1,12 +1,11 @@
 package org.caleydo.view.tourguide.internal.view.ui;
 
-import static org.caleydo.core.event.EventListenerManager.triggerEvent;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.event.EventListenerManager.ListenTo;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.view.model.CategoricalDataDomainQuery;
@@ -110,7 +109,7 @@ public class CategoricalDataDomainElement extends ADataDomainElement {
 			for (Object score : categoriesUI.getCheckedElements()) {
 				r.add(score);
 			}
-			triggerEvent(new EditDataDomainFilterEvent(r).to(CategoricalDataDomainElement.this));
+			EventPublisher.publishEvent(new EditDataDomainFilterEvent(r).to(CategoricalDataDomainElement.this));
 			super.okPressed();
 		}
 	}

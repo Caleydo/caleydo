@@ -28,7 +28,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.api.score.MultiScore;
@@ -199,7 +199,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			} else { // score single
 				s = AdjustedRandScoreFactory.this.create(null, strat);
 			}
-			GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s).to(receiver));
+			EventPublisher.publishEvent(new AddScoreColumnEvent(s).to(receiver));
 		}
 	}
 }
