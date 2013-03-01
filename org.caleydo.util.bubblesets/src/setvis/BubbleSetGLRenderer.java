@@ -51,6 +51,8 @@ public class BubbleSetGLRenderer {
 		texRenderer = new TextureRenderer(1280, 768, true);
 	}
 	
+	public int getNumberOfGroups(){return numberOfGroups;}
+	
 	public void clearBubbleSet(){
 		numberOfGroups = bubblesetCanvas.getGroupCount() - 1;
 		while (bubblesetCanvas.getGroupCount() > 0) {
@@ -132,6 +134,32 @@ public class BubbleSetGLRenderer {
 	
 	public void setSize(int width, int height){
 		texRenderer.setSize(width,height);
+	}
+	
+	public void renderPxl(GL2 gl, float pxlWidth, float pxlHeight)
+	{		
+		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
+		bubbleSetsTexture = texRenderer.getTexture();
+		
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		
+		bubbleSetsTexture.enable(gl);
+		bubbleSetsTexture.bind(gl);
+		gl.glBegin(GL2.GL_QUADS);
+			gl.glTexCoord2f(0, 0);
+			gl.glVertex3f(0.0f, 0.0f, 0.0f);
+			
+			gl.glTexCoord2f(1, 0);
+			gl.glVertex3f(pxlWidth, 0.0f, 0.0f);
+			
+			gl.glTexCoord2f(1, 1);
+			gl.glVertex3f(pxlWidth, pxlHeight, 0.0f);
+			
+			gl.glTexCoord2f(0, 1);
+			gl.glVertex3f(0.0f, pxlHeight, 0.0f);
+		gl.glEnd();
+		bubbleSetsTexture.disable(gl);		
 	}
 	
 	public void render(GL2 gl, float glWidth, float glHeight)
