@@ -28,13 +28,27 @@ package org.caleydo.view.subgraph;
 public enum EEmbeddingID {
 
 	/**
-	 * Embedding id for views that shall be used as one pathway multiform instance.
+	 * Embedding id for views that shall be used as one pathway multiform instance for level 1 (highest detail).
 	 */
-	PATHWAY_MULTIFORM("org.caleydo.view.subgraph.pathway.multiform"),
+	PATHWAY_MULTIFORM_LEVEL1("org.caleydo.view.subgraph.pathway.multiform.level1"),
 	/**
-	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways.
+	 * Embedding id for views that shall be used as one pathway multiform instance for level 2 (medium detail).
 	 */
-	PATH("org.caleydo.view.subgraph.path");
+	PATHWAY_MULTIFORM_LEVEL2("org.caleydo.view.subgraph.pathway.multiform.level2"),
+	/**
+	 * Embedding id for views that shall be used as one pathway multiform instance for level 3 (low detail).
+	 */
+	PATHWAY_MULTIFORM_LEVEL3("org.caleydo.view.subgraph.pathway.multiform.level3"),
+	/**
+	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways, in level 1
+	 * (highest detail).
+	 */
+	PATH_LEVEL1("org.caleydo.view.subgraph.path.level1"),
+	/**
+	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways, in level 2
+	 * (medium detail).
+	 */
+	PATH_LEVEL2("org.caleydo.view.subgraph.path.level2");
 
 	/**
 	 * Actual ID of embedding.
