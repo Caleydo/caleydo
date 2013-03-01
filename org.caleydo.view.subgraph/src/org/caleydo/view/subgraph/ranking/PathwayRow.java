@@ -20,7 +20,7 @@
 package org.caleydo.view.subgraph.ranking;
 
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.tourguide.v3.model.ARow;
+import org.caleydo.vis.rank.model.ARow;
 
 /**
  * @author Samuel Gratzl

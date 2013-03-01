@@ -34,17 +34,17 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraph;
-import org.caleydo.view.tourguide.v3.config.RankTableConfigBase;
-import org.caleydo.view.tourguide.v3.data.AFloatFunction;
-import org.caleydo.view.tourguide.v3.data.IFloatFunction;
-import org.caleydo.view.tourguide.v3.layout.RowHeightLayouts;
-import org.caleydo.view.tourguide.v3.model.FloatRankColumnModel;
-import org.caleydo.view.tourguide.v3.model.IRow;
-import org.caleydo.view.tourguide.v3.model.PiecewiseLinearMapping;
-import org.caleydo.view.tourguide.v3.model.RankTableModel;
-import org.caleydo.view.tourguide.v3.model.StringRankColumnModel;
-import org.caleydo.view.tourguide.v3.ui.TableBodyUI;
-import org.caleydo.view.tourguide.v3.ui.TableHeaderUI;
+import org.caleydo.vis.rank.config.RankTableConfigBase;
+import org.caleydo.vis.rank.data.AFloatFunction;
+import org.caleydo.vis.rank.data.IFloatFunction;
+import org.caleydo.vis.rank.layout.RowHeightLayouts;
+import org.caleydo.vis.rank.model.FloatRankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.RankTableModel;
+import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.ui.TableBodyUI;
+import org.caleydo.vis.rank.ui.TableHeaderUI;
 
 /**
  * @author Samuel Gratzl
