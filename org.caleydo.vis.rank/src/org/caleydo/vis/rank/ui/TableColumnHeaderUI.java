@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.ui;
 
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
+import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 import gleem.linalg.Vec2f;
 
 import java.awt.Color;
@@ -201,7 +202,7 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		if (draggable) {
 			g.incZ();
 			g.pushName(headerPickingId);
-			g.fillRect(0, 0, w, 20);
+			g.fillRect(0, 0, w, LABEL_HEIGHT);
 			g.popName();
 			g.decZ();
 		}
@@ -213,15 +214,15 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		if (isCollapsed)
 			return;
 		g.move(2, 2);
-		model.getHeaderRenderer().render(g, w - 4, 20 - 6, this);
+		model.getHeaderRenderer().render(g, w - 4, LABEL_HEIGHT - 6, this);
 		g.move(-2, -2);
 		if (headerHovered) {
 			g.color(Color.BLACK).renderRoundedRect(false, 0, 0, w, h, 5, 2, true, true, false, false);
 		}
 		if (this.armDropColum) {
-			g.incZ(0.3f);
+			g.incZ(0.6f);
 			g.drawText("+", 2, 2, w - 4, h - 4, VAlign.CENTER);
-			g.decZ();
+			g.incZ(-0.6f);
 		}
 	}
 
@@ -358,11 +359,11 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement hist = children.get(HIST);
-		hist.setBounds(1, 20, w - 2, h - 20);
+		hist.setBounds(1, LABEL_HEIGHT, w - 2, h - LABEL_HEIGHT);
 
 		if (interactive) {
 			IGLLayoutElement weight = children.get(DRAG_WEIGHT);
-			weight.setBounds(w, 20, canDrag ? 8 : 0, h - 20);
+			weight.setBounds(w, LABEL_HEIGHT, canDrag ? 8 : 0, h - LABEL_HEIGHT);
 
 			IGLLayoutElement buttons = children.get(BUTTONS);
 			buttons.setBounds(2, 2, w - 4, canDrag ? 12 : 0);

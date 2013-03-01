@@ -26,12 +26,27 @@ import org.caleydo.vis.rank.model.SimpleHistogram;
 
 
 /**
+ * contract that this column can be used to rank a table
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IRankableColumnMixin extends IRankColumnModel {
+
+	/**
+	 * returns the normalized value of the given row
+	 *
+	 * @param row
+	 * @return
+	 */
 	float getValue(IRow row);
 
+	/**
+	 * returns a summary of the current filtered data as a simple histogram
+	 * 
+	 * @param bins
+	 * @return
+	 */
 	SimpleHistogram getHist(int bins);
 
 	Color getBgColor();

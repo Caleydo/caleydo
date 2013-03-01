@@ -45,6 +45,9 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 			onWeightChanged((float) evt.getNewValue() - (float) evt.getOldValue());
 		}
 	};
+	/**
+	 * which is the current aligned column index
+	 */
 	private int alignment = 0;
 
 	public StackedRankColumnModel() {
@@ -131,5 +134,24 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 		if (alignment == this.alignment)
 			return;
 		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignment, this.alignment = alignment);
+	}
+
+	/**
+	 * returns the distributions how much a individual column contributes to the overall scores, i.e. the normalized
+	 * weights
+	 *
+	 * @return
+	 */
+	public float[] getDistributions() {
+		float[] r = new float[this.size()];
+		float sum = 0;
+		int i = 0;
+		for (ARankColumnModel col : this) {
+			sum += col.getWeight();
+			r[i++] = col.getWeight();
+		}
+		for (i = 0; i < r.length; ++i)
+			r[i] /= sum;
+		return r;
 	}
 }

@@ -28,14 +28,24 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
  */
 public interface IRankTableConfig {
 
+	/**
+	 * is this column moveable
+	 *
+	 * @param model
+	 * @return
+	 */
 	boolean isMoveAble(ARankColumnModel model);
 
 	/**
+	 * creates a new combined column caused by dragging two columns onto each other
+	 *
 	 * @return
 	 */
 	ACompositeRankColumnModel createNewCombined();
 
 	/**
+	 * are these columsn combine able
+	 *
 	 * @param model
 	 * @param with
 	 * @return
@@ -53,11 +63,15 @@ public interface IRankTableConfig {
 	boolean isDefaultHideAble();
 
 	/**
+	 * is this whole table interactive
+	 *
 	 * @return
 	 */
 	boolean isInteractive();
 
 	/**
+	 * triggers that indead of hide a column it will be destroyed
+	 * 
 	 * @return
 	 */
 	boolean isDestroyOnHide();

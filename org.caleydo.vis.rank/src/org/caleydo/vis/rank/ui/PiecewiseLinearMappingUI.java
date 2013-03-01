@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
 import gleem.linalg.Vec2f;
 
@@ -53,12 +54,17 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.model.SimpleHistogram;
+
 /**
+ * ui for a {@link PiecewiseLinearMapping}
+ *
  * @author Samuel Gratzl
  *
  */
 public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLLayout {
 	private static final float GAP = 10;
+	private static final float PADDING = 5;
+
 	private static final int RAW_HIST = 0;
 	private static final int NORMAL_HIST = 1;
 	private static final int CANVAS = 2;
@@ -69,6 +75,9 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 
 	private final Color color;
 	private final Color backgroundColor;
+	/**
+	 * callback to call when the mapping changes
+	 */
 	private final ICallback<PiecewiseLinearMapping> callback;
 
 
@@ -76,7 +85,7 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 			ICallback<PiecewiseLinearMapping> callback) {
 		this.callback = callback;
 		setLayout(this);
-		setSize(260, 260);
+		setSize(PADDING * 2 + 200 + GAP * 2, PADDING * 2 + 200 + GAP * 2);
 		this.model = model;
 		this.raw = data;
 		this.color = color;
@@ -93,22 +102,22 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(0.95f, .95f, .95f, 0.9f).fillRoundedRect(0, 0, w, h, 5);
+		g.color(0.95f, .95f, .95f, 0.9f).fillRect(0, 0, w, h);
 		super.renderImpl(g, w, h);
 	}
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		final float histHeight = 40;
 		IGLLayoutElement raw = children.get(RAW_HIST);
-		raw.setBounds(histHeight + GAP, h - histHeight, w - histHeight - GAP * 2, histHeight);
+		raw.setBounds(HIST_HEIGHT + GAP + PADDING, h - HIST_HEIGHT - PADDING, w - HIST_HEIGHT - GAP * 2 - 2 * PADDING,
+				HIST_HEIGHT);
 		IGLLayoutElement norm = children.get(NORMAL_HIST);
-		norm.setBounds(0, GAP, histHeight, h - histHeight - GAP * 2);
+		norm.setBounds(PADDING, GAP + PADDING, HIST_HEIGHT, h - HIST_HEIGHT - GAP * 2 - PADDING * 2);
 
-		float x_canvas = histHeight + GAP;
-		float y_canvas = GAP;
-		float w_canvas = w - histHeight - GAP * 2;
-		float h_canvas = h - histHeight - GAP * 2;
+		float x_canvas = HIST_HEIGHT + GAP + PADDING;
+		float y_canvas = GAP + PADDING;
+		float w_canvas = w - HIST_HEIGHT - GAP * 2 - PADDING * 2;
+		float h_canvas = h - HIST_HEIGHT - GAP * 2 - PADDING * 2;
 		IGLLayoutElement canvas = children.get(CANVAS);
 		canvas.setBounds(x_canvas, y_canvas, w_canvas, h_canvas);
 		for (IGLLayoutElement point : children.subList(FIRST_POINT, children.size())) {
@@ -411,19 +420,9 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
-			GL2 gl = g.gl;
-			final float z = g.z();
 			g.drawText(Formatter.formatNumber(model.getActMin()), -40, h - 14, 38, 12, VAlign.RIGHT);
 			g.drawText(Formatter.formatNumber(model.getActMax()), w + 2, h - 14, 38, 12, VAlign.LEFT);
-			gl.glBegin(GL2.GL_QUADS);
-			g.color(backgroundColor);
-			gl.glVertex3f(0, 0, z);
-			g.color(Color.WHITE);
-			gl.glVertex3f(w, 0, z);
-			gl.glVertex3f(w, h, z);
-			g.color(backgroundColor);
-			gl.glVertex3f(0, h, z);
-			gl.glEnd();
+			g.color(backgroundColor).fillRect(0, 0, w, h);
 			RenderUtils.renderHist(g, DataUtils.getHist(binsForWidth(w), data), w, h, -1, color,
 					Color.BLACK);
 			g.color(color).drawRect(0, 0, w, h);

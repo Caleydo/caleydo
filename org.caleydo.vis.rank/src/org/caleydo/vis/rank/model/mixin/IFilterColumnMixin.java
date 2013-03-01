@@ -26,6 +26,8 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
+ * contract that the column can have filters
+ *
  * @author Samuel Gratzl
  *
  */
@@ -34,7 +36,18 @@ public interface IFilterColumnMixin extends IRankColumnModel {
 
 	boolean isFiltered();
 
+	/**
+	 * performs filtering on the given data and updates the given mask
+	 *
+	 * @param data
+	 * @param mask
+	 */
 	void filter(List<IRow> data, BitSet mask);
 
+	/**
+	 * triggers the edit dialog of this column given the summary element
+	 * 
+	 * @param summary
+	 */
 	void editFilter(GLElement summary);
 }

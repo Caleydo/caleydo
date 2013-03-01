@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
+import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
+
 import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -38,6 +41,8 @@ import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 
 /**
+ * simple visualization of the pool of hidden columns
+ *
  * @author Samuel Gratzl
  *
  */
@@ -61,12 +66,12 @@ public class ColumnPoolUI extends GLElementContainer {
 		this.table = table;
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
 		setLayout(new GLFlowLayout(true, 5, new GLPadding(5)));
-		setSize(-1, 60);
+		setSize(-1, LABEL_HEIGHT + HIST_HEIGHT);
 		for (ARankColumnModel hidden : table.getPool()) {
 			add(wrap(hidden));
 		}
 		this.add(new GLElement()); // spacer
-		this.add(new PaperBasket().setSize(50, -1));
+		this.add(new PaperBasket().setSize(LABEL_HEIGHT + HIST_HEIGHT - 10, -1));
 	}
 
 	private GLElement wrap(ARankColumnModel hidden) {

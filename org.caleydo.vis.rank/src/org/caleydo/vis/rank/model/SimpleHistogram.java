@@ -24,6 +24,8 @@ import java.util.Iterator;
 import com.google.common.primitives.Ints;
 
 /**
+ * simple version of a normalized histogram
+ *
  * @author Samuel Gratzl
  *
  */
@@ -41,12 +43,23 @@ public class SimpleHistogram implements Iterable<Integer> {
 		return bins.length;
 	}
 
+	/**
+	 * returns the bin of the given value or -1 if it is a NaN
+	 *
+	 * @param value
+	 * @return
+	 */
 	public int getBinOf(float value) {
 		if (Float.isNaN(value))
 			return -1;
 		return Math.round(value * (bins.length - 1));
 	}
 
+	/**
+	 * add the given normalized value to this histogram
+	 *
+	 * @param value
+	 */
 	public void add(float value) {
 		if (Float.isNaN(value)) {
 			nans++;
@@ -62,12 +75,21 @@ public class SimpleHistogram implements Iterable<Integer> {
 			largestValue = bins[bin];
 	}
 
+	/**
+	 * returns the number of NaN entries
+	 *
+	 * @return
+	 */
 	public int getNaN() {
 		return nans;
 	}
 
 	/**
-	 * @return the largestValue, see {@link #largestValue}
+	 * returns the largest value of this histogram
+	 * 
+	 * @param includeNaN
+	 *            should also be NaN values be considered
+	 * @return
 	 */
 	public int getLargestValue(boolean includeNaN) {
 		if (includeNaN && nans > largestValue)

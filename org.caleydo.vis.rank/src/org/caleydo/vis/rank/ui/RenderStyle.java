@@ -53,4 +53,13 @@ public class RenderStyle {
 	 */
 	public static final float COLUMN_SPACE = 1;
 
+	/**
+	 * height of a hist
+	 */
+	public static final float HIST_HEIGHT = 40;
+	/**
+	 * height of the label above the hist
+	 */
+	public static final float LABEL_HEIGHT = 20;
+
 }

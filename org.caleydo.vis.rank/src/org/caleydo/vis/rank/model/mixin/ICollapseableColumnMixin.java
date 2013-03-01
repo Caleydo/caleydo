@@ -20,6 +20,8 @@
 package org.caleydo.vis.rank.model.mixin;
 
 /**
+ * contract that the column can be collapsed
+ *
  * @author Samuel Gratzl
  *
  */
@@ -29,6 +31,11 @@ public interface ICollapseableColumnMixin extends IRankColumnModel {
 
 	boolean isCollapsed();
 
+	/**
+	 * is the column currently collapse able
+	 * 
+	 * @return
+	 */
 	boolean isCollapseAble();
 
 	void setCollapsed(boolean collapsed);

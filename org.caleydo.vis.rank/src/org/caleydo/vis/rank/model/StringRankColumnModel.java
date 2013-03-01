@@ -36,15 +36,19 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.event.FilterEvent;
+import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Function;
+
 /**
+ * a special {@link IRankColumnModel} for Strings
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGLRenderer {
 	public static final Function<IRow, String> DFEAULT = new Function<IRow, String>() {

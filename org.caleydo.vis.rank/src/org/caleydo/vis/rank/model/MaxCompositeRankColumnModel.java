@@ -139,6 +139,7 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 		return false;
 	}
 
+
 	private class RepaintingGLElement extends GLElement {
 		private final PropertyChangeListener l = GLPropertyChangeListeners.repaintOnEvent(this);
 

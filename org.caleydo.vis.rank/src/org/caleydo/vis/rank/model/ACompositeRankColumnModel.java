@@ -202,4 +202,5 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		return hist;
 	}
 
+
 }

@@ -22,8 +22,10 @@ package org.caleydo.vis.rank.event;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
+ * simple generic event for filtering changes
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class FilterEvent extends ADirectedEvent {
 	private Object filter;

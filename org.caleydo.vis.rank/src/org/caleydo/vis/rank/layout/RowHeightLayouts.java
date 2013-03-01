@@ -21,12 +21,29 @@ package org.caleydo.vis.rank.layout;
 
 import java.util.Arrays;
 
+import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+
 /**
+ * row height layouts determine on the one hand the row heights of items and will also be used for layouting the rows of
+ * a {@link MaxCompositeRankColumnModel}
+ *
  * @author Samuel Gratzl
  *
  */
 public class RowHeightLayouts {
 	public interface IRowHeightLayout {
+		/**
+		 * returns a computed list of row heights, when it is smaller than the number of rows, the remaining rows will
+		 * be hidden
+		 * 
+		 * @param numRows
+		 *            the number of visible rows
+		 * @param selectedRowIndex
+		 *            the index of the selected one
+		 * @param h
+		 *            the available height
+		 * @return
+		 */
 		float[] compute(int numRows, int selectedRowIndex, float h);
 	}
 

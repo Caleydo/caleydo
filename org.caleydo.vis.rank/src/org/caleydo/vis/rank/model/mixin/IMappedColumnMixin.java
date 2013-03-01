@@ -23,13 +23,26 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
+ * contract that the column has an underlying mapping, which transform the values
+ *
  * @author Samuel Gratzl
  *
  */
 public interface IMappedColumnMixin extends IRankColumnModel {
 	String PROP_MAPPING = "mapping";
 
+	/**
+	 * triggers to open the edit dialog given its summary element
+	 * 
+	 * @param summary
+	 */
 	void editMapping(GLElement summary);
 
+	/**
+	 * returns a representation of the raw value
+	 * 
+	 * @param row
+	 * @return
+	 */
 	String getRawValue(IRow row);
 }

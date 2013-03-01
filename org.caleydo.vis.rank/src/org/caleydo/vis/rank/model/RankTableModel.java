@@ -41,6 +41,8 @@ import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import com.google.common.collect.Iterators;
 
 /**
+ * basic model abstraction of a ranked list
+ *
  * @author Samuel Gratzl
  *
  */
@@ -55,7 +57,13 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 
 	private final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
+	/**
+	 * current visible columns
+	 */
 	private List<ARankColumnModel> columns = new ArrayList<>();
+	/**
+	 * current hidden columns
+	 */
 	private List<ARankColumnModel> pool = new ArrayList<>(2);
 
 	private final PropertyChangeListener resort = new PropertyChangeListener() {
@@ -73,18 +81,41 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		}
 	};
 
+	/**
+	 * settings
+	 */
 	private final IRankTableConfig config;
+	/**
+	 * the data of this table, not data can only be ADDED not removed, if you want to disable the use the
+	 * {@link #dataMask}
+	 */
 	private final List<IRow> data = new ArrayList<>();
+	/**
+	 * mask selecting a subset of the data
+	 */
 	private BitSet dataMask;
 
 	private int selectedRank = -1;
 	private IRow selectedRow = null;
 
 	private boolean dirtyFilter = true;
+	/**
+	 * current filter to select data
+	 */
 	private BitSet filter;
 
 	private boolean dirtyOrder = true;
+	/**
+	 * currently column used for ordering
+	 */
 	private IRankableColumnMixin orderBy;
+	/**
+	 * current order
+	 *
+	 * <pre>
+	 * order[i] = data index
+	 * </pre>
+	 */
 	private int[] order;
 
 	/**
@@ -94,6 +125,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		this.config = config;
 	}
 
+	/**
+	 * adds a collection of new data items to this table
+	 *
+	 * @param rows
+	 */
 	public void addData(Collection<? extends IRow> rows) {
 		if (rows == null || rows.isEmpty())
 			return;
@@ -110,6 +146,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		propertySupport.firePropertyChange(PROP_INVALID, false, true);
 	}
 
+	/**
+	 * sets the data mask to filter the {@link #data}
+	 *
+	 * @param dataMask
+	 */
 	public void setDataMask(BitSet dataMask) {
 		if (Objects.equals(dataMask, this.dataMask))
 			return;
@@ -127,11 +168,22 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		}
 	}
 
+	/**
+	 * add and registered a new column to this table
+	 *
+	 * @param col
+	 */
 	public void addColumn(ARankColumnModel col) {
 		setup(col);
 		add(col);
 	}
 
+	/**
+	 * see {@link #addColumn(ARankColumnModel)} but append the column to the given parent
+	 *
+	 * @param parent
+	 * @param col
+	 */
 	public void addColumnTo(ACompositeRankColumnModel parent, ARankColumnModel col) {
 		setup(col);
 		parent.add(col);
@@ -148,6 +200,12 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		checkOrderChanges(index, col);
 	}
 
+	/**
+	 * are the current changes, e.g. moving triggers changes in the filtering or ordering?
+	 *
+	 * @param index
+	 * @param col
+	 */
 	private void checkOrderChanges(int index, ARankColumnModel col) {
 		if (col instanceof IFilterColumnMixin && ((IFilterColumnMixin) col).isFiltered()) { // filter elements changed
 			dirtyFilter = true;
@@ -329,8 +387,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		checkOrderChanges(index, children.get(0));
 	}
 
-
-
 	private IRankableColumnMixin findFirstRankable() {
 		for (ARankColumnModel col : this.columns) {
 			if (col instanceof IRankableColumnMixin)
@@ -353,6 +409,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		return Collections.unmodifiableList(pool);
 	}
 
+	/**
+	 * finds all columns, by flatten combined columns
+	 *
+	 * @return
+	 */
 	public Iterator<ARankColumnModel> findAllColumns() {
 		Collection<ARankColumnModel> c = new ArrayList<>();
 		findAllColumns(c, this.columns);
@@ -383,11 +444,15 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		return filter;
 	}
 
+	/**
+	 * performs filtering
+	 */
 	private void filter() {
 		if (!dirtyFilter)
 			return;
 		dirtyFilter = false;
 		// System.out.println("filter");
+		// start with data mask
 		if (dataMask != null)
 			filter = (BitSet) dataMask.clone();
 		else {
@@ -399,6 +464,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			it.next().filter(data, filter);
 		}
 
+		// selected not visible anymore?
 		if (selectedRow != null && !filter.get(selectedRow.getIndex()))
 			setSelectedRow(-1);
 
@@ -413,6 +479,9 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			order();
 	}
 
+	/**
+	 * sorts the current data
+	 */
 	private void order() {
 		if (!dirtyOrder)
 			return;
@@ -420,9 +489,10 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		// System.out.println("sort");
 		int[] bak = order;
 
+		// by what
 		orderBy = findFirstRankable();
 		if (orderBy == null) {
-			int rank = 0;
+			int rank = 0; // natural order
 			for (int i = 0; i < data.size(); ++i) {
 				if (!filter.get(i)) {
 					data.get(i).setRank(-1);
@@ -471,11 +541,17 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		propertySupport.firePropertyChange(PROP_SELECTED_ROW, this.selectedRow, this.selectedRow = get(selectedRank));
 	}
 
-	public IRow get(int index) {
-		if (index < 0)
+	/**
+	 * returns the element at the given rank
+	 * 
+	 * @param rank
+	 * @return
+	 */
+	public IRow get(int rank) {
+		if (rank < 0)
 			return null;
 		checkOrder();
-		return data.get(order[index]);
+		return data.get(order[rank]);
 	}
 
 	public void selectNextRow() {

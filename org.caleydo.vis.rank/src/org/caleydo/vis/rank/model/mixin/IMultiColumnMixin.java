@@ -26,10 +26,20 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 
 /**
+ * contract that the columns is composite of multiple other ones
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankColumnModel> {
+	/**
+	 * the individual values of the children and their representation index
+	 *
+	 * repr &lt; 0 to indicate that there is not direct representer
+	 *
+	 * @param row
+	 * @return
+	 */
 	MultiFloat getSplittedValue(IRow row);
 
 	public static final class MultiFloat {
@@ -58,16 +68,32 @@ public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankC
 	}
 
 	/**
+	 * children colors
+	 *
 	 * @return
 	 */
 	Color[] getColors();
 
+	/**
+	 * collection of hists of its children
+	 *
+	 * @param bins
+	 * @return
+	 */
 	SimpleHistogram[] getHists(int bins);
 
 	/**
+	 * number of children
+	 *
 	 * @return
 	 */
 	int size();
 
+	/**
+	 * returns a selected child
+	 *
+	 * @param index
+	 * @return
+	 */
 	ARankColumnModel get(int index);
 }

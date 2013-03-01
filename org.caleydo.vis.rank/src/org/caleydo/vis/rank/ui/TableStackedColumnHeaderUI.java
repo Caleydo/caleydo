@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
+import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -123,7 +125,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement summary = children.get(0);
-		summary.setBounds(3, 0, w - 6, 40);
+		summary.setBounds(3, 0, w - 6, HIST_HEIGHT);
 
 		List<? extends IGLLayoutElement> columns = children.subList(1, numColumns+1);
 		List<? extends IGLLayoutElement> separators = null;
@@ -132,19 +134,20 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			separators = children.subList(numColumns + 2, children.size());
 			assert separators.size() == columns.size();
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);
-			sep0.setBounds(3, 40, RenderStyle.COLUMN_SPACE, h - 40); // left separator
+			sep0.setBounds(3, HIST_HEIGHT, COLUMN_SPACE, h - HIST_HEIGHT); // left
+																												// separator
 			((StackedSeparatorUI) sep0.asElement()).setAlignment(this.model.getAlignment());
 		}
 		// align the columns normally
-		float x = RenderStyle.COLUMN_SPACE + 3;
+		float x = COLUMN_SPACE + 3;
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			col.setBounds(x, 40, model.getPreferredWidth(), h - 40);
-			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
+			col.setBounds(x, HIST_HEIGHT, model.getPreferredWidth(), h - HIST_HEIGHT);
+			x += model.getPreferredWidth() + COLUMN_SPACE;
 			if (interactive && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
-				sep.setBounds(x - RenderStyle.COLUMN_SPACE, 40, RenderStyle.COLUMN_SPACE, h - 40);
+				sep.setBounds(x - COLUMN_SPACE, HIST_HEIGHT, COLUMN_SPACE, h - HIST_HEIGHT);
 				((SeparatorUI) sep.asElement()).setIndex(i + 1);
 				((StackedSeparatorUI) sep.asElement()).setAlignment(this.model.getAlignment());
 			}

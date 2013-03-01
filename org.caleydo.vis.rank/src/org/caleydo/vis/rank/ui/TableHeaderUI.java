@@ -19,6 +19,10 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
+import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
+import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
+
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -73,7 +77,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 				this.add(new SeparatorUI(this, i));
 		}
 		setLayout(this);
-		setSize(-1, (hasStacked ? 40 : 0) + 60);
+		setSize(-1, (hasStacked ? HIST_HEIGHT : 0) + HIST_HEIGHT + LABEL_HEIGHT);
 	}
 
 	private void init(ARankColumnModel col) {
@@ -149,17 +153,17 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		//align the columns normally
-		float x = RenderStyle.COLUMN_SPACE;
+		float x = COLUMN_SPACE;
 
 		List<? extends IGLLayoutElement> columns = children.subList(0, numColumns);
 
-		float y = hasStacked ? 40 : 0;
-		float hn = hasStacked ? h - 40 : h;
+		float y = hasStacked ? HIST_HEIGHT : 0;
+		float hn = hasStacked ? h - HIST_HEIGHT : h;
 		List<? extends IGLLayoutElement> separators = null;
 		if (interactive) {
 			separators = children.subList(numColumns + 1, children.size());
 			assert separators.size() == columns.size();
-			children.get(numColumns).setBounds(0, y, RenderStyle.COLUMN_SPACE, hn); // left separator
+			children.get(numColumns).setBounds(0, y, COLUMN_SPACE, hn); // left separator
 		}
 
 		for (int i = 0; i < columns.size(); ++i) {
@@ -169,10 +173,10 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);
-			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
+			x += model.getPreferredWidth() + COLUMN_SPACE;
 			if (interactive && separators != null) {
 				IGLLayoutElement sep = separators.get(i);
-				sep.setBounds(x - RenderStyle.COLUMN_SPACE, y, RenderStyle.COLUMN_SPACE, hn);
+				sep.setBounds(x - COLUMN_SPACE, y, COLUMN_SPACE, hn);
 				((SeparatorUI) sep.asElement()).setIndex(i);
 			}
 		}
