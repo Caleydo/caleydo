@@ -36,6 +36,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.GLSubGraph;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.data.AFloatFunction;
+import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
@@ -123,7 +124,7 @@ public class RankingElement extends GLElementContainer {
 			}
 		};
 		table.addColumn(new FloatRankColumnModel(pathwaySize, GLRenderers.drawText("Score", VAlign.CENTER), Color.BLUE,
-				Color.LIGHT_GRAY, new PiecewiseLinearMapping(0, Float.NaN)));
+				Color.LIGHT_GRAY, new PiecewiseLinearMapping(0, Float.NaN), FloatInferrers.MEAN));
 
 		// add data
 		Collection<PathwayRow> data = new ArrayList<>();
