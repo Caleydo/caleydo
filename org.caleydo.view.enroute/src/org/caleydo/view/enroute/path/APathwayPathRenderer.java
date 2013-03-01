@@ -938,6 +938,16 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		return true;
 	}
 
+	public boolean containsVertexRep(PathwayVertexRep vertexRep) {
+		List<PathwayVertexRep> segments = flattenSegments(pathSegments);
+
+		for (PathwayVertexRep vSource : segments) {
+			if (vSource == vertexRep)
+				return true;
+		}
+		return false;
+	}
+
 	public int getNumEqualVertices(List<List<PathwayVertexRep>> segments) {
 		List<PathwayVertexRep> sourceSegments = flattenSegments(pathSegments);
 		List<PathwayVertexRep> targetSegments = flattenSegments(segments);

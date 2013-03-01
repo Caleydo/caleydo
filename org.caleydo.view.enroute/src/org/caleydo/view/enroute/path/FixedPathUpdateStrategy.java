@@ -79,7 +79,7 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 
 	@Override
 	public void triggerPathUpdate() {
-		triggerPathUpdate(selectedPathSegments);
+
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 					firstSegment.add(node.getVertexReps().get(node.getVertexReps().size() - 1));
 					selectedPathSegments.add(firstSegment);
 					selectedPathStartNode = node;
-					triggerPathUpdate();
+					triggerPathUpdate(selectedPathSegments);
 				}
 				createNewPathSelection = !createNewPathSelection;
 			}
@@ -138,7 +138,7 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 					segments.set(segments.size() - 1, startSegment);
 				}
 				selectedPathSegments = segments;
-				triggerPathUpdate();
+				triggerPathUpdate(selectedPathSegments);
 			}
 		}
 	}

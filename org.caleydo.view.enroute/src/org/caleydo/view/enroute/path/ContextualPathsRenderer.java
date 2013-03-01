@@ -22,6 +22,7 @@ package org.caleydo.view.enroute.path;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -293,42 +294,48 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	}
 
 	/**
-	 * Removes all paths except the one that shows the currently selected path.
+	 * Removes the specified pathrenderer.
 	 */
-	protected void removeContextPaths() {
-
-		ElementLayout selectedPathLayout = renderers.get(selectedPathRenderer);
-		for (ElementLayout layout : renderers.values()) {
-			if (layout != selectedPathLayout) {
-				pathRow.remove(layout);
-			}
-		}
-
-		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			if (renderer != selectedPathRenderer)
-				renderer.destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
-		}
-		renderers.clear();
-		if (selectedPathRenderer != null) {
-			renderers.put(selectedPathRenderer, selectedPathLayout);
-		}
+	protected void removePath(APathwayPathRenderer renderer) {
+		pathRow.remove(renderers.get(renderer));
+		renderers.remove(renderer);
+		renderer.destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
 	}
 
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public void onShowPortalNodes(ShowPortalNodesEvent event) {
 		Set<PathwayVertexRep> vertexReps = PathwayManager.get().getEquivalentVertexRepsInPathway(event.getVertexRep(),
 				pathway);
-		removeContextPaths();
-
-		for (PathwayVertexRep vertexRep : vertexReps) {
-			List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 5);
-			segment.remove(0);
-			Collections.reverse(segment);
-			segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 5));
-			List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(1);
-			pathSegments.add(segment);
-			addAlternative(pathSegments);
+		if (event.getVertexRep().getPathway() == pathway) {
+			vertexReps.add(event.getVertexRep());
 		}
+
+		Set<APathwayPathRenderer> renderersToRemove = new HashSet<>(renderers.keySet());
+		renderersToRemove.remove(selectedPathRenderer);
+		// TODO: only remove paths that dont contain vertexreps
+		for (PathwayVertexRep vertexRep : vertexReps) {
+			boolean createNewPath = true;
+			for (APathwayPathRenderer renderer : renderers.keySet()) {
+				if (renderer.containsVertexRep(vertexRep)) {
+					renderersToRemove.remove(renderer);
+					createNewPath = false;
+					break;
+				}
+			}
+			if (createNewPath) {
+				List<PathwayVertexRep> segment = PathwayManager.get().determineDirectionalPath(vertexRep, false, 5);
+				segment.remove(0);
+				Collections.reverse(segment);
+				segment.addAll(PathwayManager.get().determineDirectionalPath(vertexRep, true, 5));
+				List<List<PathwayVertexRep>> pathSegments = new ArrayList<>(1);
+				pathSegments.add(segment);
+				addAlternative(pathSegments);
+			}
+		}
+		for (APathwayPathRenderer renderer : renderersToRemove) {
+			removePath(renderer);
+		}
+
 		setDisplayListDirty();
 		layout.updateLayout();
 	}
