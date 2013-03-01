@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Template Demo View
+Bundle-SymbolicName: org.caleydo.vis.rank;singleton:=true
+Bundle-Version: 2.2
+Require-Bundle: org.caleydo.core;bundle-version="2.2"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: www.caleydo.org
+Bundle-ActivationPolicy: lazy
+Export-Package: org.caleydo.vis.rank.config,
+ org.caleydo.vis.rank.data,
+ org.caleydo.vis.rank.event,
+ org.caleydo.vis.rank.layout,
+ org.caleydo.vis.rank.model,
+ org.caleydo.vis.rank.model.mixin,
+ org.caleydo.vis.rank.ui,
+ org.caleydo.vis.rank.ui.detail
