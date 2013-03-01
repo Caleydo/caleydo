@@ -66,9 +66,9 @@ import org.caleydo.view.pathway.GLPathway;
 
 /**
  * Renderer that shows the alternative entrances
- *
+ * 
  * @author Christian Partl
- *
+ * 
  */
 public class ContextualPathsRenderer extends ALayoutRenderer implements IPathwayRepresentation, IListenerOwner {
 
@@ -221,7 +221,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	private APathwayPathRenderer addAlternative(List<List<PathwayVertexRep>> pathSegments) {
 		VerticalPathRenderer renderer = new VerticalPathRenderer(view, tablePerspectives);
 
-		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode));
+		renderer.setUpdateStrategy(new FixedPathUpdateStrategy(renderer, eventSpace, isPathSelectionMode, this));
 		renderer.setTablePerspectives(tablePerspectives);
 		renderer.setPathway(pathway);
 
@@ -316,7 +316,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		for (PathwayVertexRep vertexRep : vertexReps) {
 			boolean createNewPath = true;
 			for (APathwayPathRenderer renderer : renderers.keySet()) {
-				if (renderer.containsVertexRep(vertexRep)) {
+				if (PathUtility.containsVertexRep(renderer.pathSegments, vertexRep)) {
 					renderersToRemove.remove(renderer);
 					createNewPath = false;
 					break;
@@ -357,7 +357,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		boolean isSelectedPathShown = false;
 
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			isSelectedPathShown = renderer.isPathShown(selectedPathSegments);
+			isSelectedPathShown = PathUtility.isPathShown(renderer.pathSegments, selectedPathSegments, pathway);
 			if (isSelectedPathShown) {
 				selectedPathRenderer = renderer;
 				return;
@@ -367,7 +367,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		APathwayPathRenderer pathRendererWithMostEqualNodes = null;
 		int maxEqualVertices = 0;
 		for (APathwayPathRenderer renderer : renderers.keySet()) {
-			int numEqualVertices = renderer.getNumEqualVertices(selectedPathSegments);
+			int numEqualVertices = PathUtility.getNumEqualVertices(renderer.pathSegments, selectedPathSegments);
 			if (maxEqualVertices < numEqualVertices) {
 				pathRendererWithMostEqualNodes = renderer;
 				maxEqualVertices = numEqualVertices;
@@ -424,6 +424,13 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 	 */
 	public String getEventSpace() {
 		return eventSpace;
+	}
+
+	/**
+	 * @return the selectedPathRenderer, see {@link #selectedPathRenderer}
+	 */
+	public APathwayPathRenderer getSelectedPathRenderer() {
+		return selectedPathRenderer;
 	}
 
 }

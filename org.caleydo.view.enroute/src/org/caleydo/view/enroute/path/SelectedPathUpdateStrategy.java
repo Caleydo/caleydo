@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.path;
 
+import java.util.List;
+
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.EnablePathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 
@@ -55,6 +58,11 @@ public class SelectedPathUpdateStrategy extends APathUpdateStrategy {
 	@Override
 	public void nodesCreated() {
 		// nothing to do
+	}
+
+	@Override
+	public boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath) {
+		return true;
 	}
 
 }

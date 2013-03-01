@@ -135,8 +135,22 @@ public abstract class APathUpdateStrategy implements IListenerOwner {
 	@ListenTo(restrictExclusiveToEventSpace = true)
 	public abstract void onSelectedPathChanged(PathwayPathSelectionEvent event);
 
+	/**
+	 * Triggers events to indicate a path update
+	 */
 	public abstract void triggerPathUpdate();
 
+	/**
+	 * This method shall be called, when all nodes of the associated {@link APathwayPathRenderer} are created.
+	 */
 	public abstract void nodesCreated();
+
+	/**
+	 * Tells whether a change to the path that was triggered by the path is permitted or not.
+	 *
+	 * @param newPath
+	 * @return
+	 */
+	public abstract boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath);
 
 }

@@ -57,14 +57,17 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 	 */
 	protected List<List<PathwayVertexRep>> selectedPathSegments = new ArrayList<>();
 
+	protected ContextualPathsRenderer contextualPathsRenderer;
+
 	/**
 	 * @param renderer
 	 * @param pathwayPathEventSpace
 	 */
 	public FixedPathUpdateStrategy(APathwayPathRenderer renderer, String pathwayPathEventSpace,
-			boolean isPathSelectionMode) {
+			boolean isPathSelectionMode, ContextualPathsRenderer contextualPathsRenderer) {
 		super(renderer, pathwayPathEventSpace);
 		this.isPathSelectionMode = isPathSelectionMode;
+		this.contextualPathsRenderer = contextualPathsRenderer;
 	}
 
 	@Override
@@ -141,6 +144,16 @@ public class FixedPathUpdateStrategy extends APathUpdateStrategy {
 				triggerPathUpdate(selectedPathSegments);
 			}
 		}
+	}
+
+	@Override
+	public boolean isPathChangePermitted(List<List<PathwayVertexRep>> newPath) {
+		if (renderer != contextualPathsRenderer.getSelectedPathRenderer())
+			return true;
+
+		if (PathUtility.isPathShown(newPath, selectedPathSegments, renderer.pathway))
+			return true;
+		return false;
 	}
 
 }

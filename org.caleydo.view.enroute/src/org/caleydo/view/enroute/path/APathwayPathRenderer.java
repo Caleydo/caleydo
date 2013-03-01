@@ -213,18 +213,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	}
 
 	/**
-	 * @param segments
-	 * @return One list of {@link PathwayVertexRep}s that contains all objects of the list of lists.
-	 */
-	protected List<PathwayVertexRep> flattenSegments(List<List<PathwayVertexRep>> segments) {
-		List<PathwayVertexRep> vertexReps = new ArrayList<>();
-		for (List<PathwayVertexRep> segment : segments) {
-			vertexReps.addAll(segment);
-		}
-		return vertexReps;
-	}
-
-	/**
 	 * Updates the layout of the path. This method should be called everytime something changes in the layout of the
 	 * path.
 	 */
@@ -575,25 +563,27 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		if (isIncomingBranch) {
 			// insert above linearized node
 			Collections.reverse(branchPath);
-			newSegment = pathSegments.get(segmentIndex).subList(vertexRepIndex, pathSegments.get(segmentIndex).size());
+			newSegment = new ArrayList<>(pathSegments.get(segmentIndex).subList(vertexRepIndex,
+					pathSegments.get(segmentIndex).size()));
 			newSegment.addAll(0, branchPath);
 			newPathSegments.add(newSegment);
 			if (segmentIndex + 1 < pathSegments.size())
-				newPathSegments.addAll(pathSegments.subList(segmentIndex + 1, pathSegments.size()));
+				newPathSegments.addAll(new ArrayList<>(pathSegments.subList(segmentIndex + 1, pathSegments.size())));
 
 		} else {
 			// insert below linearized node
 
-			newSegment = pathSegments.get(segmentIndex).subList(0, vertexRepIndex + 1);
+			newSegment = new ArrayList<>(pathSegments.get(segmentIndex).subList(0, vertexRepIndex + 1));
 			newSegment.addAll(branchPath);
 			if (segmentIndex > 0)
-				newPathSegments.addAll(pathSegments.subList(0, segmentIndex));
+				newPathSegments.addAll(new ArrayList<>(pathSegments.subList(0, segmentIndex)));
 			newPathSegments.add(newSegment);
 		}
 
-		setPath(newPathSegments);
-
-		updateStrategy.triggerPathUpdate();
+		if (updateStrategy.isPathChangePermitted(newPathSegments)) {
+			setPath(newPathSegments);
+			updateStrategy.triggerPathUpdate();
+		}
 	}
 
 	/**
@@ -624,34 +614,41 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public void removeNodeFromPath(ALinearizableNode node) {
 
+		// Create deep copy of pathSegments
+		List<List<PathwayVertexRep>> segments = new ArrayList<>(pathSegments.size());
+		for (List<PathwayVertexRep> segment : pathSegments) {
+			segments.add(new ArrayList<>(segment));
+		}
+
 		if (isFirstNode(node)) {
-			List<PathwayVertexRep> segment = pathSegments.get(0);
+			List<PathwayVertexRep> segment = segments.get(0);
 			segment.remove(0);
 			if (segment.size() == 0) {
-				if (pathSegments.size() > 1) {
-					List<PathwayVertexRep> nextSegment = pathSegments.get(1);
+				if (segments.size() > 1) {
+					List<PathwayVertexRep> nextSegment = segments.get(1);
 					nextSegment.remove(0);
 				}
-				pathSegments.remove(segment);
+				segments.remove(segment);
 			}
 		} else if (isLastNode(node)) {
-			List<PathwayVertexRep> segment = pathSegments.get(pathSegments.size() - 1);
+			List<PathwayVertexRep> segment = segments.get(segments.size() - 1);
 			segment.remove(segment.size() - 1);
 			if (segment.size() == 0) {
-				if (pathSegments.size() > 1) {
-					List<PathwayVertexRep> prevSegment = pathSegments.get(pathSegments.size() - 2);
+				if (segments.size() > 1) {
+					List<PathwayVertexRep> prevSegment = segments.get(segments.size() - 2);
 					prevSegment.remove(prevSegment.size() - 1);
 				}
-				pathSegments.remove(segment);
+				segments.remove(segment);
 			}
 
 		} else {
 			return;
 		}
 
-		setPath(pathSegments);
-
-		updateStrategy.triggerPathUpdate();
+		if (updateStrategy.isPathChangePermitted(segments)) {
+			setPath(segments);
+			updateStrategy.triggerPathUpdate();
+		}
 	}
 
 	/**
@@ -726,38 +723,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 		}
 		return null;
 	}
-
-	// protected void broadcastPath() {
-	//
-	// List<PathwayPath> segments = new ArrayList<>(selectedPathSegments.size());
-	// for (List<PathwayVertexRep> segment : selectedPathSegments) {
-	// PathwayVertexRep startVertexRep = segment.get(0);
-	// PathwayVertexRep endVertexRep = segment.get(segment.size() - 1);
-	// List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
-	// PathwayGraph pathway = startVertexRep.getPathway();
-	//
-	// for (int i = 0; i < segment.size() - 1; i++) {
-	// PathwayVertexRep currentVertexRep = segment.get(i);
-	// PathwayVertexRep nextVertexRep = segment.get(i + 1);
-	//
-	// DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
-	// if (edge == null)
-	// edge = pathway.getEdge(nextVertexRep, currentVertexRep);
-	// edges.add(edge);
-	// }
-	// GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-	// pathway, startVertexRep, endVertexRep, edges, edges.size());
-	//
-	// segments.add(new PathwayPath(graphPath));
-	// }
-	//
-	// PathwayPathSelectionEvent event = new PathwayPathSelectionEvent();
-	// event.setEventSpace(pathwayPathEventSpace);
-	// event.setPathSegments(segments);
-	// event.setSender(this);
-	// GeneralManager.get().getEventPublisher().triggerEvent(event);
-	//
-	// }
 
 	@Override
 	public int getMinWidthPixels() {
@@ -901,68 +866,6 @@ public abstract class APathwayPathRenderer extends ALayoutRenderer implements IE
 	 */
 	public APathUpdateStrategy getUpdateStrategy() {
 		return updateStrategy;
-	}
-
-	/**
-	 * Determines, whether the specified path segments are shown within this pathway. If this renderer only shows the
-	 * nodes of a specific pathway, only segments referring to this pathway are considered.
-	 *
-	 * @param segments
-	 * @return
-	 */
-	public boolean isPathShown(List<List<PathwayVertexRep>> segments) {
-		List<PathwayVertexRep> sourceSegments = flattenSegments(pathSegments);
-		List<PathwayVertexRep> targetSegments = flattenSegments(segments);
-		int startIndex = 0;
-		boolean equalityStarted = false;
-		for (PathwayVertexRep vTarget : targetSegments) {
-			// Ignore other pathway paths if this renderer only repersents a single pathway
-			if (pathway != null && pathway != vTarget.getPathway())
-				continue;
-			if (startIndex >= sourceSegments.size())
-				return false;
-			for (int i = startIndex; i < sourceSegments.size(); i++) {
-				PathwayVertexRep vSource = sourceSegments.get(i);
-				startIndex = i + 1;
-				// Ignore other pathway paths if this renderer only repersents a single pathway
-				if (pathway != null && pathway != vSource.getPathway())
-					continue;
-				if (vTarget == vSource) {
-					equalityStarted = true;
-					break;
-				} else if (equalityStarted) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	public boolean containsVertexRep(PathwayVertexRep vertexRep) {
-		List<PathwayVertexRep> segments = flattenSegments(pathSegments);
-
-		for (PathwayVertexRep vSource : segments) {
-			if (vSource == vertexRep)
-				return true;
-		}
-		return false;
-	}
-
-	public int getNumEqualVertices(List<List<PathwayVertexRep>> segments) {
-		List<PathwayVertexRep> sourceSegments = flattenSegments(pathSegments);
-		List<PathwayVertexRep> targetSegments = flattenSegments(segments);
-
-		int numEqualVertices = 0;
-		for (PathwayVertexRep vTarget : targetSegments) {
-			for (PathwayVertexRep vSource : sourceSegments) {
-				if (vSource == vTarget) {
-					numEqualVertices++;
-					break;
-				}
-			}
-		}
-
-		return numEqualVertices;
 	}
 
 	protected class NodeContextMenuPickingListener extends APickingListener {
