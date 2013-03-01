@@ -1235,6 +1235,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		} else {// //////// select end node /////////////////////////
 			if (pathStartVertexRep == null)
 				return;
+			if(!pathway.containsVertex(pathStartVertexRep)){	
+				isPathStartSelected = false; 
+				return;
+			}
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, pathStartVertexRep, MAX_PATHS);
 			List<GraphPath<PathwayVertexRep, DefaultEdge>> allPathsTmp = null;
