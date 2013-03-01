@@ -69,7 +69,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private Set<String> remoteRenderedPathwayMultiformViewIDs;
 
-	private String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();;
+	private String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(GLLayouts.flowHorizontal(10));
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
@@ -175,49 +175,6 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private void createRemoteRenderedViews() {
 		if (remoteRenderedPathwayMultiformViewIDs == null) {
-			//
-			// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-			// PathwayDataDomain.DATA_DOMAIN_TYPE);
-			//
-			// TablePerspective tablePerspective = tablePerspectives.get(0);
-			//
-			// Perspective oldRecordPerspective = tablePerspective.getRecordPerspective();
-			// Perspective newRecordPerspective = new Perspective(tablePerspective.getDataDomain(),
-			// oldRecordPerspective.getIdType());
-			//
-			// PerspectiveInitializationData data = new PerspectiveInitializationData();
-			// data.setData(oldRecordPerspective.getVirtualArray());
-			//
-			// newRecordPerspective.init(data);
-			//
-			// Perspective oldDimensionPerspective = tablePerspective.getDimensionPerspective();
-			// Perspective newDimensionPerspective = new Perspective(tablePerspective.getDataDomain(),
-			// oldDimensionPerspective.getIdType());
-			// data = new PerspectiveInitializationData();
-			// data.setData(oldDimensionPerspective.getVirtualArray());
-			//
-			// newDimensionPerspective.init(data);
-			// PathwayTablePerspective pathwayTablePerspective = new PathwayTablePerspective(
-			// tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective, newDimensionPerspective,
-			// PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-			// pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
-			//
-			// List<TablePerspective> pathwayTablePerspectives = new ArrayList<>(1);
-			// pathwayTablePerspectives.add(pathwayTablePerspective);
-			//
-			// addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
-			// Float.NaN);
-			//
-			// pathwayTablePerspective = new PathwayTablePerspective(tablePerspective.getDataDomain(),
-			// pathwayDataDomain,
-			// newRecordPerspective, newDimensionPerspective, PathwayManager.get().getPathwayByTitle(
-			// "Pathways in cancer", EPathwayDatabaseType.KEGG));
-			// pathwayDataDomain.addTablePerspective(pathwayTablePerspective);
-			//
-			// pathwayTablePerspectives.clear();
-			// pathwayTablePerspectives.add(pathwayTablePerspective);
-			// addMultiformRenderer(pathwayTablePerspectives, EEmbeddingID.PATHWAY_MULTIFORM.id(), pathwayColumn,
-			// Float.NaN);
 			addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
 			addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
 			addMultiformRenderer(tablePerspectives, EEmbeddingID.PATH.id(), baseContainer, 0.3f);
@@ -395,7 +352,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		augmentation.setPxlSize(
 				this.getParentGLCanvas().getWidth(),
 				this.getParentGLCanvas().getHeight());
-		
+
 		augmentation.clearRenderers();
 		PathwayVertexRep start = null;
 		PathwayVertexRep end = null;
@@ -471,7 +428,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	}
 
-	
+
 	@Override
 	public void display(GL2 gl) {
 		boolean updateAugmentation = false;
