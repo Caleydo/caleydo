@@ -13,9 +13,10 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
-public class TableColumnUI extends GLElementContainer implements IGLLayout {
+public class TableColumnUI extends GLElementContainer implements IGLLayout, IColumnRenderInfo {
 	private final ARankColumnModel model;
 
 	public TableColumnUI(ARankColumnModel model) {
@@ -48,6 +49,11 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout {
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		((IColumModelLayout) getParent()).layoutRows(model, children, w, h);
+	}
+
+	@Override
+	public boolean isCollapsed() {
+		return ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed());
 	}
 
 	@Override

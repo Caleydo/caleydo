@@ -1,0 +1,33 @@
+#name	color
+Republic of Korea	#FFFFFF
+Taiwan	#FFFFFF
+Australia	#FFFFFF
+Austria	#FFFFFF
+Brazil	#FFFFFF
+Canada	#FFFFFF
+Denmark	#FFFFFF
+Egypt	#FFFFFF
+Finland	#FFFFFF
+France	#FFFFFF
+Germany	#FFFFFF
+Greece	#FFFFFF
+Hong Kong	#FFFFFF
+Iran	#FFFFFF
+Italy	#FFFFFF
+Japan	#FFFFFF
+Malaysia	#FFFFFF
+Netherlands	#FFFFFF
+New Zealand	#FFFFFF
+Norway	#FFFFFF
+Portugal	#FFFFFF
+Republic of Ireland	#FFFFFF
+Republic of Korea	#FFFFFF
+Saudi Arabia	#FFFFFF
+Singapore	#FFFFFF
+Spain	#FFFFFF
+Sweden	#FFFFFF
+Switzerland	#FFFFFF
+Taiwan	#FFFFFF
+Turkey	#FFFFFF
+UK	#FFFFFF
+US	#FFFFFF

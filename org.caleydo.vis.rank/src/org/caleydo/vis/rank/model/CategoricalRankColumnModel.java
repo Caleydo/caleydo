@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.event.EventListenerManager.ListenTo;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
@@ -40,12 +39,15 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.event.FilterEvent;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
+import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -104,8 +106,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			return;
 		float hi = Math.min(h, 18);
 		g.color(info.getColor()).fillRect(1, 1, w - 2, h - 2);
-		if (w > COLLAPSED_WIDTH) { // FIXME is Collapsed really not approximated
-			g.drawText(info.getLabel(), 1, 1 + (h - hi) * 0.5f, w - 2, hi - 2);
+		if (!(((IColumnRenderInfo) parent.getParent()).isCollapsed())) {
+			g.drawText(info.getLabel(), 1, 1 + (h - hi) * 0.5f, w - 2, hi - 5);
 		}
 	}
 
@@ -161,7 +163,12 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		protected Control createDialogArea(Composite parent) {
 			parent = (Composite) super.createDialogArea(parent);
 
-			this.categoriesUI = CheckboxTableViewer.newCheckList(parent, SWT.BORDER | SWT.FULL_SELECTION);
+			ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+			sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			sc.setExpandVertical(false);
+			sc.setExpandHorizontal(false);
+
+			this.categoriesUI = CheckboxTableViewer.newCheckList(sc, SWT.BORDER | SWT.FULL_SELECTION);
 			categoriesUI.getTable().setLayoutData(
 					new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 			Table table = categoriesUI.getTable();
@@ -184,6 +191,12 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			for (Object s : selection) {
 				categoriesUI.setChecked(s, true);
 			}
+
+			sc.setContent(categoriesUI.getTable());
+			Point point = categoriesUI.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			categoriesUI.getTable().setSize(point);
+			sc.setMinSize(point);
+
 			applyDialogFont(parent);
 			return parent;
 		}
@@ -230,13 +243,13 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			super.renderImpl(g, w, h);
-			if (w < COLLAPSED_WIDTH)
+			if (((IColumnRenderInfo) getParent()).isCollapsed())
 				return;
-			// g.drawText("Filter:", 4, 2, w - 4, 12);
-			// String t = "<None>";
-			// if (filter != null)
-			// t = filter;
-			// g.drawText(t, 4, 18, w - 4, 12);
+			g.drawText("Filter:", 4, 2, w - 4, 12);
+			String t = "<None>";
+			if (isFiltered())
+				t = selection.size() + " out of " + metaData.size();
+			g.drawText(t, 4, 18, w - 4, 12);
 		}
 	}
 

@@ -397,7 +397,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 				renderSelection(g, selectionMin, selectionMax, w, h);
 			checkMapping();
 			DecimalFormat d = new DecimalFormat("#####.##");
-			// TODO
+
 			float[] m = mapping.getMappedMin();
 			g.drawText(d.format(m[0]), 1, h - 23, w * 0.4f, 10);
 			g.drawText(d.format(m[1]), 1, h - 12, w * 0.4f, 10);

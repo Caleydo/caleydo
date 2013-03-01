@@ -30,7 +30,6 @@ import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
  */
 public abstract class ABasicRankColumnModel extends ARankColumnModel implements IHideableColumnMixin,
 		ICollapseableColumnMixin {
-	public static final int COLLAPSED_WIDTH = 16;
 	private boolean collapsed = false;
 
 	public ABasicRankColumnModel(Color color, Color bgColor) {

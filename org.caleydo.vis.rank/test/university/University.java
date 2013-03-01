@@ -27,10 +27,11 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
@@ -40,6 +41,7 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.config.RankTableConfigBase;
 import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ARow;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
@@ -61,50 +63,46 @@ public class University extends GLSandBox {
 
 	public University() throws NoSuchFieldException, NumberFormatException, IOException {
 		super(new GLElementContainer(GLLayouts.flowVertical(0)), new GLPadding(5), new Dimension(800, 600));
-
 		this.table = new RankTableModel(new RankTableConfigBase() {
 			@Override
 			public boolean isInteractive() {
 				return true;
 			}
 		});
-
-		List<UniversityRow> rows = new ArrayList<>();
-		Map<String, CategoryInfo> metaData = new TreeMap<>();
-		try (BufferedReader r = new BufferedReader(new InputStreamReader(
-				University.class.getResourceAsStream("top100under50.txt"), Charset.forName("UTF-8")))) {
-			String line;
-			r.readLine();
-			while ((line = r.readLine()) != null) {
-				String[] l = line.split("\t");
-				UniversityRow row = new UniversityRow();
-				row.rank = Integer.parseInt(l[0]);
-				row.institution = l[2];
-				row.country = l[3];
-				if (!metaData.containsKey(row.country)) {
-					metaData.put(row.country, new CategoryInfo(row.country, Color.PINK));
-				}
-				row.yearFounded = Integer.parseInt(l[4]);
-				row.teaching = toFloat(l, 5);
-				row.research = toFloat(l, 6);
-				row.citations = toFloat(l, 7);
-				row.incomeFromIndustry = toFloat(l, 8);
-				row.internationalMix = toFloat(l, 9);
-				row.overallScore = toFloat(l, 10);
-				rows.add(row);
+		createModel();
+		canvas.addKeyListener(new IGLKeyListener() {
+			@Override
+			public void keyPressed(IKeyEvent e) {
+				if (e.isKey(ESpecialKey.DOWN))
+					table.selectNextRow();
+				else if (e.isKey(ESpecialKey.UP))
+					table.selectPreviousRow();
 			}
-		}
+
+			@Override
+			public void keyReleased(IKeyEvent e) {
+
+			}
+		});
+		createUI();
+
+	}
+
+	private void createModel() throws IOException, NoSuchFieldException {
+		List<UniversityRow> rows = readData();
 		table.addData(rows);
+		Map<String, CategoryInfo> metaData = readCountriesCategories();
 
 		table.addColumn(eventListeners.register(new RankRankColumnModel()));
 		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT)));
 		// as categorical
-//		table.addColumn(eventListeners.register(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country", VAlign.CENTER),
-//				new ReflectionData(field("country")), metaData)));
+		table.addColumn(eventListeners.register(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country",
+				VAlign.CENTER), new ReflectionData(field("country")), metaData)));
 		// as string
-		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Country", VAlign.CENTER),
- new ReflectionData(field("country")))));
+		// table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Country",
+		// VAlign.CENTER),
+		// new ReflectionData(field("country")))));
 
 
 		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
@@ -141,17 +139,55 @@ public class University extends GLSandBox {
 		table.addColumn(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
 				"Overall Score", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
 				new PiecewiseLinearMapping(0, 100)));
+	}
 
+	private static Map<String, CategoryInfo> readCountriesCategories() throws IOException {
+		Map<String, CategoryInfo> metaData = new HashMap<>();
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(
+				University.class.getResourceAsStream("countries.txt"), Charset.forName("UTF-8")))) {
+			String line;
+			r.readLine();
+			while ((line = r.readLine()) != null) {
+				String[] l = line.split("\t");
+				CategoryInfo c = new CategoryInfo(l[0], Color.decode(l[1]));
+				metaData.put(c.getLabel(), c);
+			}
+		}
+		return metaData;
+	}
+
+	private static List<UniversityRow> readData() throws IOException {
+		List<UniversityRow> rows = new ArrayList<>();
+		try (BufferedReader r = new BufferedReader(new InputStreamReader(
+				University.class.getResourceAsStream("top100under50.txt"), Charset.forName("UTF-8")))) {
+			String line;
+			r.readLine();
+			while ((line = r.readLine()) != null) {
+				String[] l = line.split("\t");
+				UniversityRow row = new UniversityRow();
+				row.rank = Integer.parseInt(l[0]);
+				row.institution = l[2];
+				row.country = l[3];
+				row.yearFounded = Integer.parseInt(l[4]);
+				row.teaching = toFloat(l, 5);
+				row.research = toFloat(l, 6);
+				row.citations = toFloat(l, 7);
+				row.incomeFromIndustry = toFloat(l, 8);
+				row.internationalMix = toFloat(l, 9);
+				row.overallScore = toFloat(l, 10);
+				rows.add(row);
+			}
+		}
+		return rows;
+	}
+
+	private void createUI() {
+		// visual part
 		GLElementContainer root = (GLElementContainer) getRoot();
 		root.add(new TableHeaderUI(table));
 		root.add(new TableBodyUI(table, RowHeightLayouts.LINEAR));
 
 		root.add(new ColumnPoolUI(table));
-
-	}
-
-	public static void main(String[] args) throws NumberFormatException, NoSuchFieldException, IOException {
-		new University().run();
 	}
 
 	public static float toFloat(String[] l, int i) {
@@ -181,5 +217,9 @@ public class University extends GLSandBox {
 		public String toString() {
 			return institution;
 		}
+	}
+
+	public static void main(String[] args) throws NumberFormatException, NoSuchFieldException, IOException {
+		new University().run();
 	}
 }

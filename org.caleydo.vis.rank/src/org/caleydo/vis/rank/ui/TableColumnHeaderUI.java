@@ -61,7 +61,7 @@ import org.eclipse.swt.SWT;
  * @author Samuel Gratzl
  *
  */
-public class TableColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout {
+public class TableColumnHeaderUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo {
 	private final static int HIST = 0;
 	private final static int DRAG_WEIGHT = 1;
 	private final static int BUTTONS = 2;
@@ -133,6 +133,11 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 
 	}
 
+
+	@Override
+	public boolean isCollapsed() {
+		return ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed());
+	}
 
 	@Override
 	protected void init(IGLElementContext context) {

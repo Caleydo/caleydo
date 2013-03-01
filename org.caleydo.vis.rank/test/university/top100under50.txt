@@ -1,9 +1,9 @@
 ﻿100 Under 50 rank	World University Rankings 2011-12 position	Institution	Country	Year founded	Teaching	Research	Citations	Income from industry	International mix	Overall score
 1	53	Pohang University of Science andTechnology	Republic of Korea	1986	65.9	66.8	92.3	100	25	71.8
 2	46	École Polytechnique Fédérale de Lausanne	Switzerland	1968	55.9	40.9	95.3	46.7	98.9	66.2
-3	62	Hong Kong University of Science andTechnology	Hong Kong	1991	51.4	62.6	71	59	80.1	63
+3	62	Hong Kong University of Science and Technology	Hong Kong	1991	51.4	62.6	71	59	80.1	63
 4	86	University of California. Irvine	US	1965	42.2	51.5	93.5	45.6	36.3	60
-5	94	Korea Advanced Institute of Science andTechnology	 Republic of Korea	1971	71.3	61.3	47.1	100	29.3	58.6
+5	94	Korea Advanced Institute of Science andTechnology	Republic of Korea	1971	71.3	61.3	47.1	100	29.3	58.6
 6	84	Université Pierre et Marie Curie	France	1971	61.6	26.3	81.1	26.2	66.7	56.3
 7	110	University of California. Santa Cruz	US	1965	31.6	45.4	99.9	29.5	29.8	56
 8	121	University of York	UK	1963	43.1	50.1	71.6	33.9	72.7	55.7
@@ -53,7 +53,7 @@
 50	301-350	University of Stirling	UK	1967	22.2	31.2	42	26.6	69.5	34.5
 53	276-300	University ofTexas at San Antonio	US	1969	17.1	19.5	70.3	25.3	22.6	34.4
 54	301-350	University of Eastern Finland	Finland	1969	29.4	22.8	51.1	30.2	33.5	34.3
-55	301-350	NationalTaiwan University of Science andTechnology	 Taiwan	1974	31.1	53.6	19.4	42.9	15.6	33.5
+55	301-350	National Taiwan University of Science and Technology	Taiwan	1974	31.1	53.6	19.4	42.9	15.6	33.5
 56	301-350	University of Surrey	UK	1966	40.5	34.1	12.4	46.9	81.5	33.4
 57	301-350	George Mason University	US	1972	36	23.3	42.6	25.1	23.8	33
 58	301-350	University ofWaikato	New Zealand	1964	17	19.4	47.8	24.5	87	32.4

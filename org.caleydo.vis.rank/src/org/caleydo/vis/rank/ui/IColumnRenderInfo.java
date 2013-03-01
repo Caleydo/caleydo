@@ -17,20 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mixin;
+package org.caleydo.vis.rank.ui;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface ICollapseableColumnMixin extends IRankColumnModel {
-	int COLLAPSED_WIDTH = 16;
-	String PROP_COLLAPSED = "collapsed";
-
+public interface IColumnRenderInfo {
 	boolean isCollapsed();
-
-	boolean isCollapseAble();
-
-	void setCollapsed(boolean collapsed);
-
 }
