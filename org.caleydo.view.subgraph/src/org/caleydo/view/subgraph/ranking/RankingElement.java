@@ -89,7 +89,7 @@ public class RankingElement extends GLElementContainer {
 	 */
 	protected void onRowPick(Pick pick) {
 		int rank = pick.getObjectID();
-		PathwayRow row = (PathwayRow) table.get(rank);
+		PathwayRow row = (PathwayRow) table.getCurrent(rank);
 		System.out.println(row + " " + pick.getPickingMode());
 	}
 
