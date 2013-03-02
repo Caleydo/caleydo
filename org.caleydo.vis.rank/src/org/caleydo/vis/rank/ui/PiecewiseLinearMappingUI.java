@@ -55,6 +55,9 @@ import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 /**
  * ui for a {@link PiecewiseLinearMapping}
  *
@@ -95,8 +98,14 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		this.add(new NormalizedHistogramElement());
 		this.add(new Canvas());
 
+		if (model.isMappingDefault()) {
+			if (Float.isNaN(model.getFromMin()))
+				this.add(new Point(model.getActMin(), 0, true));
+			if (Float.isNaN(model.getFromMax()))
+				this.add(new Point(model.getActMax(), 1, true));
+		}
 		for (Map.Entry<Float, Float> entry : model) {
-			this.add(new Point(entry.getKey(), entry.getValue()));
+			this.add(new Point(entry.getKey(), entry.getValue(), false));
 		}
 	}
 
@@ -129,12 +138,90 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 	}
 
 	void onRemovePoint(Point point) {
-		if (model.size() <= 2) // at least two points
+		if (point.pseudo) // can't remove pseudo points
+			return;
+		if (model.hasDefinedMappingBounds() && model.size() == 2) // can't remove defined bounds
+			return;
+		if ((!model.isMaxDefined() || !model.isMinDefined()) && model.size() == 1) // can't remove single defined
 			return;
 		model.remove(point.from);
-		this.remove(point);
-		getCanvas().repaintAll();
-		get(NORMAL_HIST).repaint();
+		int s = model.size();
+		switch (s) {
+		case 0: // add the second
+			point.pseudo = true;
+			Point other = (Point) (get(FIRST_POINT) == point ? get(FIRST_POINT + 1) : get(FIRST_POINT));
+			if (other.from == model.getActMin()) {
+				point.from = model.getActMax();
+				point.to = 1;
+			} else {
+				point.from = model.getActMin();
+				point.to = 0;
+			}
+			point.repaint();
+			relayout();
+			break;
+		case 1:
+			point.pseudo = true;
+			if (!model.isMinDefined()) {
+				point.from = model.getActMin();
+				point.to = 0;
+			} else {
+				point.from = model.getActMax();
+				point.to = 1;
+			}
+			point.repaint();
+			relayout();
+			break;
+		default:
+			this.remove(point);
+			break;
+		}
+		repaintMapping();
+		fireCallback();
+	}
+
+	protected void onAddPoint(float from, float to) {
+		Vec2f size = getCanvas().getSize();
+
+		from = from / size.x();
+		to = (size.y() - to) / size.y();
+
+		from = inverseNormalize(from);
+		model.put(from, to);
+		switch (model.size()) {
+		case 1:
+			List<Point> points = Lists.newArrayList(Iterables.filter(this, Point.class));
+			assert points.size() == 2;
+			Point p1 = points.get(0);
+			Point p2 = points.get(1);
+			Point t;
+			if (Math.abs(p1.from - from) < Math.abs(p2.from - from))
+				t = p1;
+			else
+				t = p2;
+			t.from = from;
+			t.to = to;
+			t.pseudo = false;
+			t.repaint();
+			relayout();
+			break;
+		case 2:
+			for (Point p : Iterables.filter(this, Point.class)) {
+				if (p.pseudo) {
+					p.from = from;
+					p.to = to;
+					p.pseudo = false;
+					p.repaint();
+					break;
+				}
+			}
+			relayout();
+			break;
+		default:
+			this.add(new Point(from, to, false));
+			break;
+		}
+		repaintMapping();
 		fireCallback();
 	}
 
@@ -166,22 +253,14 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		float from = normalizeRaw(point.from) + dx / (size.x());
 		float to = point.to - dy / (size.y());
 		updateMapping(point, from, to);
-		getCanvas().repaintAll();
-		get(NORMAL_HIST).repaint();
+		repaintMapping();
 		this.relayout();
 	}
 
-	protected void onAddPoint(float from, float to) {
-		Vec2f size = getCanvas().getSize();
-
-		from = from / size.x();
-		to = (size.y() - to) / size.y();
-
-		from = inverseNormalize(from);
-		model.put(from, to);
-		this.add(new Point(from, to));
+	public void repaintMapping() {
+		getCanvas().repaintAll();
+		get(RAW_HIST).repaint();
 		get(NORMAL_HIST).repaint();
-		fireCallback();
 	}
 
 	private void updateMapping(Point current, float from, float to) {
@@ -336,12 +415,14 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 	 */
 	private class Point extends PickableGLElement {
 		private boolean hovered;
+		private boolean pseudo;
 		private float from;
 		private float to;
 
-		public Point(float from, float to) {
+		public Point(float from, float to, boolean pseudo) {
 			this.from = from;
 			this.to = to;
+			this.pseudo = pseudo;
 		}
 
 		public void set(float from, float to) {
@@ -357,7 +438,16 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		@Override
 		protected void renderImpl(GLGraphics g, float w, float h) {
 			Color color = this.hovered ? Color.RED : Color.BLACK;
-			g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5, -5, 10, 10, color);
+			if (!pseudo)
+				g.fillImage(g.getTexture(RenderStyle.ICON_CIRCLE), -5, -5, 10, 10, color);
+			else {
+				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
+				g.gl.glLineStipple(2, (short) 0xAAAA);
+				g.lineWidth(2);
+				g.color(color).drawCircle(0, 0, 5);
+				g.gl.glDisable(GL2.GL_LINE_STIPPLE);
+				g.lineWidth(1);
+			}
 			// g.fillCircle(0, 0, 5);
 		}
 
@@ -380,6 +470,8 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 		protected void onDragged(Pick pick) {
 			if (!pick.isDoDragging())
 				return;
+			if (pick.getDx() != 0 || pick.getDy() != 0)
+				this.pseudo = false;
 			drag(this, pick.getDx(), pick.getDy());
 			this.repaintAll();
 		}
@@ -469,12 +561,14 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 	}
 
 	public static void main(String[] args) {
-		PiecewiseLinearMapping model = new PiecewiseLinearMapping(0, 1);
+		PiecewiseLinearMapping model = new PiecewiseLinearMapping(0, Float.NaN);
 		float[] arr = new float[100];
 		Random r = new Random(100);
 		for (int i = 0; i < arr.length; ++i)
 			arr[i] = r.nextFloat();
 		IFloatList data = new ArrayFloatList(arr);
+		float[] s = data.computeStats();
+		model.setAct(s[0], s[1]);
 		final PiecewiseLinearMappingUI root = new PiecewiseLinearMappingUI(model, data, Color.GRAY, Color.LIGHT_GRAY,
 				null);
 		GLSandBox.main(args, root, new GLPadding(10), new Dimension(260, 260));

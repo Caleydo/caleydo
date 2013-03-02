@@ -138,12 +138,10 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 	public float apply(float in) {
 		if (Float.isNaN(in))
 			return in;
-		if (mapping.size() < 2) {// default clamping
-			if (in < actMin)
-				return Float.NaN;
-			if (in > actMax)
-				return Float.NaN;
-			return linearMapping(in, actMin, 0, actMax, 1);
+		if (mapping.size() < 2) {// default
+			float[] m0 = getMappedMin();
+			float[] m1 = getMappedMax();
+			return linearMapping(in, m0[0], m0[1], m1[0], m1[1]);
 		}
 		if (mapping.containsKey(in))
 			return mapping.get(in);
@@ -163,6 +161,10 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 	}
 
 	private static float linearMapping(float in, float start, float startTo, float end, float endTo) {
+		if (in < start)
+			return Float.NaN;
+		if (in > end)
+			return Float.NaN;
 		// linear interpolation between start and end
 		float v = (in - start) / (end - start); // to ratio
 		// to mapped value
@@ -180,16 +182,30 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 	}
 
 	public float[] getMappedMin() {
-		if (mapping.size() < 2)
+		if (mapping.isEmpty())
 			return new float[] { actMin, 0 };
 		float k = mapping.firstKey();
+		if (mapping.size() == 1 && isDefaultMin(k)) {
+			return new float[] { actMin, 0 };
+		}
 		return new float[] { k, mapping.get(k) };
 	}
 
+	private boolean isDefaultMin(float k) {
+		boolean id = !isMinDefined();
+		boolean ad = !isMaxDefined();
+		if (id && ad && (Math.abs(k - actMin) < Math.abs(k - actMax)))
+			return true;
+		return id;
+	}
+
 	public float[] getMappedMax() {
-		if (mapping.size() < 2)
+		if (mapping.isEmpty())
 			return new float[] { actMax, 1 };
 		float k = mapping.lastKey();
+		if (mapping.size() == 1 && !isDefaultMin(k)) {
+			return new float[] { actMax, 1 };
+		}
 		return new float[] { k, mapping.get(k) };
 	}
 
@@ -222,6 +238,14 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 
 	public boolean hasDefinedMappingBounds() {
 		return !Float.isNaN(fromMin) && !Float.isNaN(fromMax);
+	}
+
+	public boolean isMinDefined() {
+		return !Float.isNaN(fromMin);
+	}
+
+	public boolean isMaxDefined() {
+		return !Float.isNaN(fromMax);
 	}
 
 	public boolean isMappingDefault() {
