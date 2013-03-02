@@ -58,7 +58,7 @@ final class SWTGLCanvas implements IGLCanvas {
 			public void widgetDisposed(DisposeEvent e) {
 				// problem if the canvas is not the the top level widget, only release(...) will be called -> call it
 				// manually on disposing
-				if (!PlatformUI.getWorkbench().isClosing()) {
+				if (PlatformUI.getWorkbench() != null && !PlatformUI.getWorkbench().isClosing()) {
 					// e.widget.dispose();
 					fireDispose(SWTGLCanvas.this.canvas);
 					SWTGLCanvas.this.canvas.getContext().destroy();

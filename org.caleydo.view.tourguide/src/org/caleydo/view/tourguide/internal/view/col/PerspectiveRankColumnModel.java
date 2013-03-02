@@ -41,6 +41,16 @@ public class PerspectiveRankColumnModel extends StringRankColumnModel {
 		this.stratomex = stratomex;
 	}
 
+	public PerspectiveRankColumnModel(PerspectiveRankColumnModel copy) {
+		super(copy);
+		this.stratomex = copy.stratomex;
+	}
+
+	@Override
+	public PerspectiveRankColumnModel clone() {
+		return new PerspectiveRankColumnModel(this);
+	}
+
 	@Override
 	public boolean isDestroyAble() {
 		return false;

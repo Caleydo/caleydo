@@ -72,6 +72,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	private boolean animateByDefault = true;
 
+	private IMoveTransition defaultMoveTransition = MoveTransitions.MOVE_AND_GROW_LINEAR;
+	private IInTransition defaultInTransition = InOutTransitions.SLIDE_HOR_IN;
+	private IOutTransition defaultOutTransition = InOutTransitions.SLIDE_HOR_OUT;
+
 
 	public AnimatedGLElementContainer() {
 
@@ -87,6 +91,35 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 */
 	public AnimatedGLElementContainer setAnimateByDefault(boolean animateByDefault) {
 		this.animateByDefault = animateByDefault;
+		return this;
+	}
+
+	/**
+	 * @param transition
+	 *            setter, see {@link defaultInTransition}
+	 */
+	public AnimatedGLElementContainer setDefaultInTransition(IInTransition transition) {
+		this.defaultInTransition = transition == null ? InOutTransitions.SLIDE_HOR_IN : transition;
+		return this;
+	}
+
+	/**
+	 * @param transition
+	 *            setter, see {@link defaultMoveTransition}
+	 */
+	public AnimatedGLElementContainer setDefaultMoveTransition(IMoveTransition transition) {
+		this.defaultMoveTransition = transition == null ? MoveTransitions.MOVE_AND_GROW_LINEAR
+				: transition;
+		return this;
+	}
+
+	/**
+	 * @param transition
+	 *            setter, see {@link defaultOutTransition}
+	 */
+	public AnimatedGLElementContainer setDefaultOutTransition(IOutTransition transition) {
+		this.defaultOutTransition = transition == null ? InOutTransitions.SLIDE_HOR_OUT
+				: transition;
 		return this;
 	}
 
@@ -204,7 +237,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 		final IDuration duration = elem.getLayoutDataAs(IDuration.class, Durations.DEFAULT);
 		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class,
-				MoveTransitions.MOVE_AND_GROW_LINEAR);
+ defaultMoveTransition);
 		MoveAnimation anim = new MoveAnimation(0, duration, elem.wrappee, animation);
 		return anim;
 	}
@@ -285,7 +318,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void add(GLElement child, int duration) {
-		add(child, duration, child.getLayoutDataAs(IInTransition.class, InOutTransitions.SLIDE_HOR_IN));
+		add(child, duration, child.getLayoutDataAs(IInTransition.class, defaultInTransition));
 	}
 
 	/**
@@ -312,7 +345,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void remove(GLElement child, int duration) {
-		remove(child, duration, child.getLayoutDataAs(IOutTransition.class, InOutTransitions.SLIDE_HOR_OUT));
+		remove(child, duration, child.getLayoutDataAs(IOutTransition.class, defaultOutTransition));
 	}
 
 	public final void remove(GLElement child, int duration, IOutTransition animation) {

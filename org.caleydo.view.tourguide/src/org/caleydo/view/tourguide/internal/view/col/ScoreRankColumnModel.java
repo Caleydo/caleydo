@@ -57,6 +57,18 @@ public class ScoreRankColumnModel extends FloatRankColumnModel implements IGLRen
 		setHeaderRenderer(this);
 	}
 
+	public ScoreRankColumnModel(ScoreRankColumnModel copy) {
+		super(copy);
+		this.score = copy.score;
+		this.headerMode = copy.headerMode;
+		setHeaderRenderer(this);
+	}
+
+	@Override
+	public ScoreRankColumnModel clone() {
+		return new ScoreRankColumnModel(this);
+	}
+
 	/**
 	 * @return the score, see {@link #score}
 	 */

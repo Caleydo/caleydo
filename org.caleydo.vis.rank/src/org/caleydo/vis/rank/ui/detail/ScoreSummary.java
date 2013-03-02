@@ -80,7 +80,7 @@ public class ScoreSummary extends GLElement {
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		// hist
 		SimpleHistogram hist = model.getHist(binsForWidth(w));
-		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.getValue(selectedRow));
+		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));
 		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker());
 	}
 

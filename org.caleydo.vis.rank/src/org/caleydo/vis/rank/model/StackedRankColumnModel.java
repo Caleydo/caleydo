@@ -24,7 +24,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
@@ -36,7 +35,7 @@ import org.caleydo.vis.rank.ui.detail.ScoreSummary;
  * @author Samuel Gratzl
  *
  */
-public class StackedRankColumnModel extends ACompositeRankColumnModel implements IMultiColumnMixin {
+public class StackedRankColumnModel extends AMultiRankColumnModel {
 	public static final String PROP_ALIGNMENT = "alignment";
 
 	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
@@ -53,6 +52,16 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 	public StackedRankColumnModel() {
 		super(Color.GRAY, new Color(0.90f, .90f, .90f));
 		setWeight(0);
+	}
+
+	public StackedRankColumnModel(StackedRankColumnModel copy) {
+		super(copy);
+		this.alignment = copy.alignment;
+	}
+
+	@Override
+	public StackedRankColumnModel clone() {
+		return new StackedRankColumnModel(this);
 	}
 
 	protected void onWeightChanged(float delta) {
@@ -97,17 +106,12 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 	}
 
 	@Override
-	public float getValue(IRow row) {
+	public float applyPrimitive(IRow row) {
 		float s = 0;
 		for (ARankColumnModel col : this) {
-			s += ((IRankableColumnMixin) col).getValue(row) * col.getWeight();
+			s += ((IRankableColumnMixin) col).applyPrimitive(row) * col.getWeight();
 		}
 		return s / getWeight();
-	}
-
-	@Override
-	public boolean isValueInferred(IRow row) {
-		return false;
 	}
 
 	@Override
@@ -115,7 +119,7 @@ public class StackedRankColumnModel extends ACompositeRankColumnModel implements
 		float[] s = new float[this.size()];
 		int i = 0;
 		for (ARankColumnModel col : this) {
-			s[i++] = ((IRankableColumnMixin) col).getValue(row) * col.getWeight();
+			s[i++] = ((IRankableColumnMixin) col).applyPrimitive(row) * col.getWeight();
 		}
 		return new MultiFloat(-1, s);
 	}

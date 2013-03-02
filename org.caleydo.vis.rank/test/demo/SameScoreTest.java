@@ -42,6 +42,12 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
  */
 public class SameScoreTest extends ARankTableDemo {
 
+	/**
+	 *
+	 */
+	public SameScoreTest() {
+		super("Same Score");
+	}
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
 		table.addColumn(new RankRankColumnModel());

@@ -46,9 +46,9 @@ import com.google.common.base.Function;
 
 /**
  * a special {@link IRankColumnModel} for Strings
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class StringRankColumnModel extends ABasicFilterableRankColumnModel implements IGLRenderer {
 	public static final Function<IRow, String> DFEAULT = new Function<IRow, String>() {
@@ -70,14 +70,16 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		this.data = data;
 	}
 
-	@Override
-	protected void init(RankTableModel table) {
-		super.init(table);
+	public StringRankColumnModel(StringRankColumnModel copy) {
+		super(copy);
+		setHeaderRenderer(getHeaderRenderer());
+		this.data = copy.data;
+		this.filter = copy.filter;
 	}
 
 	@Override
-	protected void takeDown(RankTableModel table) {
-		super.takeDown(table);
+	public StringRankColumnModel clone() {
+		return new StringRankColumnModel(this);
 	}
 
 	@Override

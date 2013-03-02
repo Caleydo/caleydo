@@ -79,12 +79,13 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	/**
 	 * @param canvas
 	 */
-	public GLSandBox(GLElement root, GLPadding padding, Dimension dim) {
+	public GLSandBox(String title, GLElement root, GLPadding padding, Dimension dim) {
 		IResourceLocator loader = ResourceLocators.chain(
 				ResourceLocators.classLoader(root.getClass().getClassLoader()), ResourceLocators.FILE);
 		this.display = new Display();
 		this.shell = new Shell(display);
 		shell.setLayout(new FillLayout());
+		shell.setText(title);
 		IGLCanvasFactory canvasFactory = new SWTGLCanvasFactory();
 		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 		this.canvas = canvasFactory.create(caps, shell);
@@ -351,7 +352,7 @@ public class GLSandBox implements GLEventListener, IGLElementParent, IGLElementC
 	}
 
 	public static void main(String[] args, GLElement root, GLPadding padding, Dimension dim) {
-		new GLSandBox(root, padding, dim).run();
+		new GLSandBox(root.getClass().getSimpleName(), root, padding, dim).run();
 	}
 
 }

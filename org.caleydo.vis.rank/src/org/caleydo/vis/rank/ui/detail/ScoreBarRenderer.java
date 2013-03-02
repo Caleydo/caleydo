@@ -47,7 +47,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null); // current row
-		float v = model.getValue(r);
+		float v = model.applyPrimitive(r);
 		boolean inferred = model.isValueInferred(r);
 		if (Float.isNaN(v) || v <= 0)
 			return;

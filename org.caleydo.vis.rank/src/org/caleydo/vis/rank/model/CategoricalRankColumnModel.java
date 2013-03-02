@@ -74,14 +74,17 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		this.selection.addAll(metaData.keySet());
 	}
 
-	@Override
-	protected void init(RankTableModel table) {
-		super.init(table);
+	public CategoricalRankColumnModel(CategoricalRankColumnModel<CATEGORY_TYPE> copy) {
+		super(copy);
+		setHeaderRenderer(getHeaderRenderer());
+		this.data = copy.data;
+		this.metaData = copy.metaData;
+		this.selection.addAll(copy.selection);
 	}
 
 	@Override
-	protected void takeDown(RankTableModel table) {
-		super.takeDown(table);
+	public CategoricalRankColumnModel<CATEGORY_TYPE> clone() {
+		return new CategoricalRankColumnModel<>(this);
 	}
 
 	@Override

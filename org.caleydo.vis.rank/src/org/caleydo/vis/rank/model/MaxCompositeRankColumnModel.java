@@ -30,7 +30,6 @@ import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.detail.MultiRenderer;
@@ -40,8 +39,8 @@ import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
  * @author Samuel Gratzl
  *
  */
-public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel implements IRankableColumnMixin,
-		IHideableColumnMixin, IExplodeableColumnMixin, IMultiColumnMixin {
+public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements IRankableColumnMixin,
+		IHideableColumnMixin, IExplodeableColumnMixin {
 
 	private final MultiRenderer valueRenderer;
 
@@ -53,6 +52,17 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f));
 		setHeaderRenderer(renderer);
 		this.valueRenderer = new MultiRenderer(this, layout);
+	}
+
+	public MaxCompositeRankColumnModel(MaxCompositeRankColumnModel copy) {
+		super(copy);
+		setHeaderRenderer(copy.getHeaderRenderer());
+		this.valueRenderer = new MultiRenderer(this, copy.valueRenderer.getLayout());
+	}
+
+	@Override
+	public MaxCompositeRankColumnModel clone() {
+		return new MaxCompositeRankColumnModel(this);
 	}
 
 	@Override
@@ -84,7 +94,7 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 		float[] vs = new float[size()];
 		int i = 0;
 		for (ARankColumnModel col : this) {
-			float v = ((IRankableColumnMixin) col).getValue(row);
+			float v = ((IRankableColumnMixin) col).applyPrimitive(row);
 			vs[i++] = v;
 			if (v > max) {
 				maxIndex = i - 1;
@@ -95,17 +105,12 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 	}
 
 	@Override
-	public boolean isValueInferred(IRow row) {
-		return false;
-	}
-
-	@Override
-	public float getValue(IRow row) {
+	public float applyPrimitive(IRow row) {
 		if (children.isEmpty())
 			return 0;
 		float max = Float.NEGATIVE_INFINITY;
 		for (ARankColumnModel col : this) {
-			float v = ((IRankableColumnMixin) col).getValue(row);
+			float v = ((IRankableColumnMixin) col).applyPrimitive(row);
 			max = Math.max(max, v);
 		}
 		if (max > 1) {
@@ -121,29 +126,6 @@ public class MaxCompositeRankColumnModel extends ACompositeRankColumnModel imple
 	public static boolean canBeChild(ARankColumnModel model) {
 		return model instanceof IRankableColumnMixin;
 	}
-
-	@Override
-	public boolean isHideAble() {
-		return parent.isHideAble(this);
-	}
-
-	@Override
-	public boolean hide() {
-		return parent.hide(this);
-	}
-
-	@Override
-	public boolean isDestroyAble() {
-		return parent.isDestroyAble(this);
-	}
-
-	@Override
-	public boolean destroy() {
-		if (isDestroyAble())
-			return getTable().destroy(this);
-		return false;
-	}
-
 
 	private class RepaintingGLElement extends GLElement {
 		private final PropertyChangeListener l = GLPropertyChangeListeners.repaintOnEvent(this);

@@ -75,7 +75,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case RankTableModel.PROP_INVALID:
+			case IRankColumnParent.PROP_INVALID:
 				if (!mapping.hasDefinedMappingBounds())
 					invalidAllFilter();
 				cacheHist = null;
@@ -103,7 +103,24 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 		this.missingValueInferer = missingValue;
 
 		setHeaderRenderer(header);
+	}
 
+	public FloatRankColumnModel(FloatRankColumnModel copy) {
+		super(copy);
+		this.data = copy.data;
+		this.mapping = new PiecewiseLinearMapping(copy.mapping);
+		this.missingValueInferer = copy.missingValueInferer;
+		setHeaderRenderer(copy.getHeaderRenderer());
+		this.missingValue = copy.missingValue;
+		this.dirtyMinMax = copy.dirtyMinMax;
+		this.cacheHist = copy.cacheHist;
+		this.selectionMin = copy.selectionMin;
+		this.selectionMax = copy.selectionMax;
+	}
+
+	@Override
+	public FloatRankColumnModel clone() {
+		return new FloatRankColumnModel(this);
 	}
 
 	public void addSelection(boolean isMin, float delta) {
@@ -120,15 +137,15 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
-	protected void init(RankTableModel table) {
-		table.addPropertyChangeListener(RankTableModel.PROP_INVALID, listerner);
-		super.init(table);
+	protected void init(IRankColumnParent parent) {
+		parent.addPropertyChangeListener(IRankColumnParent.PROP_INVALID, listerner);
+		super.init(parent);
 	}
 
 	@Override
-	protected void takeDown(RankTableModel table) {
-		table.removePropertyChangeListener(RankTableModel.PROP_INVALID, listerner);
-		super.takeDown(table);
+	protected void takeDown() {
+		parent.removePropertyChangeListener(IRankColumnParent.PROP_INVALID, listerner);
+		super.takeDown();
 	}
 
 	@Override
@@ -157,24 +174,23 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	private IFloatList asData() {
-		final RankTableModel table = getTable();
+		final int size = parent.getCurrentSize();
 		return new AFloatList() {
 			@Override
 			public float getPrimitive(int index) {
-				return data.applyPrimitive(table.get(index));
+				return data.applyPrimitive(parent.getCurrent(index));
 			}
 
 			@Override
 			public int size() {
-				return table.size();
+				return size;
 			}
 		};
 	}
 
 	private IFloatIterator asDataIterator() {
-		final RankTableModel table = getTable();
-		final List<IRow> data2 = table.getData();
-		final BitSet filter = table.getFilter();
+		final List<IRow> data2 = getTable().getData();
+		final BitSet filter = parent.getCurrentFilter();
 		return new IFloatIterator() {
 			int act = 0;
 			@Override
@@ -220,7 +236,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	private float computeMissingValue() {
 		if (Float.isNaN(missingValue)) {
-			missingValue = missingValueInferer.infer(asDataIterator(), getTable().size());
+			missingValue = missingValueInferer.infer(asDataIterator(), parent.getCurrentSize());
 		}
 		return missingValue;
 	}
@@ -234,7 +250,12 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
-	public float getValue(IRow row) {
+	public Float apply(IRow row) {
+		return applyPrimitive(row);
+	}
+
+	@Override
+	public float applyPrimitive(IRow row) {
 		return map(data.applyPrimitive(row));
 	}
 
@@ -255,18 +276,13 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	public SimpleHistogram getHist(int bins) {
 		if (cacheHist != null)
 			return cacheHist;
-		SimpleHistogram hist = new SimpleHistogram(bins);
-		for (IRow row : getTable()) {
-			hist.add(getValue(row));
-		}
-		cacheHist = hist;
-		return hist;
+		return cacheHist = DataUtils.getHist(bins, parent.getCurrentOrder(), this);
 	}
 
 	@Override
 	protected void updateMask(BitSet todo, List<IRow> data, BitSet mask) {
 		for (int i = todo.nextSetBit(0); i >= 0; i = todo.nextSetBit(i + 1)) {
-			float v = getValue(data.get(i));
+			float v = applyPrimitive(data.get(i));
 			mask.set(i++, (!Float.isNaN(v) && v >= selectionMin && v <= selectionMax));
 		}
 	}
@@ -409,7 +425,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			g.color(bgColor).fillRect(0, 0, w, h);
 			// hist
 			SimpleHistogram hist = getHist(RenderStyle.binsForWidth(w));
-			int selectedBin = selectedRow == null ? -1 : hist.getBinOf(getValue(selectedRow));
+			int selectedBin = selectedRow == null ? -1 : hist.getBinOf(applyPrimitive(selectedRow));
 			RenderUtils.renderHist(g, hist, w, h, selectedBin, color, color.darker());
 			// selection
 			if (w > 20)

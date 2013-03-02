@@ -26,22 +26,25 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class ABasicFilterableRankColumnModel extends ABasicRankColumnModel implements IFilterColumnMixin {
+public abstract class ABasicFilterableRankColumnModel extends ARankColumnModel implements IFilterColumnMixin,
+		IHideableColumnMixin, ICollapseableColumnMixin {
 
 	private final BitSet mask = new BitSet();
 	private final BitSet maskInvalid = new BitSet();
 
-	private final PropertyChangeListener listerner = new PropertyChangeListener() {
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case RankTableModel.PROP_DATA:
+			case IRankColumnParent.PROP_DATA:
 				@SuppressWarnings("unchecked")
 				Collection<IRow> news = (Collection<IRow>) evt.getNewValue();
 				maskInvalid.set(getTable().getDataSize() - news.size(), getTable().getDataSize());
@@ -54,16 +57,22 @@ public abstract class ABasicFilterableRankColumnModel extends ABasicRankColumnMo
 		super(color, bgColor);
 	}
 
+	public ABasicFilterableRankColumnModel(ABasicFilterableRankColumnModel copy) {
+		super(copy);
+		this.mask.or(copy.mask);
+		this.maskInvalid.or(copy.maskInvalid);
+	}
+
 	@Override
-	protected void init(RankTableModel table) {
-		table.addPropertyChangeListener(RankTableModel.PROP_DATA, listerner);
+	protected void init(IRankColumnParent table) {
+		table.addPropertyChangeListener(IRankColumnParent.PROP_DATA, listener);
 		super.init(table);
 	}
 
 	@Override
-	protected void takeDown(RankTableModel table) {
-		table.removePropertyChangeListener(RankTableModel.PROP_DATA, listerner);
-		super.takeDown(table);
+	protected void takeDown() {
+		parent.removePropertyChangeListener(IRankColumnParent.PROP_DATA, listener);
+		super.takeDown();
 	}
 
 	protected final void invalidAllFilter() {

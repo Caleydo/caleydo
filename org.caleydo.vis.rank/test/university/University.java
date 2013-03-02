@@ -46,10 +46,16 @@ import demo.ARankTableDemo;
 
 /**
  * @author Samuel Gratzl
- * 
+ *
  */
 public class University extends ARankTableDemo {
 
+	/**
+	 *
+	 */
+	public University() {
+		super("top 100 universties under 50 years");
+	}
 	@Override
 	protected void createModel() throws IOException, NoSuchFieldException {
 		List<UniversityRow> rows = readData();

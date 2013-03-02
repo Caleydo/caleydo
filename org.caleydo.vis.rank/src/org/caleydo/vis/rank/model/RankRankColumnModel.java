@@ -38,6 +38,16 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 		setWeight(20);
 	}
 
+	public RankRankColumnModel(RankRankColumnModel copy) {
+		super(copy);
+		setHeaderRenderer(getHeaderRenderer());
+	}
+
+	@Override
+	public RankRankColumnModel clone() {
+		return new RankRankColumnModel(this);
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new GLElement(); // dummy

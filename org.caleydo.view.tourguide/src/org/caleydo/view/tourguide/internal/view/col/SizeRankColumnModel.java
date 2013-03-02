@@ -67,6 +67,16 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 		setHeaderRenderer(this);
 	}
 
+	public SizeRankColumnModel(SizeRankColumnModel copy) {
+		super(copy);
+		setHeaderRenderer(this);
+	}
+
+	@Override
+	public SizeRankColumnModel clone() {
+		return new SizeRankColumnModel(this);
+	}
+
 	@Override
 	public GLElement createSummary(boolean interactive) {
 		return new MyHeaderElement(interactive);

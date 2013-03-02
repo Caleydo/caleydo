@@ -261,7 +261,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	}
 
 	private void scheduleAllOf(Collection<IScore> toCompute) {
-		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getFilter(), this);
+		ComputeForScoreJob job = new ComputeForScoreJob(toCompute, table.getData(), table.getCurrentFilter(), this);
 		if (job.hasThingsToDo()) {
 			getPopupLayer().show(waiting, null, 0);
 			job.schedule();

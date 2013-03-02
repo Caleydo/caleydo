@@ -87,7 +87,7 @@ public class GLGraphics {
 	 * @return whether an error was found
 	 */
 	public boolean checkError() {
-		return checkError("");
+		return checkErrorImpl("");
 	}
 
 	/**
@@ -98,10 +98,14 @@ public class GLGraphics {
 	 * @return whether an error was found
 	 */
 	public boolean checkError(String text) {
+		return checkErrorImpl(text);
+	}
+
+	private boolean checkErrorImpl(String text) {
 		int error = gl.glGetError();
 		if (error > 0) {
 			StackTraceElement[] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
-			StackTraceElement caller = stackTrace[1];
+			StackTraceElement caller = stackTrace[2];
 			System.err.println(caller.toString() + " " + error + " " + glu().gluErrorString(error) + ": " + text);
 			return true;
 		}

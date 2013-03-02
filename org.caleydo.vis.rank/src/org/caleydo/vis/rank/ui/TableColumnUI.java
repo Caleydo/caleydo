@@ -1,14 +1,10 @@
 package org.caleydo.vis.rank.ui;
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -16,13 +12,17 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.ui.anim.ReRankTransition;
 
-public class TableColumnUI extends GLElementContainer implements IGLLayout, IColumnRenderInfo {
+public class TableColumnUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo {
 	private final ARankColumnModel model;
 
 	public TableColumnUI(ARankColumnModel model) {
 		this.model = model;
 		this.setLayoutData(model);
+		this.setDefaultInTransition(ReRankTransition.INSTANCE);
+		this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
+		this.setDefaultOutTransition(ReRankTransition.INSTANCE);
 		this.setLayout(this);
 	}
 
@@ -33,16 +33,19 @@ public class TableColumnUI extends GLElementContainer implements IGLLayout, ICol
 		return model;
 	}
 
-	public TableColumnUI setData(Collection<IRow> rows, IColumModelLayout parent) {
-		Set<IRow> target = new LinkedHashSet<>(rows);
-		for (Iterator<GLElement> it = asList().iterator(); it.hasNext();) {
-			GLElement elem = it.next();
-			IRow row = elem.getLayoutDataAs(IRow.class, null);
-			if (!target.remove(row))
-				it.remove();
+	public TableColumnUI setData(Iterable<IRow> rows, IColumModelLayout parent) {
+		int s = size();
+		int i = 0;
+		Iterator<IRow> it = rows.iterator();
+		while (it.hasNext() && i < s) {
+			get(i++).setLayoutData(it.next());
 		}
-		for (IRow row : target) {
-			this.add(model.createValue().setLayoutData(row));
+		if (i < s) {
+			for (int j = s - 1; j >= i; j--)
+				remove(get(j));
+		} else {
+			while (it.hasNext())
+				this.add(model.createValue().setLayoutData(it.next()));
 		}
 		return this;
 	}

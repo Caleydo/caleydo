@@ -47,8 +47,9 @@ public abstract class ARankTableDemo extends GLSandBox {
 
 	protected final RankTableModel table;
 
-	public ARankTableDemo() {
-		super(new GLElementContainer(GLLayouts.flowVertical(0)), new GLPadding(5), new Dimension(800, 600));
+	public ARankTableDemo(String name) {
+		super(name, new GLElementContainer(GLLayouts.flowVertical(0)), new GLPadding(5),
+				new Dimension(800, 600));
 		this.table = new RankTableModel(new RankTableConfigBase() {
 			@Override
 			public boolean isInteractive() {
@@ -58,7 +59,6 @@ public abstract class ARankTableDemo extends GLSandBox {
 		try {
 			createModel();
 		} catch (NoSuchFieldException | IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		canvas.addKeyListener(new IGLKeyListener() {

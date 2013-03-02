@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.model.mixin;
 
 import java.awt.Color;
 
+import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 
@@ -31,15 +32,7 @@ import org.caleydo.vis.rank.model.SimpleHistogram;
  * @author Samuel Gratzl
  *
  */
-public interface IRankableColumnMixin extends IRankColumnModel {
-
-	/**
-	 * returns the normalized value of the given row
-	 *
-	 * @param row
-	 * @return
-	 */
-	float getValue(IRow row);
+public interface IRankableColumnMixin extends IRankColumnModel, IFloatFunction<IRow> {
 
 	boolean isValueInferred(IRow row);
 

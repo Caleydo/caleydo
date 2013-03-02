@@ -40,8 +40,9 @@ public class FloatInferrers {
 		@Override
 		public float infer(IFloatIterator it, int size) {
 			float[] tmp = new float[size];
-			for (int i = 0; it.hasNext(); ++i)
+			for (int i = 0; it.hasNext(); ++i) {
 				tmp[i] = it.nextPrimitive();
+			}
 			Arrays.sort(tmp);
 			if (size % 2 == 0)
 				return 0.5f*(tmp[size/2]+tmp[size/2+1]);

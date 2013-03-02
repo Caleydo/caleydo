@@ -45,6 +45,13 @@ public class MultiRenderer implements IGLRenderer {
 		this.layout = layout;
 	}
 
+	/**
+	 * @return the layout, see {@link #layout}
+	 */
+	public IRowHeightLayout getLayout() {
+		return layout;
+	}
+
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null);

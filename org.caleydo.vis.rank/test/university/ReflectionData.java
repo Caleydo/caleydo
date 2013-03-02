@@ -43,7 +43,6 @@ public class ReflectionData implements Function<IRow, String> {
 		try {
 			return Objects.toString(field.get(in));
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

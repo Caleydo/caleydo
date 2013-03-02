@@ -155,7 +155,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		if (isFlagSet(FLAG_MOVEABLE)) {
-			g.color(Color.LIGHT_GRAY).renderRoundedRect(true, 0, 0, w, 8, 3, 2, true, true, false, false);
+			g.color(Color.BLACK).renderRoundedRect(true, 0, 0, w, 8, 3, 2, true, true, false, false);
 		}
 		if (isFlagSet(FLAG_BORDER)) {
 			// g.color(Color.LIGHT_GRAY).fillRoundedRect(0, 0, w, h, 3);

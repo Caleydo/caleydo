@@ -25,8 +25,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
-
 import com.google.common.collect.Iterators;
 
 /**
@@ -34,7 +32,7 @@ import com.google.common.collect.Iterators;
  *
  */
 public abstract class ACompositeRankColumnModel extends ARankColumnModel implements Iterable<ARankColumnModel>,
-		IRankableColumnMixin, IRankColumnParent {
+		IRankColumnParent {
 	public static final String PROP_CHILDREN = "children";
 
 	protected final List<ARankColumnModel> children = new ArrayList<>(2);
@@ -42,6 +40,13 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	public ACompositeRankColumnModel(Color color,
 			Color bgColor) {
 		super(color, bgColor);
+	}
+
+	public ACompositeRankColumnModel(ACompositeRankColumnModel copy) {
+		super(copy);
+		for (ARankColumnModel c : copy.children) {
+			this.add(c.clone());
+		}
 	}
 
 	protected boolean canAdd(ARankColumnModel model) {
@@ -66,12 +71,12 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	protected void init(ARankColumnModel model) {
-		model.setParent(this);
+		model.init(this);
 		ARankColumnModel.uncollapse(model);
 	}
 
 	protected void takeDown(ARankColumnModel model) {
-		model.setParent(null);
+		model.takeDown();
 	}
 
 	public ARankColumnModel get(int index) {
@@ -159,7 +164,6 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		remove(model);
 	}
 
-
 	@Override
 	public void explode(ACompositeRankColumnModel model) {
 		int index = this.children.indexOf(model);
@@ -175,31 +179,6 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 			propertySupport.fireIndexedPropertyChange(PROP_CHILDREN, index + 1, null,
 					children.subList(1, children.size()));
 		}
-	}
-
-	public final Color[] getColors() {
-		Color[] colors = new Color[size()];
-		int i = 0;
-		for (ARankColumnModel child : this)
-			colors[i++] = child.getColor();
-		return colors;
-	}
-
-	public final SimpleHistogram[] getHists(int bins) {
-		SimpleHistogram[] hists = new SimpleHistogram[size()];
-		int i = 0;
-		for (ARankColumnModel child : this)
-			hists[i++] = ((IRankableColumnMixin) child).getHist(bins);
-		return hists;
-	}
-
-	@Override
-	public final SimpleHistogram getHist(int bins) {
-		SimpleHistogram hist = new SimpleHistogram(bins);
-		for (IRow row : getTable()) {
-			hist.add(getValue(row));
-		}
-		return hist;
 	}
 
 

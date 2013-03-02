@@ -46,6 +46,7 @@ import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
@@ -92,8 +93,8 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		this.rowLayout = rowLayout;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_ORDER, layoutOnChange);
-		this.table.addPropertyChangeListener(RankTableModel.PROP_INVALID, layoutOnChange);
-		this.table.addPropertyChangeListener(RankTableModel.PROP_DATA, updateData);
+		this.table.addPropertyChangeListener(IRankColumnParent.PROP_INVALID, layoutOnChange);
+		this.table.addPropertyChangeListener(IRankColumnParent.PROP_DATA, updateData);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
 		for (ARankColumnModel col : table.getColumns()) {
 			if (col instanceof StackedRankColumnModel) {
@@ -198,8 +199,8 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	protected void takeDown() {
 		this.table.removePropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
 		this.table.removePropertyChangeListener(RankTableModel.PROP_ORDER, layoutOnChange);
-		this.table.removePropertyChangeListener(RankTableModel.PROP_INVALID, layoutOnChange);
-		this.table.removePropertyChangeListener(RankTableModel.PROP_DATA, updateData);
+		this.table.removePropertyChangeListener(IRankColumnParent.PROP_INVALID, layoutOnChange);
+		this.table.removePropertyChangeListener(IRankColumnParent.PROP_DATA, updateData);
 		this.table.removePropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
 		for (GLElement col : this) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
@@ -269,8 +270,12 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			row.setBounds(RenderStyle.COLUMN_SPACE, y, w, hr - y);
 			y = hr;
 		}
+		hideUnused(children, w, h, used);
+	}
+
+	static void hideUnused(List<? extends IGLLayoutElement> children, float w, float h, BitSet used) {
 		for (int unused = used.nextSetBit(0); unused >= 0; unused = used.nextSetBit(unused + 1)) {
-			children.get(unused).setBounds(0, h, w, 0);
+			children.get(unused).setBounds(RenderStyle.COLUMN_SPACE, h, w, 0);
 		}
 	}
 
@@ -310,7 +315,6 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	public float[] getRowPositions() {
 		return rowPositions;
 	}
-
 }
 
 

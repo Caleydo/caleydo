@@ -61,6 +61,15 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 		}
 	}
 
+	public PiecewiseLinearMapping(PiecewiseLinearMapping copy) {
+		this.fromMin = copy.fromMin;
+		this.fromMax = copy.fromMax;
+		this.actMin = copy.actMin;
+		this.actMax = copy.actMax;
+		this.mapping.putAll(copy.mapping);
+		this.onChange = copy.onChange;
+	}
+
 	public String toJavaScript() {
 		StringBuilder b = new StringBuilder();
 		if (mapping.isEmpty())

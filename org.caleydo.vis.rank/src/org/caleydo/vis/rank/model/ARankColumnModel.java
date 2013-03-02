@@ -30,12 +30,13 @@ import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.IRankColumnModel;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class ARankColumnModel implements IDragInfo {
+public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 	public static final String PROP_WEIGHT = "weight";
 
 	protected final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
@@ -45,6 +46,7 @@ public abstract class ARankColumnModel implements IDragInfo {
 	private IGLRenderer header = GLRenderers.DUMMY;
 	protected final Color color;
 	protected final Color bgColor;
+	private boolean collapsed = false;
 
 	protected IRankColumnParent parent;
 
@@ -53,29 +55,33 @@ public abstract class ARankColumnModel implements IDragInfo {
 		this.bgColor = bgColor;
 	}
 
+	public ARankColumnModel(ARankColumnModel copy) {
+		this.color = copy.color;
+		this.bgColor = copy.bgColor;
+		this.weight = copy.weight;
+		this.parent = copy.parent;
+		this.collapsed = copy.collapsed;
+	}
+
+	@Override
+	public abstract ARankColumnModel clone();
+
 	protected final void setHeaderRenderer(IGLRenderer header) {
 		this.header = header;
 	}
 
-	protected void init(RankTableModel table) {
-
-	}
-
-	protected void takeDown(RankTableModel table) {
-
-	}
-
-	/**
-	 * @param parent
-	 *            setter, see {@link parent}
-	 */
-	void setParent(IRankColumnParent parent) {
+	protected void init(IRankColumnParent parent) {
 		this.parent = parent;
+	}
+
+	protected void takeDown() {
+		this.parent = null;
 	}
 
 	/**
 	 * @return the parent, see {@link #parent}
 	 */
+	@Override
 	public IRankColumnParent getParent() {
 		return parent;
 	}
@@ -95,10 +101,6 @@ public abstract class ARankColumnModel implements IDragInfo {
 	}
 
 	public float getWeight() {
-		return weight;
-	}
-
-	public float getPreferredWidth() {
 		return weight;
 	}
 
@@ -144,6 +146,7 @@ public abstract class ARankColumnModel implements IDragInfo {
 	/**
 	 * @return the table, see {@link #table}
 	 */
+	@Override
 	public RankTableModel getTable() {
 		return parent.getTable();
 	}
@@ -194,5 +197,46 @@ public abstract class ARankColumnModel implements IDragInfo {
 	static void uncollapse(ARankColumnModel model) {
 		if (model instanceof ICollapseableColumnMixin)
 			((ICollapseableColumnMixin) model).setCollapsed(false);
+	}
+
+	public boolean isCollapsed() {
+		return collapsed;
+	}
+
+	public float getPreferredWidth() {
+		if (isCollapsed())
+			return ICollapseableColumnMixin.COLLAPSED_WIDTH;
+		return getWeight();
+	}
+
+	public final boolean isCollapseAble() {
+		return parent.isCollapseAble(this);
+	}
+
+	public void setCollapsed(boolean collapsed) {
+		if (this.collapsed == collapsed)
+			return;
+		if (collapsed && !parent.isCollapseAble(this))
+			return;
+		propertySupport.firePropertyChange(ICollapseableColumnMixin.PROP_COLLAPSED, this.collapsed,
+				this.collapsed = collapsed);
+	}
+
+	public boolean hide() {
+		return parent.hide(this);
+	}
+
+	public boolean isHideAble() {
+		return parent.isHideAble(this);
+	}
+
+	public boolean isDestroyAble() {
+		return parent.isDestroyAble(this);
+	}
+
+	public boolean destroy() {
+		if (!isDestroyAble())
+			return false;
+		return getTable().destroy(this);
 	}
 }

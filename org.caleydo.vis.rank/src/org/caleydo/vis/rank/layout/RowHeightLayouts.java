@@ -35,7 +35,7 @@ public class RowHeightLayouts {
 		/**
 		 * returns a computed list of row heights, when it is smaller than the number of rows, the remaining rows will
 		 * be hidden
-		 * 
+		 *
 		 * @param numRows
 		 *            the number of visible rows
 		 * @param selectedRowIndex
@@ -60,17 +60,30 @@ public class RowHeightLayouts {
 	public static final IRowHeightLayout LINEAR = new IRowHeightLayout() {
 		@Override
 		public float[] compute(int numRows, int selectedRowIndex, float h) {
+			final float firstHeight = 22;
+			final float selectedHeight = 35;
+			final float minHeight = 3;
+			final float minDelta = 0.25f;
+			final float maxDelta = 0.75f;
+
+			int numDeltas = (numRows - 1) * (numRows) / 2;
+			if ((firstHeight * numRows - numDeltas * minDelta) < h) {
+				// TODO
+				System.out.println();
+			}
+
 			float[] r = new float[numRows];
-			float act = 22;
+			float act = firstHeight;
+
 			float delta = -0.25f;
 			float acc = 0;
 			for (int i = 0; i < numRows; ++i) {
 				r[i] = act;
 				act += delta;
-				if (act <= 3)
+				if (act <= minHeight)
 					delta = 0;
 				if (i == selectedRowIndex) {
-					r[i] = 40;
+					r[i] = selectedHeight;
 				}
 				acc += r[i];
 				if (acc >= (h - act)) {

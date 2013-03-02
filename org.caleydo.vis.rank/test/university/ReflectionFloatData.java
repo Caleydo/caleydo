@@ -42,7 +42,6 @@ public class ReflectionFloatData extends AFloatFunction<IRow> {
 			Number v = (Number) field.get(in);
 			return v.floatValue();
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return Float.NaN;

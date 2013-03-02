@@ -103,8 +103,10 @@
 		</copy>
 		
 		<copy todir="${tmp.location}">
-			<zipfileset src="deploy/jar-in-jar-loader.zip" />
+			<zipfileset src="${eclipse.plugins}/org.eclipse.jdt.ui_3.8.1.v20120814-144251.jar" includes="jar-in-jar-loader.zip"/>
 		</copy>
+		<unzip dest="${tmp.location}" src="${tmp.location}/jar-in-jar-loader.zip" />
+		<delete file="${tmp.location}/jar-in-jar-loader.zip" />
 		
 		<jar destfile="target/University.jar" basedir="${tmp.location}">
 			<manifest>

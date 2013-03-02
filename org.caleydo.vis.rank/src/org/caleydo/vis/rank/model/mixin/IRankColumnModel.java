@@ -33,4 +33,6 @@ public interface IRankColumnModel {
 	RankTableModel getTable();
 
 	IRankColumnModel getParent();
+
+	IRankColumnModel clone();
 }
