@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
@@ -41,6 +42,8 @@ import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.InOutTransitionBase;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -71,11 +74,14 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private String pathEventSpace = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
 
-	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(GLLayouts.flowHorizontal(10));
+	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(true,
+			10, GLPadding.ZERO));
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
-	private AnimatedGLElementContainer pathwayColumn = new AnimatedGLElementContainer(GLLayouts.flowVertical(10));
+	private AnimatedGLElementContainer pathwayColumn = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(false,
+			10, GLPadding.ZERO));
 	private GLSubGraphAugmentation augmentation = new GLSubGraphAugmentation();
-	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(GLLayouts.flowHorizontal(10));
+	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(
+			true, 10, GLPadding.ZERO));
 
 	private GLPathwayBackground currentActiveBackground = null;
 
@@ -113,13 +119,12 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	public GLSubGraph(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-		GLElementContainer column = new GLElementContainer(GLLayouts.flowVertical(10));
+		GLElementContainer column = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		column.add(nodeInfoContainer);
-		pathwayColumn.setLayoutData(0.5f);
 		RankingElement rankingElement = new RankingElement(this);
-		rankingElement.setLayoutData(0.2f);
+		rankingElement.setSize(200, Float.NaN);
 		baseContainer.add(rankingElement);
 		baseContainer.add(pathwayColumn);
 
@@ -190,6 +195,13 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			pathInfo = new MultiFormInfo();
 			createMultiformRenderer(tablePerspectives, EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2),
 					baseContainer, 0.3f, pathInfo);
+			// This assumes that a path level 2 view exists.
+			int rendererID = pathInfo.embeddingIDToRendererIDs.get(EEmbeddingID.PATH_LEVEL2).get(0);
+			if (pathInfo.multiFormRenderer.getActiveRendererID() != rendererID) {
+				pathInfo.multiFormRenderer.setActive(rendererID);
+			} else {
+				setPathLevel(EEmbeddingID.PATH_LEVEL2);
+			}
 
 		}
 	}
@@ -254,7 +266,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 				List<Integer> rendererIDList = info.embeddingIDToRendererIDs.get(embeddingID);
 				if (rendererIDList == null) {
 					rendererIDList = new ArrayList<>(ids.size());
-					info.embeddingIDToRendererIDs.put(embeddingID, rendererIDList);
+					info.embeddingIDToRendererIDs.put(embedding, rendererIDList);
 				}
 
 				int rendererID = renderer.addPluginVisualization(viewID, getViewType(), embeddingID, tablePerspectives,
@@ -274,7 +286,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		}
 
-		GLElementContainer multiFormContainer = new GLElementContainer(GLLayouts.flowVertical(1));
+		GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
+				GLPadding.ZERO));
 		multiFormContainer.add(new GLTitleBar(pathway == null ? "" : pathway.getTitle()));
 		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer);
 		multiFormContainer.add(multiFormRendererAdapter);
@@ -282,19 +295,18 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
 		GLPathwayBackground bg = new GLPathwayBackground(this, viewSwitchingBar);
-		GLElementContainer barContainer = new GLElementContainer(GLLayouts.flowVertical(0));
-		GLElementContainer barRow = new GLElementContainer(GLLayouts.flowHorizontal(0));
-		barContainer.add(new GLElement().setSize(Float.NaN, 2));
-		barContainer.add(barRow);
+		GLElementContainer barRow = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0,
+				new GLPadding(0, 2, 5, 0)));
+
 		barRow.add(new GLElement());
 		barRow.add(viewSwitchingBar);
-		barRow.add(new GLElement().setSize(5, Float.NaN));
 
 		backgroundContainer.add(bg);
 		backgroundContainer.add(multiFormContainer);
-		backgroundContainer.add(barContainer);
+		backgroundContainer.add(barRow);
 
 		info.container = multiFormRendererAdapter;
+		info.window = backgroundContainer;
 
 		// List<Pair<MultiFormRenderer, GLElement>> embeddingSpecificRenderers = multiFormRenderers.get(embeddingID);
 		//
@@ -468,6 +480,25 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	@Override
 	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
+
+		if (pathInfo == null || !pathInfo.isInitialized())
+			return;
+		if (multiFormRenderer == pathInfo.multiFormRenderer) {
+			EEmbeddingID embeddingID = pathInfo.getEmbeddingIDFromRendererID(rendererID);
+			setPathLevel(embeddingID);
+		}
+	}
+
+	private void setPathLevel(EEmbeddingID embeddingID) {
+		if (embeddingID == null)
+			return;
+		if (embeddingID == EEmbeddingID.PATH_LEVEL1) {
+			pathInfo.window.setSize(Float.NaN, Float.NaN);
+			pathInfo.window.setLayoutData(0.5f);
+		} else if (embeddingID == EEmbeddingID.PATH_LEVEL2) {
+			pathInfo.window.setLayoutData(Float.NaN);
+			pathInfo.window.setSize(150, Float.NaN);
+		}
 		isLayoutDirty = true;
 	}
 
@@ -518,9 +549,34 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 *
 	 */
 	private class MultiFormInfo {
+		/**
+		 * The multiform renderer.
+		 */
 		protected MultiFormRenderer multiFormRenderer;
-		protected GLElement container;
-		protected Map<String, List<Integer>> embeddingIDToRendererIDs = new HashMap<>();
+		/**
+		 * The element that represents the "window" of the multiform renderer, which includes a title bar. This element
+		 * should be used for resizing.
+		 */
+		protected GLElement window;
+		/**
+		 * The parent {@link GLElementAdapter} of this container.
+		 */
+		protected GLElementAdapter container;
+		protected Map<EEmbeddingID, List<Integer>> embeddingIDToRendererIDs = new HashMap<>();
+
+		protected boolean isInitialized() {
+			return multiFormRenderer != null && window != null && container != null && embeddingIDToRendererIDs != null;
+		}
+
+		protected EEmbeddingID getEmbeddingIDFromRendererID(int rendererID) {
+			for (Entry<EEmbeddingID, List<Integer>> entry : embeddingIDToRendererIDs.entrySet()) {
+				List<Integer> rendererIDs = entry.getValue();
+				if (rendererIDs.contains(rendererID)) {
+					return entry.getKey();
+				}
+			}
+			return null;
+		}
 	}
 
 	/**
@@ -531,6 +587,11 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	 */
 	private class PathwayMultiFormInfo extends MultiFormInfo {
 		protected PathwayGraph pathway;
+
+		@Override
+		protected boolean isInitialized() {
+			return super.isInitialized() && pathway != null;
+		}
 	}
 
 	private class PathEventSpaceHandler {
