@@ -248,7 +248,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		tablePerspectives = new ArrayList<TablePerspective>();
 
-		parentGLCanvas.addMouseListener(glMouseWheelListener);
 
 		registerPickingListeners();
 	}

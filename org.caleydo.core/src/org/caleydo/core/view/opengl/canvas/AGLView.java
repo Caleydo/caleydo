@@ -244,6 +244,8 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
 
+		parentGLCanvas.addMouseListener(glMouseWheelListener);
+
 	}
 
 	@Override
@@ -392,7 +394,7 @@ public abstract class AGLView extends AView implements IGLView, GLEventListener,
 
 	/**
 	 * hook for custom view frustum layouts
-	 * 
+	 *
 	 * @param width
 	 * @param height
 	 */

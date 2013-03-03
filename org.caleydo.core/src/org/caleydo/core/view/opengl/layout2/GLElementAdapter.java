@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ALayoutRenderer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.util.Zoomer;
 
 /**
  * an adapter to use a {@link ALayoutRenderer} as as {@link GLElement}
@@ -45,6 +46,7 @@ public class GLElementAdapter extends GLElement {
 	private final LayoutManager layout;
 	private final ViewFrustum viewFrustum;
 	private final PixelGLConverter pixelGLConverter;
+	private final AGLView view;
 
 	/**
 	 * the underlying element
@@ -56,6 +58,7 @@ public class GLElementAdapter extends GLElement {
 	 *            the base view for getting status information
 	 */
 	public GLElementAdapter(AGLView view) {
+		this.view = view;
 		this.viewFrustum = new ViewFrustum();
 		this.viewFrustum.setNear(view.getViewFrustum().getNear());
 		this.viewFrustum.setFar(view.getViewFrustum().getFar());
@@ -70,6 +73,10 @@ public class GLElementAdapter extends GLElement {
 		setRenderer(renderer);
 	}
 
+	public GLElementAdapter(AGLView view, ALayoutRenderer renderer, boolean isZoomable) {
+		this(view);
+		setRenderer(renderer, isZoomable);
+	}
 
 	@Override
 	protected void takeDown() {
@@ -81,13 +88,20 @@ public class GLElementAdapter extends GLElement {
 		super.takeDown();
 	}
 
+	public GLElementAdapter setRenderer(ALayoutRenderer renderer) {
+		return setRenderer(renderer, false);
+	}
+
 	/**
 	 * @param renderer
 	 *            setter, see {@link renderer}
 	 */
-	public GLElementAdapter setRenderer(ALayoutRenderer renderer) {
+	public GLElementAdapter setRenderer(ALayoutRenderer renderer, boolean isZoomable) {
 		if (this.wrappee == null) {
 			this.wrappee = new ElementLayout("wrappee");
+			if (isZoomable) {
+				this.wrappee.setZoomer(new Zoomer(view, wrappee));
+			}
 		}
 		this.wrappee.setRenderer(renderer);
 		return this;

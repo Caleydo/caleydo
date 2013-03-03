@@ -170,7 +170,7 @@ public class VerticalPathRenderer extends APathwayPathRenderer {
 	protected void renderContent(GL2 gl) {
 		GLU glu = new GLU();
 		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 
 		renderPathwayBorders(gl);

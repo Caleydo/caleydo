@@ -108,7 +108,6 @@ import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
 
-
 /**
  * Single OpenGL2 pathway view
  *
@@ -198,7 +197,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
 
-
 	/**
 	 * Determines whether the paths should be selectable via mouse click.
 	 */
@@ -258,8 +256,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 		if (allPaths.size() == 1)
 			selectedPathID = 0;
-		else
-		{
+		else {
 			selectedPathID++;
 
 			if (selectedPathID > allPaths.size() - 1)
@@ -535,13 +532,13 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 				// code adapted from documentation at
 				// http://docs.oracle.com/javase/6/docs/api/java/awt/image/PixelGrabber.html
 				int[] pixels = bubbleSet.getBubbleSetGLRenderer().getPxl(pickX, pickX);
-				 int alpha = (pixels[0] >> 24) & 0xff;
+				int alpha = (pixels[0] >> 24) & 0xff;
 				int red = (pixels[0] >> 16) & 0xff;
-				 int green = (pixels[0] >> 8) & 0xff;
-				 int blue = (pixels[0]) & 0xff;
-//				 System.out.println("DENIS_DEBUG:: pickedRed:" + red +
-//				 " pickedGreen:" + green + " pickedBlue:" + blue
-//				 + " pickedAlpha:" + alpha);
+				int green = (pixels[0] >> 8) & 0xff;
+				int blue = (pixels[0]) & 0xff;
+				// System.out.println("DENIS_DEBUG:: pickedRed:" + red +
+				// " pickedGreen:" + green + " pickedBlue:" + blue
+				// + " pickedAlpha:" + alpha);
 				// look up color
 				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
 						.getColorList("qualitativeColors");
@@ -553,7 +550,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 					cComponents = c.getRGB();
 					if (red > (int) (cComponents[0] * 255f) - threshold
 							&& red < (int) (cComponents[0] * 255f) + threshold) {
-						 System.out.println("DENIS_DEBUG:: found usedColor id="+ i);
+						System.out.println("DENIS_DEBUG:: found usedColor id=" + i);
 						// select
 						selectedPathID = i;
 						if (selectedPathID > allPaths.size() - 1)
@@ -613,7 +610,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		// gl.glVertex3f(1, 0, 0);
 		// gl.glEnd();
 
-		if (true) {
+		if (isDisplayListDirty) {
 			calculatePathwayScaling(gl, pathway);
 			rebuildPathwayDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -708,33 +705,31 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		gl.glPopMatrix();
 	}
 
-
 	private void overlayBubbleSets(GL2 gl) {
 		if (allPaths == null)
 			return;
 
 		if (isBubbleTextureDirty) {
-//			//allPaths
+			// //allPaths
 			this.bubbleSet.clear();
 			this.bubbleSet.setPathwayGraph(pathway);
 
-			//this.bubbleSet.addAllPaths(allPaths);
+			// this.bubbleSet.addAllPaths(allPaths);
 
 			this.bubbleSet.addPathSegements(pathSegments);
 			this.bubbleSet.addPortals(portalVertexReps);
 
-			//update texture
+			// update texture
 			this.bubbleSet.getBubbleSetGLRenderer().setSize(pathway.getWidth(), pathway.getHeight());
-			this.bubbleSet.getBubbleSetGLRenderer().update(gl,SelectionType.SELECTION.getColor(),selectedPathID);
+			this.bubbleSet.getBubbleSetGLRenderer().update(gl, SelectionType.SELECTION.getColor(), selectedPathID);
 			isBubbleTextureDirty = false;
 		}
 
 		gl.glPushName(generalManager.getViewManager().getPickingManager()
 				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 		this.bubbleSet.getBubbleSetGLRenderer().render(gl,
-					pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
-					pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight())
-					);
+				pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth()),
+				pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight()));
 		gl.glPopName();
 	}
 
@@ -1235,8 +1230,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		} else {// //////// select end node /////////////////////////
 			if (pathStartVertexRep == null)
 				return;
-			if(!pathway.containsVertex(pathStartVertexRep)){	
-				isPathStartSelected = false; 
+			if (!pathway.containsVertex(pathStartVertexRep)) {
+				isPathStartSelected = false;
 				return;
 			}
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
@@ -1510,7 +1505,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	public synchronized void addVertexRepBasedContextMenuItem(VertexRepBasedContextMenuItem item) {
 		addedContextMenuItems.add(item);
 	}
-
 
 	public void enablePathSelection(boolean isPathSelection) {
 		this.isPathSelectionMode = isPathSelection;

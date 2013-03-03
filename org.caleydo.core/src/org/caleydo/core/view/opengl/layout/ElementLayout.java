@@ -498,7 +498,10 @@ public class ElementLayout implements Comparable<ElementLayout> {
 	}
 
 	public void setZoomer(Zoomer zoomer) {
+		if (this.zoomer != null)
+			this.zoomer.destroy();
 		this.zoomer = zoomer;
+
 	}
 
 	/**

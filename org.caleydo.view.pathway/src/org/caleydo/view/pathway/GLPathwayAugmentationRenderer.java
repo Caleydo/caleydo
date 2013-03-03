@@ -230,7 +230,8 @@ public class GLPathwayAugmentationRenderer {
 
 	private void buildEnzymeNodeDisplayList(final GL2 gl) {
 
-		enzymeNodeDisplayListId = gl.glGenLists(1);
+		if (enzymeNodeDisplayListId == -1)
+			enzymeNodeDisplayListId = gl.glGenLists(1);
 
 		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
@@ -244,7 +245,8 @@ public class GLPathwayAugmentationRenderer {
 
 	private void buildUpscaledEnzymeNodeDisplayList(final GL2 gl) {
 
-		upscaledFilledEnzymeNodeDisplayListId = gl.glGenLists(1);
+		if (upscaledFilledEnzymeNodeDisplayListId == -1)
+			upscaledFilledEnzymeNodeDisplayListId = gl.glGenLists(1);
 
 		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
@@ -263,7 +265,8 @@ public class GLPathwayAugmentationRenderer {
 
 	protected void buildUpscaledFramedEnzymeNodeDisplayList(final GL2 gl) {
 
-		upscaledFramedEnzymeNodeDisplayListID = gl.glGenLists(1);
+		if (upscaledFramedEnzymeNodeDisplayListID == -1)
+			upscaledFramedEnzymeNodeDisplayListID = gl.glGenLists(1);
 
 		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
@@ -281,8 +284,10 @@ public class GLPathwayAugmentationRenderer {
 
 	protected void buildFramedEnzymeNodeDisplayList(final GL2 gl) {
 
-		framedEnzymeNodeDisplayListId = gl.glGenLists(1);
-		framedMappedEnzymeNodeDisplayListId = gl.glGenLists(1);
+		if (framedEnzymeNodeDisplayListId == -1)
+			framedEnzymeNodeDisplayListId = gl.glGenLists(1);
+		if (framedMappedEnzymeNodeDisplayListId == -1)
+			framedMappedEnzymeNodeDisplayListId = gl.glGenLists(1);
 
 		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
@@ -307,7 +312,8 @@ public class GLPathwayAugmentationRenderer {
 
 	protected void buildCompoundNodeDisplayList(final GL2 gl) {
 		// Creating display list for node cube objects
-		compoundNodeDisplayListId = gl.glGenLists(1);
+		if (compoundNodeDisplayListId == -1)
+			compoundNodeDisplayListId = gl.glGenLists(1);
 
 		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 				PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
@@ -321,7 +327,8 @@ public class GLPathwayAugmentationRenderer {
 
 	protected void buildFramedCompoundNodeDisplayList(final GL2 gl) {
 		// Creating display list for node cube objects
-		framedCompoundNodeDisplayListId = gl.glGenLists(1);
+		if (framedCompoundNodeDisplayListId == -1)
+			framedCompoundNodeDisplayListId = gl.glGenLists(1);
 
 		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 				PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
