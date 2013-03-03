@@ -26,9 +26,9 @@ import java.util.List;
  *
  */
 public class GLFlowLayout implements IGLLayout {
-	private final boolean horizontal;
-	private final float gap;
-	private final GLPadding padding;
+	protected final boolean horizontal;
+	protected final float gap;
+	protected final GLPadding padding;
 
 	public GLFlowLayout(boolean horizontal, float gap, GLPadding padding) {
 		this.horizontal = horizontal;
@@ -87,18 +87,18 @@ public class GLFlowLayout implements IGLLayout {
 		}
 	}
 
-	private static boolean isDefault(float v) {
+	protected static boolean isDefault(float v) {
 		return v < 0 || Float.isNaN(v);
 	}
 
-	private void setSize(float w, float h, IGLLayoutElement child, float value) {
+	protected void setSize(float w, float h, IGLLayoutElement child, float value) {
 		if (horizontal)
 			child.setSize(value, grab(child.getSetHeight(), h));
 		else
 			child.setSize(grab(child.getSetWidth(), w), value);
 	}
 
-	static float grab(float v, float v_full) {
+	protected static float grab(float v, float v_full) {
 		return isDefault(v) ? v_full : v;
 	}
 }
