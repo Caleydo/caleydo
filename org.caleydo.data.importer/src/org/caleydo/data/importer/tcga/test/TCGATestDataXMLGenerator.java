@@ -36,6 +36,7 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
+import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
  * Creates and parameterizes a series of {@link DataSetDescription}s for the TCGA dataset. Writes the result to an xml
@@ -47,7 +48,7 @@ import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 
 	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
-			+ System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
+			+ System.getProperty("file.separator") + "Dropbox/Caleydo/data/tcga/20110728/gbm/";
 
 	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
 	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
@@ -66,8 +67,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 
 	public static final String MUTATION = DROPBOX_GBM_FOLDER
 			+ "mutation/mut_patient_centric_table_public_transposed_01.txt";
-
-	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 
 	private IDSpecification sampleIDSpecification;
 
@@ -90,8 +89,9 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression("-", "\\.");
-		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setReplacementExpression(TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
+		idTypeParsingRules.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
@@ -252,7 +252,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		categoricalClassDescription.addCategoryProperty(1, "Low level amplification",
 				Colors.RED.getColorWithSpecificBrighness(0.5f));
 		categoricalClassDescription.addCategoryProperty(2, "High level amplification", Colors.RED);
-
 
 		// groupLabels.add("Homozygous deletion");
 		// groupLabels.add("Heterozygous deletion");

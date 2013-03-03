@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.test;
 
@@ -30,81 +27,43 @@ import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
- * Generator class that writes the loading information of a the TCGA gene-referenced data
- * sets with all genes to an XML file.
+ * Generator class that writes the loading information of a the TCGA gene-referenced data sets with all genes to an XML
+ * file.
  *
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
+public class BioVisEnRouteTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 	/**
 	 * @param arguments
 	 */
-	public GeneDataTCGADataXMLGenerator(String[] arguments) {
+	public BioVisEnRouteTCGADataXMLGenerator(String[] arguments) {
 		super(arguments);
 	}
 
 	public static final String DROPBOX_BIOVIS_FOLDER = System.getProperty("user.home")
-			+ System.getProperty("file.separator")
-			+ "Dropbox/TCGA GDAC/Omics Integration/biovis_paper_data/";
+			+ System.getProperty("file.separator") + "Dropbox/Caleydo/data/biovis_paper_data/";
 
 	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
-			+ System.getProperty("file.separator")
-			+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
-
-
-//	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "GBM.medianexp.txt";
+			+ System.getProperty("file.separator") + "Dropbox/Caleydo/data/tcga/20110728/gbm/";
 
 	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "sampled/GBM.medianexp.txt";
 
+	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
 
-	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER
-			+ "mrna_cnmf/cnmf.membership.txt";
+	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER + "sampled/all_thresholded_by_genes.txt";
 
-//	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER
-//			+ "all_thresholded_by_genes.txt";
-	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER
-			+ "sampled/all_thresholded_by_genes.txt";
-
-	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER
-			+ "ground_truth/2011_exp_assignments.txt";
-
-	// public static final String CLINICAL = DROPBOX_BIOVIS_FOLDER
-	// + "clinical/clinical_patient_public_GBM.txt";
-	//
-	// public static final String MUTATION = DROPBOX_BIOVIS_FOLDER
-	// + "mutation/mut_patient_centric_table_public_transposed_01.txt";
+	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER + "ground_truth/2011_exp_assignments.txt";
 
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "caleydo_data.xml";
 
-
 	private IDSpecification sampleIDSpecification;
-
-	/*
-	 * public static final String DROPBOX_GBM_FOLDER =
-	 * System.getProperty("user.home") + System.getProperty("file.separator") +
-	 * "Dropbox/TCGA GDAC/Omics Integration/testdata/20111026/brca/"; public
-	 * static final String MRNA = DROPBOX_GBM_FOLDER +
-	 * "mrna_cnmf/outputprefix.expclu.gct"; public static final String
-	 * MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
-	 * public static final String MIRNA = DROPBOX_GBM_FOLDER +
-	 * "mir_cnmf/cnmf.normalized.gct"; public static final String MIRNA_GROUPING
-	 * = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt"; public static
-	 * final String METHYLATION = DROPBOX_GBM_FOLDER +
-	 * "methylation_cnmf/cnmf.normalized.gct"; public static final String
-	 * METHYLATION_GROUPING = DROPBOX_GBM_FOLDER +
-	 * "methylation_cnmf/cnmf.membership.txt"; public static final String
-	 * COPY_NUMBER = DROPBOX_GBM_FOLDER +
-	 * "copy_number/all_thresholded_by_genes.txt"; public static final String
-	 * OUTPUT_FILE_PATH = System.getProperty("user.home") +
-	 * System.getProperty("file.separator") + "tcga_brca_data.xml";
-	 */
 
 	public static void main(String[] args) {
 
-		GeneDataTCGADataXMLGenerator generator = new GeneDataTCGADataXMLGenerator(args);
+		BioVisEnRouteTCGADataXMLGenerator generator = new BioVisEnRouteTCGADataXMLGenerator(args);
 		generator.run();
 	}
 
@@ -115,8 +74,7 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+		idTypeParsingRules.setReplacementExpression(TCGADefinitions.TCGA_REPLACEMENT_STRING,
 				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		idTypeParsingRules.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setDefault(true);
@@ -149,8 +107,7 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		mrnaData.setRowIDSpecification(geneIDSpecification);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
-		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
-				MRNA_GROUPING);
+		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(MRNA_GROUPING);
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(firehoseClustering);
