@@ -289,7 +289,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
 				GLPadding.ZERO));
 		multiFormContainer.add(new GLTitleBar(pathway == null ? "" : pathway.getTitle()));
-		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer);
+		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer, true);
 		multiFormContainer.add(multiFormRendererAdapter);
 		// multiFormRendererAdapter.onPick(pl);
 
