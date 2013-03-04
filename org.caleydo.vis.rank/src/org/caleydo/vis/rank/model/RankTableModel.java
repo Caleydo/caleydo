@@ -420,7 +420,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	@Override
 	public void takeSnapshot(ARankColumnModel model) {
 		ARankColumnModel c = model.clone();
-		FreezedRankColumnModel freezed = new FreezedRankColumnModel(getOrder(), getCurrentFilter());
+		FrozenRankColumnModel freezed = new FrozenRankColumnModel(getOrder(), getCurrentFilter());
 		this.addColumn(freezed);
 		freezed.add(c);
 	}
