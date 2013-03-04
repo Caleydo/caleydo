@@ -70,7 +70,7 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 		if (!model.isCollapsed()) {
 			// render the lines between the orders
 			IRow selectedRow = model.getTable().getSelectedRow();
-			renderOrderLines(g, w, h, selectedRow == null ? -1 : selectedRow.getIndex());
+			renderOrderLines(g, selectedRow == null ? -1 : selectedRow.getIndex());
 
 			// highlight selected row
 			if (selectedRow != null && indexToRank.containsKey(selectedRow.getIndex())) {
@@ -115,7 +115,8 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 						float yr = rightRank == 0 ? 0 : right[rightRank - 1];
 						float hr = right[rightRank];
 						renderBand(g, renderer, y, hl, yr, hr, RenderStyle.FROZEN_BAND_WIDTH, false);
-						g.fillRect(RenderStyle.FROZEN_BAND_WIDTH, yr, w - RenderStyle.FROZEN_BAND_WIDTH, hr);
+						g.fillRect(RenderStyle.FROZEN_BAND_WIDTH, yr,
+								w - RenderStyle.FROZEN_BAND_WIDTH, hr - yr);
 						g.popName();
 					}
 				}
@@ -126,7 +127,7 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 		super.renderPickImpl(g, w, h);
 	}
 
-	private void renderOrderLines(GLGraphics g, float w, float h, int selectedIndex) {
+	private void renderOrderLines(GLGraphics g, int selectedIndex) {
 		// my positions
 		float[] right = getRowPositions();
 
@@ -166,9 +167,12 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 		float[] rightTopPos = new float[] { w, yr1 + deltar };
 		float[] rightBottomPos = new float[] { w, yr2 - deltar };
 		float[] col = (isSelected ? RenderStyle.COLOR_SELECTED_ROW : RenderStyle.COLOR_BAND).getRGBComponents(null);
-		renderer.renderSingleBand(g.gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos, false, 20, -1,
- col,
+		if (isSelected)
+			g.gl.glTranslatef(0, 0, 0.1f);
+		renderer.renderSingleBand(g.gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos, false, 20, -1, col,
 				false);
+		if (isSelected)
+			g.gl.glTranslatef(0, 0, -0.1f);
 	}
 
 	@Override
