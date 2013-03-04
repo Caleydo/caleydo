@@ -115,5 +115,20 @@
             </Embedding>
          </ParentView>
       </EmbeddingInfo>
+      <EmbeddingInfo
+            viewID="org.caleydo.view.pathway.texture">
+         <ParentView
+               viewID="org.caleydo.view.subgraph">
+            <Embedding
+                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level3"
+                  icon="resources/icons/pathway.png"
+                  isDefaultView="false"
+                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+               <RendererCreator
+                     class="org.caleydo.view.pathway.PathwayTextureCreator">
+               </RendererCreator>
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
    </extension>
 </plugin>

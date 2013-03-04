@@ -227,7 +227,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				glParentView.getParentComposite().addKeyListener(glKeyListener);
+				if (glKeyListener != null)
+					glParentView.getParentComposite().addKeyListener(glKeyListener);
 			}
 		});
 

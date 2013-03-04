@@ -74,6 +74,7 @@ import org.caleydo.view.pathway.GLPathway;
 public class ContextualPathsRenderer extends ALayoutRenderer implements IPathwayRepresentation, IListenerOwner {
 
 	protected final String BRANCH_PATH_EVENTSPACE = GeneralManager.get().getEventPublisher().createUniqueEventSpace();
+	protected final int PATHWAY_TEXTURE_HEIGHT = 100;
 
 	protected LayoutManager layout;
 	protected PathwayGraph pathway;
@@ -111,7 +112,7 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 		Column baseColumn = new Column();
 		pathRow = new Row();
 		ElementLayout pathwayTextureLayout = new ElementLayout();
-		pathwayTextureLayout.setPixelSizeY(100);
+		pathwayTextureLayout.setPixelSizeY(PATHWAY_TEXTURE_HEIGHT);
 
 		// This should probably be a renderer in the final version.
 		pathwayView = (GLPathway) GeneralManager
@@ -472,6 +473,29 @@ public class ContextualPathsRenderer extends ALayoutRenderer implements IPathway
 			if (!isPathShown)
 				addPath(event.getPathSegments());
 		}
+	}
+
+	@Override
+	public int getMinHeightPixels() {
+		int maxMinPixelHeight = 0;
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
+			int minPixelHeight = renderer.getMinHeightPixels();
+			if (minPixelHeight > maxMinPixelHeight) {
+				maxMinPixelHeight = minPixelHeight;
+			}
+		}
+		// TODO: use right size of pathway thumbnail texture
+		return PATHWAY_TEXTURE_HEIGHT + maxMinPixelHeight;
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		int totalWidth = 0;
+		for (APathwayPathRenderer renderer : renderers.keySet()) {
+			totalWidth += renderer.getMinWidthPixels();
+		}
+		// TODO: use right size of pathway thumbnail texture
+		return Math.max(100, totalWidth);
 	}
 
 }
