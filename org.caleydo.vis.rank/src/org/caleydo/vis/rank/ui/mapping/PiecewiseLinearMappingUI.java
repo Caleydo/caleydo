@@ -548,15 +548,13 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 			g.move(-h, 0);
 			RenderUtils.renderHist(g, computeHist(h), h, w, -1, color, Color.BLACK);
 
-			float[] m = model.getMappedMin();
-			if (m[1] > 0) {
-				float from = m[1];
-				g.color(0, 0, 0, 0.25f).fillRect(0, 0, from * h, w);
+			float m = model.getMinTo();
+			if (m > 0) {
+				g.color(0, 0, 0, 0.25f).fillRect(0, 0, m * h, w);
 			}
-			m = model.getMappedMax();
-			if (m[1] < 1) {
-				float to = m[1];
-				g.color(0, 0, 0, 0.25f).fillRect(to * h, 0, (1 - to) * h, w);
+			m = model.getMaxTo();
+			if (m < 1) {
+				g.color(0, 0, 0, 0.25f).fillRect(m * h, 0, (1 - m) * h, w);
 			}
 
 			g.restore();

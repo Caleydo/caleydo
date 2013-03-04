@@ -160,6 +160,24 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 		return new float[] { k, mapping.get(k) };
 	}
 
+	public float getMinTo() {
+		if (mapping.isEmpty() || mapping.size() == 1 && isDefaultMin(mapping.firstKey()))
+			return 0;
+		float min = Float.POSITIVE_INFINITY;
+		for (Float v : this.mapping.values())
+			min = Math.min(min, v);
+		return min;
+	}
+
+	public float getMaxTo() {
+		if (mapping.isEmpty() || mapping.size() == 1 && !isDefaultMin(mapping.firstKey()))
+			return 1;
+		float max = Float.NEGATIVE_INFINITY;
+		for (Float v : this.mapping.values())
+			max = Math.max(max, v);
+		return max;
+	}
+
 
 	@Override
 	public float[] getMappedMax() {
