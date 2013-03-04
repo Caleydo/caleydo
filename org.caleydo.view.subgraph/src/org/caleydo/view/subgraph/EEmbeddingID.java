@@ -30,39 +30,91 @@ public enum EEmbeddingID {
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 1 (highest detail).
 	 */
-	PATHWAY_MULTIFORM_LEVEL1("org.caleydo.view.subgraph.pathway.multiform.level1"),
+	PATHWAY_LEVEL1("org.caleydo.view.subgraph.pathway.multiform.level1", 4),
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 2 (medium detail).
 	 */
-	PATHWAY_MULTIFORM_LEVEL2("org.caleydo.view.subgraph.pathway.multiform.level2"),
+	PATHWAY_LEVEL2("org.caleydo.view.subgraph.pathway.multiform.level2", 3),
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 3 (low detail).
 	 */
-	PATHWAY_MULTIFORM_LEVEL3("org.caleydo.view.subgraph.pathway.multiform.level3"),
+	PATHWAY_LEVEL3("org.caleydo.view.subgraph.pathway.multiform.level3", 2),
+	/**
+	 * Embedding id for views that shall be used as one pathway multiform instance for level 3 (low detail).
+	 */
+	PATHWAY_LEVEL4(null, 1),
+
 	/**
 	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways, in level 1
 	 * (highest detail).
 	 */
-	PATH_LEVEL1("org.caleydo.view.subgraph.path.level1"),
+	PATH_LEVEL1("org.caleydo.view.subgraph.path.level1", 4),
 	/**
 	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways, in level 2
 	 * (medium detail).
 	 */
-	PATH_LEVEL2("org.caleydo.view.subgraph.path.level2");
+	PATH_LEVEL2("org.caleydo.view.subgraph.path.level2", 3);
 
 	/**
-	 * Actual ID of embedding.
+	 * ID of the embedding that is associated with a certain pathway multiform level.
 	 */
-	private final String id;
 
-	private EEmbeddingID(String id) {
-		this.id = id;
+	/**
+	 * ID of the embedding that is associated with a certain pathway multiform level.
+	 */
+	private final String embeddingID;
+
+	private final int renderPriority;
+
+	private EEmbeddingID(String id, int renderPriority) {
+		this.embeddingID = id;
+		this.renderPriority = renderPriority;
 	}
 
 	/**
-	 * @return see {@link #id}
+	 * @return see {@link #embeddingID}
 	 */
 	public String id() {
-		return id;
+		return embeddingID;
+	}
+
+	public int renderPriority() {
+		return renderPriority;
+	}
+
+	public static EEmbeddingID levelUp(EEmbeddingID level) {
+		switch (level) {
+		case PATHWAY_LEVEL1:
+			return PATHWAY_LEVEL1;
+		case PATHWAY_LEVEL2:
+			return PATHWAY_LEVEL1;
+		case PATHWAY_LEVEL3:
+			return PATHWAY_LEVEL2;
+		case PATHWAY_LEVEL4:
+			return PATHWAY_LEVEL3;
+		case PATH_LEVEL1:
+			return PATH_LEVEL1;
+		case PATH_LEVEL2:
+			return PATH_LEVEL1;
+		}
+		return null;
+	}
+
+	public static EEmbeddingID levelDown(EEmbeddingID level) {
+		switch (level) {
+		case PATHWAY_LEVEL1:
+			return PATHWAY_LEVEL2;
+		case PATHWAY_LEVEL2:
+			return PATHWAY_LEVEL3;
+		case PATHWAY_LEVEL3:
+			return PATHWAY_LEVEL4;
+		case PATHWAY_LEVEL4:
+			return PATHWAY_LEVEL4;
+		case PATH_LEVEL1:
+			return PATH_LEVEL2;
+		case PATH_LEVEL2:
+			return PATH_LEVEL2;
+		}
+		return null;
 	}
 }
