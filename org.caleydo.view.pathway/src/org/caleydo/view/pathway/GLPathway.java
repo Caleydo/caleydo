@@ -250,6 +250,10 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 
 	}
 
+	public Set<PathwayVertexRep> getCurrentPortalVertexReps(){
+		return portalVertexReps;
+	}
+	
 	private void selectNextPath() {
 		if (allPaths == null)
 			return;
@@ -715,8 +719,8 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			this.bubbleSet.setPathwayGraph(pathway);
 
 			// this.bubbleSet.addAllPaths(allPaths);
-
-			this.bubbleSet.addPathSegements(pathSegments);
+//
+			//this.bubbleSet.addPathSegements(pathSegments);
 			this.bubbleSet.addPortals(portalVertexReps);
 
 			// update texture
