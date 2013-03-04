@@ -160,6 +160,13 @@ public class GLElement implements IHasGLLayoutData {
 		return this;
 	}
 
+	/**
+	 * @return the zDelta, see {@link #zDelta}
+	 */
+	public float getzDelta() {
+		return zDelta;
+	}
+
 	public final GLElement setLayoutData(Object layoutData) {
 		if (this.layoutData == layoutData)
 			return this;

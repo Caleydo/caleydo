@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.test;
 
+import gleem.linalg.Vec4f;
+
 import java.awt.Color;
 
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
@@ -30,6 +32,8 @@ import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
+import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations;
+import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -42,7 +46,20 @@ public class SimpleAnimationTest extends AnimatedGLElementContainer {
 	public SimpleAnimationTest() {
 		setLayout(GLLayouts.flowHorizontal(4));
 		add(new GLElement(GLRenderers.fillRect(Color.GREEN)).setSize(Float.NaN, 200).setLayoutData(0.3f));
-		add(new GLElement(GLRenderers.fillRect(Color.RED)).setSize(100, -1));
+		final GLElement red = new GLElement(GLRenderers.fillRect(Color.RED)).setSize(100, -1);
+		add(red);
+		animate(red, 4000, 3000, new IStyleAnimation() {
+			@Override
+			public void render(GLElement elem, GLGraphics g, float alpha) {
+				elem.render(g);
+				Vec4f bounds = elem.getBounds();
+				g.incZ(elem.getzDelta() + .5f);
+				int v = (int) (alpha * 300);
+				if (v % 2 == 0)
+					g.color(Color.BLACK).fillRect(bounds.x(), bounds.y(), bounds.z(), bounds.w());
+				g.incZ(-elem.getzDelta() - .5f);
+			}
+		});
 
 		GLElementContainer l = new GLElementContainer();
 		l.setLayout(GLLayouts.flowVertical(5));
@@ -57,6 +74,7 @@ public class SimpleAnimationTest extends AnimatedGLElementContainer {
 		l.add(new GLElement(GLRenderers.fillRect(Color.BLACK)), 10);
 		l.add(new GLElement(GLRenderers.fillRect(Color.WHITE)), 5);
 		add(l);
+
 	}
 
 	class ButtonElement extends PickableGLElement {
@@ -75,6 +93,7 @@ public class SimpleAnimationTest extends AnimatedGLElementContainer {
 		@Override
 		protected void onMouseOver(Pick pick) {
 			this.hovered = true;
+			((AnimatedGLElementContainer) getParent()).animate(this, 5000, StyleAnimations.glowOut(Color.YELLOW, 10));
 			repaint();
 		}
 

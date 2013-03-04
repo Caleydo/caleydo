@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -164,6 +165,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		for (AAnimation anim : animations) {
 			switch (anim.getType()) {
 			case MOVE:
+			case STYLE:
 				break;
 			case IN:
 				if (anim.getStopAt() < time) { // was added
@@ -239,42 +241,48 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			return new DummyAnimation(EAnimationType.MOVE, elem.wrappee);
 		}
 		final IDuration duration = elem.getLayoutDataAs(IDuration.class, Durations.DEFAULT);
-		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class,
- defaultMoveTransition);
+		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
 		MoveAnimation anim = new MoveAnimation(0, duration, elem.wrappee, animation);
 		return anim;
 	}
 
-	private void doAnimation() {
+	private Collection<StyleAnimation> doAnimation() {
 		if (animations.isEmpty())
-			return;
+			return Collections.emptyList();
 
 		Vec2f size = getSize();
 		int delta = nextDelta();
 
+		Collection<StyleAnimation> styles = new LinkedList<>();
 		for (Iterator<AAnimation> it = animations.iterator(); it.hasNext();) {
 			AAnimation anim = it.next();
 			if (anim.apply(delta, size.x(), size.y())) { // done
 				GLElement elem = anim.getAnimatedElement();
 				switch (anim.getType()) {
 				case MOVE:
+					it.remove();
 					break;
 				case IN:
+					it.remove();
 					break;
 				case OUT:
 					takeDown(elem);
+					it.remove();
 					break;
 				case STYLE:
+					// will be removed during rendering
 					break;
 				}
-				it.remove();
 			}
+			if (anim instanceof StyleAnimation)
+				styles.add((StyleAnimation) anim);
 		}
 		if (animations.isEmpty()) {
 			startTime = -1; // stop animation
 		}
 
 		repaintAll();
+		return styles;
 	}
 
 	private int nextDelta() {
@@ -399,18 +407,36 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void animate(GLElement elem, int duration, IStyleAnimation anim) {
-		this.animations.add(new StyleAnimation(0, Durations.fix(duration), elem.layoutElement, anim));
-		animate();
+		animate(elem, 0, duration, anim);
+	}
 
+	public final void animate(GLElement elem, int startIn, int duration, IStyleAnimation anim) {
+		this.animations.add(new StyleAnimation(startIn, Durations.fix(duration), elem.layoutElement, anim));
+		animate();
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		doAnimation();
+		Collection<StyleAnimation> styleAnims = doAnimation();
 		super.renderImpl(g, w, h);
 		g.incZ();
-		for (GLElement child : activeChildren())
-			child.render(g);
+		for (GLElement child : activeChildren()) {
+			boolean found = false;
+			for (Iterator<StyleAnimation> it = styleAnims.iterator(); it.hasNext();) {
+				StyleAnimation a = it.next();
+				if (a.getAnimatedElement() == child && a.isRunning()) {
+					a.render(g);
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+				child.render(g);
+		}
+		for (StyleAnimation anim : styleAnims) {
+			if (anim.isDone() || anim.getAnimatedElement().getParent() != this)
+				animations.remove(anim);
+		}
 		g.decZ();
 	}
 

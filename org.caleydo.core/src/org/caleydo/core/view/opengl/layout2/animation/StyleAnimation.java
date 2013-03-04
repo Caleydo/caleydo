@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -30,6 +32,8 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 public class StyleAnimation extends AAnimation {
 	private final IStyleAnimation anim;
 
+	private float lastAlpha = -1;
+
 	public StyleAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IStyleAnimation anim) {
 		super(startIn, duration, animated);
 		this.anim = anim;
@@ -37,20 +41,29 @@ public class StyleAnimation extends AAnimation {
 
 	@Override
 	protected void animate(float alpha, float w, float h) {
-		anim.animate(getAnimatedElement(), alpha);
-		getAnimatedElement().repaint();
+		lastAlpha = alpha;
 	}
 
 	@Override
 	protected void firstTime(float w, float h) {
-		anim.firstTime(getAnimatedElement());
-		getAnimatedElement().repaint();
+		lastAlpha = 0;
 	}
 
 	@Override
 	protected void lastTime() {
-		anim.lastTime(getAnimatedElement());
-		getAnimatedElement().repaint();
+		lastAlpha = 1;
+	}
+
+	public boolean isDone() {
+		return lastAlpha >= 1;
+	}
+
+	public void render(GLGraphics g) {
+		GLElement elem = getAnimatedElement();
+		if (lastAlpha < 0)
+			elem.render(g);
+		else
+			anim.render(elem, g, lastAlpha);
 	}
 
 	@Override

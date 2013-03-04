@@ -19,7 +19,14 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
+import gleem.linalg.Vec4f;
+
+import java.awt.Color;
+
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 
 /**
  * @author Samuel Gratzl
@@ -27,10 +34,37 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
  */
 public class StyleAnimations {
 	public interface IStyleAnimation {
-		void firstTime(GLElement elem);
+		void render(GLElement elem, GLGraphics g, float alpha);
+	}
 
-		void animate(GLElement elem, float alpha);
-
-		void lastTime(GLElement elem);
+	public static IStyleAnimation glowOut(final Color color, final int width) {
+		return new IStyleAnimation() {
+			@Override
+			public void render(GLElement elem, GLGraphics g, float alpha) {
+				elem.render(g);
+				Vec4f bounds = elem.getBounds();
+				Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) ((1 - alpha) * 255));
+				g.decZ();
+				g.gl.glBegin(GL2.GL_QUAD_STRIP);
+				float z = g.z();
+				// first
+				float x = bounds.x();
+				float x2 = x + bounds.z();
+				float y = bounds.y();
+				float y2 = y + bounds.w();
+				g.color(c).gl.glVertex3f(x, y, z);
+				g.color(1, 1, 1, 1 - alpha).gl.glVertex3f(x - width, y - width, z);
+				g.color(c).gl.glVertex3f(x2, y, z);
+				g.color(1, 1, 1, 1 - alpha).gl.glVertex3f(x2 + width, y - width, z);
+				g.color(c).gl.glVertex3f(x2, y2, z);
+				g.color(1, 1, 1, 1 - alpha).gl.glVertex3f(x2 + width, y2 + width, z);
+				g.color(c).gl.glVertex3f(x, y2, z);
+				g.color(1, 1, 1, 1 - alpha).gl.glVertex3f(x - width, y2 + width, z);
+				g.color(c).gl.glVertex3f(x, y, z);
+				g.color(1, 1, 1, 1 - alpha).gl.glVertex3f(x - width, y - width, z);
+				g.gl.glEnd();
+				g.incZ();
+			}
+		};
 	}
 }
