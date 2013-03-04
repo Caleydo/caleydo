@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -445,21 +446,27 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		}
 		List<Rectangle2D> path = new ArrayList<>();
-		for (PathwayMultiFormInfo info : pathwayInfos) {
-			IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
-					info.multiFormRenderer.getActiveRendererID());
+	
 
-			for (PathwayPath segment : pathSegments) {
+		IPathwayRepresentation pathwayRepresentation =null;
+		PathwayMultiFormInfo pwInfo=null;
+		for (PathwayPath segment : pathSegments) 
+		{
+			for (PathwayMultiFormInfo info : pathwayInfos) 
+			{
+				pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,info.multiFormRenderer.getActiveRendererID());
 				if (segment.getPathway() == pathwayRepresentation.getPathway()) {
-					for (PathwayVertexRep v : segment.getNodes()) {
-						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, info.container);
-						if (rect != null)
-							path.add(rect);
-					}
+					pwInfo=info;
+					break;
 				}
 			}
-
+			for (PathwayVertexRep v : segment.getNodes()) {
+				Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, pwInfo.container);
+						if (rect != null)
+							path.add(rect);
+			}
 		}
+
 		augmentation.setPath(path);
 
 	}
@@ -593,12 +600,28 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			return super.isInitialized() && pathway != null;
 		}
 	}
-
+	
+    protected ArrayList<Rectangle2D> portalRects = new ArrayList<>();
+    
 	private class PathEventSpaceHandler {
-
+		
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onShowPortalNodes(ShowPortalNodesEvent event) {
-
+            portalRects.clear();
+            PathwayVertexRep vertexRep =  event.getVertexRep();
+            Rectangle2D nodeRect=null;
+            //find in all open pathways
+            for (PathwayMultiFormInfo info : pathwayInfos) {
+                IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,info.multiFormRenderer.getActiveRendererID());
+                Set<PathwayVertexRep> portalVertexRepsInPathway  = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathwayRepresentation.getPathway());
+                for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
+                            Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep, info.container);
+                            portalRects.add(rect);
+                }
+                if(nodeRect==null && pathwayRepresentation.getPathway().containsVertex(vertexRep))
+                	nodeRect= getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);;
+            }
+            augmentation.updatePortalRects(nodeRect,portalRects);
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)

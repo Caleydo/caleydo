@@ -35,6 +35,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.jgrapht.graph.DefaultEdge;
 
 import setvis.BubbleSetGLRenderer;
+import setvis.bubbleset.BubbleSet;
 
 /**
  * Renders all Elements on top of {@link GLSubGraph} such as visual links.
@@ -44,10 +45,13 @@ import setvis.BubbleSetGLRenderer;
  */
 public class GLSubGraphAugmentation extends GLElement {
 
+	private ArrayList<Rectangle2D> portals= new ArrayList<>();
 	private	ArrayList<Rectangle2D> bubbleSetItems= new ArrayList<>();
 	private	ArrayList<Line2D> bubbleSetEdges= new ArrayList<>();
-	private Color bubbleSetColor=new Color(0.0f,1.0f,0.0f); 
+	private Color bubbleSetColor=new Color(0.0f,1.0f,0.0f);
+	private Color portalColor=new Color(1.0f,0.0f,0.0f);
 
+	private Rectangle2D portalStartNode;
 	
 	private List<IGLRenderer> renderers = new ArrayList<>();
 	private BubbleSetGLRenderer bubbleSetRenderer=new BubbleSetGLRenderer();
@@ -69,7 +73,7 @@ public class GLSubGraphAugmentation extends GLElement {
 
 		protected final Rectangle2D loc1;
 		protected final Rectangle2D loc2;
-	
+		
 		private Color portalBSColor=new Color(1.0f,0.0f,0.0f); 
 
 		public ConnectionRenderer(Rectangle2D loc1, Rectangle2D loc2) {
@@ -79,25 +83,17 @@ public class GLSubGraphAugmentation extends GLElement {
 
 		@Override
 		public void render(GLGraphics g, float w, float h, GLElement parent) {
-			g.incZ(0.5f);
-			g.color(0, 1, 0, 1)
-					.lineWidth(2)
-					.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
-							(float) loc2.getCenterY());
-			g.drawRect((float) loc1.getX(), (float) loc1.getY(), (float) loc1.getWidth(), (float) loc1.getHeight());
-			g.drawRect((float) loc2.getX(), (float) loc2.getY(), (float) loc2.getWidth(), (float) loc2.getHeight());
-			g.lineWidth(1);
-			// g.color(0, 1, 0, 1).fillCircle((float) loc1.getX(), (float) loc1.getY(), 50);
-			// g.color(0, 1, 0, 1).fillCircle((float) loc2.getX(), (float) loc2.getY(), 50);
-			g.incZ(-0.5f);
-//update portal nodes -> bubbleSet
-//			ArrayList<Rectangle2D> items= new ArrayList<>();
-//			ArrayList<Line2D> edges= new ArrayList<>();
-//			
-//			items.add(new Rectangle2D.Double(loc1.getCenterX(), loc1.getCenterY(), loc1.getWidth(), loc1.getHeight()));
-//			items.add(new Rectangle2D.Double(loc2.getCenterX(), loc2.getCenterY(), loc2.getWidth(), loc2.getHeight()));
-//			edges.add(new Line2D.Double(loc1.getCenterX(), loc1.getCenterY(), loc2.getCenterX(), loc2.getCenterY()));
-
+//			g.incZ(0.5f);
+//			g.color(1, 0, 0, 1)
+//					.lineWidth(2)
+//					.drawLine((float) loc1.getCenterX(), (float) loc1.getCenterY(), (float) loc2.getCenterX(),
+//							(float) loc2.getCenterY());
+//			g.drawRect((float) loc1.getX(), (float) loc1.getY(), (float) loc1.getWidth(), (float) loc1.getHeight());
+//			g.drawRect((float) loc2.getX(), (float) loc2.getY(), (float) loc2.getWidth(), (float) loc2.getHeight());
+//			g.lineWidth(1);
+//			// g.color(0, 1, 0, 1).fillCircle((float) loc1.getX(), (float) loc1.getY(), 50);
+//			// g.color(0, 1, 0, 1).fillCircle((float) loc2.getX(), (float) loc2.getY(), 50);
+//			g.incZ(-0.5f);
 		}
 	}
 
@@ -113,18 +109,20 @@ public class GLSubGraphAugmentation extends GLElement {
 		
 		if (path != null) {
 			int i=0;
-			Rectangle2D prevRect=null;
+			Rectangle2D prevRect=new Rectangle2D.Double(0f,0f,0f,0f);
 			for (Rectangle2D rect : path) {
 				g.incZ(0.5f);
-				g.color(1, 0, 0, 0.5f);
-				g.fillRect((float) rect.getX(), (float) rect.getY(), (float) rect.getWidth(), (float) rect.getHeight());
+//				g.color(0, 0, 1, 0.5f);
+//				g.fillRect((float) rect.getX(), (float) rect.getY(), (float) rect.getWidth(), (float) rect.getHeight());
+
+				bubbleSetItems.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight()));
+				if(i>0){
+					bubbleSetEdges.add(new Line2D.Double(rect.getCenterX(), rect.getCenterY(), prevRect.getCenterX(), prevRect.getCenterY()));
+				}
+				prevRect.setRect(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight());
+				i++;
 				g.incZ(-0.5f);
 				
-				bubbleSetItems.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight()));
-				if(i>0)
-					bubbleSetEdges.add(new Line2D.Double(rect.getCenterX(), rect.getCenterY(), prevRect.getCenterX(), prevRect.getCenterY()));
-				prevRect=rect;
-				i++;
 			}
 		}
 
@@ -132,14 +130,27 @@ public class GLSubGraphAugmentation extends GLElement {
 			renderer.render(g, w, h, this);
 		}
 		
-		//render bubbleSet		
-		this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges , bubbleSetColor);
-		this.bubbleSetRenderer.update(g.gl,null,0);
+		//render bubbleSet	
 		g.gl.glTranslatef(0.f, 0.f, 1.0f);
-		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);
+		this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges , bubbleSetColor);
+		this.renderPortalLinks(g);
+		this.bubbleSetRenderer.update(g.gl,null,0);		
+		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);		
 		g.gl.glTranslatef(0.f, 0.f, -1.0f);		
 	}
 
+	public void renderPortalLinks(GLGraphics g){
+		for(Rectangle2D rect : this.portals){
+			ArrayList<Rectangle2D> items= new ArrayList<>();		
+			items.add(new Rectangle2D.Double(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect.getHeight()));
+			this.bubbleSetRenderer.addGroup(items, null , portalColor);
+			g.color(1, 0, 0, 1)
+			.lineWidth(2)
+			.drawLine((float) this.portalStartNode.getCenterX(), (float) this.portalStartNode.getCenterY(), 
+					(float) rect.getCenterX(),(float) rect.getCenterY());
+		}
+	}
+	
 	public void addRenderer(IGLRenderer renderer) {
 		if (renderer != null) {
 			renderers.add(renderer);
@@ -159,5 +170,8 @@ public class GLSubGraphAugmentation extends GLElement {
 	public void setPath(List<Rectangle2D> path) {
 		this.path = path;
 	}
-
+	public void updatePortalRects(Rectangle2D node, ArrayList<Rectangle2D> portalList) {
+		this.portals = 	portalList;
+		this.portalStartNode = 	node;
+	}
 }
