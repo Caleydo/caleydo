@@ -50,7 +50,7 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 	}
 
 	public boolean canAdd(ARankColumnModel model) {
-		return model.getParent() != this && model != this;
+		return model != this;
 	}
 
 	final boolean add(ARankColumnModel model) {
