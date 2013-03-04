@@ -152,6 +152,21 @@ final class SWTMouseAdapter implements MouseListener, MouseMoveListener, MouseWh
 		}
 
 		@Override
+		public boolean isAltDown() {
+			return (event.stateMask & SWT.ALT) != 0;
+		}
+
+		@Override
+		public boolean isCtrlDown() {
+			return (event.stateMask & SWT.CTRL) != 0;
+		}
+
+		@Override
+		public boolean isShiftDown() {
+			return (event.stateMask & SWT.SHIFT) != 0;
+		}
+
+		@Override
 		public Dimension getParentSize() {
 			if (event.widget instanceof Control) {
 				org.eclipse.swt.graphics.Point size = ((Control) event.widget).getSize();

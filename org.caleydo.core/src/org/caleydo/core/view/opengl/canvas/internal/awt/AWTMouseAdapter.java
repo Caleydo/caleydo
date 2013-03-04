@@ -142,5 +142,20 @@ final class AWTMouseAdapter implements MouseListener, MouseMotionListener, Mouse
 		public Dimension getParentSize() {
 			return event.getComponent().getSize();
 		}
+
+		@Override
+		public boolean isAltDown() {
+			return event.isAltDown();
+		}
+
+		@Override
+		public boolean isCtrlDown() {
+			return event.isControlDown();
+		}
+
+		@Override
+		public boolean isShiftDown() {
+			return event.isShiftDown();
+		}
 	}
 }

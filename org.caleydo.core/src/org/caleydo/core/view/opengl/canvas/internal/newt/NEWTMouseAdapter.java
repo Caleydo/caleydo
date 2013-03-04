@@ -55,82 +55,42 @@ final class NEWTMouseAdapter implements MouseListener {
 		return listener;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mouseClicked(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		listener.mouseClicked(wrap(e));
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mouseEntered(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		listener.mouseEntered(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mouseExited(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 		listener.mouseExited(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mousePressed(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		listener.mousePressed(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mouseReleased(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		listener.mouseReleased(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		listener.mouseMoved(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		listener.mouseDragged(wrap(e));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseWheelMoved(MouseEvent e) {
 		listener.mouseWheelMoved(wrap(e));
@@ -151,62 +111,46 @@ final class NEWTMouseAdapter implements MouseListener {
 			this.event = event;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getPoint()
-		 */
 		@Override
 		public Point getPoint() {
 			return new Point(event.getX(), event.getY());
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getClickCount()
-		 */
 		@Override
 		public int getClickCount() {
 			return event.getClickCount();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getWheelRotation()
-		 */
 		@Override
 		public int getWheelRotation() {
 			return event.getWheelRotation();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getButton()
-		 */
 		@Override
 		public int getButton() {
 			return event.getButton();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#isButtonDown(int)
-		 */
 		@Override
 		public boolean isButtonDown(int button) {
 			return (event.getModifiers() & InputEvent.getButtonMask(button)) != 0;
 		}
 
+		@Override
+		public boolean isAltDown() {
+			return event.isAltDown();
+		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getParentSize()
-		 */
+		@Override
+		public boolean isCtrlDown() {
+			return event.isControlDown();
+		}
+
+		@Override
+		public boolean isShiftDown() {
+			return event.isShiftDown();
+		}
+
 		@Override
 		public Dimension getParentSize() {
 			Dimension size;

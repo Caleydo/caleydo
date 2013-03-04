@@ -56,5 +56,11 @@ public interface IGLMouseListener {
 
 		@Deprecated
 		Dimension getParentSize();
+
+		boolean isShiftDown();
+
+		boolean isAltDown();
+
+		boolean isCtrlDown();
 	}
 }
