@@ -114,7 +114,7 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.color(0.95f, .95f, .95f, 0.9f).fillRect(0, 0, w, h);
+		g.color(0.95f, .95f, .95f, 0.95f).fillRect(0, 0, w, h);
 		super.renderImpl(g, w, h);
 	}
 
