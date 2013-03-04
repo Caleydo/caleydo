@@ -26,6 +26,9 @@ import java.beans.PropertyChangeListener;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
+import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
@@ -38,7 +41,8 @@ import org.caleydo.vis.rank.ui.detail.ScoreSummary;
  * @author Samuel Gratzl
  *
  */
-public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin {
+public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin,
+		IHideableColumnMixin {
 	public static final String PROP_ALIGNMENT = "alignment";
 
 	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
@@ -95,8 +99,8 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	@Override
-	protected boolean canAdd(ARankColumnModel model) {
-		return model instanceof IRankableColumnMixin;
+	public boolean canAdd(ARankColumnModel model) {
+		return model instanceof IRankableColumnMixin && super.canAdd(model);
 	}
 
 	@Override
@@ -178,6 +182,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public void takeSnapshot() {
-		parent.takeSnapshot(this);
+		parent.takeSnapshot(new FloatRankColumnModel(this, getHeaderRenderer(), getColor(), getBgColor(),
+				new PiecewiseLinearMapping(0, 1), FloatInferrers.MEDIAN));
 	}
 }

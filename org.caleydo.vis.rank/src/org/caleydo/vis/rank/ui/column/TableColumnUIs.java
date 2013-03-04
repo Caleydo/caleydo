@@ -21,6 +21,7 @@ package org.caleydo.vis.rank.ui.column;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.vis.rank.model.FrozenRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 
 /**
@@ -28,15 +29,19 @@ import org.caleydo.vis.rank.model.StackedRankColumnModel;
  *
  */
 public class TableColumnUIs {
-	public static GLElement createHeader(ARankColumnModel model, boolean interactive) {
-		if (model instanceof StackedRankColumnModel)
+	public static GLElement createHeader(ARankColumnModel model, boolean interactive, boolean allowComplex) {
+		if (allowComplex && model instanceof StackedRankColumnModel)
 			return new TableStackedColumnHeaderUI((StackedRankColumnModel) model, interactive);
+		if (allowComplex && model instanceof FrozenRankColumnModel)
+			return new TableFrozenColumnHeaderUI((FrozenRankColumnModel) model, interactive);
 		return new TableColumnHeaderUI(model, interactive, interactive);
 	}
 
-	public static ITableColumnUI createBody(ARankColumnModel model) {
-		if (model instanceof StackedRankColumnModel)
+	public static ITableColumnUI createBody(ARankColumnModel model, boolean allowComplex) {
+		if (allowComplex && model instanceof StackedRankColumnModel)
 			return new TableStackedColumnUI((StackedRankColumnModel) model);
+		if (allowComplex && model instanceof FrozenRankColumnModel)
+			return new TableFrozenColumnUI((FrozenRankColumnModel) model);
 		return new TableColumnUI(model);
 	}
 

@@ -41,7 +41,7 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
-import org.caleydo.vis.rank.ui.column.IThickTableHeaderUI;
+import org.caleydo.vis.rank.ui.column.ACompositeTableColumnHeaderUI;
 import org.caleydo.vis.rank.ui.column.TableColumnUIs;
 
 /**
@@ -62,20 +62,22 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 	private int numColumns = 0;
 	private final boolean interactive;
+	private final boolean hasThick;
 
 	public TableHeaderUI(RankTableModel table) {
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
 		this.interactive = table.getConfig().isInteractive();
 
-		boolean hasThick = false;
+		boolean hasCurrentThick = false;
 		for (ARankColumnModel col : table.getColumns()) {
 			GLElement elem = wrap(col);
-			if (elem instanceof IThickTableHeaderUI)
-				hasThick = true;
+			if (elem instanceof ACompositeTableColumnHeaderUI)
+				hasCurrentThick = true;
 			this.add(elem);
 			numColumns++;
 		}
+		this.hasThick = hasCurrentThick;
 		if (interactive) {
 			this.add(new SeparatorUI(this, -1)); // left
 			for (int i = 0; i < numColumns; ++i)
@@ -132,7 +134,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 	private GLElement wrap(ARankColumnModel model) {
 		init(model);
-		return TableColumnUIs.createHeader(model, interactive);
+		return TableColumnUIs.createHeader(model, interactive, true);
 	}
 
 	@Override
@@ -162,13 +164,6 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 		List<? extends IGLLayoutElement> columns = children.subList(0, numColumns);
 
-		boolean hasThick = false;
-		for (IGLLayoutElement elem : columns)
-			if (elem.asElement() instanceof IThickTableHeaderUI) {
-				hasThick = true;
-				break;
-			}
-
 		float y = hasThick ? HIST_HEIGHT + LABEL_HEIGHT : 0;
 		float hn = hasThick ? h - HIST_HEIGHT - LABEL_HEIGHT : h;
 		List<? extends IGLLayoutElement> separators = null;
@@ -181,7 +176,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			if (col.asElement() instanceof IThickTableHeaderUI)
+			if (col.asElement() instanceof ACompositeTableColumnHeaderUI)
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);

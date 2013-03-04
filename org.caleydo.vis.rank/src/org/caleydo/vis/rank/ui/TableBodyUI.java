@@ -20,7 +20,8 @@
 package org.caleydo.vis.rank.ui;
 
 
-import java.awt.Color;
+import gleem.linalg.Vec4f;
+
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,6 +30,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -50,6 +52,7 @@ import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.ui.column.ACompositeTableColumnUI;
 import org.caleydo.vis.rank.ui.column.IColumModelLayout;
 import org.caleydo.vis.rank.ui.column.ITableColumnUI;
 import org.caleydo.vis.rank.ui.column.TableColumnUI;
@@ -158,7 +161,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 	private GLElement wrap(ARankColumnModel new_) {
 		init(new_);
-		return TableColumnUIs.createBody(new_).setData(table.getData(), this);
+		return TableColumnUIs.createBody(new_, true).setData(table.getData(), this);
 	}
 
 	protected void updateData() {
@@ -187,6 +190,13 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			this.pickingIDs[i] = context.registerPickingListener(selectRowListener, i);
 	}
 
+	/**
+	 * @return the pickingIDs, see {@link #pickingIDs}
+	 */
+	public int[] getPickingIDs() {
+		return pickingIDs;
+	}
+
 	@Override
 	protected void takeDown() {
 		this.table.removePropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
@@ -211,8 +221,8 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	 */
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		rowPositions = preScan(rowLayout.compute(table.size(), table.getSelectedRow() == null ? -1 : table
-				.getSelectedRow().getRank(), h - 5));
+		rowPositions = computeRowPositions(h, table.size(),table.getSelectedRow() == null ? -1 : table
+				.getSelectedRow().getRank());
 		if (rowPositions.length > pickingIDs.length) {
 			int bak = this.pickingIDs.length;
 			this.pickingIDs = Arrays.copyOf(this.pickingIDs, rowPositions.length);
@@ -228,13 +238,14 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		}
 	}
 
-	private float[] preScan(float[] compute) {
+	public float[] computeRowPositions(float h, int numRows, int selectedRank) {
+		float[] hs = rowLayout.compute(numRows, selectedRank, h - 5);
 		float acc = 0;
-		for (int i = 0; i < compute.length; ++i) {
-			compute[i] += acc;
-			acc = compute[i];
+		for (int i = 0; i < hs.length; ++i) {
+			hs[i] += acc;
+			acc = hs[i];
 		}
-		return compute;
+		return hs;
 	}
 
 	@Override
@@ -248,15 +259,17 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	}
 
 	@Override
-	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
-		int[] ranks = table.getOrder();
+	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h,
+			float[] rowPositions) {
+		Iterator<IRow> ranks = model.getParent().getCurrentOrder();
 		// align simple all the same x
 		BitSet used = new BitSet(children.size());
 		used.set(0, children.size());
-		int i = 0;
 		float y = 0;
 		for (float hr : rowPositions) {
-			int r = ranks[i++];
+			if (!ranks.hasNext())
+				break;
+			int r = ranks.next().getIndex();
 			IGLLayoutElement row = children.get(r);
 			used.clear(r);
 			row.setBounds(RenderStyle.COLUMN_SPACE, y, w, hr - y);
@@ -282,11 +295,28 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			if (rank < rowPositions.length && rank >= 0) {
 				float prev = rank == 0 ? 0 : rowPositions[rank - 1];
 				float next = rowPositions[rank];
-				g.color(Color.LIGHT_GRAY).fillRect(0, prev + 3, w, next - prev);
+				g.color(RenderStyle.COLOR_SELECTED_ROW);
+				float hi = next - prev;
+				renderSubLine(g, w, prev, hi);
 			}
 		}
 		super.renderImpl(g, w, h);
 		g.popResourceLocator();
+	}
+
+	private void renderSubLine(GLGraphics g, float w, float y, float hi) {
+		// just for elements that haven't an own order
+		float x = 0;
+		for (GLElement child : this) {
+			if (child instanceof ACompositeTableColumnUI && ((ACompositeTableColumnUI<?>) child).hasOwnOrder()) {
+				Vec4f l = child.getBounds();
+				g.fillRect(x, y + 3, l.x() - x, hi);
+				x = l.x() + l.z();
+			}
+		}
+		Vec4f last = get(size() - 1).getBounds();
+		if (x < (last.x() + last.z()))
+			g.fillRect(x, y + 3, last.x() + last.z() - x, hi);
 	}
 
 	@Override
@@ -294,7 +324,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		float y = 0;
 		for (int i = 0; i < rowPositions.length; ++i) {
 			g.pushName(pickingIDs[i]);
-			g.fillRect(0, y + 3, w, rowPositions[i] - y);
+			renderSubLine(g, w, y, rowPositions[i] - y);
 			y = rowPositions[i];
 			g.popName();
 		}
@@ -304,8 +334,35 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	/**
 	 * @return the rowPositions, see {@link #rowPositions}
 	 */
+	@Override
 	public float[] getRowPositions() {
 		return rowPositions;
+	}
+
+	public float[] getPreviousRowPositions(ACompositeTableColumnUI<?> col) {
+		ACompositeTableColumnUI<?> prev = findPrevious(col);
+		if (prev == null)
+			return getRowPositions();
+		return prev.getRowPositions();
+	}
+
+	private ACompositeTableColumnUI<?> findPrevious(ACompositeTableColumnUI<?> col) {
+		int index = indexOf(col);
+		if (index <= 0)
+			return null;
+		for (int i = index - 1; i >= 0; --i) {
+			GLElement g = get(i);
+			if (g instanceof ACompositeTableColumnUI)
+				return (ACompositeTableColumnUI<?>) g;
+		}
+		return null;
+	}
+
+	public Iterator<IRow> getPreviousOrder(ACompositeTableColumnUI<?> col) {
+		ACompositeTableColumnUI<?> prev = findPrevious(col);
+		if (prev == null)
+			return table.getCurrentOrder();
+		return prev.getModel().getCurrentOrder();
 	}
 }
 

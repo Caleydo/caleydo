@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -68,9 +67,8 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 
 	@Override
 	protected GLElement wrap(ARankColumnModel model) {
-		TableColumnUI ui = new TableColumnUI(model);
-		ui.setData(model.getTable().getData(), this);
-		return ui;
+		ITableColumnUI ui = TableColumnUIs.createBody(model, false);
+		return ui.setData(model.getTable().getData(), this);
 	}
 
 	@Override
@@ -80,23 +78,13 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 	}
 
 	@Override
-	protected void renderImpl(GLGraphics g, float w, float h) {
-		g.decZ().decZ();
-		g.color(model.getBgColor()).fillRect(0, 0, w, h);
-		g.incZ().incZ();
-		// float x = get(stacked.getAlignment()).getLocation().x();
-		// g.color(Color.BLUE).drawLine(x, 0, x, h);
-		super.renderImpl(g, w, h);
-	}
-
-	@Override
-	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
+	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h,
+			float[] rowPositions) {
 		int combinedAlign = this.model.getAlignment();
 		int index = this.model.indexOf(model);
 		if (combinedAlign >= 0 && index != combinedAlign) {
 			// moving around
 			int[] ranks = this.model.getTable().getOrder();
-			float[] rowPositions = ((TableBodyUI) getParent()).getRowPositions();
 			float[] weights = new float[this.model.size()];
 			for (int i = 0; i < weights.length; ++i)
 				weights[i] = this.model.get(i).getWeight();
@@ -127,8 +115,13 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 			TableBodyUI.hideUnused(children, w, h, used);
 		} else {
 			// simple
-			((TableBodyUI) getParent()).layoutRows(model, children, w, h);
+			((IColumModelLayout) getParent()).layoutRows(model, children, w, h, rowPositions);
 		}
+	}
+
+	@Override
+	public float[] getRowPositions() {
+		return ((IColumModelLayout) getParent()).getRowPositions();
 	}
 
 	@Override

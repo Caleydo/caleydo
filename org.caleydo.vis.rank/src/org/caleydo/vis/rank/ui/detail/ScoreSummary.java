@@ -76,8 +76,6 @@ public class ScoreSummary extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		// background
-		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		// hist
 		SimpleHistogram hist = model.getHist(binsForWidth(w));
 		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));

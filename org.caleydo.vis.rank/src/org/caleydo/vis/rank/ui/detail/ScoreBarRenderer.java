@@ -51,6 +51,11 @@ public class ScoreBarRenderer implements IGLRenderer {
 		boolean inferred = model.isValueInferred(r);
 		if (Float.isNaN(v) || v <= 0)
 			return;
+		renderValue(g, w, h, parent, r, v, inferred, model, false);
+	}
+
+	static void renderValue(GLGraphics g, float w, float h, GLElement parent, final IRow r, float v, boolean inferred,
+			IRankableColumnMixin model, boolean align) {
 		if (getRenderInfo(parent).isCollapsed()) {
 			// if collapsed use a brightness encoding
 			g.color(1 - v, 1 - v, 1 - v, 1).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);

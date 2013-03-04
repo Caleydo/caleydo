@@ -27,9 +27,9 @@ import org.caleydo.vis.rank.model.SimpleHistogram;
 
 /**
  * contract that the columns is composite of multiple other ones
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankColumnModel> {
 	/**
@@ -67,6 +67,8 @@ public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankC
 		}
 	}
 
+	boolean[] isValueInferreds(IRow row);
+
 	/**
 	 * children colors
 	 *
@@ -81,6 +83,7 @@ public interface IMultiColumnMixin extends IRankableColumnMixin, Iterable<ARankC
 	 * @return
 	 */
 	SimpleHistogram[] getHists(int bins);
+
 
 	/**
 	 * number of children

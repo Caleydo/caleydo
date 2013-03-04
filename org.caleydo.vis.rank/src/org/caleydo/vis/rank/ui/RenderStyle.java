@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui;
 
+import java.awt.Color;
+
+
 /**
  * @author Samuel Gratzl
  *
@@ -64,5 +67,11 @@ public class RenderStyle {
 	 * height of the label above the hist
 	 */
 	public static final float LABEL_HEIGHT = 20;
+
+	public static final Color COLOR_SELECTED_ROW = Color.LIGHT_GRAY;
+	public static final Color COLOR_BAND = new Color(0.90f, 0.90f, 0.90f);
+
+	public static final float FROZEN_BAND_WIDTH = 50;
+	public static final float BUTTON_WIDTH = 14;
 
 }

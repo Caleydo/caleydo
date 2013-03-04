@@ -19,32 +19,44 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.column;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.FrozenRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.TableBodyUI;
+
+import com.jogamp.common.util.IntIntHashMap;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColumnModel> {
+	private float[] rowPositions;
+	private IntIntHashMap indexToRank;
 
 	public TableFrozenColumnUI(FrozenRankColumnModel model) {
 		super(model);
+
+		indexToRank = new IntIntHashMap();
+		int i = 0;
+		for (Iterator<IRow> it = model.getCurrentOrder(); it.hasNext(); i++) {
+			indexToRank.put(it.next().getIndex(), i);
+		}
 	}
 
 	@Override
 	protected GLElement wrap(ARankColumnModel model) {
-		TableColumnUI ui = new TableColumnUI(model);
-		ui.setData(model.getTable().getData(), this);
-		return ui;
+		ITableColumnUI ui = TableColumnUIs.createBody(model, false);
+		return ui.setData(model.getTable().getData(), this);
 	}
 
 	@Override
@@ -55,18 +67,142 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		// g.decZ().decZ();
-		// g.color(stacked.getBgColor()).fillRect(0, 0, w, h);
-		// g.incZ().incZ();
-		// float x = get(stacked.getAlignment()).getLocation().x();
-		// g.color(Color.BLUE).drawLine(x, 0, x, h);
+		if (!model.isCollapsed()) {
+			// render the lines between the orders
+			IRow selectedRow = model.getTable().getSelectedRow();
+			renderOrderLines(g, w, h, selectedRow == null ? -1 : selectedRow.getIndex());
+
+			// highlight selected row
+			if (selectedRow != null && indexToRank.containsKey(selectedRow.getIndex())) {
+				int rank = indexToRank.get(selectedRow.getIndex());
+				if (rank < rowPositions.length && rank >= 0) {
+					float prev = rank == 0 ? 0 : rowPositions[rank - 1];
+					float next = rowPositions[rank];
+					g.color(RenderStyle.COLOR_SELECTED_ROW);
+					g.fillRect(RenderStyle.FROZEN_BAND_WIDTH, prev, w - RenderStyle.FROZEN_BAND_WIDTH, next - prev);
+				}
+			}
+		}
 		super.renderImpl(g, w, h);
 	}
 
 	@Override
-	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (!model.isCollapsed()) {
+			int[] pickingIDs = ((TableBodyUI) getParent()).getPickingIDs();
+
+			// my positions
+			float[] right = getRowPositions();
+
+			// the left positions
+			float[] left = ((TableBodyUI) getParent()).getPreviousRowPositions(this);
+			Iterator<IRow> leftOrder = ((TableBodyUI) getParent()).getPreviousOrder(this);
+
+			ConnectionBandRenderer renderer = new ConnectionBandRenderer();
+			renderer.init(g.gl);
+			// align simple all the same x
+			float y = 0;
+			int ri = 0;
+			for (float hl : left) {
+				if (!leftOrder.hasNext())
+					break;
+				int index = leftOrder.next().getIndex();
+				if (indexToRank.containsKey(index)) {
+					int rightRank = indexToRank.get(index);
+					if (rightRank < right.length) {
+						// render the right picking id according to the left rank
+						g.pushName(pickingIDs[ri]);
+						float yr = rightRank == 0 ? 0 : right[rightRank - 1];
+						float hr = right[rightRank];
+						renderBand(g, renderer, y, hl, yr, hr, RenderStyle.FROZEN_BAND_WIDTH, false);
+						g.fillRect(RenderStyle.FROZEN_BAND_WIDTH, yr, w - RenderStyle.FROZEN_BAND_WIDTH, hr);
+						g.popName();
+					}
+				}
+				y = hl;
+				ri++;
+			}
+		}
+		super.renderPickImpl(g, w, h);
+	}
+
+	private void renderOrderLines(GLGraphics g, float w, float h, int selectedIndex) {
+		// my positions
+		float[] right = getRowPositions();
+
+		// the left positions
+		float[] left = ((TableBodyUI) getParent()).getPreviousRowPositions(this);
+		Iterator<IRow> leftOrder = ((TableBodyUI) getParent()).getPreviousOrder(this);
+
+		ConnectionBandRenderer renderer = new ConnectionBandRenderer();
+		renderer.init(g.gl);
+		// align simple all the same x
+		g.save();
+		g.gl.glTranslatef(0, 0, g.z());
+		float y = 0;
+		for (float hr : left) {
+			if (!leftOrder.hasNext())
+				break;
+			int index = leftOrder.next().getIndex();
+			if (indexToRank.containsKey(index)) {
+				int rightRank = indexToRank.get(index);
+				if (rightRank < right.length) {
+					renderBand(g, renderer, y, hr, rightRank == 0 ? 0 : right[rightRank - 1], right[rightRank],
+							RenderStyle.FROZEN_BAND_WIDTH - 3,
+							selectedIndex == index);
+				}
+			}
+			y = hr;
+		}
+		g.restore();
+	}
+
+	private void renderBand(GLGraphics g, ConnectionBandRenderer renderer, float yl1, float yl2, float yr1, float yr2,
+			float w, boolean isSelected) {
+		float deltal = Math.min(3, (yl2 - yl1 - 1) * .5f);
+		float deltar = Math.min(3, (yr2 - yr1 - 1) * .5f);
+		float[] leftTopPos = new float[] { 0, yl1 + deltal };
+		float[] leftBottomPos = new float[] { 0, yl2 - deltal };
+		float[] rightTopPos = new float[] { w, yr1 + deltar };
+		float[] rightBottomPos = new float[] { w, yr2 - deltar };
+		float[] col = (isSelected ? RenderStyle.COLOR_SELECTED_ROW : RenderStyle.COLOR_BAND).getRGBComponents(null);
+		renderer.renderSingleBand(g.gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos, false, 20, -1,
+ col,
+				false);
+	}
+
+	@Override
+	protected float getLeftPadding() {
+		return RenderStyle.FROZEN_BAND_WIDTH;
+	}
+
+	@Override
+	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
+		IRow selected = model.getTable().getSelectedRow();
+		int selectedRank;
+		if (selected != null && indexToRank.containsKey(selected.getIndex()))
+			selectedRank = indexToRank.get(selected.getIndex());
+		else
+			selectedRank = -1;
+		rowPositions = ((TableBodyUI) getParent()).computeRowPositions(h, model.getCurrentSize(), selectedRank);
+		super.doLayout(children, w, h);
+	}
+
+	@Override
+	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h,
+			float[] rowPositions) {
 		// simple
-		((TableBodyUI) getParent()).layoutRows(model, children, w, h);
+		((IColumModelLayout) getParent()).layoutRows(model, children, w, h, rowPositions);
+	}
+
+	@Override
+	public boolean hasOwnOrder() {
+		return true;
+	}
+
+	@Override
+	public float[] getRowPositions() {
+		return rowPositions;
 	}
 
 	@Override

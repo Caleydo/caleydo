@@ -28,7 +28,6 @@ import java.util.Iterator;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
-import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
@@ -67,7 +66,10 @@ public class ContainerRankColumnModel extends ACompositeRankColumnModel {
 
 	@Override
 	public float getPreferredWidth() {
-		return getWeight() + RenderStyle.COLUMN_SPACE * size() + 6;
+		float w = 0;
+		for (ARankColumnModel c : this)
+			w += c.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
+		return w;
 	}
 
 	@Override
@@ -85,8 +87,8 @@ public class ContainerRankColumnModel extends ACompositeRankColumnModel {
 	}
 
 	@Override
-	protected boolean canAdd(ARankColumnModel model) {
-		return model instanceof IRankableColumnMixin;
+	public boolean canAdd(ARankColumnModel model) {
+		return !(model instanceof FrozenRankColumnModel);
 	}
 
 	@Override

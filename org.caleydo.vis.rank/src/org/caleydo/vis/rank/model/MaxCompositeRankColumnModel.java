@@ -76,8 +76,9 @@ public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implement
 	}
 
 	@Override
-	protected boolean canAdd(ARankColumnModel model) {
-		return model instanceof IRankableColumnMixin && !(model instanceof ACompositeRankColumnModel);
+	public boolean canAdd(ARankColumnModel model) {
+		return model instanceof IRankableColumnMixin && !(model instanceof ACompositeRankColumnModel)
+				&& super.canAdd(model);
 	}
 
 	@Override

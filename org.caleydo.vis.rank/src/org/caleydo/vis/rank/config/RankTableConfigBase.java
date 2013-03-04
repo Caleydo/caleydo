@@ -43,6 +43,8 @@ public class RankTableConfigBase implements IRankTableConfig {
 
 	@Override
 	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
+		if (model instanceof ACompositeRankColumnModel && ((ACompositeRankColumnModel)model).canAdd(with))
+			return true;
 		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
 			return false;
 		return true;

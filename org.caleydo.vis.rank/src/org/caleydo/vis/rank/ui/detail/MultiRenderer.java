@@ -56,6 +56,8 @@ public class MultiRenderer implements IGLRenderer {
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null);
 		MultiFloat v = model.getSplittedValue(r);
+		// boolean inferred = model.isValueInferred(r);
+		// TODO inferred vis
 		Color[] colors = model.getColors();
 		if (v.repr >= 0) {
 			boolean selected = model.getTable().getSelectedRow() == r;

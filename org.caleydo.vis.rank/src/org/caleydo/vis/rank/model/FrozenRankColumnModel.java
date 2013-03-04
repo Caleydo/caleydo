@@ -20,13 +20,21 @@
 package org.caleydo.vis.rank.model;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
 import java.util.BitSet;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
  * @author Samuel Gratzl
@@ -38,10 +46,41 @@ public class FrozenRankColumnModel extends ACompositeRankColumnModel implements 
 	private final int[] order;
 	private final BitSet filter;
 
+	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			onWeightChanged((float) evt.getNewValue() - (float) evt.getOldValue());
+		}
+	};
+
 	public FrozenRankColumnModel(int[] order, BitSet filter) {
 		super(Color.GRAY, new Color(0.95f, 0.95f, 0.95f));
 		this.order = order;
 		this.filter = filter;
+		setHeaderRenderer(GLRenderers.drawText(getNow(), VAlign.CENTER));
+		setWeight(0);
+	}
+
+	protected void onWeightChanged(float delta) {
+		addWeight(delta);
+	}
+
+	@Override
+	protected void init(ARankColumnModel model) {
+		super.init(model);
+		model.addPropertyChangeListener(PROP_WEIGHT, weightChanged);
+		addWeight(model.getWeight());
+	}
+
+	@Override
+	protected void takeDown(ARankColumnModel model) {
+		super.takeDown(model);
+		model.removePropertyChangeListener(PROP_WEIGHT, weightChanged);
+		addWeight(-model.getWeight());
+	}
+
+	private static String getNow() {
+		return DateFormat.getTimeInstance(DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 	}
 
 	public FrozenRankColumnModel(FrozenRankColumnModel copy) {
@@ -54,6 +93,16 @@ public class FrozenRankColumnModel extends ACompositeRankColumnModel implements 
 	@Override
 	public FrozenRankColumnModel clone() {
 		return new FrozenRankColumnModel(this);
+	}
+
+	@Override
+	public float getPreferredWidth() {
+		if (isCollapsed())
+			return COLLAPSED_WIDTH;
+		float w = RenderStyle.FROZEN_BAND_WIDTH; // for the offsets
+		for (ARankColumnModel c : this)
+			w += c.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
+		return w;
 	}
 
 	@Override

@@ -59,7 +59,8 @@ public class TableColumnUI extends AnimatedGLElementContainer implements ITableC
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		((IColumModelLayout) getParent()).layoutRows(model, children, w, h);
+		final IColumModelLayout p = (IColumModelLayout) getParent();
+		p.layoutRows(model, children, w, h,p.getRowPositions());
 	}
 
 	@Override

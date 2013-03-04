@@ -28,6 +28,8 @@ import java.util.Iterator;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 
+import com.google.common.collect.Iterables;
+
 /**
  * @author Samuel Gratzl
  *
@@ -82,15 +84,27 @@ public abstract class AMultiRankColumnModel extends ACompositeRankColumnModel im
 
 	@Override
 	public boolean isValueInferred(IRow row) {
+		for(IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
+			if (child.isValueInferred(row))
+				return true;
 		return false;
+	}
+
+	@Override
+	public final boolean[] isValueInferreds(IRow row) {
+		boolean[] r = new boolean[size()];
+		int i = 0;
+		for(IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
+			r[i++] = child.isValueInferred(row);
+		return r;
 	}
 
 	@Override
 	public final SimpleHistogram[] getHists(int bins) {
 		SimpleHistogram[] hists = new SimpleHistogram[size()];
 		int i = 0;
-		for (ARankColumnModel child : this)
-			hists[i++] = ((IRankableColumnMixin) child).getHist(bins);
+		for (IRankableColumnMixin child : Iterables.filter(this, IRankableColumnMixin.class))
+			hists[i++] = child.getHist(bins);
 		return hists;
 	}
 

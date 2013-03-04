@@ -30,12 +30,15 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.ui.RenderStyle;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -56,6 +59,7 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 		}
 	};
 
+
 	public ACompositeTableColumnUI(T model) {
 		this.model = model;
 		setLayout(this);
@@ -66,12 +70,24 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 		}
 	}
 
+	/**
+	 * @return the model, see {@link #model}
+	 */
+	public T getModel() {
+		return model;
+	}
+
+	public boolean hasOwnOrder() {
+		return false;
+	}
+
 	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
 		super.takeDown();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void onChildrenChanged(IndexedPropertyChangeEvent evt) {
 		int index = evt.getIndex();
 		if (evt.getOldValue() instanceof Integer) {
@@ -107,12 +123,33 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
-		float x = RenderStyle.COLUMN_SPACE;
+		float x = getLeftPadding();
 		for (IGLLayoutElement col : children) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
 			col.setBounds(x, 0, model.getPreferredWidth(), h);
 			x += model.getPreferredWidth() + RenderStyle.COLUMN_SPACE;
 		}
+	}
+
+	@Override
+	protected void renderImpl(GLGraphics g, float w, float h) {
+		g.decZ().decZ();
+		g.color(model.getBgColor()).fillRect(0, 0, w, h);
+		g.incZ().incZ();
+		// float x = get(stacked.getAlignment()).getLocation().x();
+		// g.color(Color.BLUE).drawLine(x, 0, x, h);
+		if (!model.isCollapsed())
+			super.renderImpl(g, w, h);
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		if (!model.isCollapsed())
+			super.renderPickImpl(g, w, h);
+	}
+
+	protected float getLeftPadding() {
+		return RenderStyle.COLUMN_SPACE;
 	}
 
 	@Override
@@ -124,8 +161,8 @@ public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnMode
 
 	@Override
 	public void update() {
-		for (GLElement g : this)
-			g.relayout();
+		for (ITableColumnUI g : Iterables.filter(this, ITableColumnUI.class))
+			g.update();
 		relayout();
 	}
 }

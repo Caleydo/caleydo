@@ -420,9 +420,17 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	@Override
 	public void takeSnapshot(ARankColumnModel model) {
 		ARankColumnModel c = model.clone();
-		FrozenRankColumnModel freezed = new FrozenRankColumnModel(getOrder(), getCurrentFilter());
-		this.addColumn(freezed);
-		freezed.add(c);
+		FrozenRankColumnModel frozen = new FrozenRankColumnModel(getOrder(), getCurrentFilter());
+		setup(frozen);
+		// before the first frozen
+		int i = 0;
+		for (ARankColumnModel col : this.columns) {
+			if (col instanceof FrozenRankColumnModel)
+				break;
+			++i;
+		}
+		add(i, frozen);
+		frozen.add(c);
 	}
 
 	private IRankableColumnMixin findFirstRankable() {

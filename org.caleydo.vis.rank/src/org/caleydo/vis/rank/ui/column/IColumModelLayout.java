@@ -26,8 +26,10 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 
 public interface IColumModelLayout {
-	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h);
+	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h,
+			float[] rowPositions);
 
+	float[] getRowPositions();
 	/**
 	 * @param tableColumnUI
 	 * @return
