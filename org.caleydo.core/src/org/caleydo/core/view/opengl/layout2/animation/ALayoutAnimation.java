@@ -21,56 +21,19 @@ package org.caleydo.core.view.opengl.layout2.animation;
 
 import gleem.linalg.Vec4f;
 
+import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
+ * basic for animation description
+ *
  * @author Samuel Gratzl
  *
  */
-public class DummyAnimation extends ALayoutAnimation {
-	private final EAnimationType type;
-	private Vec4f to;
-
-	public DummyAnimation(EAnimationType type, IGLLayoutElement animated) {
-		super(0, Durations.NO, animated);
-		this.type = type;
+public abstract class ALayoutAnimation extends AAnimation {
+	public ALayoutAnimation(int startIn, IDuration duration, IGLLayoutElement animated) {
+		super(startIn, duration, animated);
 	}
 
-	@Override
-	protected void animate(float alpha, float w, float h) {
-
-	}
-
-	@Override
-	protected void firstTime(float w, float h) {
-
-	}
-
-	@Override
-	protected void lastTime() {
-		switch (type) {
-		case IN:
-		case MOVE:
-			animated.setBounds(to);
-			break;
-		case OUT:
-			animated.hide();
-			break;
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * @return the type, see {@link #type}
-	 */
-	@Override
-	public EAnimationType getType() {
-		return type;
-	}
-
-	@Override
-	public void init(Vec4f from, Vec4f to) {
-		this.to = to;
-	}
+	public abstract void init(Vec4f from, Vec4f to);
 }

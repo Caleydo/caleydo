@@ -30,8 +30,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import org.caleydo.core.view.opengl.layout2.animation.Animation;
-import org.caleydo.core.view.opengl.layout2.animation.Animation.EAnimationType;
+import org.caleydo.core.view.opengl.layout2.animation.AAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.AAnimation.EAnimationType;
+import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
 import org.caleydo.core.view.opengl.layout2.animation.DummyAnimation;
 import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
@@ -43,6 +44,8 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveAnimation;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
 import org.caleydo.core.view.opengl.layout2.animation.OutAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.StyleAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.AGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
@@ -63,7 +66,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	private final List<GLElement> children = new ArrayList<>(3);
 
 	// active animations sorted by their remaining time
-	private final PriorityQueue<Animation> animations = new PriorityQueue<>(3);
+	private final PriorityQueue<AAnimation> animations = new PriorityQueue<>(3);
 
 	private boolean dirtyAnimation = true;
 	private boolean forceLayout = true;
@@ -158,7 +161,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		if (this.animations.isEmpty() || time == 0)
 			return children;
 		List<GLElement> r = new ArrayList<>(children);
-		for (Animation anim : animations) {
+		for (AAnimation anim : animations) {
 			switch (anim.getType()) {
 			case MOVE:
 				break;
@@ -183,7 +186,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 */
 	private Iterable<GLElement> activeChildren() {
 		Collection<GLElement> r = new ArrayList<>(children);
-		for (Animation anim : animations) {
+		for (AAnimation anim : animations) {
 			switch (anim.getType()) {
 			case OUT:
 				if (anim.isRunning()) { // was removed
@@ -203,7 +206,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		Vec2f size = getSize();
 
 		if (dirtyAnimation || forceLayout) {
-			List<Animation> tmp = Lists.newArrayList(animations);
+			List<AAnimation> tmp = Lists.newArrayList(animations);
 
 			Collection<GLElement> elems = asSeenIn(0);
 			List<RecordingLayoutElement> l = new ArrayList<>(elems.size());
@@ -214,16 +217,16 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			layout.doLayout(l, size.x(), size.y());
 
 			outer: for (RecordingLayoutElement elem : l) {
-				for (Iterator<Animation> ita = tmp.iterator(); ita.hasNext();) {
-					Animation anim = ita.next();
-					if (anim.getAnimated() == elem.wrappee) { // match
-						anim.init(elem.before, elem.after);
+				for (Iterator<AAnimation> ita = tmp.iterator(); ita.hasNext();) {
+					AAnimation anim = ita.next();
+					if (anim.getAnimated() == elem.wrappee && anim instanceof ALayoutAnimation) { // match
+						((ALayoutAnimation) anim).init(elem.before, elem.after);
 						ita.remove();
 						continue outer;
 					}
 				}
 				if (elem.hasChanged()) { // create a move animation
-					Animation anim = createMoveAnimation(elem);
+					ALayoutAnimation anim = createMoveAnimation(elem);
 					anim.init(elem.before, elem.after);
 					animations.add(anim);
 				}
@@ -231,7 +234,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 	}
 
-	private Animation createMoveAnimation(RecordingLayoutElement elem) {
+	private ALayoutAnimation createMoveAnimation(RecordingLayoutElement elem) {
 		if (!animateByDefault) {
 			return new DummyAnimation(EAnimationType.MOVE, elem.wrappee);
 		}
@@ -249,8 +252,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		Vec2f size = getSize();
 		int delta = nextDelta();
 
-		for (Iterator<Animation> it = animations.iterator(); it.hasNext();) {
-			Animation anim = it.next();
+		for (Iterator<AAnimation> it = animations.iterator(); it.hasNext();) {
+			AAnimation anim = it.next();
 			if (anim.apply(delta, size.x(), size.y())) { // done
 				GLElement elem = anim.getAnimatedElement();
 				switch (anim.getType()) {
@@ -260,6 +263,8 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					break;
 				case OUT:
 					takeDown(elem);
+					break;
+				case STYLE:
 					break;
 				}
 				it.remove();
@@ -391,6 +396,12 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		children.remove(child);
 		relayout();
 		return context != null;
+	}
+
+	public final void animate(GLElement elem, int duration, IStyleAnimation anim) {
+		this.animations.add(new StyleAnimation(0, Durations.fix(duration), elem.layoutElement, anim));
+		animate();
+
 	}
 
 	@Override

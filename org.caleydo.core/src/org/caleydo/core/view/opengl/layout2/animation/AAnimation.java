@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
-import gleem.linalg.Vec4f;
-
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
@@ -31,14 +29,14 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class Animation implements Comparable<Animation> {
+public abstract class AAnimation implements Comparable<AAnimation> {
 	private int startIn;
 	private int remaining;
 	private final IDuration duration; // TODO
 	private int durationValue;
 	protected final IGLLayoutElement animated;
 
-	public Animation(int startIn, IDuration duration, IGLLayoutElement animated) {
+	public AAnimation(int startIn, IDuration duration, IGLLayoutElement animated) {
 		this.duration = duration;
 		this.durationValue = duration.getDuration();
 		this.startIn = startIn;
@@ -104,7 +102,7 @@ public abstract class Animation implements Comparable<Animation> {
 	}
 
 	@Override
-	public int compareTo(Animation o) {
+	public int compareTo(AAnimation o) {
 		return this.getStopAt() - o.getStopAt();
 	}
 
@@ -124,7 +122,7 @@ public abstract class Animation implements Comparable<Animation> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Animation other = (Animation) obj;
+		AAnimation other = (AAnimation) obj;
 		if (animated == null) {
 			if (other.animated != null)
 				return false;
@@ -172,9 +170,7 @@ public abstract class Animation implements Comparable<Animation> {
 
 	public abstract EAnimationType getType();
 
-	public abstract void init(Vec4f from, Vec4f to);
-
 	public enum EAnimationType {
-		IN, OUT, MOVE
+		IN, OUT, MOVE, STYLE
 	}
 }

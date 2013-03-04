@@ -19,58 +19,43 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
-import gleem.linalg.Vec4f;
-
+import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
+import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class DummyAnimation extends ALayoutAnimation {
-	private final EAnimationType type;
-	private Vec4f to;
+public class StyleAnimation extends AAnimation {
+	private final IStyleAnimation anim;
 
-	public DummyAnimation(EAnimationType type, IGLLayoutElement animated) {
-		super(0, Durations.NO, animated);
-		this.type = type;
+	public StyleAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IStyleAnimation anim) {
+		super(startIn, duration, animated);
+		this.anim = anim;
 	}
 
 	@Override
 	protected void animate(float alpha, float w, float h) {
-
+		anim.animate(getAnimatedElement(), alpha);
+		getAnimatedElement().repaint();
 	}
 
 	@Override
 	protected void firstTime(float w, float h) {
-
+		anim.firstTime(getAnimatedElement());
+		getAnimatedElement().repaint();
 	}
 
 	@Override
 	protected void lastTime() {
-		switch (type) {
-		case IN:
-		case MOVE:
-			animated.setBounds(to);
-			break;
-		case OUT:
-			animated.hide();
-			break;
-		default:
-			break;
-		}
+		anim.lastTime(getAnimatedElement());
+		getAnimatedElement().repaint();
 	}
 
-	/**
-	 * @return the type, see {@link #type}
-	 */
 	@Override
 	public EAnimationType getType() {
-		return type;
+		return EAnimationType.STYLE;
 	}
 
-	@Override
-	public void init(Vec4f from, Vec4f to) {
-		this.to = to;
-	}
 }

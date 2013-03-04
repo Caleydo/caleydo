@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * @author Samuel Gratzl
  *
  */
-public class MoveAnimation extends Animation {
+public class MoveAnimation extends ALayoutAnimation {
 	private final IMoveTransition animation;
 	private Vec4f from = null;
 	private Vec4f to = null;
