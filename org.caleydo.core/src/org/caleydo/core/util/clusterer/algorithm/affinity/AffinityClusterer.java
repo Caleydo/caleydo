@@ -136,7 +136,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 			for (Integer recordIndex1 : recordVA) {
 
-				if (bClusteringCanceled == false) {
+				if (isClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt1 / recordVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
@@ -211,7 +211,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 			for (Integer iDimensionIndex1 : dimensionVA) {
 
-				if (bClusteringCanceled == false) {
+				if (isClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) isto1 / dimensionVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
@@ -423,7 +423,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 				}
 			}
 			processEvents();
-			if (bClusteringCanceled) {
+			if (isClusteringCanceled) {
 				Logger.log(new Status(IStatus.INFO, toString(),
 						"Affinity propagation clustering was canceled!"));
 				GeneralManager.get().getEventPublisher()

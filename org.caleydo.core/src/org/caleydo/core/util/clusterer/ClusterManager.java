@@ -152,7 +152,7 @@ public class ClusterManager {
 			return result;
 		}
 		catch (OutOfMemoryError e) {
-			throw new IllegalStateException("Clusterer out of memory");
+			throw new IllegalStateException("Clusterer out of memory", e);
 		}
 	}
 

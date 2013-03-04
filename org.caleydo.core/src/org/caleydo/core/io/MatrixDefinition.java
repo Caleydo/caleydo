@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ *
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.io;
 
@@ -31,29 +28,22 @@ import javax.xml.bind.annotation.XmlType;
  * The general contract of this class is the following:
  * </p>
  * <ul>
- * <li>The data is stored in a delimited text file. Common delimiters are tabs
- * or semicolons, but any ascii string is possible. Lines in the matrix are
- * separated with an ascii linebreak according to
- * {@link BufferedReader#readLine()} contract, i.e. either a line feed, a
- * carriage return, or both.</li>
- * <li>The file may have a header of arbitrary length (an arbitrary number of
- * lines)</li>
- * <li>The data matrix follows the header. The data matrix has a constant number
- * of columns and every line until the end of the file contains nothing but
- * data.</li>
- * <li>Generally, there should be a row containing identifiers for the columns.
- * The location of this row is assumed to be in the header directly preceding
- * the data (i.e. in the line before the data starts). If this row is at some
- * other position in the header this can be specified using
- * {@link #rowOfColumnIDs}. If no column IDs are specified, they are
+ * <li>The data is stored in a delimited text file. Common delimiters are tabs or semicolons, but any ascii string is
+ * possible. Lines in the matrix are separated with an ascii linebreak according to {@link BufferedReader#readLine()}
+ * contract, i.e. either a line feed, a carriage return, or both.</li>
+ * <li>The file may have a header of arbitrary length (an arbitrary number of lines)</li>
+ * <li>The data matrix follows the header. The data matrix has a constant number of columns and every line until the end
+ * of the file contains nothing but data.</li>
+ * <li>Generally, there should be a row containing identifiers for the columns. The location of this row is assumed to
+ * be in the header directly preceding the data (i.e. in the line before the data starts). If this row is at some other
+ * position in the header this can be specified using {@link #rowOfColumnIDs}. If no column IDs are specified, they are
  * automatically generated</li>
- * <li>There must be a column containing identifiers for the rows. The column
- * can be specified in {@link #columnOfRowIds}. If this is not specified it is
- * assumed to be the first column.</li>
+ * <li>There must be a column containing identifiers for the rows. The column can be specified in
+ * {@link #columnOfRowIds}. If this is not specified it is assumed to be the first column.</li>
  * </ul>
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 @XmlType
 public class MatrixDefinition {
@@ -62,9 +52,8 @@ public class MatrixDefinition {
 	protected String dataSourcePath;
 
 	/**
-	 * The number of lines which should be ignored for parsing, i.e. that don't
-	 * contain data. They may contain the line containing the IDs. This defaults
-	 * to 1 line for the IDs.
+	 * The number of lines which should be ignored for parsing, i.e. that don't contain data. They may contain the line
+	 * containing the IDs. This defaults to 1 line for the IDs.
 	 */
 	protected Integer numberOfHeaderLines = 1;
 
@@ -77,11 +66,14 @@ public class MatrixDefinition {
 	protected boolean containsColumnIDs = true;
 
 	/**
-	 * Defines in which row the IDs for the columns are found. By default, this
-	 * is assumed to be {@link #numberOfHeaderLines}-1, i.e., if the row of
-	 * column IDs is directly followed by the data it is not necessary to
-	 * specify this. Defaults to null, which means that
-	 * {@link #numberOfHeaderLines}-1 should be used.
+	 * <p>
+	 * Defines in which row the IDs for the columns are found. By default, this is assumed to be
+	 * {@link #numberOfHeaderLines}-1, i.e., if the row of column IDs is directly followed by the data it is not
+	 * necessary to specify this. Defaults to null, which means that {@link #numberOfHeaderLines}-1 should be used.
+	 * </p>
+	 * <p>
+	 * Notice that we start at 0!
+	 * </p>
 	 */
 	protected Integer rowOfColumnIDs = null;
 
@@ -91,8 +83,8 @@ public class MatrixDefinition {
 	private IDSpecification columnIDSpecification = null;
 
 	/**
-	 * Defines in which columns the IDs for the rows are found. Counting starts at 0. By default it is
-	 * assumed that this is in column 0 (the first row).
+	 * Defines in which columns the IDs for the rows are found. Counting starts at 0. By default it is assumed that this
+	 * is in column 0 (the first row).
 	 */
 	protected Integer columnOfRowIds = 0;
 
@@ -218,7 +210,5 @@ public class MatrixDefinition {
 	public IDSpecification getRowIDSpecification() {
 		return rowIDSpecification;
 	}
-
-
 
 }

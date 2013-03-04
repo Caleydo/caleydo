@@ -44,7 +44,7 @@ public abstract class AClusterer
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
 	private ClustererCanceledListener clustererCanceledListener;
 
-	protected boolean bClusteringCanceled = false;
+	protected boolean isClusteringCanceled = false;
 
 	// variables needed for correct visualization of cluster progress bar
 	protected int iProgressBarMultiplier;
@@ -75,7 +75,7 @@ public abstract class AClusterer
 
 	@Override
 	public void cancel() {
-		bClusteringCanceled = true;
+		isClusteringCanceled = true;
 	}
 
 	@Override

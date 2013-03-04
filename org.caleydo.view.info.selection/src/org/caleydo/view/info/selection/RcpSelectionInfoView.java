@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -41,13 +41,12 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Search view contains gene and pathway search.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -59,9 +58,6 @@ public class RcpSelectionInfoView
 
 	private HashMap<SelectionManager, TreeItem> selectionManagerToSubTree = new HashMap<SelectionManager, TreeItem>();
 
-	private Label lblViewInfoContent;
-
-	private Composite parentComposite;
 
 	private Tree selectionTree;
 
@@ -147,7 +143,7 @@ public class RcpSelectionInfoView
 
 				if (!selectionManagerToSubTree.containsKey(selectionManager)
 						&& (mouseOverIDs.size() > 0 || selectedIDs.size() > 0)) {
-					
+
 					TreeItem idCategorySubTree = new TreeItem(selectionTree, SWT.NONE);
 					idCategorySubTree.setExpanded(true);
 					idCategorySubTree.setData(-1);
@@ -155,18 +151,18 @@ public class RcpSelectionInfoView
 
 					selectionManagerToSubTree.put(selectionManager, idCategorySubTree);
 				}
-				
+
 				TreeItem subTree = selectionManagerToSubTree.get(selectionManager);
-				
+
 				if (subTree == null)
 					return;
-				
+
 				// Flush old items from this selection type
 				for (TreeItem item : subTree.getItems()) {
 					item.dispose();
 				}
 				subTree.clearAll(true);
-				
+
 				createItems(subTree, SelectionType.MOUSE_OVER, mouseOverIDs, idType);
 				createItems(subTree, SelectionType.SELECTION, selectedIDs, idType);
 
@@ -182,7 +178,7 @@ public class RcpSelectionInfoView
 		});
 	}
 
-	private void createItems(TreeItem tree, SelectionType selectionType, Set<Integer> IDs, IDType idType) {
+	private synchronized void createItems(TreeItem tree, SelectionType selectionType, Set<Integer> IDs, IDType idType) {
 		Color color;
 		int[] intColor = selectionType.getIntColor();
 
@@ -196,7 +192,7 @@ public class RcpSelectionInfoView
 			String humanReadableID = "<unresolved>";
 			if (resolvedIDs != null && resolvedIDs.size() > 0)
 				humanReadableID = (String) resolvedIDs.toArray()[0];
-			
+
 			TreeItem item = new TreeItem(tree, SWT.NONE);
 			item.setText(humanReadableID + "");
 			item.setBackground(color);
@@ -208,7 +204,7 @@ public class RcpSelectionInfoView
 	}
 
 	@Override
-	public void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
+	public synchronized void notifyOfSelectionChange(EventBasedSelectionManager selectionManager) {
 		updateSubTree(selectionManager);
 	}
 }

@@ -107,7 +107,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 			int icnt = 0;
 			for (Integer recordIndex : recordVA) {
-				if (bClusteringCanceled)
+				if (isClusteringCanceled)
 					return canceled();
 
 				int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
@@ -116,8 +116,8 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 					percentage++;
 				}
 
-				for (Integer iDimensionIndex : dimensionVA) {
-					buffer.append(table.getNormalizedValue(iDimensionIndex, recordIndex) + ", ");
+				for (Integer dimensionIndex : dimensionVA) {
+					buffer.append(table.getNormalizedValue(dimensionIndex, recordIndex) + ", ");
 
 				}
 				buffer.append("\n");
@@ -142,7 +142,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 			int isto = 0;
 			for (Integer iDimensionIndex : dimensionVA) {
-				if (bClusteringCanceled)
+				if (isClusteringCanceled)
 					return canceled();
 
 				int tempPercentage = (int) ((float) isto / dimensionVA.size() * 100);
@@ -186,7 +186,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 		}
 
 		processEvents();
-		if (bClusteringCanceled) {
+		if (isClusteringCanceled) {
 			return canceled();
 		}
 		triggerProgress(45, false);
@@ -199,7 +199,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 			return error(e);
 		}
 		processEvents();
-		if (bClusteringCanceled) {
+		if (isClusteringCanceled) {
 			return canceled();
 		}
 		triggerProgress(60, false);
@@ -223,7 +223,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 			}
 		}
 		processEvents();
-		if (bClusteringCanceled) {
+		if (isClusteringCanceled) {
 			return canceled();
 		}
 		triggerProgress(80, false);

@@ -149,7 +149,7 @@ public class TreeClusterer extends AClusterer {
 
 			for (Integer recordIndex1 : recordVA) {
 
-				if (bClusteringCanceled == false) {
+				if (isClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt1 / recordVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
@@ -208,7 +208,7 @@ public class TreeClusterer extends AClusterer {
 
 			for (Integer iDimensionIndex1 : dimensionVA) {
 
-				if (bClusteringCanceled == false) {
+				if (isClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt1 / dimensionVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager
@@ -462,7 +462,7 @@ public class TreeClusterer extends AClusterer {
 									"Tree clustering of experiments in progress"));
 
 		for (int n = iNrSamples; n > 1; n--) {
-			if (bClusteringCanceled == false) {
+			if (isClusteringCanceled == false) {
 				int sum;
 				int is = 1;
 				int js = 0;
@@ -709,7 +709,7 @@ public class TreeClusterer extends AClusterer {
 
 		for (int n = iNrSamples; n > 1; n--) {
 
-			if (bClusteringCanceled == false) {
+			if (isClusteringCanceled == false) {
 				int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
 				if (iPercentage == tempPercentage) {
 					GeneralManager.get().getEventPublisher()
