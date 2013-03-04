@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.model.FreezedRankColumnModel;
+import org.caleydo.vis.rank.model.FrozenRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 
@@ -34,9 +34,9 @@ import org.caleydo.vis.rank.ui.TableBodyUI;
  * @author Samuel Gratzl
  *
  */
-public class TableFreezedColumnUI extends ACompositeTableColumnUI<FreezedRankColumnModel> {
+public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColumnModel> {
 
-	public TableFreezedColumnUI(FreezedRankColumnModel model) {
+	public TableFrozenColumnUI(FrozenRankColumnModel model) {
 		super(model);
 	}
 

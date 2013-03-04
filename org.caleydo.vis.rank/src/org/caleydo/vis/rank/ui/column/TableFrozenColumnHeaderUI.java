@@ -50,7 +50,7 @@ import org.caleydo.vis.rank.ui.StackedSeparatorUI;
  * @author Samuel Gratzl
  *
  */
-public class TableFreezedColumnHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker,
+public class TableFrozenColumnHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker,
 		IThickTableHeaderUI {
 	private final static int FIRST_COLUMN = 1;
 	private StackedRankColumnModel model;
@@ -68,7 +68,7 @@ public class TableFreezedColumnHeaderUI extends GLElementContainer implements IG
 
 	private final boolean interactive;
 
-	public TableFreezedColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
+	public TableFrozenColumnHeaderUI(StackedRankColumnModel model, boolean interactive) {
 		this.model = model;
 		this.interactive = interactive;
 		setLayout(this);

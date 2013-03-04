@@ -46,7 +46,7 @@ import org.caleydo.vis.rank.ui.RenderStyle;
  * @author Samuel Gratzl
  *
  */
-public class TableFreezedSummaryHeaderUI extends AnimatedGLElementContainer implements IGLLayout {
+public class TableFrozenSummaryHeaderUI extends AnimatedGLElementContainer implements IGLLayout {
 	private final static int HIST = 0;
 	private final static int BUTTONS = 1;
 
@@ -56,7 +56,7 @@ public class TableFreezedSummaryHeaderUI extends AnimatedGLElementContainer impl
 	private final StackedRankColumnModel model;
 	private PropertyChangeListener onAlignmentChange;
 
-	public TableFreezedSummaryHeaderUI(final StackedRankColumnModel model, boolean interactive) {
+	public TableFrozenSummaryHeaderUI(final StackedRankColumnModel model, boolean interactive) {
 		this.model = model;
 		this.interactive = interactive;
 		setLayout(this);
