@@ -26,7 +26,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 
 /**
  * @author Samuel Gratzl

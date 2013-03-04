@@ -49,8 +49,11 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRankColumnParent;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
+import org.caleydo.vis.rank.ui.column.IColumModelLayout;
+import org.caleydo.vis.rank.ui.column.ITableColumnUI;
+import org.caleydo.vis.rank.ui.column.TableColumnUI;
+import org.caleydo.vis.rank.ui.column.TableColumnUIs;
 
 /**
  * a visualization of the body of the {@link RankTableModel}, in HTML it would be the tbody
@@ -97,15 +100,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		this.table.addPropertyChangeListener(IRankColumnParent.PROP_DATA, updateData);
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
 		for (ARankColumnModel col : table.getColumns()) {
-			if (col instanceof StackedRankColumnModel) {
-				StackedRankColumnModel s = (StackedRankColumnModel) col;
-				TableStackedColumnUI ui = new TableStackedColumnUI(s);
-				ui.setData(table.getData());
-				init(col);
-				this.add(ui);
-			} else {
-				this.add(wrap(col));
-			}
+			this.add(wrap(col));
 		}
 		selectRowListener.add(new IPickingListener() {
 			@Override
@@ -163,16 +158,14 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 	private GLElement wrap(ARankColumnModel new_) {
 		init(new_);
-		return new TableColumnUI(new_).setData(table.getData(), this);
+		return TableColumnUIs.createBody(new_).setData(table.getData(), this);
 	}
 
 	protected void updateData() {
 		Collection<IRow> data = table.getData();
 		for (GLElement col : this) {
-			if (col instanceof TableStackedColumnUI) {
-				((TableStackedColumnUI) col).setData(data);
-			} else
-				((TableColumnUI) col).setData(data, this);
+			if (col instanceof ITableColumnUI)
+				((ITableColumnUI) col).setData(data, this);
 		}
 	}
 
@@ -180,10 +173,9 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		relayout();
 		repaint();
 		for (GLElement g : this) {
-			if (g instanceof TableStackedColumnUI) {
-				((TableStackedColumnUI) g).update();
+			if (g instanceof ITableColumnUI) {
+				((ITableColumnUI) g).update();
 			}
-			g.relayout();
 		}
 	}
 
@@ -273,7 +265,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		hideUnused(children, w, h, used);
 	}
 
-	static void hideUnused(List<? extends IGLLayoutElement> children, float w, float h, BitSet used) {
+	public static void hideUnused(List<? extends IGLLayoutElement> children, float w, float h, BitSet used) {
 		for (int unused = used.nextSetBit(0); unused >= 0; unused = used.nextSetBit(unused + 1)) {
 			children.get(unused).setBounds(RenderStyle.COLUMN_SPACE, h, w, 0);
 		}

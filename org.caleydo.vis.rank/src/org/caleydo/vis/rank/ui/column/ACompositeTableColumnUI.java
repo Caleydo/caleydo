@@ -17,10 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.column;
 
 
 import java.beans.IndexedPropertyChangeEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,19 +32,44 @@ import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
+import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class ATableColumnUI extends GLElementContainer implements IGLLayout, IColumModelLayout {
+public abstract class ACompositeTableColumnUI<T extends ACompositeRankColumnModel> extends GLElementContainer implements
+		IGLLayout, IColumModelLayout, ITableColumnUI {
 
+	protected final T model;
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+			case ACompositeRankColumnModel.PROP_CHILDREN:
+				onChildrenChanged((IndexedPropertyChangeEvent) evt);
+				break;
+			}
+		}
+	};
 
-	public ATableColumnUI(ARankColumnModel model) {
+	public ACompositeTableColumnUI(T model) {
+		this.model = model;
 		setLayout(this);
 		setLayoutData(model);
+		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
+		for (ARankColumnModel col2 : model) {
+			this.add(wrap(col2));
+		}
+	}
+
+	@Override
+	protected void takeDown() {
+		model.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
+		super.takeDown();
 	}
 
 	protected void onChildrenChanged(IndexedPropertyChangeEvent evt) {
@@ -88,20 +115,18 @@ public abstract class ATableColumnUI extends GLElementContainer implements IGLLa
 		}
 	}
 
-	/**
-	 * @param data
-	 */
-	public void setData(Collection<IRow> data) {
+	@Override
+	public GLElement setData(Iterable<IRow> data, IColumModelLayout parent) {
 		for (GLElement col : this)
 			((TableColumnUI) col).setData(data, this);
+		return this;
 	}
 
-	/**
-	 *
-	 */
+	@Override
 	public void update() {
 		for (GLElement g : this)
 			g.relayout();
+		relayout();
 	}
 }
 

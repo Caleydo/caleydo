@@ -1,4 +1,4 @@
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.column;
 
 import java.util.Iterator;
 import java.util.List;
@@ -12,9 +12,10 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.ui.IColumnRenderInfo;
 import org.caleydo.vis.rank.ui.anim.ReRankTransition;
 
-public class TableColumnUI extends AnimatedGLElementContainer implements IGLLayout, IColumnRenderInfo {
+public class TableColumnUI extends AnimatedGLElementContainer implements ITableColumnUI, IGLLayout, IColumnRenderInfo {
 	private final ARankColumnModel model;
 
 	public TableColumnUI(ARankColumnModel model) {
@@ -33,6 +34,7 @@ public class TableColumnUI extends AnimatedGLElementContainer implements IGLLayo
 		return model;
 	}
 
+	@Override
 	public TableColumnUI setData(Iterable<IRow> rows, IColumModelLayout parent) {
 		int s = size();
 		int i = 0;
@@ -48,6 +50,11 @@ public class TableColumnUI extends AnimatedGLElementContainer implements IGLLayo
 				this.add(model.createValue().setLayoutData(it.next()));
 		}
 		return this;
+	}
+
+	@Override
+	public void update() {
+		relayout();
 	}
 
 	@Override

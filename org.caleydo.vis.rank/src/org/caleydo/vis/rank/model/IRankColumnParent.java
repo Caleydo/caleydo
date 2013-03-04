@@ -93,4 +93,15 @@ public interface IRankColumnParent extends IRankColumnModel {
 	void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
 
 	void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
+
+	/**
+	 * @param aRankColumnModel
+	 * @return
+	 */
+	boolean canTakeSnapshot(ARankColumnModel aRankColumnModel);
+
+	/**
+	 * @param aRankColumnModel
+	 */
+	void takeSnapshot(ARankColumnModel aRankColumnModel);
 }

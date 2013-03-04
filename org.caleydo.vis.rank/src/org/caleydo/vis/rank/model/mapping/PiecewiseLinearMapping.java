@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model;
+package org.caleydo.vis.rank.model.mapping;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -26,55 +26,56 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.caleydo.core.io.gui.dataimport.widget.ICallback;
-import org.caleydo.core.util.function.AFloatFunction;
-import org.caleydo.core.util.function.FloatFunctions;
-
 import com.google.common.collect.Iterators;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<Entry<Float, Float>> {
-	private ICallback<PiecewiseLinearMapping> onChange;
-
+public class PiecewiseLinearMapping extends AMappingFunction implements Iterable<Entry<Float, Float>>, IMappingFunction {
 	private final SortedMap<Float, Float> mapping = new TreeMap<>();
-	private final float fromMin;
-	private final float fromMax;
-
-	private float actMin;
-	private float actMax;
 
 	public PiecewiseLinearMapping(float fromMin, float fromMax) {
-		this.fromMin = fromMin;
-		this.fromMax = fromMax;
-		this.actMin = 0;
+		super(fromMin, fromMax);
 		if (!Float.isNaN(fromMin)) {
-			this.actMin = fromMin;
 			put(fromMin, 0);
 		}
-		this.actMax = 1;
 		if (!Float.isNaN(fromMax)) {
-			this.actMax = fromMax;
 			put(fromMax, 1);
 		}
 	}
 
 	public PiecewiseLinearMapping(PiecewiseLinearMapping copy) {
-		this.fromMin = copy.fromMin;
-		this.fromMax = copy.fromMax;
-		this.actMin = copy.actMin;
-		this.actMax = copy.actMax;
+		super(copy);
 		this.mapping.putAll(copy.mapping);
-		this.onChange = copy.onChange;
 	}
 
+	@Override
+	public PiecewiseLinearMapping clone() {
+		return new PiecewiseLinearMapping(this);
+	}
+
+	@Override
 	public String toJavaScript() {
 		StringBuilder b = new StringBuilder();
-		if (mapping.isEmpty())
-			b.append("clamp(value, 0, 1)");
-		else if (mapping.size() == 1) {
+		if (mapping.size() < 2) {
+			String min_from, min_to, max_from, max_to;
+			if (mapping.isEmpty() || isDefaultMin(mapping.firstKey())) {
+				min_from = "value_min";
+				min_to = "0";
+			} else {
+				min_from = String.format(Locale.ENGLISH, "%.2g",mapping.firstKey());
+				min_to = String.format(Locale.ENGLISH, "%.2g",mapping.get(mapping.firstKey()));
+			}
+			if (mapping.isEmpty() || !isDefaultMin(mapping.firstKey())) {
+				max_from = "value_max";
+				max_to = "1";
+			} else {
+				max_from = String.format(Locale.ENGLISH, "%.2g",mapping.firstKey());
+				max_to = String.format(Locale.ENGLISH, "%.2g",mapping.get(mapping.firstKey()));
+			}
+			b.append(String.format("if (value < %s) return Float.NaN\n", min_from));
+			b.append(String.format("else if (value <= %s) return linear(%s, %s, value, %s, %s)\n",max_from,min_from,max_from,min_to,max_to));
 		} else {
 			Map.Entry<Float, Float> last = null;
 			for (Map.Entry<Float, Float> entry : this) {
@@ -83,28 +84,18 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 				} else {
 					b.append(String
 							.format(Locale.ENGLISH,
-									"else if (inRange(value, %1$.2g, %2$.2g)) return linear(%1$.2g, %2$.2g, value, %3$.2g, %4$.2g)\n",
+							"else if (value <= %2$.2g) return linear(%1$.2g, %2$.2g, value, %3$.2g, %4$.2g)\n",
 									last.getKey(), entry.getKey(), last.getValue(), entry.getValue()));
 				}
 				last = entry;
 			}
-			b.append(String.format("else return Float.NaN"));
 		}
+		b.append("else return Float.NaN");
 		return b.toString();
-	}
-
-	public void setChangeCallback(ICallback<PiecewiseLinearMapping> callback) {
-		this.onChange = callback;
 	}
 
 	public void put(float from, float to) {
 		mapping.put(from, to);
-		fireChange();
-	}
-
-	private void fireChange() {
-		if (onChange != null)
-			onChange.on(this);
 	}
 
 	public void update(float oldFrom, float oldTo, float from, float to) {
@@ -112,7 +103,6 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 			return;
 		mapping.remove(oldFrom);
 		mapping.put(from, to);
-		fireChange();
 	}
 
 	@Override
@@ -126,12 +116,10 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 
 	public void remove(float from) {
 		mapping.remove(from);
-		fireChange();
 	}
 
 	public void clear() {
 		mapping.clear();
-		fireChange();
 	}
 
 	@Override
@@ -141,7 +129,7 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 		if (mapping.size() < 2) {// default
 			float[] m0 = getMappedMin();
 			float[] m1 = getMappedMax();
-			return linearMapping(in, m0[0], m0[1], m1[0], m1[1]);
+			return MappingFunctions.linear(m0[0], m1[0], in, m0[1], m1[1]);
 		}
 		if (mapping.containsKey(in))
 			return mapping.get(in);
@@ -157,97 +145,34 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 		Float end = after.firstKey();
 		Float endTo = after.get(end);
 
-		return linearMapping(in, start, startTo, end, endTo);
+		return MappingFunctions.linear(start, end, in, startTo, endTo);
 	}
 
-	private static float linearMapping(float in, float start, float startTo, float end, float endTo) {
-		if (in < start)
-			return Float.NaN;
-		if (in > end)
-			return Float.NaN;
-		// linear interpolation between start and end
-		float v = (in - start) / (end - start); // to ratio
-		// to mapped value
-		float r = startTo + v * (endTo - startTo);
 
-		// finally clamp
-		return FloatFunctions.CLAMP01.apply(r);
-	}
-
-	public void setAct(float min, float max) {
-		if (Float.isNaN(fromMin))
-			actMin = min;
-		if (Float.isNaN(fromMax))
-			actMax = max;
-	}
-
+	@Override
 	public float[] getMappedMin() {
 		if (mapping.isEmpty())
-			return new float[] { actMin, 0 };
+			return new float[] { getActMin(), 0 };
 		float k = mapping.firstKey();
 		if (mapping.size() == 1 && isDefaultMin(k)) {
-			return new float[] { actMin, 0 };
+			return new float[] { getActMin(), 0 };
 		}
 		return new float[] { k, mapping.get(k) };
 	}
 
-	private boolean isDefaultMin(float k) {
-		boolean id = !isMinDefined();
-		boolean ad = !isMaxDefined();
-		if (id && ad && (Math.abs(k - actMin) < Math.abs(k - actMax)))
-			return true;
-		return id;
-	}
 
+	@Override
 	public float[] getMappedMax() {
 		if (mapping.isEmpty())
-			return new float[] { actMax, 1 };
+			return new float[] { getActMax(), 1 };
 		float k = mapping.lastKey();
 		if (mapping.size() == 1 && !isDefaultMin(k)) {
-			return new float[] { actMax, 1 };
+			return new float[] { getActMax(), 1 };
 		}
 		return new float[] { k, mapping.get(k) };
 	}
 
-	/**
-	 * @return the actMin, see {@link #actMin}
-	 */
-	public float getActMin() {
-		return actMin;
-	}
-
-	/**
-	 * @return the actMax, see {@link #actMax}
-	 */
-	public float getActMax() {
-		return actMax;
-	}
-
-	/**
-	 * @return the fromMin, see {@link #fromMin}
-	 */
-	public float getFromMin() {
-		return fromMin;
-	}
-	/**
-	 * @return the fromMax, see {@link #fromMax}
-	 */
-	public float getFromMax() {
-		return fromMax;
-	}
-
-	public boolean hasDefinedMappingBounds() {
-		return !Float.isNaN(fromMin) && !Float.isNaN(fromMax);
-	}
-
-	public boolean isMinDefined() {
-		return !Float.isNaN(fromMin);
-	}
-
-	public boolean isMaxDefined() {
-		return !Float.isNaN(fromMax);
-	}
-
+	@Override
 	public boolean isMappingDefault() {
 		return mapping.size() < 2;
 	}
@@ -289,6 +214,16 @@ public class PiecewiseLinearMapping extends AFloatFunction implements Iterable<E
 		test(0.5f, t.apply(0.5f));
 		test(0.1f, t.apply(-0.1f));
 		test(Float.NaN, t.apply(1.1f));
+
+		PiecewiseLinearMapping p = new PiecewiseLinearMapping(Float.NaN, Float.NaN);
+		p.setAct(-1, +1);
+		System.out.println(p.toJavaScript());
+		p = new PiecewiseLinearMapping(0, Float.NaN);
+		p.setAct(0, 100);
+		System.out.println(p.toJavaScript());
+		p = new PiecewiseLinearMapping(Float.NaN, 1);
+		p.setAct(-10, 10);
+		System.out.println(p.toJavaScript());
 	}
 
 	private static void test(float expected, float actual) {

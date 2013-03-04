@@ -165,7 +165,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 		this.table.addColumn(new RankRankColumnModel());
 		this.table.addColumn(new PerspectiveRankColumnModel(this));
-		this.stacked = new StackedRankColumnModel();
+		this.stacked = new StackedRankColumnModel("Stacked");
 		this.table.addColumn(stacked);
 		this.table.addColumn(new SizeRankColumnModel());
 

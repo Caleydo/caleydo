@@ -39,6 +39,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
+import org.caleydo.vis.rank.ui.column.TableColumnHeaderUI;
 
 /**
  * simple visualization of the pool of hidden columns

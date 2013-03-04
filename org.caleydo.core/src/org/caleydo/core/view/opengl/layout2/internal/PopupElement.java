@@ -69,9 +69,10 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		}
 
 		GLButton close = new GLButton();
-
 		close.setRenderer(this);
 		close.setCallback(this);
+		close.setTooltip("close this popup");
+		close.setHoverEffect(GLRenderers.drawRoundedRect(Color.WHITE));
 		close.setzDelta(0.5f);
 		close.setVisibility(isFlagSet(FLAG_CLOSEABLE) ? EVisibility.PICKABLE : EVisibility.HIDDEN);
 		this.add(close);
@@ -140,7 +141,7 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 		boolean moveAble = isFlagSet(FLAG_MOVEABLE);
 		body.setBounds(3, (moveAble ? 8 : 3), w - 6, h - 3 - (moveAble ? 8 : 3));
 		IGLLayoutElement close = children.get(1);
-		close.setBounds(w - 8, -2, 12, 12);
+		close.setBounds(w - 8, -4, 14, 14);
 		IGLLayoutElement resize = children.get(2);
 		resize.setBounds(w - 12, h - 12, 12, 12);
 	}
@@ -187,10 +188,12 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		g.color(new Color(210, 210, 210)).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
-		g.color(Color.BLACK);
-		g.drawLine(2, 2, w - 2, h - 2);
-		g.drawLine(w - 2, 2, 2, h - 2);
+		g.color(Color.BLACK).fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.25f);
+		g.color(Color.WHITE);
+		g.lineWidth(2);
+		g.drawLine(3, 3, w - 3, h - 3);
+		g.drawLine(w - 3, 3, 3, h - 3);
+		g.lineWidth(1);
 	}
 
 	/**
@@ -206,6 +209,20 @@ class PopupElement extends GLElementContainer implements IGLLayout, IGLRenderer,
 	class Resize extends PickableGLElement {
 		public Resize() {
 			setPicker(GLRenderers.DUMMY);
+		}
+
+		@Override
+		protected void onMouseOver(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			context.setCursor(SWT.CURSOR_SIZESE);
+		}
+
+		@Override
+		protected void onMouseOut(Pick pick) {
+			if (pick.isAnyDragging())
+				return;
+			context.setCursor(-1);
 		}
 
 		@Override

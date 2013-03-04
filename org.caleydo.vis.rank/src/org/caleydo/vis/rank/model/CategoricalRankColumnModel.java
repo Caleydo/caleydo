@@ -47,6 +47,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -62,9 +63,11 @@ import com.google.common.base.Function;
  *
  */
 public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements IGLRenderer {
+	private static final int MAX_CATEGORY_COLORS = 0;
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private Map<CATEGORY_TYPE, CategoryInfo> metaData;
+	private final boolean useColorDetails;
 
 	public CategoricalRankColumnModel(IGLRenderer header, final Function<IRow, CATEGORY_TYPE> data, Map<CATEGORY_TYPE, CategoryInfo> metaData) {
 		super(Color.GRAY, new Color(.95f, .95f, .95f));
@@ -72,6 +75,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		this.data = data;
 		this.metaData = metaData;
 		this.selection.addAll(metaData.keySet());
+		this.useColorDetails = metaData.size() <= MAX_CATEGORY_COLORS;
 	}
 
 	public CategoricalRankColumnModel(CategoricalRankColumnModel<CATEGORY_TYPE> copy) {
@@ -80,6 +84,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		this.data = copy.data;
 		this.metaData = copy.metaData;
 		this.selection.addAll(copy.selection);
+		this.useColorDetails = copy.useColorDetails;
 	}
 
 	@Override
@@ -108,7 +113,8 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		if (info == null)
 			return;
 		float hi = Math.min(h, 18);
-		g.color(info.getColor()).fillRect(1, 1, w - 2, h - 2);
+		if (useColorDetails)
+			g.color(info.getColor()).fillRect(1, 1, w - 2, h - 2);
 		if (!(((IColumnRenderInfo) parent.getParent()).isCollapsed())) {
 			g.drawText(info.getLabel(), 1, 1 + (h - hi) * 0.5f, w - 2, hi - 5);
 		}
@@ -178,7 +184,22 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			table.setHeaderVisible(true);
 			table.setLinesVisible(true);
 			table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-			TableViewerColumn tableColumn = new TableViewerColumn(categoriesUI, SWT.LEAD);
+
+			TableViewerColumn tableColumn;
+			if (useColorDetails) {
+				tableColumn = new TableViewerColumn(categoriesUI, SWT.LEAD);
+				tableColumn.getColumn().setText("Color");
+				tableColumn.getColumn().setWidth(50);
+				tableColumn.setLabelProvider(new ColumnLabelProvider() {
+					@Override
+					public org.eclipse.swt.graphics.Color getBackground(Object element) {
+						@SuppressWarnings("unchecked")
+						CATEGORY_TYPE k = (CATEGORY_TYPE) element;
+						return toSWT(metaData.get(k).getColor());
+					}
+				});
+			}
+			tableColumn = new TableViewerColumn(categoriesUI, SWT.LEAD);
 			tableColumn.getColumn().setText("Category");
 			tableColumn.getColumn().setWidth(200);
 			tableColumn.setLabelProvider(new ColumnLabelProvider() {
@@ -202,6 +223,11 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 
 			applyDialogFont(parent);
 			return parent;
+		}
+
+		protected org.eclipse.swt.graphics.Color toSWT(Color color) {
+			return new org.eclipse.swt.graphics.Color(getShell().getDisplay(), color.getRed(), color.getGreen(),
+					color.getBlue());
 		}
 
 		@Override
@@ -248,11 +274,15 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 			super.renderImpl(g, w, h);
 			if (((IColumnRenderInfo) getParent()).isCollapsed())
 				return;
-			g.drawText("Filter:", 4, 2, w - 4, 12);
-			String t = "<None>";
-			if (isFiltered())
-				t = selection.size() + " out of " + metaData.size();
-			g.drawText(t, 4, 18, w - 4, 12);
+			if (!useColorDetails) {
+				g.drawText("Filter:", 4, 2, w - 4, 12);
+				String t = "<None>";
+				if (isFiltered())
+					t = selection.size() + " out of " + metaData.size();
+				g.drawText(t, 4, 18, w - 4, 12);
+			} else {
+				// TODO render a simple hist
+			}
 		}
 	}
 

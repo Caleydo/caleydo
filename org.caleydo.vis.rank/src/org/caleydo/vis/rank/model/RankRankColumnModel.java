@@ -60,7 +60,7 @@ public class RankRankColumnModel extends ARankColumnModel implements IGLRenderer
 
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
-		if (h < 5 || w < 15)
+		if (h < 5 || w < 15 || !getTable().hasDefinedRank())
 			return;
 		float hi = Math.min(h, 16);
 		String value = String.format("%2d.", getTable().getVisualRank(parent.getLayoutDataAs(IRow.class, null)));

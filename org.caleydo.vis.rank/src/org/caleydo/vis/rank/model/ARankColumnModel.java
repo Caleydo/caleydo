@@ -61,6 +61,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		this.weight = copy.weight;
 		this.parent = copy.parent;
 		this.collapsed = copy.collapsed;
+		this.header = copy.header;
 	}
 
 	@Override
@@ -238,5 +239,9 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		if (!isDestroyAble())
 			return false;
 		return getTable().destroy(this);
+	}
+
+	public boolean canTakeSnapshot() {
+		return parent.canTakeSnapshot(this);
 	}
 }

@@ -45,14 +45,16 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
+import org.caleydo.vis.rank.model.mapping.IMappingFunction;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
-import org.caleydo.vis.rank.ui.PiecewiseLinearMappingUI;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
+import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 import org.eclipse.swt.SWT;
 
 /**
@@ -66,7 +68,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	private SimpleHistogram cacheHist = null;
 	private boolean dirtyMinMax = true;
-	private final PiecewiseLinearMapping mapping;
+	private final IMappingFunction mapping;
 	private float missingValue;
 	private final IFloatInferrer missingValueInferer;
 
@@ -85,9 +87,9 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			}
 		}
 	};
-	private final ICallback<PiecewiseLinearMapping> callback = new ICallback<PiecewiseLinearMapping>() {
+	private final ICallback<IMappingFunction> callback = new ICallback<IMappingFunction>() {
 		@Override
-		public void on(PiecewiseLinearMapping data) {
+		public void on(IMappingFunction data) {
 			cacheHist = null;
 			invalidAllFilter();
 			propertySupport.firePropertyChange(PROP_MAPPING, null, data);
@@ -108,7 +110,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	public FloatRankColumnModel(FloatRankColumnModel copy) {
 		super(copy);
 		this.data = copy.data;
-		this.mapping = new PiecewiseLinearMapping(copy.mapping);
+		this.mapping = copy.mapping.clone();
 		this.missingValueInferer = copy.missingValueInferer;
 		setHeaderRenderer(copy.getHeaderRenderer());
 		this.missingValue = copy.missingValue;
@@ -165,7 +167,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public void editMapping(GLElement summary) {
-		PiecewiseLinearMappingUI m = new PiecewiseLinearMappingUI(mapping, asData(), getColor(), getBgColor(), callback);
+		GLElement m = MappingFunctionUIs.create(mapping, asData(), getColor(), getBgColor(), callback);
 		m.setzDelta(0.5f);
 		FloatSummary s = (FloatSummary) summary;
 		Vec2f location = s.getAbsoluteLocation();

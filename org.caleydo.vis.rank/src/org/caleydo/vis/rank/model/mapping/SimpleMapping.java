@@ -17,41 +17,50 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.score;
-
-import java.awt.Color;
-
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+package org.caleydo.vis.rank.model.mapping;
 
 /**
- * basic abstraction of a score
- *
  * @author Samuel Gratzl
  *
  */
-public interface IScore extends ILabelProvider, IFloatFunction<IRow> {
-	/**
-	 * determines whether the current score support the given {@link EDataDomainQueryMode} mode
-	 *
-	 * @param mode
-	 * @return
-	 */
-	boolean supports(EDataDomainQueryMode mode);
+public class SimpleMapping extends AMappingFunction implements Cloneable {
 
-	/**
-	 * @return
-	 */
-	String getAbbreviation();
+	public SimpleMapping(SimpleMapping copy) {
+		super(copy);
+	}
 
-	String getDescription();
+	public SimpleMapping(float fromMin, float fromMax) {
+		super(fromMin, fromMax);
+	}
 
-	Color getColor();
+	@Override
+	public String toJavaScript() {
+		return "clamp01(value)";
+	}
 
-	Color getBGColor();
+	@Override
+	public float[] getMappedMin() {
+		return new float[] { 0, 0 };
+	}
 
-	PiecewiseLinearMapping createMapping();
+	@Override
+	public float[] getMappedMax() {
+		return new float[] { 1, 1 };
+	}
+
+	@Override
+	public boolean isMappingDefault() {
+		return false;
+	}
+
+	@Override
+	public float apply(float in) {
+		return MappingFunctions.clamp01(in);
+	}
+
+	@Override
+	public IMappingFunction clone() {
+		return new SimpleMapping(this);
+	}
+
 }

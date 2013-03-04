@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.COLUMN_SPACE;
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
@@ -42,12 +43,16 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
+import org.caleydo.vis.rank.ui.SeparatorUI;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
+import org.caleydo.vis.rank.ui.StackedSeparatorUI;
 /**
  * @author Samuel Gratzl
  *
  */
-public class TableStackedColumnHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker {
+public class TableStackedColumnHeaderUI extends GLElementContainer implements IGLLayout, IMoveHereChecker,
+		IThickTableHeaderUI {
 	private final static int FIRST_COLUMN = 1;
 	private StackedRankColumnModel model;
 	private int numColumns = 0;
@@ -91,7 +96,7 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 			int movedFrom = (Integer) evt.getOldValue();
 			this.add(index + FIRST_COLUMN, get(movedFrom + FIRST_COLUMN));
 		} else if (evt.getOldValue() == null) { // added
-			Collection<TableColumnHeaderUI> news = null;
+			Collection<GLElement> news = null;
 			if (evt.getNewValue() instanceof ARankColumnModel) {
 				news = Collections.singleton(wrap((ARankColumnModel) evt.getNewValue()));
 			} else {
@@ -119,8 +124,8 @@ public class TableStackedColumnHeaderUI extends GLElementContainer implements IG
 	 * @param newValue
 	 * @return
 	 */
-	private TableColumnHeaderUI wrap(ARankColumnModel model) {
-		return new TableColumnHeaderUI(model, interactive, interactive);
+	private GLElement wrap(ARankColumnModel model) {
+		return TableColumnUIs.createHeader(model, this.interactive);
 	}
 
 	@Override

@@ -17,26 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.mapping;
 
-import java.util.List;
+import java.awt.Color;
 
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
-import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
-import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.util.function.IFloatList;
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.model.mapping.IMappingFunction;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 
-interface IColumModelLayout {
-	void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h);
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class MappingFunctionUIs {
+	public static GLElement create(IMappingFunction model, IFloatList data, Color color, Color bgColor,
+			ICallback<IMappingFunction> callback) {
+		if (model instanceof PiecewiseLinearMapping)
+			return new PiecewiseLinearMappingUI((PiecewiseLinearMapping) model, data, color, bgColor, callback);
+		return null;
+	}
 
-	/**
-	 * @param tableColumnUI
-	 * @return
-	 */
-	boolean hasFreeSpace(TableColumnUI tableColumnUI);
-
-	/**
-	 * @param tableColumnUI
-	 * @return
-	 */
-	VAlign getAlignment(TableColumnUI tableColumnUI);
 }

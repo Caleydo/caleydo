@@ -38,11 +38,11 @@ import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.ui.ColumnPoolUI;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableHeaderUI;
@@ -76,7 +76,7 @@ public class RankedVis extends GLElementContainer {
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
 
-		final StackedRankColumnModel stacked = new StackedRankColumnModel();
+		final StackedRankColumnModel stacked = new StackedRankColumnModel("Stacked");
 		table.addColumn(stacked);
 
 		table.addColumnTo(

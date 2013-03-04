@@ -49,6 +49,7 @@ public class RenderStyle {
 	public static final String ICON_DRAG = ICON_PREFIX + "drag.png";
 	public static final String ICON_ALIGN_CLASSIC = ICON_PREFIX + "align_classic.png";
 	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
+	public static final String ICON_FREEZE = ICON_PREFIX + "camera_add.png";
 
 	/**
 	 * space between columns

@@ -42,7 +42,7 @@ import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 
 import com.google.common.collect.Sets;
 

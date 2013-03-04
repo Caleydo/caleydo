@@ -17,41 +17,33 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.score;
+package org.caleydo.vis.rank.model.mapping;
 
-import java.awt.Color;
-
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.core.util.function.IFloatFunction;
 
 /**
- * basic abstraction of a score
- *
  * @author Samuel Gratzl
  *
  */
-public interface IScore extends ILabelProvider, IFloatFunction<IRow> {
-	/**
-	 * determines whether the current score support the given {@link EDataDomainQueryMode} mode
-	 *
-	 * @param mode
-	 * @return
-	 */
-	boolean supports(EDataDomainQueryMode mode);
+public interface IMappingFunction extends IFloatFunction {
+	String toJavaScript();
+
+	void setAct(float min, float max);
+
+	float[] getMappedMin();
+
+	float[] getMappedMax();
+
+	boolean hasDefinedMappingBounds();
+
+	boolean isMinDefined();
+
+	boolean isMaxDefined();
+
+	boolean isMappingDefault();
 
 	/**
 	 * @return
 	 */
-	String getAbbreviation();
-
-	String getDescription();
-
-	Color getColor();
-
-	Color getBGColor();
-
-	PiecewiseLinearMapping createMapping();
+	IMappingFunction clone();
 }

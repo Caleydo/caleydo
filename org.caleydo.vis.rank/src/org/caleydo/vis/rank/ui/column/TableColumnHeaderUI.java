@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.column;
 
 import static org.caleydo.core.view.opengl.layout2.layout.GLLayouts.defaultValue;
 import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
@@ -56,6 +56,8 @@ import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
+import org.caleydo.vis.rank.ui.IColumnRenderInfo;
+import org.caleydo.vis.rank.ui.RenderStyle;
 import org.eclipse.swt.SWT;
 
 /**
@@ -133,7 +135,6 @@ public class TableColumnHeaderUI extends AnimatedGLElementContainer implements I
 		}
 
 	}
-
 
 	@Override
 	public boolean isCollapsed() {

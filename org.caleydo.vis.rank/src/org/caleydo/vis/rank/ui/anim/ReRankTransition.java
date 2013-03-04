@@ -48,7 +48,7 @@ public class ReRankTransition implements IMoveTransition, IInTransition, IOutTra
 		r.setY(from.y() + delta.y() * alpha);
 		r.setZ(to.z());// from.z() + delta.z() * alpha);
 		r.setW(from.w() + delta.w() * alpha);
-		if (Math.abs(delta.y()) > 10) {
+		if (delta.y() < -20) {
 			r.setX(r.x() - (float) Math.sin(Math.PI * alpha) * (delta.y()));
 		}
 		return r;

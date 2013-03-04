@@ -37,10 +37,10 @@ import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
-import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 
 import demo.ARankTableDemo;
 
@@ -77,7 +77,7 @@ public class University extends ARankTableDemo {
 		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
 				new ReflectionData(field("yearFounded")))));
 
-		final StackedRankColumnModel stacked = new StackedRankColumnModel();
+		final StackedRankColumnModel stacked = new StackedRankColumnModel("Stacked");
 		table.addColumn(stacked);
 		table.addColumnTo(
 				stacked,

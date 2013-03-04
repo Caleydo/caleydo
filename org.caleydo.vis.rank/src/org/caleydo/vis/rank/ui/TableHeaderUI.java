@@ -39,9 +39,10 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.data.loader.ResourceLocators;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
-import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
+import org.caleydo.vis.rank.ui.column.IThickTableHeaderUI;
+import org.caleydo.vis.rank.ui.column.TableColumnUIs;
 
 /**
  * a visualzation of the table header row, in HTML it would be the thead section
@@ -59,8 +60,6 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 		}
 	};
 
-	private boolean hasStacked = false;
-
 	private int numColumns = 0;
 	private final boolean interactive;
 
@@ -68,13 +67,13 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 		this.table = table;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
 		this.interactive = table.getConfig().isInteractive();
+
+		boolean hasThick = false;
 		for (ARankColumnModel col : table.getColumns()) {
-			if (col instanceof StackedRankColumnModel) {
-				init(col);
-				this.add(new TableStackedColumnHeaderUI((StackedRankColumnModel) col, interactive));
-				this.hasStacked = true;
-			} else
-				this.add(wrap(col));
+			GLElement elem = wrap(col);
+			if (elem instanceof IThickTableHeaderUI)
+				hasThick = true;
+			this.add(elem);
 			numColumns++;
 		}
 		if (interactive) {
@@ -83,7 +82,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 				this.add(new SeparatorUI(this, i));
 		}
 		setLayout(this);
-		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * (hasStacked ? 2 : 1));
+		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * (hasThick ? 2 : 1));
 	}
 
 	private void init(ARankColumnModel col) {
@@ -133,7 +132,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 	private GLElement wrap(ARankColumnModel model) {
 		init(model);
-		return new TableColumnHeaderUI(model, interactive, interactive);
+		return TableColumnUIs.createHeader(model, interactive);
 	}
 
 	@Override
@@ -163,8 +162,15 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 		List<? extends IGLLayoutElement> columns = children.subList(0, numColumns);
 
-		float y = hasStacked ? HIST_HEIGHT + LABEL_HEIGHT : 0;
-		float hn = hasStacked ? h - HIST_HEIGHT - LABEL_HEIGHT : h;
+		boolean hasThick = false;
+		for (IGLLayoutElement elem : columns)
+			if (elem.asElement() instanceof IThickTableHeaderUI) {
+				hasThick = true;
+				break;
+			}
+
+		float y = hasThick ? HIST_HEIGHT + LABEL_HEIGHT : 0;
+		float hn = hasThick ? h - HIST_HEIGHT - LABEL_HEIGHT : h;
 		List<? extends IGLLayoutElement> separators = null;
 		if (interactive) {
 			separators = children.subList(numColumns + 1, children.size());
@@ -175,7 +181,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 		for (int i = 0; i < columns.size(); ++i) {
 			IGLLayoutElement col = columns.get(i);
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			if (model instanceof StackedRankColumnModel)
+			if (col.asElement() instanceof IThickTableHeaderUI)
 				col.setBounds(x, 0, model.getPreferredWidth(), h);
 			else
 				col.setBounds(x, y, model.getPreferredWidth(), hn);

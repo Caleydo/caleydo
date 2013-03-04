@@ -28,7 +28,7 @@ import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 
 /**
  * @author Samuel Gratzl

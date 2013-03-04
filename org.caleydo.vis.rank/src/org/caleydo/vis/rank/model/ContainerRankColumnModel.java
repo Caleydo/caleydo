@@ -22,15 +22,14 @@ package org.caleydo.vis.rank.model;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.BitSet;
+import java.util.Iterator;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
-import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderStyle;
-import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
-import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 
 /**
  * the stacked column
@@ -38,8 +37,7 @@ import org.caleydo.vis.rank.ui.detail.ScoreSummary;
  * @author Samuel Gratzl
  *
  */
-public class StackedRankColumnModel extends AMultiRankColumnModel implements ISnapshotableColumnMixin {
-	public static final String PROP_ALIGNMENT = "alignment";
+public class ContainerRankColumnModel extends ACompositeRankColumnModel {
 
 	private final PropertyChangeListener weightChanged = new PropertyChangeListener() {
 		@Override
@@ -47,25 +45,20 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 			onWeightChanged((float) evt.getNewValue() - (float) evt.getOldValue());
 		}
 	};
-	/**
-	 * which is the current aligned column index or -1 for all
-	 */
-	private int alignment = 0;
 
-	public StackedRankColumnModel(String title) {
+	public ContainerRankColumnModel(String title) {
 		super(Color.GRAY, new Color(0.90f, .90f, .90f));
 		setHeaderRenderer(GLRenderers.drawText(title, VAlign.CENTER));
 		setWeight(0);
 	}
 
-	public StackedRankColumnModel(StackedRankColumnModel copy) {
+	public ContainerRankColumnModel(ContainerRankColumnModel copy) {
 		super(copy);
-		this.alignment = copy.alignment;
 	}
 
 	@Override
-	public StackedRankColumnModel clone() {
-		return new StackedRankColumnModel(this);
+	public ContainerRankColumnModel clone() {
+		return new ContainerRankColumnModel(this);
 	}
 
 	protected void onWeightChanged(float delta) {
@@ -89,9 +82,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		super.takeDown(model);
 		model.removePropertyChangeListener(PROP_WEIGHT, weightChanged);
 		addWeight(-model.getWeight());
-		if (alignment > size() - 2) {
-			setAlignment(alignment - 1);
-		}
 	}
 
 	@Override
@@ -101,83 +91,31 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new ScoreSummary(this, interactive);
+		return new GLElement();
 	}
 
 	@Override
 	public GLElement createValue() {
-		return new GLElement(new ScoreBarRenderer(this));
+		return new GLElement();
 	}
 
 	@Override
-	public float applyPrimitive(IRow row) {
-		float s = 0;
-		for (ARankColumnModel col : this) {
-			s += ((IRankableColumnMixin) col).applyPrimitive(row) * col.getWeight();
-		}
-		return s / getWeight();
+	public Iterator<IRow> getCurrentOrder() {
+		return parent.getCurrentOrder();
 	}
 
 	@Override
-	public MultiFloat getSplittedValue(IRow row) {
-		float[] s = new float[this.size()];
-		int i = 0;
-		for (ARankColumnModel col : this) {
-			s[i++] = ((IRankableColumnMixin) col).applyPrimitive(row) * col.getWeight();
-		}
-		return new MultiFloat(-1, s);
-	}
-
-	/**
-	 * @return the alignment, see {@link #alignment}
-	 */
-	public int getAlignment() {
-		return alignment;
-	}
-
-	/**
-	 * @param alignment
-	 *            setter, see {@link alignment}
-	 */
-	public void setAlignment(int alignment) {
-		if (alignment > this.children.size())
-			alignment = this.children.size();
-		if (alignment == this.alignment)
-			return;
-		propertySupport.firePropertyChange(PROP_ALIGNMENT, this.alignment, this.alignment = alignment);
-	}
-
-	/**
-	 * returns the distributions how much a individual column contributes to the overall scores, i.e. the normalized
-	 * weights
-	 *
-	 * @return
-	 */
-	public float[] getDistributions() {
-		float[] r = new float[this.size()];
-		float sum = 0;
-		int i = 0;
-		for (ARankColumnModel col : this) {
-			sum += col.getWeight();
-			r[i++] = col.getWeight();
-		}
-		for (i = 0; i < r.length; ++i)
-			r[i] /= sum;
-		return r;
-	}
-
-	public boolean isAlignAll() {
-		return alignment < 0;
-	}
-
-	public void setAlignAll(boolean alignAll) {
-		if (isAlignAll() == alignAll)
-			return;
-		this.setAlignment(-alignment - 1);
+	public BitSet getCurrentFilter() {
+		return parent.getCurrentFilter();
 	}
 
 	@Override
-	public void takeSnapshot() {
-		parent.takeSnapshot(this);
+	public int getCurrentSize() {
+		return parent.getCurrentSize();
+	}
+
+	@Override
+	public IRow getCurrent(int rank) {
+		return parent.getCurrent(rank);
 	}
 }

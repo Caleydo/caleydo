@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.column;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -39,6 +39,8 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
+import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
+import org.caleydo.vis.rank.ui.RenderStyle;
 
 /**
  * @author Samuel Gratzl
@@ -85,29 +87,46 @@ public class TableStackedSummaryHeaderUI extends AnimatedGLElementContainer impl
 		buttons.setzDelta(.5f);
 
 		final int button_width = 12;
-		final GLButton b = new GLButton(EButtonMode.CHECKBOX);
-		b.setSize(button_width, -1);
-		b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_ALIGN_CLASSIC));
-		b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_ALIGN_STACKED));
-		b.setSelected(model.isAlignAll());
-		b.setTooltip("Toggle classic multi-col score bar table and stacked one");
-		final ISelectionCallback callback = new ISelectionCallback() {
-			@Override
-			public void onSelectionChanged(GLButton button, boolean selected) {
-				model.setAlignAll(!model.isAlignAll());
-			}
-		};
-		b.setCallback(callback);
-		onAlignmentChange = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				b.setCallback(null);
-				b.setSelected(model.isAlignAll());
-				b.setCallback(callback);
-			}
-		};
-		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, onAlignmentChange);
-		buttons.add(b);
+		{
+			final GLButton b = new GLButton(EButtonMode.CHECKBOX);
+			b.setSize(button_width, -1);
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_ALIGN_CLASSIC));
+			b.setSelectedRenderer(GLRenderers.fillImage(RenderStyle.ICON_ALIGN_STACKED));
+			b.setSelected(model.isAlignAll());
+			b.setTooltip("Toggle classic multi-col score bar table and stacked one");
+			final ISelectionCallback callback = new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					model.setAlignAll(!model.isAlignAll());
+				}
+			};
+			b.setCallback(callback);
+			onAlignmentChange = new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					b.setCallback(null);
+					b.setSelected(model.isAlignAll());
+					b.setCallback(callback);
+				}
+			};
+			model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, onAlignmentChange);
+			buttons.add(b);
+		}
+		if (model instanceof ISnapshotableColumnMixin) {
+			final GLButton b = new GLButton();
+			b.setSize(button_width, -1);
+			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FREEZE));
+			b.setTooltip("Take a snapshot of the current state");
+			final ISelectionCallback callback = new ISelectionCallback() {
+				@Override
+				public void onSelectionChanged(GLButton button, boolean selected) {
+					if (model.canTakeSnapshot())
+						model.takeSnapshot();
+				}
+			};
+			b.setCallback(callback);
+			buttons.add(b);
+		}
 		return buttons;
 	}
 

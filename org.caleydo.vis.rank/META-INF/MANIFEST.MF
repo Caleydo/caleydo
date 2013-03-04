@@ -12,6 +12,7 @@ Export-Package: org.caleydo.vis.rank.config,
  org.caleydo.vis.rank.event,
  org.caleydo.vis.rank.layout,
  org.caleydo.vis.rank.model,
+ org.caleydo.vis.rank.model.mapping,
  org.caleydo.vis.rank.model.mixin,
  org.caleydo.vis.rank.ui,
  org.caleydo.vis.rank.ui.detail

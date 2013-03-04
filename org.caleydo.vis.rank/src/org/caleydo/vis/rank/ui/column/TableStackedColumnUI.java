@@ -17,10 +17,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.column;
 
 
-import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
@@ -35,21 +34,19 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
+import org.caleydo.vis.rank.ui.RenderStyle;
+import org.caleydo.vis.rank.ui.TableBodyUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class TableStackedColumnUI extends ATableColumnUI {
-	private StackedRankColumnModel stacked;
+public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankColumnModel> {
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch (evt.getPropertyName()) {
-			case ACompositeRankColumnModel.PROP_CHILDREN:
-				onChildrenChanged((IndexedPropertyChangeEvent) evt);
-				break;
 			case StackedRankColumnModel.PROP_ALIGNMENT:
 				onAlignmentChanged();
 				break;
@@ -59,12 +56,8 @@ public class TableStackedColumnUI extends ATableColumnUI {
 
 	public TableStackedColumnUI(StackedRankColumnModel model) {
 		super(model);
-		this.stacked = model;
 		model.addPropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
-		for (ARankColumnModel col2 : model) {
-			this.add(wrap(col2));
-		}
 	}
 
 	protected void onAlignmentChanged() {
@@ -82,15 +75,14 @@ public class TableStackedColumnUI extends ATableColumnUI {
 
 	@Override
 	protected void takeDown() {
-		stacked.removePropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
-		stacked.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
+		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, listener);
 		super.takeDown();
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		g.decZ().decZ();
-		g.color(stacked.getBgColor()).fillRect(0, 0, w, h);
+		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		g.incZ().incZ();
 		// float x = get(stacked.getAlignment()).getLocation().x();
 		// g.color(Color.BLUE).drawLine(x, 0, x, h);
@@ -99,15 +91,15 @@ public class TableStackedColumnUI extends ATableColumnUI {
 
 	@Override
 	public void layoutRows(ARankColumnModel model, List<? extends IGLLayoutElement> children, float w, float h) {
-		int combinedAlign = stacked.getAlignment();
-		int index = stacked.indexOf(model);
+		int combinedAlign = this.model.getAlignment();
+		int index = this.model.indexOf(model);
 		if (combinedAlign >= 0 && index != combinedAlign) {
 			// moving around
-			int[] ranks = stacked.getTable().getOrder();
+			int[] ranks = this.model.getTable().getOrder();
 			float[] rowPositions = ((TableBodyUI) getParent()).getRowPositions();
-			float[] weights = new float[stacked.size()];
+			float[] weights = new float[this.model.size()];
 			for (int i = 0; i < weights.length; ++i)
-				weights[i] = stacked.get(i).getWeight();
+				weights[i] = this.model.get(i).getWeight();
 
 			float y = 0;
 			BitSet used = new BitSet(children.size());
@@ -119,7 +111,7 @@ public class TableStackedColumnUI extends ATableColumnUI {
 				used.clear(r);
 				IRow data = row.getLayoutDataAs(IRow.class, null);
 				float x = 0;
-				MultiFloat vs = stacked.getSplittedValue(data);
+				MultiFloat vs = this.model.getSplittedValue(data);
 				if (index < combinedAlign) {
 					for (int i = index; i < combinedAlign; ++i)
 						x += -vs.values[i] + weights[i] - RenderStyle.COLUMN_SPACE;
@@ -141,20 +133,20 @@ public class TableStackedColumnUI extends ATableColumnUI {
 
 	@Override
 	public VAlign getAlignment(TableColumnUI model) {
-		int combinedAlign = stacked.getAlignment();
+		int combinedAlign = this.model.getAlignment();
 		if (combinedAlign < 0)
 			return VAlign.LEFT;
-		int index = stacked.indexOf(model.getModel());
+		int index = this.model.indexOf(model.getModel());
 		return index >= combinedAlign ? VAlign.LEFT : VAlign.RIGHT;
 	}
 
 	@Override
 	public boolean hasFreeSpace(TableColumnUI model) {
-		int combinedAlign = stacked.getAlignment();
+		int combinedAlign = this.model.getAlignment();
 		if (combinedAlign < 0)
 			return true;
-		int index = stacked.indexOf(model.getModel());
-		return index >= combinedAlign ? (index == (stacked.size() - 1)) : (index == 0);
+		int index = this.model.indexOf(model.getModel());
+		return index >= combinedAlign ? (index == (this.model.size() - 1)) : (index == 0);
 	}
 }
 

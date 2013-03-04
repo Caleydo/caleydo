@@ -17,41 +17,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.score;
+package org.caleydo.vis.rank.model.mapping;
 
-import java.awt.Color;
-
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.vis.rank.data.IFloatFunction;
-import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
 
 /**
- * basic abstraction of a score
- *
  * @author Samuel Gratzl
  *
  */
-public interface IScore extends ILabelProvider, IFloatFunction<IRow> {
-	/**
-	 * determines whether the current score support the given {@link EDataDomainQueryMode} mode
-	 *
-	 * @param mode
-	 * @return
-	 */
-	boolean supports(EDataDomainQueryMode mode);
+public class MappingFunctions {
+	public static float linear(float start, float end, float in, float startTo, float endTo) {
+		if (Float.isNaN(in))
+			return in;
+		if (in < start)
+			return Float.NaN;
+		if (in > end)
+			return Float.NaN;
+		// linear interpolation between start and end
+		float v = (in - start) / (end - start); // to ratio
+		// to mapped value
+		float r = startTo + v * (endTo - startTo);
 
-	/**
-	 * @return
-	 */
-	String getAbbreviation();
+		// finally clamp
+		return clamp01(r);
+	}
 
-	String getDescription();
+	public static float clamp01(float in) {
+		if (Float.isNaN(in))
+			return in;
+		return (in < 0 ? 0 : (in > 1 ? 1 : in));
+	}
 
-	Color getColor();
+	public static float clamp(float in, float min, float max) {
+		if (Float.isNaN(in))
+			return in;
+		return (in < min ? min : (in > max ? max : in));
+	}
 
-	Color getBGColor();
-
-	PiecewiseLinearMapping createMapping();
+	public static float normalize(float in, float min, float max) {
+		if (Float.isNaN(in))
+			return in;
+		return clamp01((in - min) / (max - min));
+	}
 }

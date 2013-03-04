@@ -412,6 +412,19 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 		checkOrderChanges(index, children.get(0));
 	}
 
+	@Override
+	public boolean canTakeSnapshot(ARankColumnModel model) {
+		return true;
+	}
+
+	@Override
+	public void takeSnapshot(ARankColumnModel model) {
+		ARankColumnModel c = model.clone();
+		FreezedRankColumnModel freezed = new FreezedRankColumnModel(getOrder(), getCurrentFilter());
+		this.addColumn(freezed);
+		freezed.add(c);
+	}
+
 	private IRankableColumnMixin findFirstRankable() {
 		for (ARankColumnModel col : this.columns) {
 			if (col instanceof IRankableColumnMixin)
@@ -564,7 +577,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			propertySupport.firePropertyChange(PROP_ORDER, bak, order);
 	}
 
-	private static class IntFloat implements Comparable<IntFloat> {
+	private static final class IntFloat implements Comparable<IntFloat> {
 		private final int id;
 		private final float value;
 
@@ -605,6 +618,11 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			return r - exaequoOffsets.get(r) + 1;
 		}
 		return r + 1;
+	}
+
+	public boolean hasDefinedRank() {
+		checkOrder();
+		return orderBy != null;
 	}
 
 	public void selectNextRow() {

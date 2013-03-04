@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui;
+package org.caleydo.vis.rank.ui.mapping;
 
 import static org.caleydo.vis.rank.ui.RenderStyle.HIST_HEIGHT;
 import static org.caleydo.vis.rank.ui.RenderStyle.binsForWidth;
@@ -52,8 +52,11 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.DataUtils;
-import org.caleydo.vis.rank.model.PiecewiseLinearMapping;
 import org.caleydo.vis.rank.model.SimpleHistogram;
+import org.caleydo.vis.rank.model.mapping.IMappingFunction;
+import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.ui.RenderStyle;
+import org.caleydo.vis.rank.ui.RenderUtils;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -81,11 +84,11 @@ public class PiecewiseLinearMappingUI extends GLElementContainer implements IGLL
 	/**
 	 * callback to call when the mapping changes
 	 */
-	private final ICallback<PiecewiseLinearMapping> callback;
+	private final ICallback<IMappingFunction> callback;
 
 
 	public PiecewiseLinearMappingUI(PiecewiseLinearMapping model, IFloatList data, Color color, Color bgColor,
-			ICallback<PiecewiseLinearMapping> callback) {
+			ICallback<IMappingFunction> callback) {
 		this.callback = callback;
 		setLayout(this);
 		setSize(PADDING * 2 + 200 + GAP * 2, PADDING * 2 + 200 + GAP * 2);

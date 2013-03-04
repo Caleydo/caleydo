@@ -181,5 +181,14 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		}
 	}
 
+	@Override
+	public boolean canTakeSnapshot(ARankColumnModel aRankColumnModel) {
+		return false;
+	}
+
+	@Override
+	public void takeSnapshot(ARankColumnModel aRankColumnModel) {
+		// should not happen
+	}
 
 }
