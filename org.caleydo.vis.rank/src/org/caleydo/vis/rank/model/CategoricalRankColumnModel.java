@@ -25,7 +25,9 @@ import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.util.BitSet;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +42,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.event.FilterEvent;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
+import org.caleydo.vis.rank.ui.RenderUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -47,7 +50,6 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -62,8 +64,10 @@ import com.google.common.base.Function;
  * @author Samuel Gratzl
  *
  */
-public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements IGLRenderer {
-	private static final int MAX_CATEGORY_COLORS = 0;
+public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableRankColumnModel implements IGLRenderer,
+		Function<IRow, CATEGORY_TYPE> {
+	private static final int MAX_CATEGORY_COLORS = 8;
+
 	private final Function<IRow, CATEGORY_TYPE> data;
 	private Set<CATEGORY_TYPE> selection = new HashSet<>();
 	private Map<CATEGORY_TYPE, CategoryInfo> metaData;
@@ -106,7 +110,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		if (h < 5)
 			return;
-		CATEGORY_TYPE value = data.apply(parent.getLayoutDataAs(IRow.class, null));
+		CATEGORY_TYPE value = apply(parent.getLayoutDataAs(IRow.class, null));
 		if (value == null)
 			return;
 		CategoryInfo info = metaData.get(value);
@@ -143,6 +147,11 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 	@Override
 	public boolean isFiltered() {
 		return selection.size() < metaData.size();
+	}
+
+	@Override
+	public CATEGORY_TYPE apply(IRow row) {
+		return data.apply(row);
 	}
 
 	@Override
@@ -241,6 +250,24 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		}
 	}
 
+	/**
+	 * @return
+	 */
+	public Map<CATEGORY_TYPE, Integer> getHist() {
+		Map<CATEGORY_TYPE, Integer> hist = new HashMap<>();
+		for(Iterator<IRow> it = parent.getCurrentOrder(); it.hasNext(); ) {
+			CATEGORY_TYPE v = apply(it.next());
+			if (v == null) // TODO nan
+				continue;
+			Integer c = hist.get(v);
+			if (c == null)
+				hist.put(v, 1);
+			else
+				hist.put(v, c + 1);
+		}
+		return hist;
+	}
+
 	private class MyElement extends PickableGLElement {
 		private final PropertyChangeListener repaintListner = GLPropertyChangeListeners.repaintOnEvent(this);
 
@@ -281,7 +308,10 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 					t = selection.size() + " out of " + metaData.size();
 				g.drawText(t, 4, 18, w - 4, 12);
 			} else {
-				// TODO render a simple hist
+				Map<CATEGORY_TYPE, Integer> hist = getHist();
+				IRow s = getTable().getSelectedRow();
+				CATEGORY_TYPE selected = s == null ? null : apply(s);
+				RenderUtils.renderHist(g, hist, w, h, selected, metaData);
 			}
 		}
 	}

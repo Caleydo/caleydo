@@ -20,10 +20,12 @@
 package org.caleydo.vis.rank.ui;
 
 import java.awt.Color;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 
 /**
@@ -54,6 +56,37 @@ public class RenderUtils {
 			}
 			if (selectedBin == i) {
 				g.color(color);
+			}
+			x += delta;
+		}
+		g.restore();
+		g.gl.glPopAttrib();
+	}
+
+	public static <CATEGORY_TYPE> void renderHist(GLGraphics g, Map<CATEGORY_TYPE, Integer> hist, float w, float h,
+			CATEGORY_TYPE selected, Map<CATEGORY_TYPE, CategoryInfo> metaData) {
+		w -= 2;
+		int largest = 0;
+		for (Integer v : hist.values())
+			largest = Math.max(v, largest);
+
+		float factor = h / largest;
+		float delta = w / metaData.size();
+		float lineWidth = delta;
+
+		g.gl.glPushAttrib(GL2.GL_LINE_BIT);
+		g.lineWidth(lineWidth);
+		g.save();
+		float x = 1 + delta / 2;
+		g.move(0, h - 1);
+		for (Map.Entry<CATEGORY_TYPE, CategoryInfo> entry : metaData.entrySet()) {
+			if (entry.getKey() == selected)
+				g.color(Color.GRAY);
+			else
+				g.color(entry.getValue().getColor());
+			float v = -(hist.containsKey(entry.getKey()) ? hist.get(entry.getKey()) : 0) * factor;
+			if (v <= -1) {
+				g.drawLine(x, 0, x, v);
 			}
 			x += delta;
 		}
