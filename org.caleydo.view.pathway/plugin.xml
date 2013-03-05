@@ -105,7 +105,7 @@
          <ParentView
                viewID="org.caleydo.view.subgraph">
             <Embedding
-                  embeddingID="org.caleydo.view.subgraph.pathway.multiform.level2"
+                  embeddingID="invalidforthemoment"
                   icon="resources/icons/pathway.png"
                   isDefaultView="false"
                   visInfo="org.caleydo.view.pathway.PathwayVisInfo">
