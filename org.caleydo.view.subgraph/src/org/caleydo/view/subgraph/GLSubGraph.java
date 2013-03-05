@@ -285,7 +285,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			Set<String> ids = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, embeddingID);
 
 			for (String viewID : ids) {
-				List<Integer> rendererIDList = info.embeddingIDToRendererIDs.get(embeddingID);
+				List<Integer> rendererIDList = info.embeddingIDToRendererIDs.get(embedding);
 				if (rendererIDList == null) {
 					rendererIDList = new ArrayList<>(ids.size());
 					info.embeddingIDToRendererIDs.put(embedding, rendererIDList);

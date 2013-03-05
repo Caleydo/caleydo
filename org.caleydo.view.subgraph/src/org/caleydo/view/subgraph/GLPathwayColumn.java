@@ -70,7 +70,8 @@ public class GLPathwayColumn extends AnimatedGLElementContainer implements Compa
 	protected int getLevelScore() {
 		int score = 0;
 		for (PathwayMultiFormInfo info : rendererInfos) {
-			EEmbeddingID embdeddingID = info.getEmbeddingIDFromRendererID(info.multiFormRenderer.getActiveRendererID());
+			int rendererID = info.multiFormRenderer.getActiveRendererID();
+			EEmbeddingID embdeddingID = info.getEmbeddingIDFromRendererID(rendererID);
 			if (embdeddingID.renderPriority() > score)
 				score = embdeddingID.renderPriority();
 		}
