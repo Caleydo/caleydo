@@ -23,7 +23,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
@@ -532,27 +531,39 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			return;
 		dirtyOrder = false;
 		// System.out.println("sort");
-		int[] bak = order;
 		order = null;
+		int[] deltas = null;
+		boolean anyDelta = false;
 
 		// by what
 		orderBy = findFirstRankable();
 		exaequoOffsets.clear();
 		if (orderBy == null) {
-			int rank = 0; // natural order
+			List<IRow> tmp = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
 				if (!filter.get(i)) {
 					data.get(i).setRank(-1);
 				} else {
-					data.get(i).setRank(rank);
-					exaequoOffsets.put(rank, -rank);
-					rank++;
+					tmp.add(data.get(i));
 				}
 			}
-			int[] tmp = new int[rank];
-			for (int i = 0; i < tmp.length; ++i)
-				tmp[i] = i;
-			order = tmp;
+			int[] tmp2 = new int[tmp.size()];
+			deltas = new int[tmp2.length];
+			for (int i = 0; i < tmp2.length; ++i) {
+				IRow r = tmp.get(i);
+				tmp2[i] = r.getIndex();
+				exaequoOffsets.put(i, -i);
+				if (r.getRank() < 0) {
+					anyDelta = true;
+					deltas[i] = Integer.MIN_VALUE;
+				} else {
+					int delta = i - r.getRank();
+					deltas[i] = delta;
+					anyDelta = anyDelta || delta != 0;
+				}
+				r.setRank(i);
+			}
+			order = tmp2;
 		} else {
 			List<IntFloat> tmp = new ArrayList<>(data.size());
 			for (int i = 0; i < data.size(); ++i) {
@@ -565,24 +576,34 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 			Collections.sort(tmp);
 
 			int[] tmp2 = new int[tmp.size()];
+			deltas = new int[tmp2.length];
 			int offset = 0;
 			float last = Float.NaN;
 			for (int i = 0; i < tmp.size(); ++i) {
 				IntFloat pair = tmp.get(i);
 				tmp2[i] = pair.id;
-				data.get(tmp2[i]).setRank(i);
+				IRow r = data.get(tmp2[i]);
 				if (last == pair.value) {
 					offset++;
 					exaequoOffsets.put(i, offset);
 				} else {
 					offset = 0;
 				}
+				if (r.getRank() < 0) {
+					anyDelta = true;
+					deltas[i] = Integer.MIN_VALUE;
+				} else {
+					int delta = i - r.getRank();
+					deltas[i] = delta;
+					anyDelta = anyDelta || delta != 0;
+				}
+				r.setRank(i);
 				last = pair.value;
 			}
 			order = tmp2;
 		}
-		if (!Arrays.equals(bak, order))
-			propertySupport.firePropertyChange(PROP_ORDER, bak, order);
+		if (anyDelta)
+			propertySupport.firePropertyChange(PROP_ORDER, deltas, order);
 	}
 
 	private static final class IntFloat implements Comparable<IntFloat> {

@@ -210,6 +210,11 @@ public class TableFrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColum
 	}
 
 	@Override
+	public int getRankDelta(IRow row) {
+		return 0; // there are no deltas currently as the order is static
+	}
+
+	@Override
 	public VAlign getAlignment(TableColumnUI model) {
 		return VAlign.LEFT;
 	}

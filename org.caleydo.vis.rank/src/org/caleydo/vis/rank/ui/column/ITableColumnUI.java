@@ -30,4 +30,6 @@ public interface ITableColumnUI {
 	GLElement setData(Iterable<IRow> rows, IColumModelLayout parent);
 
 	void update();
+
+	GLElement get(int index);
 }

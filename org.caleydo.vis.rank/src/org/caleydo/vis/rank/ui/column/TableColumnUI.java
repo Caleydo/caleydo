@@ -6,6 +6,10 @@ import java.util.List;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.animation.ALayoutAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.Durations;
+import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
+import org.caleydo.core.view.opengl.layout2.animation.MoveAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
@@ -13,13 +17,16 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.IColumnRenderInfo;
+import org.caleydo.vis.rank.ui.anim.ReRankColorTransition;
 import org.caleydo.vis.rank.ui.anim.ReRankTransition;
 
 public class TableColumnUI extends AnimatedGLElementContainer implements ITableColumnUI, IGLLayout, IColumnRenderInfo {
 	private final ARankColumnModel model;
+	private final boolean hasColoredTransitions;
 
-	public TableColumnUI(ARankColumnModel model) {
+	public TableColumnUI(ARankColumnModel model, boolean hasColoredTransitions) {
 		this.model = model;
+		this.hasColoredTransitions = hasColoredTransitions;
 		this.setLayoutData(model);
 		this.setDefaultInTransition(ReRankTransition.INSTANCE);
 		this.setDefaultMoveTransition(ReRankTransition.INSTANCE);
@@ -32,6 +39,22 @@ public class TableColumnUI extends AnimatedGLElementContainer implements ITableC
 	 */
 	public ARankColumnModel getModel() {
 		return model;
+	}
+
+	@Override
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem) {
+		if (!hasColoredTransitions)
+			return super.createMoveAnimation(elem);
+		// ranking delta
+		// = MIN_VALUE -> from invisible to visible
+		// = MAX_VALUE -> from visible to invisible
+		int delta = getColumnParent().getRankDelta(elem.getLayoutDataAs(IRow.class, null));
+
+		final IDuration duration = Durations.DEFAULT;
+		ReRankTransition t = ReRankTransition.INSTANCE;
+		if (delta != 0 && delta != Integer.MAX_VALUE)
+			t = ReRankColorTransition.get(delta);
+		return new MoveAnimation(0, duration, elem, t);
 	}
 
 	@Override
@@ -70,12 +93,16 @@ public class TableColumnUI extends AnimatedGLElementContainer implements ITableC
 
 	@Override
 	public VAlign getAlignment() {
-		return ((IColumModelLayout) getParent()).getAlignment(this);
+		return getColumnParent().getAlignment(this);
+	}
+
+	private IColumModelLayout getColumnParent() {
+		return (IColumModelLayout) getParent();
 	}
 
 	@Override
 	public boolean hasFreeSpace() {
-		return ((IColumModelLayout) getParent()).hasFreeSpace(this);
+		return getColumnParent().hasFreeSpace(this);
 	}
 
 	@Override

@@ -125,6 +125,11 @@ public class TableStackedColumnUI extends ACompositeTableColumnUI<StackedRankCol
 	}
 
 	@Override
+	public int getRankDelta(IRow row) {
+		return ((IColumModelLayout) getParent()).getRankDelta(row);
+	}
+
+	@Override
 	public VAlign getAlignment(TableColumnUI model) {
 		int combinedAlign = this.model.getAlignment();
 		if (combinedAlign < 0)

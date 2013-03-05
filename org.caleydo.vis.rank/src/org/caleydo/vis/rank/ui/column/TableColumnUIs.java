@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.ui.column;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.FrozenRankColumnModel;
+import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 
 /**
@@ -42,7 +43,7 @@ public class TableColumnUIs {
 			return new TableStackedColumnUI((StackedRankColumnModel) model);
 		if (allowComplex && model instanceof FrozenRankColumnModel)
 			return new TableFrozenColumnUI((FrozenRankColumnModel) model);
-		return new TableColumnUI(model);
+		return new TableColumnUI(model, model instanceof RankRankColumnModel);
 	}
 
 }

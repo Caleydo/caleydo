@@ -32,7 +32,8 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTrans
 public class ReRankTransition implements IMoveTransition, IInTransition, IOutTransition {
 	public static final ReRankTransition INSTANCE = new ReRankTransition();
 
-	private ReRankTransition() {
+	protected ReRankTransition() {
+
 	}
 
 	@Override

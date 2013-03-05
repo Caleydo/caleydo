@@ -68,22 +68,27 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 		IColumModelLayout {
 	private final RankTableModel table;
 	private final IRowHeightLayout rowLayout;
-	private final PropertyChangeListener layoutOnChange = new PropertyChangeListener() {
+	private final PropertyChangeListener listener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			update();
-		}
-	};
-	private final PropertyChangeListener updateData = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			updateData();
-		}
-	};
-	private final PropertyChangeListener columnsChanged = new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			onColumsChanged((IndexedPropertyChangeEvent) evt);
+			switch (evt.getPropertyName()) {
+			case RankTableModel.PROP_ORDER:
+				rankDeltas = (int[]) evt.getOldValue();
+				update();
+				break;
+			case RankTableModel.PROP_SELECTED_ROW:
+			case IRankColumnParent.PROP_INVALID:
+			case ARankColumnModel.PROP_WEIGHT:
+			case ICollapseableColumnMixin.PROP_COLLAPSED:
+				update();
+				break;
+			case IRankColumnParent.PROP_DATA:
+				updateData();
+				break;
+			case RankTableModel.PROP_COLUMNS:
+				onColumsChanged((IndexedPropertyChangeEvent) evt);
+				break;
+			}
 		}
 	};
 	/**
@@ -91,17 +96,19 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	 */
 	private int[] pickingIDs = null;
 	private PickingListenerComposite selectRowListener = new PickingListenerComposite();
+
 	private float[] rowPositions;
+	private int[] rankDeltas;
 
 
 	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout) {
 		this.table = table;
 		this.rowLayout = rowLayout;
-		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
-		this.table.addPropertyChangeListener(RankTableModel.PROP_ORDER, layoutOnChange);
-		this.table.addPropertyChangeListener(IRankColumnParent.PROP_INVALID, layoutOnChange);
-		this.table.addPropertyChangeListener(IRankColumnParent.PROP_DATA, updateData);
-		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
+		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, listener);
+		this.table.addPropertyChangeListener(RankTableModel.PROP_ORDER, listener);
+		this.table.addPropertyChangeListener(IRankColumnParent.PROP_INVALID, listener);
+		this.table.addPropertyChangeListener(IRankColumnParent.PROP_DATA, listener);
+		this.table.addPropertyChangeListener(RankTableModel.PROP_COLUMNS, listener);
 		for (ARankColumnModel col : table.getColumns()) {
 			this.add(wrap(col));
 		}
@@ -124,13 +131,13 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	}
 
 	private void init(ARankColumnModel col) {
-		col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, layoutOnChange);
-		col.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, layoutOnChange);
+		col.addPropertyChangeListener(ARankColumnModel.PROP_WEIGHT, listener);
+		col.addPropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 	}
 
 	private void takeDown(ARankColumnModel col) {
-		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, layoutOnChange);
-		col.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, layoutOnChange);
+		col.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, listener);
+		col.removePropertyChangeListener(ICollapseableColumnMixin.PROP_COLLAPSED, listener);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -199,15 +206,15 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 	@Override
 	protected void takeDown() {
-		this.table.removePropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, layoutOnChange);
-		this.table.removePropertyChangeListener(RankTableModel.PROP_ORDER, layoutOnChange);
-		this.table.removePropertyChangeListener(IRankColumnParent.PROP_INVALID, layoutOnChange);
-		this.table.removePropertyChangeListener(IRankColumnParent.PROP_DATA, updateData);
-		this.table.removePropertyChangeListener(RankTableModel.PROP_COLUMNS, columnsChanged);
+		this.table.removePropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, listener);
+		this.table.removePropertyChangeListener(RankTableModel.PROP_ORDER, listener);
+		this.table.removePropertyChangeListener(IRankColumnParent.PROP_INVALID, listener);
+		this.table.removePropertyChangeListener(IRankColumnParent.PROP_DATA, listener);
+		this.table.removePropertyChangeListener(RankTableModel.PROP_COLUMNS, listener);
 		for (GLElement col : this) {
 			ARankColumnModel model = col.getLayoutDataAs(ARankColumnModel.class, null);
-			model.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, layoutOnChange);
-			model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, columnsChanged);
+			model.removePropertyChangeListener(ARankColumnModel.PROP_WEIGHT, listener);
+			model.addPropertyChangeListener(ACompositeRankColumnModel.PROP_CHILDREN, listener);
 		}
 
 		for (int pickingID : this.pickingIDs)
@@ -249,6 +256,17 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 	}
 
 	@Override
+	public int getRankDelta(IRow row) {
+		if (rankDeltas == null)
+			return 0;
+		int r = row.getRank();
+		if (r < 0 || rankDeltas.length <= r)
+			return Integer.MAX_VALUE;
+		int result = rankDeltas[r];
+		return result;
+	}
+
+	@Override
 	public VAlign getAlignment(TableColumnUI tableColumnUI) {
 		return VAlign.LEFT;
 	}
@@ -286,22 +304,38 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		// push my resource locator to find the icons
 		g.pushResourceLocator(ResourceLocators.classLoader(this.getClass().getClassLoader()));
 
-		// highlight selected row
-		IRow selectedRow = table.getSelectedRow();
-		if (selectedRow != null) {
-			int rank = selectedRow.getRank();
-			if (rank < rowPositions.length && rank >= 0) {
-				float prev = rank == 0 ? 0 : rowPositions[rank - 1];
-				float next = rowPositions[rank];
-				g.color(RenderStyle.COLOR_SELECTED_ROW);
-				float hi = next - prev;
-				renderSubLine(g, w, prev, hi);
-			}
-		}
+		renderSelectedLine(g, w);
+
 		super.renderImpl(g, w, h);
+
+		rankDeltas = null;
 		g.popResourceLocator();
+	}
+
+	// highlight selected row
+	private void renderSelectedLine(GLGraphics g, float w) {
+		IRow selectedRow = table.getSelectedRow();
+		if (selectedRow == null)
+			return;
+		ITableColumnUI firstCol = findFirstSimpleCol();
+		if (firstCol == null)
+			return;
+		Vec4f bounds = firstCol.get(selectedRow.getIndex()).getBounds();
+		if (bounds.z() <= 0 || bounds.w() <= 0)
+			return; // not visible
+		g.color(RenderStyle.COLOR_SELECTED_ROW);
+		renderSubLine(g, w, bounds.y() + 2, bounds.w() - 4);
+	}
+
+	private ITableColumnUI findFirstSimpleCol() {
+		for (GLElement elem : this) {
+			if (elem instanceof ITableColumnUI && (!(elem instanceof ACompositeTableColumnUI)))
+				return (ITableColumnUI) elem;
+		}
+		return null;
 	}
 
 	private void renderSubLine(GLGraphics g, float w, float y, float hi) {

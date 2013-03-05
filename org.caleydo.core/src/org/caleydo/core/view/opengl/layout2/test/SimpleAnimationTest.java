@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.GLSandBox;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
+import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.animation.InOutInitializers;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
@@ -101,7 +102,8 @@ public class SimpleAnimationTest extends AnimatedGLElementContainer {
 		protected void onMouseOut(Pick pick) {
 			this.hovered = false;
 			repaint();
-			((AnimatedGLElementContainer) getParent()).remove(this, 500, new InOutTransitions.InOutTransitionBase(
+			((AnimatedGLElementContainer) getParent()).remove(this, Durations.fix(500),
+					new InOutTransitions.InOutTransitionBase(
 					InOutInitializers.LEFT, MoveTransitions.MOVE_LINEAR));
 		}
 	}
