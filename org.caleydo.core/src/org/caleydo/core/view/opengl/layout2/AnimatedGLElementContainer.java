@@ -74,8 +74,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	private long startTime = -1;
 
-	private boolean animateByDefault = true;
-
+	private IDuration defaultDuration = Durations.DEFAULT;
 	private IMoveTransition defaultMoveTransition = MoveTransitions.MOVE_AND_GROW_LINEAR;
 	private IInTransition defaultInTransition = InOutTransitions.SLIDE_HOR_IN;
 	private IOutTransition defaultOutTransition = InOutTransitions.SLIDE_HOR_OUT;
@@ -94,7 +93,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 *            setter, see {@link animateByDefault}
 	 */
 	public AnimatedGLElementContainer setAnimateByDefault(boolean animateByDefault) {
-		this.animateByDefault = animateByDefault;
+		this.defaultDuration = animateByDefault ? Durations.DEFAULT : Durations.NO;
 		return this;
 	}
 
@@ -228,7 +227,7 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 					}
 				}
 				if (elem.hasChanged()) { // create a move animation
-					ALayoutAnimation anim = createMoveAnimation(elem);
+					ALayoutAnimation anim = createMoveAnimation(elem.wrappee);
 					anim.init(elem.before, elem.after);
 					animations.add(anim);
 				}
@@ -236,46 +235,34 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 		}
 	}
 
-	private ALayoutAnimation createMoveAnimation(RecordingLayoutElement elem) {
-		if (!animateByDefault) {
-			return new DummyAnimation(EAnimationType.MOVE, elem.wrappee);
-		}
-		final IDuration duration = elem.getLayoutDataAs(IDuration.class, Durations.DEFAULT);
-		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
-		MoveAnimation anim = new MoveAnimation(0, duration, elem.wrappee, animation);
-		return anim;
-	}
-
-	private Collection<StyleAnimation> doAnimation() {
+	private Collection<AAnimation> doAnimation() {
 		if (animations.isEmpty())
 			return Collections.emptyList();
 
 		Vec2f size = getSize();
 		int delta = nextDelta();
 
-		Collection<StyleAnimation> styles = new LinkedList<>();
+		Collection<AAnimation> styles = new LinkedList<>();
 		for (Iterator<AAnimation> it = animations.iterator(); it.hasNext();) {
 			AAnimation anim = it.next();
 			if (anim.apply(delta, size.x(), size.y())) { // done
 				GLElement elem = anim.getAnimatedElement();
 				switch (anim.getType()) {
 				case MOVE:
-					it.remove();
 					break;
 				case IN:
-					it.remove();
 					break;
 				case OUT:
 					takeDown(elem);
-					it.remove();
 					break;
 				case STYLE:
-					// will be removed during rendering
 					break;
 				}
+				if (!anim.hasRenderAnimation()) // render animations will be removed during rendering
+					it.remove();
 			}
-			if (anim instanceof StyleAnimation)
-				styles.add((StyleAnimation) anim);
+			if (anim.hasRenderAnimation())
+				styles.add(anim);
 		}
 		if (animations.isEmpty()) {
 			startTime = -1; // stop animation
@@ -292,6 +279,29 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			old = startTime;
 		int delta = (int) (startTime - old);
 		return delta;
+	}
+
+	protected ALayoutAnimation createMoveAnimation(IGLLayoutElement elem) {
+		if (defaultDuration == Durations.NO) {
+			return new DummyAnimation(EAnimationType.MOVE, elem);
+		}
+		final IDuration duration = elem.getLayoutDataAs(IDuration.class, defaultDuration);
+		final IMoveTransition animation = elem.getLayoutDataAs(IMoveTransition.class, defaultMoveTransition);
+		return new MoveAnimation(0, duration, elem, animation);
+	}
+
+	protected AAnimation createInAnimation(IGLLayoutElement elem, int startIn, IDuration duration,
+			IInTransition animation) {
+		if (defaultDuration == Durations.NO)
+			return new DummyAnimation(EAnimationType.IN, elem);
+		return new InAnimation(startIn, duration, elem, animation);
+	}
+
+	protected AAnimation createOutAnimation(IGLLayoutElement elem, int startIn, IDuration duration,
+			IOutTransition animation) {
+		if (defaultDuration == Durations.NO)
+			return new DummyAnimation(EAnimationType.OUT, elem);
+		return new OutAnimation(startIn, duration, elem, animation);
 	}
 
 	@Override
@@ -322,15 +332,20 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 			child.init(context);
 	}
 
+
 	private void takeDown(GLElement child) {
 		child.takeDown();
 	}
 
 	public final void add(GLElement child) {
-		add(child, animateByDefault ? 300 : 0);
+		add(child, defaultDuration);
 	}
 
 	public final void add(GLElement child, int duration) {
+		add(child, Durations.fix(duration));
+	}
+
+	public final void add(GLElement child, IDuration duration) {
 		add(child, duration, child.getLayoutDataAs(IInTransition.class, defaultInTransition));
 	}
 
@@ -340,11 +355,15 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	 * @param child
 	 */
 	public final void add(GLElement child, int duration, IInTransition animation) {
+		add(child, Durations.fix(duration), animation);
+	}
+
+	public final void add(GLElement child, IDuration duration, IInTransition animation) {
 		int startIn = 0;
 		assert child.getParent() == null; // no parent yet
 		// we want to add this child now but smooth it in, so we are interested in its final position in the future at
 		// the future state
-		this.animations.add(new InAnimation(startIn, Durations.fix(duration), child.layoutElement, animation));
+		this.animations.add(createInAnimation(child.layoutElement, startIn, duration, animation));
 		setup(child);
 		dirtyAnimation = true;
 		if (startIn == 0)
@@ -354,17 +373,17 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 
 	public final void remove(GLElement child) {
-		remove(child, animateByDefault ? 300 : 0);
+		remove(child, defaultDuration);
 	}
 
-	public final void remove(GLElement child, int duration) {
+	public final void remove(GLElement child, IDuration duration) {
 		remove(child, duration, child.getLayoutDataAs(IOutTransition.class, defaultOutTransition));
 	}
 
-	public final void remove(GLElement child, int duration, IOutTransition animation) {
+	public final void remove(GLElement child, IDuration duration, IOutTransition animation) {
 		int startIn = 0;
 		assert child.getParent() == this;
-		this.animations.add(new OutAnimation(startIn, Durations.fix(duration), child.layoutElement, animation));
+		this.animations.add(createOutAnimation(child.layoutElement, startIn, duration, animation));
 		if (startIn == 0)
 			children.remove(child);
 		dirtyAnimation = true;
@@ -372,10 +391,10 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 	}
 
 	public final void clear() {
-		clear(animateByDefault ? 300 : 0);
+		clear(defaultDuration);
 	}
 
-	public final void clear(int duration) {
+	public final void clear(IDuration duration) {
 		List<GLElement> seenIn = new ArrayList<>(asSeenIn(0));
 		for (GLElement s : seenIn)
 			remove(s, duration);
@@ -417,25 +436,30 @@ public class AnimatedGLElementContainer extends GLElement implements IGLElementP
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		Collection<StyleAnimation> styleAnims = doAnimation();
+		Collection<AAnimation> styleAnims = doAnimation();
 		super.renderImpl(g, w, h);
+
 		g.incZ();
 		for (GLElement child : activeChildren()) {
 			boolean found = false;
-			for (Iterator<StyleAnimation> it = styleAnims.iterator(); it.hasNext();) {
-				StyleAnimation a = it.next();
+			for (Iterator<AAnimation> it = styleAnims.iterator(); it.hasNext();) {
+				AAnimation a = it.next();
 				if (a.getAnimatedElement() == child && a.isRunning()) {
 					a.render(g);
 					found = true;
 					break;
 				}
 			}
-			if (!found)
+			if (!found) {
 				child.render(g);
+			}
 		}
-		for (StyleAnimation anim : styleAnims) {
+		for (AAnimation anim : styleAnims) {
 			if (anim.isDone() || anim.getAnimatedElement().getParent() != this)
 				animations.remove(anim);
+		}
+		if (animations.isEmpty()) {
+			startTime = -1; // stop animation
 		}
 		g.decZ();
 	}

@@ -17,69 +17,56 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout2.animation;
+package org.caleydo.vis.rank.ui.anim;
 
 import gleem.linalg.Vec4f;
 
+import java.awt.Color;
+
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
-import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IInTransition;
 import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
-import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
- * in animation implementation
- *
  * @author Samuel Gratzl
  *
  */
-public class InAnimation extends ALayoutAnimation {
-	private final IInTransition animation;
-	private Vec4f to = null;
+public class ColorAnimation implements IStyleAnimation {
+	// fly weights
+	private static final ColorAnimation[] ups;
+	private static final ColorAnimation[] downs;
 
-	public InAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IInTransition animation) {
-		super(startIn, duration, animated);
-		this.animation = animation;
+	static {
+		ups = new ColorAnimation[10];
+		downs = new ColorAnimation[10];
+		for(int i = 0; i<10; ++i) {
+			ups[i] = new ColorAnimation(i + 1);
+			downs[i] = new ColorAnimation(-i - 1);
+		}
+	}
+
+	public static ColorAnimation get(int delta) {
+		if (delta > 0 && delta <= 10)
+			return ups[delta - 1];
+		if (delta < 0 && delta >= -10)
+			return downs[-delta + 1];
+		return new ColorAnimation(delta);
+	}
+
+	private final int delta;
+
+	public ColorAnimation(int delta) {
+		this.delta = delta;
 	}
 
 	@Override
-	protected void animate(float alpha, float w, float h) {
-		animated.setBounds(animation.in(to, w, h, alpha));
+	public void render(GLElement elem, GLGraphics g, float alpha) {
+		elem.render(g);
+		Color c = delta < 0 ? Color.GREEN : Color.RED; // TODO alpha
+		g.decZ();
+		Vec4f b = elem.getBounds();
+		g.color(c).fillRect(b.x(), b.y(), b.z(), b.w());
+		g.incZ();
 	}
 
-	@Override
-	protected void firstTime(float w, float h) {
-		animate(0, w, h);
-	}
-
-	@Override
-	protected void lastTime() {
-		animated.setBounds(to);
-	}
-
-	@Override
-	public EAnimationType getType() {
-		return EAnimationType.IN;
-	}
-
-	@Override
-	public void init(Vec4f from, Vec4f to) {
-		this.to = to;
-	}
-
-	@Override
-	public boolean hasRenderAnimation() {
-		return animation instanceof IStyleAnimation;
-	}
-
-	@Override
-	public void render(GLGraphics g) {
-		GLElement elem = getAnimatedElement();
-		if (!isRunning())
-			elem.render(g);
-		else
-			((IStyleAnimation) animation).render(elem, g, lastAlpha);
-	}
 }
-

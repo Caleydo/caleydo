@@ -57,12 +57,11 @@ public class ReRankTransition implements IMoveTransition, IInTransition, IOutTra
 
 	@Override
 	public Vec4f in(Vec4f to, float w, float h, float alpha) {
-		return to;
+		return to.copy();
 	}
 
 	@Override
 	public Vec4f out(Vec4f from, float w, float h, float alpha) {
 		return new Vec4f(from.x(), from.y(), from.z(), 0);
 	}
-
 }

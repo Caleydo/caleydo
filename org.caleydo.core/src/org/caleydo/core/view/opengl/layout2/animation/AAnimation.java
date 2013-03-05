@@ -19,7 +19,10 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
+import java.util.Objects;
+
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
@@ -35,6 +38,8 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	private final IDuration duration; // TODO
 	private int durationValue;
 	protected final IGLLayoutElement animated;
+
+	protected float lastAlpha = -1;
 
 	public AAnimation(int startIn, IDuration duration, IGLLayoutElement animated) {
 		this.duration = duration;
@@ -123,10 +128,7 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 		if (getClass() != obj.getClass())
 			return false;
 		AAnimation other = (AAnimation) obj;
-		if (animated == null) {
-			if (other.animated != null)
-				return false;
-		} else if (!animated.equals(other.animated))
+		if (!Objects.equals(animated, other.animated))
 			return false;
 		return true;
 	}
@@ -141,13 +143,14 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	public boolean apply(int delta, float w, float h) {
 		if (startIn >= 0) {
 			startIn -= delta;
-			if (startIn < 0) {
+			if (startIn <= 0) {
 				delta = -startIn;
 				startIn = -1;
 			} else {
 				delta = 0;
 			}
 			firstTime(w, h);
+			lastAlpha = 0;
 		}
 		if (delta < 3)
 			return false;
@@ -155,14 +158,28 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 		float alpha = 0;
 		if (remaining <= 0) { //last one
 			lastTime();
+			lastAlpha = 1;
 		} else {
 			alpha = 1 - (remaining / (float) durationValue);
 			animate(alpha, w, h);
+			lastAlpha = alpha;
 		}
 		return remaining <= 0;
 	}
 
+	public boolean hasRenderAnimation() {
+		return false;
+	}
+
+	public boolean isDone() {
+		return remaining <= 0;
+	}
+
 	protected abstract void animate(float alpha, float w, float h);
+
+	public void render(GLGraphics g) {
+		getAnimatedElement().render(g);
+	}
 
 	protected abstract void firstTime(float w, float h);
 

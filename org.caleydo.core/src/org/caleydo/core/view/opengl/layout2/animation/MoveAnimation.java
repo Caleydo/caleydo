@@ -21,8 +21,11 @@ package org.caleydo.core.view.opengl.layout2.animation;
 
 import gleem.linalg.Vec4f;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions.IMoveTransition;
+import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
@@ -49,12 +52,13 @@ public class MoveAnimation extends ALayoutAnimation {
 
 	@Override
 	protected void firstTime(float w, float h) {
-
+		System.out.println(hashCode() + "-" + animated.asElement().hashCode() + " first time ");
 	}
 
 	@Override
 	protected void lastTime() {
 		animated.setBounds(to);
+		System.out.println(hashCode() + "-" + animated.asElement().hashCode() + " last time " + to);
 	}
 
 	@Override
@@ -66,6 +70,21 @@ public class MoveAnimation extends ALayoutAnimation {
 	public void init(Vec4f from, Vec4f to) {
 		this.from = from;
 		this.to = to;
+		System.out.println(hashCode() + "-" + animated.asElement().hashCode() + " init " + from + " " + to);
+	}
+
+	@Override
+	public boolean hasRenderAnimation() {
+		return animation instanceof IStyleAnimation;
+	}
+
+	@Override
+	public void render(GLGraphics g) {
+		GLElement elem = getAnimatedElement();
+		if (!isRunning())
+			elem.render(g);
+		else
+			((IStyleAnimation) animation).render(elem, g, lastAlpha);
 	}
 
 }

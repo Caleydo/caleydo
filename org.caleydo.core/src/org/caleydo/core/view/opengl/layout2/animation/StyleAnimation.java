@@ -32,8 +32,6 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 public class StyleAnimation extends AAnimation {
 	private final IStyleAnimation anim;
 
-	private float lastAlpha = -1;
-
 	public StyleAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IStyleAnimation anim) {
 		super(startIn, duration, animated);
 		this.anim = anim;
@@ -41,26 +39,28 @@ public class StyleAnimation extends AAnimation {
 
 	@Override
 	protected void animate(float alpha, float w, float h) {
-		lastAlpha = alpha;
+
 	}
 
 	@Override
 	protected void firstTime(float w, float h) {
-		lastAlpha = 0;
+
 	}
 
 	@Override
 	protected void lastTime() {
-		lastAlpha = 1;
+
 	}
 
-	public boolean isDone() {
-		return lastAlpha >= 1;
+	@Override
+	public boolean hasRenderAnimation() {
+		return true;
 	}
 
+	@Override
 	public void render(GLGraphics g) {
 		GLElement elem = getAnimatedElement();
-		if (lastAlpha < 0)
+		if (!isRunning())
 			elem.render(g);
 		else
 			anim.render(elem, g, lastAlpha);
