@@ -68,7 +68,7 @@ public class RenderStyle {
 	 */
 	public static final float LABEL_HEIGHT = 20;
 
-	public static final Color COLOR_SELECTED_ROW = Color.LIGHT_GRAY;
+	public static final Color COLOR_SELECTED_ROW = new Color(0, 0, 0, 128);
 	public static final Color COLOR_BAND = new Color(0.90f, 0.90f, 0.90f);
 
 	public static final float FROZEN_BAND_WIDTH = 50;

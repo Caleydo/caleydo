@@ -22,6 +22,7 @@ package org.caleydo.vis.rank.ui;
 
 import gleem.linalg.Vec4f;
 
+import java.awt.Color;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -34,10 +35,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IGLElementContext;
+import org.caleydo.core.view.opengl.layout2.animation.ACustomAnimation;
+import org.caleydo.core.view.opengl.layout2.animation.Durations;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayout;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -64,7 +67,7 @@ import org.caleydo.vis.rank.ui.column.TableColumnUIs;
  * @author Samuel Gratzl
  *
  */
-public final class TableBodyUI extends GLElementContainer implements IGLLayout,
+public final class TableBodyUI extends AnimatedGLElementContainer implements IGLLayout,
 		IColumModelLayout {
 	private final RankTableModel table;
 	private final IRowHeightLayout rowLayout;
@@ -102,6 +105,7 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 
 	public TableBodyUI(final RankTableModel table, IRowHeightLayout rowLayout) {
+		setAnimateByDefault(false);
 		this.table = table;
 		this.rowLayout = rowLayout;
 		this.table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, listener);
@@ -155,7 +159,8 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 				for (ARankColumnModel c : (Collection<ARankColumnModel>) evt.getNewValue())
 					news.add(wrap(c));
 			}
-			asList().addAll(index, news);
+			for (GLElement new_ : news)
+				add(index++, new_);
 		} else if (evt.getNewValue() == null) { // removed
 			takeDown(get(index).getLayoutDataAs(ARankColumnModel.class, null));
 			remove(index);
@@ -311,23 +316,65 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 
 		super.renderImpl(g, w, h);
 
-		rankDeltas = null;
+		if (rankDeltas != null)
+			triggerRankAnimations(w, h);
+		rankDeltas = null; // a single run with the rank deltas, not used anymore
 		g.popResourceLocator();
+	}
+
+	private void triggerRankAnimations(float w, float h) {
+		assert rankDeltas != null;
+		ITableColumnUI col = findFirstSimpleCol();
+		if (col == null)
+			return;
+		for (int i = 0; i < rankDeltas.length; ++i) {
+			int delta = rankDeltas[i];
+			if (delta == 0 || delta == Integer.MAX_VALUE)
+				continue;
+			IRow r = table.getCurrent(i);
+			if (r == null)
+				continue;
+			this.animate(new LineHighlightAnimation(delta, r));
+		}
+	}
+
+	protected void renderLineHighlight(GLGraphics g, IRow row, float alpha, int delta, float w) {
+		Vec4f bounds = getRowBounds(row);
+		if (bounds == null || delta == Integer.MIN_VALUE)
+			return;
+		float calpha = computeAlpha(alpha, delta);
+		Color base = delta < 0 ? Color.GREEN : Color.RED; // TODO alpha
+		Color c = new Color(base.getRed(), base.getGreen(), base.getBlue(), (int) (calpha * 255));
+		g.decZ();
+		g.color(c);
+		renderSubLine(g, w, bounds.y() + 1, bounds.w() - 2);
+		g.incZ();
+	}
+
+
+	private static float computeAlpha(float alpha, int delta) {
+		return 1 - alpha * 0.5f;
 	}
 
 	// highlight selected row
 	private void renderSelectedLine(GLGraphics g, float w) {
-		IRow selectedRow = table.getSelectedRow();
-		if (selectedRow == null)
+		Vec4f bounds = getRowBounds(table.getSelectedRow());
+		if (bounds == null)
 			return;
-		ITableColumnUI firstCol = findFirstSimpleCol();
-		if (firstCol == null)
-			return;
-		Vec4f bounds = firstCol.get(selectedRow.getIndex()).getBounds();
-		if (bounds.z() <= 0 || bounds.w() <= 0)
-			return; // not visible
 		g.color(RenderStyle.COLOR_SELECTED_ROW);
 		renderSubLine(g, w, bounds.y() + 2, bounds.w() - 4);
+	}
+
+	private Vec4f getRowBounds(IRow row) {
+		if (row == null)
+			return null;
+		ITableColumnUI firstCol = findFirstSimpleCol();
+		if (firstCol == null)
+			return null;
+		Vec4f bounds = firstCol.get(row.getIndex()).getBounds();
+		if (bounds.z() <= 0 || bounds.w() <= 0)
+			return null; // not visible
+		return bounds;
 	}
 
 	private ITableColumnUI findFirstSimpleCol() {
@@ -398,6 +445,33 @@ public final class TableBodyUI extends GLElementContainer implements IGLLayout,
 			return table.getCurrentOrder();
 		return prev.getModel().getCurrentOrder();
 	}
+
+	class LineHighlightAnimation extends ACustomAnimation {
+		private final IRow row;
+		private final int delta;
+
+		public LineHighlightAnimation(int delta, IRow row) {
+			super(0, Durations.fix(delta == Integer.MIN_VALUE ? 500 : Math.min(Math.abs(delta) * 400, 2000)));
+			this.delta = delta;
+			this.row = row;
+		}
+
+		@Override
+		protected void firstTime(GLGraphics g, float w, float h) {
+			animate(g, 0, w, h);
+		}
+
+		@Override
+		protected void animate(GLGraphics g, float alpha, float w, float h) {
+			renderLineHighlight(g, row, alpha, delta, w);
+		}
+
+		@Override
+		protected void lastTime(GLGraphics g, float w, float h) {
+			animate(g, 1, w, h);
+		}
+	}
+
 }
 
 

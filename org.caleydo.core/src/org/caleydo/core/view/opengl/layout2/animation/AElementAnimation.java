@@ -19,65 +19,59 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
+import java.util.Objects;
+
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
-import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
+ * basic for animation description
+ *
  * @author Samuel Gratzl
  *
  */
-public class StyleAnimation extends AElementAnimation {
-	private final IStyleAnimation anim;
+public abstract class AElementAnimation extends AAnimation {
+	protected final IGLLayoutElement animated;
 
-	public StyleAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IStyleAnimation anim) {
-		super(startIn, duration, animated);
-		this.anim = anim;
+	public AElementAnimation(int startIn, IDuration duration, IGLLayoutElement animated) {
+		super(startIn, duration);
+		this.animated = animated;
 	}
 
 	/**
-	 * performs the animation
-	 *
-	 * @param delta
-	 *            between last call in ms
-	 * @return whether this animation ended
+	 * @return the animated, see {@link #animated}
 	 */
-	public boolean apply(GLGraphics g, int delta) {
-		if (startIn >= 0) {
-			startIn -= delta;
-			if (startIn <= 0) {
-				delta = -startIn;
-				startIn = -1;
-				animate(g, 0.0f);
-			} else
-				return false;
-		}
-		if (delta < 1)
-			return false;
-		remaining -= delta;
-		float alpha = 0;
-		if (remaining <= 0) { // last one
-			animate(g, 1.f);
-		} else {
-			alpha = 1 - (remaining / (float) durationValue);
-			animate(g, alpha);
-		}
-		return remaining <= 0;
+	public final GLElement getAnimatedElement() {
+		return animated.asElement();
 	}
 
-	public void animate(GLGraphics g, float alpha) {
-		GLElement elem = getAnimatedElement();
-		if (!isRunning())
-			elem.render(g);
-		else
-			anim.render(elem, g, alpha);
+	/**
+	 * @return the animated, see {@link #animated}
+	 */
+	public final IGLLayoutElement getAnimated() {
+		return animated;
 	}
 
 	@Override
-	public EAnimationType getType() {
-		return EAnimationType.STYLE;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((animated == null) ? 0 : animated.hashCode());
+		return result;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AElementAnimation other = (AElementAnimation) obj;
+		if (!Objects.equals(animated, other.animated))
+			return false;
+		return true;
+	}
 }

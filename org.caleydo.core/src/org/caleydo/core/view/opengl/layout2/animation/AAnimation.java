@@ -19,12 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
-import java.util.Objects;
-
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
-import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * basic for animation description
@@ -33,40 +28,22 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  *
  */
 public abstract class AAnimation implements Comparable<AAnimation> {
-	private int startIn;
-	private int remaining;
+	protected int startIn;
+	protected int remaining;
 	private final IDuration duration; // TODO
-	private int durationValue;
-	protected final IGLLayoutElement animated;
+	protected final int durationValue;
 
-	protected float lastAlpha = -1;
-
-	public AAnimation(int startIn, IDuration duration, IGLLayoutElement animated) {
+	public AAnimation(int startIn, IDuration duration) {
 		this.duration = duration;
 		this.durationValue = duration.getDuration();
 		this.startIn = startIn;
 		this.remaining = this.durationValue;
-		this.animated = animated;
-	}
-
-	/**
-	 * @return the animated, see {@link #animated}
-	 */
-	public GLElement getAnimatedElement() {
-		return animated.asElement();
-	}
-
-	/**
-	 * @return the animated, see {@link #animated}
-	 */
-	public IGLLayoutElement getAnimated() {
-		return animated;
 	}
 
 	/**
 	 * @return the remaining, see {@link #remaining}
 	 */
-	public int getRemaining() {
+	public final int getRemaining() {
 		return remaining;
 	}
 
@@ -75,7 +52,7 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	 *
 	 * @return
 	 */
-	public int getStopAt() {
+	public final int getStopAt() {
 		return startIn + remaining;
 	}
 
@@ -84,7 +61,7 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	 *
 	 * @return
 	 */
-	public int getElapsed() {
+	public final int getElapsed() {
 		return durationValue - remaining;
 	}
 
@@ -93,7 +70,7 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	 *
 	 * @return
 	 */
-	public int getStartIn() {
+	public final int getStartIn() {
 		return startIn;
 	}
 
@@ -102,92 +79,25 @@ public abstract class AAnimation implements Comparable<AAnimation> {
 	 *
 	 * @return
 	 */
-	public boolean isRunning() {
+	public final boolean isRunning() {
 		return startIn < 0;
 	}
 
 	@Override
-	public int compareTo(AAnimation o) {
-		return this.getStopAt() - o.getStopAt();
+	public final int compareTo(AAnimation o) {
+		int r = this.getStopAt() - o.getStopAt();
+		if (r != 0)
+			return r;
+		return getType().ordinal() - o.getType().ordinal();
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((animated == null) ? 0 : animated.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AAnimation other = (AAnimation) obj;
-		if (!Objects.equals(animated, other.animated))
-			return false;
-		return true;
-	}
-
-	/**
-	 * performs the animation
-	 *
-	 * @param delta
-	 *            between last call in ms
-	 * @return whether this animation ended
-	 */
-	public boolean apply(int delta, float w, float h) {
-		if (startIn >= 0) {
-			startIn -= delta;
-			if (startIn <= 0) {
-				delta = -startIn;
-				startIn = -1;
-			} else {
-				delta = 0;
-			}
-			firstTime(w, h);
-			lastAlpha = 0;
-		}
-		if (delta < 3)
-			return false;
-		remaining -= delta;
-		float alpha = 0;
-		if (remaining <= 0) { //last one
-			lastTime();
-			lastAlpha = 1;
-		} else {
-			alpha = 1 - (remaining / (float) durationValue);
-			animate(alpha, w, h);
-			lastAlpha = alpha;
-		}
+	public final boolean isDone() {
 		return remaining <= 0;
 	}
-
-	public boolean hasRenderAnimation() {
-		return false;
-	}
-
-	public boolean isDone() {
-		return remaining <= 0;
-	}
-
-	protected abstract void animate(float alpha, float w, float h);
-
-	public void render(GLGraphics g) {
-		getAnimatedElement().render(g);
-	}
-
-	protected abstract void firstTime(float w, float h);
-
-	protected abstract void lastTime();
 
 	public abstract EAnimationType getType();
 
 	public enum EAnimationType {
-		IN, OUT, MOVE, STYLE
+		IN, OUT, MOVE, STYLE, CUSTOM
 	}
 }

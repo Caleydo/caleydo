@@ -30,9 +30,45 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class ALayoutAnimation extends AAnimation {
+public abstract class ALayoutAnimation extends AElementAnimation {
 	public ALayoutAnimation(int startIn, IDuration duration, IGLLayoutElement animated) {
 		super(startIn, duration, animated);
+	}
+
+	protected abstract void animate(float alpha, float w, float h);
+
+	protected abstract void firstTime(float w, float h);
+
+	protected abstract void lastTime();
+
+	/**
+	 * performs the animation
+	 *
+	 * @param delta
+	 *            between last call in ms
+	 * @return whether this animation ended
+	 */
+	public boolean apply(int delta, float w, float h) {
+		if (startIn >= 0) {
+			startIn -= delta;
+			if (startIn <= 0) {
+				delta = -startIn;
+				startIn = -1;
+				firstTime(w, h);
+			}
+			return false;
+		}
+		if (delta < 3)
+			return false;
+		remaining -= delta;
+		float alpha = 0;
+		if (remaining <= 0) { // last one
+			lastTime();
+		} else {
+			alpha = 1 - (remaining / (float) durationValue);
+			animate(alpha, w, h);
+		}
+		return remaining <= 0;
 	}
 
 	public abstract void init(Vec4f from, Vec4f to);

@@ -19,23 +19,23 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout2.animation;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
-import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
-import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class StyleAnimation extends AElementAnimation {
-	private final IStyleAnimation anim;
-
-	public StyleAnimation(int startIn, IDuration duration, IGLLayoutElement animated, IStyleAnimation anim) {
-		super(startIn, duration, animated);
-		this.anim = anim;
+public abstract class ACustomAnimation extends AAnimation {
+	public ACustomAnimation(int startIn, IDuration duration) {
+		super(startIn, duration);
 	}
+
+	protected abstract void firstTime(GLGraphics g, float w, float h);
+
+	protected abstract void animate(GLGraphics g, float alpha, float w, float h);
+
+	protected abstract void lastTime(GLGraphics g, float w, float h);
 
 	/**
 	 * performs the animation
@@ -44,13 +44,13 @@ public class StyleAnimation extends AElementAnimation {
 	 *            between last call in ms
 	 * @return whether this animation ended
 	 */
-	public boolean apply(GLGraphics g, int delta) {
+	public boolean apply(GLGraphics g, int delta, float w, float h) {
 		if (startIn >= 0) {
 			startIn -= delta;
 			if (startIn <= 0) {
 				delta = -startIn;
 				startIn = -1;
-				animate(g, 0.0f);
+				firstTime(g, w, h);
 			} else
 				return false;
 		}
@@ -59,25 +59,17 @@ public class StyleAnimation extends AElementAnimation {
 		remaining -= delta;
 		float alpha = 0;
 		if (remaining <= 0) { // last one
-			animate(g, 1.f);
+			lastTime(g, w, h);
 		} else {
 			alpha = 1 - (remaining / (float) durationValue);
-			animate(g, alpha);
+			animate(g, alpha, w, h);
 		}
 		return remaining <= 0;
 	}
 
-	public void animate(GLGraphics g, float alpha) {
-		GLElement elem = getAnimatedElement();
-		if (!isRunning())
-			elem.render(g);
-		else
-			anim.render(elem, g, alpha);
-	}
-
 	@Override
-	public EAnimationType getType() {
-		return EAnimationType.STYLE;
+	public final EAnimationType getType() {
+		return EAnimationType.CUSTOM;
 	}
 
 }

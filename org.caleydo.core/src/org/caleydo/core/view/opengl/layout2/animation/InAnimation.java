@@ -21,11 +21,8 @@ package org.caleydo.core.view.opengl.layout2.animation;
 
 import gleem.linalg.Vec4f;
 
-import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.animation.Durations.IDuration;
 import org.caleydo.core.view.opengl.layout2.animation.InOutTransitions.IInTransition;
-import org.caleydo.core.view.opengl.layout2.animation.StyleAnimations.IStyleAnimation;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 
 /**
@@ -66,20 +63,6 @@ public class InAnimation extends ALayoutAnimation {
 	@Override
 	public void init(Vec4f from, Vec4f to) {
 		this.to = to;
-	}
-
-	@Override
-	public boolean hasRenderAnimation() {
-		return animation instanceof IStyleAnimation;
-	}
-
-	@Override
-	public void render(GLGraphics g) {
-		GLElement elem = getAnimatedElement();
-		if (!isRunning())
-			elem.render(g);
-		else
-			((IStyleAnimation) animation).render(elem, g, lastAlpha);
 	}
 }
 
