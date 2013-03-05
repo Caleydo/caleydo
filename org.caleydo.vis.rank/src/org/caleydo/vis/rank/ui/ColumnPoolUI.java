@@ -32,9 +32,11 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.layout.GLFlowLayout;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
@@ -63,6 +65,15 @@ public class ColumnPoolUI extends GLElementContainer {
 		}
 	};
 
+	private int dropPickingId = -1;
+	private final IPickingListener dropListener = new IPickingListener() {
+		@Override
+		public void pick(Pick pick) {
+			onDropPick(pick);
+		}
+	};
+	private boolean armed;
+
 	public ColumnPoolUI(RankTableModel table) {
 		this.table = table;
 		table.addPropertyChangeListener(RankTableModel.PROP_POOL, listener);
@@ -72,7 +83,47 @@ public class ColumnPoolUI extends GLElementContainer {
 			add(wrap(hidden));
 		}
 		this.add(new GLElement()); // spacer
-		this.add(new PaperBasket().setSize(LABEL_HEIGHT + HIST_HEIGHT - 10, -1));
+		this.add(new PaperBasket(table).setSize(LABEL_HEIGHT + HIST_HEIGHT - 10, -1));
+	}
+
+	@Override
+	protected void init(IGLElementContext context) {
+		super.init(context);
+		dropPickingId = context.registerPickingListener(dropListener);
+	}
+
+	protected void onDropPick(Pick pick) {
+		if (!pick.isAnyDragging() || !context.getMouseLayer().hasDraggable(IHideableColumnMixin.class))
+			return;
+		Pair<GLElement, IHideableColumnMixin> pair = context.getMouseLayer().getFirstDraggable(
+					IHideableColumnMixin.class);
+		switch(pick.getPickingMode()) {
+		case MOUSE_OVER:
+			if (!pair.getSecond().isHideAble())
+				return;
+			this.armed = true;
+			context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
+			repaint();
+			break;
+		case MOUSE_OUT:
+			if (this.armed) {
+				context.getMouseLayer().setDropable(IHideableColumnMixin.class, true);
+				this.armed = false;
+				repaint();
+			}
+			break;
+		case MOUSE_RELEASED:
+			if (armed) {
+				context.getMouseLayer().removeDraggable(pair.getFirst());
+				pair.getSecond().hide();
+				context.setCursor(-1);
+				armed = false;
+				repaint();
+			}
+			break;
+		default:
+			break;
+		}
 	}
 
 	private GLElement wrap(ARankColumnModel hidden) {
@@ -81,6 +132,8 @@ public class ColumnPoolUI extends GLElementContainer {
 
 	@Override
 	protected void takeDown() {
+		context.unregisterPickingListener(dropPickingId);
+		dropPickingId = -1;
 		table.removePropertyChangeListener(RankTableModel.PROP_POOL, listener);
 		super.takeDown();
 	}
@@ -89,6 +142,15 @@ public class ColumnPoolUI extends GLElementContainer {
 	protected void renderImpl(GLGraphics g, float w, float h) {
 		super.renderImpl(g, w, h);
 		g.color(Color.DARK_GRAY).drawRoundedRect(0, 0, w, h, 10);
+	}
+
+	@Override
+	protected void renderPickImpl(GLGraphics g, float w, float h) {
+		GLElement paperBasket = get(size() - 1);
+		g.pushName(dropPickingId);
+		g.fillRect(0, 0, paperBasket.getLocation().x() - 2, h);
+		g.popName();
+		super.renderPickImpl(g, w, h);
 	}
 
 	protected void onColumsChanged(IndexedPropertyChangeEvent evt) {
@@ -105,8 +167,14 @@ public class ColumnPoolUI extends GLElementContainer {
 		}
 	}
 
-	class PaperBasket extends PickableGLElement {
+	private static class PaperBasket extends PickableGLElement {
 		private boolean armed = false;
+		private final RankTableModel table;
+
+		public PaperBasket(RankTableModel table) {
+			this.table = table;
+		}
+
 		@Override
 		protected void onMouseOver(Pick pick) {
 			if (!pick.isAnyDragging() || !context.getMouseLayer().hasDraggable(IHideableColumnMixin.class))
