@@ -44,7 +44,6 @@ import org.caleydo.core.view.opengl.layout2.animation.MoveTransitions;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
 import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
 import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
-import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
 import org.caleydo.datadomain.pathway.IPathwayRepresentation;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.VertexRepBasedContextMenuItem;
@@ -54,7 +53,6 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.listener.PathwayPathSelectionEvent;
 import org.caleydo.datadomain.pathway.listener.ShowPortalNodesEvent;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.subgraph.event.ShowNodeInfoEvent;
 import org.caleydo.view.subgraph.event.ShowPathwayBrowserEvent;
@@ -77,7 +75,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 	private AnimatedGLElementContainer baseContainer = new AnimatedGLElementContainer(new GLSizeRestrictiveFlowLayout(
 			true, 10, GLPadding.ZERO));
 	private GLElementContainer root = new GLElementContainer(GLLayouts.LAYERS);
-	private GLElementContainer pathwayRow = new GLElementContainer();
+	private AnimatedGLElementContainer pathwayRow = new AnimatedGLElementContainer();
 	// private AnimatedGLElementContainer pathwayRow = new AnimatedGLElementContainer();
 	private GLSubGraphAugmentation augmentation = new GLSubGraphAugmentation();
 	private AnimatedGLElementContainer nodeInfoContainer = new AnimatedGLElementContainer(
@@ -108,6 +106,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	protected MultiFormRenderer lastUsedRenderer;
 
+	protected GLPathwayGridLayout pathwayLayout = new GLPathwayGridLayout(this, GLPadding.ZERO, 10);
+
 	// /**
 	// * Maps from the embeddingID to all associated {@link MultiFormRenderer}s and their wrapping {@link GLElement}.
 	// */
@@ -130,7 +130,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		RankingElement rankingElement = new RankingElement(this);
 		rankingElement.setSize(200, Float.NaN);
 		baseContainer.add(rankingElement);
-		pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
+		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
+		pathwayRow.setLayout(pathwayLayout);
 		//
 		baseContainer.add(pathwayRow);
 
@@ -196,8 +197,8 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 	private void createRemoteRenderedViews() {
 		if (remoteRenderedPathwayMultiformViewIDs == null) {
-			addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
-			addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
+			// addPathway(PathwayManager.get().getPathwayByTitle("Glioma", EPathwayDatabaseType.KEGG));
+			// addPathway(PathwayManager.get().getPathwayByTitle("Pathways in cancer", EPathwayDatabaseType.KEGG));
 			pathInfo = new MultiFormInfo();
 			createMultiformRenderer(tablePerspectives, EnumSet.of(EEmbeddingID.PATH_LEVEL1, EEmbeddingID.PATH_LEVEL2),
 					baseContainer, 0.3f, pathInfo);
@@ -248,31 +249,30 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		info.pathway = pathway;
 
 		info.age = currentPathwayAge--;
-		GLPathwayColumn pathwayColumn = new GLPathwayColumn(this);
-		pathwayColumn.setLayout(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
+		// pathwayColumn.setLayout(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
 		createMultiformRenderer(pathwayTablePerspectives,
 				EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1, EEmbeddingID.PATHWAY_LEVEL2, EEmbeddingID.PATHWAY_LEVEL3),
-				pathwayColumn, Float.NaN, info);
-		int rendererID = info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL1).get(0);
+				pathwayRow, Float.NaN, info);
+		pathwayLayout.addColumn(info.window);
 
+		int rendererID = info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL1).get(0);
 		if (info.multiFormRenderer.getActiveRendererID() != rendererID) {
 			info.multiFormRenderer.setActive(rendererID);
 		}
-		for (PathwayMultiFormInfo pathwayInfo : pathwayInfos) {
-			pathwayInfo.multiFormRenderer.setActive(pathwayInfo.embeddingIDToRendererIDs.get(
-					EEmbeddingID.PATHWAY_LEVEL2).get(0));
-		}
+		// for (PathwayMultiFormInfo pathwayInfo : pathwayInfos) {
+		// pathwayInfo.multiFormRenderer.setActive(pathwayInfo.embeddingIDToRendererIDs.get(
+		// EEmbeddingID.PATHWAY_LEVEL2).get(0));
+		// }
 
 		pathwayInfos.add(info);
-		pathwayColumn.addRenderer(info);
-		pathwayRow.add(pathwayColumn);
+		// pathwayRow.add(pathwayColumn);
 	}
 
 	private void createMultiformRenderer(List<TablePerspective> tablePerspectives, EnumSet<EEmbeddingID> embeddingIDs,
 			AnimatedGLElementContainer parent, Object layoutData, MultiFormInfo info) {
 
-		GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
-		backgroundContainer.setLayoutData(layoutData);
+		// GLElementContainer backgroundContainer = new GLElementContainer(GLLayouts.LAYERS);
+		// backgroundContainer.setLayoutData(layoutData);
 
 		// Different renderers should receive path updates from the beginning on, therefore no lazy creation.
 		MultiFormRenderer renderer = new MultiFormRenderer(this, false);
@@ -308,27 +308,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			}
 		}
 
-		GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
-				GLPadding.ZERO));
-		multiFormContainer.add(new GLTitleBar(pathway == null ? "" : pathway.getTitle()));
-		GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer, true);
-		multiFormContainer.add(multiFormRendererAdapter);
-		// multiFormRendererAdapter.onPick(pl);
+		GLPathwayWindow window = new GLPathwayWindow(pathway, this, info);
+		info.window = window;
 
-		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
-		GLPathwayBackground bg = new GLPathwayBackground(this, viewSwitchingBar);
-		GLElementContainer barRow = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(0, 2,
-				5, 0)));
+		// GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
+		// GLPadding.ZERO));
+		// multiFormContainer.add(new GLTitleBar(pathway == null ? "" : pathway.getTitle()));
+		// GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer, true);
+		// multiFormContainer.add(multiFormRendererAdapter);
+		// // multiFormRendererAdapter.onPick(pl);
+		//
+		// GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
+		// GLPathwayBackground bg = new GLPathwayBackground(this, viewSwitchingBar);
+		// GLElementContainer barRow = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(0,
+		// 2,
+		// 5, 0)));
+		//
+		// barRow.add(new GLElement());
+		// barRow.add(viewSwitchingBar);
+		//
+		// backgroundContainer.add(bg);
+		// backgroundContainer.add(multiFormContainer);
+		// backgroundContainer.add(barRow);
 
-		barRow.add(new GLElement());
-		barRow.add(viewSwitchingBar);
-
-		backgroundContainer.add(bg);
-		backgroundContainer.add(multiFormContainer);
-		backgroundContainer.add(barRow);
-
-		info.container = multiFormRendererAdapter;
-		info.window = backgroundContainer;
 		lastUsedRenderer = renderer;
 
 		// List<Pair<MultiFormRenderer, GLElement>> embeddingSpecificRenderers = multiFormRenderers.get(embeddingID);
@@ -339,7 +341,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		// }
 		// embeddingSpecificRenderers.add(new Pair<MultiFormRenderer, GLElement>(renderer, multiFormRendererAdapter));
 
-		parent.add(backgroundContainer);
+		parent.add(window);
 	}
 
 	@Override
@@ -469,23 +471,21 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 		List<Rectangle2D> path = new ArrayList<>();
 
-
-		IPathwayRepresentation pathwayRepresentation =null;
-		PathwayMultiFormInfo pwInfo=null;
-		for (PathwayPath segment : pathSegments)
-		{
-			for (PathwayMultiFormInfo info : pathwayInfos)
-			{
-				pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,info.multiFormRenderer.getActiveRendererID());
+		IPathwayRepresentation pathwayRepresentation = null;
+		PathwayMultiFormInfo pwInfo = null;
+		for (PathwayPath segment : pathSegments) {
+			for (PathwayMultiFormInfo info : pathwayInfos) {
+				pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+						info.multiFormRenderer.getActiveRendererID());
 				if (segment.getPathway() == pathwayRepresentation.getPathway()) {
-					pwInfo=info;
+					pwInfo = info;
 					break;
 				}
 			}
 			for (PathwayVertexRep v : segment.getNodes()) {
 				Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, pwInfo.container);
-						if (rect != null)
-							path.add(rect);
+				if (rect != null)
+					path.add(rect);
 			}
 		}
 
@@ -586,7 +586,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		 * The element that represents the "window" of the multiform renderer, which includes a title bar. This element
 		 * should be used for resizing.
 		 */
-		protected GLElement window;
+		protected GLPathwayWindow window;
 		/**
 		 * The parent {@link GLElementAdapter} of this container.
 		 */
@@ -624,27 +624,29 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		}
 	}
 
-    protected ArrayList<Rectangle2D> portalRects = new ArrayList<>();
+	protected ArrayList<Rectangle2D> portalRects = new ArrayList<>();
 
 	private class PathEventSpaceHandler {
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
 		public void onShowPortalNodes(ShowPortalNodesEvent event) {
-            portalRects.clear();
-            PathwayVertexRep vertexRep =  event.getVertexRep();
-            Rectangle2D nodeRect=null;
-            //find in all open pathways
-            for (PathwayMultiFormInfo info : pathwayInfos) {
-                IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,info.multiFormRenderer.getActiveRendererID());
-                Set<PathwayVertexRep> portalVertexRepsInPathway  = PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathwayRepresentation.getPathway());
-                for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
-                            Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep, info.container);
-                            portalRects.add(rect);
-                }
-                if(nodeRect==null && pathwayRepresentation.getPathway().containsVertex(vertexRep))
-                	nodeRect= getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);;
-            }
-            augmentation.updatePortalRects(nodeRect,portalRects);
+			portalRects.clear();
+			PathwayVertexRep vertexRep = event.getVertexRep();
+			Rectangle2D nodeRect = null;
+			// find in all open pathways
+			for (PathwayMultiFormInfo info : pathwayInfos) {
+				IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+						info.multiFormRenderer.getActiveRendererID());
+				Set<PathwayVertexRep> portalVertexRepsInPathway = PathwayManager.get()
+						.getEquivalentVertexRepsInPathway(vertexRep, pathwayRepresentation.getPathway());
+				for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
+					Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep, info.container);
+					portalRects.add(rect);
+				}
+				if (nodeRect == null && pathwayRepresentation.getPathway().containsVertex(vertexRep))
+					nodeRect = getAbsoluteVertexLocation(pathwayRepresentation, vertexRep, info.container);
+			}
+			augmentation.updatePortalRects(nodeRect, portalRects);
 		}
 
 		@ListenTo(restrictExclusiveToEventSpace = true)
