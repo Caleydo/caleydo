@@ -99,9 +99,9 @@ public class VirtualArray implements Iterable<Integer>, Cloneable {
 	 *            setter, see {@link #idType}
 	 */
 	public synchronized void setIdType(IDType idType) {
-		if (this.idType != null) {
-			throw new IllegalStateException("Can't change ID type of a virtual array");
-		}
+		// if (this.idType != null) {
+		// throw new IllegalStateException("Can't change ID type of a virtual array");
+		// }
 		this.idType = idType;
 	}
 

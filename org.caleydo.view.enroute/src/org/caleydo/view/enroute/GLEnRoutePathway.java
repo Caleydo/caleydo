@@ -84,23 +84,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	protected final static String EMPTY_VIEW_TEXT_LINE_ONE = "Please select a path of nodes using the Pathway View ";
 	protected final static String EMPTY_VIEW_TEXT_LINE_TWO = "and assign data to enRoute using the Data-View Integrator.";
 
-	// protected final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
-	// protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
-	// protected final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
 	protected final static int DATA_COLUMN_WIDTH_PIXELS = 350;
-	// protected final static int MIN_NODE_SPACING_PIXELS = 50;
-	// protected final static int TOP_SPACING_PIXELS = 60;
 	protected final static int TOP_SPACING_MAPPED_DATA = 10;
 	protected final static int SIDE_SPACING_MAPPED_DATA = 10;
-	// protected final static int BOTTOM_SPACING_PIXELS = 60;
-	// protected final static int PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS = 40;
-	// protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
-	// protected final static int EXPANDED_BRANCH_NODE_SPACING_PIXELS = 20;
-	// protected final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
 	protected final static int SPACING_PIXELS = 2;
-	// protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
-
-	// public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
 	/**
 	 * The top-level table perspectives as set externally through the {@link IMultiTablePerspectiveBasedView} interface.
@@ -266,7 +253,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				renderEmptyViewInfo(gl, displayListIndex);
 				isDisplayListDirty = false;
 			}
-
 			gl.glCallList(displayListIndex);
 		} else {
 			if (isLayoutDirty) {
