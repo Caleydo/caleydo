@@ -504,9 +504,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		super.display(gl);
 		// The augmentation has to be updated after the layout was updated in super; updating on relayout would be too
 		// early, as the layout is not adapted at that time.
-		if (updateAugmentation) {
+		//if (updateAugmentation) {
 			updatePathLinks();
-		}
+		//}
 
 	}
 
