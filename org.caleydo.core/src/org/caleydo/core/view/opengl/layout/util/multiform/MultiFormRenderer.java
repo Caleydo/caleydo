@@ -193,15 +193,18 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			}
 			viewRenderer.setView(view);
 			currentRenderer = viewRenderer;
-			if (!isInitialized) {
-				view.initRemote(remoteRenderingView.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(),
-						remoteRenderingView, remoteRenderingView.getGLMouseListener());
-				isInitialized = true;
-			}
+			if (!isInitialized)
+				init();
 			currentRenderer.setLimits(x, y);
 			MultiFormRenderer.this.isDisplayListDirty = true;
 			currentRenderer.setDisplayListDirty();
 			isActive = true;
+		}
+
+		void init() {
+			view.initRemote(remoteRenderingView.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(),
+					remoteRenderingView, remoteRenderingView.getGLMouseListener());
+			isInitialized = true;
 		}
 
 		@Override
@@ -638,6 +641,16 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 
 	@Override
 	protected void renderContent(GL2 gl) {
+		if (!isLazyViewCreation) {
+			for (ARendererInfo info : rendererInfos.values()) {
+				if (info instanceof ViewInfo) {
+					ViewInfo viewInfo = (ViewInfo) info;
+					if (!viewInfo.isInitialized) {
+						viewInfo.init();
+					}
+				}
+			}
+		}
 		if (!ensureValidRenderer())
 			return;
 		super.renderContent(gl);
