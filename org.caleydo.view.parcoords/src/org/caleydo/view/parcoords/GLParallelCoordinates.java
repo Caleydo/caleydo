@@ -57,6 +57,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.events.SortByDataEvent;
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.event.EventListenerManagers;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -69,6 +70,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
@@ -85,6 +87,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingEvent;
@@ -1150,22 +1153,25 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					bIsAngularBrushingFirstTime = true;
 				}
 
-				handleSelection(SelectionType.SELECTION, pick.getObjectID());
+				handleRecordSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
 
 			@Override
 			public void mouseOver(Pick pick) {
-				handleSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
+				handleRecordSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
 			}
 
 			@Override
 			public void rightClicked(Pick pick) {
-				handleSelection(SelectionType.SELECTION, pick.getObjectID());
+				handleRecordSelection(SelectionType.SELECTION, pick.getObjectID());
+				if (dataDomain instanceof GeneticDataDomain) {
 
-				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-				contexMenuItemContainer.setDataDomain(dataDomain);
-				contexMenuItemContainer.setData(recordIDType, pick.getObjectID());
-				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+					contexMenuItemContainer.setDataDomain(dataDomain);
+					contexMenuItemContainer.setData(recordIDType, pick.getObjectID());
+					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+				}
+
 			}
 
 		}, EPickingType.POLYLINE_SELECTION.name());
@@ -1184,11 +1190,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 			@Override
 			public void rightClicked(Pick pick) {
+				handleDimensionRightClick(pick.getObjectID());
 				handleDimensionSelection(SelectionType.SELECTION, pick.getObjectID());
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ dataDomain.getDimensionLabel(dimensionIDType, pick.getObjectID()), dimensionIDType,
-						pick.getObjectID(), dataDomain.getDataDomainID());
-				contextMenuCreator.addContextMenuItem(menuItem);
 
 			}
 
@@ -1296,6 +1299,13 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				setDisplayListDirty();
 
 			}
+
+			@Override
+			protected void rightClicked(Pick pick) {
+
+				handleDimensionRightClick(pick.getObjectID());
+			}
+
 		}, EPickingType.MOVE_AXIS.name());
 
 		addTypePickingListener(new APickingListener() {
@@ -1416,7 +1426,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		return this;
 	}
 
-	private void handleSelection(SelectionType selectionType, Integer id) {
+	private void handleRecordSelection(SelectionType selectionType, Integer id) {
 		if (recordSelectionManager.checkStatus(selectionType, id)) {
 			return;
 		}
@@ -1452,6 +1462,24 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		setDisplayListDirty();
 	}
 
+	private void handleDimensionRightClick(Integer dimensionID) {
+
+		AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+				+ dataDomain.getDimensionLabel(dimensionIDType, dimensionID), dimensionIDType, dimensionID,
+				dataDomain.getDataDomainID());
+		contextMenuCreator.addContextMenuItem(menuItem);
+
+		SortByDataEvent sortEvent = new SortByDataEvent(dataDomain.getDataDomainID(),
+				tablePerspective.getTablePerspectiveKey(), tablePerspective.getRecordPerspective().getPerspectiveID(),
+				dimensionID);
+		sortEvent.setSender(this);
+
+		AContextMenuItem sortByDimensionItem = new GenericContextMenuItem("Sort by this axis ", sortEvent);
+
+		contextMenuCreator.addContextMenuItem(sortByDimensionItem);
+
+	}
+
 	private void triggerDimensionFilterEvent(VirtualArrayDelta delta, String label) {
 
 		Filter filter = new Filter(tablePerspective.getDimensionPerspective().getPerspectiveID());
@@ -1482,9 +1510,6 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		eventPublisher.triggerEvent(filterEvent);
 	}
-
-
-
 
 	private void handleAngularBrushing(final GL2 gl) {
 		hasFilterChanged = true;

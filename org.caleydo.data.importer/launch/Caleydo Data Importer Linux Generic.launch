@@ -14,9 +14,6 @@
 <stringAttribute key="deselected_workspace_plugins" value="org.caleydo.data.pathway.kegg,org.caleydo.data.pathway.wikipathways,org.caleydo.lib.vecmath,org.caleydo.util.bubblesets,org.caleydo.util.r,org.caleydo.view.bookmark,org.caleydo.view.browser,org.caleydo.view.dvi,org.caleydo.view.enroute,org.caleydo.view.filter,org.caleydo.view.filterpipeline,org.caleydo.view.heatmap,org.caleydo.view.histogram,org.caleydo.view.info.dataset,org.caleydo.view.info.selection,org.caleydo.view.kaplanmeier,org.caleydo.view.parcoords,org.caleydo.view.pathway,org.caleydo.view.radial,org.caleydo.view.search,org.caleydo.view.selectionbrowser,org.caleydo.view.stratomex,org.caleydo.view.subgraph,org.caleydo.view.template,org.caleydo.view.tourguide,org.caleydo.view.treemap"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.data.importer.tcga.product"/>
-<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
-</listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=512m -Xms512m -Xmx1024m"/>

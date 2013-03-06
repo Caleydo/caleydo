@@ -38,10 +38,10 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 /**
- * utility class to hold a list of event listeners to register and remove them all in an convenient way.
- *
+ * Utility class to hold a list of event listeners to register and remove them all in an convenient way.
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class EventListenerManager {
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
@@ -66,12 +66,12 @@ public class EventListenerManager {
 	}
 
 	/**
-	 * filter all methods of the listener object for <code>
-	 *
+	 * Filter all methods of the listener object for <code>
+	 * 
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 *
+	 * 
 	 *           and register an event listener for calling this method
-	 *
+	 * 
 	 * @param listener
 	 */
 	public final <T> T register(T listener) {
@@ -79,12 +79,12 @@ public class EventListenerManager {
 	}
 
 	/**
-	 * filter all methods of the listener object for <code>
-	 *
+	 * Filter all methods of the listener object for <code>
+	 * 
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 *
+	 * 
 	 *           and register an event listener for calling this method
-	 *
+	 * 
 	 * @param listener
 	 * @param eventSpace
 	 *            if {@link ListenTo#restrictToEventSpace()} or {@link ListenTo#restrictExclusiveToEventSpace()} is used
@@ -158,7 +158,7 @@ public class EventListenerManager {
 	}
 
 	/**
-	 * marker annotation that the method is an event listener, !no DataDomain specific things are supported
+	 * Marker annotation that the method is an event listener. No! DataDomain specific things are supported.
 	 *
 	 * @author Samuel Gratzl
 	 *

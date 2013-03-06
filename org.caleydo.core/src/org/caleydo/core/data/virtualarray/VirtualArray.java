@@ -1,26 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -41,11 +39,9 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * A VirtualArray is a list of indices referring to a collection. It is most
- * commonly used in combination with {@link AColumn}s or Records (which are the
- * records in the ADimensions). A VirtualArray is of use when the collections
- * themselves are immutable, or are shared between multiple clients (i.e. views)
- * using different VirtualArrays on them.
+ * A VirtualArray is a list of indices referring to a collection. It is most commonly used in combination with
+ * {@link AColumn}s or Records (which are the records in the ADimensions). A VirtualArray is of use when the collections
+ * themselves are immutable, or are shared between multiple clients (i.e. views) using different VirtualArrays on them.
  * </p>
  * <p>
  * FIXME: Groups and group interactions are somewhat undefined
@@ -56,8 +52,7 @@ import org.eclipse.core.runtime.Status;
  */
 @XmlType
 @XmlRootElement
-public class VirtualArray
-	implements Iterable<Integer>, Cloneable {
+public class VirtualArray implements Iterable<Integer>, Cloneable {
 
 	private static int VIRTUAL_ARRAY_ID_COUNTER = 0;
 
@@ -88,9 +83,8 @@ public class VirtualArray
 	}
 
 	/**
-	 * Constructor. Pass the length of the managed collection and a predefined
-	 * array list of indices on the collection. This will serve as the starting
-	 * point for the virtual array.
+	 * Constructor. Pass the length of the managed collection and a predefined array list of indices on the collection.
+	 * This will serve as the starting point for the virtual array.
 	 *
 	 * @param initialList
 	 */
@@ -101,9 +95,13 @@ public class VirtualArray
 	}
 
 	/**
-	 * @param idType setter, see {@link #idType}
+	 * @param idType
+	 *            setter, see {@link #idType}
 	 */
-	public void setIdType(IDType idType) {
+	public synchronized void setIdType(IDType idType) {
+		if (this.idType != null) {
+			throw new IllegalStateException("Can't change ID type of a virtual array");
+		}
 		this.idType = idType;
 	}
 
@@ -111,7 +109,7 @@ public class VirtualArray
 	 * @return the idType, see {@link #idType}
 	 */
 	@XmlTransient
-	public IDType getIdType() {
+	public synchronized IDType getIdType() {
 		return idType;
 	}
 
@@ -119,52 +117,50 @@ public class VirtualArray
 		idMap.setDirty();
 	}
 
-
-
 	/**
-	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate
-	 * over the virtual array
+	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array
 	 */
 	@Override
-	public VAIterator iterator() {
+	public synchronized VAIterator iterator() {
 		return new VAIterator(this);
 	}
 
 	/**
 	 * Returns the element at the specified index in the virtual array
 	 *
-	 * @param index the index
+	 * @param index
+	 *            the index
 	 * @return the element at the index
 	 */
-	public Integer get(int index) {
+	public synchronized Integer get(int index) {
 		return virtualArrayList.get(index);
 	}
 
 	/**
 	 * Adds an element to the end of the list.
 	 *
-	 * @param newElementID the id of the new element (which corresponds to the
-	 *            index of the collection)
-	 * @exception IllegalArgumentException if the value of the new element is
-	 *                larger than allowed. The maximum allowed value is the
-	 *                length of the collection which is managed - 1
+	 * @param newElementID
+	 *            the id of the new element (which corresponds to the index of the collection)
+	 * @exception IllegalArgumentException
+	 *                if the value of the new element is larger than allowed. The maximum allowed value is the length of
+	 *                the collection which is managed - 1
 	 */
-	public void append(Integer newElementID) {
+	public synchronized void append(Integer newElementID) {
 		idMap.setDirty();
 		virtualArrayList.add(newElementID);
 	}
 
 	/**
-	 * Adds an element to the end of the list, if the element is not already
-	 * contained.
+	 * Adds an element to the end of the list, if the element is not already contained.
 	 *
-	 * @param newElement the index to the collection
-	 * @exception IllegalArgumentException if the value of the new element is
-	 *                larger than allowed. The maximum allowed value is the
-	 *                length of the collection which is managed - 1
+	 * @param newElement
+	 *            the index to the collection
+	 * @exception IllegalArgumentException
+	 *                if the value of the new element is larger than allowed. The maximum allowed value is the length of
+	 *                the collection which is managed - 1
 	 * @return true if the array was modified, else false
 	 */
-	public boolean appendUnique(Integer newElement) {
+	public synchronized boolean appendUnique(Integer newElement) {
 		idMap.setDirty();
 		if (indexOf(newElement) != -1)
 			return false;
@@ -175,77 +171,79 @@ public class VirtualArray
 	}
 
 	/**
-	 * Inserts the specified element at the specified position in this list.
-	 * Shifts the element currently at that position (if any) and any subsequent
-	 * elements to the right (adds one to their indices).
+	 * Inserts the specified element at the specified position in this list. Shifts the element currently at that
+	 * position (if any) and any subsequent elements to the right (adds one to their indices).
 	 *
-	 * @param index the position on which to insert the new element
-	 * @param newElement the id refering to the index of the collection
+	 * @param index
+	 *            the position on which to insert the new element
+	 * @param newElement
+	 *            the id refering to the index of the collection
 	 */
-	public void add(int index, Integer newElement) {
+	public synchronized void add(int index, Integer newElement) {
 		idMap.setDirty();
 		virtualArrayList.add(index, newElement);
 	}
 
 	/**
-	 * Replaces the element at the specified position in this list with the
-	 * specified element.
+	 * Replaces the element at the specified position in this list with the specified element.
 	 *
 	 * @param index
 	 * @param newElement
 	 */
-	public void set(int index, Integer newElement) {
+	public synchronized void set(int index, Integer newElement) {
 		idMap.setDirty();
 		virtualArrayList.set(index, newElement);
 	}
 
 	/**
-	 * Copies the element at index to the next index. Shifts the element
-	 * currently at that position (if any) and any subsequent elements to the
-	 * right (adds one to their indices).
+	 * Copies the element at index to the next index. Shifts the element currently at that position (if any) and any
+	 * subsequent elements to the right (adds one to their indices).
 	 *
-	 * @param index the index of the element to be copied
+	 * @param index
+	 *            the index of the element to be copied
 	 */
-	public void copy(int index) {
+	public synchronized void copy(int index) {
 		virtualArrayList.add(index + 1, virtualArrayList.get(index));
 		idMap.setDirty();
 	}
 
 	/**
-	 * Moves the element at the specified source index to the target index. The
-	 * element formerly at srcIndex is at targetIndex after this operation.
+	 * Moves the element at the specified source index to the target index. The element formerly at srcIndex is at
+	 * targetIndex after this operation.
 	 *
-	 * @param srcIndex the src index of the element
-	 * @param targetIndex the target index of the element
+	 * @param srcIndex
+	 *            the src index of the element
+	 * @param targetIndex
+	 *            the target index of the element
 	 */
-	public void move(int srcIndex, int targetIndex) {
+	public synchronized void move(int srcIndex, int targetIndex) {
 		idMap.setDirty();
 		Integer element = virtualArrayList.remove(srcIndex);
 		virtualArrayList.add(targetIndex, element);
 	}
 
 	/**
-	 * Removes the element at the specified index. Shifts any subsequent
-	 * elements to the left (subtracts one from their indices).
+	 * Removes the element at the specified index. Shifts any subsequent elements to the left (subtracts one from their
+	 * indices).
 	 *
-	 * @param iIndex the index of the element to be removed
+	 * @param iIndex
+	 *            the index of the element to be removed
 	 * @return the Element that was removed from the list
 	 */
-	public Integer remove(int index) {
+	public synchronized Integer remove(int index) {
 		idMap.setDirty();
 		groupList.removeElementOfVA(index);
 		return virtualArrayList.remove(index);
 	}
 
-	public void removeInBulk(ArrayList<Integer> indices) {
+	public synchronized void removeInBulk(ArrayList<Integer> indices) {
 		Collections.sort(indices);
 		int previousIndex = Integer.MAX_VALUE;
 		for (int count = indices.size() - 1; count >= 0; count--) {
 			Integer currentIndex = indices.get(count);
-			if (currentIndex == previousIndex || currentIndex < 0
-					|| currentIndex > previousIndex) {
-				Logger.log(new Status(IStatus.INFO, "org.caleydo.core", "Cannot remove index: "
-						+ currentIndex + " from VA " + this));
+			if (currentIndex == previousIndex || currentIndex < 0 || currentIndex > previousIndex) {
+				Logger.log(new Status(IStatus.INFO, "org.caleydo.core", "Cannot remove index: " + currentIndex
+						+ " from VA " + this));
 				continue;
 			}
 			previousIndex = currentIndex;
@@ -255,17 +253,17 @@ public class VirtualArray
 
 	/**
 	 * <p>
-	 * Remove all occurrences of an element from the list. Shifts any subsequent
-	 * elements to the left (subtracts one from their indices).
+	 * Remove all occurrences of an element from the list. Shifts any subsequent elements to the left (subtracts one
+	 * from their indices).
 	 * </p>
 	 * <p>
-	 * The implementation if based on a hash-table, performance is in constant
-	 * time.
+	 * The implementation if based on a hash-table, performance is in constant time.
 	 * </p>
 	 *
-	 * @param element the element to be removed
+	 * @param element
+	 *            the element to be removed
 	 */
-	public void removeByElement(Integer element) {
+	public synchronized void removeByElement(Integer element) {
 		ArrayList<Integer> indices = indicesOf(element);
 		removeInBulk(indices);
 		idMap.setDirty();
@@ -276,86 +274,84 @@ public class VirtualArray
 	 *
 	 * @return the size
 	 */
-	public int size() {
+	public synchronized int size() {
 		return virtualArrayList.size();
 	}
 
 	/**
 	 * Reset the virtual array to contain no elements
 	 */
-	public void clear() {
+	public synchronized void clear() {
 		idMap.setDirty();
 		virtualArrayList.clear();
 	}
 
 	/**
 	 * <p>
-	 * Returns the index of the first occurrence of the specified element in
-	 * this list, or -1 if this list does not contain the element. More
-	 * formally, returns the lowest index i such that (o==null ? get(i)==null :
+	 * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not
+	 * contain the element. More formally, returns the lowest index i such that (o==null ? get(i)==null :
 	 * o.equals(get(i))), or -1 if there is no such index.
 	 * </p>
 	 * <p>
-	 * The runtime complexity of this function depends on whether there has been
-	 * a change to the VA recently. If, for example, an element has been removed
-	 * prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
+	 * The runtime complexity of this function depends on whether there has been a change to the VA recently. If, for
+	 * example, an element has been removed prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
 	 * </p>
 	 *
-	 * @param id element to search for
-	 * @return the index of the first occurrence of the specified element in
-	 *         this list, or -1 if this list does not contain the element
+	 * @param id
+	 *            element to search for
+	 * @return the index of the first occurrence of the specified element in this list, or -1 if this list does not
+	 *         contain the element
 	 */
-	public int indexOf(Integer id) {
+	public synchronized int indexOf(Integer id) {
 		return idMap.indexOf(id);
 	}
 
 	/**
 	 * <p>
-	 * Returns the indices of all occurrences of the specified element in this
-	 * list, or an empty list if the list does not contain the element.
+	 * Returns the indices of all occurrences of the specified element in this list, or an empty list if the list does
+	 * not contain the element.
 	 * </p>
 	 * <p>
-	 * The runtime complexity of this function depends on whether there has been
-	 * a change to the VA recently. If, for example, an element has been removed
-	 * prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
+	 * The runtime complexity of this function depends on whether there has been a change to the VA recently. If, for
+	 * example, an element has been removed prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
 	 * </p>
 	 *
-	 * @param id element to search for
-	 * @return a list of all the indices of all occurrences of the element or an
-	 *         empty list if no such elements exist
+	 * @param id
+	 *            element to search for
+	 * @return a list of all the indices of all occurrences of the element or an empty list if no such elements exist
 	 */
-	public ArrayList<Integer> indicesOf(Integer id) {
+	public synchronized ArrayList<Integer> indicesOf(Integer id) {
 		return idMap.indicesOf(id);
 	}
 
 	/**
 	 * Checks whether element is contained in the virtual array.
 	 *
-	 * @param id the id to be checked
+	 * @param id
+	 *            the id to be checked
 	 * @return true if element occurs at least once, else false
 	 */
-	public boolean contains(Integer id) {
+	public synchronized boolean contains(Integer id) {
 		return idMap.contains(id);
 	}
 
 	/**
-	 * Checks the number of occurrences of an id. Returns 0 if it does not
-	 * occur.
+	 * Checks the number of occurrences of an id. Returns 0 if it does not occur.
 	 *
-	 * @param id the id to be checked
+	 * @param id
+	 *            the id to be checked
 	 * @return the number of occurrences (0 if none)
 	 */
-	public int occurencesOf(Integer id) {
+	public synchronized int occurencesOf(Integer id) {
 		return idMap.occurencesOf(id);
 	}
 
 	/**
-	 * Returns the array list which contains the list of vaIDs. DO NOT EDIT THIS
-	 * LIST
+	 * Returns the array list which contains the list of vaIDs. DO NOT EDIT THIS LIST
 	 *
 	 * @return the list containing the dimension indices
 	 */
-	public ArrayList<Integer> getIDs() {
+	public synchronized ArrayList<Integer> getIDs() {
 		return virtualArrayList;
 	}
 
@@ -364,36 +360,35 @@ public class VirtualArray
 	 *
 	 * @param delta
 	 */
-	public void setDelta(VirtualArrayDelta delta) {
+	public synchronized void setDelta(VirtualArrayDelta delta) {
 		if (!delta.getIDType().equals(idType))
 			throw new IllegalStateException("Incompatible ID Types");
 		ArrayList<Integer> indicesToBeRemoved = new ArrayList<Integer>();
 		for (VADeltaItem item : delta) {
 			switch (item.getType()) {
-				case ADD:
-					add(item.getIndex(), item.getID());
-					break;
-				case APPEND:
-					append(item.getID());
-					break;
-				case APPEND_UNIQUE:
-					appendUnique(item.getID());
-					break;
-				case REMOVE:
-					indicesToBeRemoved.add(item.getIndex());
-					break;
-				case REMOVE_ELEMENT:
-					indicesToBeRemoved.add(indexOf(item.getID()));
-					break;
-				case COPY:
-					copy(item.getIndex());
-					break;
-				case MOVE:
-					move(item.getIndex(), item.getTargetIndex());
-					break;
-				default:
-					throw new IllegalStateException("Unhandled EVAOperation: "
-							+ item.getType());
+			case ADD:
+				add(item.getIndex(), item.getID());
+				break;
+			case APPEND:
+				append(item.getID());
+				break;
+			case APPEND_UNIQUE:
+				appendUnique(item.getID());
+				break;
+			case REMOVE:
+				indicesToBeRemoved.add(item.getIndex());
+				break;
+			case REMOVE_ELEMENT:
+				indicesToBeRemoved.add(indexOf(item.getID()));
+				break;
+			case COPY:
+				copy(item.getIndex());
+				break;
+			case MOVE:
+				move(item.getIndex(), item.getTargetIndex());
+				break;
+			default:
+				throw new IllegalStateException("Unhandled EVAOperation: " + item.getType());
 			}
 		}
 		removeInBulk(indicesToBeRemoved);
@@ -404,12 +399,12 @@ public class VirtualArray
 	 *
 	 * @return the group list
 	 */
-	public GroupList getGroupList() {
+	public synchronized GroupList getGroupList() {
 		return groupList;
 	}
 
 	/** DOCUMENT ME! */
-	public List<Group> getGroupOf(Integer id) {
+	public synchronized List<Group> getGroupOf(Integer id) {
 		ArrayList<Group> resultGroups = new ArrayList<Group>(1);
 		ArrayList<Integer> indices = indicesOf(id);
 
@@ -427,28 +422,24 @@ public class VirtualArray
 	}
 
 	/**
-	 * Returns a List of all VAIDs of one group. The returned list is backed by
-	 * this list, so non-structural changes in the returned list are reflected
-	 * in this list, and vice-versa.
+	 * Returns a List of all VAIDs of one group. The returned list is backed by this list, so non-structural changes in
+	 * the returned list are reflected in this list, and vice-versa.
 	 *
-	 * @param groupIndex the index of the group in the groupList. Can be
-	 *            retrieved using {@link Group#getGroupIndex()}
-	 * @return ArrayList<Integer> containing all IDs that belong to this group,
-	 *         or null if no groupList is available
+	 * @param groupIndex
+	 *            the index of the group in the groupList. Can be retrieved using {@link Group#getGroupIndex()}
+	 * @return ArrayList<Integer> containing all IDs that belong to this group, or null if no groupList is available
 	 */
-	public List<Integer> getIDsOfGroup(int groupIndex) {
+	public synchronized List<Integer> getIDsOfGroup(int groupIndex) {
 
 		if (groupList == null)
 			return null;
 
 		if (groupIndex >= groupList.size()) {
-			throw new IllegalArgumentException(
-					"groupIndex was bigger than the size of the groupList.");
+			throw new IllegalArgumentException("groupIndex was bigger than the size of the groupList.");
 		}
 		Group group = groupList.get(groupIndex);
 
-		List<Integer> vaIDs = virtualArrayList.subList(group.getStartIndex(),
-				group.getStartIndex() + group.getSize());
+		List<Integer> vaIDs = virtualArrayList.subList(group.getStartIndex(), group.getStartIndex() + group.getSize());
 
 		return vaIDs;
 	}
@@ -456,10 +447,11 @@ public class VirtualArray
 	/**
 	 * Sets group list in VA, used especially by affinity clusterer.
 	 *
-	 * @param groupList new group list
+	 * @param groupList
+	 *            new group list
 	 * @return true if operation executed correctly otherwise false
 	 */
-	public boolean setGroupList(GroupList groupList) {
+	public synchronized boolean setGroupList(GroupList groupList) {
 
 		this.groupList = groupList;
 
@@ -468,7 +460,7 @@ public class VirtualArray
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public VirtualArray clone() {
+	public synchronized VirtualArray clone() {
 		VirtualArray va = new VirtualArray(idType);
 
 		// va.iUniqueID =
@@ -481,30 +473,16 @@ public class VirtualArray
 		return va;
 	}
 
-	/**
-	 * Replace the internally created ID with the specified. Used when this VA
-	 * replaces another VA
-	 *
-	 * @param id
-	 */
-	public void tableID(int id) {
-		this.id = id;
-	}
-
 	@Override
 	public String toString() {
-
-		return "ID: " + getID() + ", size: " + virtualArrayList.size() + ", Nr. ouf Groups: "
-				+ groupList.size();
-
+		return "ID: " + getID() + ", size: " + virtualArrayList.size() + ", Nr. ouf Groups: " + groupList.size();
 	}
 
 	/**
-	 * Function which merges the clusters determined by the cut off value to
-	 * group lists used for rendering the clusters assignments in
-	 * {@link GLHierarchicalHeatMap}.
+	 * Function which merges the clusters determined by the cut off value to group lists used for rendering the clusters
+	 * assignments in {@link GLHierarchicalHeatMap}.
 	 */
-	public GroupList buildNewGroupList(ArrayList<ClusterNode> clusterNodes) {
+	public synchronized GroupList buildNewGroupList(ArrayList<ClusterNode> clusterNodes) {
 
 		int sampleElementIndex = 0;
 
@@ -519,7 +497,30 @@ public class VirtualArray
 	/**
 	 * @return the id, see {@link #id}
 	 */
-	public int getID() {
+	public synchronized int getID() {
 		return id;
+	}
+
+	public synchronized void sort(List<Float> values) {
+		ValueBasedComparator comparator = new ValueBasedComparator(values);
+		Collections.sort(virtualArrayList, comparator);
+
+	}
+
+	private class ValueBasedComparator implements Comparator<Integer> {
+		List<Float> values;
+
+		/**
+		 *
+		 */
+		private ValueBasedComparator(List<Float> values) {
+			this.values = values;
+		}
+
+		@Override
+		public int compare(Integer o1, Integer o2) {
+			return values.get(o1).compareTo(values.get(o2));
+		}
+
 	}
 }

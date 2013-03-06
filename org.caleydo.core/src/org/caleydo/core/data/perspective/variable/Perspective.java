@@ -533,6 +533,10 @@ public class Perspective implements IDefaultLabelHolder {
 
 	}
 
+	public void sort(List<Float> values) {
+		virtualArray.sort(values);
+	}
+
 	@Override
 	public String toString() {
 		return perspectiveID + ", size: " + (virtualArray == null ? -1 : virtualArray.size());

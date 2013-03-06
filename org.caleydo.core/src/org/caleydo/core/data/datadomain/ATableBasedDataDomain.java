@@ -55,10 +55,12 @@ import org.caleydo.core.data.virtualarray.events.IVADeltaHandler;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveListener;
+import org.caleydo.core.data.virtualarray.events.SortByDataEvent;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.data.virtualarray.events.VADeltaListener;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.event.EventListenerManager.ListenTo;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
@@ -853,6 +855,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 		listeners.register(CreateClusteringEvent.class, new CreateClusteringEventListener(this));
 		listeners.register(LoadGroupingEvent.class, new LoadGroupingEventListener(this));
+
+		listeners.register(this);
 	}
 
 	// TODO this is never called!
@@ -926,6 +930,46 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		localRecordPerspective.init(data);
 		localRecordPerspective.setLabel(foreignPerspective.getLabel(), foreignPerspective.isLabelDefault());
 		return localRecordPerspective;
+
+	}
+
+	@ListenTo
+	public void handleVASorting(SortByDataEvent event) {
+		if (!event.getDataDomainID().equals(dataDomainID))
+			return;
+
+		TablePerspective tPerspective = getTablePerspective(event.getTablePerspectiveKey());
+
+		Perspective perspective = null;
+
+		assert (tPerspective != null) : "no tPerspective for " + event.getTablePerspectiveKey();
+
+		VirtualArray virtualArray;
+		ArrayList<Float> valueColumn = null;
+		if (tPerspective.getRecordPerspective().getPerspectiveID().equals(event.getPerspectiveID())) {
+			perspective = tPerspective.getRecordPerspective();
+			virtualArray = perspective.getVirtualArray();
+
+			valueColumn = new ArrayList<>(virtualArray.size());
+			for (Integer recordIndex : virtualArray) {
+				valueColumn.add(table.getNormalizedValue(event.getId(), recordIndex));
+			}
+
+		} else if (tPerspective.getDimensionPerspective().getPerspectiveID().equals(event.getPerspectiveID())) {
+			perspective = tPerspective.getDimensionPerspective();
+			virtualArray = perspective.getVirtualArray();
+
+			valueColumn = new ArrayList<>(virtualArray.size());
+			for (Integer dimensionIndex : virtualArray) {
+				valueColumn.add(table.getNormalizedValue(dimensionIndex, event.getId()));
+			}
+		} else {
+			throw new IllegalStateException("Table and value perspective key's don't sync up");
+		}
+
+		perspective.sort(valueColumn);
+
+		System.out.println("Arrived" + valueColumn.toString());
 
 	}
 }
