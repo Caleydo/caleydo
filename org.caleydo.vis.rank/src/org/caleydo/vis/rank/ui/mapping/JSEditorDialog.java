@@ -29,7 +29,7 @@ import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import org.caleydo.vis.rank.event.CodeUpdateEvent;
+import org.caleydo.vis.rank.internal.event.CodeUpdateEvent;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
 import org.caleydo.vis.rank.model.mapping.ScriptedMappingFunction;
 import org.eclipse.jface.dialogs.IDialogConstants;

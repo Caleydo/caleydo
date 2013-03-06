@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.ui.anim;
+package org.caleydo.vis.rank.internal.ui.anim;
 
 import gleem.linalg.Vec4f;
 

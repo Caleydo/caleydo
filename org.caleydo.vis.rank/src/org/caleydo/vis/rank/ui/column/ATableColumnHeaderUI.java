@@ -74,6 +74,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 	private final boolean interactive;
 	private boolean canDrag;
 	private boolean armDropColum;
+	private String armDropHint;
 
 	private boolean isCollapsed;
 
@@ -246,7 +247,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 		}
 		if (this.armDropColum) {
 			g.incZ(0.6f);
-			g.drawText("+", 2, 2, w - 4, h - 4, VAlign.CENTER);
+			g.drawText(armDropHint, 2, 2, w - 4, h - 4, VAlign.CENTER);
 			g.incZ(-0.6f);
 		}
 	}
@@ -425,6 +426,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 				if (model.isCombineAble(pair.getSecond())) {
 					m.setDropable(ARankColumnModel.class, true);
 					this.armDropColum = true;
+					armDropHint = model.getTable().getConfig().getCombineStringHint(model, pair.getSecond());
 					repaint();
 				}
 			} else if (!pick.isAnyDragging()) {

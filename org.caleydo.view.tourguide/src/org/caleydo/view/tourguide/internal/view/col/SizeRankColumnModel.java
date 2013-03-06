@@ -35,8 +35,8 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.tourguide.internal.event.SizeFilterEvent;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
-import org.caleydo.vis.rank.event.FilterEvent;
 import org.caleydo.vis.rank.model.ABasicFilterableRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
@@ -99,13 +99,11 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 	}
 
 	@ListenTo(sendToMe = true)
-	private void onSetFilter(FilterEvent event) {
+	private void onSetFilter(SizeFilterEvent event) {
 		invalidAllFilter();
-		@SuppressWarnings("unchecked")
-		Pair<Integer, Integer> p = (Pair<Integer, Integer>) event.getFilter();
-		min = p.getFirst() == null ? 0 : p.getFirst().intValue();
-		max = p.getSecond() == null ? Integer.MAX_VALUE : p.getSecond().intValue();
-		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(min, max), p);
+		min = event.getMin() == null ? 0 : event.getMin().intValue();
+		max = event.getMax() == null ? Integer.MAX_VALUE : event.getMax().intValue();
+		propertySupport.firePropertyChange(PROP_FILTER, Pair.make(min, max), Pair.make(event.getMin(), event.getMax()));
 	}
 
 	@Override
@@ -249,7 +247,7 @@ public class SizeRankColumnModel extends ABasicFilterableRankColumnModel impleme
 			Integer minV = t.length() > 0 ? new Integer(t) : null;
 			t = maxUI.getText().trim();
 			Integer maxV = t.length() > 0 ? new Integer(t) : null;
-			EventPublisher.publishEvent(new FilterEvent(Pair.make(minV, maxV)).to(SizeRankColumnModel.this));
+			EventPublisher.publishEvent(new SizeFilterEvent(minV, maxV).to(SizeRankColumnModel.this));
 			super.okPressed();
 		}
 	}

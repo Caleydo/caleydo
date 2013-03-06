@@ -44,13 +44,14 @@ import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
 import org.caleydo.vis.rank.ui.RenderUtils;
 
 /**
  * @author Samuel Gratzl
- * 
+ *
  */
 public class StackedScoreSummary extends GLElementContainer implements IGLLayout {
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -133,6 +134,8 @@ public class StackedScoreSummary extends GLElementContainer implements IGLLayout
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
+		if ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed())
+			return;
 		// background
 		g.color(model.getBgColor()).fillRect(0, 0, w, h);
 		// hist

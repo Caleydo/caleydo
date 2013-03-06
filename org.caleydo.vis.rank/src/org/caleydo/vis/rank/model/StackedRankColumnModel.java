@@ -23,10 +23,9 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.FloatInferrers;
+import org.caleydo.vis.rank.internal.ui.TextRenderer;
 import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -56,15 +55,16 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	 */
 	private int alignment = 0;
 
-	public StackedRankColumnModel(String title) {
+	public StackedRankColumnModel() {
 		super(Color.GRAY, new Color(0.90f, .90f, .90f));
-		setHeaderRenderer(GLRenderers.drawText(title, VAlign.CENTER));
+		setHeaderRenderer(new TextRenderer("AND", this));
 		setWeight(0);
 	}
 
 	public StackedRankColumnModel(StackedRankColumnModel copy) {
 		super(copy);
 		this.alignment = copy.alignment;
+		setHeaderRenderer(new TextRenderer("AND", this));
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public class RankedVis extends GLElementContainer {
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Label", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
 
-		final StackedRankColumnModel stacked = new StackedRankColumnModel("Stacked");
+		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.addColumn(stacked);
 
 		table.addColumnTo(

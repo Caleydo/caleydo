@@ -23,6 +23,7 @@ import org.caleydo.vis.rank.layout.RowHeightLayouts;
 import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.MaxCompositeRankColumnModel;
+import org.caleydo.vis.rank.model.StackedRankColumnModel;
 
 /**
  * @author Samuel Gratzl
@@ -34,12 +35,10 @@ public class RankTableConfigBase implements IRankTableConfig {
 		return true;
 	}
 
-
 	@Override
 	public ACompositeRankColumnModel createNewCombined() {
 		return new MaxCompositeRankColumnModel(RowHeightLayouts.JUST_SELECTED);
 	}
-
 
 	@Override
 	public boolean isCombineAble(ARankColumnModel model, ARankColumnModel with) {
@@ -50,6 +49,12 @@ public class RankTableConfigBase implements IRankTableConfig {
 		return true;
 	}
 
+	@Override
+	public String getCombineStringHint(ARankColumnModel model, ARankColumnModel with) {
+		if (model instanceof StackedRankColumnModel)
+			return "AND";
+		return "OR";
+	}
 
 	@Override
 	public boolean isDefaultCollapseAble() {

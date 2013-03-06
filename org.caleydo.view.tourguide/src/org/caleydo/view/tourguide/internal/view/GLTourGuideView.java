@@ -165,7 +165,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 
 		this.table.addColumn(new RankRankColumnModel());
 		this.table.addColumn(new PerspectiveRankColumnModel(this));
-		this.stacked = new StackedRankColumnModel("Stacked");
+		this.stacked = new StackedRankColumnModel();
 		this.table.addColumn(stacked);
 		this.table.addColumn(new SizeRankColumnModel());
 
@@ -630,6 +630,13 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 		if (!MaxCompositeRankColumnModel.canBeChild(model) || !MaxCompositeRankColumnModel.canBeChild(with))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String getCombineStringHint(ARankColumnModel model, ARankColumnModel with) {
+		if (model instanceof StackedRankColumnModel)
+			return "AND";
+		return "OR";
 	}
 
 	@Override

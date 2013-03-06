@@ -52,7 +52,7 @@ import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.vis.rank.event.CodeUpdateEvent;
+import org.caleydo.vis.rank.internal.event.CodeUpdateEvent;
 import org.caleydo.vis.rank.model.DataUtils;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;

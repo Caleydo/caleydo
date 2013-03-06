@@ -30,8 +30,10 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.SimpleHistogram;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.ui.RenderUtils;
+
 
 /**
  * @author Samuel Gratzl
@@ -76,7 +78,8 @@ public class ScoreSummary extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		// hist
+		if ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed())
+			return;
 		SimpleHistogram hist = model.getHist(binsForWidth(w));
 		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));
 		RenderUtils.renderHist(g, hist, w, h, selectedBin, model.getColor(), model.getColor().darker());

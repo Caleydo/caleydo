@@ -93,7 +93,7 @@ public class University extends ARankTableDemo {
 		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
 				new ReflectionData(field("yearFounded"))));
 
-		final StackedRankColumnModel stacked = new StackedRankColumnModel("Stacked");
+		final StackedRankColumnModel stacked = new StackedRankColumnModel();
 		table.addColumn(stacked);
 		table.addColumnTo(
 				stacked,

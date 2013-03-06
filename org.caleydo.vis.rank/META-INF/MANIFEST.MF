@@ -9,7 +9,6 @@ Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Export-Package: org.caleydo.vis.rank.config,
  org.caleydo.vis.rank.data,
- org.caleydo.vis.rank.event,
  org.caleydo.vis.rank.layout,
  org.caleydo.vis.rank.model,
  org.caleydo.vis.rank.model.mapping,

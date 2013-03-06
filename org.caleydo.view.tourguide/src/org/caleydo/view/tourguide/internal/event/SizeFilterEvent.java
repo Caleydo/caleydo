@@ -17,31 +17,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.event;
+package org.caleydo.view.tourguide.internal.event;
 
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
+ * simple generic event for filtering changes
+ *
  * @author Samuel Gratzl
  *
  */
-public class CodeUpdateEvent extends ADirectedEvent {
-	private String code;
+public class SizeFilterEvent extends ADirectedEvent {
+	private Integer min;
+	private Integer max;
 
-	public CodeUpdateEvent(String code) {
-		this.code = code;
+	/**
+	 * @param filter
+	 */
+	public SizeFilterEvent(Integer min, Integer max) {
+		super();
+		this.min = min;
+		this.max = max;
 	}
 
 	/**
-	 * @return the code, see {@link #code}
+	 * @return the min, see {@link #min}
 	 */
-	public String getCode() {
-		return code;
+	public Integer getMin() {
+		return min;
+	}
+
+	/**
+	 * @return the max, see {@link #max}
+	 */
+	public Integer getMax() {
+		return max;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		return code != null;
+		return true;
 	}
-
 }

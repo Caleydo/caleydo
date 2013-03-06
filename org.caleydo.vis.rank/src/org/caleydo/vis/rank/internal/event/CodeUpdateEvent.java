@@ -17,65 +17,31 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.config;
+package org.caleydo.vis.rank.internal.event;
 
-import org.caleydo.vis.rank.model.ACompositeRankColumnModel;
-import org.caleydo.vis.rank.model.ARankColumnModel;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IRankTableConfig {
+public class CodeUpdateEvent extends ADirectedEvent {
+	private String code;
+
+	public CodeUpdateEvent(String code) {
+		this.code = code;
+	}
 
 	/**
-	 * is this column moveable
-	 *
-	 * @param model
-	 * @return
+	 * @return the code, see {@link #code}
 	 */
-	boolean isMoveAble(ARankColumnModel model);
+	public String getCode() {
+		return code;
+	}
 
-	/**
-	 * creates a new combined column caused by dragging two columns onto each other
-	 *
-	 * @return
-	 */
-	ACompositeRankColumnModel createNewCombined();
-
-	/**
-	 * are these columsn combine able
-	 *
-	 * @param model
-	 * @param with
-	 * @return
-	 */
-	boolean isCombineAble(ARankColumnModel model, ARankColumnModel with);
-
-	String getCombineStringHint(ARankColumnModel model, ARankColumnModel with);
-
-	/**
-	 * @return
-	 */
-	boolean isDefaultCollapseAble();
-
-	/**
-	 * @return
-	 */
-	boolean isDefaultHideAble();
-
-	/**
-	 * is this whole table interactive
-	 *
-	 * @return
-	 */
-	boolean isInteractive();
-
-	/**
-	 * triggers that indead of hide a column it will be destroyed
-	 *
-	 * @return
-	 */
-	boolean isDestroyOnHide();
+	@Override
+	public boolean checkIntegrity() {
+		return code != null;
+	}
 
 }
