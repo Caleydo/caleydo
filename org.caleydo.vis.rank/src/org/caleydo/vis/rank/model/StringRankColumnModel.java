@@ -104,12 +104,12 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 	}
 
 	@Override
-	public final void editFilter(GLElement summary) {
+	public final void editFilter(GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				InputDialog d = new InputDialog(null, "Filter column: " + getHeaderRenderer().toString(),
-						"Edit Filter", filter, null);
+						"Edit Filter (use * as wildcard)", filter, null);
 				if (d.open() == Window.OK) {
 					String v = d.getValue().trim();
 					if (v.length() == 0)
@@ -169,7 +169,7 @@ public class StringRankColumnModel extends ABasicFilterableRankColumnModel imple
 		protected void onMouseReleased(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			editFilter(this);
+			editFilter(this, context);
 		}
 
 		@Override

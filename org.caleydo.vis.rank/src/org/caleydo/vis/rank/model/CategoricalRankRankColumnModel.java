@@ -159,7 +159,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	}
 
 	@Override
-	public final void editFilter(GLElement summary) {
+	public final void editFilter(GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -372,7 +372,7 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 		protected void onMouseReleased(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			editFilter(this);
+			editFilter(this, context);
 		}
 
 		@Override
@@ -384,13 +384,6 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 			IRow s = getTable().getSelectedRow();
 			CATEGORY_TYPE selected = s == null ? null : getCatValue(s);
 			RenderUtils.renderHist(g, hist, w, h, selected, metaData);
-		}
-
-		/**
-		 * @return
-		 */
-		public IGLElementContext getContext() {
-			return context;
 		}
 	}
 
@@ -420,13 +413,11 @@ public class CategoricalRankRankColumnModel<CATEGORY_TYPE> extends ABasicFiltera
 	}
 
 	@Override
-	public void editMapping(GLElement summary) {
+	public void editMapping(GLElement summary, IGLElementContext context) {
 		GLElement m = MappingFunctionUIs.create(mapping, getHist(), metaData, bgColor, callback);
 		m.setzDelta(0.5f);
-		@SuppressWarnings("unchecked")
-		MyElement s = (MyElement) summary;
-		Vec2f location = s.getAbsoluteLocation();
-		Vec2f size = s.getSize();
-		s.getContext().getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 260));
+		Vec2f location = summary.getAbsoluteLocation();
+		Vec2f size = summary.getSize();
+		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 260));
 	}
 }

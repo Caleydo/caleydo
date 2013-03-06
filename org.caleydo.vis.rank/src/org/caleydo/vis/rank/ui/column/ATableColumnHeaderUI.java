@@ -316,7 +316,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 			final ISelectionCallback callback = new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.editFilter(get(HIST));
+					m.editFilter(get(HIST), context);
 				}
 			};
 			b.setCallback(callback);
@@ -340,7 +340,7 @@ public class ATableColumnHeaderUI extends AnimatedGLElementContainer implements 
 			b.setCallback(new ISelectionCallback() {
 				@Override
 				public void onSelectionChanged(GLButton button, boolean selected) {
-					m.editMapping(get(HIST));
+					m.editMapping(get(HIST), context);
 				}
 			});
 			buttons.add(b);

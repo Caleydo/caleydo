@@ -20,6 +20,7 @@
 package org.caleydo.vis.rank.model.mixin;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
@@ -33,14 +34,15 @@ public interface IMappedColumnMixin extends IRankColumnModel {
 
 	/**
 	 * triggers to open the edit dialog given its summary element
-	 * 
+	 *
 	 * @param summary
+	 * @param context
 	 */
-	void editMapping(GLElement summary);
+	void editMapping(GLElement summary, IGLElementContext context);
 
 	/**
 	 * returns a representation of the raw value
-	 * 
+	 *
 	 * @param row
 	 * @return
 	 */

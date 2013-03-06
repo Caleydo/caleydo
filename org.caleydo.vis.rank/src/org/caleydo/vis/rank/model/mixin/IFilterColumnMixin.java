@@ -23,6 +23,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.vis.rank.model.IRow;
 
 /**
@@ -46,8 +47,9 @@ public interface IFilterColumnMixin extends IRankColumnModel {
 
 	/**
 	 * triggers the edit dialog of this column given the summary element
-	 * 
+	 *
 	 * @param summary
+	 * @param context
 	 */
-	void editFilter(GLElement summary);
+	void editFilter(GLElement summary, IGLElementContext context);
 }

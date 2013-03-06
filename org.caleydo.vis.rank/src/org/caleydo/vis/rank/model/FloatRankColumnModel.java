@@ -54,6 +54,7 @@ import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
 import org.caleydo.vis.rank.ui.detail.ScoreBarRenderer;
+import org.caleydo.vis.rank.ui.detail.ScoreSummary;
 import org.caleydo.vis.rank.ui.mapping.MappingFunctionUIs;
 import org.eclipse.swt.SWT;
 
@@ -152,7 +153,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public GLElement createSummary(boolean interactive) {
-		return new FloatSummary(interactive);
+		return new ScoreSummary(this, interactive);
 	}
 
 	@Override
@@ -161,18 +162,17 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	}
 
 	@Override
-	public void editFilter(GLElement summary) {
+	public void editFilter(GLElement summary, IGLElementContext context) {
 		// inline
 	}
 
 	@Override
-	public void editMapping(GLElement summary) {
+	public void editMapping(GLElement summary, IGLElementContext context) {
 		GLElement m = MappingFunctionUIs.create(mapping, asData(), getColor(), getBgColor(), callback);
 		m.setzDelta(0.5f);
-		FloatSummary s = (FloatSummary) summary;
-		Vec2f location = s.getAbsoluteLocation();
-		Vec2f size = s.getSize();
-		s.getContext().getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 260));
+		Vec2f location = summary.getAbsoluteLocation();
+		Vec2f size = summary.getSize();
+		context.getPopupLayer().show(m, new Vec4f(location.x(), location.y() + size.y(), 260, 260));
 	}
 
 	private IFloatList asData() {
@@ -313,10 +313,6 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			} else {
 				setVisibility(EVisibility.VISIBLE); // disable picking
 			}
-		}
-
-		public IGLElementContext getContext() {
-			return context;
 		}
 
 		@Override

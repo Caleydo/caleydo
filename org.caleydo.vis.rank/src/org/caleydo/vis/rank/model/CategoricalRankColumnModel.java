@@ -117,7 +117,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 	}
 
 	@Override
-	public final void editFilter(GLElement summary) {
+	public final void editFilter(GLElement summary, IGLElementContext context) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -266,7 +266,7 @@ public class CategoricalRankColumnModel<CATEGORY_TYPE> extends ABasicFilterableR
 		protected void onMouseReleased(Pick pick) {
 			if (pick.isAnyDragging())
 				return;
-			editFilter(this);
+			editFilter(this, context);
 		}
 
 		@Override
