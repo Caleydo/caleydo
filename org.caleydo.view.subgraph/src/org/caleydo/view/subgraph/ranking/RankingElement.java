@@ -23,7 +23,9 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
+import java.util.List;
 
 import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -122,6 +124,26 @@ public class RankingElement extends GLElementContainer {
 			return;
 
 		view.addPathway(newValue.getPathway());
+	}
+
+	private void selectPathways() {
+		List<IRow> data = table.getData();
+		BitSet dataMask = new BitSet(data.size());
+		int i = 0;
+		for (IRow row : data) {
+			// select all rows
+			dataMask.set(i++, isSelected(((PathwayRow) row).getPathway()));
+		}
+		table.setDataMask(dataMask);
+	}
+
+	/**
+	 * @param pathway
+	 * @return
+	 */
+	private boolean isSelected(PathwayGraph pathway) {
+		// logic whether to select a path or not
+		return true;
 	}
 
 	/**
