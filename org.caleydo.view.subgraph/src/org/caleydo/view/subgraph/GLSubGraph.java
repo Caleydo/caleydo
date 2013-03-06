@@ -127,7 +127,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		column.add(baseContainer);
 		nodeInfoContainer.setSize(Float.NaN, 0);
 		column.add(nodeInfoContainer);
-		RankingElement rankingElement = new RankingElement(this);
+		RankingElement rankingElement = new RankingElement(this, eventListeners);
 		rankingElement.setSize(200, Float.NaN);
 		baseContainer.add(rankingElement);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));

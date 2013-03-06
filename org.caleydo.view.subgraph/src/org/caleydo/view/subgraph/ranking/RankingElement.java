@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.caleydo.core.event.EventListenerManager;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -43,7 +44,7 @@ import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableHeaderUI;
 
@@ -62,7 +63,7 @@ public class RankingElement extends GLElementContainer {
 		}
 	};
 
-	public RankingElement(GLSubGraph view) {
+	public RankingElement(GLSubGraph view, final EventListenerManager eventListeners) {
 		this.view = view;
 		this.table = new RankTableModel(new RankTableConfigBase() {
 			@Override
@@ -71,7 +72,20 @@ public class RankingElement extends GLElementContainer {
 			}
 		});
 		table.addPropertyChangeListener(RankTableModel.PROP_SELECTED_ROW, onSelectRow);
-		initTable(table);
+		// scan columns for events
+		this.table.addPropertyChangeListener(RankTableModel.PROP_REGISTER, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getOldValue() != null) {
+					eventListeners.unregister(evt.getOldValue());
+				}
+				if (evt.getNewValue() != null)
+					eventListeners.register(evt.getNewValue());
+			}
+		});
+
+		initTable(table, eventListeners);
+
 		setLayout(GLLayouts.flowVertical(0));
 		this.add(new TableHeaderUI(table));
 		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.LINEAR);
@@ -82,6 +96,12 @@ public class RankingElement extends GLElementContainer {
 			}
 		});
 		this.add(body);
+	}
+
+	@Override
+	protected void takeDown() {
+		table.reset();
+		super.takeDown();
 	}
 
 	/**
@@ -101,11 +121,13 @@ public class RankingElement extends GLElementContainer {
 	}
 
 	/**
+	 * @param eventListeners2
 	 * @param table2
 	 */
-	private static void initTable(RankTableModel table) {
+	private static void initTable(RankTableModel table, EventListenerManager eventListeners) {
 		// add columns
-		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
+		table.addColumn(new StringRankColumnModel(GLRenderers
+.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
 		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
 		// new Function<IRow, String>() {
@@ -124,7 +146,7 @@ public class RankingElement extends GLElementContainer {
 			}
 		};
 		table.addColumn(new FloatRankColumnModel(pathwaySize, GLRenderers.drawText("Score", VAlign.CENTER), Color.BLUE,
-				Color.LIGHT_GRAY, new PiecewiseLinearMapping(0, Float.NaN), FloatInferrers.MEAN));
+				Color.LIGHT_GRAY, new PiecewiseMapping(0, Float.NaN), FloatInferrers.MEAN));
 
 		// add data
 		Collection<PathwayRow> data = new ArrayList<>();
