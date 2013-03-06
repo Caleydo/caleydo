@@ -196,4 +196,8 @@ public abstract class ACompositeRankColumnModel extends ARankColumnModel impleme
 		// should not happen
 	}
 
+	public boolean isFlatAdding(ACompositeRankColumnModel t) {
+		return false;
+	}
+
 }

@@ -55,7 +55,7 @@ public class FrozenColumnUI extends ACompositeTableColumnUI<FrozenRankColumnMode
 
 	@Override
 	protected GLElement wrap(ARankColumnModel model) {
-		ITableColumnUI ui = ColumnUIs.createBody(model, false);
+		ITableColumnUI ui = ColumnUIs.createBody(model, true);
 		return ui.setData(model.getTable().getData(), this);
 	}
 

@@ -46,7 +46,8 @@ import org.caleydo.vis.rank.ui.StackedSeparatorUI;
  * @author Samuel Gratzl
  *
  */
-public class ACompositeTableColumnHeaderUI<T extends ACompositeRankColumnModel> extends GLElementContainer implements
+public abstract class ACompositeTableColumnHeaderUI<T extends ACompositeRankColumnModel> extends GLElementContainer
+		implements
 		IGLLayout, IMoveHereChecker {
 	private static final int SUMMARY = 0;
 	private final static int FIRST_COLUMN = 1;
@@ -135,13 +136,7 @@ public class ACompositeTableColumnHeaderUI<T extends ACompositeRankColumnModel> 
 			super.renderPickImpl(g, w, h);
 	}
 
-	/**
-	 * @param newValue
-	 * @return
-	 */
-	private GLElement wrap(ARankColumnModel model) {
-		return ColumnUIs.createHeader(model, this.interactive, false);
-	}
+	protected abstract GLElement wrap(ARankColumnModel model);
 
 	@Override
 	protected void takeDown() {

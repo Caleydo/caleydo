@@ -290,21 +290,6 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 		ButtonBar buttons = new ButtonBar();
 		buttons.setzDelta(.5f);
 
-		if (model instanceof ISnapshotableColumnMixin) {
-			final ISnapshotableColumnMixin m = (ISnapshotableColumnMixin) model;
-			final GLButton b = new GLButton();
-			b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FREEZE));
-			b.setTooltip("Take a snapshot of the current state");
-			final ISelectionCallback callback = new ISelectionCallback() {
-				@Override
-				public void onSelectionChanged(GLButton button, boolean selected) {
-					if (m.canTakeSnapshot())
-						m.takeSnapshot();
-				}
-			};
-			b.setCallback(callback);
-			buttons.addButton(b);
-		}
 		if (model instanceof IFilterColumnMixin) {
 			final IFilterColumnMixin m = (IFilterColumnMixin) model;
 			final GLButton b = new GLButton();
@@ -356,7 +341,24 @@ public class AColumnHeaderUI extends AnimatedGLElementContainer implements IGLLa
 			});
 			buttons.addButton(b);
 		}
-		buttons.add(new GLElement()); // spacer
+		if (model instanceof ISnapshotableColumnMixin) {
+			final ISnapshotableColumnMixin m = (ISnapshotableColumnMixin) model;
+			if (m.canTakeSnapshot()) {
+				final GLButton b = new GLButton();
+				b.setRenderer(GLRenderers.fillImage(RenderStyle.ICON_FREEZE));
+				b.setTooltip("Take a snapshot of the current state");
+				final ISelectionCallback callback = new ISelectionCallback() {
+					@Override
+					public void onSelectionChanged(GLButton button, boolean selected) {
+						if (m.canTakeSnapshot())
+							m.takeSnapshot();
+					}
+				};
+				b.setCallback(callback);
+				buttons.addButton(b);
+			}
+		}
+		buttons.addSpacer();
 
 		if (model instanceof ICollapseableColumnMixin) {
 			final ICollapseableColumnMixin m = (ICollapseableColumnMixin) model;

@@ -58,8 +58,8 @@ import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.column.ACompositeTableColumnUI;
 import org.caleydo.vis.rank.ui.column.IColumModelLayout;
 import org.caleydo.vis.rank.ui.column.ITableColumnUI;
-import org.caleydo.vis.rank.ui.column.TableColumnUI;
-import org.caleydo.vis.rank.ui.column.TableColumnUIs;
+import org.caleydo.vis.rank.ui.column.ColumnUI;
+import org.caleydo.vis.rank.ui.column.ColumnUIs;
 
 /**
  * a visualization of the body of the {@link RankTableModel}, in HTML it would be the tbody
@@ -190,7 +190,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 
 	private GLElement wrap(ARankColumnModel new_) {
 		init(new_);
-		return TableColumnUIs.createBody(new_, true).setData(table.getData(), this);
+		return ColumnUIs.createBody(new_, true).setData(table.getData(), this);
 	}
 
 	protected void updateData() {
@@ -301,12 +301,12 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 	}
 
 	@Override
-	public VAlign getAlignment(TableColumnUI tableColumnUI) {
+	public VAlign getAlignment(ColumnUI tableColumnUI) {
 		return VAlign.LEFT;
 	}
 
 	@Override
-	public boolean hasFreeSpace(TableColumnUI tableColumnUI) {
+	public boolean hasFreeSpace(ColumnUI tableColumnUI) {
 		return true;
 	}
 

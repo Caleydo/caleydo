@@ -28,8 +28,8 @@ import org.caleydo.core.view.opengl.layout2.IMouseLayer;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ARankColumnModel;
-import org.caleydo.vis.rank.ui.column.TableStackedColumnHeaderUI;
-import org.caleydo.vis.rank.ui.column.TableStackedColumnHeaderUI.AlignmentDragInfo;
+import org.caleydo.vis.rank.ui.column.StackedColumnHeaderUI;
+import org.caleydo.vis.rank.ui.column.StackedColumnHeaderUI.AlignmentDragInfo;
 
 
 /**
@@ -113,8 +113,8 @@ public class StackedSeparatorUI extends SeparatorUI {
 		m.addDraggable(e, getStacked().align);
 	}
 
-	private TableStackedColumnHeaderUI getStacked() {
-		return ((TableStackedColumnHeaderUI) getParent());
+	private StackedColumnHeaderUI getStacked() {
+		return ((StackedColumnHeaderUI) getParent());
 	}
 
 	@Override

@@ -29,9 +29,11 @@ import java.util.List;
 import java.util.Locale;
 
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.IMouseLayer.IDragInfo;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.SeparatorUI;
@@ -57,6 +59,11 @@ public class StackedColumnHeaderUI extends ACompositeTableColumnHeaderUI<Stacked
 	}
 
 	@Override
+	protected GLElement wrap(ARankColumnModel model) {
+		return ColumnUIs.createHeader(model, this.interactive, false);
+	}
+
+	@Override
 	protected void takeDown() {
 		model.removePropertyChangeListener(StackedRankColumnModel.PROP_ALIGNMENT, alignmentChanged);
 		super.takeDown();
@@ -69,7 +76,7 @@ public class StackedColumnHeaderUI extends ACompositeTableColumnHeaderUI<Stacked
 
 		super.doLayout(children, w, h);
 
-		// update the alignemnt infos
+		// update the alignment infos
 		if (interactive) {
 			List<? extends IGLLayoutElement> separators = children.subList(numColumns + 2, children.size());
 			final IGLLayoutElement sep0 = children.get(numColumns + 1);

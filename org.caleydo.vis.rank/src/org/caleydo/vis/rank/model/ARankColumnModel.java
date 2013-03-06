@@ -169,7 +169,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 		with.getParent().detach(with);
 		if (isModelComposite) {
 			ACompositeRankColumnModel t = (ACompositeRankColumnModel) model;
-			if (isWithComposite) {
+			if (isWithComposite && t.isFlatAdding(t)) {
 				ACompositeRankColumnModel w = (ACompositeRankColumnModel) with;
 				Collection<ARankColumnModel> tmp = new ArrayList<>(w.getChildren());
 				for (ARankColumnModel wi : tmp) {

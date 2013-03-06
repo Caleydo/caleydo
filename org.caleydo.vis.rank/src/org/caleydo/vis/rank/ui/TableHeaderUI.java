@@ -42,7 +42,10 @@ import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.ui.SeparatorUI.IMoveHereChecker;
 import org.caleydo.vis.rank.ui.column.ACompositeTableColumnHeaderUI;
-import org.caleydo.vis.rank.ui.column.TableColumnUIs;
+import org.caleydo.vis.rank.ui.column.ColumnUIs;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 /**
  * a visualzation of the table header row, in HTML it would be the thead section
@@ -62,7 +65,7 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 
 	private int numColumns = 0;
 	private final boolean interactive;
-	private final boolean hasThick;
+	private boolean hasThick;
 
 	public TableHeaderUI(RankTableModel table) {
 		this.table = table;
@@ -77,14 +80,14 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 			this.add(elem);
 			numColumns++;
 		}
-		this.hasThick = hasCurrentThick;
 		if (interactive) {
 			this.add(new SeparatorUI(this, -1)); // left
 			for (int i = 0; i < numColumns; ++i)
 				this.add(new SeparatorUI(this, i));
 		}
 		setLayout(this);
-		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * (hasThick ? 2 : 1));
+		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * 1);
+		setHasThick(hasCurrentThick);
 	}
 
 	private void init(ARankColumnModel col) {
@@ -115,10 +118,13 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 					news.add(wrap(c));
 			}
 			numColumns += news.size();
+			if (!hasThick) {
+				setHasThick(Iterables.any(news, Predicates.instanceOf(ACompositeTableColumnHeaderUI.class)));
+			}
 			asList().addAll(index, news);
 			if (interactive) {
 				for (int i = 0; i < news.size(); ++i)
-				add(new SeparatorUI(this));
+					add(new SeparatorUI(this));
 			}
 		} else if (evt.getNewValue() == null) { // removed
 			takeDown(get(index).getLayoutDataAs(ARankColumnModel.class, null));
@@ -126,15 +132,28 @@ public final class TableHeaderUI extends GLElementContainer implements IGLLayout
 			numColumns--;
 			if (interactive)
 				remove(this.size() - 1); // remove last separator
+			setHasThick(Iterables.any(this, Predicates.instanceOf(ACompositeTableColumnHeaderUI.class)));
 		} else { // replaced
 			takeDown(get(index).getLayoutDataAs(ARankColumnModel.class, null));
 			set(index, wrap((ARankColumnModel) evt.getNewValue()));
+			setHasThick(Iterables.any(this, Predicates.instanceOf(ACompositeTableColumnHeaderUI.class)));
 		}
+	}
+
+	/**
+	 * @param any
+	 */
+	private void setHasThick(boolean hasThick) {
+		if (this.hasThick == hasThick) {
+			return;
+		}
+		this.hasThick = hasThick;
+		setSize(-1, (HIST_HEIGHT + LABEL_HEIGHT) * (hasThick ? 2 : 1));
 	}
 
 	private GLElement wrap(ARankColumnModel model) {
 		init(model);
-		return TableColumnUIs.createHeader(model, interactive, true);
+		return ColumnUIs.createHeader(model, interactive, true);
 	}
 
 	@Override

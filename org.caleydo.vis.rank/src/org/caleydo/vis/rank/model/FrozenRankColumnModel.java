@@ -61,6 +61,22 @@ public class FrozenRankColumnModel extends ACompositeRankColumnModel implements 
 		setWeight(0);
 	}
 
+	public FrozenRankColumnModel(FrozenRankColumnModel copy) {
+		super(copy);
+		this.order = copy.order;
+		this.filter = copy.filter;
+		this.collapsed = copy.collapsed;
+		float w = 0; // recompute as added and set
+		for (ARankColumnModel c : this)
+			w += c.getWeight();
+		setWeight(w);
+	}
+
+	@Override
+	public FrozenRankColumnModel clone() {
+		return new FrozenRankColumnModel(this);
+	}
+
 	protected void onWeightChanged(float delta) {
 		addWeight(delta);
 	}
@@ -83,18 +99,6 @@ public class FrozenRankColumnModel extends ACompositeRankColumnModel implements 
 		return DateFormat.getTimeInstance(DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 	}
 
-	public FrozenRankColumnModel(FrozenRankColumnModel copy) {
-		super(copy);
-		this.order = copy.order;
-		this.filter = copy.filter;
-		this.collapsed = copy.collapsed;
-	}
-
-	@Override
-	public FrozenRankColumnModel clone() {
-		return new FrozenRankColumnModel(this);
-	}
-
 	@Override
 	public float getPreferredWidth() {
 		if (isCollapsed())
@@ -113,6 +117,11 @@ public class FrozenRankColumnModel extends ACompositeRankColumnModel implements 
 	@Override
 	public BitSet getCurrentFilter() {
 		return filter;
+	}
+
+	@Override
+	public boolean isHideAble(ARankColumnModel model) {
+		return getTable().isHideAble(model); // can remove the last one
 	}
 
 	@Override

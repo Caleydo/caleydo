@@ -24,8 +24,10 @@ import static org.caleydo.vis.rank.ui.RenderStyle.LABEL_HEIGHT;
 
 import java.util.List;
 
+import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.layout.IGLLayoutElement;
+import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.FrozenRankColumnModel;
 import org.caleydo.vis.rank.ui.RenderStyle;
 /**
@@ -46,6 +48,11 @@ public class FrozenColumnHeaderUI extends ACompositeTableColumnHeaderUI<FrozenRa
 	}
 
 	@Override
+	protected GLElement wrap(ARankColumnModel model) {
+		return ColumnUIs.createHeader(model, this.interactive, true);
+	}
+
+	@Override
 	protected float getLeftPadding() {
 		return RenderStyle.FROZEN_BAND_WIDTH;
 	}
@@ -53,7 +60,8 @@ public class FrozenColumnHeaderUI extends ACompositeTableColumnHeaderUI<FrozenRa
 	@Override
 	public void doLayout(List<? extends IGLLayoutElement> children, float w, float h) {
 		IGLLayoutElement summary = children.get(0);
-		summary.setBounds(0, 0, w, HIST_HEIGHT + LABEL_HEIGHT);
+		summary.setBounds(0, 0, Math.min(RenderStyle.FROZEN_BAND_WIDTH, w),
+				(HIST_HEIGHT + LABEL_HEIGHT * 2));
 		super.doLayout(children, w, h);
 	}
 }

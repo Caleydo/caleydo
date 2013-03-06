@@ -41,7 +41,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.model.ARankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
-import org.caleydo.vis.rank.ui.column.TableColumnHeaderUI;
+import org.caleydo.vis.rank.ui.column.ColumnHeaderUI;
 
 /**
  * simple visualization of the pool of hidden columns
@@ -129,7 +129,7 @@ public class ColumnPoolUI extends GLElementContainer {
 	}
 
 	private GLElement wrap(ARankColumnModel hidden) {
-		return new TableColumnHeaderUI(hidden, false, true).setSize(100, -1);
+		return new ColumnHeaderUI(hidden, false, true).setSize(100, -1);
 	}
 
 	@Override

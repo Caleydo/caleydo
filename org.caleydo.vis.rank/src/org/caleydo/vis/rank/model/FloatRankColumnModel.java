@@ -50,6 +50,7 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
+import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
 import org.caleydo.vis.rank.ui.GLPropertyChangeListeners;
 import org.caleydo.vis.rank.ui.RenderStyle;
 import org.caleydo.vis.rank.ui.RenderUtils;
@@ -63,7 +64,7 @@ import org.eclipse.swt.SWT;
  *
  */
 public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implements IFilterColumnMixin,
-		IMappedColumnMixin, IRankableColumnMixin {
+		IMappedColumnMixin, IRankableColumnMixin, ISnapshotableColumnMixin {
 	private float selectionMin = 0;
 	private float selectionMax = 1;
 
@@ -491,6 +492,11 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 			this.selectedRow = selectedRow;
 			repaint();
 		}
+	}
+
+	@Override
+	public void takeSnapshot() {
+		parent.takeSnapshot(this);
 	}
 
 }

@@ -24,9 +24,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
-import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.internal.ui.TextRenderer;
-import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -65,6 +63,10 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 		super(copy);
 		this.alignment = copy.alignment;
 		setHeaderRenderer(new TextRenderer("AND", this));
+		float w = 0; // recompute as added and set
+		for (ARankColumnModel c : this)
+			w += c.getWeight();
+		setWeight(w);
 	}
 
 	@Override
@@ -208,7 +210,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 
 	@Override
 	public void takeSnapshot() {
-		parent.takeSnapshot(new FloatRankColumnModel(this, getHeaderRenderer(), getColor(), getBgColor(),
-				new PiecewiseMapping(0, 1), FloatInferrers.MEDIAN));
+		parent.takeSnapshot(this);
 	}
 }
