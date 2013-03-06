@@ -20,7 +20,10 @@
 package org.caleydo.view.subgraph;
 
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.layout.GLPadding;
+import org.caleydo.core.view.opengl.layout2.layout.GLSizeRestrictiveFlowLayout;
 
 /**
  * Bar with text on it.
@@ -28,21 +31,28 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
  * @author Christian Partl
  *
  */
-public class GLTitleBar extends GLElement {
+public class GLTitleBar extends GLElementContainer {
 
-	protected String text;
+	protected final String text;
 
 	public GLTitleBar(String text) {
 		super();
 		this.text = text;
 		setSize(Float.NaN, 20);
+		setLayout(new GLSizeRestrictiveFlowLayout(true, 2, new GLPadding(3, 2)));
+		add(new GLElement() {
+
+			@Override
+			protected void renderImpl(GLGraphics g, float w, float h) {
+				g.drawText(GLTitleBar.this.text, 0, -2, w, h);
+			}
+		});
 	}
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		super.renderImpl(g, w, h);
 		g.color(0.6f, 0.6f, 0.6f, 1f).fillRoundedRect(0, 0, w, h, 7);
-		g.drawText(text, 3, 0, w - 3, 16);
+		super.renderImpl(g, w, h);
 	}
 
 }

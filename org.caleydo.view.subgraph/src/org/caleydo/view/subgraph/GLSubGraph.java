@@ -132,6 +132,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		baseContainer.add(rankingElement);
 		// pathwayRow.setLayout(new GLMultiFormPathwayLayout(10, GLPadding.ZERO, this, pathwayRow));
 		pathwayRow.setLayout(pathwayLayout);
+		// pathwayRow.setDefaultDuration(Durations.fix(600));
+		// pathwayRow
+		// .setDefaultInTransition(new InOutTransitionBase(InOutInitializers.RIGHT, MoveTransitions.MOVE_LINEAR));
 		//
 		baseContainer.add(pathwayRow);
 

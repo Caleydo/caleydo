@@ -20,7 +20,6 @@
 package org.caleydo.view.subgraph;
 
 import org.caleydo.core.view.opengl.layout2.AnimatedGLElementContainer;
-import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.GLElementAdapter;
 import org.caleydo.core.view.opengl.layout2.GLElementContainer;
 import org.caleydo.core.view.opengl.layout2.layout.GLLayouts;
@@ -44,23 +43,19 @@ public class GLPathwayWindow extends AnimatedGLElementContainer {
 
 		GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
 				GLPadding.ZERO));
-		multiFormContainer.add(new GLTitleBar(pathway == null ? "" : pathway.getTitle()));
+		GLTitleBar titleBar = new GLTitleBar(pathway == null ? "" : pathway.getTitle());
+		multiFormContainer.add(titleBar);
 		GLElementAdapter container = new GLElementAdapter(view, info.multiFormRenderer, true);
 		multiFormContainer.add(container);
 		info.container = container;
 		// multiFormRendererAdapter.onPick(pl);
 
 		GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(info.multiFormRenderer);
-		GLPathwayBackground bg = new GLPathwayBackground(view, viewSwitchingBar);
-		GLElementContainer barRow = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(0, 2,
-				5, 0)));
-
-		barRow.add(new GLElement());
-		barRow.add(viewSwitchingBar);
+		GLPathwayBackground bg = new GLPathwayBackground(view);
+		titleBar.add(viewSwitchingBar);
 
 		add(bg);
 		add(multiFormContainer);
-		add(barRow);
 	}
 
 	public int getMinWidth() {

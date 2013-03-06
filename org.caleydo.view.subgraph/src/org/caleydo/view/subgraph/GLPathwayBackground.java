@@ -22,7 +22,6 @@ package org.caleydo.view.subgraph;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
-import org.caleydo.core.view.opengl.layout2.util.GLElementViewSwitchingBar;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -35,11 +34,9 @@ public class GLPathwayBackground extends PickableGLElement {
 
 	protected boolean hovered = false;
 	protected GLSubGraph view;
-	protected GLElementViewSwitchingBar bar;
 
-	public GLPathwayBackground(GLSubGraph view, GLElementViewSwitchingBar bar) {
+	public GLPathwayBackground(GLSubGraph view) {
 		this.view = view;
-		this.bar = bar;
 	}
 
 	@Override
