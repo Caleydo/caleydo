@@ -25,6 +25,7 @@ import org.caleydo.core.view.opengl.layout2.GLGraphics;
 import org.caleydo.core.view.opengl.layout2.PickableGLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.core.view.opengl.picking.AdvancedPick;
 import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
@@ -181,17 +182,20 @@ public class GLButton extends PickableGLElement {
 		if (pick.isAnyDragging())
 			return;
 		armed = true;
-		switch (mode) {
-		case BUTTON_COMPATIBLE:
-			fireCallback(true);
-			armed = false;
-			break;
-		case CHECKBOX_COMPATIBLE:
-			this.setSelected(!isSelected());
-			armed = false;
-			break;
-		default:
-			break;
+		if (!(pick instanceof AdvancedPick)) {
+			// compatible mode
+			switch (mode) {
+			case BUTTON:
+				fireCallback(true);
+				armed = false;
+				break;
+			case CHECKBOX:
+				this.setSelected(!isSelected());
+				armed = false;
+				break;
+			default:
+				break;
+			}
 		}
 		repaint();
 	}
@@ -252,14 +256,14 @@ public class GLButton extends PickableGLElement {
 	 *
 	 */
 	public enum EButtonMode {
-		BUTTON, BUTTON_COMPATIBLE, CHECKBOX, CHECKBOX_COMPATIBLE
+		BUTTON, CHECKBOX
 	}
 
 	/**
 	 * callback interface for selection changes of a button
-	 * 
+	 *
 	 * @author Samuel Gratzl
-	 * 
+	 *
 	 */
 	public interface ISelectionCallback {
 		void onSelectionChanged(GLButton button, boolean selected);

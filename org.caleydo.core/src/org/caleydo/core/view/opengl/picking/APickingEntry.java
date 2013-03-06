@@ -69,10 +69,10 @@ abstract class APickingEntry {
 		if (mode == PickingMode.DRAGGED || mode == PickingMode.MOUSE_MOVED) {
 			int dx = mouse.x - lastPoint.x;
 			int dy = mouse.y - lastPoint.y;
-			pick = new Pick(objectId, mode, mouse, dragStart, depth, dx, dy, isAnyDragging);
+			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, dx, dy, isAnyDragging);
 			lastPoint = mouse;
 		} else
-			pick = new Pick(objectId, mode, mouse, dragStart, depth, 0, 0, isAnyDragging);
+			pick = new AdvancedPick(objectId, mode, mouse, dragStart, depth, 0, 0, isAnyDragging);
 		pick.setDoDragging(dragging);
 
 		fire(pick);
