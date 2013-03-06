@@ -311,36 +311,7 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		GLPathwayWindow window = new GLPathwayWindow(pathway, this, info);
 		info.window = window;
 
-		// GLElementContainer multiFormContainer = new GLElementContainer(new GLSizeRestrictiveFlowLayout(false, 1,
-		// GLPadding.ZERO));
-		// multiFormContainer.add(new GLTitleBar(pathway == null ? "" : pathway.getTitle()));
-		// GLElementAdapter multiFormRendererAdapter = new GLElementAdapter(this, renderer, true);
-		// multiFormContainer.add(multiFormRendererAdapter);
-		// // multiFormRendererAdapter.onPick(pl);
-		//
-		// GLElementViewSwitchingBar viewSwitchingBar = new GLElementViewSwitchingBar(renderer);
-		// GLPathwayBackground bg = new GLPathwayBackground(this, viewSwitchingBar);
-		// GLElementContainer barRow = new GLElementContainer(new GLSizeRestrictiveFlowLayout(true, 0, new GLPadding(0,
-		// 2,
-		// 5, 0)));
-		//
-		// barRow.add(new GLElement());
-		// barRow.add(viewSwitchingBar);
-		//
-		// backgroundContainer.add(bg);
-		// backgroundContainer.add(multiFormContainer);
-		// backgroundContainer.add(barRow);
-
 		lastUsedRenderer = renderer;
-
-		// List<Pair<MultiFormRenderer, GLElement>> embeddingSpecificRenderers = multiFormRenderers.get(embeddingID);
-		//
-		// if (embeddingSpecificRenderers == null) {
-		// embeddingSpecificRenderers = new ArrayList<>();
-		// multiFormRenderers.put(embeddingID, embeddingSpecificRenderers);
-		// }
-		// embeddingSpecificRenderers.add(new Pair<MultiFormRenderer, GLElement>(renderer, multiFormRendererAdapter));
-
 		parent.add(window);
 	}
 
@@ -473,18 +444,17 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		IPathwayRepresentation pathwayRepresentation = null;
 		PathwayMultiFormInfo pwInfo = null;
-		for (PathwayPath segment : pathSegments) 
-		{
+		for (PathwayPath segment : pathSegments) {
 			for (PathwayMultiFormInfo info : pathwayInfos) {
 				pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
 						info.multiFormRenderer.getActiveRendererID());
-				if (pathwayRepresentation!=null && (segment.getPathway() == pathwayRepresentation.getPathway())) {
+				if (pathwayRepresentation != null && (segment.getPathway() == pathwayRepresentation.getPathway())) {
 					pwInfo = info;
 					break;
 				}
 			}
-			if(pathwayRepresentation!=null && pwInfo!=null){
-				for (PathwayVertexRep v : segment.getNodes()) {				
+			if (pathwayRepresentation != null && pwInfo != null) {
+				for (PathwayVertexRep v : segment.getNodes()) {
 					Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, v, pwInfo.container);
 					if (rect != null)
 						path.add(rect);
@@ -504,9 +474,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 		super.display(gl);
 		// The augmentation has to be updated after the layout was updated in super; updating on relayout would be too
 		// early, as the layout is not adapted at that time.
-		//if (updateAugmentation) {
-			updatePathLinks();
-		//}
+		// if (updateAugmentation) {
+		updatePathLinks();
+		// }
 
 	}
 
@@ -520,18 +490,19 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			EEmbeddingID embeddingID = pathInfo.getEmbeddingIDFromRendererID(rendererID);
 			setPathLevel(embeddingID);
 		}
-		if (wasTriggeredByUser) {
+		if (wasTriggeredByUser && rendererID != previousRendererID) {
 			for (PathwayMultiFormInfo info : pathwayInfos) {
-				if (info.multiFormRenderer == multiFormRenderer && rendererID != previousRendererID) {
+				if (info.multiFormRenderer == multiFormRenderer) {
 					if (info.getEmbeddingIDFromRendererID(rendererID) == EEmbeddingID.PATHWAY_LEVEL1) {
 						pathwayLayout.setLevel1(info.window);
 						info.age = currentPathwayAge--;
 						lastUsedRenderer = info.multiFormRenderer;
-						pathwayRow.relayout();
+
 						break;
 					}
 				}
 			}
+			pathwayRow.relayout();
 		}
 	}
 
@@ -652,14 +623,15 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 			Rectangle2D nodeRect = null;
 			// find in all open pathways
 			for (PathwayMultiFormInfo info : pathwayInfos) {
-				IPathwayRepresentation pathwayRepresentation = 
-						getPathwayRepresentation(info.multiFormRenderer,info.multiFormRenderer.getActiveRendererID());
-				if(pathwayRepresentation!=null){
-					Set<PathwayVertexRep> portalVertexRepsInPathway = 
-							PathwayManager.get().getEquivalentVertexRepsInPathway(vertexRep, pathwayRepresentation.getPathway());
-					
+				IPathwayRepresentation pathwayRepresentation = getPathwayRepresentation(info.multiFormRenderer,
+						info.multiFormRenderer.getActiveRendererID());
+				if (pathwayRepresentation != null) {
+					Set<PathwayVertexRep> portalVertexRepsInPathway = PathwayManager.get()
+							.getEquivalentVertexRepsInPathway(vertexRep, pathwayRepresentation.getPathway());
+
 					for (PathwayVertexRep portalVertexRep : portalVertexRepsInPathway) {
-						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep, info.container);
+						Rectangle2D rect = getAbsoluteVertexLocation(pathwayRepresentation, portalVertexRep,
+								info.container);
 						portalRects.add(rect);
 					}
 					if (nodeRect == null && pathwayRepresentation.getPathway().containsVertex(vertexRep))
