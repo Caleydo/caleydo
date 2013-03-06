@@ -88,7 +88,7 @@ public class RankingElement extends GLElementContainer {
 
 		setLayout(GLLayouts.flowVertical(0));
 		this.add(new TableHeaderUI(table));
-		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.LINEAR);
+		TableBodyUI body = new TableBodyUI(table, RowHeightLayouts.UNIFORM);
 		body.addOnRowPick(new IPickingListener() {
 			@Override
 			public void pick(Pick pick) {
