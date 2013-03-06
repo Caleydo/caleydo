@@ -85,9 +85,10 @@ public class RenderStyle {
 
 
 	/**
-	 * the duration of the hightligh animation
+	 * the duration of the highlight animation
 	 *
 	 * @param delta
+	 *            the number of ranks the item moved up, {@link Integer#MIN_VALUE} if it was not visible before
 	 * @return
 	 */
 	public static int hightlightAnimationDuration(int delta) {

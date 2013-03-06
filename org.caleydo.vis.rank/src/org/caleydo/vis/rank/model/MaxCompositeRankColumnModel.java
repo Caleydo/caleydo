@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.layout2.IGLElementContext;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
 import org.caleydo.vis.rank.layout.RowHeightLayouts.IRowHeightLayout;
+import org.caleydo.vis.rank.model.mixin.ICollapseableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IExplodeableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -40,7 +41,7 @@ import org.caleydo.vis.rank.ui.detail.StackedScoreSummary;
  *
  */
 public class MaxCompositeRankColumnModel extends AMultiRankColumnModel implements IRankableColumnMixin,
-		IHideableColumnMixin, IExplodeableColumnMixin {
+		IHideableColumnMixin, IExplodeableColumnMixin, ICollapseableColumnMixin {
 
 	private final MultiRenderer valueRenderer;
 

@@ -86,23 +86,28 @@ public class ScoreBarRenderer implements IGLRenderer {
 			if (model.getTable().getSelectedRow() == r) { // is selected, render the value
 				String text = (model instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) model).getRawValue(r)
 						: Formatter.formatNumber(v);
-				float hi = Math.min(h * 0.45f, 12);
+				float hi = getTextHeight(h);
 				renderLabel(g, (h - hi) * 0.5f, w, hi, text, v, parent);
 			}
 		}
 	}
 
-	private static IColumnRenderInfo getRenderInfo(GLElement parent) {
+	static float getTextHeight(float h) {
+		float hi = Math.min(h * 0.45f, 12);
+		return hi;
+	}
+
+	static IColumnRenderInfo getRenderInfo(GLElement parent) {
 		return (IColumnRenderInfo) parent.getParent();
 	}
 
 	static void renderLabel(GLGraphics g, float y, float w, float h, String text, float v, GLElement parent) {
-		if (h < 7)
+		if (h < 5)
 			return;
 		float tw = g.text.getTextWidth(text, h);
 		boolean hasFreeSpace = getRenderInfo(parent).hasFreeSpace();
 
 		VAlign alignment = getRenderInfo(parent).getAlignment();
-		g.drawText(text, 2, y, (hasFreeSpace && alignment == VAlign.LEFT) ? w : v - 2, h, VAlign.LEFT);
+		g.drawText(text, 2, y, (hasFreeSpace && alignment == VAlign.LEFT) ? w : (v * w) - 2, h, VAlign.LEFT);
 	}
 }

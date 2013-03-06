@@ -41,7 +41,7 @@ class FishEyeRowHeightLayout implements IRowHeightLayout {
 		if (distance > 25)
 			return MIN_ROW_HEIGHT;
 		float ratio = distance / 25.f;
-		float hi = 30 * (float) (1 - Math.sqrt(ratio)); // Math.cos(Math.PI / 2 * ratio);
+		float hi = 30 * (float) (1 - Math.sqrt(ratio));
 		return MIN_ROW_HEIGHT + hi;
 	}
 

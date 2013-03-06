@@ -276,7 +276,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 
 	@Override
 	public SimpleHistogram getHist(int bins) {
-		if (cacheHist != null)
+		if (cacheHist != null && cacheHist.size() == bins)
 			return cacheHist;
 		return cacheHist = DataUtils.getHist(bins, parent.getCurrentOrder(), this);
 	}

@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
+import static org.caleydo.vis.rank.ui.detail.ScoreBarRenderer.getRenderInfo;
+import static org.caleydo.vis.rank.ui.detail.ScoreBarRenderer.getTextHeight;
+
 import java.awt.Color;
 
 import org.caleydo.core.util.format.Formatter;
@@ -31,7 +34,6 @@ import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMultiColumnMixin.MultiFloat;
-
 /**
  * @author Samuel Gratzl
  *
@@ -52,10 +54,18 @@ public class MultiRenderer implements IGLRenderer {
 		return layout;
 	}
 
+
 	@Override
 	public void render(GLGraphics g, float w, float h, GLElement parent) {
 		final IRow r = parent.getLayoutDataAs(IRow.class, null);
 		MultiFloat v = model.getSplittedValue(r);
+		if (v.repr < 0)
+			return;
+		if (getRenderInfo(parent).isCollapsed()) {
+			g.color(1-v.get(),1-v.get(),1-v.get(),1);
+			g.fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
+			return;
+		}
 		// boolean inferred = model.isValueInferred(r);
 		// TODO inferred vis
 		Color[] colors = model.getColors();
@@ -74,7 +84,8 @@ public class MultiRenderer implements IGLRenderer {
 					ARankColumnModel modeli = model.get(i);
 					String text = (modeli instanceof IMappedColumnMixin) ? ((IMappedColumnMixin) modeli).getRawValue(r)
 								: Formatter.formatNumber(v.values[i]);
-					ScoreBarRenderer.renderLabel(g, y, w, hi * 0.8f, text, v.values[i], parent);
+					float hli = getTextHeight(hi);
+					ScoreBarRenderer.renderLabel(g, y + (hi - hli) * 0.5f, w, hli, text, v.values[i], parent);
 				}
 				y += hi;
 			}
