@@ -472,7 +472,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 
 		if (!currentRendererInfo.isActive) {
 			currentRendererInfo.setActive();
-			notifyActive(currentRendererInfo.rendererID, -1);
+			notifyActive(currentRendererInfo.rendererID, -1, false);
 		}
 
 		return true;
@@ -529,14 +529,27 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	}
 
 	/**
+	 * Short for {@link #setActive(int, false)}
+	 *
+	 * @param rendererID
+	 *            Identifier that specifies a view or layout renderer.
+	 */
+	public void setActive(int rendererID) {
+		setActive(rendererID, false);
+	}
+
+	/**
 	 * Sets a {@link AGLView} or {@link ALayoutRenderer} previously added to this {@link MultiFormRenderer} active, so
 	 * that it will be rendered. If the specified identifier is invalid, or the renderer is already active, no operation
 	 * is performed.
 	 *
 	 * @param rendererID
 	 *            Identifier that specifies a view or layout renderer.
+	 * @param wasTriggeredByUser
+	 *            Determines whether the change was directly triggered by the user, e.g., by clicking a button in a view
+	 *            switching bar.
 	 */
-	public void setActive(int rendererID) {
+	public void setActive(int rendererID, boolean wasTriggeredByUser) {
 		ARendererInfo info = rendererInfos.get(rendererID);
 		if (info != null && info != currentRendererInfo) {
 			int previousRendererID = currentRendererInfo != null ? currentRendererInfo.rendererID : -1;
@@ -546,7 +559,7 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 			}
 			currentRendererInfo = info;
 			info.setActive();
-			notifyActive(rendererID, previousRendererID);
+			notifyActive(rendererID, previousRendererID, wasTriggeredByUser);
 		}
 	}
 
@@ -719,9 +732,9 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 	 * @param previousRendererID
 	 *            ID of the renderer that was set active before. -1 if no renderer was active before.
 	 */
-	protected void notifyActive(int currentRendererID, int previousRendererID) {
+	protected void notifyActive(int currentRendererID, int previousRendererID, boolean wasTriggeredByUser) {
 		for (IMultiFormChangeListener listener : changeListeners) {
-			listener.activeRendererChanged(this, currentRendererID, previousRendererID);
+			listener.activeRendererChanged(this, currentRendererID, previousRendererID, wasTriggeredByUser);
 		}
 	}
 

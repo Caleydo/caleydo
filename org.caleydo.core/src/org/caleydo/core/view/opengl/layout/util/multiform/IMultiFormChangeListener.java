@@ -35,8 +35,12 @@ public interface IMultiFormChangeListener {
 	 *            ID of the renderer that was set active.
 	 * @param previousRendererID
 	 *            ID of the renderer that was active before. -1 if there was no active renderer before.
+	 * @param wasTriggeredByUser
+	 *            Determines whether the user directly set the active renderer, e.g., by clicking a button in a view
+	 *            switching bar.
 	 */
-	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID);
+	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID,
+			boolean wasTriggeredByUser);
 
 	/**
 	 * Called, when a renderer was added.

@@ -1211,7 +1211,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		});
 	}
 
-
 	/**
 	 * @return
 	 */
@@ -1409,7 +1408,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	}
 
 	@Override
-	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
+	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID,
+			boolean wasTriggeredByUser) {
 		if (isInitialized)
 			updateBrickSizeAccordingToRenderer(rendererID);
 		// if (brickColumn.isGlobalViewSwitching()) {

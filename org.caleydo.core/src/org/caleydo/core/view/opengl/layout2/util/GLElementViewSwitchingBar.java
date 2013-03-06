@@ -68,7 +68,7 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 	private IPickingListener buttonPickingListener = new APickingListener() {
 		@Override
 		public void clicked(Pick pick) {
-			GLElementViewSwitchingBar.this.multiFormRenderer.setActive(pick.getObjectID());
+			GLElementViewSwitchingBar.this.multiFormRenderer.setActive(pick.getObjectID(), true);
 		}
 	};
 
@@ -186,7 +186,8 @@ public class GLElementViewSwitchingBar extends GLElementContainer implements IMu
 	}
 
 	@Override
-	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
+	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID,
+			boolean wasTriggeredByUser) {
 		selectButton(previousRendererID, false);
 		selectButton(rendererID, true);
 	}

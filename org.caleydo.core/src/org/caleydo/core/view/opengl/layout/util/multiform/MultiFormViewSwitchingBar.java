@@ -89,7 +89,7 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				MultiFormViewSwitchingBar.this.multiFormRenderer.setActive(pick.getObjectID());
+				MultiFormViewSwitchingBar.this.multiFormRenderer.setActive(pick.getObjectID(), true);
 			}
 		}, buttonPickingType);
 	}
@@ -207,7 +207,8 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 	}
 
 	@Override
-	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
+	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID,
+			boolean wasTriggeredByUser) {
 		selectButton(previousRendererID, false);
 		selectButton(rendererID, true);
 	}
