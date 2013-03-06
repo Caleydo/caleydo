@@ -172,6 +172,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		if (id < 0) { // reset
 			model.reset();
 			active.reset();
+			fireCallback();
 		} else if (active != modes.get(id)) {
 			// switch
 			set(SPECIFIC, modes.get(id));
@@ -184,6 +185,7 @@ public class MappingFunctionUI extends GLElementContainer implements GLButton.IS
 		AMappingFunctionMode<?> active = (AMappingFunctionMode<?>) this.get(SPECIFIC);
 		active.reset();
 		repaintMapping();
+		fireCallback();
 	}
 
 	public void openJSEditor() {

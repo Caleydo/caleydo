@@ -79,4 +79,27 @@ public class RenderStyle {
 	public static final float FROZEN_BAND_WIDTH = 50;
 	public static final float BUTTON_WIDTH = 16;
 
+	/**
+	 * the duration of the hightligh animation
+	 *
+	 * @param delta
+	 * @return
+	 */
+	public static int hightlightAnimationDuration(int delta) {
+		return delta == Integer.MIN_VALUE ? 2000 : Math.min(Math.abs(delta) * 400, 2000);
+	}
+
+	/**
+	 * computes the alpha value to use
+	 *
+	 * @param alpha
+	 *            the animation alpha value
+	 * @param delta
+	 *            the rank delta of this animation
+	 * @return
+	 */
+	public static float computeHighlightAlpha(float alpha, int delta) {
+		return (1 - alpha) * 0.5f;
+	}
+
 }

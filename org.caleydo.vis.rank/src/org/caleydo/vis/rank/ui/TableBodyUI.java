@@ -342,18 +342,13 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		Vec4f bounds = getRowBounds(row);
 		if (bounds == null || delta == Integer.MIN_VALUE)
 			return;
-		float calpha = computeAlpha(alpha, delta);
+		float calpha = RenderStyle.computeHighlightAlpha(alpha, delta);
 		Color base = delta < 0 ? Color.GREEN : Color.RED; // TODO alpha
 		Color c = new Color(base.getRed(), base.getGreen(), base.getBlue(), (int) (calpha * 255));
 		g.decZ();
 		g.color(c);
 		renderSubLine(g, w, bounds.y() + 1, bounds.w() - 2);
 		g.incZ();
-	}
-
-
-	private static float computeAlpha(float alpha, int delta) {
-		return 1 - alpha * 0.5f;
 	}
 
 	// highlight selected row
@@ -451,7 +446,7 @@ public final class TableBodyUI extends AnimatedGLElementContainer implements IGL
 		private final int delta;
 
 		public LineHighlightAnimation(int delta, IRow row) {
-			super(0, Durations.fix(delta == Integer.MIN_VALUE ? 500 : Math.min(Math.abs(delta) * 400, 2000)));
+			super(0, Durations.fix(RenderStyle.hightlightAnimationDuration(delta)));
 			this.delta = delta;
 			this.row = row;
 		}
