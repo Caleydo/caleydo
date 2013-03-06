@@ -78,7 +78,7 @@ public class ScoreSummary extends GLElement {
 
 	@Override
 	protected void renderImpl(GLGraphics g, float w, float h) {
-		if ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed())
+		if ((model instanceof ICollapseableColumnMixin) && ((ICollapseableColumnMixin) model).isCollapsed() || w < 5)
 			return;
 		SimpleHistogram hist = model.getHist(binsForWidth(w));
 		int selectedBin = selectedRow == null ? -1 : hist.getBinOf(model.applyPrimitive(selectedRow));

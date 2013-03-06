@@ -294,7 +294,7 @@ public class GLTourGuideView extends AGLElementView implements IGLKeyListener, I
 	private void addColumns(Collection<IScore> scores) {
 		for (IScore s : scores) {
 			if (s instanceof MultiScore) {
-				ACompositeRankColumnModel combined = table.createCombined();
+				ACompositeRankColumnModel combined = createNewCombined();
 				table.addColumnTo(stacked, combined);
 				for (IScore s2 : ((MultiScore) s)) {
 					table.addColumnTo(combined, new ScoreRankColumnModel(s2));

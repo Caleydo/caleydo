@@ -187,6 +187,7 @@ public abstract class ARankColumnModel implements IDragInfo, IRankColumnModel {
 				w.add(0, model);
 			} else {
 				ACompositeRankColumnModel new_ = base.getTable().createCombined();
+				new_.setWeight(model.getWeight());
 				base.replace(model, new_);
 				new_.add(model);
 				new_.add(with);

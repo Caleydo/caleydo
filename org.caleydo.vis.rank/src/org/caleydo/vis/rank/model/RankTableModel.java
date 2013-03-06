@@ -307,7 +307,7 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	/**
 	 * @return
 	 */
-	public ACompositeRankColumnModel createCombined() {
+	ACompositeRankColumnModel createCombined() {
 		ACompositeRankColumnModel new_ = config.createNewCombined();
 		setup(new_);
 		return new_;

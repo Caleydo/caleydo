@@ -73,7 +73,7 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	}
 
 	protected void onWeightChanged(float delta) {
-		addWeight(delta);
+		addDirectWeight(delta);
 	}
 
 	@Override
@@ -85,14 +85,40 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	protected void init(ARankColumnModel model) {
 		super.init(model);
 		model.addPropertyChangeListener(PROP_WEIGHT, weightChanged);
-		addWeight(model.getWeight());
+		addDirectWeight(model.getWeight());
+	}
+
+	private void addDirectWeight(float delta) {
+		setWeight(getWeight() + delta);
+	}
+
+	@Override
+	public ARankColumnModel addWeight(float delta) {
+		// uniformly distribute the weight to my children
+		if (children.isEmpty())
+			addDirectWeight(delta);
+		else {
+			float sum = getWeight();
+			for (ARankColumnModel r : this) {
+				float w = r.getWeight();
+				float f = w / sum;
+				if ((w + f * delta) <= 1) // abort invalid weight
+					return this;
+			}
+			for (ARankColumnModel r : this) {
+				float w = r.getWeight();
+				float f = w / sum;
+				r.addWeight(f * delta);
+			}
+		}
+		return this;
 	}
 
 	@Override
 	protected void takeDown(ARankColumnModel model) {
 		super.takeDown(model);
 		model.removePropertyChangeListener(PROP_WEIGHT, weightChanged);
-		addWeight(-model.getWeight());
+		addDirectWeight(-model.getWeight());
 		if (alignment > size() - 2) {
 			setAlignment(alignment - 1);
 		}

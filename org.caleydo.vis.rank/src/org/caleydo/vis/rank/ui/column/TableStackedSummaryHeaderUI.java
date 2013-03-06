@@ -38,7 +38,7 @@ public class TableStackedSummaryHeaderUI extends ATableColumnHeaderUI {
 	private PropertyChangeListener onAlignmentChange;
 
 	public TableStackedSummaryHeaderUI(final StackedRankColumnModel model, boolean interactive) {
-		super(model, interactive, interactive, false, true, false);
+		super(model, interactive, interactive, false, true, true);
 	}
 
 	@Override
