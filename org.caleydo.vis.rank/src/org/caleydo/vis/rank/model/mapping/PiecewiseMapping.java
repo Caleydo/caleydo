@@ -29,34 +29,71 @@ import java.util.TreeMap;
 import com.google.common.collect.Iterators;
 
 /**
+ * a special {@link ScriptedMappingFunction}, which has a defined semantic
+ *
  * @author Samuel Gratzl
  *
  */
-public class PiecewiseLinearMapping extends AMappingFunction implements Iterable<Entry<Float, Float>>, IMappingFunction {
+public class PiecewiseMapping extends ScriptedMappingFunction implements Iterable<Entry<Float, Float>>,
+		IMappingFunction {
 	private final SortedMap<Float, Float> mapping = new TreeMap<>();
+	// are the semantic mapping used or just the code
+	private boolean isDefinedMapping = true;
 
-	public PiecewiseLinearMapping(float fromMin, float fromMax) {
+	public PiecewiseMapping(float fromMin, float fromMax) {
 		super(fromMin, fromMax);
-		if (!Float.isNaN(fromMin)) {
-			put(fromMin, 0);
-		}
-		if (!Float.isNaN(fromMax)) {
-			put(fromMax, 1);
-		}
+		reset();
 	}
 
-	public PiecewiseLinearMapping(PiecewiseLinearMapping copy) {
+	public PiecewiseMapping(PiecewiseMapping copy) {
 		super(copy);
 		this.mapping.putAll(copy.mapping);
 	}
 
+	/**
+	 * @return the isDefinedMapping, see {@link #isDefinedMapping}
+	 */
+	public boolean isDefinedMapping() {
+		return isDefinedMapping;
+	}
+
 	@Override
-	public PiecewiseLinearMapping clone() {
-		return new PiecewiseLinearMapping(this);
+	public void fromJavaScript(String code) {
+		this.isDefinedMapping = updateFromCode(code);
+		super.fromJavaScript(code);
+	}
+
+	@Override
+	public PiecewiseMapping clone() {
+		return new PiecewiseMapping(this);
+	}
+
+	public boolean updateFromCode(String code) {
+		// no change
+		if (isDefinedMapping && this.toJavaScript().equals(code))
+			return true;
+		mapping.clear();
+		// TODO
+		return false;
+	}
+
+	@Override
+	public void reset() {
+		super.reset();
+		mapping.clear();
+		if (!Float.isNaN(getFromMin())) {
+			put(getFromMin(), 0);
+		}
+		if (!Float.isNaN(getFromMax())) {
+			put(getFromMax(), 1);
+		}
+		this.isDefinedMapping = true;
 	}
 
 	@Override
 	public String toJavaScript() {
+		if (!isDefinedMapping)
+			return super.toJavaScript();
 		StringBuilder b = new StringBuilder();
 		if (mapping.size() < 2) {
 			String min_from, min_to, max_from, max_to;
@@ -74,13 +111,13 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 				max_from = String.format(Locale.ENGLISH, "%.2g",mapping.firstKey());
 				max_to = String.format(Locale.ENGLISH, "%.2g",mapping.get(mapping.firstKey()));
 			}
-			b.append(String.format("if (value < %s) return Float.NaN\n", min_from));
+			b.append(String.format("if (value < %s) return NaN\n", min_from));
 			b.append(String.format("else if (value <= %s) return linear(%s, %s, value, %s, %s)\n",max_from,min_from,max_from,min_to,max_to));
 		} else {
 			Map.Entry<Float, Float> last = null;
 			for (Map.Entry<Float, Float> entry : this) {
 				if (last == null) {
-					b.append(String.format(Locale.ENGLISH, "if (value < %.2g) return Float.NaN\n", entry.getKey()));
+					b.append(String.format(Locale.ENGLISH, "if (value < %.2g) return NaN\n", entry.getKey()));
 				} else {
 					b.append(String
 							.format(Locale.ENGLISH,
@@ -90,7 +127,7 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 				last = entry;
 			}
 		}
-		b.append("else return Float.NaN");
+		b.append("else return NaN");
 		return b.toString();
 	}
 
@@ -126,6 +163,10 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 	public float apply(float in) {
 		if (Float.isNaN(in))
 			return in;
+
+		if (!isDefinedMapping)
+			return super.apply(in);
+
 		if (mapping.size() < 2) {// default
 			float[] m0 = getMappedMin();
 			float[] m1 = getMappedMax();
@@ -151,6 +192,8 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 
 	@Override
 	public float[] getMappedMin() {
+		if (!isDefinedMapping)
+			return super.getMappedMin();
 		if (mapping.isEmpty())
 			return new float[] { getActMin(), 0 };
 		float k = mapping.firstKey();
@@ -160,7 +203,10 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 		return new float[] { k, mapping.get(k) };
 	}
 
+	@Override
 	public float getMinTo() {
+		if (!isDefinedMapping)
+			return super.getMinTo();
 		if (mapping.isEmpty() || mapping.size() == 1 && isDefaultMin(mapping.firstKey()))
 			return 0;
 		float min = Float.POSITIVE_INFINITY;
@@ -169,7 +215,10 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 		return min;
 	}
 
+	@Override
 	public float getMaxTo() {
+		if (!isDefinedMapping)
+			return super.getMaxTo();
 		if (mapping.isEmpty() || mapping.size() == 1 && !isDefaultMin(mapping.firstKey()))
 			return 1;
 		float max = Float.NEGATIVE_INFINITY;
@@ -181,6 +230,8 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 
 	@Override
 	public float[] getMappedMax() {
+		if (!isDefinedMapping)
+			return super.getMappedMax();
 		if (mapping.isEmpty())
 			return new float[] { getActMax(), 1 };
 		float k = mapping.lastKey();
@@ -196,7 +247,7 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 	}
 
 	public static void main(String[] args) {
-		PiecewiseLinearMapping t = new PiecewiseLinearMapping(0, 1);
+		PiecewiseMapping t = new PiecewiseMapping(0, 1);
 		t.put(0, 0);
 		t.put(1, 1);
 		System.out.println(t.toJavaScript());
@@ -233,13 +284,13 @@ public class PiecewiseLinearMapping extends AMappingFunction implements Iterable
 		test(0.1f, t.apply(-0.1f));
 		test(Float.NaN, t.apply(1.1f));
 
-		PiecewiseLinearMapping p = new PiecewiseLinearMapping(Float.NaN, Float.NaN);
+		PiecewiseMapping p = new PiecewiseMapping(Float.NaN, Float.NaN);
 		p.setAct(-1, +1);
 		System.out.println(p.toJavaScript());
-		p = new PiecewiseLinearMapping(0, Float.NaN);
+		p = new PiecewiseMapping(0, Float.NaN);
 		p.setAct(0, 100);
 		System.out.println(p.toJavaScript());
-		p = new PiecewiseLinearMapping(Float.NaN, 1);
+		p = new PiecewiseMapping(Float.NaN, 1);
 		p.setAct(-10, 10);
 		System.out.println(p.toJavaScript());
 	}

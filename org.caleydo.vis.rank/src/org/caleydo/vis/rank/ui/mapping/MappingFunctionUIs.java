@@ -20,12 +20,16 @@
 package org.caleydo.vis.rank.ui.mapping;
 
 import java.awt.Color;
+import java.util.Map;
 
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.util.function.IFloatList;
 import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
+import org.caleydo.vis.rank.model.mapping.BaseCategoricalMappingFunction;
+import org.caleydo.vis.rank.model.mapping.ICategoricalMappingFunction;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl
@@ -33,10 +37,27 @@ import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
  */
 public class MappingFunctionUIs {
 	public static GLElement create(IMappingFunction model, IFloatList data, Color color, Color bgColor,
-			ICallback<IMappingFunction> callback) {
-		if (model instanceof PiecewiseLinearMapping)
-			return new PiecewiseLinearMappingUI((PiecewiseLinearMapping) model, data, color, bgColor, callback);
-		return null;
+			ICallback<? super IMappingFunction> callback) {
+		MappingFunctionUI m = new MappingFunctionUI(model, data, color, bgColor, callback);
+		if (model instanceof PiecewiseMapping) {
+			m.addMode(new PiecewiseMappingCrossUI((PiecewiseMapping) model, true));
+			m.addMode(new PiecewiseMappingParallelUI((PiecewiseMapping) model, true));
+			m.addMode(new PiecewiseMappingCrossUI((PiecewiseMapping) model, false));
+			m.addMode(new PiecewiseMappingParallelUI((PiecewiseMapping) model, false));
+		} else {
+			m.addMode(new MappingCrossUI<IMappingFunction>(model, true));
+			m.addMode(new MappingParallelUI<IMappingFunction>(model, true));
+			m.addMode(new MappingCrossUI<IMappingFunction>(model, false));
+			m.addMode(new MappingParallelUI<IMappingFunction>(model, false));
+		}
+		return m;
 	}
 
+	public static <T> GLElement create(ICategoricalMappingFunction<T> model, Map<T, Integer> data,
+			Map<T, CategoryInfo> metaData, Color bgColor, ICallback<? super ICategoricalMappingFunction<?>> callback) {
+		if (model instanceof BaseCategoricalMappingFunction)
+			return new BaseCategoricalMappingFunctionUI<T>((BaseCategoricalMappingFunction<T>) model, data, metaData,
+					bgColor, callback);
+		return null;
+	}
 }

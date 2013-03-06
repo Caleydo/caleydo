@@ -19,45 +19,15 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model.mapping;
 
-import org.caleydo.core.util.function.IFloatFunction;
+import org.caleydo.vis.rank.data.IFloatFunction;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IMappingFunction extends IFloatFunction {
-	String toJavaScript();
+public interface ICategoricalMappingFunction<T> extends IFloatFunction<T> {
 
-	void fromJavaScript(String code);
-
-	void setAct(float min, float max);
-
-	float[] getMappedMin();
-
-	float[] getMappedMax();
-
-	boolean hasDefinedMappingBounds();
-
-	boolean isMinDefined();
-
-	boolean isMaxDefined();
-
-	boolean isMappingDefault();
-
-	/**
-	 * @return
-	 */
-	IMappingFunction clone();
+	ICategoricalMappingFunction<T> clone();
 
 	void reset();
-
-
-	float getMaxTo();
-
-	float getMinTo();
-
-
-	float getActMin();
-
-	float getActMax();
 }

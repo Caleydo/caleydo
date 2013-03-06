@@ -19,44 +19,50 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.model.mapping;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.caleydo.vis.rank.data.AFloatFunction;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class MappingFunctions {
-	public static float linear(float start, float end, float in, float startTo, float endTo) {
-		if (Float.isNaN(in))
-			return in;
-		if (in < start)
-			return Float.NaN;
-		if (in > end)
-			return Float.NaN;
-		// linear interpolation between start and end
-		float v = (in - start) / (end - start); // to ratio
-		// to mapped value
-		float r = startTo + v * (endTo - startTo);
+public class BaseCategoricalMappingFunction<T> extends AFloatFunction<T> implements ICategoricalMappingFunction<T>,
+		Cloneable {
+	private final Map<T, Float> mapping = new LinkedHashMap<>();
+	private float missingValue = 0.f;
 
-		// finally clamp
-		return clamp01(r);
+	public BaseCategoricalMappingFunction(Set<T> items) {
+		int i = 1;
+		float f = 1.f / mapping.size();
+		for (T key : items)
+			mapping.put(key, (i++) * f);
 	}
 
-
-	public static float clamp01(float in) {
-		if (Float.isNaN(in))
-			return in;
-		return (in < 0 ? 0 : (in > 1 ? 1 : in));
+	public BaseCategoricalMappingFunction(BaseCategoricalMappingFunction<T> copy) {
+		this.mapping.putAll(copy.mapping);
 	}
 
-	public static float clamp(float in, float min, float max) {
-		if (Float.isNaN(in))
-			return in;
-		return (in < min ? min : (in > max ? max : in));
+	@Override
+	public float applyPrimitive(T in) {
+		if (in == null)
+			return missingValue;
+		Float r = mapping.get(in);
+		return r == null ? missingValue : r.floatValue();
 	}
 
-	public static float normalize(float in, float min, float max) {
-		if (Float.isNaN(in))
-			return in;
-		return clamp01((in - min) / (max - min));
+	@Override
+	public BaseCategoricalMappingFunction<T> clone() {
+		return new BaseCategoricalMappingFunction<T>(this);
+	}
+
+	@Override
+	public void reset() {
+		int i = 1;
+		float f = 1.f/mapping.size();
+		for (Map.Entry<T, Float> entry : mapping.entrySet())
+			entry.setValue((i++) * f);
 	}
 }

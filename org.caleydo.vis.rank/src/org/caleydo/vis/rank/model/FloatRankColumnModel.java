@@ -46,7 +46,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.data.IFloatInferrer;
 import org.caleydo.vis.rank.model.mapping.IMappingFunction;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IFilterColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IMappedColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
@@ -98,7 +98,7 @@ public class FloatRankColumnModel extends ABasicFilterableRankColumnModel implem
 	private final IGLRenderer valueRenderer = new ScoreBarRenderer(this);
 
 	public FloatRankColumnModel(IFloatFunction<IRow> data, IGLRenderer header, Color color, Color bgColor,
-			PiecewiseLinearMapping mapping, IFloatInferrer missingValue) {
+			PiecewiseMapping mapping, IFloatInferrer missingValue) {
 		super(color, bgColor);
 		this.data = data;
 		this.mapping = mapping;

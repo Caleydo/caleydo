@@ -34,7 +34,7 @@ import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.IRow;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl
@@ -58,7 +58,7 @@ public class SameScoreTest extends ARankTableDemo {
 						return ((SimpleRow)in).value;
 					}
 				}, GLRenderers.drawText("Float", VAlign.CENTER), Color
-						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, Float.NaN),
+						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseMapping(0, Float.NaN),
 						FloatInferrers.MEAN));
 
 		Random r = new Random(200);

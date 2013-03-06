@@ -25,7 +25,7 @@ import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.vis.rank.data.IFloatFunction;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
  * basic abstraction of a score
@@ -53,5 +53,5 @@ public interface IScore extends ILabelProvider, IFloatFunction<IRow> {
 
 	Color getBGColor();
 
-	PiecewiseLinearMapping createMapping();
+	PiecewiseMapping createMapping();
 }

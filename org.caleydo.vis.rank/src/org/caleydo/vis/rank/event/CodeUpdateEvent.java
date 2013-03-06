@@ -17,47 +17,31 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mapping;
+package org.caleydo.vis.rank.event;
 
-import org.caleydo.core.util.function.IFloatFunction;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IMappingFunction extends IFloatFunction {
-	String toJavaScript();
+public class CodeUpdateEvent extends ADirectedEvent {
+	private String code;
 
-	void fromJavaScript(String code);
-
-	void setAct(float min, float max);
-
-	float[] getMappedMin();
-
-	float[] getMappedMax();
-
-	boolean hasDefinedMappingBounds();
-
-	boolean isMinDefined();
-
-	boolean isMaxDefined();
-
-	boolean isMappingDefault();
+	public CodeUpdateEvent(String code) {
+		this.code = code;
+	}
 
 	/**
-	 * @return
+	 * @return the code, see {@link #code}
 	 */
-	IMappingFunction clone();
+	public String getCode() {
+		return code;
+	}
 
-	void reset();
+	@Override
+	public boolean checkIntegrity() {
+		return code != null;
+	}
 
-
-	float getMaxTo();
-
-	float getMinTo();
-
-
-	float getActMin();
-
-	float getActMax();
 }

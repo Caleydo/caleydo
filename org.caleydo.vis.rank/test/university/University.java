@@ -20,6 +20,8 @@
 package university;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,12 +37,12 @@ import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.FloatInferrers;
 import org.caleydo.vis.rank.model.ARow;
 import org.caleydo.vis.rank.model.CategoricalRankColumnModel;
-import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.FloatRankColumnModel;
 import org.caleydo.vis.rank.model.RankRankColumnModel;
+import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import demo.ARankTableDemo;
 
@@ -60,66 +62,77 @@ public class University extends ARankTableDemo {
 	protected void createModel() throws IOException, NoSuchFieldException {
 		List<UniversityRow> rows = readData();
 		table.addData(rows);
-		Map<String, CategoryInfo> metaData = readCountriesCategories();
+		Map<String, String> metaData = readCountriesCategories();
 
-		table.addColumn(eventListeners.register(new RankRankColumnModel()));
-		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
-				StringRankColumnModel.DFEAULT)));
+		// scan columns
+		this.table.addPropertyChangeListener(RankTableModel.PROP_REGISTER, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getOldValue() != null) {
+					eventListeners.unregister(evt.getOldValue());
+				}
+				if (evt.getNewValue() != null)
+					eventListeners.register(evt.getNewValue());
+			}
+		});
+
+		table.addColumn(new RankRankColumnModel());
+		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("University", VAlign.CENTER),
+				StringRankColumnModel.DFEAULT));
 		// as categorical
-		table.addColumn(eventListeners.register(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country",
-				VAlign.CENTER), new ReflectionData(field("country")), metaData)));
+		table.addColumn(new CategoricalRankColumnModel<String>(GLRenderers.drawText("Country",
+				VAlign.CENTER), new ReflectionData(field("country")), metaData));
 		// as string
 		// table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Country",
 		// VAlign.CENTER),
 		// new ReflectionData(field("country")))));
 
 
-		table.addColumn(eventListeners.register(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
-				new ReflectionData(field("yearFounded")))));
+		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Year Founded", VAlign.CENTER),
+				new ReflectionData(field("yearFounded"))));
 
 		final StackedRankColumnModel stacked = new StackedRankColumnModel("Stacked");
 		table.addColumn(stacked);
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("teaching")), GLRenderers.drawText("Teaching",
-						VAlign.CENTER), Color.decode("#8DD3C7"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
+						VAlign.CENTER), Color.decode("#8DD3C7"), Color.decode("#EEEEEE"), new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("research")), GLRenderers.drawText("Research",
-						VAlign.CENTER), Color.decode("#FFFFB3"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
+						VAlign.CENTER), Color.decode("#FFFFB3"), Color.decode("#EEEEEE"), new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("citations")), GLRenderers.drawText("Citations",
-						VAlign.CENTER), Color.decode("#BEBADA"), Color.decode("#EEEEEE"), new PiecewiseLinearMapping(0,
+						VAlign.CENTER), Color.decode("#BEBADA"), Color.decode("#EEEEEE"), new PiecewiseMapping(0,
 						100), FloatInferrers.MEDIAN).setWeight((float) 30 * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("incomeFromIndustry")), GLRenderers.drawText(
 						"Income From Industry", VAlign.CENTER), Color.decode("#FB8072"), Color.decode("#EEEEEE"),
-						new PiecewiseLinearMapping(0, 100), FloatInferrers.MEDIAN).setWeight(7.5f * 5));
+						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(7.5f * 5));
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new ReflectionFloatData(field("internationalMix")), GLRenderers.drawText(
 						"International Mix", VAlign.CENTER), Color.decode("#80B1D3"), Color.decode("#EEEEEE"),
-						new PiecewiseLinearMapping(0, 100), FloatInferrers.MEDIAN).setWeight(2.5f * 5));
+						new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN).setWeight(2.5f * 5));
 
 		table.addColumn(new FloatRankColumnModel(new ReflectionFloatData(field("overallScore")), GLRenderers.drawText(
 				"Overall Score", VAlign.CENTER), Color.decode("#ffb380"), Color.decode("#ffe6d5"),
-				new PiecewiseLinearMapping(0, 100), FloatInferrers.MEDIAN));
+				new PiecewiseMapping(0, 100), FloatInferrers.MEDIAN));
 	}
 
-	private static Map<String, CategoryInfo> readCountriesCategories() throws IOException {
-		Map<String, CategoryInfo> metaData = new HashMap<>();
+	private static Map<String, String> readCountriesCategories() throws IOException {
+		Map<String, String> metaData = new HashMap<>();
 		try (BufferedReader r = new BufferedReader(new InputStreamReader(
 				University.class.getResourceAsStream("countries.txt"), Charset.forName("UTF-8")))) {
 			String line;
 			r.readLine();
 			while ((line = r.readLine()) != null) {
 				String[] l = line.split("\t");
-				CategoryInfo c = new CategoryInfo(l[0], Color.decode(l[1]));
-				metaData.put(c.getLabel(), c);
+				metaData.put(l[0], l[0]);
 			}
 		}
 		return metaData;

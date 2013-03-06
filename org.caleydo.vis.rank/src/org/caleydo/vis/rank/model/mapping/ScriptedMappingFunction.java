@@ -40,17 +40,9 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	private String code = "";
 	private final ScriptEngine engine;
 	private CompiledScript script;
-	private final Bindings bindings;
-
-	public ScriptedMappingFunction(float fromMin, float fromMax) {
-		super(fromMin, fromMax);
-		this.engine = new ScriptEngineManager().getEngineByName("JavaScript");
-		this.code = "return linear(value_min, value_max, value, 0, 1)";
-		this.bindings = engine.createBindings();
-		this.script = null;
-	}
 
 	static {
+		// create code around the script
 		StringBuilder b = new StringBuilder();
 		b.append("importPackage(").append(MappingFunctions.class.getPackage().getName()).append(")\n");
 		for (Method m : MappingFunctions.class.getDeclaredMethods()) {
@@ -68,19 +60,39 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		postfix = b.toString();
 	}
 
+	public ScriptedMappingFunction(float fromMin, float fromMax) {
+		super(fromMin, fromMax);
+		this.engine = createEngine();
+		this.script = null;
+		this.code = "return linear(value_min, value_max, value, 0, 1)";
+	}
+
+	public static ScriptEngine createEngine() {
+		return new ScriptEngineManager().getEngineByName("JavaScript");
+	}
+
+	public static String fullCode(String code) {
+		StringBuilder b = new StringBuilder();
+		b.append(prefix);
+		if (!code.contains("return "))
+			b.append("return ");
+		b.append(code);
+		b.append(postfix);
+		return b.toString();
+	}
+
+	@Override
+	public void reset() {
+		this.code = "return linear(value_min, value_max, value, 0, 1)";
+		this.script = null;
+	}
+
 	private CompiledScript compileScript() {
 		if (script != null)
 			return script;
-		Compilable c = (Compilable) engine;
 		try {
-			StringBuilder b = new StringBuilder();
-			b.append(prefix);
-			if (!code.contains("return "))
-				b.append("return ");
-			b.append(code);
-			b.append(postfix);
-			System.out.println(b);
-			script = c.compile(b.toString());
+			Compilable c = (Compilable) engine;
+			script = c.compile(fullCode(code));
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,11 +100,12 @@ public class ScriptedMappingFunction extends AMappingFunction {
 		return script;
 	}
 
+
+
 	public ScriptedMappingFunction(ScriptedMappingFunction copy) {
 		super(copy);
 		this.code = copy.code;
 		this.engine = copy.engine;
-		this.bindings = engine.createBindings();
 		this.script = copy.script;
 	}
 
@@ -105,15 +118,12 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	 * @param code
 	 *            setter, see {@link code}
 	 */
-	public void setCode(String code) {
+	@Override
+	public void fromJavaScript(String code) {
+		if (this.code.equals(code))
+			return;
 		this.code = code;
-	}
-
-	/**
-	 * @return the code, see {@link #code}
-	 */
-	public String getCode() {
-		return code;
+		this.script = null;
 	}
 
 	@Override
@@ -124,12 +134,22 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	@Override
 	public float[] getMappedMin() {
 		// TODO no idea how to compute that out of a script
-		return new float[] { 0, 0 };
+		return new float[] { getActMin(), 0 };
 	}
 
 	@Override
 	public float[] getMappedMax() {
-		return new float[] { 1, 1 };
+		return new float[] { getActMax(), 1 };
+	}
+
+	@Override
+	public float getMaxTo() {
+		return 1;
+	}
+
+	@Override
+	public float getMinTo() {
+		return 0;
 	}
 
 	@Override
@@ -140,9 +160,13 @@ public class ScriptedMappingFunction extends AMappingFunction {
 	@Override
 	public float apply(float in) {
 		try {
+			Bindings bindings = engine.createBindings();
 			bindings.put("v", in);
 			bindings.put("v_min", getActMin());
 			bindings.put("v_max", getActMax());
+			CompiledScript c = compileScript();
+			if (c == null)
+				return Float.NaN;
 			Object r = compileScript().eval(bindings);
 			if (r instanceof Number)
 				return ((Number) r).floatValue();
@@ -155,7 +179,7 @@ public class ScriptedMappingFunction extends AMappingFunction {
 
 	public static void main(String[] args) {
 		ScriptedMappingFunction m = new ScriptedMappingFunction(0, 1);
-		m.setCode("return 1-Math.abs(value)");
+		m.fromJavaScript("return 1-Math.abs(value)");
 		System.out.println(m.apply(0.2f));
 	}
 }

@@ -28,7 +28,7 @@ import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import com.google.common.collect.Iterators;
 
@@ -62,7 +62,7 @@ public class MultiScore extends DefaultLabelProvider implements IScore, Iterable
 	}
 
 	@Override
-	public PiecewiseLinearMapping createMapping() {
+	public PiecewiseMapping createMapping() {
 		return null;
 	}
 

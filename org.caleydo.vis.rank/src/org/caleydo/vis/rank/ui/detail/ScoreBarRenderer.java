@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.vis.rank.ui.detail;
 
+import java.awt.Color;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.format.Formatter;
@@ -51,14 +53,20 @@ public class ScoreBarRenderer implements IGLRenderer {
 		boolean inferred = model.isValueInferred(r);
 		if (Float.isNaN(v) || v <= 0)
 			return;
-		renderValue(g, w, h, parent, r, v, inferred, model, false);
+		renderValue(g, w, h, parent, r, v, inferred, model, false, model.getColor(), null);
 	}
 
 	static void renderValue(GLGraphics g, float w, float h, GLElement parent, final IRow r, float v, boolean inferred,
-			IRankableColumnMixin model, boolean align) {
+			IRankableColumnMixin model, boolean align, Color color, Color collapseColor) {
 		if (getRenderInfo(parent).isCollapsed()) {
 			// if collapsed use a brightness encoding
-			g.color(1 - v, 1 - v, 1 - v, 1).fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
+			if (collapseColor == null)
+				g.color(1 - v, 1 - v, 1 - v, 1);
+			else {
+				float[] rgb = collapseColor.getColorComponents(null);
+				g.color(rgb[0], rgb[1], rgb[2], 1 - v);
+			}
+			g.fillRect(w * 0.1f, h * 0.1f, w * 0.8f, h * 0.8f);
 			if (inferred) {
 				g.gl.glLineStipple(4, (short) 0xAAAA);
 				g.gl.glEnable(GL2.GL_LINE_STIPPLE);
@@ -94,14 +102,7 @@ public class ScoreBarRenderer implements IGLRenderer {
 		float tw = g.text.getTextWidth(text, h);
 		boolean hasFreeSpace = getRenderInfo(parent).hasFreeSpace();
 
-		if (tw < w * v)
-			g.drawText(text, 1, y, w * v - 2, h, VAlign.RIGHT);
-		else if (tw < w && hasFreeSpace) {
-			VAlign alignment = getRenderInfo(parent).getAlignment();
-			if (alignment == VAlign.LEFT)
-				g.drawText(text, w * v + 1, y, w - w * v, h);
-			else
-				g.drawText(text, -w + w * v, y, w, h, VAlign.RIGHT);
-		}
+		VAlign alignment = getRenderInfo(parent).getAlignment();
+		g.drawText(text, 2, y, (hasFreeSpace && alignment == VAlign.LEFT) ? w : v - 2, h, VAlign.LEFT);
 	}
 }

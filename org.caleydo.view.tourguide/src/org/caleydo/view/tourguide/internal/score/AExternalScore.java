@@ -26,7 +26,7 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.external.AExternalScoreParseSpecification;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl
@@ -82,17 +82,17 @@ public abstract class AExternalScore extends DefaultLabelProvider implements ISe
 	}
 
 	@Override
-	public PiecewiseLinearMapping createMapping() {
+	public PiecewiseMapping createMapping() {
 		boolean tnan = Float.isNaN(mappingMax);
-		PiecewiseLinearMapping m;
+		PiecewiseMapping m;
 		if (tnan) {
-			m = new PiecewiseLinearMapping(mappingMin, mappingMax);
+			m = new PiecewiseMapping(mappingMin, mappingMax);
 		} else if (mappingMin > mappingMax) {
-			m = new PiecewiseLinearMapping(mappingMax, mappingMin);
+			m = new PiecewiseMapping(mappingMax, mappingMin);
 			m.put(mappingMax, 1);
 			m.put(mappingMin, 0);
 		} else {
-			m = new PiecewiseLinearMapping(mappingMin, mappingMax);
+			m = new PiecewiseMapping(mappingMin, mappingMax);
 		}
 		return m;
 	}

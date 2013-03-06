@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout2.GLElement;
 import org.caleydo.core.view.opengl.layout2.renderer.GLRenderers;
 import org.caleydo.vis.rank.data.FloatInferrers;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.model.mixin.IHideableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.IRankableColumnMixin;
 import org.caleydo.vis.rank.model.mixin.ISnapshotableColumnMixin;
@@ -183,6 +183,6 @@ public class StackedRankColumnModel extends AMultiRankColumnModel implements ISn
 	@Override
 	public void takeSnapshot() {
 		parent.takeSnapshot(new FloatRankColumnModel(this, getHeaderRenderer(), getColor(), getBgColor(),
-				new PiecewiseLinearMapping(0, 1), FloatInferrers.MEDIAN));
+				new PiecewiseMapping(0, 1), FloatInferrers.MEDIAN));
 	}
 }

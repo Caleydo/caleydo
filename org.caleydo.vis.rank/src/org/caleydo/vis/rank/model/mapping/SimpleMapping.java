@@ -39,6 +39,16 @@ public class SimpleMapping extends AMappingFunction implements Cloneable {
 	}
 
 	@Override
+	public void fromJavaScript(String code) {
+
+	}
+
+	@Override
+	public void reset() {
+
+	}
+
+	@Override
 	public float[] getMappedMin() {
 		return new float[] { 0, 0 };
 	}
@@ -46,6 +56,16 @@ public class SimpleMapping extends AMappingFunction implements Cloneable {
 	@Override
 	public float[] getMappedMax() {
 		return new float[] { 1, 1 };
+	}
+
+	@Override
+	public float getMaxTo() {
+		return 1;
+	}
+
+	@Override
+	public float getMinTo() {
+		return 0;
 	}
 
 	@Override

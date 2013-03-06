@@ -38,7 +38,7 @@ import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -67,8 +67,8 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 	private IRegisteredScore create(String label, Perspective reference) {
 		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null, color, bgColor) {
 			@Override
-			public PiecewiseLinearMapping createMapping() {
-				PiecewiseLinearMapping m = new PiecewiseLinearMapping(-1, 1);
+			public PiecewiseMapping createMapping() {
+				PiecewiseMapping m = new PiecewiseMapping(-1, 1);
 				m.put(-1,1);
 				m.put(0, 0);
 				m.put(1, 1);

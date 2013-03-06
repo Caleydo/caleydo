@@ -28,7 +28,7 @@ import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.internal.view.PerspectiveRow;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 /**
  * @author Samuel Gratzl
@@ -77,8 +77,8 @@ public abstract class AComputedStratificationScore extends DefaultLabelProvider 
 	}
 
 	@Override
-	public PiecewiseLinearMapping createMapping() {
-		return new PiecewiseLinearMapping(0, 1);
+	public PiecewiseMapping createMapping() {
+		return new PiecewiseMapping(0, 1);
 	}
 
 }

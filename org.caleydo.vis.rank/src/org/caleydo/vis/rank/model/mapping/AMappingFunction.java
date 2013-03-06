@@ -74,6 +74,7 @@ public abstract class AMappingFunction extends AFloatFunction implements IMappin
 	/**
 	 * @return the actMin, see {@link #actMin}
 	 */
+	@Override
 	public final float getActMin() {
 		return actMin;
 	}
@@ -81,6 +82,7 @@ public abstract class AMappingFunction extends AFloatFunction implements IMappin
 	/**
 	 * @return the actMax, see {@link #actMax}
 	 */
+	@Override
 	public final float getActMax() {
 		return actMax;
 	}

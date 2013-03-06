@@ -39,7 +39,7 @@ import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -144,14 +144,14 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
-		public PiecewiseLinearMapping createMapping() {
-			PiecewiseLinearMapping m;
+		public PiecewiseMapping createMapping() {
+			PiecewiseMapping m;
 			if (isPValue) {
-				m = new PiecewiseLinearMapping(0, 1);
+				m = new PiecewiseMapping(0, 1);
 				m.put(0, 1);
 				m.put(1, 0);
 			} else {
-				m = new PiecewiseLinearMapping(0, Float.NaN);
+				m = new PiecewiseMapping(0, Float.NaN);
 			}
 			return m;
 		}

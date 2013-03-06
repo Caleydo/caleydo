@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout2.GLGraphics;
-import org.caleydo.vis.rank.model.CategoricalRankColumnModel.CategoryInfo;
+import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel.CategoryInfo;
 import org.caleydo.vis.rank.model.SimpleHistogram;
 
 /**
@@ -36,7 +36,7 @@ public class RenderUtils {
 	public static void renderHist(GLGraphics g, SimpleHistogram hist, float w, float h, int selectedBin, Color color,
 			Color selectionColor) {
 		w -= 2;
-		float factor = h / hist.getLargestValue(false);
+		float factor = (h - 2) / hist.getLargestValue(false);
 		float delta = w / hist.size();
 		float lineWidth = delta;
 

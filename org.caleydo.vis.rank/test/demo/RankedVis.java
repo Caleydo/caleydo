@@ -42,7 +42,7 @@ import org.caleydo.vis.rank.model.RankRankColumnModel;
 import org.caleydo.vis.rank.model.RankTableModel;
 import org.caleydo.vis.rank.model.StackedRankColumnModel;
 import org.caleydo.vis.rank.model.StringRankColumnModel;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 import org.caleydo.vis.rank.ui.ColumnPoolUI;
 import org.caleydo.vis.rank.ui.TableBodyUI;
 import org.caleydo.vis.rank.ui.TableHeaderUI;
@@ -82,17 +82,17 @@ public class RankedVis extends GLElementContainer {
 		table.addColumnTo(
 				stacked,
 				new FloatRankColumnModel(new SimpleAcc(1), GLRenderers.drawText("Float", VAlign.CENTER), Color
-						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, Float.NaN),
+						.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseMapping(0, Float.NaN),
 						FloatInferrers.MEAN));
 		table.addColumnTo(stacked,
 				new FloatRankColumnModel(new SimpleAcc(2), GLRenderers.drawText("Float2", VAlign.CENTER), Color
-						.decode("#80ffb3"), Color.decode("#e3f4d7"), new PiecewiseLinearMapping(0, 1),
+						.decode("#80ffb3"), Color.decode("#e3f4d7"), new PiecewiseMapping(0, 1),
 						FloatInferrers.MEAN));
 
 		table.addColumn(new FloatRankColumnModel(new SimpleAcc(3), GLRenderers.drawText("Float3", VAlign.CENTER), Color
-				.decode("#5fd3bc"), Color.decode("#d5fff6"), new PiecewiseLinearMapping(0, 1), FloatInferrers.MEAN));
+				.decode("#5fd3bc"), Color.decode("#d5fff6"), new PiecewiseMapping(0, 1), FloatInferrers.MEAN));
 		table.addColumn(new FloatRankColumnModel(new SimpleAcc(4), GLRenderers.drawText("Float4", VAlign.CENTER), Color
-				.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseLinearMapping(0, 1), FloatInferrers.MEAN));
+				.decode("#ffb380"), Color.decode("#ffe6d5"), new PiecewiseMapping(0, 1), FloatInferrers.MEAN));
 
 
 		Random r = new Random(200);

@@ -17,47 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.vis.rank.model.mapping;
+package org.caleydo.vis.rank.ui.detail;
 
-import org.caleydo.core.util.function.IFloatFunction;
+import java.awt.Color;
+
+import org.caleydo.core.view.opengl.layout2.GLElement;
+import org.caleydo.core.view.opengl.layout2.GLGraphics;
+import org.caleydo.core.view.opengl.layout2.renderer.IGLRenderer;
+import org.caleydo.vis.rank.model.CategoricalRankRankColumnModel;
+import org.caleydo.vis.rank.model.IRow;
 
 /**
+ * 
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IMappingFunction extends IFloatFunction {
-	String toJavaScript();
+public class CategoricalScoreBarRenderer implements IGLRenderer {
+	private final CategoricalRankRankColumnModel<?> model;
 
-	void fromJavaScript(String code);
+	public CategoricalScoreBarRenderer(CategoricalRankRankColumnModel<?> model) {
+		this.model = model;
+	}
 
-	void setAct(float min, float max);
-
-	float[] getMappedMin();
-
-	float[] getMappedMax();
-
-	boolean hasDefinedMappingBounds();
-
-	boolean isMinDefined();
-
-	boolean isMaxDefined();
-
-	boolean isMappingDefault();
-
-	/**
-	 * @return
-	 */
-	IMappingFunction clone();
-
-	void reset();
-
-
-	float getMaxTo();
-
-	float getMinTo();
-
-
-	float getActMin();
-
-	float getActMax();
+	@Override
+	public void render(GLGraphics g, float w, float h, GLElement parent) {
+		final IRow r = parent.getLayoutDataAs(IRow.class, null); // current row
+		float v = model.applyPrimitive(r);
+		boolean inferred = model.isValueInferred(r);
+		if (Float.isNaN(v) || v <= 0)
+			return;
+		Color color = model.getColor(r);
+		ScoreBarRenderer.renderValue(g, w, h, parent, r, v, inferred, model, false, color, color);
+	}
 }

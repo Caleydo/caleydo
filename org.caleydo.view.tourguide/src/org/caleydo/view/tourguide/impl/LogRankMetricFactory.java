@@ -42,7 +42,7 @@ import org.caleydo.view.tourguide.spi.score.IDecoratedScore;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.vis.rank.model.IRow;
-import org.caleydo.vis.rank.model.mapping.PiecewiseLinearMapping;
+import org.caleydo.vis.rank.model.mapping.PiecewiseMapping;
 
 import com.google.common.collect.Sets;
 
@@ -155,8 +155,8 @@ public class LogRankMetricFactory implements IMetricFactory {
 		}
 
 		@Override
-		public PiecewiseLinearMapping createMapping() {
-			PiecewiseLinearMapping m = new PiecewiseLinearMapping(0, 1);
+		public PiecewiseMapping createMapping() {
+			PiecewiseMapping m = new PiecewiseMapping(0, 1);
 			m.put(0, 1);
 			m.put(1, 0);
 			return m;

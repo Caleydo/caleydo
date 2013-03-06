@@ -54,6 +54,11 @@ public class RenderStyle {
 	public static final String ICON_ALIGN_STACKED = ICON_PREFIX + "align_stacked.png";
 	public static final String ICON_FREEZE = ICON_PREFIX + "camera_add.png";
 
+	public static final String ICON_MAPPING_CROSS_LEFT = ICON_PREFIX + "cross_left.png";
+	public static final String ICON_MAPPING_CROSS_RIGHT = ICON_PREFIX + "cross_right.png";
+	public static final String ICON_MAPPING_PAR_HOR = ICON_PREFIX + "par_hor.png";
+	public static final String ICON_MAPPING_PAR_VERT = ICON_PREFIX + "par_vert.png";
+	public static final String ICON_MAPPING_RESET = ICON_PREFIX + "arrow_undo.png";
 	/**
 	 * space between columns
 	 */
