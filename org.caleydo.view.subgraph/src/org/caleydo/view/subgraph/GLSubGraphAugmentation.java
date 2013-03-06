@@ -133,8 +133,17 @@ public class GLSubGraphAugmentation extends GLElement {
 		//render bubbleSet	
 		g.gl.glTranslatef(0.f, 0.f, 1.0f);
 		this.bubbleSetRenderer.addGroup(bubbleSetItems, bubbleSetEdges , bubbleSetColor);
+		((BubbleSet)this.bubbleSetRenderer.setOutline).useVirtualEdges(false);
+		//                     routingIterations, marchingIterations,pixelGroup
+		((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 5);
+		//((BubbleSet)this.bubbleSetRenderer.setOutline).setParameter(1, 1,1,1.0,1.0,.5,1.5, 1.0, 1);
+		//setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);		
+		//	  BubbleSet(routingIterations, marchingIterations,pixelGroup, 
+		//				edgeR0,edgeR1, nodeR0, nodeR1, 
+		//				morphBuffer,skip) 
+
 		this.renderPortalLinks(g);
-		this.bubbleSetRenderer.update(g.gl,null,0);		
+		this.bubbleSetRenderer.update(g.gl,null,0);	
 		this.bubbleSetRenderer.renderPxl(g.gl, pxlWidth, pxlHeight);		
 		g.gl.glTranslatef(0.f, 0.f, -1.0f);		
 	}
