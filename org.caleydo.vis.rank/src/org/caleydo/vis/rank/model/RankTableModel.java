@@ -151,6 +151,27 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	}
 
 	/**
+	 * removes all columns and clears the data
+	 */
+	public void reset() {
+		for (ARankColumnModel c : this.columns)
+			takeDown(c);
+		this.columns.clear();
+		for (ARankColumnModel c : this.pool)
+			takeDown(c);
+		this.pool.clear();
+		this.dataMask = null;
+		this.data.clear();
+		this.selectedRank = -1;
+		this.selectedRow = null;
+		this.dirtyFilter = this.dirtyOrder = true;
+		this.exaequoOffsets.clear();
+		this.filter = null;
+		this.order = null;
+		this.orderBy = null;
+	}
+
+	/**
 	 * adds a collection of new data items to this table
 	 *
 	 * @param rows
@@ -773,5 +794,6 @@ public class RankTableModel implements Iterable<IRow>, IRankColumnParent {
 	public IRankColumnModel getParent() {
 		return null;
 	}
+
 }
 
