@@ -117,6 +117,10 @@ public class RankingElement extends GLElementContainer {
 	 * @param newValue
 	 */
 	protected void rowSelected(PathwayRow newValue) {
+
+		if (newValue == null)
+			return;
+
 		view.addPathway(newValue.getPathway());
 	}
 
@@ -126,8 +130,7 @@ public class RankingElement extends GLElementContainer {
 	 */
 	private static void initTable(RankTableModel table, EventListenerManager eventListeners) {
 		// add columns
-		table.addColumn(new StringRankColumnModel(GLRenderers
-.drawText("Pathway", VAlign.CENTER),
+		table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway", VAlign.CENTER),
 				StringRankColumnModel.DFEAULT));
 		// table.addColumn(new StringRankColumnModel(GLRenderers.drawText("Pathway Type", VAlign.CENTER),
 		// new Function<IRow, String>() {
