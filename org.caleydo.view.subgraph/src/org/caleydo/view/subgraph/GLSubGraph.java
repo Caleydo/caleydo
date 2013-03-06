@@ -250,9 +250,9 @@ public class GLSubGraph extends AGLElementGLView implements IMultiTablePerspecti
 
 		info.age = currentPathwayAge--;
 		// pathwayColumn.setLayout(new GLSizeRestrictiveFlowLayout(false, 10, GLPadding.ZERO));
-		createMultiformRenderer(pathwayTablePerspectives,
-				EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1, EEmbeddingID.PATHWAY_LEVEL2, EEmbeddingID.PATHWAY_LEVEL3),
-				pathwayRow, Float.NaN, info);
+		createMultiformRenderer(pathwayTablePerspectives, EnumSet.of(EEmbeddingID.PATHWAY_LEVEL1,
+				EEmbeddingID.PATHWAY_LEVEL2, EEmbeddingID.PATHWAY_LEVEL3, EEmbeddingID.PATHWAY_LEVEL4), pathwayRow,
+				Float.NaN, info);
 		pathwayLayout.addColumn(info.window);
 
 		int rendererID = info.embeddingIDToRendererIDs.get(EEmbeddingID.PATHWAY_LEVEL1).get(0);

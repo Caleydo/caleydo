@@ -42,7 +42,7 @@ public enum EEmbeddingID {
 	/**
 	 * Embedding id for views that shall be used as one pathway multiform instance for level 3 (low detail).
 	 */
-	PATHWAY_LEVEL4(null, 1),
+	PATHWAY_LEVEL4("org.caleydo.view.subgraph.pathway.multiform.level4", 1),
 
 	/**
 	 * Embedding id for views that shall represent the extracted path, possibly over multiple pathways, in level 1

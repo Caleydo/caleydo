@@ -64,7 +64,7 @@ public class GLPathwayWindow extends AnimatedGLElementContainer {
 	}
 
 	public int getMinWidth() {
-		return info.multiFormRenderer.getMinWidthPixels();
+		return Math.max(info.multiFormRenderer.getMinWidthPixels(), 100);
 	}
 
 	public int getMinHeight() {
